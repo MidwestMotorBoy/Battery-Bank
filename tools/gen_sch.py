@@ -104,16 +104,18 @@ def place(sym, ref, val, x, y, nets, status=""):
         body.append(f'(label {q(net)} (at {px:.2f} {py:.2f} {ang}) {F} (justify {just} bottom)) (uuid "{U()}"))')
 def text(t, x, y, size=2.0):
     body.append(f'(text {q(t)} (exclude_from_sim no) (at {x} {y} 0) (effects (font (size {size} {size})) (justify left bottom)) (uuid "{U()}"))')
-text("Monolith top board: all blocks. DRAFT 5, generated from the TI pin tables.", 25.4, 20.32, 3)
+text("Monolith top board: all blocks. DRAFT 6, generated from the TI pin tables.", 25.4, 20.32, 3)
 text("Connections are made by net labels at each pin. Resistors marked TBD still need values. Standard footprints are assigned; custom packages are still blank.", 25.4, 27.94)
 p = {x[0]: x for x in gen.parts}
-place("TPS25751D", "U1", "TPS25751D", 127, 101.6, {str(a): c for a, b, c in p["U1"][5]}, "pinout from TI datasheet")
+u1 = {str(a): c for a, b, c in p["U1"][5]}; u1["2"] = "PD_3V3"; u1["3"] = "GND"   # ADCIN1 = level 7, ADCIN2 = level 0: SafeMode, address index 1
+place("TPS25751D", "U1", "TPS25751D", 127, 101.6, u1, "pinout and boot strap from TI datasheet")
 place("BQ25756", "U2", "BQ25756", 279.4, 101.6, {str(a): c for a, b, c in p["U2"][5]}, "pinout from TI datasheet")
 place("USB_C_Port", "J1", "12402082E512A", 43.18, 58.42, {"VBUS": "VBUS1", "CC1": "P1_CC1", "CC2": "P1_CC2", "D+": "P1_DP", "D-": "P1_DN", "GND": "GND"}, "pin numbers pending Amphenol drawing")
 place("EEPROM_24C512", "U3", "BL24C512A-SFRC", 43.18, 101.6, {"1": "GND", "2": "GND", "3": "GND", "4": "GND", "5": "CHG_SDA", "6": "CHG_SCL", "7": "GND", "8": "PD_3V3"}, "512 kbit at address 0x50; TPS25751 needs at least 36 kB")
 place("ESD_DUAL", "D3", "PESD24VS2UT", 43.18, 134.62, {"1": "P1_CC1", "2": "P1_CC2", "3": "GND"}, "24V ESD pair for the CC lines")
 place("ESD_DUAL", "D4", "PESD5V0S2UT", 43.18, 157.48, {"1": "P1_DP", "2": "P1_DN", "3": "GND"}, "5V ESD pair for D+ and D-; stock to confirm")
 text("Power stage", 381, 45.72)
+text("I2C addresses on the charger bus: BQ25756 0x6B, EEPROM 0x50. Charge voltage 16.5V, charge current 3A, input window 4.4V to 24V, 400kHz.", 25.4, 35.56)
 for i, (ref, d, g, s, role) in enumerate([("Q1", "AC_SNS_N", "HG1", "SW1", "buck high"), ("Q2", "SW1", "LG1", "GND", "buck low"), ("Q4", "BAT_SNS_P", "HG2", "SW2", "boost high"), ("Q3", "SW2", "LG2", "GND", "boost low")]):
     place("NFET", ref, "AGM404AP1, " + role, 393.7 + (i // 2) * 60.96, 63.5 + (i % 2) * 30.48, {"D": d, "G": g, "S": s}, "40V 4.4mOhm at 10V, PDFN 3.3x3.3; pinout to confirm in datasheet")
 text("Cell protector", 96.52, 149.86)
@@ -149,15 +151,15 @@ two_pin = [("L","L1","3.3uH MWSA1004S-3R3MT","SW1","SW2"),("R","R1","5m 1%","PPH
  ("C","C5","1u 35V","CHG_VAC","GND"),("R","R3","10R","PPHV","CHG_VAC")]
 two_pin += [("C",f"C{n}","22u 35V","AC_SNS_N","GND") for n in range(6,10)] + [("C","C10","68u 25V poly","PPHV","GND")]
 two_pin += [("C",f"C{n}","22u 25V","BAT_SNS_P","GND") for n in range(11,15)] + [("C","C15","68u 25V poly","VBAT_SYS","GND")]
-two_pin += [("R","R4","243k 0.1%","VBAT_SYS","CHG_FB"),("R","R5","24.9k 0.1%","CHG_FB","CHG_FBG"),("R","R6","16.9k","CHG_ICHG","GND"),
+two_pin += [("R","R4","249k 0.1%","VBAT_SYS","CHG_FB"),("R","R5","25.5k 0.1%","CHG_FB","CHG_FBG"),("R","R6","16.9k","CHG_ICHG","GND"),
  ("R","R7","4.02k","CHG_ILIM","GND"),("R","R8","66.5k","CHG_FSW","GND"),("R","R9","5.23k","REGN","CHG_TS"),("R","R10","30.1k","CHG_TS","GND"),
- ("NTC","RT1","10k 103AT","CHG_TS","GND"),("R","R11",T,"CHG_VAC","CHG_ACOV"),("R","R12",T,"CHG_ACOV","CHG_ACUV"),("R","R13",T,"CHG_ACUV","GND"),
+ ("NTC","RT1","10k 103AT","CHG_TS","GND"),("R","R11","1M 1%","CHG_VAC","CHG_ACUV"),("R","R12","267k 1%","CHG_ACUV","CHG_ACOV"),("R","R13","66.5k 1%","CHG_ACOV","GND"),
  ("R","R14","10k","CHG_CE_N","GND"),("R","R15","10k","PD_3V3","CHG_INT"),("R","R16","3.3k","PD_3V3","CHG_SDA"),("R","R17","3.3k","PD_3V3","CHG_SCL"),
  ("R","R18","4.7k","3V3","HOST_SDA"),("R","R19","4.7k","3V3","HOST_SCL"),("R","R20","10k","3V3","HOST_IRQ"),
  ("R","R21","100k","3V3","CHG_STAT1"),("R","R22","100k","3V3","CHG_STAT2"),("R","R23","100k","3V3","CHG_PG"),
  ("C","C16","10u","PD_3V3","GND"),("C","C17","10u","PD_1V5","GND"),("C","C18","10u","3V3","GND"),("C","C19","4.7u 35V","VBUS1","GND"),
  ("C","C20","22u","5V","GND"),("C","C21","330p","P1_CC1","GND"),("C","C22","330p","P1_CC2","GND"),
- ("R","R24",T,"PD_3V3","ADCIN1"),("R","R25",T,"ADCIN1","GND"),("R","R26",T,"PD_3V3","ADCIN2"),("R","R27",T,"ADCIN2","GND"),("TVS","D1","TVS2200","VBUS1","GND")]
+ ("TVS","D1","TVS2200","VBUS1","GND")]
 two_pin += [("FUSE","F1","15A","BAT_POS","VBAT_SYS"),("R","R30","33R","BAT_POS","PROT_VC4"),("R","R31","33R","CELL3","PROT_VC3"),("R","R32","33R","CELL2","PROT_VC2"),
  ("R","R33","33R","CELL1","PROT_VC1"),("R","R34","33R","BAT_NEG","PROT_VC0"),("C","C30","1u","PROT_VC4","PROT_VC3"),("C","C31","1u","PROT_VC3","PROT_VC2"),
  ("C","C32","1u","PROT_VC2","PROT_VC1"),("C","C33","1u","PROT_VC1","PROT_VC0"),("R","R35","1k","BAT_POS","PROT_VDD"),("C","C34","1u 35V","PROT_VDD","BAT_NEG"),
@@ -179,7 +181,7 @@ for i, (sym, ref, val, n1, n2) in enumerate(two_pin):
     place(sym, ref, val, 30.48 + (i % 20) * 35.56, 266.7 + (i // 20) * 22.86, {"1": n1, "2": n2}, "value to confirm" if val != T else "value to be set")
 lib = "\n".join(LIB.values())
 sch = (f'(kicad_sch (version 20231120) (generator "eeschema") (generator_version "8.0")\n(uuid "{ROOT}")\n(paper "A1")\n'
-       f'(title_block (title "Monolith top board") (rev "draft 5"))\n(lib_symbols\n{lib}\n)\n' + "\n".join(body) +
+       f'(title_block (title "Monolith top board") (rev "draft 6"))\n(lib_symbols\n{lib}\n)\n' + "\n".join(body) +
        '\n(sheet_instances (path "/" (page "1")))\n)\n')
 assert sch.count("(") == sch.count(")"), (sch.count("("), sch.count(")"))
 open("/mnt/user-data/outputs/BatteryBank/BatteryBank.kicad_sch", "w", newline="\n").write(sch)
