@@ -34,8 +34,10 @@ def two(name, ref):
 ic("TPS25751D", [(p, n) for p, n, _ in gen.parts[0][5]])
 ic("BQ25756", [(p, n) for p, n, _ in gen.parts[1][5]])
 for n, r in (("R", "R"), ("C", "C"), ("L", "L"), ("TVS", "D"), ("NTC", "RT")): two(n, r)
-LIB["NFET"] = libsym("NFET", "Q", [pin("D", "D", 0, 5.08, 270), pin("G", "G", -5.08, 0, 0), pin("S", "S", 0, -5.08, 90)], (-2.54, 2.54, 2.54, -2.54))
-PINPOS["NFET"] = {"D": (0, 5.08, "R"), "G": (-5.08, 0, "L"), "S": (0, -5.08, "R")}
+LIB["NFET"] = libsym("NFET", "Q", [pin(n, "S", 0, -5.08, 90) for n in "123"] + [pin("4", "G", -5.08, 0, 0)] + [pin(n, "D", 0, 5.08, 270) for n in "5678"], (-2.54, 2.54, 2.54, -2.54))
+PINPOS["NFET"] = {**{n: (0, -5.08, "R") for n in "123"}, "4": (-5.08, 0, "L"), **{n: (0, 5.08, "R") for n in "5678"}}
+LIB["ESD_DUAL"] = libsym("ESD_DUAL", "D", [pin("1", "K1", -5.08, 2.54, 0), pin("2", "K2", -5.08, -2.54, 0), pin("3", "A", 5.08, 0, 180)], (-2.54, 5.08, 2.54, -5.08))
+PINPOS["ESD_DUAL"] = {"1": (-5.08, 2.54, "L"), "2": (-5.08, -2.54, "L"), "3": (5.08, 0, "R")}
 two("FUSE", "F"); two("LED", "D")
 GNDP = [1, 2, 3, 4, 5, 8, 15, 17, 19, 21, 24, 31] + list(range(43, 78))
 WBN = {6: "ANT_IN", 7: "ANT_OUT", 9: "PA4", 10: "PA8", 11: "PA1", 12: "PA6", 13: "PA2", 14: "PB8", 16: "VDDA", 18: "VBAT", 20: "VDDSMPS", 22: "BOOT0", 23: "NRST",
@@ -50,45 +52,70 @@ ic("BQ77915", [(i + 1, n) for i, n in enumerate("VDD AVDD VC5 VC4 VC3 VC2 VC1 VC
 ic("TPS70933DBV", [(1, "IN"), (2, "GND"), (3, "EN"), (4, "NC"), (5, "OUT")])
 ic("TPS62933DRL", [(1, "RT"), (2, "EN"), (3, "VIN"), (4, "GND"), (5, "SW"), (6, "BST"), (7, "SS"), (8, "FB")])
 ic("USB_C_Port", [("VBUS", "VBUS"), ("CC1", "CC1"), ("CC2", "CC2"), ("D+", "D+"), ("D-", "D-"), ("GND", "GND")])
-ic("EEPROM_I2C", [("1", "SCL"), ("2", "GND"), ("3", "SDA"), ("4", "VCC"), ("5", "WP")])
+ic("EEPROM_24C512", [("1", "A0"), ("2", "A1"), ("3", "A2"), ("4", "VSS"), ("5", "SDA"), ("6", "SCL"), ("7", "WP"), ("8", "VCC")])
 # ---------- placement ----------
 body = []; netcheck = {}
+def footprint(sym, ref, val):
+    R, C = "Resistor_SMD:", "Capacitor_SMD:"
+    if sym == "R": return R + ("R_2512_6332Metric" if val.startswith(("5m", "3m")) else "R_0402_1005Metric")
+    if sym == "C":
+        if "poly" in val: return ""
+        if val.startswith("22u 25V") or val.startswith("22u 35V"): return C + "C_1210_3225Metric"
+        if val.startswith("10u 35V"): return C + "C_1206_3216Metric"
+        if val.startswith(("22u", "4.7u 35V")): return C + "C_0805_2012Metric"
+        if val.startswith(("10u", "4.7u", "2.2u", "1u")): return C + "C_0603_1608Metric"
+        return C + "C_0402_1005Metric"
+    if sym == "LED": return "LED_SMD:LED_0603_1608Metric"
+    if sym == "ESD_DUAL": return "Package_TO_SOT_SMD:SOT-23"
+    if sym == "PAD": return "TestPoint:TestPoint_Pad_4.0x4.0mm" if "wire" in val else "TestPoint:TestPoint_Pad_D1.5mm"
+    return {"U3": "Package_SO:TSSOP-8_4.4x3mm_P0.65mm", "U4": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", "U5": "Package_TO_SOT_SMD:SOT-23-5",
+            "U6": "Package_TO_SOT_SMD:SOT-583-8"}.get(ref, "")
+FPCOUNT = [0, 0]; NOFP = []
+LCSC = {**{f"Q{i}": "C41349455" for i in range(1, 7)}, "U2": "C19272232", "U8": "C473913", "U5": "C89347", "L2": "C408446", "D3": "C477999", "U3": "C169114"}
 TI = "https://www.ti.com/lit/ds/symlink/"
 DS = {"U1": TI + "tps25751.pdf", "U2": TI + "bq25756.pdf", "U4": TI + "bq77915.pdf", "U5": TI + "tps709.pdf", "U6": TI + "tps62933.pdf",
       "D1": TI + "tvs2200.pdf", "U8": TI + "tps25810.pdf", "U7": "https://www.st.com/resource/en/datasheet/stm32wb1mmc.pdf", "J2": "https://cdn.amphenol-cs.com/media/wysiwyg/files/drawing/c12402082.pdf", "J1": "https://cdn.amphenol-cs.com/media/wysiwyg/files/drawing/c12402082.pdf"}
 def place(sym, ref, val, x, y, nets, status=""):
-    pins = PINPOS[sym]; isic = len(pins) > 3
+    pins = PINPOS[sym]; isic = len(pins) > 3 and sym not in ("NFET", "ESD_DUAL")
+    if sym == "NFET": nets = {**{n: nets["S"] for n in "123"}, "4": nets["G"], **{n: nets["D"] for n in "5678"}}
+    seen = set(); fp = footprint(sym, ref, val); FPCOUNT[0 if fp else 1] += 1
+    if not fp: NOFP.append(ref)
     top = max(p[1] for p in pins.values())
     rx, ry = (x, y - (top + 6.35)) if isic else (x - 2.54, y - 1.27)
     vx, vy = (x, y - (top + 3.81)) if isic else (x - 2.54, y + 1.27)
     j = "" if isic else " (justify right)"
-    if sym == "NFET": rx, ry, vx, vy, j = x + 3.81, y - 1.27, x + 3.81, y + 1.27, " (justify left)"
+    if sym in ("NFET", "ESD_DUAL"): rx, ry, vx, vy, j = x + 3.81, y - 1.27, x + 3.81, y + 1.27, " (justify left)"
     s = (f'(symbol (lib_id "Monolith:{sym}") (at {x:.2f} {y:.2f} 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "{U()}")\n'
          f'(property "Reference" {q(ref)} (at {rx:.2f} {ry:.2f} 0) {F}{j}))\n(property "Value" {q(val)} (at {vx:.2f} {vy:.2f} 0) {F}{j}))\n'
-         f'(property "Footprint" "" (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n(property "Datasheet" {q(DS.get(ref, ""))} (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n'
+         f'(property "Footprint" {q(fp)} (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n(property "Datasheet" {q(DS.get(ref, ""))} (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n'
          f'(property "Status" {q(status)} (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n'
+         f'(property "LCSC" {q(LCSC.get(ref, ""))} (at {x:.2f} {y:.2f} 0) {F} (hide yes)))\n'
          + "".join(f'(pin {q(n)} (uuid "{U()}"))\n' for n in pins)
          + f'(instances (project "BatteryBank" (path "/{ROOT}" (reference {q(ref)}) (unit 1)))))')
     body.append(s)
     for num, (dx, dy, side) in pins.items():
         net = nets.get(num, ""); px, py = x + dx, y - dy
+        if net: netcheck.setdefault(net, []).append(f"{ref}.{num}")
+        if (px, py) in seen: continue
+        seen.add((px, py))
         if not net:
             body.append(f'(no_connect (at {px:.2f} {py:.2f}) (uuid "{U()}"))'); continue
         ang, just = (180, "right") if side == "L" else (0, "left")
         body.append(f'(label {q(net)} (at {px:.2f} {py:.2f} {ang}) {F} (justify {just} bottom)) (uuid "{U()}"))')
-        netcheck.setdefault(net, []).append(f"{ref}.{num}")
 def text(t, x, y, size=2.0):
     body.append(f'(text {q(t)} (exclude_from_sim no) (at {x} {y} 0) (effects (font (size {size} {size})) (justify left bottom)) (uuid "{U()}"))')
-text("Monolith top board: all blocks. DRAFT 3, generated from the TI pin tables.", 25.4, 20.32, 3)
-text("Connections are made by net labels at each pin. Parts marked TBD are not final. Port 1 ESD protection is not drawn yet.", 25.4, 27.94)
+text("Monolith top board: all blocks. DRAFT 5, generated from the TI pin tables.", 25.4, 20.32, 3)
+text("Connections are made by net labels at each pin. Resistors marked TBD still need values. Standard footprints are assigned; custom packages are still blank.", 25.4, 27.94)
 p = {x[0]: x for x in gen.parts}
 place("TPS25751D", "U1", "TPS25751D", 127, 101.6, {str(a): c for a, b, c in p["U1"][5]}, "pinout from TI datasheet")
 place("BQ25756", "U2", "BQ25756", 279.4, 101.6, {str(a): c for a, b, c in p["U2"][5]}, "pinout from TI datasheet")
 place("USB_C_Port", "J1", "12402082E512A", 43.18, 58.42, {"VBUS": "VBUS1", "CC1": "P1_CC1", "CC2": "P1_CC2", "D+": "P1_DP", "D-": "P1_DN", "GND": "GND"}, "pin numbers pending Amphenol drawing")
-place("EEPROM_I2C", "U3", "24C-series EEPROM (TBD)", 43.18, 101.6, {"1": "CHG_SCL", "2": "GND", "3": "CHG_SDA", "4": "PD_3V3", "5": "GND"}, "size, address and pinout to confirm")
+place("EEPROM_24C512", "U3", "BL24C512A-SFRC", 43.18, 101.6, {"1": "GND", "2": "GND", "3": "GND", "4": "GND", "5": "CHG_SDA", "6": "CHG_SCL", "7": "GND", "8": "PD_3V3"}, "512 kbit at address 0x50; TPS25751 needs at least 36 kB")
+place("ESD_DUAL", "D3", "PESD24VS2UT", 43.18, 134.62, {"1": "P1_CC1", "2": "P1_CC2", "3": "GND"}, "24V ESD pair for the CC lines")
+place("ESD_DUAL", "D4", "PESD5V0S2UT", 43.18, 157.48, {"1": "P1_DP", "2": "P1_DN", "3": "GND"}, "5V ESD pair for D+ and D-; stock to confirm")
 text("Power stage", 381, 45.72)
 for i, (ref, d, g, s, role) in enumerate([("Q1", "AC_SNS_N", "HG1", "SW1", "buck high"), ("Q2", "SW1", "LG1", "GND", "buck low"), ("Q4", "BAT_SNS_P", "HG2", "SW2", "boost high"), ("Q3", "SW2", "LG2", "GND", "boost low")]):
-    place("NFET", ref, "40V N-FET TBD, " + role, 393.7 + (i // 2) * 60.96, 63.5 + (i % 2) * 30.48, {"D": d, "G": g, "S": s}, "part to be selected")
+    place("NFET", ref, "AGM404AP1, " + role, 393.7 + (i // 2) * 60.96, 63.5 + (i % 2) * 30.48, {"D": d, "G": g, "S": s}, "40V 4.4mOhm at 10V, PDFN 3.3x3.3; pinout to confirm in datasheet")
 text("Cell protector", 96.52, 149.86)
 prot = dict(zip(range(1, 25), ["PROT_VDD", "PROT_AVDD", "PROT_VC4", "PROT_VC4", "PROT_VC3", "PROT_VC2", "PROT_VC1", "PROT_VC0", "BAT_NEG", "BAT_NEG", "PROT_SNS",
     "PROT_DSG", "PROT_CHG", "PROT_LD", "", "BAT_NEG", "PROT_OCDP", "PROT_TS", "PROT_VTB", "PROT_AVDD", "", "PROT_PRES", "BAT_NEG", "BAT_NEG"]))
@@ -97,8 +124,8 @@ text("3.3V and 5V rails", 248.92, 149.86)
 place("TPS70933DBV", "U5", "TPS70933DBV", 279.4, 162.56, {"1": "VBAT_SYS", "2": "GND", "3": "", "4": "", "5": "3V3"}, "pinout from TI datasheet")
 place("TPS62933DRL", "U6", "TPS62933", 279.4, 187.96, {"1": "GND", "2": "", "3": "VBAT_SYS", "4": "GND", "5": "BUCK_SW", "6": "BUCK_BST", "7": "BUCK_SS", "8": "BUCK_FB"}, "pinout from TI datasheet")
 text("Protection FETs (low side)", 381, 149.86)
-place("NFET", "Q5", "30V N-FET TBD, discharge", 393.7, 167.64, {"D": "PROT_MID", "G": "PROT_DSG_G", "S": "PROT_SNS"}, "part to be selected")
-place("NFET", "Q6", "30V N-FET TBD, charge", 454.66, 167.64, {"D": "PROT_MID", "G": "PROT_CHG_G", "S": "GND"}, "part to be selected")
+place("NFET", "Q5", "AGM404AP1, discharge", 393.7, 167.64, {"D": "PROT_MID", "G": "PROT_DSG_G", "S": "PROT_SNS"}, "40V 4.4mOhm at 10V, PDFN 3.3x3.3; pinout to confirm in datasheet")
+place("NFET", "Q6", "AGM404AP1, charge", 454.66, 167.64, {"D": "PROT_MID", "G": "PROT_CHG_G", "S": "GND"}, "40V 4.4mOhm at 10V, PDFN 3.3x3.3; pinout to confirm in datasheet")
 text("Battery wire pads", 485.14, 182.88)
 for i, (ref, net) in enumerate([("W1", "BAT_POS"), ("W2", "CELL3"), ("W3", "CELL2"), ("W4", "CELL1"), ("W5", "BAT_NEG")]):
     place("PAD", ref, "wire pad", 495.3, 190.5 + i * 7.62, {"1": net}, "")
@@ -117,7 +144,7 @@ p2 = {1: "P2_FAULT", 2: "5V", 3: "5V", 4: "5V", 5: "5V", 6: "5V", 7: "5V", 8: "5
       16: "", 17: "", 18: "", 19: "P2_ATTACH", 20: "", "EP": "GND"}
 place("TPS25810", "U8", "TPS25810", 127, 226.06, {str(k): v for k, v in p2.items()}, "pinout from TI datasheet; REF and REF_RTN order to confirm")
 T = "TBD"
-two_pin = [("L","L1","4.7uH 12A TBD","SW1","SW2"),("R","R1","5m 1%","PPHV","AC_SNS_N"),("R","R2","5m 1%","BAT_SNS_P","VBAT_SYS"),
+two_pin = [("L","L1","3.3uH MWSA1004S-3R3MT","SW1","SW2"),("R","R1","5m 1%","PPHV","AC_SNS_N"),("R","R2","5m 1%","BAT_SNS_P","VBAT_SYS"),
  ("C","C1","100n","BTST1","SW1"),("C","C2","100n","BTST2","SW2"),("C","C3","4.7u","REGN","GND"),("C","C4","4.7u","REGN","GND"),
  ("C","C5","1u 35V","CHG_VAC","GND"),("R","R3","10R","PPHV","CHG_VAC")]
 two_pin += [("C",f"C{n}","22u 35V","AC_SNS_N","GND") for n in range(6,10)] + [("C","C10","68u 25V poly","PPHV","GND")]
@@ -138,7 +165,7 @@ two_pin += [("FUSE","F1","15A","BAT_POS","VBAT_SYS"),("R","R30","33R","BAT_POS",
  ("R","R39","1k","PROT_CHG","PROT_CHG_G"),("R","R40","1M","PROT_CHG_G","GND"),("R","R41","470k","PROT_LD","GND"),("R","R42","196k","PROT_OCDP","BAT_NEG"),
  ("R","R43","10k 1%","PROT_VTB","PROT_TS"),("NTC","RT2","10k 103AT","PROT_TS","BAT_NEG"),("R","R44",T,"PROT_VDD","PROT_PRES"),
  ("C","C40","1u 35V","VBAT_SYS","GND"),("C","C41","2.2u","3V3","GND"),
- ("L","L2","3.3uH 5A","BUCK_SW","5V"),("C","C42","100n","BUCK_BST","BUCK_SW"),("C","C43","33n","BUCK_SS","GND"),("R","R45","53.6k","5V","BUCK_FB"),
+ ("L","L2","3.3uH MWSA0603S-3R3MT","BUCK_SW","5V"),("C","C59","100n","PD_3V3","GND"),("C","C42","100n","BUCK_BST","BUCK_SW"),("C","C43","33n","BUCK_SS","GND"),("R","R45","53.6k","5V","BUCK_FB"),
  ("R","R46","10k","BUCK_FB","GND"),("C","C44","10p","5V","BUCK_FB"),("C","C45","10u 35V","VBAT_SYS","GND"),("C","C46","10u 35V","VBAT_SYS","GND"),
  ("C","C47","100n 35V","VBAT_SYS","GND"),("C","C48","22u 10V","5V","GND"),("C","C49","22u 10V","5V","GND")]
 two_pin += [("R","R47","100k 1%","P2_REF","P2_REF_RTN"),("R","R48","100k","3V3","P2_ATTACH"),("R","R49","100k","3V3","P2_FAULT"),("C","C50","100n","5V","GND"),
@@ -152,7 +179,7 @@ for i, (sym, ref, val, n1, n2) in enumerate(two_pin):
     place(sym, ref, val, 30.48 + (i % 20) * 35.56, 266.7 + (i // 20) * 22.86, {"1": n1, "2": n2}, "value to confirm" if val != T else "value to be set")
 lib = "\n".join(LIB.values())
 sch = (f'(kicad_sch (version 20231120) (generator "eeschema") (generator_version "8.0")\n(uuid "{ROOT}")\n(paper "A1")\n'
-       f'(title_block (title "Monolith top board") (rev "draft 3"))\n(lib_symbols\n{lib}\n)\n' + "\n".join(body) +
+       f'(title_block (title "Monolith top board") (rev "draft 5"))\n(lib_symbols\n{lib}\n)\n' + "\n".join(body) +
        '\n(sheet_instances (path "/" (page "1")))\n)\n')
 assert sch.count("(") == sch.count(")"), (sch.count("("), sch.count(")"))
 open("/mnt/user-data/outputs/BatteryBank/BatteryBank.kicad_sch", "w", newline="\n").write(sch)
@@ -172,3 +199,5 @@ import csv
 with open("/mnt/user-data/outputs/BatteryBank/monolith_netlist.csv", "w", newline="") as f:
     w = csv.writer(f); w.writerow(["net", "connections", "pins"])
     for k in sorted(netcheck): w.writerow([k, len(netcheck[k]), " ".join(netcheck[k])])
+
+print("footprints assigned / blank:", FPCOUNT, " blank:", " ".join(NOFP))
