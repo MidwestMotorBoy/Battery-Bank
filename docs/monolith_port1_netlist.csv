@@ -1,0 +1,186 @@
+ref,part,value_or_role,pin,pin_name,net,status
+U1,TPS25751D,USB-C PD controller,1,LDO_3V3,PD_3V3,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,2,ADCIN1,ADCIN1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,3,ADCIN2,ADCIN2,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,4,LDO_1V5,PD_1V5,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,5,GPIO0,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,6,GPIO1,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,7,GPIO2,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,8,I2Ct_SDA,HOST_SDA,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,9,I2Ct_SCL,HOST_SCL,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,10,I2Ct_IRQ,HOST_IRQ,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,11,GND,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,12,GND,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,13,GPIO11,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,14,GND,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,15,DRAIN,PD_DRAIN,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,16,I2Cc_SDA,CHG_SDA,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,17,I2Cc_SCL,CHG_SCL,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,18,I2Cc_IRQ,CHG_INT,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,19,GPIO3,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,20,PPHV,PPHV,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,21,PPHV,PPHV,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,22,PPHV,PPHV,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,23,VBUS_IN,VBUS1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,24,VBUS_IN,VBUS1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,25,VBUS_IN,VBUS1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,26,GPIO4/USB_P,P1_DP,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,27,GPIO5/USB_N,P1_DN,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,28,CC1,P1_CC1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,29,CC2,P1_CC2,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,30,DRAIN,PD_DRAIN,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,31,GND,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,32,VBUS,VBUS1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,33,VBUS,VBUS1,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,34,PP5V,5V,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,35,PP5V,5V,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,36,GPIO7,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,37,GPIO6,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,38,VIN_3V3,3V3,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,EP1,GND pad,GND,confirmed from TI datasheet
+U1,TPS25751D,USB-C PD controller,EP2,DRAIN pad,PD_DRAIN,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,1,SCL,CHG_SCL,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,2,SDA,CHG_SDA,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,3,INT,CHG_INT,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,4,STAT1,CHG_STAT1,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,5,STAT2,CHG_STAT2,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,6,PG,CHG_PG,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,7,CE,CHG_CE_N,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,8,TS,CHG_TS,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,9,ICHG,CHG_ICHG,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,10,ILIM_HIZ,CHG_ILIM,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,11,FBG,CHG_FBG,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,12,FB,CHG_FB,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,13,SRN,VBAT_SYS,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,14,SRP,BAT_SNS_P,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,15,NC,no connect,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,16,NC,no connect,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,17,PGND,GND,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,18,SW2,SW2,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,19,HIDRV2,HG2,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,20,BTST2,BTST2,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,21,LODRV2,LG2,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,22,PGND,GND,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,23,DRV_SUP,REGN,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,24,REGN,REGN,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,25,LODRV1,LG1,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,26,BTST1,BTST1,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,27,HIDRV1,HG1,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,28,SW1,SW1,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,29,ACN,AC_SNS_N,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,30,ACP,PPHV,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,31,NC,no connect,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,32,VAC,CHG_VAC,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,33,VAC,CHG_VAC,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,34,ACUV,CHG_ACUV,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,35,ACOV,CHG_ACOV,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,36,FSW_SYNC,CHG_FSW,confirmed from TI datasheet
+U2,BQ25756,Buck-boost charge controller,EP,Thermal pad,GND,confirmed from TI datasheet
+Q1,N-FET 40V <=6mOhm logic-level,Buck high side,D,drain,AC_SNS_N,to be selected
+Q1,N-FET 40V <=6mOhm logic-level,Buck high side,G,gate,HG1,to be selected
+Q1,N-FET 40V <=6mOhm logic-level,Buck high side,S,source,SW1,to be selected
+Q2,N-FET 40V <=6mOhm logic-level,Buck low side,D,drain,SW1,to be selected
+Q2,N-FET 40V <=6mOhm logic-level,Buck low side,G,gate,LG1,to be selected
+Q2,N-FET 40V <=6mOhm logic-level,Buck low side,S,source,GND,to be selected
+Q3,N-FET 40V <=6mOhm logic-level,Boost low side,D,drain,SW2,to be selected
+Q3,N-FET 40V <=6mOhm logic-level,Boost low side,G,gate,LG2,to be selected
+Q3,N-FET 40V <=6mOhm logic-level,Boost low side,S,source,GND,to be selected
+Q4,N-FET 40V <=6mOhm logic-level,Boost high side,D,drain,BAT_SNS_P,to be selected
+Q4,N-FET 40V <=6mOhm logic-level,Boost high side,G,gate,HG2,to be selected
+Q4,N-FET 40V <=6mOhm logic-level,Boost high side,S,source,SW2,to be selected
+L1,Inductor,"4.7uH, Isat>=12A, <=5mm tall",1,,SW1,to be selected
+L1,Inductor,"4.7uH, Isat>=12A, <=5mm tall",2,,SW2,to be selected
+R1,Sense resistor,5mOhm 1% 1W,1,,PPHV,"assumed, verify"
+R1,Sense resistor,5mOhm 1% 1W,2,,AC_SNS_N,"assumed, verify"
+R2,Sense resistor,5mOhm 1% 1W,1,,BAT_SNS_P,confirmed from TI datasheet
+R2,Sense resistor,5mOhm 1% 1W,2,,VBAT_SYS,confirmed from TI datasheet
+C1,Bootstrap cap,100nF 25V,1,,BTST1,"assumed, verify"
+C1,Bootstrap cap,100nF 25V,2,,SW1,"assumed, verify"
+C2,Bootstrap cap,100nF 25V,1,,BTST2,"assumed, verify"
+C2,Bootstrap cap,100nF 25V,2,,SW2,"assumed, verify"
+C3,REGN cap,4.7uF 10V,1,,REGN,confirmed from TI datasheet
+C3,REGN cap,4.7uF 10V,2,,GND,confirmed from TI datasheet
+C4,DRV_SUP cap,4.7uF 10V,1,,REGN,confirmed from TI datasheet
+C4,DRV_SUP cap,4.7uF 10V,2,,GND,confirmed from TI datasheet
+C5,VAC cap,1uF 35V,1,,CHG_VAC,confirmed from TI datasheet
+C5,VAC cap,1uF 35V,2,,GND,confirmed from TI datasheet
+R3,VAC feed,10 Ohm,1,,PPHV,"assumed, verify"
+R3,VAC feed,10 Ohm,2,,CHG_VAC,"assumed, verify"
+C6-C9,Input bulk (port side),"4x 22uF 35V X7R, plus C10",1,,AC_SNS_N,"assumed, verify"
+C6-C9,Input bulk (port side),"4x 22uF 35V X7R, plus C10",2,,GND,"assumed, verify"
+C10,Input bulk polymer,"68uF 25V, <=5mm tall",1,,PPHV,"assumed, verify"
+C10,Input bulk polymer,"68uF 25V, <=5mm tall",2,,GND,"assumed, verify"
+C11-C14,Output bulk (battery side),"4x 22uF 25V X7R, plus C15",1,,BAT_SNS_P,"assumed, verify"
+C11-C14,Output bulk (battery side),"4x 22uF 25V X7R, plus C15",2,,GND,"assumed, verify"
+C15,Battery bulk polymer,"68uF 25V, <=5mm tall",1,,VBAT_SYS,"assumed, verify"
+C15,Battery bulk polymer,"68uF 25V, <=5mm tall",2,,GND,"assumed, verify"
+R4,FB top,243k 0.1%,1,,VBAT_SYS,"assumed, verify"
+R4,FB top,243k 0.1%,2,,CHG_FB,"assumed, verify"
+R5,FB bottom,24.9k 0.1%,1,,CHG_FB,"assumed, verify"
+R5,FB bottom,24.9k 0.1%,2,,CHG_FBG,"assumed, verify"
+R6,ICHG set,16.9k 1% (2.96A),1,,CHG_ICHG,confirmed from TI datasheet
+R6,ICHG set,16.9k 1% (2.96A),2,,GND,confirmed from TI datasheet
+R7,ILIM set,4.02k 1% (about 5A with 5mOhm R1),1,,CHG_ILIM,"assumed, verify"
+R7,ILIM set,4.02k 1% (about 5A with 5mOhm R1),2,,GND,"assumed, verify"
+R8,FSW set,66.5k 1% (400kHz),1,,CHG_FSW,confirmed from TI datasheet
+R8,FSW set,66.5k 1% (400kHz),2,,GND,confirmed from TI datasheet
+R9,TS upper,5.23k 1%,1,,REGN,confirmed from TI datasheet
+R9,TS upper,5.23k 1%,2,,CHG_TS,confirmed from TI datasheet
+R10,TS lower,30.1k 1%,1,,CHG_TS,confirmed from TI datasheet
+R10,TS lower,30.1k 1%,2,,GND,confirmed from TI datasheet
+RT1,NTC on cell,"10k 103AT, on leads",1,,CHG_TS,confirmed from TI datasheet
+RT1,NTC on cell,"10k 103AT, on leads",2,,GND,confirmed from TI datasheet
+R11,ACUV/ACOV divider top,value from datasheet section 6.3,1,,CHG_VAC,to be selected
+R11,ACUV/ACOV divider top,value from datasheet section 6.3,2,,CHG_ACOV,to be selected
+R12,ACUV/ACOV divider mid,value from datasheet section 6.3,1,,CHG_ACOV,to be selected
+R12,ACUV/ACOV divider mid,value from datasheet section 6.3,2,,CHG_ACUV,to be selected
+R13,ACUV/ACOV divider bottom,value from datasheet section 6.3,1,,CHG_ACUV,to be selected
+R13,ACUV/ACOV divider bottom,value from datasheet section 6.3,2,,GND,to be selected
+R14,CE pull-down,10k,1,,CHG_CE_N,"assumed, verify"
+R14,CE pull-down,10k,2,,GND,"assumed, verify"
+R15,INT pull-up,10k,1,,CHG_INT,confirmed from TI datasheet
+R15,INT pull-up,10k,2,,PD_3V3,confirmed from TI datasheet
+R16,I2Cc SDA pull-up,3.3k,1,,CHG_SDA,confirmed from TI datasheet
+R16,I2Cc SDA pull-up,3.3k,2,,PD_3V3,confirmed from TI datasheet
+R17,I2Cc SCL pull-up,3.3k,1,,CHG_SCL,confirmed from TI datasheet
+R17,I2Cc SCL pull-up,3.3k,2,,PD_3V3,confirmed from TI datasheet
+R18,I2Ct SDA pull-up,4.7k,1,,HOST_SDA,confirmed from TI datasheet
+R18,I2Ct SDA pull-up,4.7k,2,,3V3,confirmed from TI datasheet
+R19,I2Ct SCL pull-up,4.7k,1,,HOST_SCL,confirmed from TI datasheet
+R19,I2Ct SCL pull-up,4.7k,2,,3V3,confirmed from TI datasheet
+R20,Host IRQ pull-up,10k,1,,HOST_IRQ,"assumed, verify"
+R20,Host IRQ pull-up,10k,2,,3V3,"assumed, verify"
+R21-R23,STAT1/STAT2/PG pull-ups,3x 100k,1,,CHG_STAT1 / CHG_STAT2 / CHG_PG,"assumed, verify"
+R21-R23,STAT1/STAT2/PG pull-ups,3x 100k,2,,3V3,"assumed, verify"
+C16,LDO_3V3 cap,10uF 6.3V,1,,PD_3V3,confirmed from TI datasheet
+C16,LDO_3V3 cap,10uF 6.3V,2,,GND,confirmed from TI datasheet
+C17,LDO_1V5 cap,10uF 6.3V,1,,PD_1V5,confirmed from TI datasheet
+C17,LDO_1V5 cap,10uF 6.3V,2,,GND,confirmed from TI datasheet
+C18,VIN_3V3 cap,10uF 6.3V,1,,3V3,confirmed from TI datasheet
+C18,VIN_3V3 cap,10uF 6.3V,2,,GND,confirmed from TI datasheet
+C19,VBUS cap,4.7uF 35V,1,,VBUS1,confirmed from TI datasheet
+C19,VBUS cap,4.7uF 35V,2,,GND,confirmed from TI datasheet
+C20,PP5V cap,22uF 10V,1,,5V,confirmed from TI datasheet
+C20,PP5V cap,22uF 10V,2,,GND,confirmed from TI datasheet
+C21,CC1 cap,330pF,1,,P1_CC1,confirmed from TI datasheet
+C21,CC1 cap,330pF,2,,GND,confirmed from TI datasheet
+C22,CC2 cap,330pF,1,,P1_CC2,confirmed from TI datasheet
+C22,CC2 cap,330pF,2,,GND,confirmed from TI datasheet
+"R24,R25",ADCIN1 strap divider,level chosen in TI GUI,1,,PD_3V3 / GND,to be selected
+"R24,R25",ADCIN1 strap divider,level chosen in TI GUI,2,,ADCIN1,to be selected
+"R26,R27",ADCIN2 strap divider,level chosen in TI GUI,1,,PD_3V3 / GND,to be selected
+"R26,R27",ADCIN2 strap divider,level chosen in TI GUI,2,,ADCIN2,to be selected
+U3,I2C EEPROM,size and address per TPS25751 datasheet,SDA,,CHG_SDA,to be selected
+U3,I2C EEPROM,size and address per TPS25751 datasheet,SCL,,CHG_SCL,to be selected
+U3,I2C EEPROM,size and address per TPS25751 datasheet,VCC,,PD_3V3,to be selected
+U3,I2C EEPROM,size and address per TPS25751 datasheet,GND,,GND,to be selected
+D1,VBUS TVS,TVS2200 or equivalent,1,,VBUS1,confirmed from TI datasheet
+D1,VBUS TVS,TVS2200 or equivalent,2,,GND,confirmed from TI datasheet
+D2,CC/D+/D- ESD array,"4-channel, 24V-tolerant on CC",IO,,"P1_CC1, P1_CC2, P1_DP, P1_DN",to be selected
+D2,CC/D+/D- ESD array,"4-channel, 24V-tolerant on CC",GND,,GND,to be selected
+J1,Amphenol 12402082E512A,Port 1 USB-C,VBUS,A4/A9/B4/B9,VBUS1,"assumed, verify"
+J1,Amphenol 12402082E512A,Port 1 USB-C,GND,A1/A12/B1/B12/shell,GND,"assumed, verify"
+J1,Amphenol 12402082E512A,Port 1 USB-C,CC1,A5,P1_CC1,"assumed, verify"
+J1,Amphenol 12402082E512A,Port 1 USB-C,CC2,B5,P1_CC2,"assumed, verify"
+J1,Amphenol 12402082E512A,Port 1 USB-C,D+,A6/B6,P1_DP,"assumed, verify"
+J1,Amphenol 12402082E512A,Port 1 USB-C,D-,A7/B7,P1_DN,"assumed, verify"

@@ -1,0 +1,12 @@
+# KiCad local and temporary files
+*.lck
+*-backups/
+*.kicad_prl
+fp-info-cache
+*.bak
+~*
+_autosave-*
+# check reports
+ERC.rpt
+DRC.rpt
+__pycache__/

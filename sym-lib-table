@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Monolith")(type "KiCad")(uri "${KIPRJMOD}/Monolith.kicad_sym")(options "")(descr "Monolith project symbols"))
+)
