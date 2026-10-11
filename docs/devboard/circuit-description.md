@@ -1,6 +1,6 @@
 # Monolith dev board — circuit description
 
-Draft 3, 2026-10-11 (gauge network and charger ACUV/ACOV values added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
+Draft 4, 2026-10-11 (gauge network, charger ACUV/ACOV and USB ESD added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
 **Status: specification only. Nothing here has been drawn, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
@@ -124,7 +124,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **J1 / J2:** Shou Han TYPE-C 16PCB0.8 IP68 (LCSC C55629727), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
 - VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2; D+/D− (A6/B6, A7/B7) → TPS25751 USB_P/USB_N (BC1.2); SBU unconnected.
 - **TVS:** Littelfuse SMAJ22A (C148220) VBUSx to GND, right at the connector.
-- **ESD array** on CC1/CC2/D+/D−, 24 V-tolerant on CC (part *TBD*).
+- **ESD protection: 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
 - 330 pF on each CC line (TPS25751 datasheet).
 
 ### 7.2 PD controller (TPS25751D)
@@ -176,5 +176,4 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 - 21700 holder part number (polarized, 3–5 A)
 - INA190 JLC stock at order time; amplifier 5 V input connector
-- ESD array for CC/D+/D−
 - Confirm the STM32WB1MMC pin map in CubeMX
