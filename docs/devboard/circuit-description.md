@@ -69,13 +69,13 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (1%, 0.5 W, 1206 or larger) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
 - The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. Optional (low-current, no bypass needed): a 10 Ω in series with the gauge's BAT feed plus a third INA190 footprint (DNP) to see the gauge's ~50–340 µA on the scope.
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
-  - U_AMP_LO: INA190A5 (gain 500) → 5 mV per µA, ~1 mA full scale (sleep detail). If A5 isn't stocked, INA190A4 (gain 200 → 2 mV/µA, ~2.4 mA full scale; LCSC C2059766, SC-70-6)
-  - U_AMP_HI: INA190A1 (gain 25) → 0.25 V per mA, ~20 mA full scale (Bluetooth bursts); JLC C1852068 (INA190A1IDDFR, TSOT-23-8)
-  - INA190: zero-drift, ~2 µV typical offset, common mode −0.2 to 40 V, 1.7–5.5 V supply
-  - REF pins to GND (unidirectional: charging current reads as zero)
-  - Outputs to two BNC or SMA connectors (OUT_LO, OUT_HI) plus test points; optional RC footprint on each output
-  - **Amplifier supply from a separate 5 V input** (2-pin header or USB-C/micro-USB used for power only), not from 3V3, so the amplifiers' ~50 µA isn't measured. Local 0.1 µF bypass each.
-  - Confirm INA190 stock at JLC when ordering (stock wasn't visible from here)
+  - **U_AMP_LO: INA190A5IDDFR** (gain 500, SOT-23-8 with ENABLE) → 5 mV per µA, ~0.99 mA full scale on a 5 V supply, 27 kHz bandwidth (sleep detail). If JLC doesn't stock the A5, use INA190A4 (gain 200 → 2 mV/µA, ~2.5 mA full scale; LCSC C2059766, SC-70-6, no ENABLE pin)
+  - **U_AMP_HI: INA190A1IDDFR** (gain 25, JLC C1852068, SOT-23-8) → 0.25 V per mA, ~20 mA full scale, 45 kHz bandwidth (Bluetooth bursts)
+  - INA190 (datasheet): offset ±15 µV max (≈ ±1.5 µA on 10 Ω; typically much less), input bias 0.5 nA typ, common mode −0.2 to 40 V, 48 µA supply, output swings to within 40 mV of VS and 3 mV of GND
+  - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
+  - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
+  - Outputs to two SMA edge connectors (OUT_LO, OUT_HI) plus test points; 49.9 Ω series resistor footprint (0 Ω to start) at each output to keep cable capacitance from making the amp ring
+  - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 
 ## 4. 3.3 V always-on rail
@@ -176,5 +176,5 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ## Open items before ProtoFlow
 
-- INA190 JLC stock at order time; amplifier 5 V input connector
+- INA190A5 (DDF) JLC stock at order time; fallback INA190A4
 - Confirm the STM32WB1MMC pin map in CubeMX
