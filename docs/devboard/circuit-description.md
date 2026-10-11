@@ -37,7 +37,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## 1. Cell inputs
 
-- **Four single-cell 21700 spring holders** in series: **MYOUNG BH-21700-B1BJ001** (JLC C20606791), placed by JLC with the rest of the board. Nickel-plated contacts, −25 to 85 °C. Confirm JLC stock (need 4 per board) and the footprint/mounting style from its drawing when ordering. Backup: Keystone 1121 (through-hole) / 1122 (SMT) from DigiKey or Farnell.
+- **Four single-cell 21700 spring holders** in series: **MYOUNG BH-21700-B1BJ001** (JLC C20606791), placed by JLC with the rest of the board. Surface-mount, nickel-plated contacts, −25 to 85 °C; plenty in JLC stock (checked 2026-10-11). Since the solder joints take cell insertion force, use the manufacturer's full pad size, add stitching vias to the inner copper under each pad, and keep the holders away from board flex points (near mounting holes). Backup: Keystone 1121 (through-hole) / 1122 (SMT) from DigiKey or Farnell.
   - No published current rating; treat as a few amps (normal charging and modest loads only).
   - Open holders don't stop a cell going in backwards. Silkscreen + and − at both ends of every holder, orient all four the same way, and check each cell's voltage with a meter at the tap test points before closing the fuse/link. A reversed cell can push the gauge's VC pins below ground (the 100 Ω filter resistors limit the current).
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
