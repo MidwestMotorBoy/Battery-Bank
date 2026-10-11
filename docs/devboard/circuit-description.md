@@ -1,6 +1,6 @@
 # Monolith dev board — circuit description
 
-Draft 2, 2026-10-11 (gauge network values added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
+Draft 3, 2026-10-11 (gauge network and charger ACUV/ACOV values added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
 **Status: specification only. Nothing here has been drawn, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
@@ -149,7 +149,13 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
   - ICHG: 5.11 kΩ (C705788) → ~9.8 A hardware ceiling
   - ILIM_HIZ: 3.65 kΩ (C705773) → ~5.5 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
   - TS: RT1 1.74 kΩ (C784581) REGN→TS, RT2 5.11 kΩ (C705788) TS→GND, with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
-  - ACUV / ACOV divider: *TBD* from the datasheet (target: undervoltage below 4.5 V, overvoltage just above 21 V)
+  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** (top, from VAC), **RAC2 40.2 kΩ** (C865475), **RAC3 10.0 kΩ** (C110775, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
+    - Overvoltage stop: 1.2 V × 187.2 / 10.0 = **22.5 V** (above PD's 21 V max, below the SMAJ22A's 24.4 V breakdown)
+    - Undervoltage stop: 1.1 V × 187.2 / 50.2 = **4.1 V**
+    - Hardware input-voltage regulation floor (ACUV reaching 1.21 V): **4.5 V**, so a weak 5 V source or panel is never pulled into collapse; firmware can raise it further via the input DPM / MPPT settings
+    - Divider draws ~107 µA only while VAC is powered (cable attached)
+    - 137 kΩ is the only new value (Yageo RT0805 0.1%; check stock, 1% is acceptable for these thresholds)
+    - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
 - REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet; VAC feed and capacitor per `monolith_port1_netlist.csv`.
 - STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
 
@@ -171,5 +177,4 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - 21700 holder part number (polarized, 3–5 A)
 - INA190 JLC stock at order time; amplifier 5 V input connector
 - ESD array for CC/D+/D−
-- BQ25756 ACUV/ACOV divider values
 - Confirm the STM32WB1MMC pin map in CubeMX
