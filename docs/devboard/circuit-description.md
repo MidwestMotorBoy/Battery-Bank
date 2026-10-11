@@ -1,6 +1,6 @@
 # Monolith dev board — circuit description
 
-Draft 1, 2026-10-11. Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
+Draft 2, 2026-10-11 (gauge network values added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
 **Status: specification only. Nothing here has been drawn, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
@@ -45,26 +45,35 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## 2. Gauge and protection (BQ40Z50-R2, same as production)
 
+Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
+
 - **U_GAUGE:** BQ40Z50RSMR-R2 (LCSC C2845123).
-- Cell voltage inputs VC1–VC4 from the Kelvin taps through the RC filter network from TI's datasheet / EVM (same values as production).
-- **Sense resistor RS_GAUGE:** Yageo PA2512FKE7W0R001E, 1 mΩ 1% 2 W 2512, ±50 ppm/°C (LCSC C326570), in the low side between CELL_N and GND. SRP/SRN Kelvin-routed with the datasheet filter.
-- **Protection FETs:** AGM404AP1 ×2, back-to-back CHG and DSG N-FETs in the high side between CELL_P (after fuse) and PACK_P, driven by the gauge's CHG/DSG pins, per TI's reference circuit.
-- PACK pin and VCC network per the TI datasheet. The gauge's VCC feed comes from **PACK_LP** (through the 10 Ω), so its own draw shows up in the sleep measurement.
-- TS1: cell thermistor. TS2–TS4: per datasheet (unused inputs handled as TI recommends).
-- SMBus SMBC/SMBD to the shared SDA/SCL bus (7-bit address 0x0B).
+- **Cell inputs:** VC1–VC4 each through **100 Ω** in series from the Kelvin taps, with **0.1 µF** from each VC pin to the node below (VC4→VC3, VC3→VC2, VC2→VC1, VC1→VSS). The 100 Ω also sets internal balancing current (internal FETs ~200 Ω, up to ~10 mA); balancing settings in data flash.
+- **BAT supply:** from CELL_P (after the fuse, before the protection FETs) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
+- **PBI:** 2.2 µF ceramic to VSS.
+- **Sense resistor RS_GAUGE:** Yageo PA2512FKE7W0R001E, 1 mΩ 1% 2 W 2512, ±50 ppm/°C (LCSC C326570), low side between CELL_N and GND. **100 Ω** from each end of the sense resistor to SRP / SRN (Kelvin traces), **0.1 µF** across SRP–SRN at the pins.
+- **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals).
+- **PCHG:** no precharge FET (the BQ25756 does precharge itself); leave PCHG unconnected or 20 kΩ to VSS, and set data flash so precharge uses the CHG FET.
+- **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
+- **TS1:** cell thermistor (10 kΩ 103-type NTC; internal 18 kΩ pull-up). **TS2–TS4:** tie to VSS and disable in data flash.
+- **PRES/SHUTDN:** to VSS (system always present). **FUSE:** to VSS. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
+- **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
+- **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
 - **EV2400 header:** 3-pin 2.54 mm (SMBC, SMBD, GND).
 
 ## 3. Power path split and sleep-current measurement
 
 - PACK_P feeds the **high-current branch** directly: both BQ25756 power stages (battery side) and both TPS62933 inputs. No measurement resistor on these.
-- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (1%, 0.5 W, 1206 or larger) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter and the gauge VCC network. Expected draw is a few mA at most (~80 mV drop at 8 mA).
+- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (1%, 0.5 W, 1206 or larger) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
+- The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. Optional (low-current, no bypass needed): a 10 Ω in series with the gauge's BAT feed plus a third INA190 footprint (DNP) to see the gauge's ~50–340 µA on the scope.
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
-  - U_AMP_LO: INA190A5 (gain 500) → 5 mV per µA, ~1 mA full scale (sleep detail)
-  - U_AMP_HI: INA190A1 (gain 25) → 0.25 V per mA, ~20 mA full scale (Bluetooth bursts)
+  - U_AMP_LO: INA190A5 (gain 500) → 5 mV per µA, ~1 mA full scale (sleep detail). If A5 isn't stocked, INA190A4 (gain 200 → 2 mV/µA, ~2.4 mA full scale; LCSC C2059766, SC-70-6)
+  - U_AMP_HI: INA190A1 (gain 25) → 0.25 V per mA, ~20 mA full scale (Bluetooth bursts); JLC C1852068 (INA190A1IDDFR, TSOT-23-8)
+  - INA190: zero-drift, ~2 µV typical offset, common mode −0.2 to 40 V, 1.7–5.5 V supply
   - REF pins to GND (unidirectional: charging current reads as zero)
   - Outputs to two BNC or SMA connectors (OUT_LO, OUT_HI) plus test points; optional RC footprint on each output
   - **Amplifier supply from a separate 5 V input** (2-pin header or USB-C/micro-USB used for power only), not from 3V3, so the amplifiers' ~50 µA isn't measured. Local 0.1 µF bypass each.
-  - Check INA190 stock at JLC
+  - Confirm INA190 stock at JLC when ordering (stock wasn't visible from here)
 - Ground test point next to the scope connectors for the scope ground clip.
 
 ## 4. 3.3 V always-on rail
@@ -95,7 +104,8 @@ A roomy prototype of the complete Monolith production circuit, used for:
 | PA13 / PA14 / NRST | SWD |
 | BOOT0 | 10 kΩ pull-down |
 | PA9 / PA10 | UART debug TX / RX (if CubeMX confirms USART1 there) |
-| Spares | PA6–PA8, PA11, PA12, PB4, PB5, PB8 → bring all to a 2.54 mm header |
+| PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT (100 kΩ pull-up) |
+| Spares | PA7, PA8, PA11, PA12, PB4, PB5, PB8 → bring all to a 2.54 mm header |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
 - **UART header:** 3-pin (TX, RX, GND).
@@ -159,8 +169,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ## Open items before ProtoFlow
 
 - 21700 holder part number (polarized, 3–5 A)
-- INA190 JLC stock; amplifier 5 V input connector
+- INA190 JLC stock at order time; amplifier 5 V input connector
 - ESD array for CC/D+/D−
 - BQ25756 ACUV/ACOV divider values
-- BQ40Z50-R2 VC filter, PACK/VCC network and TS2–TS4 handling values from the TI datasheet
 - Confirm the STM32WB1MMC pin map in CubeMX
