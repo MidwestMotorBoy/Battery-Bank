@@ -1,6 +1,6 @@
 # Monolith dev board — circuit description
 
-Draft 4, 2026-10-11 (gauge network, charger ACUV/ACOV and USB ESD added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
+Draft 5, 2026-10-11 (gauge network, charger ACUV/ACOV, USB ESD and cell holders added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
 **Status: specification only. Nothing here has been drawn, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
@@ -37,7 +37,9 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## 1. Cell inputs
 
-- **Four single-cell 21700 spring holders** in series (polarized, one-way insertion; part *TBD*, rated for at least ~3–5 A). Mark polarity on silkscreen next to each.
+- **Four single-cell 21700 spring holders** in series: **Keystone 1121** (through-hole, nickel-plated stainless contacts, spring riveted to the base; DigiKey/Farnell, ~$6–15 each). Through-hole so the solder joints take cell insertion force. Same holder also exists as SMT (Keystone 1122) and a JLC-assemblable alternative is MYOUNG BH-21700-B1BJ001 (JLC C20606791; stock not checked).
+  - Keystone doesn't publish a current rating; treat it as a few amps (normal charging and modest loads only).
+  - Open holders don't stop a cell going in backwards. Silkscreen + and − at both ends of every holder, orient all four the same way, and check each cell's voltage with a meter at the tap test points before closing the fuse/link. A reversed cell can push the gauge's VC pins below ground (the 100 Ω filter resistors limit the current).
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
 - **Fuse** in series with CELL_P, sized for holder use (*TBD*, ~5–7 A).
 - **Kelvin cell taps:** CELL1–CELL3 and the stack ends for the gauge are taken from the cell end of each holder contact (separate small traces), not from the power traces, so spring resistance isn't measured as cell resistance.
@@ -174,6 +176,5 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ## Open items before ProtoFlow
 
-- 21700 holder part number (polarized, 3–5 A)
 - INA190 JLC stock at order time; amplifier 5 V input connector
 - Confirm the STM32WB1MMC pin map in CubeMX
