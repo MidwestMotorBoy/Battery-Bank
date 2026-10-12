@@ -10,3 +10,7 @@ _autosave-*
 ERC.rpt
 DRC.rpt
 __pycache__/
+
+# KiCad 10 local history
+.history/
+__pycache__/

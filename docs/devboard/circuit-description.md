@@ -2,7 +2,7 @@
 
 Draft 5, 2026-10-11 (gauge network, charger ACUV/ACOV, USB ESD and cell holders added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
-**Status: specification only. Nothing here has been drawn, built or tested.** Values marked *TBD* still need a datasheet calculation.
+**Status: schematic drafted in KiCad (`DevBoard/`, 2026-10-11; see `DevBoard/README.md` for changes from this description). Not reviewed, laid out, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
 ## Purpose
 
