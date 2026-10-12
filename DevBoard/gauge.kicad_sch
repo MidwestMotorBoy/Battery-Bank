@@ -4983,7 +4983,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7549,7 +7549,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)

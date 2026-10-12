@@ -20,6 +20,8 @@ First complete schematic draft of the dev board described in `../docs/devboard/c
 Wiring pass (rev A3): wires instead of labels wherever parts sit on the same block. Passives are placed on the row of the pin they serve (datasheet style): the BQ40Z50 cell-tap filters are an R/C ladder fanning into the VC pins; BAT/VCC/PBI/PACK/SMBus, the BQ25756 VAC divider, pull-down comb, bootstrap caps, FB divider and DRV_SUP, the TPS25751 I2Cc pull-ups (off a short LDO_3V3 rail), the STM32 BOOT0/NRST/SWD header and the TPS62177 PG pull-up are all drawn with wires. Labels remain for genuinely long runs and cross-sheet nets (I2C buses, gate drive to the FETs, cell taps from the holders, NTC dividers, test points). Local labels went from 275 to 198 and wires from 272 to 350. Nets that are fully wired lost their old names and now carry KiCad's automatic names (for example `Net-(U101-VC1)`).
 
 Tools:
+- `tools/setup_board.py` writes the board outline, stack-up, mounting holes (only while the board is empty), JLC design rules, net classes and `MonolithDev.kicad_dru`.
+- `tools/netlist_to_board.py net.xml [REF,...]` pushes a `kicad-cli sch export netlist --format kicadxml` netlist into the board: pad nets, symbol links, values and fields, and swaps footprints whose schematic footprint changed (listed refs are refreshed from the library). Use it instead of the KiCad MCP's `sync_schematic_to_board`, which mishandles the reused USB port sheet (it left port 1 unconnected and merged the two ports' nets). It doesn't add new footprints; use KiCad's Update PCB from Schematic (F8) for that, then check parity.
 - `tools/junctions.py sheet [--drop-labels A,B]` adds missing junction dots (KiCad only joins a wire end to the middle of another wire if a junction is there, and some MCP move/rotate operations delete junctions) and optionally deletes labels by name. Run it on every sheet after any edit, then diff the netlist.
 - `tools/remove_items.py sheet spec.txt` deletes specific wires/labels by coordinates.
 - `tools/route_labels.py` auto-wires short label-only nets (A* on the 1.27 mm grid, never touching other nets). Its output was only kept where it read cleanly; the main wiring was laid out by hand.
@@ -28,6 +30,18 @@ Tools:
 - `tools/tidy_fields.py` wrote the title blocks (the older field placement in it is superseded by `place_fields.py`).
 
 Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, EN_5V1/2, GAUGE_BTP, 3V3_SLEEP). Both ports share one sheet file, so any change to it applies to both ports.
+
+## Board (set up 2026-10-12, not yet placed or routed)
+
+- **175 × 115 mm, 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, ENIG.** The four holders need ~96 × 110 mm, so the spec's 100 × 80 mm grew; holders on the left, electronics on the right (floorplan below). 0.8 mm matches production and the mid-mount USB-C.
+- Stack-up (approximate, confirm against JLC's 0.8 mm 4-layer stack at order time): F.Cu 70 µm, prepreg 0.1, In1.Cu (GND) 35 µm, core 0.37, In2.Cu (power) 35 µm, prepreg 0.1, B.Cu 70 µm. No impedance-controlled nets.
+- Six M3 board-only mounting holes (H1–H6) at the corners and at x = 101 mm top and bottom, so the heavy holder block is supported at all four corners.
+- J401/J501 are placed and locked on the right edge at y = 35 and 78 mm (from the top-left corner); the outline is broken there and each connector footprint draws its own 10.2 × 5.65 mm notch.
+- Rules (JLC 4-layer, 2 oz outer): 0.15 mm track/gap, vias ≥ 0.2 mm drill with ≥ 0.45 mm pad (presets 0.25/0.45, 0.3/0.6, 0.4/0.8), component-hole ring ≥ 0.25 mm, copper ≥ 0.25 mm from edges (0.2 mm at the USB-C notches, JLC's floor), legend ≥ 0.8 mm. Custom rules in `MonolithDev.kicad_dru`.
+- Net classes: HighCurrent (2.5 mm: pack bus, cells, FET mid-point, VBAT_SYS, PPHV, VBUS, switch nodes, sense-resistor power sides), Power (0.8 mm: 5 V / 3.3 V rails), GND, GateDrive (0.4 mm), Default (0.2 mm).
+- Netlist loaded: 320 footprints, `kicad-cli pcb drc --schematic-parity` reports 0 parity issues. All parts still sit at the origin.
+
+Planned floorplan (board mm from the top-left corner): holders BT101–BT104 stacked at x ≈ 52, y = 15/43/71/99 (BT101 at the top, all the same way round); headers (SWD, UART, spare) along the top edge from x ≈ 104; STM32WB1MMC at the top-right with its antenna end at the top edge and a copper-free notch past it (ST reference PCB); gauge, protection FETs, fuse, shunt, J101 and EV2400 header in a column at x ≈ 104–135; port 1 and port 2 power stages beside their connectors on the right; the sleep-current section (R_MEAS, INA190s, LDO) along the bottom edge with the SMA connectors at the edge.
 
 ## Status
 
@@ -68,11 +82,12 @@ Found while checking against datasheets:
 | Footprint | Used by | Source / notes |
 |---|---|---|
 | `BatteryHolder_MYOUNG_BH-21700-B1BJ001` | BT101–BT104 | MYOUNG drawing. Its "PCB layout, bottom view" is the top view flipped about the long axis; checked against the top view (+ on the left, left peg low). Pads 7.5 × 9.0, Ø4.0 holes for the Ø3.2 pegs. Add stitching vias under the pads in layout. |
-| `USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68` | J401, J501 | Shou Han recommended layout. Mid-mount: the footprint draws a 10.20 × 5.65 mm board-edge cutout on Edge.Cuts; origin is the board edge. Pad order matches KiCad's HRO TYPE-C-31-M-12. |
+| `USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68` | J401, J501 | Shou Han recommended layout. Mid-mount: the footprint draws a 10.20 × 5.65 mm board-edge cutout on Edge.Cuts; origin is the board edge. Pad order matches KiCad's HRO TYPE-C-31-M-12. The maker's signal pads start right on the notch's back edge (5.65–6.65 mm from the edge); they're moved 0.2 mm inward (5.85–6.85 mm) for JLC's 0.2 mm copper-to-routed-edge minimum. |
 | `Infineon_PG-TDSON-8-57_HalfBridge` | Q401, Q402, Q501, Q502 | Infineon land pattern and 0.15 mm stencil (datasheet p. 8). The drain pad (8) and the phase pad (3) sit beside their lead bars; Infineon joins each pair with copper under mask, so connect them with copper in layout. |
 | `ST_LGA-77_STM32WB1MMC_6.5x10mm` | U301 | Pad centres read from the vector drawing in DS14096 fig. 11 (bottom view, mirrored). The drawing labels two centre pads "73"; the lower-middle one is 72 by the numbering order. 1:1 lands. |
 | `ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm` | U402, U502 | ST recommended footprint (DS6520 fig. 16). Replaces KiCad's generic DFN-8 2 × 3, whose 0.61 × 2.2 exposed pad didn't fit this package. The exposed pad is pad 4 (VSS), which ST allows. |
 | `TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm` | U403, U503 | Antmicro open-hardware footprint (Apache-2.0, copy in `tools/third_party/`), checked against TI's RRV0036A land pattern. Add the exposed-pad thermal vias in layout. |
+| `AGM_PDFN-8_3.3x3.3mm_P0.65mm` | Q101, Q102 | AGM404AP1 package drawing (no land pattern given): 0.4 × 0.75 mm source/gate lands, one 2.45 mm drain land, 4-window paste. Replaces `TDSON-8-1`, which is the 5 × 6 mm Infineon package and could not have fitted this 3.3 × 3.3 mm part (caught by the board parity check). |
 | `NetTie-2_SMD_3x3mm_Bridge3mm` | R430, R530 | 10 A copper link from VBAT_SYS to PACK_P (net tie, so the two net names stay separate). Kept on the R symbol so the wiring is unchanged; excluded from the BOM and position file. |
 
 ## Regenerating symbols

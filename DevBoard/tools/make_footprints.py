@@ -120,11 +120,12 @@ fp.write(-14.2, 14.2)
 # ---------------------------------------------------------------------------
 # 2. Shou Han TYPE-C 16PCB0.8 IP68 mid-mount receptacle. usb-c-16pcb0.8-ip68.pdf p.1 "Recommend P.C.B layout".
 #    Origin = board edge centre; board interior is -y. Needs a 10.20 wide x 5.65 deep edge cutout
-#    (drawn on Edge.Cuts here). Signal pads 1.0 long, centred 6.15 from the edge.
+#    (drawn on Edge.Cuts here). Signal pads 1.0 long, 5.85-6.85 mm from the edge (see yp).
 fp = FP("USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68",
         "Shou Han TYPE-C 16PCB0.8 IP68 USB 2.0 receptacle, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge",
         "USB C Type-C receptacle USB2.0 16P mid-mount")
-yp = -6.15
+yp = -6.35   # maker's layout: pads 5.65-6.65 from the edge, starting right on the notch's back edge. Moved
+             # 0.2 mm in (5.85-6.85) for JLC's 0.2 mm copper-to-routed-edge rule (edge tolerance is +/-0.2 mm).
 for nums, x, w in ((("A1", "B12"), -3.2, 0.6), (("A4", "B9"), -2.4, 0.6), (("B8",), -1.75, 0.3), (("A5",), -1.25, 0.3),
                    (("B7",), -0.75, 0.3), (("A6",), -0.25, 0.3), (("A7",), 0.25, 0.3), (("B6",), 0.75, 0.3),
                    (("A8",), 1.25, 0.3), (("B5",), 1.75, 0.3), (("B4", "A9"), 2.4, 0.6), (("B1", "A12"), 3.2, 0.6)):
@@ -260,13 +261,40 @@ fp.write(-2.0, 2.0)
 # 6. 10 A copper link between two nets (replaces the 2512 0R at R430/R530). Net tie: two 3 x 3 pads
 #    joined by a 3 mm wide copper bar; widen with zones in layout as needed.
 fp = FP("NetTie-2_SMD_3x3mm_Bridge3mm", "Net tie, two 3 x 3 mm pads joined by 3 mm copper, for a ~10 A link",
-        "net tie bridge high current")
+        "net tie bridge high current", attr="smd exclude_from_pos_files exclude_from_bom")
 fp.extra.append('(net_tie_pad_groups "1,2")')
 fp.smd("1", -2.0, 0, 3.0, 3.0, layers=("F.Cu", "F.Mask"))
 fp.smd("2", 2.0, 0, 3.0, 3.0, layers=("F.Cu", "F.Mask"))
 fp.poly([(-2.0, -1.5), (2.0, -1.5), (2.0, 1.5), (-2.0, 1.5)], "F.Cu")
 crt(fp, -3.75, -1.75, 3.75, 1.75)
 fp.write(-2.5, 2.5)
+
+# ---------------------------------------------------------------------------
+# 8. AGMSEMI AGM404AP1 PDFN3.3x3.3 (protection FETs Q101/Q102). agm404ap1.pdf p.7, first table (typ.):
+#    D 3.1 along the lead rows, E 3.0 body, E1 3.3 over the leads, e 0.65, b 0.3, L 0.4 (source/gate leads),
+#    drain pad D1 2.45 x E2 1.52 reached from the drain-side lead tips through L1 0.33 + H 0.415.
+#    No land pattern in the datasheet: leads get 0.4 x 0.75 lands (0.3 mm toe, 0.05 mm heel); the drain
+#    side is one 2.45 mm wide land from 0.3 mm past the lead tips to the drain pad's inner edge.
+#    Top view, pin 1 bottom-left: 1-3 S, 4 G along the bottom; 5-8 D along the top (5 above pin 4).
+#    The drain land is pad 5; pads 6-8 overlap it so every symbol pin has a pad.
+fp = FP("AGM_PDFN-8_3.3x3.3mm_P0.65mm", "AGMSEMI PDFN3.3x3.3 (AGM404AP1) single N-FET, S 1-3, G 4, D 5-8 + drain pad",
+        "PDFN3.3x3.3 DFN3333 MOSFET AGM404AP1")
+xs = (-0.975, -0.325, 0.325, 0.975)
+for i, x in enumerate(xs):
+    fp.smd(str(1 + i), x, 1.575, 0.4, 0.75)
+fp.smd_box("5", -1.225, -1.95, 1.225, 0.615, layers=("F.Cu", "F.Mask"))
+for n, x in zip(("6", "7", "8"), xs[::-1][1:]):
+    fp.smd(n, x, -1.65, 0.4, 0.6, layers=("F.Cu", "F.Mask"))
+for x in (-0.6, 0.6):
+    for y in (-1.35, -0.25):
+        fp.paste(x, y, 0.95, 0.85)
+fp.rect(-1.55, -1.5, 1.55, 1.5, "F.Fab", 0.1)
+fp.line(-1.55, 1.1, -1.15, 1.5, "F.Fab", 0.1)
+fp.line(-1.75, -1.0, -1.75, 1.0, "F.SilkS")
+fp.line(1.75, -1.0, 1.75, 1.0, "F.SilkS")
+fp.circle(-1.45, 2.25, 0.1, "F.SilkS", 0.2)
+crt(fp, -1.75, -2.2, 1.75, 2.2)
+fp.write(-3.0, 3.0)
 
 # ---------------------------------------------------------------------------
 # 7. TI RRV0036A VQFN-36 5 x 6 mm (BQ25756). From Antmicro's open hardware library (Apache-2.0, via
@@ -277,6 +305,7 @@ dst = os.path.join(LIB, "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm.kicad_mod")
 s = open(src, encoding="utf-8").read()
 s = re.sub(r'\(footprint "[^"]+"', '(footprint "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm"', s, count=1)
 s = re.sub(r'(\(property "Value" )"[^"]+"', r'\1"TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm"', s, count=1)
+s = s.replace("(size 0.7 0.7)", "(size 1 1)")                 # JLC legend: text >= 0.8 mm
 with open(dst, "w", newline="\n") as fh:
     fh.write(s)
 print("wrote", os.path.basename(dst)[:-10])
