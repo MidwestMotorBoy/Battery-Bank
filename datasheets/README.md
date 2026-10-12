@@ -1,8 +1,8 @@
 # Datasheets
 
-Datasheets and application notes for the parts chosen for Monolith (production board and dev board). The list, with source links, is in `sources.csv`.
+Datasheets and application notes for the parts chosen for Monolith (production board and dev board), downloaded 2026-10-11. The list, with source links, is in `sources.csv`. These documents are the manufacturers' copyrighted material, included here for reference.
 
-To download them all, run from the repo root on a computer with normal internet access:
+To re-download or refresh them, run from the repo root on a computer with normal internet access:
 
 ```
 bash tools/fetch_datasheets.sh

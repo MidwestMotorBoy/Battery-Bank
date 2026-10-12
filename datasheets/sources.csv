@@ -9,13 +9,13 @@ tps62933.pdf,TI TPS62933,5 V PP5V buck (x2),https://www.ti.com/lit/ds/symlink/tp
 tps62177.pdf,TI TPS62177,3.3 V always-on buck,https://www.ti.com/lit/ds/symlink/tps62177.pdf
 tps709.pdf,TI TPS70950,Dev board amplifier 5 V LDO,https://www.ti.com/lit/ds/symlink/tps709.pdf
 ina190.pdf,TI INA190,Dev board current-sense amplifiers,https://www.ti.com/lit/ds/symlink/ina190.pdf
-esd2can24.pdf,TI ESD2CAN24,USB CC / D+/D- ESD (x4),https://www.lcsc.com/datasheet/C5736151.pdf
+esd2can24.pdf,TI ESD2CAN24,USB CC / D+/D- ESD (x4),https://www.ti.com/lit/ds/symlink/esd2can24-q1.pdf
 stm32wb1mmc.pdf,ST STM32WB1MMC,Bluetooth MCU module,https://www.st.com/resource/en/datasheet/stm32wb1mmc.pdf
 stm32wb15cc.pdf,ST STM32WB15CC,MCU inside the module (pins / peripherals),https://www.st.com/resource/en/datasheet/stm32wb15cc.pdf
-m24512.pdf,ST M24512-DFMC6TG,PD controller EEPROM (x2),https://www.lcsc.com/datasheet/C222237.pdf
+m24512.pdf,ST M24512-DFMC6TG,PD controller EEPROM (x2),https://www.st.com/resource/en/datasheet/m24512-df.pdf
 iauc45n04s6l063h.pdf,Infineon IAUC45N04S6L063H,40 V half-bridge FETs (x4),https://www.infineon.com/dgdl/Infineon-IAUC45N04S6L063H-DataSheet-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d3f2b6c2a4a14
-agm404ap1.pdf,AGM Semi AGM404AP1,Pack protection FETs (x2),TODO (LCSC C number not confirmed; search LCSC for AGM404AP1)
-xal7030.pdf,Coilcraft XAL7030-222MEC,Charger inductor (x2),https://www.lcsc.com/datasheet/C19191686.pdf
+agm404ap1.pdf,AGM Semi AGM404AP1,Pack protection FETs (x2),https://www.lcsc.com/datasheet/C41349455.pdf
+xal7030.pdf,Coilcraft XAL7030-222MEC,Charger inductor (x2),https://www.coilcraft.com/getmedia/0d05a05e-d55d-4a0c-911d-46bd73686633/xal7030.pdf
 srp5030t.pdf,Bourns SRP5030T-3R3M,5 V buck inductor (x2),https://www.lcsc.com/datasheet/C189931.pdf
 srn4018ta.pdf,Bourns SRN4018TA-100M,3.3 V buck inductor,https://www.lcsc.com/datasheet/C2044417.pdf
 smaj22a.pdf,Littelfuse SMAJ22A,VBUS TVS (x2),https://www.lcsc.com/datasheet/C148220.pdf
