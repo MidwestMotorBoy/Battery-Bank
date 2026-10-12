@@ -22,10 +22,10 @@ DRU = os.path.join(HERE, "..", "MonolithDev.kicad_dru")
 MH = r"C:/Program Files/KiCad/10.0/share/kicad/footprints/MountingHole.pretty/MountingHole_3.2mm_M3.kicad_mod"
 
 ORIGIN = (50.0, 50.0)
-W, H = 175.0, 115.0
-USB_Y = (35.0, 78.0)              # notch centres on the right edge (J401, J501)
+W, H = 196.0, 115.0
+USB_Y = (32.0, 68.0)              # notch centres on the right edge (J401, J501)
 NOTCH_W = 10.2                     # Shou Han TYPE-C 16PCB0.8 recommended layout
-HOLES = [(4, 4), (101, 4), (171, 4), (4, 111), (101, 111), (171, 111)]
+HOLES = [(4, 4), (106, 4), (192, 4), (4, 111), (106, 111), (192, 111)]  # keep in step with place_parts.py
 
 
 def k(x, y):
@@ -135,8 +135,8 @@ def write_rules():
     ns = p.setdefault("net_settings", {})
     ns["classes"] = [
         cls("Default", 0.2, 0.15, 0.6, 0.3, 2147483647),
-        cls("HighCurrent", 2.5, 0.25, 0.8, 0.4, 0),     # pack/cell path, chargers' power stage (up to ~10 A)
-        cls("Power", 0.8, 0.2, 0.6, 0.3, 1),             # 5 V / 3.3 V rails, regulator I/O
+        cls("HighCurrent", 2.5, 0.15, 0.8, 0.4, 0),     # pack/cell path, chargers' power stage (up to ~10 A)
+        cls("Power", 0.8, 0.15, 0.6, 0.3, 1),             # 5 V / 3.3 V rails, regulator I/O
         cls("GND", 0.5, 0.15, 0.6, 0.3, 2),
         cls("GateDrive", 0.4, 0.15, 0.6, 0.3, 3),
     ]
@@ -172,10 +172,11 @@ def write_rules():
 	(constraint hole_size (min 0.5))
 	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'"))
 
-# Keep switch nodes and the pack bus a little further from small signals.
-(rule "HighCurrent to small signals"
+# Keep high-current tracks and pours a little further from small-signal copper (pads keep their footprints'
+# own spacing; 22 V max, so JLC's 0.15 mm is enough electrically).
+(rule "HighCurrent copper to small signals"
 	(constraint clearance (min 0.25))
-	(condition "A.NetClass == 'HighCurrent' && B.NetClass == 'Default'"))
+	(condition "A.NetClass == 'HighCurrent' && B.NetClass == 'Default' && A.Type != 'Pad' && B.Type != 'Pad'"))
 """)
     print("rules file written")
 

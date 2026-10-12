@@ -309,3 +309,20 @@ s = s.replace("(size 0.7 0.7)", "(size 1 1)")                 # JLC legend: text
 with open(dst, "w", newline="\n") as fh:
     fh.write(s)
 print("wrote", os.path.basename(dst)[:-10])
+
+# ---------------------------------------------------------------------------
+# 9. TI REF0038A WQFN-38 (TPS25751), KiCad's footprint with the two solder-mask-defined power pads (20-22 PPHV,
+#    23-25 VBUS) trimmed 0.025 mm on their shared edge: KiCad/TI leave 0.125 mm of copper between them, JLC needs
+#    0.15 mm on 2 oz outer copper. The mask openings, and so the soldered area, are TI's.
+src = r"C:/Program Files/KiCad/10.0/share/kicad/footprints/Package_DFN_QFN.pretty/Texas_REF0038A_WQFN-38-2EP_6x4mm_P0.4.kicad_mod"
+name = "TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz"
+s = open(src, encoding="utf-8").read()
+s = re.sub(r'\(footprint "[^"]+"', f'(footprint "{name}"', s, count=1)
+s = re.sub(r'(\(property "Value" )"[^"]+"', lambda m: m.group(1) + f'"{name}"', s, count=1)
+for num, y0, y1 in (("20", "0.6625", "0.675"), ("23", "-0.6625", "-0.675")):
+    s, n = re.subn(r'(\(pad "' + num + r'" smd roundrect\s*\(at 2\.925 )' + re.escape(y0) + r'\)(\s*\(size 0\.65 )1\.2\)',
+                   lambda m: m.group(1) + y1 + ")" + m.group(2) + "1.175)", s)
+    assert n == 1, num
+with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
+    fh.write(s)
+print("wrote", name)

@@ -33,13 +33,19 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, E
 
 ## Board (set up 2026-10-12, not yet placed or routed)
 
-- **175 × 115 mm, 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, ENIG.** The four holders need ~96 × 110 mm, so the spec's 100 × 80 mm grew; holders on the left, electronics on the right (floorplan below). 0.8 mm matches production and the mid-mount USB-C.
+- **196 × 115 mm (planned 175 × 115; see placement), 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, ENIG.** The four holders need ~96 × 110 mm, so the spec's 100 × 80 mm grew; holders on the left, electronics on the right (floorplan below). 0.8 mm matches production and the mid-mount USB-C.
 - Stack-up (approximate, confirm against JLC's 0.8 mm 4-layer stack at order time): F.Cu 70 µm, prepreg 0.1, In1.Cu (GND) 35 µm, core 0.37, In2.Cu (power) 35 µm, prepreg 0.1, B.Cu 70 µm. No impedance-controlled nets.
-- Six M3 board-only mounting holes (H1–H6) at the corners and at x = 101 mm top and bottom, so the heavy holder block is supported at all four corners.
-- J401/J501 are placed and locked on the right edge at y = 35 and 78 mm (from the top-left corner); the outline is broken there and each connector footprint draws its own 10.2 × 5.65 mm notch.
+- Six M3 board-only mounting holes (H1–H6) at the corners and at x = 106 mm top and bottom, so the heavy holder block is supported at all four corners.
+- J401/J501 are placed and locked on the right edge at y = 32 and 68 mm (from the top-left corner); the outline is broken there and each connector footprint draws its own 10.2 × 5.65 mm notch.
 - Rules (JLC 4-layer, 2 oz outer): 0.15 mm track/gap, vias ≥ 0.2 mm drill with ≥ 0.45 mm pad (presets 0.25/0.45, 0.3/0.6, 0.4/0.8), component-hole ring ≥ 0.25 mm, copper ≥ 0.25 mm from edges (0.2 mm at the USB-C notches, JLC's floor), legend ≥ 0.8 mm. Custom rules in `MonolithDev.kicad_dru`.
 - Net classes: HighCurrent (2.5 mm: pack bus, cells, FET mid-point, VBAT_SYS, PPHV, VBUS, switch nodes, sense-resistor power sides), Power (0.8 mm: 5 V / 3.3 V rails), GND, GateDrive (0.4 mm), Default (0.2 mm).
-- Netlist loaded: 320 footprints, `kicad-cli pcb drc --schematic-parity` reports 0 parity issues. All parts still sit at the origin.
+- Netlist loaded: 320 footprints, `kicad-cli pcb drc --schematic-parity` reports 0 parity issues.
+- **Placement (first pass, 2026-10-12):** all 326 footprints placed by `tools/place_parts.py`; DRC clean apart from the unrouted connections. Board grew to **196 × 115 mm**: the holder courtyards (94.7 mm) collided with corner holes, so the holder block moved right and the middle holes moved to x = 106 mm. USB notches at y = 32 and 68 mm.
+  - Hand-placed: holders, gauge core (IC, shunt by BT101's − contact, protection FETs, fuse, and the VC filter ladder at the VC pins), the sleep-current section, MCU (antenna end at the top edge with a clear zone), connectors, and each charger power train. Port 2 is port 1 shifted 37 mm down.
+  - Power train (per port): USB-side half-bridge Q401 with its 10 × 22 µF input bank straddling its drain and ground pads, inductor L401 between the two half-bridges, battery-side Q402 with its 7 × 47 µF output bank, BQ25756 beside the inductor with its gate-drive pins facing the FETs and the bootstrap/REGN caps between them; input sense resistor toward the PD controller, output sense resistor and the 10 A link toward the pack bus.
+  - The remaining ~200 small parts are auto-placed next to the pins they connect to (no courtyard overlaps). Worth a review pass in KiCad before routing.
+  - Silkscreen: labels on test points (net names; port test points as "P1 …"/"P2 …"), connectors, jumpers and holders only; "USB 1"/"USB 2" beside the ports.
+  - Run `tools/setup_board.py` after `place_parts.py`: KiCad's python save rewrites the project file with default rules.
 
 Planned floorplan (board mm from the top-left corner): holders BT101–BT104 stacked at x ≈ 52, y = 15/43/71/99 (BT101 at the top, all the same way round); headers (SWD, UART, spare) along the top edge from x ≈ 104; STM32WB1MMC at the top-right with its antenna end at the top edge and a copper-free notch past it (ST reference PCB); gauge, protection FETs, fuse, shunt, J101 and EV2400 header in a column at x ≈ 104–135; port 1 and port 2 power stages beside their connectors on the right; the sleep-current section (R_MEAS, INA190s, LDO) along the bottom edge with the SMA connectors at the edge.
 

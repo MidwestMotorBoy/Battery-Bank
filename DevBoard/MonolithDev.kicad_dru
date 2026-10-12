@@ -18,7 +18,8 @@
 	(constraint hole_size (min 0.5))
 	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'"))
 
-# Keep switch nodes and the pack bus a little further from small signals.
-(rule "HighCurrent to small signals"
+# Keep high-current tracks and pours a little further from small-signal copper (pads keep their footprints'
+# own spacing; 22 V max, so JLC's 0.15 mm is enough electrically).
+(rule "HighCurrent copper to small signals"
 	(constraint clearance (min 0.25))
-	(condition "A.NetClass == 'HighCurrent' && B.NetClass == 'Default'"))
+	(condition "A.NetClass == 'HighCurrent' && B.NetClass == 'Default' && A.Type != 'Pad' && B.Type != 'Pad'"))

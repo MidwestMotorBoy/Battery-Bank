@@ -14,7 +14,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## Board
 
-- 4 layers, **0.8 mm** thick (the production USB-C connector is a mid-mount part made for a 0.8 mm board), 2 oz outer / 1 oz inner, **175 × 115 mm** (the four holders need ~96 × 110 mm; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
+- 4 layers, **0.8 mm** thick (the production USB-C connector is a mid-mount part made for a 0.8 mm board), 2 oz outer / 1 oz inner, **196 × 115 mm** (the four holders need ~96 × 110 mm and their courtyards push the mid holes out; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
 - Everything assembled by JLC except the cell holders and connectors you choose to hand-fit.
 - Each charger power stage (BQ25756, two FET pairs, inductor, sense resistors, capacitor bank) is laid out as an **exact copy of the production power stage**, so switching and thermal results carry over. Everything else can be spread out.
 - Silkscreen: label every test point, jumper, header pin and cell polarity.
