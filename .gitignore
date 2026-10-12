@@ -14,3 +14,5 @@ __pycache__/
 # KiCad 10 local history
 .history/
 __pycache__/
+# duplicate default-name schematic plot (the tracked export is MonolithDev_schematic.pdf)
+DevBoard/MonolithDev.pdf
