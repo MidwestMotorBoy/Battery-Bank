@@ -76,12 +76,13 @@ _From the 2026-10-09 session · updated 2026-10-11_
   | PA3 | NTC TH2, USB2 power stage (ADC1) |
   | PA4 | NTC TH3, connectors (ADC1) |
   | PA5 | NTC TH4, heatsink plate (ADC1) |
-  | PB0 | NTC divider supply (high only while sampling, so the dividers draw nothing in sleep) |
-  | PB1 | TPS62933 enable, USB1 PP5V |
-  | PB2 | TPS62933 enable, USB2 PP5V |
+  | PA8 | NTC divider supply (high only while sampling, so the dividers draw nothing in sleep) |
+  | PA11 | TPS62933 enable, USB1 PP5V |
+  | PA12 | TPS62933 enable, USB2 PP5V |
+  | PB0 / PB1 / PB2 | unused: ST says these are RF-sensitive (moved 2026-10-11) |
   | PA13 / PA14 / NRST | SWDIO / SWCLK / reset, to the SWD pogo pads |
   | BOOT0 | pulled low |
-  | Spare | PA6–PA12, PB4, PB5, PB8 (ADC-capable spares: PA6–PA9) |
+  | Spare | PA7, PB8 (PA6 = gauge BTP, PB4 = 3V3 SLEEP, PB5 = LED, PA9/PA10 = UART on the dev board) |
 - **Bluetooth updates (STM32WB):** no strap pins are needed, but Bluetooth flashing does need an initial SWD program; the STM32's built-in ROM bootloader has no Bluetooth path. Plan, based on ST's BLE_Ota example in STM32CubeWB:
   - SWD-flash once before potting: ST's BLE_Ota loader at the start of flash, our application after it, and option bytes set to always boot from main flash (nSWBOOT0 = 0, nBOOT0 = 1) so the BOOT0 pin is ignored. Keep a pull-down on BOOT0 anyway.
   - Check the module's Bluetooth stack (CPU2 wireless stack) and FUS versions; install or update them over SWD with STM32CubeProgrammer if needed. Later stack updates can also go over Bluetooth through the loader.
@@ -427,7 +428,8 @@ Follow TI app note SLUA903, "Achieving the Successful Learning Cycle."
 - [x] EEPROM programming plan: in-system via the STM32WB (PBMs/PBMc boot load, then FLrd/FLad/FLwd/FLvy/GAID), see 2026-10-11 changes
 - [x] Read SLVAFL1 and SLVAFV8A in full; command formats, memory map, boot/recovery flow written up in `claude/tps25751-eeprom-programming.md`
 - [x] TPS25751 IRQs: USB1 → PA0, USB2 → PA2, internal pull-ups (see pin map)
-- [ ] Confirm the STM32WB1MMC pin map in STM32CubeMX (I2C1 on PB6/PB7, ADC channels on PA1/PA3/PA4/PA5, SWD on PA13/PA14) and check the module's layout guide for any pins reserved for the radio
+- [x] STM32WB1MMC pin map checked against DS13258 table 15 (I2C1 PB6/PB7, ADC1_IN6/8/9/10 on PA1/PA3/PA4/PA5, SWD PA13/PA14, WKUP1/4 on PA0/PA2); PB0–PB2 freed per DS14096 §7 (2026-10-11). Firmware note: PB4 resets as NJTRST with pull-up, so reconfigure it before using TPS62177 sleep mode
+- [ ] Final STM32CubeMX pass when the firmware project is created
 - [ ] In TI's Application Customization Tool, export both the Full Flash binary and the Low Region binary (C array) for the firmware
 - [ ] Add 5 SWD pogo pads (SWDIO, SWCLK, NRST, 3V3, GND) on the bottom side and to the floorplan
 - [ ] Firmware: store the patch bundle with a version number; on boot compare each TPS25751's running version and update its EEPROM only when newer

@@ -89,7 +89,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 5. MCU and Bluetooth (STM32WB1MMC)
 
 - **U_MCU:** STM32WB1MMC module, powered from 3V3 with the module datasheet's decoupling; antenna end at a board edge with the module's keep-out (no copper, no ground pour).
-- Pin map (same as production; confirm in STM32CubeMX):
+- Pin map (same as production; checked against DS13258 table 15 on 2026-10-11, see `DevBoard/README.md`):
 
 | Pin | Net / use |
 |---|---|
@@ -100,14 +100,17 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | PA3 | NTC TH2 (port 2 power stage) |
 | PA4 | NTC TH3 (connectors) |
 | PA5 | NTC TH4 (heatsink position) |
-| PB0 | NTC_EN — supply for the four NTC dividers |
-| PB1 | EN_5V1 — TPS62933 port 1 enable |
-| PB2 | EN_5V2 — TPS62933 port 2 enable |
+| PA8 | NTC_EN — supply for the four NTC dividers |
+| PA11 | EN_5V1 — TPS62933 port 1 enable |
+| PA12 | EN_5V2 — TPS62933 port 2 enable |
+| PB0 / PB1 / PB2 | not connected (ST: RF-sensitive pins) |
+| PB4 | 3V3_SLEEP — TPS62177 SLEEP (resets with a pull-up, so the rail boots in normal mode) |
 | PA13 / PA14 / NRST | SWD |
 | BOOT0 | 10 kΩ pull-down |
-| PA9 / PA10 | UART debug TX / RX (if CubeMX confirms USART1 there) |
+| PA9 / PA10 | UART debug TX / RX (USART1) |
 | PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT (100 kΩ pull-up) |
-| Spares | PA7, PA8, PA11, PA12, PB4, PB5, PB8 → bring all to a 2.54 mm header |
+| PB5 | status LED |
+| Spares | PA7, PB8 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2 for probing) |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
 - **UART header:** 3-pin (TX, RX, GND).
@@ -116,7 +119,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 6. Board NTCs (STM32WB)
 
 - Four 10 kΩ 1% NTCs (B ≈ 3380–3435, 0603): TH1 beside port 1 FETs/inductor, TH2 beside port 2, TH3 between the two USB-C connectors on VBUS/GND copper, TH4 on a bare copper pad where the heatsink plate would sit.
-- Each NTC from its ADC pin to GND, with a 10.0 kΩ 0.1% (Yageo RT0805BRD0710KL, C110775) from the ADC pin to NTC_EN (PB0). 100 nF at each ADC pin.
+- Each NTC from its ADC pin to GND, with a 10.0 kΩ 0.1% (Yageo RT0805BRD0710KL, C110775) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 

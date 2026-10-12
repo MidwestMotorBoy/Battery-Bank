@@ -44,10 +44,10 @@ Found while checking against datasheets:
 4. **BQ25756 VAC** comes straight from PPHV (before the input sense resistor) with 1 µF. The old netlist's 10 Ω series resistor is gone; that matches TI's typical application.
 5. **BQ25756 DRV_SUP** is fed from REGN through 10 Ω (TI typical application). The old netlist tied the two together directly.
 6. **BQ25756 sense filters** follow the datasheet pin descriptions on both shunts: 10 Ω in each lead, 0.47 µF differential, 0.1 µF from each side to PGND.
-7. **STM32WB1MMC:** per ST's reference schematic, 2.7 pF caps on PB0/PB1/PB2 (C305–C307). ST calls these three pins "sensitive" and recommends not using them. The pin map still uses them for NTC_EN and EN_5V1/2; see open items. ANT_IN/ANT_OUT are joined by a 0 Ω resistor (R303) for the internal antenna. NRST has 100 nF.
+7. **STM32WB1MMC: PB0/PB1/PB2 unused.** ST calls these three pins RF-sensitive and says not to connect them if possible (DS14096 §7). NTC_EN moved from PB0 to PA8, EN_5V1 from PB1 to PA11, EN_5V2 from PB2 to PA12 (design review 2026-10-11), so the 2.7 pF guard caps C305–C307 were removed and PB0–PB2 carry no-connect flags. ANT_IN/ANT_OUT are joined by a 0 Ω resistor (R303) for the internal antenna. NRST has 100 nF.
 8. **PP5V bulk:** a 220 µF 16 V polymer cap (C443/C543, ChuangHui SS221M160E7R7R4Z00ZZ, C25503905) was added on each port's PP5V. The TPS25751 table lists 120 µF minimum on PP5V (USB PD cSrcBulkShared), after derating. 2 × 22 µF + 10 µF wasn't enough, and a 100 µF MLCC keeps only about a third of its value at 5 V; polymer caps don't lose capacitance with DC bias.
-9. **TPS62177 SLEEP → PB4** (net 3V3_SLEEP). The chip has an internal pull-down, so it boots in low-Iq sleep mode until firmware drives the pin high. FB is tied to GND, which TI recommends for the fixed-output part.
-10. **Status LED on PB5:** 1 kΩ, green 0603, and a 0 Ω (R307) to pull for sleep measurements. Spare header carries PA7, PA8, PA11, PA12, PB8.
+9. **TPS62177 SLEEP → PB4** (net 3V3_SLEEP). After reset PB4 is the JTAG NJTRST pin with its internal pull-up on (DS13258 table 15 note 8), which beats the TPS62177's weak internal pull-down (1.4 µA at 3.3 V), so the 3.3 V rail boots in normal mode. That is the safe way round (sleep mode only supplies 15 mA). Firmware must make PB4 a push-pull GPIO before using sleep mode, and drive it low rather than leaving it floating. FB is tied to GND, which TI recommends for the fixed-output part.
+10. **Status LED on PB5:** 1 kΩ, green 0603, and a 0 Ω (R307) to pull for sleep measurements. Spare header J303 carries PA7, PB8 and, for probing or overriding, NTC_EN, EN_5V1 and EN_5V2.
 11. **Gauge VSS = CELL_N** (TI: "IC ground should be connected to the 1N cell tab"). The system GND is on the other side of the 1 mΩ shunt.
 12. **TPS25751 capacitors** checked against datasheet table 6.4 (values are after derating): LDO_3V3 (C404/C504) 4.7 µF 0603 → 10 µF 25 V 0805 (≥ 5 µF needed); LDO_1V5 (C405/C505) 4.7 µF → 10 µF (4.5–12 µF); VBUS (C406/C506) 1 µF 35 V 0603 → 4.7 µF 50 V 0805 (1–10 µF, a 1 µF 0603 drops below 1 µF at 20 V); VIN_3V3 (C403/C503) 10 µF is fine.
 13. **Fuse F101:** prosemi 1206FA-8A (C21261118), 1206, 8 A fast, 32 V, 300 A interrupt at 24 V. That allows about 6 A continuous after 75 % derating, inside the description's 5–7 A. The 2410 7 A alternative only lists an AC interrupt rating. **D101:** BAT54WS (C7502694, JLC preferred part).
@@ -56,11 +56,10 @@ Found while checking against datasheets:
 
 ## Open items (defaults I picked; confirm or change)
 
-- **PB0/PB1/PB2:** ST recommends leaving these unused. Consider moving NTC_EN / EN_5V1 / EN_5V2 to spare pins (PA7, PA8, PA11) before production. The dev board keeps the production map so firmware is the same on both.
 - **BQ25756 optional external bootstrap diodes** (shown in TI's typical application) are not drawn. The pin description only asks for the BTST–SW capacitor.
 - **Optional gauge-BAT INA190** from the description (DNP) is not drawn.
 - **STM32WB1MMC antenna keep-out:** the datasheet (DS14096) gives no copper keep-out for the integrated antenna. Get ST's hardware guidelines for the module before placing it, and keep it at a board edge with no copper or parts beside the antenna end until then.
-- Pin map still needs confirming in STM32CubeMX.
+- **Pin map** checked against the STM32WB15 datasheet (DS13258 table 15): ADC1_IN6/8/9/10 on PA1/PA3/PA4/PA5, WKUP1/WKUP4 on PA0/PA2, I2C1 on PB6/PB7, USART1 on PA9/PA10, SWD on PA13/PA14. A final pass in STM32CubeMX when the firmware project is set up is still worthwhile (it also catches clock-tree and peripheral conflicts).
 
 ## Footprints
 
