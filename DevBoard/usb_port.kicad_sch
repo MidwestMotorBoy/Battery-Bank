@@ -4970,7 +4970,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). R405-R408 are DNP divider footprints for other options.\n2. Unused TPS25751 GPIOs tied to GND per datasheet (KiCad ERC flags this; expected).\n3. D402/D403 (24 V rated ESD) and C401/C402 right at the connector pins, before anything else.\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two of each bulk bank plus C430/C438 at the FETs; the rest under the power stage.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = full-current copper link to PACK_P (replace 2512 with a bridge footprint).\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: 220 uF x 0.47 V/ms max = 0.1 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). R405-R408 are DNP divider footprints for other options.\n2. Unused TPS25751 GPIOs tied to GND per datasheet (KiCad ERC flags this; expected).\n3. D402/D403 (24 V rated ESD) and C401/C402 right at the connector pins, before anything else.\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two of each bulk bank plus C430/C438 at the FETs; the rest under the power stage.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: 220 uF x 0.47 V/ms max = 0.1 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration."
 		(exclude_from_sim no)
 		(at 459.74 160.02 0)
 		(effects
@@ -8444,7 +8444,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_2x3mm_P0.5mm_EP0.61x2.2mm"
+		(property "Footprint" "MonolithDev:ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm"
 			(at 254 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -10828,7 +10828,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm"
 			(at 381 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -18374,9 +18374,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "98ad6291-83a6-4809-8fb5-9d82c3cee6bd")
 		(property "Reference" "R530"
@@ -18389,7 +18389,7 @@
 				)
 			)
 		)
-		(property "Value" "0R copper link"
+		(property "Value" "Link 10A"
 			(at 474.83 58.16 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18399,7 +18399,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "MonolithDev:NetTie-2_SMD_3x3mm_Bridge3mm"
 			(at 474.98 62.738 90)
 			(hide yes)
 			(show_name no)
@@ -18432,7 +18432,7 @@
 				)
 			)
 		)
-		(property "Notes" "full current"
+		(property "Notes" "copper link (net tie footprint), not a part; keeps VBAT_SYS and PACK_P as separate net names"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -18493,7 +18493,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8-57_HalfBridge"
 			(at 350.52 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -19070,7 +19070,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8-57_HalfBridge"
 			(at 419.1 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -21218,7 +21218,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
 			(at 49.53 96.52 0)
 			(hide yes)
 			(show_name no)

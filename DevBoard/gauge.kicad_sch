@@ -4781,7 +4781,7 @@
 		(dnp no)
 		(uuid "2001919c-80c5-4578-9e7b-5043338f9f44")
 		(property "Reference" "U101"
-			(at 215.90 129.60 0)
+			(at 215.9 129.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4791,7 +4791,7 @@
 			)
 		)
 		(property "Value" "BQ40Z50RSMR-R2"
-			(at 215.90 131.57 0)
+			(at 215.9 131.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5171,7 +5171,7 @@
 		(dnp no)
 		(uuid "29f4bea2-f9c4-4433-9e73-05a851a888ca")
 		(property "Reference" "C107"
-			(at 243.80 82.69 0)
+			(at 243.8 82.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5181,7 +5181,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 84.65 0)
+			(at 243.8 84.65 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5719,7 +5719,7 @@
 		(dnp no)
 		(uuid "3b26ddea-bc53-4ad0-8154-b9dd298c4c8f")
 		(property "Reference" "TP106"
-			(at 266.70 44.95 0)
+			(at 266.7 44.95 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5965,7 +5965,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 91.44 238.00 0)
+			(at 91.44 238 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6196,7 +6196,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 266.70 55.12 0)
+			(at 266.7 55.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6583,7 +6583,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 215.90 69.09 0)
+			(at 215.9 69.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6963,7 +6963,7 @@
 		(dnp no)
 		(uuid "65fd7dc7-9300-4219-a586-a413f065e6fb")
 		(property "Reference" "C108"
-			(at 243.80 97.93 0)
+			(at 243.8 97.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6973,7 +6973,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 99.89 0)
+			(at 243.8 99.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7273,7 +7273,7 @@
 		(dnp no)
 		(uuid "71c8ea85-e687-424d-affc-3c497c2068e2")
 		(property "Reference" "TP104"
-			(at 76.20 258.31 0)
+			(at 76.2 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7350,7 +7350,7 @@
 		(dnp no)
 		(uuid "74e562ff-a0ea-4b47-9529-8a8a82cd5be5")
 		(property "Reference" "BT101"
-			(at 38.10 146.41 0)
+			(at 38.1 146.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7360,7 +7360,7 @@
 			)
 		)
 		(property "Value" "BH-21700-B1BJ001"
-			(at 38.10 148.38 0)
+			(at 38.1 148.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7369,7 +7369,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001"
 			(at 38.1 141.224 90)
 			(hide yes)
 			(show_name no)
@@ -7440,7 +7440,7 @@
 		(dnp no)
 		(uuid "789b7cc7-738b-43e1-9ef4-77e8666b0e51")
 		(property "Reference" "BT102"
-			(at 50.84 111.90 0)
+			(at 50.84 111.9 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7459,7 +7459,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001"
 			(at 38.1 115.824 90)
 			(hide yes)
 			(show_name no)
@@ -7530,7 +7530,7 @@
 		(dnp no)
 		(uuid "79bb631e-cf59-42ac-b6ca-de05d4610fdc")
 		(property "Reference" "Q102"
-			(at 228.60 38.16 0)
+			(at 228.6 38.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7540,7 +7540,7 @@
 			)
 		)
 		(property "Value" "AGM404AP1"
-			(at 228.60 40.13 0)
+			(at 228.6 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8282,7 +8282,7 @@
 		(dnp no)
 		(uuid "a3386614-4fea-4082-8161-f10b0044fd7f")
 		(property "Reference" "R103"
-			(at 152.85 156.50 90)
+			(at 152.85 156.5 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8541,7 +8541,7 @@
 		(dnp no)
 		(uuid "a6289f2f-eac6-4aae-9c28-2920249c0e42")
 		(property "Reference" "BT104"
-			(at 50.84 61.10 0)
+			(at 50.84 61.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8560,7 +8560,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001"
 			(at 38.1 65.024 90)
 			(hide yes)
 			(show_name no)
@@ -8719,7 +8719,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 228.60 193.55 0)
+			(at 228.6 193.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9411,7 +9411,7 @@
 		(dnp no)
 		(uuid "c54bf014-d957-47ce-ac53-78030697bc05")
 		(property "Reference" "BT103"
-			(at 50.84 86.50 0)
+			(at 50.84 86.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9430,7 +9430,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001"
 			(at 38.1 90.424 90)
 			(hide yes)
 			(show_name no)
@@ -9666,7 +9666,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 190.50 259.84 0)
+			(at 190.5 259.84 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9742,7 +9742,7 @@
 			)
 		)
 		(property "Value" "0.1u 25V"
-			(at 177.84 167.20 0)
+			(at 177.84 167.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10387,7 +10387,7 @@
 		(dnp no)
 		(uuid "fccf03bd-22cf-4444-b6d3-300983b3a0df")
 		(property "Reference" "C101"
-			(at 162.52 150.00 0)
+			(at 162.52 150 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10476,7 +10476,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 98.91 225.80 90)
+			(at 98.91 225.8 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
