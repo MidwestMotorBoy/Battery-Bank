@@ -44,18 +44,18 @@ Found while checking against datasheets:
 5. **BQ25756 DRV_SUP** is fed from REGN through 10 Ω (TI typical application). The old netlist tied the two together directly.
 6. **BQ25756 sense filters** follow the datasheet pin descriptions on both shunts: 10 Ω in each lead, 0.47 µF differential, 0.1 µF from each side to PGND.
 7. **STM32WB1MMC:** per ST's reference schematic, 2.7 pF caps on PB0/PB1/PB2 (C305–C307). ST calls these three pins "sensitive" and recommends not using them. The pin map still uses them for NTC_EN and EN_5V1/2; see open items. ANT_IN/ANT_OUT are joined by a 0 Ω resistor (R303) for the internal antenna. NRST has 100 nF.
-8. **PP5V bulk:** a 100 µF cap (C443) was added on each port's PP5V. The TPS25751 table lists 120 µF minimum on PP5V (USB PD cSrcBulkShared). 2 × 22 µF + 10 µF wasn't enough.
+8. **PP5V bulk:** a 220 µF 16 V polymer cap (C443/C543, ChuangHui SS221M160E7R7R4Z00ZZ, C25503905) was added on each port's PP5V. The TPS25751 table lists 120 µF minimum on PP5V (USB PD cSrcBulkShared), after derating. 2 × 22 µF + 10 µF wasn't enough, and a 100 µF MLCC keeps only about a third of its value at 5 V; polymer caps don't lose capacitance with DC bias.
 9. **TPS62177 SLEEP → PB4** (net 3V3_SLEEP). The chip has an internal pull-down, so it boots in low-Iq sleep mode until firmware drives the pin high. FB is tied to GND, which TI recommends for the fixed-output part.
 10. **Status LED on PB5:** 1 kΩ, green 0603, and a 0 Ω (R307) to pull for sleep measurements. Spare header carries PA7, PA8, PA11, PA12, PB8.
 11. **Gauge VSS = CELL_N** (TI: "IC ground should be connected to the 1N cell tab"). The system GND is on the other side of the 1 mΩ shunt.
+12. **TPS25751 capacitors** checked against datasheet table 6.4 (values are after derating): LDO_3V3 (C404/C504) 4.7 µF 0603 → 10 µF 25 V 0805 (≥ 5 µF needed); LDO_1V5 (C405/C505) 4.7 µF → 10 µF (4.5–12 µF); VBUS (C406/C506) 1 µF 35 V 0603 → 4.7 µF 50 V 0805 (1–10 µF, a 1 µF 0603 drops below 1 µF at 20 V); VIN_3V3 (C403/C503) 10 µF is fine.
+13. **Fuse F101:** prosemi 1206FA-8A (C21261118), 1206, 8 A fast, 32 V, 300 A interrupt at 24 V. That allows about 6 A continuous after 75 % derating, inside the description's 5–7 A. The 2410 7 A alternative only lists an AC interrupt rating. **D101:** BAT54WS (C7502694, JLC preferred part).
 
 ## Open items (defaults I picked; confirm or change)
 
-- **Fuse F101:** 7 A, 2512 footprint, no part chosen.
-- **D101 (gauge BAT diode):** BAT54 30 V, SOD-323, no LCSC number yet.
-- **TPS25751 capacitor values** (VIN_3V3 10 µF, LDO_3V3 4.7 µF, LDO_1V5 4.7 µF, VBUS 1 µF): the datasheet table (§6.4) came out jumbled in text extraction. Check them against the PDF.
+- **PPHV bulk vs USB PD:** the TPS25751 table caps PPHV at 100 µF (USB PD cSnkBulkPd) unless VBUS surge-current limiting is added, but the BQ25756 input bank on PPHV is 10 × 22 µF. Decide whether to shrink the bank, rely on the TPS25751's PPHV soft-start, or add surge limiting.
 - **PB0/PB1/PB2:** ST recommends leaving these unused. Consider moving NTC_EN / EN_5V1 / EN_5V2 to spare pins (PA7, PA8, PA11) before production. The dev board keeps the production map so firmware is the same on both.
-- **INA190A5 (DDF)** has no LCSC number. JLC stock still needs checking (fallback INA190A4 in SC-70-6 needs a different footprint).
+- **INA190 stock (2026-10-11):** JLC lists INA190A5IDDFR as C1852078 with only 7 in stock; INA190A1IDDFR (C1852068) and INA190A4 aren't stocked. In-stock look-alikes (INA180/181/185/296) have tens of µA input bias, which flows through R_MEAS and swamps µA readings, so they aren't drop-in. Options: JLC global sourcing / consigned parts, or buy from DigiKey/Mouser and hand-solder (SOT-23-8).
 - **VBAT_SYS → PACK_P link (R430/R530)** is drawn as a 2512 0 Ω. Replace it with a wide copper bridge / net-tie footprint rated for 10 A.
 - **BQ25756 optional external bootstrap diodes** (shown in TI's typical application) are not drawn. The pin description only asks for the BTST–SW capacitor.
 - **Optional gauge-BAT INA190** from the description (DNP) is not drawn.

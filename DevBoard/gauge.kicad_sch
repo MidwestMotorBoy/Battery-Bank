@@ -3236,6 +3236,12 @@
 		(uuid "2b6f2b14-3d34-43d2-ade4-36c277b1b4f1")
 	)
 	(junction
+		(at 196.85 135.89)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "320976f4-cf07-4bdc-9a53-ff0e30871896")
+	)
+	(junction
 		(at 198.12 181.61)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3246,6 +3252,24 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6ac48e66-dc66-44bd-a22b-f64763a158fe")
+	)
+	(junction
+		(at 215.9 44.45)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9aecec39-6c8c-429f-bdfd-f5b981be63a7")
+	)
+	(junction
+		(at 162.56 44.45)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "aa1794b2-097b-4952-909b-6eade2efa6a8")
+	)
+	(junction
+		(at 156.21 138.43)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b370bcd8-f3b3-4d6e-b3bb-bae00648308f")
 	)
 	(junction
 		(at 233.68 158.75)
@@ -7713,7 +7737,7 @@
 				)
 			)
 		)
-		(property "Value" "BAT54 30V"
+		(property "Value" "BAT54WS"
 			(at 178.92 132.84 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7746,6 +7770,17 @@
 			)
 		)
 		(property "Description" "Schottky diode"
+			(at 179.07 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7502694"
 			(at 179.07 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -9862,7 +9897,7 @@
 				)
 			)
 		)
-		(property "Value" "7A fast"
+		(property "Value" "8A 32V"
 			(at 111.61 50.23 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9872,7 +9907,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Fuse:Fuse_2512_6332Metric"
+		(property "Footprint" "Fuse:Fuse_1206_3216Metric"
 			(at 111.76 47.498 90)
 			(hide yes)
 			(show_name no)
@@ -9905,8 +9940,30 @@
 				)
 			)
 		)
-		(property "Notes" "part TBD"
+		(property "Notes" "fast; 300 A @ 24 V interrupt; ~6 A continuous after 75 % derating"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21261118"
+			(at 111.76 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "prosemi 1206FA-8A"
+			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10475,30 +10532,6 @@
 				)
 			)
 		)
-	)
-	(junction
-		(at 156.21 138.43)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b370bcd8-f3b3-4d6e-b3bb-bae00648308f")
-	)
-	(junction
-		(at 196.85 135.89)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "320976f4-cf07-4bdc-9a53-ff0e30871896")
-	)
-	(junction
-		(at 162.56 44.45)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "aa1794b2-097b-4952-909b-6eade2efa6a8")
-	)
-	(junction
-		(at 215.9 44.45)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "9aecec39-6c8c-429f-bdfd-f5b981be63a7")
 	)
 	(sheet_instances
 		(path "/"

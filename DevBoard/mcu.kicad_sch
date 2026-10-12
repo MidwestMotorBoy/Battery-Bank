@@ -5273,7 +5273,7 @@
 			)
 		)
 		(property "Value" "0R"
-			(at 126.85 98.8 90)
+			(at 126.85 98.80 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5353,7 +5353,7 @@
 		(dnp no)
 		(uuid "080b858b-50de-4a39-84bf-f8c91a2c661c")
 		(property "Reference" "TH302"
-			(at 66.8 204.62 0)
+			(at 66.80 204.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5363,7 +5363,7 @@
 			)
 		)
 		(property "Value" "10k B3435"
-			(at 66.8 206.59 0)
+			(at 66.80 206.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5443,7 +5443,7 @@
 		(dnp no)
 		(uuid "091e5daf-cc47-4f33-b906-804486147bc5")
 		(property "Reference" "TH303"
-			(at 92.2 204.62 0)
+			(at 92.20 204.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5453,7 +5453,7 @@
 			)
 		)
 		(property "Value" "10k B3435"
-			(at 92.2 206.59 0)
+			(at 92.20 206.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5610,7 +5610,7 @@
 		(dnp no)
 		(uuid "145de5d0-eabd-4264-8475-076f408b9c8c")
 		(property "Reference" "D301"
-			(at 71.43 237.8 0)
+			(at 71.43 237.80 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6021,7 +6021,7 @@
 		(dnp no)
 		(uuid "2920449a-9342-4cb6-9404-b73a0c58b0a6")
 		(property "Reference" "TH304"
-			(at 117.6 204.62 0)
+			(at 117.60 204.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6031,7 +6031,7 @@
 			)
 		)
 		(property "Value" "10k B3435"
-			(at 117.6 206.59 0)
+			(at 117.60 206.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6302,7 +6302,7 @@
 		(dnp no)
 		(uuid "3510026c-68b7-4f98-98c2-8f3001af55b1")
 		(property "Reference" "U301"
-			(at 190.5 108.01 0)
+			(at 190.50 108.01 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6312,7 +6312,7 @@
 			)
 		)
 		(property "Value" "STM32WB1MMC"
-			(at 190.5 109.98 0)
+			(at 190.50 109.98 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6863,7 +6863,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 76.2 213.87 0)
+			(at 76.20 213.87 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7883,7 +7883,7 @@
 		(dnp no)
 		(uuid "577dae90-0268-4475-a9a7-c1d64c5486d8")
 		(property "Reference" "C311"
-			(at 139.87 200.8 0)
+			(at 139.87 200.80 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8320,7 +8320,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 101.6 213.87 0)
+			(at 101.60 213.87 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9045,7 +9045,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 161.22 127 90)
+			(at 161.22 127.00 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9276,7 +9276,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 127 213.87 0)
+			(at 127.00 213.87 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9421,7 +9421,7 @@
 		(dnp no)
 		(uuid "d1ae9986-0616-4163-a336-1539a57303fe")
 		(property "Reference" "TH301"
-			(at 41.4 204.62 0)
+			(at 41.40 204.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9431,7 +9431,7 @@
 			)
 		)
 		(property "Value" "10k B3435"
-			(at 41.4 206.59 0)
+			(at 41.40 206.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9834,7 +9834,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 50.8 213.87 0)
+			(at 50.80 213.87 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9979,7 +9979,7 @@
 		(dnp no)
 		(uuid "e1c0c82c-c099-4b09-bc25-09377ffd78da")
 		(property "Reference" "J302"
-			(at 304.8 129.6 0)
+			(at 304.80 129.60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9989,7 +9989,7 @@
 			)
 		)
 		(property "Value" "UART debug"
-			(at 304.8 131.57 0)
+			(at 304.80 131.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10072,7 +10072,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 139.7 113.54 0)
+			(at 139.70 113.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10138,7 +10138,7 @@
 		(dnp no)
 		(uuid "e4198070-c3b0-42da-8abd-9e94aee9a19e")
 		(property "Reference" "J303"
-			(at 312.9 164.12 0)
+			(at 312.90 164.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10148,7 +10148,7 @@
 			)
 		)
 		(property "Value" "Spare GPIO"
-			(at 312.9 166.08 0)
+			(at 312.90 166.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10232,7 +10232,7 @@
 		(dnp no)
 		(uuid "e9245f6b-ea94-42f4-95db-46ff81de045d")
 		(property "Reference" "TP305"
-			(at 292.1 258.31 0)
+			(at 292.10 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10397,7 +10397,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 93.98 250.7 0)
+			(at 93.98 250.70 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
