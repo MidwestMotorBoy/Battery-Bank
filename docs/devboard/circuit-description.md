@@ -176,5 +176,5 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ## Open items before ProtoFlow
 
-- INA190A5 (DDF) JLC stock at order time; fallback INA190A4
+- INA190A5 / INA190A1: decided 2026-10-11 to buy from DigiKey/Mouser and hand-solder (JLC stock too low)
 - Confirm the STM32WB1MMC pin map in CubeMX

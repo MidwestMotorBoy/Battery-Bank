@@ -2198,7 +2198,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. R204/R205 0R to start; 49.9R if cable capacitance makes the amp ring.\n6. SLEEP low = sleep mode (internal pull-down); MCU PB4 drives it high for full load.\n7. R207 breaks the 3V3 rail for debugging."
+	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. R204/R205 0R to start; 49.9R if cable capacitance makes the amp ring.\n6. SLEEP low = sleep mode (internal pull-down); MCU PB4 drives it high for full load.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201/U202 are hand-soldered (DigiKey/Mouser); JLC has no stock. Not in the JLC BOM/CPL."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -3240,7 +3240,7 @@
 		(dnp no)
 		(uuid "06c986de-356f-4816-b42a-391ad87e199a")
 		(property "Reference" "TP203"
-			(at 190.50 159.25 0)
+			(at 190.5 159.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3576,7 +3576,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.50 169.42 0)
+			(at 190.5 169.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3652,7 +3652,7 @@
 			)
 		)
 		(property "Value" "0R"
-			(at 65.89 136.90 90)
+			(at 65.89 136.9 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4051,7 +4051,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "2c2b7dee-f918-450e-94dd-093423a3de84")
 		(property "Reference" "U201"
@@ -4118,6 +4118,28 @@
 				)
 			)
 		)
+		(property "MPN" "TI INA190A5IDDFR"
+			(at 109.22 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "DigiKey/Mouser, hand-solder (not JLC assembled)"
+			(at 109.22 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "a775323c-6ac4-47da-ae22-4f6526e9f514")
 		)
@@ -4174,7 +4196,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 152.40 83.06 0)
+			(at 152.4 83.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4407,7 +4429,7 @@
 		(dnp no)
 		(uuid "475210ca-1c61-498a-a5a4-e58a5b94ab9f")
 		(property "Reference" "TP201"
-			(at 152.40 138.93 0)
+			(at 152.4 138.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4572,7 +4594,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 165.10 67.82 0)
+			(at 165.1 67.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4726,7 +4748,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 88.90 241.81 0)
+			(at 88.9 241.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5605,7 +5627,7 @@
 		(dnp no)
 		(uuid "a416d5f9-1802-4233-bee6-650e4ad3f2d3")
 		(property "Reference" "JP202"
-			(at 50.80 223.07 0)
+			(at 50.8 223.07 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5615,7 +5637,7 @@
 			)
 		)
 		(property "Value" "Meas. section power"
-			(at 50.80 225.04 0)
+			(at 50.8 225.04 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6240,7 +6262,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.50 71.63 0)
+			(at 190.5 71.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6306,7 +6328,7 @@
 		(dnp no)
 		(uuid "d374f7f1-78dd-4537-a8a1-9329476030f7")
 		(property "Reference" "U203"
-			(at 88.90 223.58 0)
+			(at 88.9 223.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6316,7 +6338,7 @@
 			)
 		)
 		(property "Value" "TPS70950DBVR"
-			(at 88.90 225.55 0)
+			(at 88.9 225.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6559,7 +6581,7 @@
 		(dnp no)
 		(uuid "dcd76e59-c91f-46d3-b2b4-bb27a2ed541b")
 		(property "Reference" "U204"
-			(at 152.40 49.59 0)
+			(at 152.4 49.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6569,7 +6591,7 @@
 			)
 		)
 		(property "Value" "TPS62177DQCR"
-			(at 152.40 51.56 0)
+			(at 152.4 51.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7099,7 +7121,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e8ec2433-0680-40af-961f-5dd44afafc97")
 		(property "Reference" "U202"
@@ -7166,7 +7188,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C1852068"
+		(property "MPN" "TI INA190A1IDDFR"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "DigiKey/Mouser, hand-solder (not JLC assembled)"
 			(at 109.22 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -7222,7 +7255,7 @@
 		(dnp no)
 		(uuid "ef967bbc-7bef-48c5-aba5-3c10935b7b90")
 		(property "Reference" "TP202"
-			(at 152.40 177.03 0)
+			(at 152.4 177.03 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
