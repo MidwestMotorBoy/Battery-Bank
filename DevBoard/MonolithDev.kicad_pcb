@@ -3486,8 +3486,8 @@
 			(size 3.6 4.6)
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(zone_connect 2)
+			(net "GND")
 			(uuid "34906cf7-ee15-4458-b460-c93a86044872")
 		)
 		(embedded_fonts no)
@@ -7644,8 +7644,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "58be82b5-573a-49ee-ac31-bd9c632ceb11")
 		)
 		(pad "2" smd roundrect
@@ -7653,8 +7653,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "EN_5V1")
 			(thermal_bridge_angle 45)
+			(net "EN_5V1")
 			(uuid "b095322f-8c84-422e-adce-7815095e73f3")
 		)
 		(pad "3" smd roundrect
@@ -7662,8 +7662,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 1/5V_IN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/5V_IN")
 			(uuid "41162e30-0824-4058-8868-6024ba2e03ba")
 		)
 		(pad "4" smd roundrect
@@ -7671,8 +7671,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "91008089-95bf-4e99-93da-5d8f23f7a834")
 		)
 		(pad "5" smd roundrect
@@ -7680,8 +7680,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 1/SW_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/SW_5V")
 			(uuid "4f7762f6-69e0-48b7-ace5-d8b7e7bd85b2")
 		)
 		(pad "6" smd roundrect
@@ -7689,8 +7689,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 1/BST_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/BST_5V")
 			(uuid "ed1a15b1-ea81-4e4e-a3ff-c4908f9cda95")
 		)
 		(pad "7" smd roundrect
@@ -7698,8 +7698,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 1/SS_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/SS_5V")
 			(uuid "84a67ae4-d52d-4a48-b59e-46239517499b")
 		)
 		(pad "8" smd roundrect
@@ -7707,8 +7707,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "Net-(U404-FB)")
 			(thermal_bridge_angle 45)
+			(net "Net-(U404-FB)")
 			(uuid "5f8f0501-dcfb-4fda-80b9-888d2a8ef772")
 		)
 		(embedded_fonts no)
@@ -12113,7 +12113,7 @@
 				)
 			)
 		)
-		(property "Value" "17.8k 0.1%"
+		(property "Value" "9.09k 0.1%"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "0a0712b6-10f1-4781-b4a8-0f6241d1dd83")
@@ -12158,7 +12158,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/17.8 = 2.8 A per port (5.6 A both ports = cell 1C); charger falls back to it on watchdog expiry (review #2)"
+		(property "Notes" "ICHG hardware ceiling 50/9.09 = 5.5 A per port (5.3-5.7 A): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -12170,7 +12170,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C705729"
+		(property "LCSC" ""
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -12182,7 +12182,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0603BRD0717K8L"
+		(property "MPN" "RT0603BRD079K09L"
 			(at 205.895 67.2 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -23727,7 +23727,6 @@
 			(at 0 1.9 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 1/SW1")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -23742,6 +23741,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 1/SW1")
 			(uuid "4676a17a-c222-45c6-ac69-f1bfcd3fa251")
 		)
 		(pad "3" smd rect
@@ -23762,7 +23762,6 @@
 			(at 1.27 -2.15 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -23776,6 +23775,7 @@
 					(fill yes)
 				)
 			)
+			(net "GND")
 			(uuid "c46bc9c7-8527-4f0b-8a49-3b2ca7403d70")
 		)
 		(pad "6" smd rect
@@ -23796,7 +23796,6 @@
 			(at -1.27 -2.15 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 1/AC_SNS_N")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -23810,6 +23809,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 1/AC_SNS_N")
 			(uuid "a5dffca7-079a-4fd3-913d-5faddac40317")
 		)
 		(pad "8" smd rect
@@ -28206,8 +28206,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "fd71a19e-6814-498b-9803-2825ce6de16f")
 		)
 		(pad "2" smd roundrect
@@ -28215,8 +28215,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "EN_5V2")
 			(thermal_bridge_angle 45)
+			(net "EN_5V2")
 			(uuid "3759838c-2c6b-4093-8da5-247ff4add5b6")
 		)
 		(pad "3" smd roundrect
@@ -28224,8 +28224,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 2/5V_IN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/5V_IN")
 			(uuid "84015163-9983-4489-ad53-c51fded2c7e4")
 		)
 		(pad "4" smd roundrect
@@ -28233,8 +28233,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "235b51fa-0ed8-4f01-bc60-71671c638753")
 		)
 		(pad "5" smd roundrect
@@ -28242,8 +28242,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 2/SW_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/SW_5V")
 			(uuid "13b03490-6530-43a7-bb9e-37a8bb790da1")
 		)
 		(pad "6" smd roundrect
@@ -28251,8 +28251,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 2/BST_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/BST_5V")
 			(uuid "69911ffb-316d-4335-a3a9-27fcc68e6cc2")
 		)
 		(pad "7" smd roundrect
@@ -28260,8 +28260,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "/USB Port 2/SS_5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/SS_5V")
 			(uuid "3ec018bd-7b56-4a63-8648-0cde7555752a")
 		)
 		(pad "8" smd roundrect
@@ -28269,8 +28269,8 @@
 			(size 0.67 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1666666667)
-			(net "Net-(U504-FB)")
 			(thermal_bridge_angle 45)
+			(net "Net-(U504-FB)")
 			(uuid "fc632292-880e-4cae-b2ec-dd928e0d9da6")
 		)
 		(embedded_fonts no)
@@ -28832,8 +28832,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/LDO_3V3")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/LDO_3V3")
 			(uuid "692b968a-069f-4311-afb7-f078a6ed89da")
 		)
 		(pad "2" smd roundrect
@@ -28841,8 +28841,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/P2_ADCIN1")
 			(thermal_bridge_angle 45)
+			(net "/P2_ADCIN1")
 			(uuid "e7beca46-dd11-451a-b35b-b523fb669ec9")
 		)
 		(pad "3" smd roundrect
@@ -28850,8 +28850,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/P2_ADCIN2")
 			(thermal_bridge_angle 45)
+			(net "/P2_ADCIN2")
 			(uuid "2e582229-3477-4030-ad39-c2f27b201fa0")
 		)
 		(pad "4" smd roundrect
@@ -28859,8 +28859,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/LDO_1V5")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/LDO_1V5")
 			(uuid "2386021e-5fc4-4f31-9ced-8559e1f28757")
 		)
 		(pad "5" smd roundrect
@@ -28868,8 +28868,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "60104064-6eba-4561-8b28-0a7051b4a7c1")
 		)
 		(pad "6" smd roundrect
@@ -28877,8 +28877,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "fb6d8386-f19f-4f99-b108-da6402a27148")
 		)
 		(pad "7" smd roundrect
@@ -28886,8 +28886,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "4a1dc23c-6741-4286-adc2-b08c2d16f552")
 		)
 		(pad "8" smd roundrect
@@ -28895,8 +28895,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "SDA")
 			(thermal_bridge_angle 45)
+			(net "SDA")
 			(uuid "91f73b37-4163-40e8-aa49-76474d776316")
 		)
 		(pad "9" smd roundrect
@@ -28904,8 +28904,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "SCL")
 			(thermal_bridge_angle 45)
+			(net "SCL")
 			(uuid "1fcc5da6-16ee-4722-962e-3598f3a84f35")
 		)
 		(pad "10" smd roundrect
@@ -28913,8 +28913,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "IRQ2")
 			(thermal_bridge_angle 45)
+			(net "IRQ2")
 			(uuid "7edb78c8-5862-44a9-8993-ac0de05e6729")
 		)
 		(pad "11" smd roundrect
@@ -28922,8 +28922,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "c6b79257-3523-41bf-ae9c-7afa22db1056")
 		)
 		(pad "12" smd roundrect
@@ -28931,8 +28931,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "3021f136-2959-4f83-a1ea-5fa61b38fb1f")
 		)
 		(pad "13" smd roundrect
@@ -28940,8 +28940,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "5c78c6dd-2efb-4477-a499-0a64bfed4584")
 		)
 		(pad "14" smd roundrect
@@ -28949,8 +28949,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "0d9f1c60-cf57-4341-88e6-39bf2b509196")
 		)
 		(pad "15" smd roundrect
@@ -28958,8 +28958,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/PD_DRAIN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PD_DRAIN")
 			(uuid "9c1214e8-d240-4bbe-80aa-685c35ea7705")
 		)
 		(pad "16" smd roundrect
@@ -28967,8 +28967,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/I2CC_SDA")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/I2CC_SDA")
 			(uuid "3947f5dc-914f-44ce-a3b5-b01789d2ec93")
 		)
 		(pad "17" smd roundrect
@@ -28976,8 +28976,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/I2CC_SCL")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/I2CC_SCL")
 			(uuid "c10a0b4e-41ed-4655-9d5b-78a58ac62588")
 		)
 		(pad "18" smd roundrect
@@ -28985,8 +28985,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/CHG_INT")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/CHG_INT")
 			(uuid "a697d70e-4ea6-4cae-905b-3e8fa39326a6")
 		)
 		(pad "19" smd roundrect
@@ -28994,8 +28994,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "05156e5d-2e24-4d94-841c-0368397de94b")
 		)
 		(pad "20" smd roundrect
@@ -29003,8 +29003,8 @@
 			(size 0.65 1.175)
 			(layers "F.Cu")
 			(roundrect_rratio 0.07692307692)
-			(net "/USB Port 2/PPHV")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PPHV")
 			(uuid "35362ae7-0e06-41ac-93bd-c730995a1b13")
 		)
 		(pad "23" smd roundrect
@@ -29012,8 +29012,8 @@
 			(size 0.65 1.175)
 			(layers "F.Cu")
 			(roundrect_rratio 0.07692307692)
-			(net "/USB Port 2/VBUS")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/VBUS")
 			(uuid "3d6539ec-0af1-40f7-9c78-187290dd6ed8")
 		)
 		(pad "26" smd roundrect
@@ -29021,8 +29021,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/DP")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/DP")
 			(uuid "3c9e7b05-ee88-4f18-a58a-f23e9253e7cf")
 		)
 		(pad "27" smd roundrect
@@ -29030,8 +29030,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/DN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/DN")
 			(uuid "718caed8-4c44-4af3-86f6-4e8ec536b7de")
 		)
 		(pad "28" smd roundrect
@@ -29039,8 +29039,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/CC1")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/CC1")
 			(uuid "a6938e10-88f7-4591-a2fb-a21e3a247531")
 		)
 		(pad "29" smd roundrect
@@ -29048,8 +29048,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/CC2")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/CC2")
 			(uuid "a31a2442-9048-4c8d-9f21-6b58f1bdf8b7")
 		)
 		(pad "30" smd roundrect
@@ -29057,8 +29057,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/PD_DRAIN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PD_DRAIN")
 			(uuid "e03c6c7a-9035-4db5-886e-675adab3d748")
 		)
 		(pad "31" smd roundrect
@@ -29066,8 +29066,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "058c0f26-340c-4ed6-ad52-8d5e0a3c9fea")
 		)
 		(pad "32" smd roundrect
@@ -29075,8 +29075,8 @@
 			(size 0.6 0.65)
 			(layers "F.Cu")
 			(roundrect_rratio 0.08333333333)
-			(net "/USB Port 2/VBUS")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/VBUS")
 			(uuid "87c66eda-1bc6-418e-9abd-2abdbc3549fb")
 		)
 		(pad "34" smd roundrect
@@ -29084,8 +29084,8 @@
 			(size 0.6 0.65)
 			(layers "F.Cu")
 			(roundrect_rratio 0.08333333333)
-			(net "/USB Port 2/PP5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PP5V")
 			(uuid "5561aecd-f369-4d3c-8b0d-31cb241c9182")
 		)
 		(pad "36" smd roundrect
@@ -29093,8 +29093,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "61605cef-b936-457a-9c92-ccf17629ce05")
 		)
 		(pad "37" smd roundrect
@@ -29102,8 +29102,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "33dfe870-06bf-405c-ac31-bee27f20756c")
 		)
 		(pad "38" smd roundrect
@@ -29111,8 +29111,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 2/3V3_PD")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/3V3_PD")
 			(uuid "602608ef-c9e0-45c8-ae77-a12ec1665c20")
 		)
 		(pad "39" thru_hole circle
@@ -29151,9 +29151,9 @@
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.09433962264)
-			(net "GND")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "61bfe459-f050-43e2-9e0e-89ef9383034e")
 		)
 		(pad "39" smd roundrect
@@ -29162,9 +29162,9 @@
 			(property pad_prop_heatsink)
 			(layers "B.Cu")
 			(roundrect_rratio 0.09433962264)
-			(net "GND")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "b42f3ed0-3e94-40fc-91d4-44aa4bdc2d88")
 		)
 		(pad "39" thru_hole circle
@@ -29213,9 +29213,9 @@
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.1633986928)
-			(net "/USB Port 2/PD_DRAIN")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PD_DRAIN")
 			(uuid "78228123-424c-48fc-8f63-a8aff3929d4a")
 		)
 		(pad "40" smd roundrect
@@ -29224,9 +29224,9 @@
 			(property pad_prop_heatsink)
 			(layers "B.Cu")
 			(roundrect_rratio 0.1633986928)
-			(net "/USB Port 2/PD_DRAIN")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "/USB Port 2/PD_DRAIN")
 			(uuid "9e51a478-bc6f-42a4-b774-0d2a848d7210")
 		)
 		(pad "40" thru_hole circle
@@ -35281,7 +35281,7 @@
 				)
 			)
 		)
-		(property "Value" "17.8k 0.1%"
+		(property "Value" "9.09k 0.1%"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "e9d033ea-f4e7-4b43-a3b1-067c0f58518f")
@@ -35326,7 +35326,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/17.8 = 2.8 A per port (5.6 A both ports = cell 1C); charger falls back to it on watchdog expiry (review #2)"
+		(property "Notes" "ICHG hardware ceiling 50/9.09 = 5.5 A per port (5.3-5.7 A): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -35338,7 +35338,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C705729"
+		(property "LCSC" ""
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -35350,7 +35350,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0603BRD0717K8L"
+		(property "MPN" "RT0603BRD079K09L"
 			(at 205.895 104.2 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -43396,8 +43396,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/P1_LDO_3V3")
 			(thermal_bridge_angle 45)
+			(net "/P1_LDO_3V3")
 			(uuid "692b968a-069f-4311-afb7-f078a6ed89da")
 		)
 		(pad "2" smd roundrect
@@ -43405,8 +43405,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/P1_ADCIN1")
 			(thermal_bridge_angle 45)
+			(net "/P1_ADCIN1")
 			(uuid "e7beca46-dd11-451a-b35b-b523fb669ec9")
 		)
 		(pad "3" smd roundrect
@@ -43414,8 +43414,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/P1_ADCIN2")
 			(thermal_bridge_angle 45)
+			(net "/P1_ADCIN2")
 			(uuid "2e582229-3477-4030-ad39-c2f27b201fa0")
 		)
 		(pad "4" smd roundrect
@@ -43423,8 +43423,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/LDO_1V5")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/LDO_1V5")
 			(uuid "2386021e-5fc4-4f31-9ced-8559e1f28757")
 		)
 		(pad "5" smd roundrect
@@ -43432,8 +43432,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "60104064-6eba-4561-8b28-0a7051b4a7c1")
 		)
 		(pad "6" smd roundrect
@@ -43441,8 +43441,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "fb6d8386-f19f-4f99-b108-da6402a27148")
 		)
 		(pad "7" smd roundrect
@@ -43450,8 +43450,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "4a1dc23c-6741-4286-adc2-b08c2d16f552")
 		)
 		(pad "8" smd roundrect
@@ -43459,8 +43459,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "SDA")
 			(thermal_bridge_angle 45)
+			(net "SDA")
 			(uuid "91f73b37-4163-40e8-aa49-76474d776316")
 		)
 		(pad "9" smd roundrect
@@ -43468,8 +43468,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "SCL")
 			(thermal_bridge_angle 45)
+			(net "SCL")
 			(uuid "1fcc5da6-16ee-4722-962e-3598f3a84f35")
 		)
 		(pad "10" smd roundrect
@@ -43477,8 +43477,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "IRQ1")
 			(thermal_bridge_angle 45)
+			(net "IRQ1")
 			(uuid "7edb78c8-5862-44a9-8993-ac0de05e6729")
 		)
 		(pad "11" smd roundrect
@@ -43486,8 +43486,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "c6b79257-3523-41bf-ae9c-7afa22db1056")
 		)
 		(pad "12" smd roundrect
@@ -43495,8 +43495,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "3021f136-2959-4f83-a1ea-5fa61b38fb1f")
 		)
 		(pad "13" smd roundrect
@@ -43504,8 +43504,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "5c78c6dd-2efb-4477-a499-0a64bfed4584")
 		)
 		(pad "14" smd roundrect
@@ -43513,8 +43513,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "0d9f1c60-cf57-4341-88e6-39bf2b509196")
 		)
 		(pad "15" smd roundrect
@@ -43522,8 +43522,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/PD_DRAIN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PD_DRAIN")
 			(uuid "9c1214e8-d240-4bbe-80aa-685c35ea7705")
 		)
 		(pad "16" smd roundrect
@@ -43531,8 +43531,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/I2CC_SDA")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/I2CC_SDA")
 			(uuid "3947f5dc-914f-44ce-a3b5-b01789d2ec93")
 		)
 		(pad "17" smd roundrect
@@ -43540,8 +43540,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/I2CC_SCL")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/I2CC_SCL")
 			(uuid "c10a0b4e-41ed-4655-9d5b-78a58ac62588")
 		)
 		(pad "18" smd roundrect
@@ -43549,8 +43549,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/CHG_INT")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/CHG_INT")
 			(uuid "a697d70e-4ea6-4cae-905b-3e8fa39326a6")
 		)
 		(pad "19" smd roundrect
@@ -43558,8 +43558,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "05156e5d-2e24-4d94-841c-0368397de94b")
 		)
 		(pad "20" smd roundrect
@@ -43567,8 +43567,8 @@
 			(size 0.65 1.175)
 			(layers "F.Cu")
 			(roundrect_rratio 0.07692307692)
-			(net "/USB Port 1/PPHV")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PPHV")
 			(uuid "35362ae7-0e06-41ac-93bd-c730995a1b13")
 		)
 		(pad "23" smd roundrect
@@ -43576,8 +43576,8 @@
 			(size 0.65 1.175)
 			(layers "F.Cu")
 			(roundrect_rratio 0.07692307692)
-			(net "/USB Port 1/VBUS")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/VBUS")
 			(uuid "3d6539ec-0af1-40f7-9c78-187290dd6ed8")
 		)
 		(pad "26" smd roundrect
@@ -43585,8 +43585,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/DP")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/DP")
 			(uuid "3c9e7b05-ee88-4f18-a58a-f23e9253e7cf")
 		)
 		(pad "27" smd roundrect
@@ -43594,8 +43594,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/DN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/DN")
 			(uuid "718caed8-4c44-4af3-86f6-4e8ec536b7de")
 		)
 		(pad "28" smd roundrect
@@ -43603,8 +43603,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/CC1")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/CC1")
 			(uuid "a6938e10-88f7-4591-a2fb-a21e3a247531")
 		)
 		(pad "29" smd roundrect
@@ -43612,8 +43612,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/CC2")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/CC2")
 			(uuid "a31a2442-9048-4c8d-9f21-6b58f1bdf8b7")
 		)
 		(pad "30" smd roundrect
@@ -43621,8 +43621,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/PD_DRAIN")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PD_DRAIN")
 			(uuid "e03c6c7a-9035-4db5-886e-675adab3d748")
 		)
 		(pad "31" smd roundrect
@@ -43630,8 +43630,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "058c0f26-340c-4ed6-ad52-8d5e0a3c9fea")
 		)
 		(pad "32" smd roundrect
@@ -43639,8 +43639,8 @@
 			(size 0.6 0.65)
 			(layers "F.Cu")
 			(roundrect_rratio 0.08333333333)
-			(net "/USB Port 1/VBUS")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/VBUS")
 			(uuid "87c66eda-1bc6-418e-9abd-2abdbc3549fb")
 		)
 		(pad "34" smd roundrect
@@ -43648,8 +43648,8 @@
 			(size 0.6 0.65)
 			(layers "F.Cu")
 			(roundrect_rratio 0.08333333333)
-			(net "/USB Port 1/PP5V")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PP5V")
 			(uuid "5561aecd-f369-4d3c-8b0d-31cb241c9182")
 		)
 		(pad "36" smd roundrect
@@ -43657,8 +43657,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "61605cef-b936-457a-9c92-ccf17629ce05")
 		)
 		(pad "37" smd roundrect
@@ -43666,8 +43666,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "GND")
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "33dfe870-06bf-405c-ac31-bee27f20756c")
 		)
 		(pad "38" smd roundrect
@@ -43675,8 +43675,8 @@
 			(size 0.55 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB Port 1/3V3_PD")
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/3V3_PD")
 			(uuid "602608ef-c9e0-45c8-ae77-a12ec1665c20")
 		)
 		(pad "39" thru_hole circle
@@ -43715,9 +43715,9 @@
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.09433962264)
-			(net "GND")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "61bfe459-f050-43e2-9e0e-89ef9383034e")
 		)
 		(pad "39" smd roundrect
@@ -43726,9 +43726,9 @@
 			(property pad_prop_heatsink)
 			(layers "B.Cu")
 			(roundrect_rratio 0.09433962264)
-			(net "GND")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "GND")
 			(uuid "b42f3ed0-3e94-40fc-91d4-44aa4bdc2d88")
 		)
 		(pad "39" thru_hole circle
@@ -43777,9 +43777,9 @@
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.1633986928)
-			(net "/USB Port 1/PD_DRAIN")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PD_DRAIN")
 			(uuid "78228123-424c-48fc-8f63-a8aff3929d4a")
 		)
 		(pad "40" smd roundrect
@@ -43788,9 +43788,9 @@
 			(property pad_prop_heatsink)
 			(layers "B.Cu")
 			(roundrect_rratio 0.1633986928)
-			(net "/USB Port 1/PD_DRAIN")
 			(zone_connect 2)
 			(thermal_bridge_angle 45)
+			(net "/USB Port 1/PD_DRAIN")
 			(uuid "9e51a478-bc6f-42a4-b774-0d2a848d7210")
 		)
 		(pad "40" thru_hole circle
@@ -44690,7 +44690,6 @@
 			(at 0 1.9)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 1/SW2")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -44705,6 +44704,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 1/SW2")
 			(uuid "9c263af5-4e80-433e-9c3b-8ca47767ed6a")
 		)
 		(pad "3" smd rect
@@ -44725,7 +44725,6 @@
 			(at 1.27 -2.15)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -44739,6 +44738,7 @@
 					(fill yes)
 				)
 			)
+			(net "GND")
 			(uuid "a66ceadb-a4f7-4755-9afe-e5a271335108")
 		)
 		(pad "6" smd rect
@@ -44759,7 +44759,6 @@
 			(at -1.27 -2.15)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 1/BAT_SNS_P")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -44773,6 +44772,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 1/BAT_SNS_P")
 			(uuid "50befe9f-150c-4fcc-af3e-c2e31518b142")
 		)
 		(pad "8" smd rect
@@ -48579,8 +48579,8 @@
 			(size 0.84 2.4)
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(zone_connect 2)
+			(net "GND")
 			(uuid "e4715cb7-6a30-4b9e-b09c-b086b138b9d9")
 		)
 		(embedded_fonts no)
@@ -52078,7 +52078,6 @@
 			(at 0 1.9)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 2/SW2")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -52093,6 +52092,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 2/SW2")
 			(uuid "2e662e4c-c415-488f-9033-2ffcb6f700f9")
 		)
 		(pad "3" smd rect
@@ -52113,7 +52113,6 @@
 			(at 1.27 -2.15)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -52127,6 +52126,7 @@
 					(fill yes)
 				)
 			)
+			(net "GND")
 			(uuid "bc908ee4-5e2d-4767-bdc6-ca8343f48de8")
 		)
 		(pad "6" smd rect
@@ -52147,7 +52147,6 @@
 			(at -1.27 -2.15)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 2/BAT_SNS_P")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -52161,6 +52160,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 2/BAT_SNS_P")
 			(uuid "2d9bfec0-7ab7-4f31-8dac-6668ff54247f")
 		)
 		(pad "8" smd rect
@@ -55445,7 +55445,6 @@
 			(at 0 1.9 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 2/SW1")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -55460,6 +55459,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 2/SW1")
 			(uuid "f29781d5-3c98-43a2-b5ec-15a80bfc8514")
 		)
 		(pad "3" smd rect
@@ -55480,7 +55480,6 @@
 			(at 1.27 -2.15 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -55494,6 +55493,7 @@
 					(fill yes)
 				)
 			)
+			(net "GND")
 			(uuid "5496648b-b99e-49ac-b918-2aa22bffe890")
 		)
 		(pad "6" smd rect
@@ -55514,7 +55514,6 @@
 			(at -1.27 -2.15 180)
 			(size 0.2 0.2)
 			(layers "F.Cu" "F.Mask")
-			(net "/USB Port 2/AC_SNS_N")
 			(options
 				(clearance outline)
 				(anchor rect)
@@ -55528,6 +55527,7 @@
 					(fill yes)
 				)
 			)
+			(net "/USB Port 2/AC_SNS_N")
 			(uuid "cfd8dfa9-440e-4552-a341-130ed0355205")
 		)
 		(pad "8" smd rect
@@ -62550,8 +62550,8 @@
 			(size 3.6 4.6)
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
-			(net "GND")
 			(zone_connect 2)
+			(net "GND")
 			(uuid "34906cf7-ee15-4458-b460-c93a86044872")
 		)
 		(embedded_fonts no)

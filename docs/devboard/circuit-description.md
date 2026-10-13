@@ -153,7 +153,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **Resistors (Yageo RT 0.1%):**
   - FSW_SYNC: 40.2 kΩ (C865475) → ~600 kHz
   - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG set to ~1.527 V in firmware for 16.8 V)
-  - ICHG: 17.8 kΩ (C705729) → ~2.8 A hardware ceiling (rev A4; was 5.11 kΩ / 9.8 A, above the cells' 5.6 A)
+  - ICHG: 9.09 kΩ 0.1 % (Yageo RT0603BRD079K09L) → ~5.5 A hardware ceiling per port (rev A4; was 5.11 kΩ / 9.8 A). One port can charge at about 1C; with both ports charging, configuration/firmware hold each at 2.8 A (ICHG_REG).
   - ILIM_HIZ: 3.65 kΩ (C705773) → ~5.5 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
   - TS: RT1 1.74 kΩ (C784581) REGN→TS, RT2 5.11 kΩ (C705788) TS→GND, with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
   - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** (top, from VAC), **RAC2 40.2 kΩ** (C865475), **RAC3 10.0 kΩ** (C110775, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).

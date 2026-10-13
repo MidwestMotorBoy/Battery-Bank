@@ -4886,7 +4886,7 @@
 		)
 		(uuid "1f00cd9c-23d9-4e49-9f69-1746bb161f5a")
 	)
-	(text "BQ25756 CONTROLLER  (600 kHz, ICHG 2.8 A, ILIM 5.5 A, VAC 4.1-22.5 V window)"
+	(text "BQ25756 CONTROLLER  (600 kHz, ICHG 5.5 A max, ILIM 5.5 A, VAC 4.1-22.5 V window)"
 		(exclude_from_sim no)
 		(at 304.8 167.64 0)
 		(effects
@@ -17592,7 +17592,7 @@
 				)
 			)
 		)
-		(property "Value" "17.8k 0.1%"
+		(property "Value" "9.09k 0.1%"
 			(at 353.06 246.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17635,7 +17635,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/17.8 = 2.8 A per port (5.6 A both ports = cell 1C); charger falls back to it on watchdog expiry (review #2)"
+		(property "Notes" "ICHG hardware ceiling 50/9.09 = 5.5 A per port (5.3-5.7 A): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 2.54 0 0)
 			(hide yes)
 			(show_name no)
@@ -17646,7 +17646,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C705729"
+		(property "LCSC" ""
 			(at 353.06 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -17657,7 +17657,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0603BRD0717K8L"
+		(property "MPN" "RT0603BRD079K09L"
 			(at 353.06 236.22 0)
 			(hide yes)
 			(show_name no)

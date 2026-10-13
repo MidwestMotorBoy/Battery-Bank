@@ -26,7 +26,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | Item | Status |
 |---|---|
 | #1 U203 EN tied to PACK_P | **Fixed**: EN floats (internal pull-up). |
-| #2 Charge ceiling | **Fixed**: R413/R513 = 17.8k → 2.8 A per port. The watchdog bit and gauge OCC1 are configuration items. |
+| #2 Charge ceiling | **Fixed**: R413/R513 = 9.09k → 5.5 A per port (revised from 17.8k / 2.8 A so one port can charge at about 1C). Both-port sum, watchdog behaviour and gauge OCC1 are configuration/firmware items (firmware item 14). |
 | #3 Discharge-side overload | Configuration: source PDOs, IBAT_REV, gauge OCD1. |
 | #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. |
 | #5 U101 exposed pad | **Fixed**: TI RSM0032A footprint (1.4 mm pad). |
@@ -250,6 +250,7 @@ This is the discharge-side counterpart of #2.
 11. **NTC readings:** wait at least 5 ms after raising NTC_EN (τ = 0.5 ms). PA8's drive drop costs about 0.5–0.8 °C near 100 °C. Jumpering J303 PA7 to NTC_EN lets firmware measure the excitation directly.
 12. **CHG_INH (PB8, rev A4):** drive high to stop both chargers at their CE pins. Assert it when the gauge stops answering for about 2 s; when its read-back configuration is wrong (cell count, COV/CUV/OCC); when the gauge stack voltage, the sum of its cells and the chargers' VBAT ADC (read through the TPS25751 with I2Cr) disagree by more than about 300 mV; when any cell is outside 2.5-4.25 V; or when the gauge reports CHG off but charge current still flows (FET stuck on). Leave it low (or as input) otherwise, so a dead pack still recovers from USB. The TPS25751 configuration must keep `DIS_CE_PIN` = 0.
 13. **Body-diode limit (decision Q1):** while the gauge reports XDSG = 1 and charge current flows, hold the chargers at the precharge level (ICHG_REG via I2Cw) until DSG is back on.
+14. **Charge-current sharing (ICHG pin = 5.5 A per port):** TPS25751 configuration starts each BQ25756 at ICHG_REG = 2.8 A, EN_ICHG_PIN = 1, EN_CHG_BIT_RESET_BEHAVIOR = 0, IPRECHG ≈ 0.5 A, ITERM = 0.25 A. When only one port is charging, the MCU raises it (I2Cw) to the full rate: 5.5 A for the welded pack; in holder mode limited by the measured holder contact resistance (#4). On the other port's attach interrupt (IRQ1/IRQ2), the MCU drops the first port back to 2.8 A before the new contract closes PPHV. Gauge OCC1 about 6 A with a short delay. The cell maximum is 1C (5.6 A, "not for cycle life"); the project target is 0.5C, so the full rate belongs in a "fast charge" mode.
 
 ## Open questions
 
