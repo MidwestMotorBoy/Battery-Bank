@@ -160,9 +160,38 @@ Found while checking against datasheets:
     - **Thermistor notes:** state Murata B25/50 = 3380 K / B25/85 = 3435 K; use the R-T table.
     - **Gauge note 4:** insulated cell NTCs only.
     - **Antenna keep-out rule area** on the board.
+    - **Power budget by state:** [`../docs/devboard/power-budget.md`](../docs/devboard/power-budget.md).
     - **Bring-up checklist:** [`../docs/devboard/bringup-config-checklist.md`](../docs/devboard/bringup-config-checklist.md) gathers every configuration item, with review 2's precharge correction.
 
 28. **TH305 at the protection FETs (rev A5, 2026-10-13; review 2 A-7).** Q101/Q102 dissipate about 1 W each at 100 W and nothing sensed them. TH305 (same Murata 10k NTC) sits between the two FETs right of C111, on PA7 (ADC1_IN2) with the same 10k 1 % / 0.1 µF divider from NTC_EN as TH301–TH304 (R320, C312 under J303). The PA7 net is now NTC_TH5 and still reaches J303 pin 2 for probing. Firmware: include it in the over-temperature and gauge cross-checks. It can be left unpopulated later.
+
+29. **Footprint checks and 3D models (2026-10-13).**
+    - **Cell holder footprint fixed.** Rendering the MYOUNG drawing showed a dia 2.25 hole for the + terminal's locating tab: the side view has a fork below the seating plane, 38.60 mm from centre. The footprint lacked it, so the holder would have sat on its tab. Added as NPTH at (-38.6, -11.5) and refreshed BT101-BT104; the silk gaps around it. Pads (7.5 × 9.0, 93.6 outer) and pegs (dia 4.0 at ±34, 8.5) were already right.
+    - **J301 uses Samtec's recommended land pattern** for FTSH-1xx-xx-xxx-DV (rev G): 0.74 × 2.79 pads at ±2.035, courtyard covering the -K keying shroud. New footprint `MonolithDev:Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm`. J301 moved 1.2 mm left; the "MCU" title moved below it.
+    - **3D models on 292 of 362 footprints.** Custom footprints borrow same-body KiCad models (make_footprints.py `MODELS`, pin 1 checked in a 3D render; KiCad turns positive Z angles clockwise):
+        - QFN-32 4×4 (U101);
+        - QFN-36 5×6 (BQ25756);
+        - WQFN-40 6×4 (TPS25751; KiCad has no REF0038A model);
+        - VSON-8 3.3×3.3 at 270° (AGM404AP1);
+        - TDSON-8-1 at 270° (half-bridge; single-FET body);
+        - the 1.27 mm 2×5 SMD header (J301).
+
+      place_parts.py re-points two KiCad-library footprints whose model KiCad 10 does not ship: the SMA to 132134-10, and the TS-1187A switches to the TL3342 model (same 5 mm 4-pad tact).
+
+      **USB-C (J401/J501) model, measured from the maker's vector drawing.** No STEP file exists from ShouHan, LCSC/EasyEDA (listed with no device) or the usual aggregators.
+        - **How it was built:** `tools/drawing_extract/` pulls the outline strokes of every view out of `datasheets/usb-c-16pcb0.8-ip68.pdf`, scaled at 10.888 pt/mm (cross-checked against the 10.25, 9.64, 7.45, 8.34 and 2.56 dimensions). `tools/make_3d_usbc.py` builds the solids from those measurements (OpenCascade).
+        - **Verification:** `tools/verify_3d_usbc.py` projects the model with hidden-line removal and overlays it on the drawing. Front, top and side views coincide; see `3dmodels/verification/usbc_overlay_*.png`.
+        - **Key numbers:**
+            - receptacle centreline 0.827 above the board top;
+            - body bottom flush with the 0.8 mm board bottom;
+            - seal ring 10.25 × 4.45 with R0.2 edges, 0.50–1.50 behind the mating face;
+            - mating face 1.949 outside the board edge;
+            - legs: 0.2 sheet, shelf on the board top, foot to the board bottom at x ±5.80.
+        - **Drawing inconsistencies, all within its tolerances:** the front view draws the ring 10.36 × 4.35 against the dimensioned 10.25 × 4.45 (dimension used). Leg tips are drawn 11.81 apart against 11.60 ±0.25 (drawn geometry used; it matches the footprint slots).
+        - **Assumed (not defined by the drawing, all inside the envelope):** cavity depth, tongue, body corner R0.3. Shallow surface details (latch window, leg channels in the shell sides) are left out.
+        - **For the enclosure:** the envelope is accurate to the drawing. The drawing's own tolerances are ±0.15–0.25 mm, so confirm critical fits (seal compression, wall opening) with calipers on a sample, or ask ShouHan for their STEP.
+
+      **No model:** cell holders, STM32WB1MMC, M24512 UFDFPN8 (KiCad's 2×3 DFN has pins on the long sides), the SMT test loops, mounting holes, bare pads and net ties. LCSC/EasyEDA STEP files for the holder, module and EEPROM can go in `DevBoard/3dmodels/`, or be built the same way.
 
 ## Open items (defaults I picked; confirm or change)
 

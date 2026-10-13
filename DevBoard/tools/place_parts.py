@@ -53,7 +53,7 @@ FIXED = {
     "U204": (180, 96, 0), "L201": (184.3, 96, 0), "JP201": (140, 103, 0),
     "J201": (162, 110.0, 0), "J202": (178, 110.0, 0),          # vertical SMAs along the bottom edge
     # MCU top band; antenna (pin-1 end) at the top edge
-    "U301": (150, 5.8, 0), "J301": (120, 6, 90), "J302": (131, 6, 90), "J303": (168, 6, 90),
+    "U301": (150, 5.8, 0), "J301": (118.8, 6, 90), "J302": (131, 6, 90), "J303": (168, 6, 90),
 }
 
 # one charger port in a local frame: Q401 left, L401 centre, Q402 right; input caps above Q401, output caps
@@ -214,7 +214,7 @@ PIN_NOTES = [("TX", 131.0, 3.3), ("RX", 133.54, 3.3), ("G", 136.08, 3.3), ("not 
 
 # silkscreen block titles (text, x, y, rotation)
 TITLES = [("PORT 1", 134.8, 46.0, 90), ("PORT 2", 134.8, 46.0 + PORT_DY, 90), ("GAUGE", 121.5, 17.0, 0),
-          ("MCU", 114.0, 6.0, 0), ("SLEEP CURRENT", 148.5, 111.5, 0),
+          ("MCU", 116.5, 11.9, 0), ("SLEEP CURRENT", 148.5, 111.5, 0),
           ("FIT CELLS BEFORE USB", 55.0, 113.3, 0)]
 
 
@@ -465,7 +465,7 @@ unplaced_labels = []
 for txt, x, y in PIN_NOTES:               # reserve the pin-note spots before placing labels
     a, b = k(x - 0.5 * len(txt) - 0.3, y - 0.6), k(x + 0.5 * len(txt) + 0.3, y + 0.6)
     obst.append((a.x, a.y, b.x, b.y))
-for ref, fp in sorted(fps.items(), key=lambda kv: not kv[0].startswith("TP")):
+for ref, fp in sorted(fps.items(), key=lambda kv: (not kv[0].startswith("TP"), kv[0])):
     if not (ref.startswith("TP") or re.match(r"JP?\d", ref)):
         continue
     # test points: net name centred just above the loop (same spot on every one; port test points carry no
@@ -552,5 +552,17 @@ refs = sorted(boxes)
 clash = [(a, b) for i, a in enumerate(refs) for b in refs[i + 1:] if hit(boxes[a], [boxes[b]])]
 print("courtyard overlaps:", clash)
 board.Save(PCB)
+# KiCad-library footprints whose 3D model file KiCad 10 does not ship: point them at a same-size shipped model
+# (text pass: pcbnew's Models() returns copies, so assigning m_Filename there does not stick)
+MODEL_SUBST = {
+    "Connector_Coaxial.3dshapes/SMA_Amphenol_132134_Vertical.step":
+        "Connector_Coaxial.3dshapes/SMA_Amphenol_132134-10_Vertical.step",          # same connector family
+    "Button_Switch_SMD.3dshapes/SW_Push_1P1T_XKB_TS-1187A.step":
+        "Button_Switch_SMD.3dshapes/SW_SPST_TL3342.step",   # 5.2 mm tact, pads +/-3.15/1.9 vs +/-3.0/1.875
+}
+pcb_text = open(PCB, encoding="utf-8").read()
+for old, new in MODEL_SUBST.items():
+    pcb_text = pcb_text.replace(old, new)
+open(PCB, "w", encoding="utf-8", newline="\n").write(pcb_text)
 open(PRO, "w", encoding="utf-8", newline="\n").write(pro_backup)
 print(f"placed {len(placed)} / {len(fps)}; not placed: {sorted(set(failed) - set(placed))}")

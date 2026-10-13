@@ -12,6 +12,44 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LIB = os.path.join(HERE, "..", "MonolithDev.pretty")
 STD = "(stroke (width {w}) (type solid))"
 
+# 3D models borrowed from KiCad's library: same body and pin-1 corner (checked against the KiCad footprint each model
+# belongs to, or built by tools/make_3d_usbc.py; rotation in degrees about Z, KiCad turns positive angles clockwise seen from the top: checked in a 3D render). Not modelled: holder, STM32WB1MMC, UFDFPN8 (KiCad's 2x3
+# DFN has its pins on the long sides), SMT test loop, net tie.
+M3D = "${KICAD10_3DMODEL_DIR}/"
+MODELS = {
+    "Infineon_PG-TDSON-8-57_HalfBridge": ("Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step", 270),    # single-FET body
+    "AGM_PDFN-8_3.3x3.3mm_P0.65mm": ("Package_SON.3dshapes/VSON-8_3.3x3.3mm_P0.65mm_NexFET.step", 270),
+    "TI_RSM0032A_VQFN-32_4x4mm_P0.4mm_EP1.4x1.4mm": ("Package_DFN_QFN.3dshapes/QFN-32-1EP_4x4mm_P0.4mm_EP2.65x2.65mm.step", 0),
+    "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm": ("Package_DFN_QFN.3dshapes/QFN-36-1EP_5x6mm_P0.5mm_EP3.6x4.6mm.step", 0),
+    "TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz": ("Package_DFN_QFN.3dshapes/Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm.step", 0),
+    "USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68": ("${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step", 0),  # tools/make_3d_usbc.py
+    "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
+}
+
+
+def model_block(name):
+    if name not in MODELS:
+        return ""
+    path, rot = MODELS[name]
+    full = path if path.startswith("${") else M3D + path
+    return (f'\t(model "{full}"\n\t\t(offset\n\t\t\t(xyz 0 0 0)\n\t\t)\n\t\t(scale\n\t\t\t(xyz 1 1 1)\n'
+            f'\t\t)\n\t\t(rotate\n\t\t\t(xyz 0 0 {rot})\n\t\t)\n\t)\n')
+
+
+def with_model(s, name):
+    """Replace any (model ...) blocks in a footprint file string with the one from MODELS."""
+    while "\n\t(model " in s:
+        a = s.index("\n\t(model ") + 1
+        d, i = 0, a + 1                        # a is the tab; count from the opening paren
+        while True:
+            d += {"(": 1, ")": -1}.get(s[i], 0)
+            i += 1
+            if d == 0:
+                break
+        s = s[:a] + s[i:].lstrip("\n")
+    k = s.rstrip().rindex(")")
+    return s[:k] + model_block(name) + s[k:]
+
 
 def f(v):
     return f"{v:.4f}".rstrip("0").rstrip(".") if v != 0 else "0"
@@ -78,6 +116,7 @@ class FP:
                 f'\t(attr {self.attr})\n')
         body = "".join(f"\t{e}\n" for e in self.extra + self.items)
         body += '\t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.5 0.5) (thickness 0.08))))\n'
+        body += model_block(self.name)
         with open(os.path.join(LIB, self.name + ".kicad_mod"), "w", newline="\n") as fh:
             fh.write(head + body + ")\n")
         print("wrote", self.name)
@@ -99,15 +138,20 @@ os.makedirs(LIB, exist_ok=True)
 #    The layout is labelled "bottom view" but is the top view flipped about the long axis
 #    (checked against the top view: + terminal and molded "+" on the left, left peg low).
 #    Pads 7.5 x 9.0, outer pad edges 93.6 apart; pegs (dia 3.2) into 4.0 holes at +/-34, 8.5.
+#    Rev A5: added the dia 2.25 hole for the + terminal tab (missing before; the holder would not seat flat).
 fp = FP("BatteryHolder_MYOUNG_BH-21700-B1BJ001", "MYOUNG BH-21700-B1BJ001 SMT single 21700 holder, pad 1 = +",
         "21700 battery holder SMT")
 for num, x in (("1", -43.05), ("2", 43.05)):
     fp.smd(num, x, 0, 7.5, 9.0)
 fp.npth(-34.0, 8.5, 4.0)
 fp.npth(34.0, -8.5, 4.0)
+# + terminal locating tab: the side view shows a fork below the seating plane 38.60 from the centre at the + end;
+# the layout gives its hole as dia 2.25, 11.50 off the pad centreline (bottom view -> y flipped, like the pegs).
+fp.npth(-38.6, -11.5, 2.25)
 fp.rect(-41.25, -12.5, 41.25, 12.5, "F.Fab", 0.1)
 fp.circle(0, 0, 10.5, "F.Fab", 0.1)
-fp.line(-41.4, -12.65, 41.4, -12.65, "F.SilkS")
+fp.line(-41.4, -12.65, -40.1, -12.65, "F.SilkS")            # gap over the + tab hole
+fp.line(-37.1, -12.65, 41.4, -12.65, "F.SilkS")
 fp.line(-41.4, 12.65, 41.4, 12.65, "F.SilkS")
 for x in (-41.4, 41.4):
     fp.line(x, -12.65, x, -4.75, "F.SilkS")
@@ -306,6 +350,7 @@ s = open(src, encoding="utf-8").read()
 s = re.sub(r'\(footprint "[^"]+"', '(footprint "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm"', s, count=1)
 s = re.sub(r'(\(property "Value" )"[^"]+"', r'\1"TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm"', s, count=1)
 s = s.replace("(size 0.7 0.7)", "(size 1 1)")                 # JLC legend: text >= 0.8 mm
+s = with_model(s, "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm")       # the Antmicro .glb is not shipped
 with open(dst, "w", newline="\n") as fh:
     fh.write(s)
 print("wrote", os.path.basename(dst)[:-10])
@@ -323,6 +368,7 @@ for num, y0, y1 in (("20", "0.6625", "0.675"), ("23", "-0.6625", "-0.675")):
     s, n = re.subn(r'(\(pad "' + num + r'" smd roundrect\s*\(at 2\.925 )' + re.escape(y0) + r'\)(\s*\(size 0\.65 )1\.2\)',
                    lambda m: m.group(1) + y1 + ")" + m.group(2) + "1.175)", s)
     assert n == 1, num
+s = with_model(s, name)                                          # KiCad 10 ships no REF0038A model
 with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
     fh.write(s)
 print("wrote", name)
@@ -370,3 +416,24 @@ fp.line(-0.237, -0.735, 0.237, -0.735, "F.SilkS")
 fp.line(-0.237, 0.735, 0.237, 0.735, "F.SilkS")
 crt(fp, -1.48, -0.73, 1.48, 0.73)
 fp.write(-1.5, 1.5)
+
+# ---------------------------------------------------------------------------
+# 12. Samtec FTSH-105-01-x-DV-K, 2 x 5 1.27 mm SMT header with keying shroud (J301 SWD). Samtec "RECOMMENDED PCB
+#     LAYOUT FOR FTSH-1XX-XX-XXX-DV-XXX" (rev G): pads .029 x .110 (0.74 x 2.79) on .050 (1.27) pitch, .270 (6.86)
+#     over the outer pad ends, so pad centres at +/-2.035 and a 1.28 mm gap between rows. Pin 1 top left, odd pins left,
+#     even pins right (same numbering as KiCad's generic PinHeader_2x05_P1.27mm_Vertical_SMD). Shroud outline taken as
+#     5.08 x 9.65 (.200 wide, positions x 1.27 + 3.30); courtyard covers pads and shroud.
+fp = FP("Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm",
+        "Samtec FTSH-105-01-x-DV-K 2x05 1.27 mm SMT header with keying shroud; Samtec recommended PCB layout (rev G)",
+        "Samtec FTSH SWD Cortex debug 2x05 1.27mm keyed")
+for i in range(5):
+    y = -2.54 + 1.27 * i
+    fp.smd(str(2 * i + 1), -2.035, y, 2.79, 0.74)
+    fp.smd(str(2 * i + 2), 2.035, y, 2.79, 0.74)
+fp.rect(-2.54, -4.825, 2.54, 4.825, "F.Fab", 0.1)
+fp.line(-2.54, -3.6, -1.6, -4.825, "F.Fab", 0.1)
+fp.line(-3.6, -5.0, 3.6, -5.0, "F.SilkS")
+fp.line(-3.6, 5.0, 3.6, 5.0, "F.SilkS")
+fp.circle(-3.9, -3.3, 0.15, "F.SilkS", 0.3)
+crt(fp, -3.7, -5.1, 3.7, 5.1)
+fp.write(-6.2, 6.2)

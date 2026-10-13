@@ -6754,7 +6754,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_2x05_P1.27mm_Vertical_SMD"
+		(property "Footprint" "MonolithDev:Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm"
 			(at 156.21 144.78 0)
 			(hide yes)
 			(show_name no)
