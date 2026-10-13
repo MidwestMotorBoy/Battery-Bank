@@ -148,6 +148,8 @@ Found while checking against datasheets:
 
     Given up: measuring total pack drain across the F101 pads. Use R_MEAS for the 3V3 branch and the gauge's current reading for the rest.
 
+26. **SMD test loops instead of Keystone through-hole (rev A5, 2026-10-13).** All 45 loop test points are now ronghe RH-S2761-46R (LCSC C55121754, about $0.12–0.20 each, about 10k in stock): an SMT loop 1.60 × 0.80 × 1.15 mm on an 0603 land pattern, the JLC-stocked equivalent of the Harwin S2761-46R (3.5 A). Footprint `MonolithDev:TestPoint_Harwin_S2761_0603` (tools/make_footprints.py section 11): two 0603 pads, both pin 1 and marked jumpered, since the loop joins them. JLC places them with the rest; no through-hole assembly. They are small: fine for hook probes and mini-grabbers, but too small for a scope's alligator ground clip, so use a ground spring or a short ground lead on the GND loops. The bare 1.5 mm probe pads (TP306, TP307, TP413/TP513, TP414/TP514, TP206, TP207) stay pads.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).

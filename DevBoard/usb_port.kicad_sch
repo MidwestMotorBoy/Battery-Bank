@@ -10488,7 +10488,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 111.76 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -10511,6 +10511,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 106.68 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -11502,7 +11524,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 50.8 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -11525,6 +11547,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 45.72 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 45.72 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 45.72 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -16586,7 +16630,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 66.04 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -16609,6 +16653,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 60.96 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 60.96 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 60.96 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -17480,7 +17546,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 187.96 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -17503,6 +17569,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 182.88 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 182.88 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 182.88 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -20986,7 +21074,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 203.2 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -21009,6 +21097,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 198.12 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 198.12 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 198.12 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -21148,7 +21258,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 81.28 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -21171,6 +21281,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 76.2 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 76.2 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 76.2 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22273,7 +22405,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 142.24 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22296,6 +22428,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 137.16 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 137.16 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 137.16 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22575,7 +22729,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 127 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22598,6 +22752,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 121.92 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22737,7 +22913,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 96.52 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -22760,6 +22936,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 91.44 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 91.44 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 91.44 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -23271,7 +23469,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 157.48 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -23294,6 +23492,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 152.4 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 152.4 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 152.4 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -23643,7 +23863,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 172.72 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -23666,6 +23886,28 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 167.64 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 167.64 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 167.64 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -25454,7 +25696,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
 			(at 213.36 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -25488,6 +25730,28 @@
 			)
 		)
 		(property "Notes" "GND loop for the SW1/SW2 probe points: place beside TP405/TP406"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 213.36 289.56 0)
 			(hide yes)
 			(show_name no)

@@ -170,7 +170,7 @@ Firmware and configuration items added by these decisions:
 | H10 PPHV/VBUS caps | C449/C549 0.1 µF PPHV; C450/C550 10 nF VBUS |
 | H12 LED | R306 330 Ω |
 | C-6 LCSC | Every resistor and capacitor now has a JLC number |
-| Not done | H8 TH305 FET thermistor, H11 J104 keying, H14 J101 Kelvin (rev 2), H15 NTC insulation note; LCSC numbers for test-point loops and headers. U301 hand-soldered (out of stock at LCSC, user decision) |
+| Not done | H8 TH305 FET thermistor, H11 J104 keying, H14 J101 Kelvin (rev 2), H15 NTC insulation note; LCSC numbers for headers (test loops are now SMD RH-S2761-46R, C55121754: README item 26). U301 hand-soldered (out of stock at LCSC, user decision) |
 
 ## Decisions that were asked (kept for the record)
 

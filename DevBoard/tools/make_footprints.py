@@ -353,3 +353,20 @@ for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
 fp.circle(-2.55, -1.4, 0.1, "F.SilkS", 0.2)
 crt(fp, -2.45, -2.45, 2.45, 2.45)
 fp.write(-3.2, 3.2)
+
+# ---------------------------------------------------------------------------
+# 11. SMT test point, Harwin S2761-46R and the JLC-stocked equivalent ronghe RH-S2761-46R (C55121754): a formed
+#     loop 1.60 x 0.80 x 1.15 mm that Harwin states "conforms to 1608 Metric (0603 Imperial) package/footprint
+#     size", soldered at both ends. Land pattern = KiCad's R_0603_1608Metric (0.8 x 0.95 pads at +/-0.825). Both
+#     pads are pin 1 and marked as jumpered (the loop joins them), so the ratsnest asks for no copper between them.
+fp = FP("TestPoint_Harwin_S2761_0603",
+        "SMT test point loop, Harwin S2761-46R / ronghe RH-S2761-46R (LCSC C55121754), 1608 metric land pattern",
+        "test point loop SMT S2761 0603")
+fp.extra.append("(duplicate_pad_numbers_are_jumpers yes)")
+fp.smd("1", -0.825, 0, 0.8, 0.95, shape="roundrect")
+fp.smd("1", 0.825, 0, 0.8, 0.95, shape="roundrect")
+fp.rect(-0.8, -0.4, 0.8, 0.4, "F.Fab", 0.1)
+fp.line(-0.237, -0.735, 0.237, -0.735, "F.SilkS")
+fp.line(-0.237, 0.735, 0.237, 0.735, "F.SilkS")
+crt(fp, -1.48, -0.73, 1.48, 0.73)
+fp.write(-1.5, 1.5)
