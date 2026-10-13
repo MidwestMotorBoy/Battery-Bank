@@ -4200,7 +4200,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell). PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell). PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5)."
 		(exclude_from_sim no)
 		(at 266.7 236.22 0)
 		(effects
@@ -4354,6 +4354,36 @@
 	(no_connect
 		(at 228.6 168.91)
 		(uuid "d493dd8f-2258-4c67-8191-bd496e781241")
+	)
+	(wire
+		(pts
+			(xy 186.69 33.02) (xy 189.23 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "652ffefd-d356-4855-ba51-d6f386211b2a")
+	)
+	(wire
+		(pts
+			(xy 176.53 33.02) (xy 179.07 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "132d72d7-5645-4017-85b0-b54f461c8619")
+	)
+	(wire
+		(pts
+			(xy 168.91 33.02) (xy 166.37 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fdc4b579-cee8-4145-9367-6ac5b2c75b55")
 	)
 	(wire
 		(pts
@@ -5024,6 +5054,16 @@
 			(type default)
 		)
 		(uuid "f2bfe47a-bb71-4009-a247-1101d8ff721d")
+	)
+	(label "CELL_P"
+		(at 166.37 33.02 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e161033f-90a1-4040-af9d-8434e39476b4")
 	)
 	(label "TS4"
 		(at 81.28 160.01999999999998 180)
@@ -11241,7 +11281,7 @@
 				)
 			)
 		)
-		(property "Notes" "Hand-fit after checking all four cells at TP102-TP105 (JLC leaves it off). 15 A for 100 W out at the 12 V low end (~10 A continuous, 75 % derating). Interrupt 300 A at 24 Vdc (pack max 16.8 V). 3.9 mOhm: 0.4 W at 10 A, give it copper"
+		(property "Notes" "Hand-fit after checking all four cells at TP102-TP105 (JLC leaves it off). 15 A for 100 W out at the 12 V low end (~10 A continuous, 75 % derating). Interrupt 300 A at 24 Vdc (pack max 16.8 V). 3.9 mOhm: 0.4 W at 10 A, give it copper. Review 2 D3: 15 A holds only if the gauge cut-off under load stays at 2.8 V/cell or higher (9.8 A at 100 W); a lower cut-off needs 1206FA-20A"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -13947,6 +13987,307 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR133")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 172.72 33.02 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a6def852-32f1-4b54-8480-00b0bfd54570")
+		(property "Reference" "C110"
+			(at 172.57 27.24 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0.1u 50V"
+			(at 172.57 29.20 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "ESD protection across the back-to-back protection FETs, CELL_P to PACK_P (TI BQ40Z50-R2 sec. 9.2.2.1.1 / fig. 9-2 C1, C2). Two in series so one shorted cap does not bypass the FETs; each is rated for the full pack voltage. Short, wide traces"
+			(at 172.72 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b8d790e9-d5d3-4b49-9078-ea6521ae6d05")
+		)
+		(pin "2"
+			(uuid "5c7275a3-0afc-47b1-9bbb-3dc2dcff1592")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "C110")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 182.88 33.02 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "1d53a194-68bb-4f30-987b-72b270044ec5")
+		(property "Reference" "C111"
+			(at 182.73 27.24 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0.1u 50V"
+			(at 182.73 29.20 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "ESD protection across the back-to-back protection FETs, CELL_P to PACK_P (TI BQ40Z50-R2 sec. 9.2.2.1.1 / fig. 9-2 C1, C2). Two in series so one shorted cap does not bypass the FETs; each is rated for the full pack voltage. Short, wide traces"
+			(at 182.88 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7cf4ecbd-be63-4f5a-b0d9-025cce79587b")
+		)
+		(pin "2"
+			(uuid "7eb060d1-b894-4610-8fbf-a27db8730cb7")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "C111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 189.23 33.02 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "291b5ae7-b7e4-417d-83f9-c5d566a05d0a")
+		(property "Reference" "#PWR134"
+			(at 189.23 30.480000000000004 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 190.50 35.57 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 189.23 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 189.23 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 189.23 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3e8a60de-d1c8-4b72-a782-e35dc85f0ae2")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR134")
 					(unit 1)
 				)
 			)

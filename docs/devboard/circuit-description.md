@@ -54,7 +54,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - **BAT supply:** from CELL_P (after the fuse, before the protection FETs) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
 - **PBI:** 2.2 µF ceramic to VSS.
 - **Sense resistor RS_GAUGE:** Yageo PA2512FKE7W0R001E, 1 mΩ 1% 2 W 2512, ±50 ppm/°C (LCSC C326570), low side between CELL_N and GND. **100 Ω** from each end of the sense resistor to SRP / SRN (Kelvin traces), **0.1 µF** across SRP–SRN at the pins.
-- **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals).
+- **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals). Two **0.1 µF 50 V** ceramics in series from CELL_P to PACK_P, across the FET pair (TI fig. 9-2 C1/C2; C110/C111, added rev A4).
 - **PCHG:** no precharge FET (the BQ25756 does precharge itself); leave PCHG unconnected or 20 kΩ to VSS, and set data flash so precharge uses the CHG FET.
 - **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
 - **TS1–TS4:** one cell thermistor each (10 kΩ 103-type NTC; internal 18 kΩ pull-up), enabled in data flash.
@@ -110,7 +110,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | PA9 / PA10 | UART debug TX / RX (USART1) |
 | PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT through a 2N7002 (Q103), 100 kΩ pull-up: **active low** |
 | PB5 | status LED |
-| PB8 | CHG_INH (rev A4) — high stops both chargers at their CE pins (1 k to each) |
+| PB8 | CHG_INH (rev A4; polarity rev A5) — drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
 | Spares | PA7 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
