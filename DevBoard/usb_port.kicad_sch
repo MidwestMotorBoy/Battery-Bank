@@ -18729,7 +18729,7 @@
 				)
 			)
 		)
-		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): MLCCs keep only ~6 uF each at 20 V, so 68 uF left 72-75 uF worst case vs the BQ25756 80 uF minimum after derating; now ~99 uF. Same 6.3 mm footprint, 7.7 mm tall. Check ESR/ripple in the maker datasheet (not listed at JLC)"
+		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): ~99 uF worst case vs the BQ25756 80 uF minimum after derating. Datasheet: ESR 48 mOhm, ripple 1.5 A rms. Worst-case bank ripple ~5 A rms (reverse mode, 10 V pack to 20 V 5 A); the four 22 uF MLCCs (~11 mOhm at 600 kHz) take ~80 %, so this cap sees ~1 A rms (~50 mW). Same 6.3 mm footprint, 7.7 mm tall"
 			(at 327.66 121.92 0)
 			(hide yes)
 			(show_name no)

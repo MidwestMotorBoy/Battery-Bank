@@ -161,7 +161,7 @@ Firmware and configuration items added by these decisions:
 
 | Item | Done |
 |---|---|
-| H2 USB-side bulk | C421/C521 → 100 µF 35 V polymer (C5246554), same 6.3 mm footprint; about 99 µF worst case |
+| H2 USB-side bulk | C421/C521 → 100 µF 35 V polymer (C5246554), same 6.3 mm footprint; about 99 µF worst case. ESR 48 mΩ, 1.5 A rms rating against about 1 A rms worst case (MLCCs carry about 80 %) |
 | H3 bootstrap diodes | LRB520S-40T1G (C132124) |
 | H4 C109 | DNP value 4.7 nF; note: fit D103 with it |
 | H6 Q103 | BSS138 (onsemi, C52895) |

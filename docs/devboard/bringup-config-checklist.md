@@ -111,5 +111,6 @@ Pin states per power state are in `mcu-io-power-states.md`.
 - [ ] The 3V3 rail survives an attach while the TPS62177 is in sleep mode (15 mA limit).
 - [ ] Capture J402 (I2Cc): does the bundle rewrite ICHG_REG on every attach?
 - [ ] Bootstrap diodes D404/D405 and the protection FETs (about 1 W each at 100 W): measure their temperature.
+- [ ] Holder contact resistance (accepted risk, 100 mΩ maximum per holder; review 1 #4): measure each holder. Holder mode stays at about 2 A (ICHG_REG, PDOs, OCD1 2–3 A). Run high-current tests and gauge learning on the welded pack via J101.
 - [ ] Sleep current: R_MEAS for the 3V3 branch, the gauge's current reading for the pack. Budget about 150 µA.
 - [ ] BLE range with the module at the board edge (antenna keep-out `ANT_KEEPOUT` on all copper layers).

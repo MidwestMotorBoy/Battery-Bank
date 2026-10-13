@@ -28,7 +28,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | #1 U203 EN tied to PACK_P | **Fixed**: EN floats (internal pull-up). |
 | #2 Charge ceiling | **Fixed**: R413/R513 = 9.1k 1 % → 5.5 A per port (revised from 17.8k / 2.8 A so one port can charge at about 1C). Both-port sum, watchdog behaviour and gauge OCC1 are configuration/firmware items (firmware item 14). |
 | #3 Discharge-side overload | **F101 raised to 15 A** (1206FA-15A) so 100 W out at the 12 V low end (about 10 A) is within rating. Total-output sharing, gauge OLD and OCD1 are configuration/firmware items (firmware items 3 and 4). |
-| #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. |
+| #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. **Accepted** 2026-10-13: MYOUNG BH-21700-B1BJ001 (C20606791) stays for rev 1 despite its 100 mΩ maximum; high-current tests and learning cycles run on the welded pack (J101). |
 | #5 U101 exposed pad | **Fixed**: TI RSM0032A footprint (1.4 mm pad). |
 | #6 D± ESD vs GPIO4/5 | **Fixed**: D403/D503 → PESD5V0S2BT. No OVP switch for a D±-to-20 V short. |
 | #7 Open or reversed cell | **Fixed in hardware**: R101–R104 1206, J101 DNP. F101 was DNP (hand-fit after checking the cells) until rev A5; now JLC-placed, and the check comes before waking the gauge (protection FETs off until FET_EN), see README item 25. Firmware gating and VIMR/VIMA are configuration items. |

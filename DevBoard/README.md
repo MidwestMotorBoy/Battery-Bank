@@ -123,7 +123,7 @@ Found while checking against datasheets:
 
 24. **Review 2 follow-ups (rev A5, 2026-10-13).**
     - **BAT fed from the cell top, as TI fig. 9-12 (D1 on 4P):** D101 anode moved from CELL_P (after F101) to CELL_P_RAW, the VC4 Kelvin node. The gauge stays powered and logging if F101 opens or before it is fitted. Consequence: a meter across the F101 pads no longer sees the gauge's own supply current.
-    - **USB-side bulk C421/C521: 68 µF → 100 µF 35 V polymer** (Honor Elec HV1V107M0607PZ, C5246554). Same 6.3 mm footprint, 7.7 mm tall. About 99 µF worst case against the BQ25756's 80 µF minimum after derating (was 72–75 µF). JLC lists no ESR/ripple for it: check the maker datasheet; the MLCCs carry the switching ripple.
+    - **USB-side bulk C421/C521: 68 µF → 100 µF 35 V polymer** (Honor Elec HV1V107M0607PZ, C5246554). Same 6.3 mm footprint, 7.7 mm tall. About 99 µF worst case against the BQ25756's 80 µF minimum after derating (was 72–75 µF). Datasheet: ESR 48 mΩ, ripple 1.5 A rms. Worst-case bank ripple is about 5 A rms (reverse mode, 10 V pack boosted to 20 V at 5 A); the four 22 µF MLCCs (about 11 mΩ at 600 kHz) take about 80 %, so the polymer sees about 1 A rms (about 50 mW).
     - **Bootstrap diodes → LRB520S-40T1G** (C132124, same SOD-523): 9–20× lower reverse leakage.
     - **Q103 → BSS138** (onsemi, C52895): Vgs(th) max 1.5 V against about 2.6 V guaranteed BTP_INT drive.
     - **C109 (DNP) → 4.7 nF:** 0.1 µF would slow Q102's short-circuit turn-off past its SOA. Its note says to fit D103 whenever C109 is fitted.
