@@ -43,7 +43,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
 - **Fuse** in series with CELL_P: prosemi 1206FA-15A (C2838894), 15 A, 300 A interrupt at 24 Vdc, sized for 100 W out at the 12 V low end (rev A4; was 8 A for holder use). DNP, hand-fitted after the cells are checked.
 - **Kelvin cell taps:** CELL1–CELL3 and the stack ends for the gauge are taken from the cell end of each holder contact (separate small traces), not from the power traces, so spring resistance isn't measured as cell resistance.
-- **Cell thermistor:** 10 kΩ NTC (103AT type) on two wires to the gauge's TS1 input, taped to a cell at mid-height.
+- **Cell thermistors (rev A4: one per cell):** 10 kΩ NTC (103AT type) on two wires to each of the gauge's TS1–TS4 inputs (J102, J105, J106, J107), taped to BT101–BT104 at mid-height over the sleeve. Each can is that cell's negative terminal (up to about 12.6 V above VSS on BT104) and the TS pins are rated 2.1 V, so use insulated sensors.
 
 ## 2. Gauge and protection (BQ40Z50-R2, same as production)
 
@@ -57,7 +57,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals).
 - **PCHG:** no precharge FET (the BQ25756 does precharge itself); leave PCHG unconnected or 20 kΩ to VSS, and set data flash so precharge uses the CHG FET.
 - **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
-- **TS1:** cell thermistor (10 kΩ 103-type NTC; internal 18 kΩ pull-up). **TS2–TS4:** tie to VSS and disable in data flash.
+- **TS1–TS4:** one cell thermistor each (10 kΩ 103-type NTC; internal 18 kΩ pull-up), enabled in data flash.
 - **PRES/SHUTDN:** to VSS (system always present). **FUSE:** to VSS. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
 - **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
 - **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
@@ -120,7 +120,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 6. Board NTCs (STM32WB)
 
 - Four 10 kΩ 1% NTCs (B ≈ 3380–3435, 0603): TH1 beside port 1 FETs/inductor, TH2 beside port 2, TH3 between the two USB-C connectors on VBUS/GND copper, TH4 on a bare copper pad where the heatsink plate would sit.
-- Each NTC from its ADC pin to GND, with a 10.0 kΩ 0.1% (Yageo RT0805BRD0710KL, C110775) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
+- Each NTC from its ADC pin to GND, with a 10 kΩ 1 % (UNI-ROYAL 0805W8F1002T5E, C17414; was 0.1 %, about 0.25 °C difference) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 
@@ -150,20 +150,20 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
   - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
   - Battery side: 3 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 136 µF effective at 16.8 V
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
-- **Resistors (Yageo RT 0.1%):**
-  - FSW_SYNC: 40.2 kΩ (C865475) → ~600 kHz
+- **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
+  - FSW_SYNC: 40.2 kΩ 1 % (C17678) → ~600 kHz
   - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG set to ~1.527 V in firmware for 16.8 V)
-  - ICHG: 9.09 kΩ 0.1 % (Yageo RT0603BRD079K09L) → ~5.5 A hardware ceiling per port (rev A4; was 5.11 kΩ / 9.8 A). One port can charge at about 1C; with both ports charging, configuration/firmware hold each at 2.8 A (ICHG_REG).
-  - ILIM_HIZ: 3.65 kΩ (C705773) → ~5.5 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
-  - TS: RT1 1.74 kΩ (C784581) REGN→TS, RT2 5.11 kΩ (C705788) TS→GND, with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
-  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** (top, from VAC), **RAC2 40.2 kΩ** (C865475), **RAC3 10.0 kΩ** (C110775, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
+  - ICHG: 9.1 kΩ 1 % (C23260) → ~5.5 A hardware ceiling per port (rev A4; was 5.11 kΩ / 9.8 A). One port can charge at about 1C; with both ports charging, configuration/firmware hold each at 2.8 A (ICHG_REG).
+  - ILIM_HIZ: 3.6 kΩ 1 % (C22980) → ~5.6 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
+  - TS: RT1 1.8 kΩ 1 % (C4177) REGN→TS, RT2 5.6 kΩ 1 % (C23189) TS→GND (rev A4; was 1.74k/5.11k), with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
+  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** 1 % 0603 (C22872; top, from VAC), **RAC2 40.2 kΩ** 1 % (C17678), **RAC3 10 kΩ** 1 % (C17414, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
     - Overvoltage stop: 1.2 V × 187.2 / 10.0 = **22.5 V** (above PD's 21 V max, below the SMAJ22A's 24.4 V breakdown)
     - Undervoltage stop: 1.1 V × 187.2 / 50.2 = **4.1 V**
     - Hardware input-voltage regulation floor (ACUV reaching 1.21 V): **4.5 V**, so a weak 5 V source or panel is never pulled into collapse; firmware can raise it further via the input DPM / MPPT settings
     - Divider draws ~107 µA only while VAC is powered (cable attached)
-    - 137 kΩ is the only new value (Yageo RT0805 0.1%; check stock, 1% is acceptable for these thresholds)
+    - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the SMAJ22A breakdown
     - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
-- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet; VAC feed and capacitor per `monolith_port1_netlist.csv`.
+- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv`.
 - STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
 
 ### 7.4 5 V supply for PP5V (TPS62933)

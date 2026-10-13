@@ -45,7 +45,9 @@ FIXED = {
     # nodes VC4..VC1, CELL_N at 2.5 mm pitch
     "R104": (112.6, 37.6, 0), "R103": (112.6, 40.1, 0), "R102": (112.6, 42.6, 0), "R101": (112.6, 45.1, 0),
     "C101": (116.0, 38.85, 90), "C102": (117.8, 41.35, 90), "C103": (116.0, 43.85, 90), "C104": (117.8, 46.35, 90),
-    "F101": (114, 96, 90), "J101": (113, 108, 0), "J102": (127, 95.5, 0), "J103": (132.5, 92.5, 0),
+    "F101": (114, 96, 90), "J101": (113, 108, 0), "J103": (132.5, 92.5, 0),
+    # cell NTC headers (TS1..TS4), each beside the tap test point of the cell it watches
+    "J102": (106.3, 20.0, 0), "J105": (106.3, 47.0, 0), "J106": (106.3, 75.0, 0), "J107": (106.3, 103.0, 0),
     # sleep-current section: R_MEAS, amplifiers, LDO, 3.3 V buck; SMAs on the bottom edge
     "R201": (150, 96, 0), "U201": (160, 95, 0), "U202": (160, 104, 0), "U203": (146, 105, 0),
     "U204": (180, 96, 0), "L201": (184.3, 96, 0), "JP201": (140, 103, 0),
@@ -111,8 +113,11 @@ PORT_LAYOUT = [
     ("at", "C444", 177.2, 46.6, 90), ("at", "C445", 179.64, 46.6, 90), ("at", "C446", 181.66, 47.5, 90),
     ("at", "C440", 186.03, 47.0, 90),
     ("row", ["R433", "R434", "C439"], 180.0, 40.8, 90, 0.05),
-    ("at", "C447", 181.5, 38.05, 0),
-    ("at", "R435", 158.5, 14.3, 0),                     # CHG_INH -> CE series resistor, above the ICHG/CE row                    # DNP feed-forward cap, right above R433 (in parallel)
+    ("at", "C447", 181.5, 38.05, 0),                    # DNP feed-forward cap, right above R433 (in parallel)
+    ("at", "R435", 158.5, 14.3, 0),                     # CHG_INH -> CE series resistor, above the ICHG/CE row
+    # bootstrap diodes (TI checklist D2/D3) beside their BTST caps, cathode toward the cap: BTST2 left of C413 under the
+    # DRV_SUP cap C411, BTST1 right of C412
+    ("at", "D405", 151.75, 26.15, 180), ("at", "D404", 164.25, 26.15, 0),
     ("at", "R432", 182.4, 43.6, 0),
     ("row", ["C441", "C442"], 186.0, 41.9, 0, 0.05),
     # probe field under the power stage: SW test points straight below their inductor pads, pull-ups under

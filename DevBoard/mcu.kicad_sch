@@ -6145,7 +6145,7 @@
 		(dnp no)
 		(uuid "1c5eaf5f-4ff8-4c71-b877-af26db451ae3")
 		(property "Reference" "R310"
-			(at 93.75 189.37 0)
+			(at 96.16 189.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6154,8 +6154,8 @@
 				)
 			)
 		)
-		(property "Value" "10.0k 0.1%"
-			(at 93.75 191.33 0)
+		(property "Value" "10k 1%"
+			(at 96.16 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6197,7 +6197,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C110775"
+		(property "LCSC" "C17414"
 			(at 101.6 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -6208,7 +6208,18 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD0710KL"
+		(property "MPN" "0805W8F1002T5E"
+			(at 101.6 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "NTC divider: 1 % costs about 0.25 C at 25 C (the NTC itself is 1 %)"
 			(at 101.6 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -7473,7 +7484,7 @@
 		(dnp no)
 		(uuid "44b432ea-fc8b-45c0-a9c7-5c0dcd97f969")
 		(property "Reference" "R309"
-			(at 68.35 189.37 0)
+			(at 70.76 189.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7482,8 +7493,8 @@
 				)
 			)
 		)
-		(property "Value" "10.0k 0.1%"
-			(at 68.35 191.33 0)
+		(property "Value" "10k 1%"
+			(at 70.76 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7525,7 +7536,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C110775"
+		(property "LCSC" "C17414"
 			(at 76.2 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -7536,7 +7547,18 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD0710KL"
+		(property "MPN" "0805W8F1002T5E"
+			(at 76.2 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "NTC divider: 1 % costs about 0.25 C at 25 C (the NTC itself is 1 %)"
 			(at 76.2 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -8586,7 +8608,7 @@
 		(dnp no)
 		(uuid "8c2e1d2c-d4a3-483c-9451-4ee54252f31e")
 		(property "Reference" "R311"
-			(at 119.15 189.37 0)
+			(at 121.56 189.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8595,8 +8617,8 @@
 				)
 			)
 		)
-		(property "Value" "10.0k 0.1%"
-			(at 119.15 191.33 0)
+		(property "Value" "10k 1%"
+			(at 121.56 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8638,7 +8660,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C110775"
+		(property "LCSC" "C17414"
 			(at 127 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -8649,7 +8671,18 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD0710KL"
+		(property "MPN" "0805W8F1002T5E"
+			(at 127 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "NTC divider: 1 % costs about 0.25 C at 25 C (the NTC itself is 1 %)"
 			(at 127 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -8922,7 +8955,7 @@
 		(dnp no)
 		(uuid "af439a28-2536-49ad-8656-78653382d51e")
 		(property "Reference" "R308"
-			(at 42.95 189.37 0)
+			(at 45.36 189.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8931,8 +8964,8 @@
 				)
 			)
 		)
-		(property "Value" "10.0k 0.1%"
-			(at 42.95 191.33 0)
+		(property "Value" "10k 1%"
+			(at 45.36 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8974,7 +9007,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C110775"
+		(property "LCSC" "C17414"
 			(at 50.8 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -8985,7 +9018,18 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD0710KL"
+		(property "MPN" "0805W8F1002T5E"
+			(at 50.8 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "NTC divider: 1 % costs about 0.25 C at 25 C (the NTC itself is 1 %)"
 			(at 50.8 190.5 0)
 			(hide yes)
 			(show_name no)

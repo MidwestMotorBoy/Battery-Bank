@@ -4200,7 +4200,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS2-TS4, PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet; disable in data flash.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell). PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB."
 		(exclude_from_sim no)
 		(at 266.7 236.22 0)
 		(effects
@@ -4272,12 +4272,6 @@
 		(uuid "fd60053a-d78e-40b1-a16e-4534406ad586")
 	)
 	(junction
-		(at 198.12 184.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1da184e0-eb12-45b7-b786-e13850386825")
-	)
-	(junction
 		(at 170.18 154.94)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4288,12 +4282,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "320976f4-cf07-4bdc-9a53-ff0e30871896")
-	)
-	(junction
-		(at 198.12 181.61)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "67420b2f-5b28-4ba8-832a-5479a7b01471")
 	)
 	(junction
 		(at 170.18 147.32)
@@ -4336,12 +4324,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d40eb65f-e7eb-494a-9a64-f15fbd94f4d5")
-	)
-	(junction
-		(at 198.12 179.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d5ddd7e8-3dd4-431d-a5ef-503968b226c8")
 	)
 	(junction
 		(at 170.18 162.56)
@@ -4635,16 +4617,6 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 179.07) (xy 198.12 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ddfddc3-6f9a-46a8-864b-fc7330c36378")
-	)
-	(wire
-		(pts
 			(xy 228.6 158.75) (xy 233.68 158.75)
 		)
 		(stroke
@@ -4755,16 +4727,6 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 176.53) (xy 198.12 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "50e275ae-4b21-430c-b07a-d0aae8389714")
-	)
-	(wire
-		(pts
 			(xy 228.6 148.59) (xy 236.22 148.59)
 		)
 		(stroke
@@ -4795,16 +4757,6 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 181.61) (xy 198.12 181.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6b7d3f0c-4391-49ce-a889-47372b76b115")
-	)
-	(wire
-		(pts
 			(xy 215.9 44.45) (xy 215.9 57.15)
 		)
 		(stroke
@@ -4812,16 +4764,6 @@
 			(type default)
 		)
 		(uuid "6d7742df-0aad-4b61-9bed-13c134ab0e5e")
-	)
-	(wire
-		(pts
-			(xy 198.12 179.07) (xy 198.12 181.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6e857ab7-e04b-4e08-8d6d-2e2de54cda19")
 	)
 	(wire
 		(pts
@@ -4915,16 +4857,6 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 181.61) (xy 198.12 184.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a542f3a6-39d6-455b-a8ac-11f2cfd27989")
-	)
-	(wire
-		(pts
 			(xy 175.26 147.32) (xy 175.26 148.59)
 		)
 		(stroke
@@ -5002,16 +4934,6 @@
 			(type default)
 		)
 		(uuid "c7d3351d-5f5d-4ae3-b943-809b7590d09c")
-	)
-	(wire
-		(pts
-			(xy 203.2 176.53) (xy 198.12 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d4f69a47-8689-4e57-a880-3a58a633540c")
 	)
 	(wire
 		(pts
@@ -5102,6 +5024,66 @@
 			(type default)
 		)
 		(uuid "f2bfe47a-bb71-4009-a247-1101d8ff721d")
+	)
+	(label "TS4"
+		(at 81.28 160.01999999999998 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "afb3e258-fe59-44b3-8c82-a8b4123cf6fc")
+	)
+	(label "TS3"
+		(at 81.28 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fd88deb6-4bfb-49b0-95db-a97bd74a4191")
+	)
+	(label "TS2"
+		(at 81.28 144.78 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f5131988-0e24-40d4-b70d-cd7dfd162293")
+	)
+	(label "TS4"
+		(at 203.2 181.61 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1372f894-9c76-4091-b436-7848f63a1d72")
+	)
+	(label "TS3"
+		(at 203.2 179.07 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3d759e2e-e5b1-41e4-bf61-1c960d3171e1")
+	)
+	(label "TS2"
+		(at 203.2 176.53 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b25a425b-901e-4dbd-b582-f4b7eded40fc")
 	)
 	(label "CELL_P"
 		(at 289.56 44.45 180)
@@ -6861,7 +6843,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 80.01 134.11 90)
+			(at 74.32 139.70 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10146,7 +10128,7 @@
 		(dnp no)
 		(uuid "b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
 		(property "Reference" "J102"
-			(at 86.36 142.75 0)
+			(at 86.36 132.14 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10155,8 +10137,8 @@
 				)
 			)
 		)
-		(property "Value" "Cell NTC 10k 103AT"
-			(at 86.36 144.72 0)
+		(property "Value" "Cell 1 NTC 10k 103AT"
+			(at 86.36 134.11 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10188,6 +10170,39 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 86.36 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 86.36 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 86.36 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (VSS above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -13365,6 +13380,573 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR116")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 86.36 144.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e3a51db9-69e0-4d8c-a39a-1e79cb9d628d")
+		(property "Reference" "J105"
+			(at 100.49 145.07 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Cell 2 NTC 10k 103AT"
+			(at 100.49 147.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT102, over its sleeve. The can is that cell's negative terminal (about 4.2 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS2 in data flash"
+			(at 86.36 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "49d98c4e-3b6b-4784-9293-0b03eaed09a7")
+		)
+		(pin "2"
+			(uuid "baf534ea-5ea6-4e12-9c0d-db9d440dff48")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GNDREF")
+		(at 81.28 147.32 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "113978c4-d12a-48b1-87f9-287a7806eb14")
+		(property "Reference" "#PWR131"
+			(at 81.28 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL_N"
+			(at 74.32 147.32 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 81.28 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 81.28 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "95091416-a9fd-4fb2-829c-68e4c97394be")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR131")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 86.36 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ea00f53a-bc22-4075-8cf5-dc9760e31611")
+		(property "Reference" "J106"
+			(at 100.49 152.69 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Cell 3 NTC 10k 103AT"
+			(at 100.49 154.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT103, over its sleeve. The can is that cell's negative terminal (about 8.4 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS3 in data flash"
+			(at 86.36 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9dd05dcd-f6af-4a07-ba54-7bc5b18c0e60")
+		)
+		(pin "2"
+			(uuid "7c5ebce1-24b9-4fed-8c2a-5f2e16638d7a")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GNDREF")
+		(at 81.28 154.94 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "c9bd1f74-6a51-495c-945c-88edcd5d91ab")
+		(property "Reference" "#PWR132"
+			(at 81.28 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL_N"
+			(at 74.32 154.94 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 81.28 154.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 154.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 81.28 154.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "654aab37-2f13-4a62-a81c-602fb3f9fb14")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR132")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 86.36 160.01999999999998 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "18c15035-c6f3-419e-bc2a-c83df9c4b16a")
+		(property "Reference" "J107"
+			(at 86.36 165.61 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Cell 4 NTC 10k 103AT"
+			(at 86.36 167.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash"
+			(at 86.36 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d2d874f1-0cb3-4014-8dbe-ff5638e86d90")
+		)
+		(pin "2"
+			(uuid "75fe5704-480e-4d04-9301-7107eb22a4b5")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J107")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GNDREF")
+		(at 81.28 162.55999999999997 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "e8faaba9-82c1-4cf1-84ff-c195ce6f00c8")
+		(property "Reference" "#PWR133"
+			(at 81.28 160.01999999999998 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL_N"
+			(at 74.32 162.56 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 81.28 162.55999999999997 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 162.55999999999997 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 81.28 162.55999999999997 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8aa6cce7-8cd0-41ec-929f-8fd1b0eccbfb")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR133")
 					(unit 1)
 				)
 			)

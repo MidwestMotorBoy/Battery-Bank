@@ -178,6 +178,10 @@ D1,VBUS TVS,TVS2200 or equivalent,1,,VBUS1,confirmed from TI datasheet
 D1,VBUS TVS,TVS2200 or equivalent,2,,GND,confirmed from TI datasheet
 D2,CC/D+/D- ESD array,"4-channel, 24V-tolerant on CC",IO,,"P1_CC1, P1_CC2, P1_DP, P1_DN",to be selected
 D2,CC/D+/D- ESD array,"4-channel, 24V-tolerant on CC",GND,,GND,to be selected
+D3,Bootstrap diode,Schottky 40V,A,,REGN,TI BQ25756 schematic checklist: required (added 2026-10-12)
+D3,Bootstrap diode,Schottky 40V,K,,BTST1,TI BQ25756 schematic checklist: required (added 2026-10-12)
+D4,Bootstrap diode,Schottky 40V,A,,REGN,TI BQ25756 schematic checklist: required (added 2026-10-12)
+D4,Bootstrap diode,Schottky 40V,K,,BTST2,TI BQ25756 schematic checklist: required (added 2026-10-12)
 J1,Amphenol 12402082E512A,Port 1 USB-C,VBUS,A4/A9/B4/B9,VBUS1,"assumed, verify"
 J1,Amphenol 12402082E512A,Port 1 USB-C,GND,A1/A12/B1/B12/shell,GND,"assumed, verify"
 J1,Amphenol 12402082E512A,Port 1 USB-C,CC1,A5,P1_CC1,"assumed, verify"

@@ -4861,6 +4861,172 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:D_Schottky"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Schottky"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Schottky diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode Schottky"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "D_Schottky_0_1"
+				(polyline
+					(pts
+						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "D_Schottky_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.00 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
@@ -5316,6 +5482,26 @@
 	(no_connect
 		(at 393.7 223.52)
 		(uuid "adab6642-ec34-4123-97da-5d0ccbadda59")
+	)
+	(wire
+		(pts
+			(xy 406.4 190.5) (xy 410.21 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f466a8f8-9450-4cea-ba4c-cb35e1625114")
+	)
+	(wire
+		(pts
+			(xy 406.4 177.8) (xy 410.21 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2aeb63b6-7b7e-4b1c-92d1-0252b6e64fc0")
 	)
 	(wire
 		(pts
@@ -7066,6 +7252,36 @@
 			(type default)
 		)
 		(uuid "ffc3c3cf-8e57-4acb-8fe6-f26e1674e3a8")
+	)
+	(label "DRV_SUP"
+		(at 412.75 220.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "befd5157-a508-43ea-b50e-3e1f06719920")
+	)
+	(label "DRV_SUP"
+		(at 417.83 190.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7548d1e1-186e-4d2d-bb8e-9caed7912718")
+	)
+	(label "DRV_SUP"
+		(at 417.83 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4b4ca569-832f-4470-b1df-fefd5601e4af")
 	)
 	(label "EN_5V"
 		(at 76.2 217.17 90)
@@ -12285,7 +12501,7 @@
 		(dnp no)
 		(uuid "34fd2089-16c0-4235-9cfb-d2701eca0edf")
 		(property "Reference" "R512"
-			(at 335.05 235.09 0)
+			(at 336.26 235.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12294,8 +12510,8 @@
 				)
 			)
 		)
-		(property "Value" "40.2k 0.1%"
-			(at 335.05 237.05 0)
+		(property "Value" "40.2k 1%"
+			(at 336.26 237.05 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12337,7 +12553,7 @@
 				)
 			)
 		)
-		(property "Notes" "600 kHz"
+		(property "Notes" "FSW ~600 kHz; the oscillator is +/-15 %, so 1 % is plenty"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -12348,7 +12564,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C865475"
+		(property "LCSC" "C17678"
+			(at 342.9 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0805W8F4022T5E"
 			(at 342.9 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -13257,7 +13484,7 @@
 		(dnp no)
 		(uuid "4c429940-8e56-4309-ab85-395a9d541d87")
 		(property "Reference" "R516"
-			(at 396.01 243.98 0)
+			(at 397.82 243.98 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13266,8 +13493,8 @@
 				)
 			)
 		)
-		(property "Value" "5.11k 0.1%"
-			(at 396.01 245.94 0)
+		(property "Value" "5.6k 1%"
+			(at 397.82 245.94 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13309,7 +13536,7 @@
 				)
 			)
 		)
-		(property "Notes" "RT2"
+		(property "Notes" "TS RT2 (TS to GND), see R415"
 			(at 86.36 -3.81 0)
 			(hide yes)
 			(show_name no)
@@ -13320,7 +13547,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C705788"
+		(property "LCSC" "C23189"
+			(at 403.86 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF5601T5E"
 			(at 403.86 245.11 0)
 			(hide yes)
 			(show_name no)
@@ -14650,7 +14888,7 @@
 		(dnp no)
 		(uuid "67bb62db-555e-48f3-be95-5cadb1c2f29b")
 		(property "Reference" "R514"
-			(at 371.07 235.09 0)
+			(at 369.26 235.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14659,8 +14897,8 @@
 				)
 			)
 		)
-		(property "Value" "3.65k 0.1%"
-			(at 371.07 237.05 0)
+		(property "Value" "3.6k 1%"
+			(at 369.26 237.05 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14702,7 +14940,7 @@
 				)
 			)
 		)
-		(property "Notes" "ILIM 5.5 A"
+		(property "Notes" "ILIM_HIZ hardware input ceiling 50 x 2/5 / 3.6 = 5.6 A (5.3-5.8 A): above the 5 A PD maximum, below the cable rating plus margin"
 			(at 5.08 0 0)
 			(hide yes)
 			(show_name no)
@@ -14713,7 +14951,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C705773"
+		(property "LCSC" "C22980"
+			(at 363.22 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF3601T5E"
 			(at 363.22 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -14917,7 +15166,7 @@
 		(dnp no)
 		(uuid "690b4961-51e4-44f4-ae69-de47328347ab")
 		(property "Reference" "R510"
-			(at 342.67 191.91 0)
+			(at 343.88 191.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14926,8 +15175,8 @@
 				)
 			)
 		)
-		(property "Value" "40.2k 0.1%"
-			(at 342.67 193.87 0)
+		(property "Value" "40.2k 1%"
+			(at 343.88 193.87 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14969,7 +15218,7 @@
 				)
 			)
 		)
-		(property "Notes" "RAC2"
+		(property "Notes" "ACUV/ACOV divider middle"
 			(at 0 -1.27 0)
 			(hide yes)
 			(show_name no)
@@ -14980,7 +15229,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C865475"
+		(property "LCSC" "C17678"
+			(at 350.52 191.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0805W8F4022T5E"
 			(at 350.52 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -15195,7 +15455,7 @@
 			)
 		)
 		(property "Value" "3V3"
-			(at 336.11 196.85 0)
+			(at 332.74 192.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15626,7 +15886,7 @@
 		(dnp no)
 		(uuid "77c6872c-7f4a-45a9-8c0f-6ad4b6f15732")
 		(property "Reference" "R511"
-			(at 342.67 200.80 0)
+			(at 345.08 200.80 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15635,8 +15895,8 @@
 				)
 			)
 		)
-		(property "Value" "10.0k 0.1%"
-			(at 342.67 202.76 0)
+		(property "Value" "10k 1%"
+			(at 345.08 202.76 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15678,7 +15938,7 @@
 				)
 			)
 		)
-		(property "Notes" "RAC3"
+		(property "Notes" "ACUV/ACOV divider bottom"
 			(at 0 -1.27 0)
 			(hide yes)
 			(show_name no)
@@ -15689,7 +15949,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C110775"
+		(property "LCSC" "C17414"
+			(at 350.52 201.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0805W8F1002T5E"
 			(at 350.52 201.93 0)
 			(hide yes)
 			(show_name no)
@@ -17592,7 +17863,7 @@
 				)
 			)
 		)
-		(property "Value" "9.09k 0.1%"
+		(property "Value" "9.1k 1%"
 			(at 353.06 246.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17635,7 +17906,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/9.09 = 5.5 A per port (5.3-5.7 A): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
+		(property "Notes" "ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 2.54 0 0)
 			(hide yes)
 			(show_name no)
@@ -17646,7 +17917,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C23260"
 			(at 353.06 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -17657,7 +17928,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0603BRD079K09L"
+		(property "MPN" "0603WAF9101T5E"
 			(at 353.06 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -18464,7 +18735,7 @@
 		(dnp no)
 		(uuid "b1ac2dca-b0b5-486f-b28b-39c10d7acb05")
 		(property "Reference" "R523"
-			(at 332.74 190.41 0)
+			(at 336.97 199.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18474,7 +18745,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 332.74 192.38 0)
+			(at 336.97 201.49 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20692,7 +20963,7 @@
 		(dnp no)
 		(uuid "d28f2a22-2466-49a4-9a2e-fef9e93e9ceb")
 		(property "Reference" "R515"
-			(at 396.09 235.26 90)
+			(at 397.36 236.53 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20701,8 +20972,8 @@
 				)
 			)
 		)
-		(property "Value" "1.74k 0.1%"
-			(at 396.09 237.23 90)
+		(property "Value" "1.8k 1%"
+			(at 397.36 238.50 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20744,7 +21015,7 @@
 				)
 			)
 		)
-		(property "Notes" "RT1"
+		(property "Notes" "TS RT1 (REGN to TS). With R416 5.6k and the 10k B3435 FET NTC: hot 94.5 C, warm 74 C, cool 18.8 C, cold -7 C; open NTC reads 75.7 % of REGN (above VT1_RISE max 73.85 %, caught as cold in charge mode)"
 			(at 78.74 7.62 0)
 			(hide yes)
 			(show_name no)
@@ -20755,7 +21026,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C784581"
+		(property "LCSC" "C4177"
+			(at 396.24 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1801T5E"
 			(at 396.24 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -22753,7 +23035,7 @@
 		(dnp no)
 		(uuid "f62c7c85-a18a-4c40-b624-2a99781dbff3")
 		(property "Reference" "R509"
-			(at 350.52 176.44 0)
+			(at 356.56 183.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22762,8 +23044,8 @@
 				)
 			)
 		)
-		(property "Value" "137k 0.1%"
-			(at 350.52 178.41 0)
+		(property "Value" "137k 1%"
+			(at 356.56 184.98 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22772,7 +23054,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 348.742 184.15 90)
 			(hide yes)
 			(show_name no)
@@ -22805,8 +23087,30 @@
 				)
 			)
 		)
-		(property "Notes" "RAC1"
+		(property "Notes" "ACUV/ACOV divider top: OV stop 1.2 x 187.2/10 = 22.5 V, UV stop 4.1 V. 1 % moves them by about +/-1.5 %"
 			(at 0 1.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22872"
+			(at 350.52 184.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1373T5E"
+			(at 350.52 184.15 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23686,6 +23990,250 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "15106ccf-9f18-4ebe-9f59-d4eebbde2545")
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 414.02 177.8 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f50433c8-263f-4054-89cf-683748d71a71")
+		(property "Reference" "D504"
+			(at 415.14 180.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LRB521S-40"
+			(at 415.14 182.82 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C135802"
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "LRB521S-40T1G (LRC)"
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Bootstrap diode DRV_SUP -> BTST1 (Q401 high side). TI BQ25756 schematic checklist: D2/D3 \"BTST1/BTST2 diode-OR\", required, Schottky to minimize reverse-recovery loss. 40 V blocks VAC/VBAT plus switch-node ringing; 200 mA vs ~10-20 mA average"
+			(at 414.02 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bd662fce-7fb7-4abe-bcd3-75b121012541")
+		)
+		(pin "2"
+			(uuid "6af35348-d2b6-4d5b-b4ec-e5a314611ac9")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D504")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D404")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 414.02 190.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8c7bc995-469f-4ba5-8640-c1823b04bde3")
+		(property "Reference" "D505"
+			(at 413.87 185.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LRB521S-40"
+			(at 413.87 187.45 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C135802"
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "LRB521S-40T1G (LRC)"
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Bootstrap diode DRV_SUP -> BTST2 (Q402 high side). TI BQ25756 schematic checklist: D2/D3 \"BTST1/BTST2 diode-OR\", required, Schottky to minimize reverse-recovery loss. 40 V blocks VAC/VBAT plus switch-node ringing; 200 mA vs ~10-20 mA average"
+			(at 414.02 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1b241e6b-f487-4690-bfa9-221bd80afec6")
+		)
+		(pin "2"
+			(uuid "8e07a06d-7a7f-4f10-a0f8-95a5aab16572")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D505")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 406.4 177.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d229b8f5-269d-430e-b02c-a5654425e897")
+	)
+	(junction
+		(at 406.4 190.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d51c63ac-79d8-4da2-85c4-b75bac8913d6")
 	)
 	(sheet_instances
 		(path "/"
