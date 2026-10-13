@@ -3842,7 +3842,7 @@
 		)
 		(uuid "23fa7b93-d8b8-49ee-b71d-b7c4a8f96721")
 	)
-	(text "NOTES\n1. U301 at a board edge, as on ST's reference PCB (DS14096 fig. 6): copper-free notch past the antenna end.\n2. C301-C303 at the VDD pads; C304 at NRST.\n3. PB0/PB1/PB2 left unconnected (ST: RF-sensitive pins). NTC_EN = PA8, EN_5V1 = PA11, EN_5V2 = PA12.\n4. R303 0R joins ANT_IN/ANT_OUT for the internal antenna (ST fig. 2).\n5. Pin map checked against DS13258 table 15: NTC ADC1_IN6/8/9/10, IRQs on WKUP1/WKUP4, I2C1, USART1.\n   PB4 = 3V3_SLEEP: PB4 resets as NJTRST with pull-up, so the 3V3 rail boots in normal mode;\n   firmware makes PB4 a GPIO output before using sleep mode. PB5 = LED, PA6 = GAUGE_BTP.\n6. R307 removes the LED for sleep-current measurements.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. SW301 resets the MCU. TP306 is BOOT0: hold it at 3V3 while releasing reset for the UART bootloader.\n9. R313 (DNP) holds 3V3_SLEEP high (normal mode) while the MCU is off. TP307 probes it.\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work while 3V3 is down.\n11. R316-R319: J303 can override NTC_EN/EN_5V1/EN_5V2/CHG_INH without shorting the MCU outputs.\n12. PB8 = CHG_INH (rev A5): drive LOW to allow charging. High or hi-Z stops both chargers (R417/R517 pull CE up to 3V3),\n    so reset/hang/unprogrammed stops charging. Low only while charging (69 uA per port), high in idle. No Standby.\n13. Watchdog: IWDG in hardware mode (option byte IWDG_SW = 0) restarts a hung MCU; it runs from LSI, also in Stop/Standby."
+	(text "NOTES\n1. U301 at a board edge, as on ST's reference PCB (DS14096 fig. 6): copper-free notch past the antenna end.\n2. C301-C303 at the VDD pads; C304 at NRST.\n3. PB0/PB1/PB2 left unconnected (ST: RF-sensitive pins). NTC_EN = PA8, EN_5V1 = PA11, EN_5V2 = PA12.\n4. R303 0R joins ANT_IN/ANT_OUT for the internal antenna (ST fig. 2).\n5. Pin map checked against DS13258 table 15: NTC ADC1_IN6/8/9/10 (+ IN2 on PA7 for TH305), IRQs on WKUP1/WKUP4, I2C1, USART1.\n   PB4 = 3V3_SLEEP: PB4 resets as NJTRST with pull-up, so the 3V3 rail boots in normal mode;\n   firmware makes PB4 a GPIO output before using sleep mode. PB5 = LED, PA6 = GAUGE_BTP.\n6. R307 removes the LED for sleep-current measurements.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. SW301 resets the MCU. TP306 is BOOT0: hold it at 3V3 while releasing reset for the UART bootloader.\n9. R313 (DNP) holds 3V3_SLEEP high (normal mode) while the MCU is off. TP307 probes it.\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work while 3V3 is down.\n11. R316-R319: J303 can override NTC_EN/EN_5V1/EN_5V2/CHG_INH without shorting the MCU outputs.\n12. PB8 = CHG_INH (rev A5): drive LOW to allow charging. High or hi-Z stops both chargers (R417/R517 pull CE up to 3V3),\n    so reset/hang/unprogrammed stops charging. Low only while charging (69 uA per port), high in idle. No Standby.\n13. Watchdog: IWDG in hardware mode (option byte IWDG_SW = 0) restarts a hung MCU; it runs from LSI, also in Stop/Standby."
 		(exclude_from_sim no)
 		(at 287.02 215.9 0)
 		(effects
@@ -3912,6 +3912,12 @@
 			(justify left bottom)
 		)
 		(uuid "f4161b2d-54d8-4f03-a90f-348b8c37e009")
+	)
+	(junction
+		(at 152.4 198.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5acf64a1-3711-4222-8738-46abb18de231")
 	)
 	(junction
 		(at 149.86 101.6)
@@ -4038,6 +4044,36 @@
 	(no_connect
 		(at 204.47 149.86)
 		(uuid "d8c2d7fb-e1b4-4311-8fa7-466b0855323e")
+	)
+	(wire
+		(pts
+			(xy 152.4 198.12) (xy 160.02 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2b798b3-d69a-4d86-b0d3-2b0a72ce67de")
+	)
+	(wire
+		(pts
+			(xy 152.4 198.12) (xy 152.4 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1970c9e6-af1e-49ab-a370-de3e75af2522")
+	)
+	(wire
+		(pts
+			(xy 152.4 194.31) (xy 152.4 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36837de5-c263-4cb5-b7a7-404d80ecf409")
 	)
 	(wire
 		(pts
@@ -4789,6 +4825,26 @@
 		)
 		(uuid "fe291510-1e18-46ea-9bb7-95d57cbc58e6")
 	)
+	(label "NTC_TH5"
+		(at 160.02 198.12 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d4c07e97-a0b3-46e2-8ef3-66d0e573fda2")
+	)
+	(label "NTC_EN"
+		(at 152.4 186.69 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d513f895-a5dd-44b6-9e6f-09818caba127")
+	)
 	(label "J303_CHG_INH"
 		(at 133.35 63.5 0)
 		(effects
@@ -5109,7 +5165,7 @@
 		)
 		(uuid "808f9bb8-99af-4048-9cfe-bb70b9408e88")
 	)
-	(label "PA7"
+	(label "NTC_TH5"
 		(at 204.47 132.08 0)
 		(effects
 			(font
@@ -5119,7 +5175,7 @@
 		)
 		(uuid "8a3882b2-696a-4ce7-8c7c-6a21cb2c13c8")
 	)
-	(label "PA7"
+	(label "NTC_TH5"
 		(at 299.72 160.02 180)
 		(effects
 			(font
@@ -6550,6 +6606,118 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
 					(reference "TH304")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Thermistor_NTC")
+		(at 152.4 205.74 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "18c0f19a-f616-471e-85f9-65c662267f92")
+		(property "Reference" "TH305"
+			(at 143.00 204.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k B3435"
+			(at 143.00 206.59 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 152.4 207.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 207.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 152.4 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "TH5 at the protection FETs Q101/Q102 (about 1 W each at 100 W; review 2 A-7). Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K; use Murata's R-T table. DNP if not wanted"
+			(at 25.4 0.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C13564"
+			(at 152.4 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "NCP18XH103F03RB"
+			(at 152.4 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "19f80961-eb26-47af-ad10-e588d281572f")
+		)
+		(pin "2"
+			(uuid "ab11e2da-1596-46b9-9c68-4668b64c42cc")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "TH305")
 					(unit 1)
 				)
 			)
@@ -8382,7 +8550,7 @@
 		(dnp no)
 		(uuid "577dae90-0268-4475-a9a7-c1d64c5486d8")
 		(property "Reference" "C311"
-			(at 142.28 200.80 0)
+			(at 142.28 199.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8392,7 +8560,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 142.28 202.76 0)
+			(at 142.28 201.49 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8466,6 +8634,107 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
 					(reference "C311")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 160.02 201.93 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "fe03a6d9-8a59-4bf0-837e-1faa356548a1")
+		(property "Reference" "C312"
+			(at 167.68 200.80 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0.1u 50V"
+			(at 167.68 202.76 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 160.985 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 160.02 201.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 160.02 201.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 160.02 201.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 160.02 201.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a0439002-ce96-42df-88f0-1906bb2ce882")
+		)
+		(pin "2"
+			(uuid "43be68d0-a5ee-4124-92ac-b5180752a4fa")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "C312")
 					(unit 1)
 				)
 			)
@@ -8868,6 +9137,118 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
 					(reference "R311")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 152.4 190.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ad7390d2-5436-4ab2-8a22-39d42d3f57b1")
+		(property "Reference" "R320"
+			(at 146.96 189.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k 1%"
+			(at 146.96 191.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 150.622 190.5 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 152.4 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17414"
+			(at 152.4 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0805W8F1002T5E"
+			(at 152.4 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "TH5 divider top (from NTC_EN), same as R308-R311"
+			(at 152.4 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dc0d885b-00e6-48ae-9728-ab6ccce56f77")
+		)
+		(pin "2"
+			(uuid "0c608621-dce3-4856-8f1b-f507e3a311d0")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "R320")
 					(unit 1)
 				)
 			)
@@ -12819,6 +13200,160 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
 					(reference "#PWR326")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 152.4 209.55 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "6ff6e0aa-00b2-4487-ac52-65585cc87d6a")
+		(property "Reference" "#PWR327"
+			(at 152.4 207.01000000000002 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 152.40 213.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 209.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 209.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 152.4 209.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b357ddc1-c102-4a03-bb15-73efb1a158f9")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "#PWR327")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 160.02 205.74 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "81fa07e8-cc87-4ad4-986c-690b32b779b5")
+		(property "Reference" "#PWR328"
+			(at 160.02 203.20000000000002 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 160.02 210.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 160.02 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 160.02 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 160.02 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2fac0534-b761-4ad2-b08a-f7ce99a761bf")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "#PWR328")
 					(unit 1)
 				)
 			)

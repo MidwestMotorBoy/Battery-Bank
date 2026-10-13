@@ -30,16 +30,16 @@ Stop2 keeps GPIO output states, and EXTI wakes it.
 |---|---|---|---|---|---|---|---|
 | PB8 | CHG_INH | Two CE pull-ups, 47k + 1k each to 3V3 (R417/R435, R517/R535) | **Low** (2 × 69 µA = 138 µA) | High | **High** (0 µA) | High via the pull-ups → charging inhibited | **138 µA** if left low |
 | PA11 / PA12 | EN_5V1 / EN_5V2 | 100k pull-down (R432/R532) → TPS62933 EN | Low unless that port needs VCONN | High for a port sourcing 5 V or needing VCONN (33 µA + TPS62933 Iq) | **Low** | Low → PP5V off: a 5 V-sourced device sees VBUS drop during a reset | 33 µA + Iq per port |
-| PA8 | NTC_EN | 4 × (10k + NTC) to GND | High only while sampling (~1 ms) | Same | **Low** | Hi-Z → 0 µA | ~660 µA at 25 °C |
+| PA8 | NTC_EN | 5 × (10k + NTC) to GND (TH301–TH305) | High only while sampling (~1 ms) | Same | **Low** | Hi-Z → 0 µA | ~825 µA at 25 °C |
 | PB4 | 3V3_SLEEP | TPS62177 SLEEP (1.4 µA internal pull-down); R313 DNP | High | High | **Low** (sleep mode, 4.8 µA Iq) | High (NJTRST pull-up) → normal mode | 17 µA more Iq if left high |
 | PB5 | LED_DRV | 1k + LED (R307 removes it) | Optional | Optional | **Low** | Hi-Z (C-14: may glow faintly) | ~0.5 mA |
 | PA6 | GAUGE_BTP | 100k pull-up (R114); Q103 pulls it low when the gauge asserts BTP | Input, EXTI falling, internal pulls **off** | Same | Same (Stop2 EXTI wake; not WKUP) | — | 33 µA while BTP is asserted: re-arm or clear BTP after handling it |
 | PA0 / PA2 | IRQ1 / IRQ2 | 100k pull-ups (R314/R315), TPS25751 open drain | Input, EXTI falling, internal pulls **off** | Same | Same (EXTI, also WKUP1/WKUP4) | — | 33 µA per pending IRQ: clear TPS25751 events promptly. An internal pull-up left on adds about 80 µA while asserted |
 | PB6 / PB7 | SCL / SDA | 4.7k pull-ups to 3V3 via R312; gauge internal 1 MΩ pull-downs | I2C1 AF open-drain | Same | Bus idle high; never enter Stop2 mid-transfer | Hi-Z, pulled high | 6.6 µA (gauge pull-downs, unavoidable) |
-| PA1 / PA3 / PA4 / PA5 | NTC_TH1–TH4 | NTC dividers | Analog | Analog | Analog | Analog | — |
+| PA1 / PA3 / PA4 / PA5 / PA7 | NTC_TH1–TH5 | NTC dividers (TH5 = protection FETs, also on J303 pin 2) | Analog | Analog | Analog | Analog | — |
 | PA9 / PA10 | UART TX / RX (J302) | Header only | USART | USART | USART idle (TX high), or analog when no adapter | Hi-Z | An unpowered USB-UART adapter is fed through TX |
 | PA13 / PA14 | SWDIO / SWCLK | J301 | SWD | SWD | SWD (an attached debugger raises sleep current: unplug it to measure) | SWD pulls | — |
-| PA7, PB0–PB2, other unused | — | None (PA7 on J303) | Analog | Analog | Analog | Analog | Leakage if left as floating inputs |
+| PB0–PB2, other unused | — | None | Analog | Analog | Analog | Analog | Leakage if left as floating inputs |
 
 **MCU pin loads in S2 with this plan: about 7 µA**, almost all of it the gauge's SMBus pull-downs. The rest of the 150 µA budget goes to the gauge, the chargers, the two TPS25751s and BLE.
 

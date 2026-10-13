@@ -178,6 +178,8 @@ LAYOUT = [
     # bring-up aids: reset button between the SWD and UART headers; J303 series resistors under pins 3-5;
     # BOOT0 pad under the MCU
     ("at", "SW301", 128.0, 11.2, 0),
+    # TH5 divider (R320 from NTC_EN, C312 at the ADC node) under J303, left of the override resistors
+    ("at", "R320", 168.0, 10.6, 90), ("at", "C312", 170.2, 10.6, 90),
     ("at", "R316", 173.08, 10.6, 90), ("at", "R317", 175.62, 10.6, 90), ("at", "R318", 178.16, 10.6, 90),
     ("at", "R319", 180.7, 10.6, 90),
     ("at", "TP306", 147.6, 13.2, 0),
@@ -185,6 +187,8 @@ LAYOUT = [
     # TH4 in the probe row under port 1's stage (heatsink position)
     ("at", "TH301", 142.0, 34.4, 0), ("at", "TH302", 142.0, 34.4 + PORT_DY, 0),
     ("at", "TH303", 192.5, 50.1, 0), ("at", "TH304", 158.6, 45.35, 0),
+    # TH5 between the protection FETs Q101/Q102, right of C111 (both drains within about 4 mm)
+    ("at", "TH305", 133.6, 27.79, 90),
     # sleep-current section: Kelvin 0R taps above R_MEAS, amp decoupling left of each amp, input filter and
     # output resistors right, LDO caps either side, 3.3 V buck caps along its flow
     ("at", "R202", 148.4, 92.9, 90), ("at", "R203", 151.6, 92.9, 90),

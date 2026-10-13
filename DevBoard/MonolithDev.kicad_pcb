@@ -4209,6 +4209,180 @@
 			)
 		)
 	)
+	(footprint "Capacitor_SMD:C_0603_1608Metric"
+		(layer "F.Cu")
+		(uuid "0fdba2e1-8ffb-4e20-857c-6de4cb7cb440")
+		(at 220.2 60.6 -90)
+		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "capacitor")
+		(property "Reference" "C312"
+			(at 0 -1.43 270)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "b6986a32-07f1-44f6-a94e-98c414e635a8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "0.1u 50V"
+			(at 0 1.43 270)
+			(layer "F.Fab")
+			(uuid "fb115706-3f73-456a-b69e-701064032394")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3edd7cc4-6cd8-42e4-bd18-faabac5c1285")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0ac36af1-7a47-4e94-9d91-83f4f519ea23")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 270)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "3806075b-b559-4ce9-8d8c-c04bb085f80b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 260 60 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a6a9487b-9868-44e5-a7d3-ae544b8774e8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 260 60 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ac8708e5-e03f-4f5d-82aa-f1968ac3883a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/fe03a6d9-8a59-4bf0-837e-1faa356548a1")
+		(sheetname "MCU and NTCs")
+		(sheetfile "mcu.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.14058 0.51)
+			(end 0.14058 0.51)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "b0f6f3fa-c203-47b4-8944-6c04f20a25a0")
+		)
+		(fp_line
+			(start -0.14058 -0.51)
+			(end 0.14058 -0.51)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "57d0e770-06e8-4ca6-8f44-47b6e15134d8")
+		)
+		(fp_rect
+			(start -1.48 -0.73)
+			(end 1.48 0.73)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "d5c6d350-639b-4cbd-bfc4-be9ce36765e4")
+		)
+		(fp_rect
+			(start -0.8 -0.4)
+			(end 0.8 0.4)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "f55c823e-461b-48d9-a359-ace4949db4c2")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 270)
+			(layer "F.Fab")
+			(uuid "242050a1-4cee-4015-8080-7e3771abaaed")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.775 0 270)
+			(size 0.9 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "/MCU and NTCs/NTC_TH5")
+			(uuid "0e62bba6-8af9-4094-a329-276795d9c308")
+		)
+		(pad "2" smd roundrect
+			(at 0.775 0 270)
+			(size 0.9 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "GND")
+			(uuid "4f3f003b-dfc0-4d5a-98fa-8d4f3b023b3e")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "Package_TO_SOT_SMD:SOT-23"
 		(layer "F.Cu")
 		(uuid "101ddd56-f841-4d58-b2d4-01159cbdca2d")
@@ -9492,7 +9666,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/MCU and NTCs/PA7")
+			(net "/MCU and NTCs/NTC_TH5")
 			(uuid "9f3a611f-4979-4e32-866b-d51777205d48")
 		)
 		(pad "3" thru_hole circle
@@ -27801,7 +27975,7 @@
 				)
 			)
 		)
-		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): MLCCs keep only ~6 uF each at 20 V, so 68 uF left 72-75 uF worst case vs the BQ25756 80 uF minimum after derating; now ~99 uF. Same 6.3 mm footprint, 7.7 mm tall. Check ESR/ripple in the maker datasheet (not listed at JLC)"
+		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): ~99 uF worst case vs the BQ25756 80 uF minimum after derating. Datasheet: ESR 48 mOhm, ripple 1.5 A rms. Worst-case bank ripple ~5 A rms (reverse mode, 10 V pack to 20 V 5 A); the four 22 uF MLCCs (~11 mOhm at 600 kHz) take ~80 %, so this cap sees ~1 A rms (~50 mW). Same 6.3 mm footprint, 7.7 mm tall"
 			(at 219 131.5 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -34843,6 +35017,192 @@
 			(roundrect_rratio 0.25)
 			(net "/MCU and NTCs/SMB_PU")
 			(uuid "0565c65e-f51c-415e-a721-fb73d69b705c")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "Resistor_SMD:R_0603_1608Metric"
+		(layer "F.Cu")
+		(uuid "72a80a67-da1b-4c20-a3d1-27e97d74dbdf")
+		(at 183.6 77.789999 -90)
+		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "TH305"
+			(at 0 -1.43 270)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "e105472a-cdb5-4f8f-8dd1-d61a6a65860c")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "10k B3435"
+			(at 0 1.43 270)
+			(layer "F.Fab")
+			(uuid "3c0d1bff-455c-41f9-8a2f-09c681613528")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2381b6b6-742b-4fa7-a9a1-37f6dbf2e7a2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 0 0 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ad080f9f-e601-4c0e-bac6-b222ae86c400")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 270)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "f1965d28-aea7-4ab6-9dba-175ec42219ef")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "TH5 at the protection FETs Q101/Q102 (about 1 W each at 100 W; review 2 A-7). Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K; use Murata's R-T table. DNP if not wanted"
+			(at 260 66 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "005b887c-757f-4a47-a376-6ca4dbb79977")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C13564"
+			(at 260 66 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "341383aa-5073-4053-b878-52842bba277f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "NCP18XH103F03RB"
+			(at 260 66 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "76aef693-e9c0-471e-be45-b89ee3e8efc9")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/18c0f19a-f616-471e-85f9-65c662267f92")
+		(sheetname "MCU and NTCs")
+		(sheetfile "mcu.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.237258 0.5225)
+			(end 0.237258 0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "a0ec9bb6-3603-4569-9d21-e776d1c2404f")
+		)
+		(fp_line
+			(start -0.237258 -0.5225)
+			(end 0.237258 -0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "f5cf081b-95d1-4efa-9e9c-5d4306480bbe")
+		)
+		(fp_rect
+			(start -1.48 -0.73)
+			(end 1.48 0.73)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "39fb652f-0023-4112-a363-1032791d112b")
+		)
+		(fp_rect
+			(start -0.8 -0.4125)
+			(end 0.8 0.4125)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "da0bb6cc-1a63-42f9-aa40-5cb471c4a5bd")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 270)
+			(layer "F.Fab")
+			(uuid "2883dd21-40a8-47c2-8f5f-409824c5c005")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.825 0 270)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "/MCU and NTCs/NTC_TH5")
+			(uuid "f718e9f9-e4f0-474e-90c2-c43986baf35d")
+		)
+		(pad "2" smd roundrect
+			(at 0.825 0 270)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "GND")
+			(uuid "39e18018-aa2e-46ea-b06c-860a70304333")
 		)
 		(embedded_fonts no)
 		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
@@ -50358,7 +50718,7 @@
 			(at 2.25 4.53)
 			(size 0.3 0.35)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/MCU and NTCs/PA7")
+			(net "/MCU and NTCs/NTC_TH5")
 			(uuid "c2fa5d66-74ba-4bb6-bd66-0861e29ad16e")
 		)
 		(pad "30" smd rect
@@ -51940,6 +52300,192 @@
 		)
 		(embedded_fonts no)
 		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "Resistor_SMD:R_0805_2012Metric"
+		(layer "F.Cu")
+		(uuid "ace7a8a3-8ca2-4d98-b1cb-1d7c8bcd31f4")
+		(at 218 60.6 90)
+		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "R320"
+			(at 0 -1.65 90)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "3a9c15b3-75f7-4a47-b5e6-3409c24db9d3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "10k 1%"
+			(at 0 1.65 90)
+			(layer "F.Fab")
+			(uuid "8182a560-ee09-48cf-918e-1e234d80ed3b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0c93217d-41b6-4bd1-8ae1-50dc4caebc82")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4fcf93df-9214-4af5-95c7-f211fafd20c9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 90)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "aaf85eb5-89ca-4d98-bb01-e58a218b3387")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C17414"
+			(at 260 63 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b450588e-6d79-4b5e-b0d5-745cf187ad30")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "0805W8F1002T5E"
+			(at 260 63 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c46bab3c-ca51-4e10-b325-8ecbb2ee6b64")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "TH5 divider top (from NTC_EN), same as R308-R311"
+			(at 260 63 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f9d51f5c-ddd9-4a5e-8fe6-fd2ff6c8c360")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/ad7390d2-5436-4ab2-8a22-39d42d3f57b1")
+		(sheetname "MCU and NTCs")
+		(sheetfile "mcu.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.227064 -0.735)
+			(end 0.227064 -0.735)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "674c9458-e363-468d-a4e9-ab047a5e16ef")
+		)
+		(fp_line
+			(start -0.227064 0.735)
+			(end 0.227064 0.735)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "d25462e9-cd44-42d8-92e8-8b57ae708856")
+		)
+		(fp_rect
+			(start -1.68 -0.95)
+			(end 1.68 0.95)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "e4e53ff9-2d23-4080-9b68-51ef52e284a0")
+		)
+		(fp_rect
+			(start -1 -0.625)
+			(end 1 0.625)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "68fc7ec7-b45d-45ec-ad15-4adfb9a36ef7")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(uuid "f5e08ab1-51f0-43a6-9b8c-491025e33983")
+			(effects
+				(font
+					(size 0.5 0.5)
+					(thickness 0.08)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.9125 0 90)
+			(size 1.025 1.4)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.243902)
+			(net "/MCU and NTCs/NTC_EN")
+			(uuid "47bb1a13-b3ca-4e56-9f49-bb62a998db6c")
+		)
+		(pad "2" smd roundrect
+			(at 0.9125 0 90)
+			(size 1.025 1.4)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.243902)
+			(net "/MCU and NTCs/NTC_TH5")
+			(uuid "91889f55-d857-475e-a1b6-9bdd7bd7d4a7")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0805_2012Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -73759,7 +74305,7 @@
 				)
 			)
 		)
-		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): MLCCs keep only ~6 uF each at 20 V, so 68 uF left 72-75 uF worst case vs the BQ25756 80 uF minimum after derating; now ~99 uF. Same 6.3 mm footprint, 7.7 mm tall. Check ESR/ripple in the maker datasheet (not listed at JLC)"
+		(property "Notes" "USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): ~99 uF worst case vs the BQ25756 80 uF minimum after derating. Datasheet: ESR 48 mOhm, ripple 1.5 A rms. Worst-case bank ripple ~5 A rms (reverse mode, 10 V pack to 20 V 5 A); the four 22 uF MLCCs (~11 mOhm at 600 kHz) take ~80 %, so this cap sees ~1 A rms (~50 mW). Same 6.3 mm footprint, 7.7 mm tall"
 			(at 219 94.5 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -74660,7 +75206,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "03546ce0-64f7-486b-b067-21d9a98d75e4")
+		(uuid "c20f2bb6-6730-4fc6-ba50-9ddf553b9653")
 	)
 	(gr_line
 		(start 50 50)
@@ -74670,7 +75216,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "5f5245c2-d652-4c69-bb42-87e24d290d29")
+		(uuid "e845b06e-848d-485a-afcb-20c7c850685b")
 	)
 	(gr_line
 		(start 50 165)
@@ -74680,7 +75226,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "aa531228-ce4d-49e6-b797-4f41ce9ab418")
+		(uuid "6b06c389-664f-4010-b7e3-12b0e831f61e")
 	)
 	(gr_line
 		(start 246 50)
@@ -74690,7 +75236,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "6f4fa224-29f5-4c4c-b0bf-586628e6271e")
+		(uuid "1f998b65-37ca-4962-acb8-dba5023ab36c")
 	)
 	(gr_line
 		(start 246 87.1)
@@ -74700,7 +75246,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "10031bbc-125b-4945-a168-79e01f76339c")
+		(uuid "9da45e1a-88e8-4934-8827-6a61fff84fcb")
 	)
 	(gr_line
 		(start 246 123.1)
@@ -74710,12 +75256,12 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "01da431c-12bf-49f1-8a38-805f5f123ce8")
+		(uuid "627c312b-2c36-4b72-849d-5e55b92674cb")
 	)
 	(gr_text "not GND"
 		(at 156.3 67.6 0)
 		(layer "F.SilkS")
-		(uuid "3adbac7d-4c09-4ed5-a48f-2648b6cd6fc6")
+		(uuid "fd55fae8-e18f-4a4b-bc44-4f18b31526de")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74726,7 +75272,7 @@
 	(gr_text "TX"
 		(at 181 53.3 0)
 		(layer "F.SilkS")
-		(uuid "8ab1c11a-6599-48ba-aa9d-f21d42cc1838")
+		(uuid "5d918a00-cf83-4dee-a7cf-99ba5151c510")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74737,7 +75283,7 @@
 	(gr_text "RX"
 		(at 183.54 53.3 0)
 		(layer "F.SilkS")
-		(uuid "df8849d7-0045-47bb-be10-13c7ce5daaa5")
+		(uuid "4a48189a-fead-4577-95ab-01125b74da8d")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74748,7 +75294,7 @@
 	(gr_text "G"
 		(at 186.08 53.3 0)
 		(layer "F.SilkS")
-		(uuid "7a4ee040-321e-4506-bbe5-4e40ab3014f0")
+		(uuid "4e7f0113-2496-430d-9ec5-52b71883ab91")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74759,7 +75305,7 @@
 	(gr_text "FIT CELLS BEFORE USB"
 		(at 105 163.3 0)
 		(layer "F.SilkS")
-		(uuid "86cc36e6-71a6-454c-8c20-df29ba8bb8b3")
+		(uuid "782205ff-c651-4582-9415-8334676e739a")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74770,7 +75316,7 @@
 	(gr_text "MCU"
 		(at 164 56 0)
 		(layer "F.SilkS")
-		(uuid "291c51ef-203b-4abc-ae2b-6c367b1e554c")
+		(uuid "fdc0295d-5342-461a-a9b7-3cf1219b7397")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74781,7 +75327,7 @@
 	(gr_text "GAUGE"
 		(at 171.5 67 0)
 		(layer "F.SilkS")
-		(uuid "72ca6ee4-b868-4114-a466-a593e2d6536b")
+		(uuid "25d03f57-324b-4180-b252-45bae2616a78")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74792,7 +75338,7 @@
 	(gr_text "SLEEP CURRENT"
 		(at 198.5 161.5 0)
 		(layer "F.SilkS")
-		(uuid "912f15cf-deec-4190-838e-a14681b1ff3d")
+		(uuid "e52ad6a2-5ebb-4fca-8b18-48336359bca4")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74803,7 +75349,7 @@
 	(gr_text "USB 1"
 		(at 241.5 89.6 0)
 		(layer "F.SilkS")
-		(uuid "1d0f54b9-5de8-4afe-9bf3-38768fc9cbad")
+		(uuid "5dc89364-6135-4000-9730-b57928f8db43")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74814,7 +75360,7 @@
 	(gr_text "USB 2"
 		(at 241.5 125.6 0)
 		(layer "F.SilkS")
-		(uuid "bb73d31f-f8c5-4291-90b5-514e9b7e3d2c")
+		(uuid "6d93437d-eea9-4370-a328-23b5c154f92a")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74825,7 +75371,7 @@
 	(gr_text "PORT 1"
 		(at 184.8 96 90)
 		(layer "F.SilkS")
-		(uuid "142504a6-d9de-42c3-9887-f42f8c22c97c")
+		(uuid "cf139582-7fc6-4eda-af21-a6ca586e1f4b")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74836,7 +75382,7 @@
 	(gr_text "PORT 2"
 		(at 184.8 133 90)
 		(layer "F.SilkS")
-		(uuid "df85674d-3bb3-4793-b244-22b6aa6e55ae")
+		(uuid "a421a431-17b0-415f-b97d-ba085b0f560d")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74846,7 +75392,7 @@
 	)
 	(zone
 		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
-		(uuid "282bcb75-d1bd-496b-ad33-cf605c92e27d")
+		(uuid "83b48955-a283-4b9b-a0e0-77f3ef112ed3")
 		(name "ANT_KEEPOUT")
 		(hatch edge 0.5)
 		(connect_pads

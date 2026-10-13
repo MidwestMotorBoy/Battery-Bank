@@ -67,7 +67,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 - PACK_P feeds the **high-current branch** directly: both BQ25756 power stages (battery side) and both TPS62933 inputs. No measurement resistor on these.
 - PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (R201, 1 %, 1206; the fitted 1206W4F100JT5E is 1/4 W: fine for the ~0.4 W start-up pulse and < 2 mW steady state, and it opens as a fuse if U204 fails short) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
-- The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. Optional (low-current, no bypass needed): a 10 Ω in series with the gauge's BAT feed plus a third INA190 footprint (DNP) to see the gauge's ~50–340 µA on the scope.
+- The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. (Dropped 2026-10-13: a third INA190 on the gauge's BAT feed. Measure the gauge current as the drop across R105, 100 Ω in the BAT feed: 50–340 µA = 5–34 mV, with the pack on battery only.)
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
   - **U_AMP_LO: INA190A5IDDFR** (gain 500, SOT-23-8 with ENABLE) → 5 mV per µA, ~0.99 mA full scale on a 5 V supply, 27 kHz bandwidth (sleep detail). If JLC doesn't stock the A5, use INA190A4 (gain 200 → 2 mV/µA, ~2.5 mA full scale; LCSC C2059766, SC-70-6, no ENABLE pin)
   - **U_AMP_HI: INA190A1IDDFR** (gain 25, JLC C1852068, SOT-23-8) → 0.25 V per mA, ~20 mA full scale, 45 kHz bandwidth (Bluetooth bursts)
@@ -111,7 +111,8 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT through a 2N7002 (Q103), 100 kΩ pull-up: **active low** |
 | PB5 | status LED |
 | PB8 | CHG_INH (rev A4; polarity rev A5) — drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
-| Spares | PA7 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
+| PA7 | NTC_TH5 (rev A5): TH305 at the protection FETs, ADC1_IN2, same 10k/0.1 µF divider from NTC_EN; also on J303 pin 2 for probing |
+| Spares | 2.54 mm header J303 (NTC_TH5, NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
 - **UART header:** 3-pin (TX, RX, GND).
