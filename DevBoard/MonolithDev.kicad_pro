@@ -620,6 +620,25 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "tuning_profile": ""
+      },
+      {
+        "name": "Kelvin",
+        "track_width": 0.2,
+        "clearance": 0.15,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 4,
+        "bus_width": 12,
+        "wire_width": 6,
+        "line_style": 0,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "pcb_color": "rgba(0, 194, 194, 1.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "tuning_profile": ""
       }
     ],
     "meta": {
@@ -751,6 +770,42 @@
       {
         "netclass": "GateDrive",
         "pattern": "/Cells and Gauge/*_G"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/ACP_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/ACN_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/SRP_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/SRN_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "/Cells and Gauge/SRP"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "/Cells and Gauge/SRN"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-VC*)"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-BAT)"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-PACK)"
       }
     ]
   },

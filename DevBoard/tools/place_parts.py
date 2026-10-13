@@ -60,8 +60,8 @@ FIXED = {
 # the USB-C edge and the output side faces the pack bus.
 PORT = {
     "Q01": (-11, 0, 0), "L01": (0, 0, 0), "Q02": (11, 0, 180),
-    "U03": (0, 9.6, 90), "C12": (-3.3, 5.3, 0), "C10": (0, 5.3, 0), "C13": (3.3, 5.3, 0),
-    "R24": (-20.3, -9.0, 90), "R27": (20.3, 9.0, 90), "R30": (21.8, 16.3, 0),
+    "U03": (0, 9.6, 90),
+    "R24": (-20.3, -9.0, 90), "R27": (20.3, 9.0, 270), "R30": (21.8, 16.3, 0),   # RBAT: VBAT_SYS pad toward R30
 }
 # Bulk banks: one row of 1210 MLCCs right behind each half-bridge (they carry the switching-frequency ripple), the
 # 0603 HF cap (C30 / C38, placed below) straddling the FET's drain and ground pads, one more MLCC stood on end beside
@@ -87,7 +87,7 @@ PORT_EXTRA = {  # board offsets from the port centre for the PD controller side 
 PORT_LAYOUT = [
     # BQ25756 (U403): FB divider + SRP/SRN filter + DRV_SUP left, programming resistors and TS above, ACUV/ACOV
     # divider, FSW and ACP/ACN filter right
-    ("col", ["R418", "R419", "C417", "C419", "C418", "R420", "C411"], 151.4, 13.05, 0, 0.05),
+    ("col", ["R418", "R419", "C417", "C419", "C418"], 151.4, 13.05, 0, 0.05),
     ("row", ["R414", "R413", "R416", "R415", "R417", "TH401"], 153.55, 17.2, 90, 0.08),
     ("row", ["R412", "R411", "R410", "R409"], 161.75, 20.63, 90, 0.08),
     ("row", ["C414", "C415", "C416"], 161.75, 23.88, 90, 0.08), ("at", "C409", 168.3, 23.88, 0),  # VAC cap (0805)
@@ -95,7 +95,8 @@ PORT_LAYOUT = [
     # loop on the board; output-sense series resistors and the I2CC header left of Q402
     ("at", "C430", 168.8, 36.6, 0),
     ("at", "C438", 146.9, 26.5, 0),
-    ("at", "R428", 142.0, 26.3, 0), ("at", "R429", 142.0, 27.95, 0),
+    # SRP/SRN series resistors beside RBAT, each at the pad it senses (Kelvin taps short, out of the current path)
+    ("at", "R428", 135.1, 24.45, 90), ("at", "R429", 135.1, 20.35, 90),
     ("at", "J402", 137.95, 31.0, 0),
     # TPS25751 (U401): supply caps left, address straps (divider top / bottom / 0R) and EEPROM above,
     # VBUS/PP5V caps right, CC caps between the ESD parts and the connector (VBUS TVS D401 beside them)
@@ -104,7 +105,9 @@ PORT_LAYOUT = [
     ("row", ["R407", "R408", "R2"], 163.475, 15.51, 0, 0.08),
     ("at", "U402", 175.1, 14.65, 0),
     ("row", ["R402", "R403", "R404"], 173.55, 17.5, 90, 0.08),
-    ("row", ["C407", "C406"], 180.65, 23.0, 90, 0.08),
+    # VBUS cap right of U401's VBUS power pad (the VBUS feed passes over its VBUS pad); the PP5V cap (0603) above U401
+    # beside PP5V pin 34, clear of the VBUS pad
+    ("fix", "C406", 183.75, 23.0, 270), ("fix", "C407", 176.5, 20.0, 0),
     ("row", ["C402", "C401"], 184.9, 27.5, 90, 0.08),
     ("row", ["R425", "R426"], 176.6, 34.9, 90, 0.08),
     # TPS62933 5 V buck in a line, hot loop first: input bulk, 0.1u straddling VIN/GND (pins 3/4), U404, BST cap
@@ -114,9 +117,13 @@ PORT_LAYOUT = [
     ("row", ["R433", "R434", "C439"], 180.0, 40.8, 90, 0.05),
     ("at", "C447", 181.5, 38.05, 0),                    # DNP feed-forward cap, right above R433 (in parallel)
     ("at", "R435", 158.5, 14.3, 0),                     # CHG_INH -> CE series resistor, above the ICHG/CE row
-    # bootstrap diodes (TI checklist D2/D3) beside their BTST caps, cathode toward the cap: BTST2 left of C413 under the
-    # DRV_SUP cap C411, BTST1 right of C412
-    ("at", "D405", 151.75, 26.15, 180), ("at", "D404", 164.25, 26.15, 0),
+    # gate-drive support (tools/route_power.py routes it): each BTST cap right under its BTST/SW pins, BTST pad inner
+    # (the bootstrap loop stays on F.Cu, no vias); DRV_SUP cap, REGN cap and the REGN->DRV_SUP 10R stacked left of
+    # the IC between Q402 and L401 (F.Cu lanes from pins 23/24 under C413); both bootstrap diodes right of C412,
+    # reached through In2/B.Cu. Fixed rotations ("fix"): pad order matters here, not nearest-pin scoring.
+    ("fix", "C413", 155.5, 26.2, 180), ("fix", "C412", 160.5, 26.2, 0),
+    ("fix", "C411", 151.1, 24.6, 90), ("fix", "R420", 152.95, 27.55, 90), ("fix", "C410", 151.1, 28.4, 270),
+    ("fix", "D405", 164.0, 26.3, 0), ("fix", "D404", 164.0, 28.25, 0),
     ("at", "R432", 182.4, 43.6, 0),
     ("row", ["C441", "C442"], 186.0, 41.9, 0, 0.05),
     # probe field under the power stage: SW test points straight below their inductor pads, pull-ups under
@@ -344,6 +351,11 @@ def run_layout(items):
         if kind == "at":
             _, ref, x, y, rot = it
             struct_put(ref, x, y, rot)
+            done.append(ref)
+        elif kind == "fix":                      # exact rotation, no 0/180 choice
+            _, ref, x, y, rot = it
+            box_at(fps[ref], rot, x, y)
+            placed[ref] = fps[ref]
             done.append(ref)
         elif kind == "col":
             _, refs, x, y, rot, gap = it

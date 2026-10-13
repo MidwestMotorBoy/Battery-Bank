@@ -217,6 +217,45 @@ Found while checking against datasheets:
 
 31. **Sleep-current outputs on test loops instead of SMAs (rev A5, 2026-10-13).** J201/J202 (vertical SMAs) are removed. OUT_LO and OUT_HI are probed on their existing loops TP201/TP202. Each has its own GND loop 4.5 mm away (TP208/TP209, same RH-S2761-46R, JLC-placed) for a short probe ground lead. The four sit in a row on the bottom edge under the amps: OUT_LO, GND, OUT_HI, GND. R204/R205 49.9 Ω stay: they keep probe and cable capacitance off the INA190 outputs (1 nF max). Use a 1 MΩ scope input. Nothing is left to hand-fit in this section except U201/U202.
 
+32. **Routing started: net classes, planes, port power stages (2026-10-13).**
+    - **Kelvin net class** (0.2 mm track, 0.15 mm clearance: the gauge QFN's pins are 0.18 mm apart): each charger's filtered ACP/ACN/SRP/SRN, the gauge's SRP/SRN, VC1-VC4, BAT and PACK. The raw tap ends of the sense lines share the power nets, so a class can't enforce them: they are routed from the sense-resistor pads by hand.
+    - **Placement fixes for routing:** RBAT (R427/R527) turned 180° so its VBAT_SYS pad faces the R430 link (the 9.5 A path no longer U-turns around the resistor) and its BAT_SNS_P pad faces the output caps. The SRP/SRN series resistors (R428/R429, R528/R529) moved out of the output-current path to beside RBAT, each next to the pad it senses.
+    - **`tools/route_power.py`** (re-runnable; it rebuilds only what it added, listed in `tools/route_power.uuids`). For each port:
+        - SW1/SW2 are compact F.Cu pours from the FET switch pads to the inductor, and the SW test loops are short stubs off the far side of the inductor pads.
+        - Each input and output bank is an F.Cu pour mirrored on B.Cu and stitched with vias.
+        - GND islands under the FET sources and cap grounds are stitched straight into In1, 0.1 mm below.
+        - Cap pads that a bank pour surrounds get small pockets with their own vias.
+        - VBAT_SYS runs straight from RBAT to R430.
+    - **Planes:** In1 is solid GND and In2 is GND fill for now, both inset 0.5 mm from the edge.
+    - **Mounting holes:** H1-H6 get a 6.4 mm copper keep-out on every layer, clear of the M3 screw head and washer.
+    - **TPS25751 footprint:** the exposed pads' thermal vias now join the planes solidly. Thermal reliefs blocked the heat path and pinched the GND plane between the GND and PD_DRAIN via rows.
+    - DRC: 0 violations.
+    - **Gate drive (BQ25756).** All eleven drive pins sit on one 0.5 mm-pitch edge, in a different order from the FET pins (Q402's gates face away from the IC), so:
+        - Every gate drops through a via right under its pin. HG1 runs on In2 with its SW1 return stacked under it on B.Cu, and LG1 on In2 under the In1 GND plane. HG2 and SW2 run side by side on B.Cu (outer/inner, so they never cross), and LG2 on In2.
+        - Gate lanes are 0.5 mm wide (TI's 20 mil minimum).
+        - The bootstrap loops stay on F.Cu with no vias: C412/C413 sit right under their BTST/SW pins with the BTST pad inner.
+        - DRV_SUP and REGN run on F.Cu under C413 to C411, R420 and C410, now stacked left of the IC between Q402 and L401.
+        - The bootstrap diodes D404/D405 moved right of C412 and are fed through In2 (DRV_SUP) and B.Cu (BTST).
+        - The exposed pad gets 12 thermal vias, and PGND ties to it.
+        - Placement uses a new `("fix", ...)` entry in `place_parts.py`: exact rotation, no automatic 0/180 flip.
+    - **USB-C power path.**
+        - VBUS runs from J401's VBUS pads through via clusters into a B.Cu pour, then back up beside U401 into an F.Cu band over C406's VBUS pad to the VBUS power pad.
+        - PPHV runs from U401's PPHV pad down a 1.75 mm F.Cu corridor (mirrored on B.Cu, 12 vias) to RAC. It feeds the pad from the right so R425's Kelvin tap lands on the pad's quiet end. R426's tap reaches the AC_SNS_N pad's outer end through In2.
+        - J501 sits 36 mm below J401 (the rest of port 2 is 37 mm down), so the connector-side copper has its own offset.
+    - **C407/C507 (TPS25751 PP5V cap) is now 0603:** Samsung CL10A106MA8NRNC, LCSC C96446, same 10 µF 25 V. It moved above U401 beside the PP5V pin. The 0805 sat in front of U401's VBUS power pad, so 5 A VBUS had no way in.
+    - **5 V bucks (TPS62933):**
+        - C446 straddles VIN/GND (pins 3/4), with the 10 µF pair beside it.
+        - SW runs straight to C440 and L402.
+        - SS and BST share the gap between the pin column and C440: SS turns up first and BST passes under its corner.
+        - FB is taken from the output caps (divider top at the regulation point); EN and SS fit in the remaining gaps.
+        - 5V_IN runs from the R431 link along y 48.
+        - PP5V (3 A when the port sources 5 V): L402 → C441/C442 on F.Cu, then up the right edge on In2 + B.Cu between J401's pads and its shell, to C443, TP403 and U401's PP5V pin through C407.
+    - **Still to route:**
+        - the pack path (holders → RS101 → protection FETs → F101 → PACK_P → both ports), and the cell links under the holders;
+        - the ACP/ACN and SRP/SRN Kelvin pairs from the filter resistors to the BQ25756 (the input pair has to cross the gate lanes' corridor);
+        - the small PPHV taps (VAC pins, ACUV divider, C409, TP402) and REGN to R415/TP404;
+        - then the signals.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).

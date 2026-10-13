@@ -21006,7 +21006,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 237.185 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -21039,7 +21039,7 @@
 				)
 			)
 		)
-		(property "Notes" "at PP5V pin"
+		(property "Notes" "at PP5V pin (0603: sits between U401 and its strap resistors, clear of the VBUS power pad)"
 			(at 7.62 0 0)
 			(hide yes)
 			(show_name no)
@@ -21050,7 +21050,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C15850"
+		(property "LCSC" "C96446"
 			(at 236.22 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -21061,7 +21061,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21A106KAYNNNE"
+		(property "MPN" "CL10A106MA8NRNC"
 			(at 236.22 71.12 0)
 			(hide yes)
 			(show_name no)

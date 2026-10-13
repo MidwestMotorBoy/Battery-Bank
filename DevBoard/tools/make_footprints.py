@@ -377,6 +377,10 @@ for num, y0, y1 in (("20", "0.6625", "0.675"), ("23", "-0.6625", "-0.675")):
     s, n = re.subn(r'(\(pad "' + num + r'" smd roundrect\s*\(at 2\.925 )' + re.escape(y0) + r'\)(\s*\(size 0\.65 )1\.2\)',
                    lambda m: m.group(1) + y1 + ")" + m.group(2) + "1.175)", s)
     assert n == 1, num
+# the exposed pads' thermal vias join the inner planes solid (a relief ring blocks the heat path and pinches the GND
+# plane between the GND and PD_DRAIN via rows)
+s, n = re.subn(r'(\(drill 0\.2\)\s*\(property pad_prop_heatsink\))', r'\1\n\t\t(zone_connect 2)', s)
+assert n == 8, n
 s = with_model(s, name)                                          # KiCad 10 ships no REF0038A model
 with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
     fh.write(s)
