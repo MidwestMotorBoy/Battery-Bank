@@ -168,7 +168,7 @@ Found while checking against datasheets:
 29. **Footprint checks and 3D models (2026-10-13).**
     - **Cell holder footprint fixed.** Rendering the MYOUNG drawing showed a dia 2.25 hole for the + terminal's locating tab: the side view has a fork below the seating plane, 38.60 mm from centre. The footprint lacked it, so the holder would have sat on its tab. Added as NPTH at (-38.6, -11.5) and refreshed BT101-BT104; the silk gaps around it. Pads (7.5 × 9.0, 93.6 outer) and pegs (dia 4.0 at ±34, 8.5) were already right.
     - **J301 uses Samtec's recommended land pattern** for FTSH-1xx-xx-xxx-DV (rev G): 0.74 × 2.79 pads at ±2.035, courtyard covering the -K keying shroud. New footprint `MonolithDev:Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm`. J301 moved 1.2 mm left; the "MCU" title moved below it.
-    - **3D models on 292 of 362 footprints.** Custom footprints borrow same-body KiCad models (make_footprints.py `MODELS`, pin 1 checked in a 3D render; KiCad turns positive Z angles clockwise):
+    - **3D models on 346 of 362 footprints** (every physical part). Custom footprints borrow same-body KiCad models (make_footprints.py `MODELS`, pin 1 checked in a 3D render; KiCad turns positive Z angles clockwise):
         - QFN-32 4×4 (U101);
         - QFN-36 5×6 (BQ25756);
         - WQFN-40 6×4 (TPS25751; KiCad has no REF0038A model);
@@ -191,7 +191,23 @@ Found while checking against datasheets:
         - **Assumed (not defined by the drawing, all inside the envelope):** cavity depth, tongue, body corner R0.3. Shallow surface details (latch window, leg channels in the shell sides) are left out.
         - **For the enclosure:** the envelope is accurate to the drawing. The drawing's own tolerances are ±0.15–0.25 mm, so confirm critical fits (seal compression, wall opening) with calipers on a sample, or ask ShouHan for their STEP.
 
-      **No model:** cell holders, STM32WB1MMC, M24512 UFDFPN8 (KiCad's 2×3 DFN has pins on the long sides), the SMT test loops, mounting holes, bare pads and net ties. LCSC/EasyEDA STEP files for the holder, module and EEPROM can go in `DevBoard/3dmodels/`, or be built the same way.
+      **Cell holders (BT101-BT104) and cells:** `tools/make_3d_holder.py`.
+        - **Source:** LCSC's EasyEDA model (`3dmodels/source/`, a SolidWorks export; MYOUNG publishes none), checked against MYOUNG's drawing by hidden-line overlay. Its top view matched.
+        - **Corrected:**
+            - side walls clipped to the drawn profile (ends 15.62, shoulders 9.84, centre dip 6.88; EasyEDA's middle walls were 1.0-1.5 mm too high);
+            - end-slope wall strips filled out to the drawing (EasyEDA's were 1.0-2.3 mm short);
+            - EasyEDA logo removed;
+            - + terminal locating tab added: 1.50 wide, 1.20 below the seating plane, 11.5 off the axis. The drawing's "11.5 ±0.35" is this tab, not the cell height.
+        - **Result:** both views now coincide with the drawing.
+        - **Cell:** a separate STEP for the EVE INR21700/58E (Ø21.50 × 70.80, + end per EVE fig. 1), attached as a second model on the holder footprint.
+        - **Cell axis height is PROVISIONAL: Z = 13.18** (EasyEDA cradle floor 2.6 plus the cell radius). MYOUNG's drawing does not give it. **Measure a populated holder** (cell top above the board) and set `CELL_AXIS_Z`.
+
+      **STM32WB1MMC, M24512 UFDFPN8 and the SMT test loops:** `tools/make_3d_simple.py`, envelopes from the package drawings:
+        - STM32WB1MMC: 10.0 × 6.5 × 1.372 mm. Uses LCSC's EasyEDA model (`3dmodels/source/`), checked against ST's fig. 11 and table 3: envelope, 1.372 height, centre-pad cluster and inner pad row match the footprint. ST's own CAD models are behind sign-in (UltraLibrarian, SamacSys, DigiKey/SnapMagic); drop that STEP into `3dmodels/source/` to replace it;
+        - M24512: 3.0 × 2.0 × 0.55 mm;
+        - test loop: 1.6 × 0.8 × 1.15 mm.
+
+      **Coverage:** 346 of 362 footprints have models. The rest are mounting holes, bare probe pads and the copper net-tie links, which are not physical parts.
 
 ## Open items (defaults I picked; confirm or change)
 

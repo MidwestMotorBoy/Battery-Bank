@@ -13,8 +13,7 @@ LIB = os.path.join(HERE, "..", "MonolithDev.pretty")
 STD = "(stroke (width {w}) (type solid))"
 
 # 3D models borrowed from KiCad's library: same body and pin-1 corner (checked against the KiCad footprint each model
-# belongs to, or built by tools/make_3d_usbc.py; rotation in degrees about Z, KiCad turns positive angles clockwise seen from the top: checked in a 3D render). Not modelled: holder, STM32WB1MMC, UFDFPN8 (KiCad's 2x3
-# DFN has its pins on the long sides), SMT test loop, net tie.
+# belongs to, or built by tools/make_3d_usbc.py; rotation in degrees about Z, KiCad turns positive angles clockwise seen from the top: checked in a 3D render). Not modelled: net tie (no part). STM32WB1MMC, UFDFPN8 and the SMT test loop come from tools/make_3d_simple.py.
 M3D = "${KICAD10_3DMODEL_DIR}/"
 MODELS = {
     "Infineon_PG-TDSON-8-57_HalfBridge": ("Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step", 270),    # single-FET body
@@ -23,6 +22,12 @@ MODELS = {
     "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm": ("Package_DFN_QFN.3dshapes/QFN-36-1EP_5x6mm_P0.5mm_EP3.6x4.6mm.step", 0),
     "TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz": ("Package_DFN_QFN.3dshapes/Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm.step", 0),
     "USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68": ("${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step", 0),  # tools/make_3d_usbc.py
+    "BatteryHolder_MYOUNG_BH-21700-B1BJ001": [   # tools/make_3d_holder.py; the cell is a separate model (provisional height)
+        ("${KIPRJMOD}/3dmodels/BatteryHolder_MYOUNG_BH-21700-B1BJ001.step", 0),
+        ("${KIPRJMOD}/3dmodels/Cell_EVE_INR21700-58E_in_BH-21700.step", 0)],
+    "ST_LGA-77_STM32WB1MMC_6.5x10mm": ("${KIPRJMOD}/3dmodels/ST_LGA-77_STM32WB1MMC_6.5x10mm.step", 0),  # tools/make_3d_simple.py
+    "ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm": ("${KIPRJMOD}/3dmodels/ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", 0),  # tools/make_3d_simple.py
+    "TestPoint_Harwin_S2761_0603": ("${KIPRJMOD}/3dmodels/TestPoint_Harwin_S2761_0603.step", 0),  # tools/make_3d_simple.py
     "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
 }
 
@@ -30,7 +35,11 @@ MODELS = {
 def model_block(name):
     if name not in MODELS:
         return ""
-    path, rot = MODELS[name]
+    entries = MODELS[name] if isinstance(MODELS[name], list) else [MODELS[name]]
+    return "".join(_one_model(path, rot) for path, rot in entries)
+
+
+def _one_model(path, rot):
     full = path if path.startswith("${") else M3D + path
     return (f'\t(model "{full}"\n\t\t(offset\n\t\t\t(xyz 0 0 0)\n\t\t)\n\t\t(scale\n\t\t\t(xyz 1 1 1)\n'
             f'\t\t)\n\t\t(rotate\n\t\t\t(xyz 0 0 {rot})\n\t\t)\n\t)\n')
