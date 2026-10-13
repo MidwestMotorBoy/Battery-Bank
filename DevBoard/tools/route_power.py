@@ -205,6 +205,10 @@ for idx in ("4", "5"):
     # ---------------- VBAT_SYS: RBAT top pad straight up to the R430 link ----------------
     P.zone("VBAT_SYS", "VBAT_SYS", F, [(136.25, 13.6), (139.8, 13.6), (139.8, 20.9), (136.25, 20.9)], prio=1)
 
+    # RBAT Kelvin taps: each series resistor straight onto the outer end of the RBAT pad it senses
+    P.track("BAT_SNS_P", [(135.1, 25.28), (135.6, 24.85), (136.6, 24.85)], 0.25)
+    P.track("VBAT_SYS", [(135.1, 19.53), (135.6, 20.15), (136.6, 20.15)], 0.25)
+
     # ---------------- gate drive (BQ25756 U403 bottom pins, y 24.0-24.6, 0.5 mm pitch) ----------------
     # Pin order 18 SW2 (left column), 19 HG2, 20 BTST2, 21 LG2, 22 PGND, 23 DRV_SUP, 24 REGN, 25 LG1, 26 BTST1, 27 HG1,
     # 28 SW1. The FET pins come in a different order (Q402's gates face away), so every gate drops to an inner layer
@@ -300,6 +304,9 @@ for idx in ("4", "5"):
     P.via(178.4, 19.55, "GND"); P.track("GND", [(177.6, 20.0), (178.4, 19.55)], 0.4)
     P.track("PD_DRAIN", [(177.8, 21.6), (177.8, 22.4)], 0.2)
     P.track("PD_DRAIN", [(177.8, 25.4), (177.8, 24.6)], 0.2)
+    P.track("GND", [(177.4, 21.6), (177.4, 22.4)], 0.2)                  # U401 GND pins 31, 36, 37 onto the exposed pad
+    P.track("GND", [(175.4, 21.6), (175.4, 22.4)], 0.2)
+    P.track("GND", [(175.0, 21.6), (175.0, 22.4)], 0.2)
     # RAC Kelvin taps: ACP (R425) straight down onto the PPHV pad's left end; ACN (R426) under the PPHV pour on In2
     # to the AC_SNS_N pad's outer end
     P.track("PPHV", [(177.35, 35.9), (177.35, 37.8)], 0.25)
@@ -426,6 +433,15 @@ for oy in (0.0, 37.0):                                                  # R431 /
 K.track("PACK_P", [(119.9, 57.3), (119.9, 59.5), (134.8, 59.5)], 1.0)   # D104 (bench supply) -> bus
 K.track("PACK_P", [(119.9, 59.5), (120.65, 60.25), (120.65, 61.7)], 0.5)   # TP106
 K.via(134.8, 59.5, "PACK_P")
+# gauge current sense (SRP/SRN filter R107/R108): Kelvin taps from the inner edges of RS101's two pads, down as a tight
+# pair on In2 (In1 GND above) to the filter resistors; R108's GND end is not fanned out to the planes
+K.track("CELL_N", [(115.5, 17.6), (115.5, 19.0)], 0.2); K.via(115.5, 19.0, "CELL_N", **GV)
+K.track("GND", [(114.6, 22.4), (114.6, 21.6)], 0.2); K.via(114.6, 21.6, "GND", **GV)
+K.track("CELL_N", [(115.5, 19.0), (111.1, 19.0), (111.1, 51.9), (119.1, 51.9)], 0.2, IN2)   # outer lane
+K.track("GND", [(114.6, 21.6), (111.8, 21.6), (111.8, 51.2), (117.6, 51.2)], 0.2, IN2)     # inner lane
+K.via(119.1, 51.9, "CELL_N", **GV); K.via(117.6, 51.2, "GND", **GV)
+K.track("CELL_N", [(119.1, 51.9), (119.1, 50.4)], 0.25)
+K.track("GND", [(117.6, 51.2), (117.6, 50.4)], 0.25)
 
 # ---- In1 solid GND plane, In2 GND fill (whole board; fill clips to the outline and the antenna keep-out) ---------
 for lay, name in ((IN1, "GND_PLANE_In1"), (IN2, "GND_PLANE_In2")):

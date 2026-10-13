@@ -258,6 +258,16 @@ Found while checking against datasheets:
         - **FET_MID:** Q101 and Q102 face the same way, so their drain pads join on B.Cu through a 3×3 via grid in each pad (18 vias, also their heat path).
         - **PACK_P:** from Q102's source pins through an F.Cu strip to a B.Cu bus beside the port-1 output bank. The bus feeds R430/R530 (6 vias each), R431/R531 (5 V buck inputs) and the bench-supply diode D104.
         - One zone outline per net per layer: overlapping same-net zones with different priorities don't merge.
+    - **GND fanout (`tools/fanout_gnd.py`, branch dev-board-autoroute):**
+        - Puts one via beside every SMD GND pad not already on GND copper (144 vias), each spot clear of every other net on all layers, the edge rule and the antenna keep-out.
+        - Re-runnable, using `tools/fanout_gnd.uuids`.
+        - Kelvin ends (R108/R208) are skipped. U401/U501 GND pins 31/36/37 tie into the exposed pad instead.
+        - The RBAT and RS101 Kelvin taps are hand-routed. The RS101 pair runs on In2 to R107/R108.
+    - **Autorouter tried and rejected (2026-10-13):**
+        - `tools/autoroute.py` runs Freerouting 2.5.0 (Java 25; the native CLI build crashes) with the power routing locked.
+        - Five passes plateaued at 211–264 of 637 connections unrouted.
+        - The single-pass result broke DRC in 42 places (0.05 mm via rings, 0.12 mm tracks), altered locked items, and ran the sense pairs and signals across the power stages.
+        - Reverted. The signals will be hand-routed instead. The script is kept for reference.
     - **Still to route:**
         - the ACP/ACN and SRP/SRN Kelvin pairs from the filter resistors to the BQ25756 (the input pair has to cross the gate lanes' corridor);
         - the small PPHV taps (VAC pins, ACUV divider, C409, TP402) and REGN to R415/TP404;
