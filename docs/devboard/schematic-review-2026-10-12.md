@@ -273,7 +273,7 @@ _Decided 2026-10-12; see "Decisions on the open questions" below._
 | # | Decision |
 |---|---|
 | Q1 | The BQ40Z50-R2 has no body-diode protection (TRM SLUUBK0B). Configuration + firmware: short OCD/OCC recovery delays, chargers held at precharge level while XDSG = 1 (firmware item 13). Measure Q102 temperature at bring-up. No hardware change. |
-| Q2 | Rev 1: no hardware second-level protector. Instead the MCU cross-checks the gauge (alive, configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and can stop both chargers through the new CHG_INH line (PB8 → 1 k → each BQ25756 CE). This is firmware-dependent; a hardware secondary OVP + chemical fuse for production is an open decision in rev2-changes.md. |
+| Q2 | Rev 1: no hardware second-level protector. Instead the MCU cross-checks the gauge (alive, configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and can stop both chargers through the new CHG_INH line (PB8 → 1 k → each BQ25756 CE). This is firmware-dependent; decided 2026-10-12: no hardware secondary OVP or chemical fuse for production either; software is the second layer (rev2-changes.md 1b). |
 | Q3 | Fixed: SW101 wake button and J104 bench PACK_P header. |
 | Q4 | Rule + configuration: fit cells before USB (silkscreen and sheet note); gauge precharge and 0-V charging disabled (firmware item 4). |
 | Q5 | Fixed: J103 is now 4-pin in the EV2400 SMBus order (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT unused. The old 3-pin order would have shorted SCL to ground on a straight cable. EV2400 pull-ups are 20 k to 3.3 V, so with 3V3 down R312 must be removed (see #9). |
