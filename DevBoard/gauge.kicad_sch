@@ -5055,6 +5055,16 @@
 		)
 		(uuid "f2bfe47a-bb71-4009-a247-1101d8ff721d")
 	)
+	(label "CELL_P_RAW"
+		(at 121.92 264.16 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "62e588a0-847b-4421-ae63-6ccf27dedf14")
+	)
 	(label "CELL_P"
 		(at 166.37 33.02 180)
 		(effects
@@ -5525,7 +5535,7 @@
 		)
 		(uuid "f21ce45c-65d5-4520-8c94-050cfa49ecfc")
 	)
-	(label "CELL_P"
+	(label "CELL_P_RAW"
 		(at 175.26 135.89 180)
 		(effects
 			(font
@@ -5720,7 +5730,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 25V"
+		(property "Value" "0.1u 50V"
 			(at 162.52 159.58 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5753,6 +5763,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 170.18 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 170.18 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 170.18 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -6612,6 +6644,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C14663"
+			(at 251.46 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 251.46 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "9e5ff587-138a-469b-aa01-31a42224d2ea")
 		)
@@ -6681,6 +6735,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 294.64 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 294.64 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1003T5E"
 			(at 294.64 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -7251,6 +7327,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C22775"
+			(at 257.81 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
+			(at 257.81 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f7973131-1f16-45ec-b754-5ee64e7b8339")
 		)
@@ -7287,7 +7385,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 25V"
+		(property "Value" "0.1u 50V"
 			(at 177.84 174.82 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7320,6 +7418,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 170.18 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 170.18 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 170.18 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -8137,6 +8257,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C7250"
+			(at 162.56 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1005T5E"
+			(at 162.56 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "011d7f4f-5fcd-46f5-b773-6d4c74454123")
 		)
@@ -8283,6 +8425,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 240.03 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22775"
+			(at 240.03 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
 			(at 240.03 148.59 0)
 			(hide yes)
 			(show_name no)
@@ -8474,6 +8638,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 251.46 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 251.46 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 251.46 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -9171,6 +9357,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C22775"
+			(at 152.4 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
+			(at 152.4 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "8a3f39eb-f4f7-4a89-80d4-c4ea69c89e0d")
 		)
@@ -9251,6 +9459,17 @@
 			)
 		)
 		(property "LCSC" "C7502694"
+			(at 179.07 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "BAT feed from the cell top before F101, as TI fig. 9-12 (D1 on 4P): isolates BAT from a short-circuit dip, and keeps the gauge powered and logging if F101 opens or is not yet fitted"
 			(at 179.07 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -9974,6 +10193,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C23186"
+			(at 205.74 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF5101T5E"
+			(at 205.74 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "cb70be31-83ca-4011-b48c-9e946079a1ee")
 		)
@@ -10332,6 +10573,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C23186"
+			(at 152.4 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF5101T5E"
+			(at 152.4 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "8e1e23ae-2d3f-43af-9bc6-89db0593e453")
 		)
@@ -10401,6 +10664,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 99.06 213.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22775"
+			(at 99.06 213.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
 			(at 99.06 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10567,6 +10852,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C7250"
+			(at 215.9 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1005T5E"
+			(at 215.9 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "0f04779b-331e-443a-b0fa-d55ced2622ed")
 		)
@@ -10713,6 +11020,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 193.04 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22775"
+			(at 193.04 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -11081,7 +11410,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 25V"
+		(property "Value" "0.1u 50V"
 			(at 177.84 167.20 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11114,6 +11443,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 170.18 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 170.18 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 170.18 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -11547,6 +11898,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 195.58 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1002T5E"
+			(at 195.58 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b9f6a902-8cd3-4310-8108-a033afc61c89")
 		)
@@ -11737,7 +12110,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 25V"
+		(property "Value" "0.1u 50V"
 			(at 162.52 151.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11770,6 +12143,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 170.18 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 170.18 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 170.18 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -11859,6 +12254,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C22775"
+			(at 99.06 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1000T5E"
+			(at 99.06 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "dea47ef4-cb0c-4192-b06d-a6b48d45fc59")
 		)
@@ -11907,7 +12324,7 @@
 				)
 			)
 		)
-		(property "Value" "2N7002"
+		(property "Value" "BSS138"
 			(at 349.22 187.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11950,7 +12367,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C52895"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -11961,7 +12378,7 @@
 				)
 			)
 		)
-		(property "MPN" "2N7002"
+		(property "MPN" "BSS138 (onsemi)"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -11972,7 +12389,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTP_INT level shift: its high level has no maximum, PA6 allows 4.0 V unpowered. Inverts: GAUGE_BTP is active low"
+		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). BSS138 Vgs(th) max 1.5 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10: 2N7002 max 2.5 V was marginal). PA6 allows 4.0 V unpowered"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -12400,7 +12817,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 50V"
+		(property "Value" "4.7n 50V"
 			(at 227.37 55.44 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12443,7 +12860,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C53987"
 			(at 219.71 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -12454,7 +12871,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "0603B472K500NT"
 			(at 219.71 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -12465,7 +12882,7 @@
 				)
 			)
 		)
-		(property "Notes" "DNP: fit if DSG turn-on inrush into PACK_P (~280 uF, est. 110-170 A peak) trips SCD. ~1 V/ms gate ramp, ~0.3 A"
+		(property "Notes" "DNP: fit only if DSG turn-on inrush trips SCD. 4.7 nF (not 0.1 uF) keeps the short-circuit turn-off fast enough for Q102 SOA (review 2 A-2). Fit D103 (VGS clamp) whenever C109 is fitted"
 			(at 219.71 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -14288,6 +14705,246 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR134")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 121.92 264.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "fbcd3977-2d64-425a-8095-d1de13ee7dd4")
+		(property "Reference" "TP108"
+			(at 121.92 256.34 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL_P_RAW"
+			(at 121.92 258.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+			(at 121.92 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 121.92 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Cell top before F101: check BT104 / the stack before fitting the fuse"
+			(at 121.92 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "60a47108-8375-4bd4-a36b-45fcfeb023bf")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "TP108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 137.16 264.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cf8bb59c-5452-4a15-bd86-d5a18d78751b")
+		(property "Reference" "TP109"
+			(at 137.16 256.34 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 137.16 258.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f2a3620e-2fec-4f82-a388-2491a9906b24")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "TP109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 137.16 264.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "02e71f10-58b4-42a2-a346-78a337283b35")
+		(property "Reference" "#PWR135"
+			(at 137.16 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 137.16 268.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a6405410-c85c-4bc3-acac-575e615ccb61")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR135")
 					(unit 1)
 				)
 			)

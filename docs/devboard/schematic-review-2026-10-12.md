@@ -279,7 +279,7 @@ _Decided 2026-10-12; see "Decisions on the open questions" below._
 | Q4 | Rule + configuration: fit cells before USB (silkscreen and sheet note); gauge precharge and 0-V charging disabled (firmware item 4). |
 | Q5 | Fixed: J103 is now 4-pin in the EV2400 SMBus order (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT unused. The old 3-pin order would have shorted SCL to ground on a straight cable. EV2400 pull-ups are 20 k to 3.3 V, so with 3V3 down R312 must be removed (see #9). |
 | Q6 | No change: the TPS25751 GPIO event table (TRM SLVUCR8B Table 5-6) has no input event for a charger PG line; the TPS25751 manages the BQ25756 over I2Cc and its INT line. PG stays on its test point. |
-| Q7 | Documented: R_MEAS covers the 3V3 branch only. For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. |
+| Q7 | Documented: R_MEAS covers the 3V3 branch only. (Rev A5: the gauge BAT feed now comes from before F101, so this reading excludes the gauge's own supply current.) For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. |
 
 ## Verified correct (coverage)
 

@@ -157,6 +157,21 @@ Firmware and configuration items added by these decisions:
     - Use Stop0–2 for low-power waits; GPIO state is held there. Standby and Shutdown are not used at all (BLE needs Stop2).
     - The full pin-by-state plan is in `mcu-io-power-states.md`.
     - After every reset, run the checks (firmware item 12) before driving PB8 low.
+## Hardware changes made (rev A5, 2026-10-13)
+
+| Item | Done |
+|---|---|
+| H2 USB-side bulk | C421/C521 → 100 µF 35 V polymer (C5246554), same 6.3 mm footprint; about 99 µF worst case |
+| H3 bootstrap diodes | LRB520S-40T1G (C132124) |
+| H4 C109 | DNP value 4.7 nF; note: fit D103 with it |
+| H6 Q103 | BSS138 (onsemi, C52895) |
+| H7 BAT feed | **Follows TI fig. 9-12:** D101 from CELL_P_RAW (cell top, before F101). TP108 added on CELL_P_RAW |
+| H9 test points | GND loops TP412/TP512/TP109/TP309; pads on CE_N, LDO_3V3, LDO_IN, 5V_AMP |
+| H10 PPHV/VBUS caps | C449/C549 0.1 µF PPHV; C450/C550 10 nF VBUS |
+| H12 LED | R306 330 Ω |
+| C-6 LCSC | Every resistor and capacitor now has a JLC number |
+| Not done | H8 TH305 FET thermistor, H11 J104 keying, H14 J101 Kelvin (rev 2), H15 NTC insulation note; LCSC numbers for test-point loops and headers. U301 hand-soldered (out of stock at LCSC, user decision) |
+
 ## Decisions that were asked (kept for the record)
 
 - **D1, CHG_INH polarity.** The choice is between:

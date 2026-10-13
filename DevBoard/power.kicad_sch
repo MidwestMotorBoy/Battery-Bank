@@ -2903,6 +2903,26 @@
 		)
 		(uuid "fae07c20-dfb7-446b-b770-8e1bd98a7096")
 	)
+	(label "5V_AMP"
+		(at 83.82 248.92 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "17f2f7d0-db86-4da8-aeba-aa244df80745")
+	)
+	(label "LDO_IN"
+		(at 68.58 248.92 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fd919c1c-d6cd-474a-8dba-ac9f2c94eb25")
+	)
 	(label "OUT_LO"
 		(at 167.64 144.78 180)
 		(effects
@@ -3364,6 +3384,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C28323"
+			(at 68.58 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21B105KBFNNNE"
+			(at 68.58 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "3bacbdd2-e882-4599-bf4c-601797720297")
 		)
@@ -3388,7 +3430,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "0cc5b366-d470-4acd-9230-1141395baecb")
 		(property "Reference" "C201"
 			(at 87.06 146.19 0)
@@ -3400,7 +3442,7 @@
 				)
 			)
 		)
-		(property "Value" "22n DNP"
+		(property "Value" "22n 50V"
 			(at 87.06 148.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3433,6 +3475,39 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 80.01 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21122"
+			(at 80.01 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10B223KB8NNNC"
+			(at 80.01 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "DNP (was marked DNP in its value only): optional INA190 input differential filter"
 			(at 80.01 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -3722,6 +3797,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C21189"
+			(at 66.04 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 66.04 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "a85833e1-b670-49a7-b8ad-455cb10cbed7")
 		)
@@ -3791,6 +3888,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 121.92 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2762602"
+			(at 121.92 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21B225KBYNNNE"
 			(at 121.92 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -3959,6 +4078,28 @@
 		)
 		(property "Notes" "3V3 link"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17477"
+			(at 203.2 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0805W8F0000T5E"
+			(at 203.2 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4411,6 +4552,28 @@
 		)
 		(property "Notes" "100R filter option"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21189"
+			(at 66.04 154.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 66.04 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4875,6 +5038,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 142.24 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 142.24 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1003T5E"
 			(at 142.24 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -6916,7 +7101,7 @@
 				)
 			)
 		)
-		(property "Value" "22u 10V"
+		(property "Value" "22u 25V"
 			(at 197.55 64.33 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6949,6 +7134,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C45783"
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21A226MAQNNNE"
 			(at 190.5 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -7129,6 +7336,28 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 134.62 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 134.62 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1003T5E"
 			(at 134.62 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -7831,6 +8060,158 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "#PWR222")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 68.58 248.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6ba13e7d-480f-4cd1-b80f-653627a84983")
+		(property "Reference" "TP206"
+			(at 73.76 244.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LDO_IN"
+			(at 73.76 246.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "384ee769-789f-4ef7-bdf1-6ee6d52f7ed3")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP206")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 83.82 248.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ddcfcee6-68ed-4e23-b4de-23ee03030234")
+		(property "Reference" "TP207"
+			(at 82.55 241.10 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "5V_AMP"
+			(at 82.55 243.07 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4af1dd7a-45c0-4977-8b74-863ea7af62ea")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP207")
 					(unit 1)
 				)
 			)

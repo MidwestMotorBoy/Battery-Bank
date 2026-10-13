@@ -281,7 +281,7 @@
 		)
 		(uuid "17ac7dae-221c-4f1f-bf54-587de0440efb")
 	)
-	(text "REVISION LOG\nA0  2026-10-11  First draft from circuit description draft 5.  Author: Claude Code.  Reviewer: none yet.\nA1  2026-10-11  Layout cleanup: blocks, power symbols, notes, title blocks.  Author: Claude Code.  Reviewer: none yet.\nA2  2026-10-11  Readability pass: no overlapping text, sheet-pin names inside boxes.  Author: Claude Code.  Reviewer: none yet.\nA3  2026-10-11  Wiring pass: wires instead of labels inside each block.  Author: Claude Code.  Reviewer: none yet.\nA4  2026-10-12  Polymer bulk caps, PWR_FLAGs at rail sources, design-review fixes\n                (docs/devboard/schematic-review-2026-10-12.md).  Author: Claude Code.  Reviewer: 3-agent review.\nA5  2026-10-13  Review 2 decisions: CHG_INH fails safe (R417/R517 47k pull-up to 3V3, MCU drives low to charge),\n                MCU IWDG in hardware mode (docs/devboard/schematic-review-2-2026-10-12.md).  Author: Claude Code."
+	(text "REVISION LOG\nA0  2026-10-11  First draft from circuit description draft 5.  Author: Claude Code.  Reviewer: none yet.\nA1  2026-10-11  Layout cleanup: blocks, power symbols, notes, title blocks.  Author: Claude Code.  Reviewer: none yet.\nA2  2026-10-11  Readability pass: no overlapping text, sheet-pin names inside boxes.  Author: Claude Code.  Reviewer: none yet.\nA3  2026-10-11  Wiring pass: wires instead of labels inside each block.  Author: Claude Code.  Reviewer: none yet.\nA4  2026-10-12  Polymer bulk caps, PWR_FLAGs at rail sources, design-review fixes\n                (docs/devboard/schematic-review-2026-10-12.md).  Author: Claude Code.  Reviewer: 3-agent review.\nA5  2026-10-13  Review 2 decisions: CHG_INH fails safe (R417/R517 47k pull-up to 3V3, MCU drives low to charge),\n                MCU IWDG in hardware mode; BAT fed before F101 (TI fig. 9-12); C421/C521 100 uF; LRB520S, BSS138,\n                C109 4.7n, PPHV/VBUS caps, GND/probe test points, JLC numbers on all R/C (review 2).  Author: Claude Code."
 		(exclude_from_sim no)
 		(at 30.48 233.68 0)
 		(effects
@@ -647,6 +647,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C21189"
+			(at 116.84 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 116.84 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "15b0584c-5b83-4a96-aac1-835e09cc4b3e")
 		)
@@ -814,6 +836,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C21189"
+			(at 254 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 254 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "5a36d0bb-b64a-48cb-ace8-64ea18d02e70")
 		)
@@ -904,6 +948,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C21189"
+			(at 129.54 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 129.54 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "5603274d-394c-49e2-9cf1-9b8756820def")
 		)
@@ -985,6 +1051,28 @@
 		)
 		(property "Notes" "P2 ADCIN1 = GND"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21189"
+			(at 241.3 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF0000T5E"
+			(at 241.3 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

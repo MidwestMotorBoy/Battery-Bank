@@ -129,6 +129,11 @@ PORT_LAYOUT = [
     ("at", "R423", 139.2, 48.65, 0), ("at", "R421", 144.3, 48.65, 0), ("at", "R422", 149.4, 48.65, 0),
     ("at", "R431", 160.3, 48.1, 0),
     ("at", "TP401", 192.6, 15.6, 0), ("at", "TP403", 192.6, 20.9, 0),
+    # rev A5: scope-ground loop beside the SW1/SW2 probe points (TH304 moved 1 mm left to make room), PPHV and VBUS
+    # HF caps by their pins, CE_N and LDO_3V3 probe pads
+    ("at", "TP412", 162.2, 43.6, 0),
+    ("at", "C449", 179.24, 27.35, 0), ("at", "C450", 183.15, 31.87, 0),
+    ("at", "TP413", 161.6, 14.37, 0), ("at", "TP414", 177.87, 29.83, 0),  # CE_N pad beside R435
 ]
 PORT_DY = 37.0
 
@@ -179,7 +184,7 @@ LAYOUT = [
     # board NTCs where they sense: TH1/TH2 beside each port's power stage, TH3 between the USB-C connectors,
     # TH4 in the probe row under port 1's stage (heatsink position)
     ("at", "TH301", 142.0, 34.4, 0), ("at", "TH302", 142.0, 34.4 + PORT_DY, 0),
-    ("at", "TH303", 192.5, 50.1, 0), ("at", "TH304", 159.6, 45.35, 0),
+    ("at", "TH303", 192.5, 50.1, 0), ("at", "TH304", 158.6, 45.35, 0),
     # sleep-current section: Kelvin 0R taps above R_MEAS, amp decoupling left of each amp, input filter and
     # output resistors right, LDO caps either side, 3.3 V buck caps along its flow
     ("at", "R202", 148.4, 92.9, 90), ("at", "R203", 151.6, 92.9, 90),
@@ -190,6 +195,11 @@ LAYOUT = [
     ("at", "TP205", 180.0, 103.6, 0), ("at", "C207", 187.95, 96.0, 90), ("at", "R207", 190.6, 96.0, 90),
     # 3V3_SLEEP probe pad and its optional pull-up (DNP) beside the TPS62177
     ("at", "R313", 187.0, 103.0, 0), ("at", "TP307", 191.0, 103.0, 0),
+    # rev A5 probe points: LDO input/output pads by the LDO caps, cell top before F101, scope-ground loops in a third
+    # row of the pack probe field
+    ("at", "TP206", 145.46, 101.35, 0), ("at", "TP207", 148.82, 101.58, 0),
+    ("at", "TP108", 117.25, 97.4, 0),
+    ("at", "TP109", 113.5, 74.0, 0), ("at", "TP309", 119.85, 74.0, 0),
 ]
 
 # small silkscreen notes (text, x, y): UART pin functions over J302 (pin 1 = MCU TX out)
@@ -475,8 +485,9 @@ for ref, fp in sorted(fps.items(), key=lambda kv: not kv[0].startswith("TP")):
             obst.append(r)
             break
     else:
+        v.SetVisible(False)             # no clear spot: hide rather than print over other silk
         unplaced_labels.append(ref)
-print("test-point labels without a free spot:", unplaced_labels)
+print("test-point labels hidden (no free spot):", unplaced_labels)
 
 # outline last: creating PCB_SHAPEs earlier breaks the SWIG wrappers of footprint graphics
 for d in list(board.GetDrawings()):
