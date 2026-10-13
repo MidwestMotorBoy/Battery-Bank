@@ -96,7 +96,7 @@ Found while checking against datasheets:
     - **#2 ICHG** R413/R513 5.11k → 9.1k 1 % (revised from 17.8k, then 9.09k 0.1 %, the same day): 5.5 A hardware ceiling per port (5.3–5.8 A over K_ICHG and resistor tolerance), so a single port can charge at about 1C. The sum of both ports is kept at 5.6 A by configuration and firmware: the TPS25751 configuration starts each charger at ICHG_REG = 2.8 A, and the MCU raises the only charging port to the full rate and drops it back to 2.8 A on the other port's attach interrupt, before that port's PD contract closes PPHV. EN_CHG_BIT_RESET_BEHAVIOR = 0 and EN_ICHG_PIN = 1 in the configuration, so a watchdog expiry stops charging instead of falling back to the pin limit. Backstops: gauge OCC1 about 6 A, CHG_INH, F101. Set IPRECHG and ITERM by register (the pin only caps them at 20 % / 10 % of 5.5 A).
     - **#5 U101 footprint** is TI's RSM0032A land pattern (1.4 mm thermal pad, one 1.3 mm paste window), `MonolithDev:TI_RSM0032A_...`; KiCad's generic part had a 2.8 mm pad.
     - **#6 D403/D503** ESD2CAN24 → PESD5V0S2BT (5 V, C49338, same SOT-23 pinout): D+/D− reach TPS25751 GPIO4/5, rated 6 V. CC keeps the 24 V part.
-    - **#7** R101–R104 → 1206; **F101 and J101 are DNP** (check the cells, then hand-fit F101). The cell-tap ladder is at 2.5 mm pitch.
+    - **#7** R101–R104 → 1206; **J101 is DNP**; F101 was DNP (hand-fit after checking the cells) until rev A5, item 25. The cell-tap ladder is at 2.5 mm pitch.
     - **#8 / m1** DNP footprints on Q102: C109 gate-to-GND (inrush), D102 across R111 (fast turn-off), D103 15 V gate–source clamp.
     - **#9** SMBus pull-ups R304/R305 now hang off SMB_PU, fed from 3V3 by R312 (0R). Remove R312 and supply TP308 for EV2400 work while 3V3 is down.
     - **#10** BTP_INT → Q103 2N7002 (R117 470k gate pull-down) → GAUGE_BTP: PA6 never sees the gauge pin's unbounded high level. GAUGE_BTP is now **active low**.
@@ -140,6 +140,13 @@ Found while checking against datasheets:
         - C207 22 µF 10 V → 25 V;
         - C410/C411 4.7 µF 16 V → 25 V;
         - C441/C442 22 µF on PP5V, 35 V → 25 V (5 V net).
+
+25. **F101 is JLC-placed again (rev A5, 2026-10-13).** Hand-fitting it meant soldering next to an installed 16.8 V stack with no fuse, and since item 24 (BAT fed before F101) leaving it off no longer disconnected the gauge either. The loads were never at risk from it: everything is on PACK_P behind Q101/Q102, which stay off on a fresh gauge (FET_EN off, Mfg Status Init 0x0000). A reversed or missing cell finds no path (the DSG FET body diode blocks discharge, the CHG FET body diode blocks charge). **Procedure:**
+    1. Insert the cells.
+    2. Check each cell at TP102–TP105 and the stack at TP108.
+    3. Only then wake the gauge (SW101, J104 or USB) and configure it (precharge thresholds, then FET_EN).
+
+    Given up: measuring total pack drain across the F101 pads. Use R_MEAS for the 3V3 branch and the gauge's current reading for the rest.
 
 ## Open items (defaults I picked; confirm or change)
 

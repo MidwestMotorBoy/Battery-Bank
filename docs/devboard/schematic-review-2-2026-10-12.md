@@ -61,7 +61,7 @@ No critical issues. The one major item is a gauge configuration item, not a wiri
   - OCD2 must be raised to 12–13 A for 1–2 s, or it trips a single 100 W port at low pack voltage.
   - Two charger-only configurations, after power-on or a watchdog reset, can charge at about 2C.
   - Once a port is sourcing, it keeps draining the pack to 2.5 V total; only gauge CUV stops it.
-  - SW101 cannot wake anything while F101 is out.
+  - SW101 cannot wake anything while F101 is out. (Moot since rev A5: F101 is JLC-placed.)
   - Each port has its own EEPROM, so per-port bundles are possible.
 
 ## MAJOR

@@ -31,7 +31,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. |
 | #5 U101 exposed pad | **Fixed**: TI RSM0032A footprint (1.4 mm pad). |
 | #6 D± ESD vs GPIO4/5 | **Fixed**: D403/D503 → PESD5V0S2BT. No OVP switch for a D±-to-20 V short. |
-| #7 Open or reversed cell | **Fixed in hardware**: R101–R104 1206, F101 DNP (hand-fit after checking the cells), J101 DNP. Firmware gating and VIMR/VIMA are configuration items. |
+| #7 Open or reversed cell | **Fixed in hardware**: R101–R104 1206, J101 DNP. F101 was DNP (hand-fit after checking the cells) until rev A5; now JLC-placed, and the check comes before waking the gauge (protection FETs off until FET_EN), see README item 25. Firmware gating and VIMR/VIMA are configuration items. |
 | #8 DSG inrush | **Fixed**: DNP C109 (gate→GND) + D102 (across R111). Fit at bring-up if SCD trips. |
 | #9 EV2400 with 3V3 dead | **Fixed**: pull-ups on SMB_PU via R312 0R, plus TP308. Also J104 bench PACK_P header. |
 | #10 BTP_INT → PA6 | **Fixed**: Q103 2N7002 buffer; GAUGE_BTP is now active low. |
@@ -279,7 +279,7 @@ _Decided 2026-10-12; see "Decisions on the open questions" below._
 | Q4 | Rule + configuration: fit cells before USB (silkscreen and sheet note); gauge precharge and 0-V charging disabled (firmware item 4). |
 | Q5 | Fixed: J103 is now 4-pin in the EV2400 SMBus order (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT unused. The old 3-pin order would have shorted SCL to ground on a straight cable. EV2400 pull-ups are 20 k to 3.3 V, so with 3V3 down R312 must be removed (see #9). |
 | Q6 | No change: the TPS25751 GPIO event table (TRM SLVUCR8B Table 5-6) has no input event for a charger PG line; the TPS25751 manages the BQ25756 over I2Cc and its INT line. PG stays on its test point. |
-| Q7 | Documented: R_MEAS covers the 3V3 branch only. (Rev A5: the gauge BAT feed now comes from before F101, so this reading excludes the gauge's own supply current.) For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. |
+| Q7 | Documented: R_MEAS covers the 3V3 branch only. (Rev A5: the gauge BAT feed now comes from before F101, so this reading excludes the gauge's own supply current.) For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. (Rev A5: F101 is JLC-placed, so this method is gone; use the gauge's current reading.) |
 
 ## Verified correct (coverage)
 

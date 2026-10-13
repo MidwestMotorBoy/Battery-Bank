@@ -4223,7 +4223,7 @@
 		)
 		(uuid "8a3a566c-f33f-4c14-a5f4-a07a27bac5f6")
 	)
-	(text "Holders BT101-BT104 OR welded pack on J101 - never both.\nF101 and J101 are DNP: check each cell at TP102-TP105, then hand-fit F101."
+	(text "Holders BT101-BT104 OR welded pack on J101 - never both.\nJ101 is DNP. Check each cell at TP102-TP105 and the stack at TP108 before waking the gauge\n(Q101/Q102 stay off until FET_EN is set, so nothing loads the cells until then)."
 		(exclude_from_sim no)
 		(at 22.86 40.64 0)
 		(effects
@@ -11577,7 +11577,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "eab9dfef-c6de-4ceb-a469-22de0e91ff38")
 		(property "Reference" "F101"
 			(at 111.61 48.27 90)
@@ -11632,7 +11632,7 @@
 				)
 			)
 		)
-		(property "Notes" "Hand-fit after checking all four cells at TP102-TP105 (JLC leaves it off). 15 A for 100 W out at the 12 V low end (~10 A continuous, 75 % derating). Interrupt 300 A at 24 Vdc (pack max 16.8 V). 3.9 mOhm: 0.4 W at 10 A, give it copper. Review 2 D3: 15 A holds only if the gauge cut-off under load stays at 2.8 V/cell or higher (9.8 A at 100 W); a lower cut-off needs 1206FA-20A"
+		(property "Notes" "JLC-placed (rev A5; was DNP/hand-fit). 15 A for 100 W out at the 12 V low end (~10 A continuous, 75 % derating). Interrupt 300 A at 24 Vdc (pack max 16.8 V). 3.9 mOhm: 0.4 W at 10 A, give it copper. Review 2 D3: 15 A holds only if the gauge cut-off under load stays at 2.8 V/cell or higher (9.8 A at 100 W); a lower cut-off needs 1206FA-20A"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
