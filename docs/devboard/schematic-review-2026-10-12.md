@@ -39,7 +39,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | m1 Q102 VGS | **Fixed**: DNP D103 15 V clamp. |
 | m2, m3, m4, m7, m9, m12, m14, m15, m16, m17, m19, m20 | **Fixed** (values, footprints, parts as listed). |
 | m5 SMAJ22A clamp | Not changed: TVS2200 has no LCSC/JLC stock; SMAJ22A meets TPS25751 footnote 4. |
-| m6 Edge SMA on 0.8 mm board | **Fixed**: vertical SMAs. |
+| m6 Edge SMA on 0.8 mm board | **Fixed**: vertical SMAs; later replaced by test loops TP201/TP202 + GND TP208/TP209 (rev A5). |
 | m8 TS1 NTC protection | Sheet note: tape the NTC to BT101. |
 | m10 J101 + holders | **Fixed**: J101 DNP. |
 | m11 TP102 | **Fixed**: "not GND" silkscreen. |

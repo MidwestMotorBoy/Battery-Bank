@@ -19,7 +19,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | Subsystem | Fed from | Measure it at |
 |---|---|---|
 | Gauge (BQ40Z50-R2) | Cells, via D101 → R105 → BAT | Drop across R105 (100 Ω): 50–340 µA = 5–34 mV |
-| 3.3 V rail: MCU, both TPS25751, SMBus pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (J201/J202) |
+| 3.3 V rail: MCU, both TPS25751, SMBus pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (TP201/TP202) |
 | Chargers (2 × BQ25756), 5 V bucks (2 × TPS62933) | PACK_P directly | Not separately (datasheet values) |
 | Measurement section (TPS70950 + 2 × INA190) | PACK_P via JP202 | Off unless the JP202 shunt is fitted |
 

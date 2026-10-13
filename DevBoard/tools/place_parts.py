@@ -48,10 +48,9 @@ FIXED = {
     "F101": (114, 96, 90), "J101": (113, 108, 0), "J103": (132.5, 92.5, 0),
     # cell NTC headers (TS1..TS4), each beside the tap test point of the cell it watches
     "J102": (106.3, 20.0, 0), "J105": (106.3, 47.0, 0), "J106": (106.3, 75.0, 0), "J107": (106.3, 103.0, 0),
-    # sleep-current section: R_MEAS, amplifiers, LDO, 3.3 V buck; SMAs on the bottom edge
+    # sleep-current section: R_MEAS, amplifiers, LDO, 3.3 V buck; output probe loops on the bottom edge
     "R201": (150, 96, 0), "U201": (160, 95, 0), "U202": (160, 104, 0), "U203": (146, 105, 0),
     "U204": (180, 96, 0), "L201": (184.3, 96, 0), "JP201": (140, 103, 0),
-    "J201": (162, 110.0, 0), "J202": (178, 110.0, 0),          # vertical SMAs along the bottom edge
     # MCU top band; antenna (pin-1 end) at the top edge
     "U301": (150, 5.8, 0), "J301": (118.8, 6, 90), "J302": (131, 6, 90), "J303": (168, 6, 90),
 }
@@ -202,6 +201,10 @@ LAYOUT = [
     # rev A5 probe points: LDO input/output pads by the LDO caps, cell top before F101, scope-ground loops in a third
     # row of the pack probe field
     ("at", "TP206", 145.46, 101.35, 0), ("at", "TP207", 148.82, 101.58, 0),
+    # sleep-current outputs (replace the SMAs): each amp output loop with its own GND loop 4.5 mm away for a short
+    # probe ground lead, in a row along the bottom edge under the amps
+    ("at", "TP201", 162.0, 110.5, 0), ("at", "TP208", 166.5, 110.5, 0),
+    ("at", "TP202", 173.0, 110.5, 0), ("at", "TP209", 177.5, 110.5, 0),
     ("at", "TP108", 117.25, 97.4, 0),
     ("at", "TP109", 113.5, 74.0, 0), ("at", "TP309", 119.85, 74.0, 0),
     # J104 series Schottky (reverse-lead / back-feed protection) between the bench header and the probe field
@@ -212,9 +215,23 @@ LAYOUT = [
 # and a warning under TP102: CELL_N is the gauge ground, a scope ground there bypasses RS101
 PIN_NOTES = [("TX", 131.0, 3.3), ("RX", 133.54, 3.3), ("G", 136.08, 3.3), ("not GND", 106.3, 17.6)]
 
+# connector pinouts on the silkscreen (pin number -> text), placed beside each pin on the side with room
+PIN_LABELS = {
+    "J101": {"1": "B-", "2": "C1", "3": "C2", "4": "C3", "5": "B+"},                     # welded pack
+    "J102": {"1": "TS1", "2": "-"}, "J105": {"1": "TS2", "2": "-"},                     # cell NTCs (- = CELL_N)
+    "J106": {"1": "TS3", "2": "-"}, "J107": {"1": "TS4", "2": "-"},
+    "J103": {"1": "GND", "2": "SCL", "3": "SDA", "4": "NC"},                            # EV2400 SMBus
+    "J104": {"1": "+", "2": "-"},                                                       # bench supply
+    "J303": {"1": "3V3", "2": "TH5", "3": "NTC", "4": "5V1", "5": "5V2", "6": "INH", "7": "G"},
+    "J402": {"1": "SDA", "2": "SCL", "3": "G"}, "J502": {"1": "SDA", "2": "SCL", "3": "G"},
+    "J301": {"1": "1"},                                                                 # SWD pin 1
+}
+# what a part is for, beside its courtyard
+PART_LABELS = {"SW101": "WAKE", "SW301": "RESET", "JP201": "AMP EN", "JP202": "MEAS PWR", "J301": "SWD"}
+
 # silkscreen block titles (text, x, y, rotation)
 TITLES = [("PORT 1", 134.8, 46.0, 90), ("PORT 2", 134.8, 46.0 + PORT_DY, 90), ("GAUGE", 121.5, 17.0, 0),
-          ("MCU", 116.5, 11.9, 0), ("SLEEP CURRENT", 148.5, 111.5, 0),
+          ("MCU", 116.5, 12.6, 0), ("SLEEP CURRENT", 148.5, 111.5, 0),
           ("FIT CELLS BEFORE USB", 55.0, 113.3, 0)]
 
 
@@ -465,6 +482,101 @@ unplaced_labels = []
 for txt, x, y in PIN_NOTES:               # reserve the pin-note spots before placing labels
     a, b = k(x - 0.5 * len(txt) - 0.3, y - 0.6), k(x + 0.5 * len(txt) + 0.3, y + 0.6)
     obst.append((a.x, a.y, b.x, b.y))
+# connector pin labels and part-purpose labels (placed before the reference / test-point labels so they get the spots
+# next to the pins): 0.8 mm text, clear of pads, silk, other labels and other parts. Pins in a column get text turned
+# 90 degrees along the column (needs ~1 mm beside the pin); pins in a row get upright text above or below.
+TXT_H = 0.8
+EXTRA_SILK = []                            # (text, x, y, angle) in board mm, written with the outline below
+crts = {r: crt(f, 0.05) for r, f in fps.items()}
+
+
+def text_box(txt, x, y, ang=0):
+    L = 0.72 * TXT_H * max(len(txt), 1) + 0.2
+    w, h = (L, TXT_H + 0.2) if ang == 0 else (TXT_H + 0.2, L)
+    a, b = k(x - w / 2, y - h / 2), k(x + w / 2, y + h / 2)
+    return (a.x, a.y, b.x, b.y)
+
+
+def free_spot(txt, x, y, owner, ang=0):
+    r = text_box(txt, x, y, ang)
+    if not (r[0] > edge[0] and r[1] > edge[1] and r[2] < edge[2] and r[3] < edge[3]):
+        return None
+    if hit(r, obst) or hit(r, [c for o, c in crts.items() if o != owner]):
+        return None
+    return r
+
+
+missing = []
+for ref, labels in PIN_LABELS.items():
+    fp = fps[ref]
+    pads = {p.GetNumber(): p for p in fp.Pads()}
+    pts = {n: (pcbnew.ToMM(p.GetPosition().x) - ORIGIN[0], pcbnew.ToMM(p.GetPosition().y) - ORIGIN[1]) for n, p in pads.items()}
+    cx = sum(q[0] for q in pts.values()) / len(pts); cy = sum(q[1] for q in pts.values()) / len(pts)
+    xs = [q[0] for q in pts.values()]; ys = [q[1] for q in pts.values()]
+    vertical = (max(ys) - min(ys)) >= (max(xs) - min(xs))      # pins in a column: labels left or right
+    cx0, cy0, cx1, cy1 = [pcbnew.ToMM(v) - o for v, o in zip(crts[ref], (ORIGIN[0], ORIGIN[1], ORIGIN[0], ORIGIN[1]))]
+    ang = 90 if vertical and ref != "J301" else 0
+
+    def tang(txt):
+        return 0 if txt in "+-" else ang
+
+    def spot(n, txt, sgn):
+        px, py = pts[n]
+        L = 0.72 * TXT_H * len(txt) + 0.2
+        if ref == "J301":                                       # 2-row SWD: "1" outboard of pin 1
+            sgn2 = 1 if px > cx else -1
+            return px + sgn2 * ((cx1 - cx0) / 2 - abs(px - cx) + 0.25 + L / 2), py
+        if vertical:
+            half = TXT_H / 2 if tang(txt) else L / 2
+            return ((cx1 + 0.25 + half) if sgn > 0 else (cx0 - 0.25 - half)), py
+        return px, ((cy1 + 0.2 + TXT_H / 2) if sgn > 0 else (cy0 - 0.2 - TXT_H / 2))
+
+    def fit(n, t, sgn, taken):                                  # nudge along the row / column by up to 1 mm
+        x, y = spot(n, t, sgn)
+        for d in (0, 0.5, -0.5, 1.0, -1.0, 1.5, -1.5):
+            xx, yy = (x, y + d) if vertical else (x + d, y)
+            bx = free_spot(t, xx, yy, ref, tang(t))
+            if bx and not hit(bx, taken):
+                return (t, xx, yy, tang(t)), bx
+        return None
+
+    placed_all = False
+    for sgn in (+1, -1):                                        # 1) all pins on one side
+        got = []
+        for n, t in labels.items():
+            f = fit(n, t, sgn, [bx for _, bx in got])
+            if not f:
+                break
+            got.append(f)
+        else:
+            for lab, bx in got:
+                EXTRA_SILK.append(lab); obst.append(bx)
+            placed_all = True
+            break
+    if not placed_all:                                          # 2) pin by pin, whichever side has room
+        for n, t in labels.items():
+            for sgn in (+1, -1):
+                f = fit(n, t, sgn, [])
+                if f:
+                    EXTRA_SILK.append(f[0]); obst.append(f[1])
+                    break
+            else:
+                missing.append(f"{ref}.{n}")
+for ref, txt in PART_LABELS.items():
+    x0, y0, x1, y1 = [pcbnew.ToMM(v) for v in crts[ref]]
+    x0, x1, y0, y1 = x0 - ORIGIN[0], x1 - ORIGIN[0], y0 - ORIGIN[1], y1 - ORIGIN[1]
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    w = 0.72 * TXT_H * len(txt) + 0.2
+    for x, y in ((cx, y0 - 0.65), (cx, y1 + 0.65), (x0 - w / 2 - 0.3, cy), (x1 + w / 2 + 0.3, cy),
+                 (cx, y0 - 1.6), (cx, y1 + 1.6), (x0 - w / 2 - 1.2, cy), (x1 + w / 2 + 1.2, cy)):
+        bx = free_spot(txt, x, y, ref)
+        if bx:
+            EXTRA_SILK.append((txt, x, y, 0)); obst.append(bx)
+            break
+    else:
+        missing.append(ref)
+print("pin/part labels without room:", missing)
+
 for ref, fp in sorted(fps.items(), key=lambda kv: (not kv[0].startswith("TP"), kv[0])):
     if not (ref.startswith("TP") or re.match(r"JP?\d", ref)):
         continue
@@ -479,21 +591,35 @@ for ref, fp in sorted(fps.items(), key=lambda kv: (not kv[0].startswith("TP"), k
         hw, hh = (x1 - x0) / 2e6, (y1 - y0) / 2e6
         cands = [(0, -hh - 0.8, 0), (0, hh + 0.8, 0), (-hw - 2.0, 0, 0), (hw + 2.0, 0, 0), (-hw - 3.5, 0, 0),
                  (hw + 3.5, 0, 0), (0, -hh - 1.8, 0), (0, hh + 1.8, 0), (-hw + 1, -hh - 0.8, 0), (hw - 1, hh + 0.8, 0),
-                 (-hw - 0.8, 0, 90), (hw + 0.8, 0, 90)]
+                 (-hw - 0.8, 0, 90), (hw + 0.8, 0, 90), (-hw - 1.9, 0, 90), (hw + 1.9, 0, 90),
+                 (-hw - 2.6, 0, 90), (hw + 2.6, 0, 90),
+                 (-hw - 0.8, hh + 1.75, 90), (hw + 0.8, hh + 1.75, 90),      # in line with a pin-label column
+                 (-hw - 0.8, -hh - 1.75, 90), (hw + 0.8, -hh - 1.75, 90)]
         c = pcbnew.VECTOR2I((x0 + x1) // 2, (y0 + y1) // 2)
     else:
         cands = [(0, -2.4, 0), (0, -2.8, 0), (0, 2.4, 0), (-3.2, 0, 0), (3.2, 0, 0), (-4.2, 0, 0), (4.2, 0, 0)]
-    for dx, dy, ang in cands:
-        v.SetTextAngleDegrees(ang)
-        v.SetPosition(pcbnew.VECTOR2I(c.x + pcbnew.FromMM(dx), c.y + pcbnew.FromMM(dy)))
-        r = box(v.GetBoundingBox(), 0.05)
-        if r[0] > edge[0] and r[1] > edge[1] and r[2] < edge[2] and r[3] < edge[3] and not hit(r, obst):
-            obst.append(r)
+    # connector references boxed in by their pin labels fall back to the pin-label text size
+    sizes = [None] if ref.startswith("TP") else [(1.0, 0.15), (0.8, 0.15)]
+    found = False
+    for sz in sizes:
+        if sz:
+            v.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(sz[0]), pcbnew.FromMM(sz[0])))
+            v.SetTextThickness(pcbnew.FromMM(sz[1]))
+        for dx, dy, ang in cands:
+            v.SetTextAngleDegrees(ang)
+            v.SetPosition(pcbnew.VECTOR2I(c.x + pcbnew.FromMM(dx), c.y + pcbnew.FromMM(dy)))
+            r = box(v.GetBoundingBox(), 0.05)
+            if r[0] > edge[0] and r[1] > edge[1] and r[2] < edge[2] and r[3] < edge[3] and not hit(r, obst):
+                obst.append(r)
+                found = True
+                break
+        if found:
             break
-    else:
+    if not found:
         v.SetVisible(False)             # no clear spot: hide rather than print over other silk
         unplaced_labels.append(ref)
 print("test-point labels hidden (no free spot):", unplaced_labels)
+
 
 # outline last: creating PCB_SHAPEs earlier breaks the SWIG wrappers of footprint graphics
 for d in list(board.GetDrawings()):
@@ -517,11 +643,11 @@ for txt, yc in (("USB 1", USB_Y[0]), ("USB 2", USB_Y[1])):     # port labels bes
     t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(1.2), pcbnew.FromMM(1.2))); t.SetTextThickness(pcbnew.FromMM(0.2))
     t.SetPosition(k(W - 4.5, yc + 7.6))                       # just below the connector
     board.Add(t)
-for txt, x, y in PIN_NOTES:
+for txt, x, y, ang in [(t, x, y, 0) for t, x, y in PIN_NOTES] + EXTRA_SILK:
     t = pcbnew.PCB_TEXT(board)
     t.SetText(txt); t.SetLayer(pcbnew.F_SilkS)
     t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(0.8), pcbnew.FromMM(0.8))); t.SetTextThickness(pcbnew.FromMM(0.15))
-    t.SetPosition(k(x, y))
+    t.SetPosition(k(x, y)); t.SetTextAngleDegrees(ang)
     board.Add(t)
 for txt, x, y, rot in TITLES:              # block titles
     t = pcbnew.PCB_TEXT(board)
@@ -555,8 +681,6 @@ board.Save(PCB)
 # KiCad-library footprints whose 3D model file KiCad 10 does not ship: point them at a same-size shipped model
 # (text pass: pcbnew's Models() returns copies, so assigning m_Filename there does not stick)
 MODEL_SUBST = {
-    "Connector_Coaxial.3dshapes/SMA_Amphenol_132134_Vertical.step":
-        "Connector_Coaxial.3dshapes/SMA_Amphenol_132134-10_Vertical.step",          # same connector family
     "Button_Switch_SMD.3dshapes/SW_Push_1P1T_XKB_TS-1187A.step":
         "Button_Switch_SMD.3dshapes/SW_SPST_TL3342.step",   # 5.2 mm tact, pads +/-3.15/1.9 vs +/-3.0/1.875
 }

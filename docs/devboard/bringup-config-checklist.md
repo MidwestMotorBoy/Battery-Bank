@@ -13,7 +13,6 @@ Where review 2 corrected review 1, the corrected value is used here, and the sou
 - [ ] U301 STM32WB1MMC (out of stock at LCSC).
 - [ ] U201/U202 INA190 (DigiKey/Mouser).
 - [ ] J301 Samtec FTSH-105-01-L-DV-K (keyed shroud).
-- [ ] J201/J202 SMA.
 - [ ] Two 2.54 mm shunts (JP201, JP202).
 - [ ] Wired NTCs on J102, J105–J107, insulated, taped to BT101–BT104.
 

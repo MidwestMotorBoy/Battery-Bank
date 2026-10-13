@@ -74,7 +74,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
   - INA190 (datasheet): offset ±15 µV max (≈ ±1.5 µA on 10 Ω; typically much less), input bias 0.5 nA typ, common mode −0.2 to 40 V, 48 µA supply, output swings to within 40 mV of VS and 3 mV of GND
   - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
   - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
-  - Outputs to two vertical SMA connectors (OUT_LO, OUT_HI; the edge-launch part needs a 1.6 mm board) plus test points; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
+  - Outputs on test loops (OUT_LO TP201, OUT_HI TP202), each with a GND loop beside it (TP208, TP209) for a short probe ground; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
   - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 

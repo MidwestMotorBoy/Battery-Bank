@@ -29,7 +29,7 @@ Changes to make in the next revision of the dev board. Add items as rev 1 is rou
 These came up while placing rev 1 (2026-10-12). Any that are wanted could still go into rev 1 if done before routing and ordering.
 
 ### 2. A GND test loop in every probe field
-- Rev 1 has one GND test point (TP203, by the SMA connectors). Each port's probe field and the pack/system field have no ground loop nearby for a scope ground clip.
+- Rev 1 has one GND test point (TP203, by the sleep-current amps; rev A5 adds TP208/TP209 beside the amp outputs). Each port's probe field and the pack/system field have no ground loop nearby for a scope ground clip.
 - Needs schematic changes (new TestPoint symbols on GND). The layout has room: the empty slot in each port's probe field.
 
 ### 3. Low-inductance probe points on the switch nodes

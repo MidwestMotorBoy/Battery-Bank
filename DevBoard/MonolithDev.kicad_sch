@@ -270,7 +270,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "MONOLITH DEV BOARD - SHEET INDEX\n2  Cells and Gauge        4S holders / pack input, BQ40Z50-R2, protection FETs, SMBus\n3  Sleep Current and 3V3  R_MEAS + 2x INA190 to SMA, TPS70950 amp supply, TPS62177 3V3\n4  MCU and NTCs           STM32WB1MMC, debug headers, board NTCs TH1-TH4, LED\n5  USB Port 1 / 6  USB Port 2   (same sheet file)  TPS25751D + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec: docs/devboard/circuit-description.md   Changes/open items: DevBoard/README.md"
+	(text "MONOLITH DEV BOARD - SHEET INDEX\n2  Cells and Gauge        4S holders / pack input, BQ40Z50-R2, protection FETs, SMBus\n3  Sleep Current and 3V3  R_MEAS + 2x INA190 to test loops, TPS70950 amp supply, TPS62177 3V3\n4  MCU and NTCs           STM32WB1MMC, debug headers, board NTCs TH1-TH4, LED\n5  USB Port 1 / 6  USB Port 2   (same sheet file)  TPS25751D + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec: docs/devboard/circuit-description.md   Changes/open items: DevBoard/README.md"
 		(exclude_from_sim no)
 		(at 30.48 205.74 0)
 		(effects
@@ -281,7 +281,7 @@
 		)
 		(uuid "17ac7dae-221c-4f1f-bf54-587de0440efb")
 	)
-	(text "REVISION LOG\nA0  2026-10-11  First draft from circuit description draft 5.  Author: Claude Code.  Reviewer: none yet.\nA1  2026-10-11  Layout cleanup: blocks, power symbols, notes, title blocks.  Author: Claude Code.  Reviewer: none yet.\nA2  2026-10-11  Readability pass: no overlapping text, sheet-pin names inside boxes.  Author: Claude Code.  Reviewer: none yet.\nA3  2026-10-11  Wiring pass: wires instead of labels inside each block.  Author: Claude Code.  Reviewer: none yet.\nA4  2026-10-12  Polymer bulk caps, PWR_FLAGs at rail sources, design-review fixes\n                (docs/devboard/schematic-review-2026-10-12.md).  Author: Claude Code.  Reviewer: 3-agent review.\nA5  2026-10-13  Review 2 decisions: CHG_INH fails safe (R417/R517 47k pull-up to 3V3, MCU drives low to charge),\n                MCU IWDG in hardware mode; BAT fed before F101 (TI fig. 9-12); C421/C521 100 uF; LRB520S, BSS138,\n                C109 4.7n, PPHV/VBUS caps, GND/probe test points, JLC numbers on all R/C (review 2).  Author: Claude Code."
+	(text "REVISION LOG\nA0  2026-10-11  First draft from circuit description draft 5.  Author: Claude Code.  Reviewer: none yet.\nA1  2026-10-11  Layout cleanup: blocks, power symbols, notes, title blocks.  Author: Claude Code.  Reviewer: none yet.\nA2  2026-10-11  Readability pass: no overlapping text, sheet-pin names inside boxes.  Author: Claude Code.  Reviewer: none yet.\nA3  2026-10-11  Wiring pass: wires instead of labels inside each block.  Author: Claude Code.  Reviewer: none yet.\nA4  2026-10-12  Polymer bulk caps, PWR_FLAGs at rail sources, design-review fixes\n                (docs/devboard/schematic-review-2026-10-12.md).  Author: Claude Code.  Reviewer: 3-agent review.\nA5  2026-10-13  Review 2 decisions: CHG_INH fails safe (R417/R517 47k pull-up to 3V3, MCU drives low to charge),\n                MCU IWDG in hardware mode; BAT fed before F101 (TI fig. 9-12); C421/C521 100 uF; LRB520S, BSS138,\n                C109 4.7n, PPHV/VBUS caps, GND/probe test points, JLC numbers on all R/C (review 2);\n                J201/J202 SMAs replaced by OUT_LO/OUT_HI loops TP201/TP202 + GND loops TP208/TP209.  Author: Claude Code."
 		(exclude_from_sim no)
 		(at 30.48 233.68 0)
 		(effects
