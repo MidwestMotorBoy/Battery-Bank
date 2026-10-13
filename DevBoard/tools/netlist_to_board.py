@@ -123,6 +123,10 @@ for a, b in blocks(s, "footprint"):
                 f'\t\t\t\t)\n\t\t\t)\n\t\t)')
         vm = list(blocks(blk, "property", "\t\t"))[-1]
         blk = blk[:vm[1]] + prop + blk[vm[1]:]
+    am = re.search(r"\n\t\t\(attr([^)\n]*)\)", blk)          # do-not-populate follows the symbol
+    if am:
+        toks = [t for t in am.group(1).split() if t != "dnp"] + (["dnp"] if c["dnp"] else [])
+        blk = blk[:am.start()] + "\n\t\t(attr " + " ".join(toks) + ")" + blk[am.end():]
     pads = []
     for pa, pb in blocks(blk, "pad", "\t\t"):
         pblk = blk[pa:pb]

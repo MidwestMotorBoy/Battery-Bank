@@ -72,7 +72,8 @@ For each TPS25751 at every STM32WB boot:
 2. "PTCH" with ReadyForPatch → read BOOT_STATUS (0x2D) for the reason, load the Low Region binary by PBM (→ APP), then repair the EEPROM:
    - Blank EEPROM (first power-up): write the Full Flash image from 0x0000 with FLad/FLwd (or write both regions plus both pointers from the Low Region binary), verify with FLvy, then GAID.
    - Corrupt region: UpdateRegionOfEeprom on the bad region.
-3. Log the result over Bluetooth.
+3. Dead-battery start (VBUS came up before 3V3): the TPS25751 keeps its VIN_3V3 switch open and runs LDO_3V3 (EEPROM, I2Cc pull-ups) from VBUS until the host clears the dead-battery flag (tps25751 §8.3.2; TRM 4CC "DBfg"). Once 3V3 is up, check the flag and send DBfg, or the controller resets when the cable is pulled.
+4. Log the result over Bluetooth.
 - First-time programming time estimate: ~32 KB in 32-byte FLwd commands ≈ 1,000 commands; at ~10 ms per command handshake that's ~10–15 s per port.
 
 ## Known limits

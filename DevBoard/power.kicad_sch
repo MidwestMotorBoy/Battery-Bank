@@ -2198,7 +2198,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. R204/R205 0R to start; 49.9R if cable capacitance makes the amp ring.\n6. SLEEP low = sleep mode (internal pull-down); MCU PB4 drives it high for full load.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201/U202 are hand-soldered (DigiKey/Mouser); JLC has no stock. Not in the JLC BOM/CPL."
+	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. R204/R205 49.9R isolate the INA190 outputs from cable capacitance (1 nF max); use a 1 MOhm scope input.\n6. SLEEP low = sleep mode (internal pull-down); MCU PB4 drives it high for full load.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201/U202 are hand-soldered (DigiKey/Mouser); JLC has no stock. Not in the JLC BOM/CPL.\n9. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n10. U203 EN is left open (internal 300 nA pull-up enables it). EN must stay below 6.5 V: never tie it to LDO_IN.\n11. U204 pin 4 (NC) goes to GND, as TI recommends."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -2226,12 +2226,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6e1e6831-722e-41cf-81dd-e29b56fee9bb")
-	)
-	(junction
-		(at 77.47 229.87)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "76d3912f-f447-404f-8b23-5d3d200a22c0")
 	)
 	(junction
 		(at 80.01 139.7)
@@ -2294,6 +2288,10 @@
 		(uuid "fff99f0b-2f7d-41d9-bbc5-211e72d046be")
 	)
 	(no_connect
+		(at 80.01 232.41)
+		(uuid "c86a2134-ceb3-414c-a5da-63b7214eec27")
+	)
+	(no_connect
 		(at 118.11 147.32)
 		(uuid "0978e07e-ac0d-4fa3-a61f-5c50e162cdd7")
 	)
@@ -2305,9 +2303,55 @@
 		(at 118.11 185.42)
 		(uuid "830bf01b-8d94-4f19-819e-7fe9d68164ba")
 	)
-	(no_connect
-		(at 147.32 76.2)
-		(uuid "a03775b4-8c28-40ed-bd23-e3598a142a31")
+	(wire
+		(pts
+			(xy 207.01 55.88) (xy 207.01 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a2692f3-c537-4be5-a75d-f72f8e43f1ad")
+	)
+	(wire
+		(pts
+			(xy 62.23 229.87) (xy 68.58 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73e45f91-d62a-47e2-8b64-8dbe3058267a")
+	)
+	(wire
+		(pts
+			(xy 55.88 229.87) (xy 62.23 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0ab38819-0e5e-4798-8576-e6b4b6efaa13")
+	)
+	(wire
+		(pts
+			(xy 99.06 55.88) (xy 106.68 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e5debbc-f6fd-4290-a6f8-24ea03f10c98")
+	)
+	(wire
+		(pts
+			(xy 92.71 55.88) (xy 99.06 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "064576bd-e096-496a-9869-1975d906bbc5")
 	)
 	(wire
 		(pts
@@ -2338,16 +2382,6 @@
 			(type default)
 		)
 		(uuid "09875a15-43d4-4324-ba20-ecbeb53a0f01")
-	)
-	(wire
-		(pts
-			(xy 92.71 55.88) (xy 106.68 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0ceeba9e-572e-4671-816c-c1010b4ac677")
 	)
 	(wire
 		(pts
@@ -2521,16 +2555,6 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 232.41) (xy 77.47 232.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "74837187-4d93-4370-8cd3-e3d8730e2379")
-	)
-	(wire
-		(pts
 			(xy 118.11 177.8) (xy 121.92 177.8)
 		)
 		(stroke
@@ -2558,16 +2582,6 @@
 			(type default)
 		)
 		(uuid "83818271-6c86-453e-929e-0fa1d71f15c0")
-	)
-	(wire
-		(pts
-			(xy 55.88 229.87) (xy 68.58 229.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "84eaf5e6-cc7f-4e94-b71c-7510d3d02724")
 	)
 	(wire
 		(pts
@@ -2728,16 +2742,6 @@
 			(type default)
 		)
 		(uuid "b6fc0d67-850a-4953-9046-597d24675975")
-	)
-	(wire
-		(pts
-			(xy 77.47 232.41) (xy 77.47 229.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c51ba1d4-168e-4fac-b89d-b8635c96770a")
 	)
 	(wire
 		(pts
@@ -3109,26 +3113,6 @@
 		)
 		(uuid "de4a0bd1-5149-4212-81d4-c18124a5c7f1")
 	)
-	(label "PACK_LP"
-		(at 40.64 269.24 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "e244c8b0-454b-4b1c-9e76-851daaafe63f")
-	)
-	(label "LDO_IN"
-		(at 55.88 269.24 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "e39be690-e4a8-447a-8222-9a3ed437dd30")
-	)
 	(global_label "3V3_SLEEP"
 		(shape bidirectional)
 		(at 142.24 63.5 180)
@@ -3240,7 +3224,7 @@
 		(dnp no)
 		(uuid "06c986de-356f-4816-b42a-391ad87e199a")
 		(property "Reference" "TP203"
-			(at 190.5 159.25 0)
+			(at 190.50 159.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3328,7 +3312,7 @@
 		(dnp no)
 		(uuid "06ff21bd-7c03-4c4b-9079-c49d9d52b2a1")
 		(property "Reference" "C204"
-			(at 62.13 232.55 0)
+			(at 75.03 232.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3338,7 +3322,7 @@
 			)
 		)
 		(property "Value" "1u 50V"
-			(at 62.13 234.51 0)
+			(at 75.03 234.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3495,7 +3479,7 @@
 				)
 			)
 		)
-		(property "Value" "2.2u 10V"
+		(property "Value" "4.7u 25V"
 			(at 114.34 234.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3505,7 +3489,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 107.645 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -3528,6 +3512,39 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 106.68 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1779"
+			(at 106.68 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21A475KAQNNNE"
+			(at 106.68 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "TPS709 needs >= 1.5 uF effective at 5 V (review m3)"
 			(at 106.68 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3576,7 +3593,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.5 169.42 0)
+			(at 190.50 169.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3652,7 +3669,7 @@
 			)
 		)
 		(property "Value" "0R"
-			(at 65.89 136.9 90)
+			(at 65.89 136.90 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4196,7 +4213,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 152.4 83.06 0)
+			(at 152.40 83.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4252,7 +4269,7 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 40.64 269.24 0)
+		(at 99.06 55.88 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4262,7 +4279,7 @@
 		(dnp no)
 		(uuid "3aaa0a3b-54d2-4970-af88-f153d1a54806")
 		(property "Reference" "#FLG201"
-			(at 40.64 269.24 0)
+			(at 99.06 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4273,7 +4290,8 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 40.64 264.92 0)
+			(at 99.06 51.56 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4283,7 +4301,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 40.64 269.24 0)
+			(at 99.06 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4294,7 +4312,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 40.64 269.24 0)
+			(at 99.06 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4305,7 +4323,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 40.64 269.24 0)
+			(at 99.06 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4429,7 +4447,7 @@
 		(dnp no)
 		(uuid "475210ca-1c61-498a-a5a4-e58a5b94ab9f")
 		(property "Reference" "TP201"
-			(at 152.4 138.93 0)
+			(at 152.40 138.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4496,7 +4514,7 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 55.88 269.24 0)
+		(at 62.23 229.87 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4506,7 +4524,7 @@
 		(dnp no)
 		(uuid "4da780a6-65c2-4a65-8106-3a8e733ee15c")
 		(property "Reference" "#FLG202"
-			(at 55.88 269.24 0)
+			(at 62.23 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4517,7 +4535,8 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 55.88 264.92 0)
+			(at 62.23 225.425 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4527,7 +4546,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 55.88 269.24 0)
+			(at 62.23 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4538,7 +4557,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 55.88 269.24 0)
+			(at 62.23 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4549,7 +4568,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 55.88 269.24 0)
+			(at 62.23 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4594,7 +4613,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 165.1 67.82 0)
+			(at 165.10 67.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4748,7 +4767,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 88.9 241.81 0)
+			(at 88.90 241.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5056,7 +5075,7 @@
 				)
 			)
 		)
-		(property "Value" "0R"
+		(property "Value" "49.9"
 			(at 139.55 141.98 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5099,8 +5118,30 @@
 				)
 			)
 		)
-		(property "Notes" "49.9R option"
+		(property "Notes" "Isolates the INA190 output from cable capacitance (max 1 nF load); use a 1 MOhm scope input (review m17)"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C23185"
+			(at 139.7 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF499JT5E"
+			(at 139.7 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5223,7 +5264,7 @@
 				)
 			)
 		)
-		(property "Value" "10R 1% 0.5W"
+		(property "Value" "10R 1%"
 			(at 88.75 60.65 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5266,8 +5307,30 @@
 				)
 			)
 		)
-		(property "Notes" "R_MEAS"
+		(property "Notes" "R_MEAS: <= 10 mA in use (1 mW); 0.4 W for ~0.35 ms at TPS62177 start-up, within a 1206 pulse rating"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17903"
+			(at 88.9 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1206W4F100JT5E"
+			(at 88.9 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5313,7 +5376,7 @@
 				)
 			)
 		)
-		(property "Value" "0R"
+		(property "Value" "49.9"
 			(at 139.55 180.08 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5356,8 +5419,30 @@
 				)
 			)
 		)
-		(property "Notes" "49.9R option"
+		(property "Notes" "Isolates the INA190 output from cable capacitance (max 1 nF load); use a 1 MOhm scope input (review m17)"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C23185"
+			(at 139.7 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF499JT5E"
+			(at 139.7 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5490,7 +5575,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
+		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132134_Vertical"
 			(at 172.72 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -5513,6 +5598,28 @@
 			)
 		)
 		(property "Description" "coaxial connector (BNC, SMA, SMB, SMC, Cinch/RCA, LEMO, ...)"
+			(at 172.72 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "Amphenol 132134 (or any 5-pin vertical SMA-KE)"
+			(at 172.72 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Vertical SMA: the edge-launch 132289 needs a 1.6 mm board (review m6). Hand-fit"
 			(at 172.72 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -5627,7 +5734,7 @@
 		(dnp no)
 		(uuid "a416d5f9-1802-4233-bee6-650e4ad3f2d3")
 		(property "Reference" "JP202"
-			(at 50.8 223.07 0)
+			(at 50.80 232.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5637,7 +5744,7 @@
 			)
 		)
 		(property "Value" "Meas. section power"
-			(at 50.8 225.04 0)
+			(at 50.80 234.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5669,6 +5776,28 @@
 			)
 		)
 		(property "Description" "Jumper, 2-pole, open"
+			(at 50.8 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 50.8 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
 			(at 50.8 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -5772,83 +5901,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
-		(at 71.12 269.24 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "a69a71d5-831a-48bb-995b-09697cba82c1")
-		(property "Reference" "#PWR222"
-			(at 71.12 269.24 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK_P"
-			(at 71.12 273.56 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 71.12 269.24 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 71.12 269.24 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 71.12 269.24 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "65aefaf5-e2b3-4d9f-b614-f5e58039471b")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR222")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 129.54 173.99 0)
 		(unit 1)
@@ -5860,7 +5912,7 @@
 		(dnp no)
 		(uuid "a8a8db97-4b6a-44bf-8892-c34f1fac37a8")
 		(property "Reference" "C203"
-			(at 134.79 172.86 0)
+			(at 137.20 172.86 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5869,8 +5921,8 @@
 				)
 			)
 		)
-		(property "Value" "0.1u"
-			(at 134.79 174.82 0)
+		(property "Value" "0.1u 50V"
+			(at 137.20 174.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5912,6 +5964,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C14663"
+			(at 129.54 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 129.54 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "34fa4319-2597-414f-a4e3-4d76bb325d24")
 		)
@@ -5939,7 +6013,7 @@
 		(dnp no)
 		(uuid "ab2bd199-2c31-47a2-bf89-3de451141d49")
 		(property "Reference" "C202"
-			(at 134.79 134.76 0)
+			(at 137.20 134.76 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5948,8 +6022,8 @@
 				)
 			)
 		)
-		(property "Value" "0.1u"
-			(at 134.79 136.72 0)
+		(property "Value" "0.1u 50V"
+			(at 137.20 136.72 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5981,6 +6055,28 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 129.54 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 129.54 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
 			(at 129.54 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -6037,7 +6133,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
+		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132134_Vertical"
 			(at 172.72 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -6060,6 +6156,28 @@
 			)
 		)
 		(property "Description" "coaxial connector (BNC, SMA, SMB, SMC, Cinch/RCA, LEMO, ...)"
+			(at 172.72 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "Amphenol 132134 (or any 5-pin vertical SMA-KE)"
+			(at 172.72 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Vertical SMA: the edge-launch 132289 needs a 1.6 mm board (review m6). Hand-fit"
 			(at 172.72 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -6262,7 +6380,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.5 71.63 0)
+			(at 190.50 71.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6328,7 +6446,7 @@
 		(dnp no)
 		(uuid "d374f7f1-78dd-4537-a8a1-9329476030f7")
 		(property "Reference" "U203"
-			(at 88.9 223.58 0)
+			(at 88.90 223.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6338,7 +6456,7 @@
 			)
 		)
 		(property "Value" "TPS70950DBVR"
-			(at 88.9 225.55 0)
+			(at 88.90 225.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6581,7 +6699,7 @@
 		(dnp no)
 		(uuid "dcd76e59-c91f-46d3-b2b4-bb27a2ed541b")
 		(property "Reference" "U204"
-			(at 152.4 49.59 0)
+			(at 152.40 49.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6591,7 +6709,7 @@
 			)
 		)
 		(property "Value" "TPS62177DQCR"
-			(at 152.4 51.56 0)
+			(at 152.40 51.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7059,7 +7177,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 45.72 232.92 0)
+			(at 45.72 225.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7255,7 +7373,7 @@
 		(dnp no)
 		(uuid "ef967bbc-7bef-48c5-aba5-3c10935b7b90")
 		(property "Reference" "TP202"
-			(at 152.4 177.03 0)
+			(at 152.40 177.03 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7553,7 +7671,7 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 71.12 269.24 0)
+		(at 207.01 60.96 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7563,7 +7681,7 @@
 		(dnp no)
 		(uuid "fc3eda91-a677-4241-8787-00fe10d002b8")
 		(property "Reference" "#FLG203"
-			(at 71.12 269.24 0)
+			(at 207.01 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7574,7 +7692,8 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 71.12 264.92 0)
+			(at 207.01 65.28 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7584,7 +7703,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 71.12 269.24 0)
+			(at 207.01 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7595,7 +7714,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 71.12 269.24 0)
+			(at 207.01 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7606,7 +7725,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 71.12 269.24 0)
+			(at 207.01 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7623,6 +7742,95 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "#FLG203")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 62.23 229.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "858a7b33-f17b-48cf-8689-78b1ba09f676")
+	)
+	(junction
+		(at 99.06 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "935c542d-d27c-475a-b4a9-28370ecd5582")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 147.32 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "f31a718f-f366-43fc-b03a-f156fd51b627")
+		(property "Reference" "#PWR222"
+			(at 147.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 147.32 80.52 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bfd64186-cf34-42bb-9738-866a5efea0ad")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "#PWR222")
 					(unit 1)
 				)
 			)

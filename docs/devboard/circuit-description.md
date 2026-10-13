@@ -61,7 +61,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - **PRES/SHUTDN:** to VSS (system always present). **FUSE:** to VSS. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
 - **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
 - **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
-- **EV2400 header:** 3-pin 2.54 mm (SMBC, SMBD, GND).
+- **EV2400 header:** 4-pin 2.54 mm in the EV2400 SMBus port order (rev A4): 1 VSS, 2 SMBC, 3 SMBD, 4 not used.
 
 ## 3. Power path split and sleep-current measurement
 
@@ -74,7 +74,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
   - INA190 (datasheet): offset ±15 µV max (≈ ±1.5 µA on 10 Ω; typically much less), input bias 0.5 nA typ, common mode −0.2 to 40 V, 48 µA supply, output swings to within 40 mV of VS and 3 mV of GND
   - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
   - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
-  - Outputs to two SMA edge connectors (OUT_LO, OUT_HI) plus test points; 49.9 Ω series resistor footprint (0 Ω to start) at each output to keep cable capacitance from making the amp ring
+  - Outputs to two vertical SMA connectors (OUT_LO, OUT_HI; the edge-launch part needs a 1.6 mm board) plus test points; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
   - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 
@@ -106,11 +106,12 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | PB0 / PB1 / PB2 | not connected (ST: RF-sensitive pins) |
 | PB4 | 3V3_SLEEP — TPS62177 SLEEP (resets with a pull-up, so the rail boots in normal mode) |
 | PA13 / PA14 / NRST | SWD |
-| BOOT0 | 10 kΩ pull-down |
+| BOOT0 | 10 kΩ pull-down; TP306 pad to pull it high for the UART bootloader (reset button SW301 on NRST) |
 | PA9 / PA10 | UART debug TX / RX (USART1) |
-| PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT (100 kΩ pull-up) |
+| PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT through a 2N7002 (Q103), 100 kΩ pull-up: **active low** |
 | PB5 | status LED |
-| Spares | PA7, PB8 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2 for probing) |
+| PB8 | CHG_INH (rev A4) — high stops both chargers at their CE pins (1 k to each) |
+| Spares | PA7 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
 - **UART header:** 3-pin (TX, RX, GND).
@@ -129,7 +130,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **J1 / J2:** Shou Han TYPE-C 16PCB0.8 IP68 (LCSC C55629727), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
 - VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2; D+/D− (A6/B6, A7/B7) → TPS25751 USB_P/USB_N (BC1.2); SBU unconnected.
 - **TVS:** Littelfuse SMAJ22A (C148220) VBUSx to GND, right at the connector.
-- **ESD protection: 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
+- **ESD protection (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
 - 330 pF on each CC line (TPS25751 datasheet).
 
 ### 7.2 PD controller (TPS25751D)
@@ -146,12 +147,13 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **Inductor:** Coilcraft XAL7030-222MEC, 2.2 µH (JLC C19191686) between SW1 and SW2.
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**
-  - USB side: 10 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721); 2 at the FETs + 0.1 µF, 8 as bulk
-  - Battery side: 7 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142); 2 at the FETs + 0.1 µF, 5 as bulk
+  - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
+  - Battery side: 3 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 136 µF effective at 16.8 V
+  - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
 - **Resistors (Yageo RT 0.1%):**
   - FSW_SYNC: 40.2 kΩ (C865475) → ~600 kHz
   - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG set to ~1.527 V in firmware for 16.8 V)
-  - ICHG: 5.11 kΩ (C705788) → ~9.8 A hardware ceiling
+  - ICHG: 17.8 kΩ (C705729) → ~2.8 A hardware ceiling (rev A4; was 5.11 kΩ / 9.8 A, above the cells' 5.6 A)
   - ILIM_HIZ: 3.65 kΩ (C705773) → ~5.5 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
   - TS: RT1 1.74 kΩ (C784581) REGN→TS, RT2 5.11 kΩ (C705788) TS→GND, with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
   - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** (top, from VAC), **RAC2 40.2 kΩ** (C865475), **RAC3 10.0 kΩ** (C110775, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
@@ -166,7 +168,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ### 7.4 5 V supply for PP5V (TPS62933)
 - **U_5Vx:** TPS62933DRLR (LCSC C3200405), input from PACK_P (high-current branch), output PP5Vx.
-- RT tied to GND → 1.2 MHz. Feedback 105 kΩ (C865128) top, 20.0 kΩ (C469660) bottom → 5.00 V.
+- RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
 - Inductor: Bourns SRP5030T-3R3M, 3.3 µH (LCSC C189931).
 - Output 2 × 22 µF 35 V 1206 plus at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
 - EN ← EN_5Vx (STM32WB) with a pull-down so it's off by default.

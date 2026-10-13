@@ -326,3 +326,30 @@ for num, y0, y1 in (("20", "0.6625", "0.675"), ("23", "-0.6625", "-0.675")):
 with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
     fh.write(s)
 print("wrote", name)
+
+# ---------------------------------------------------------------------------
+# 10. TI RSM0032A VQFN-32 4 x 4 mm, 0.4 mm pitch (BQ40Z50-R2). bq40z50-r2.pdf, RSM0032A package outline
+#     (4219107/A): thermal pad 1.4 +/-0.05 ("2X 2.8" on the outline is the lead span, 7 x 0.4). Example board
+#     layout: 32X (0.6) x (0.2) lands on a (3.8) span, thermal land (1.4), NSMD 0.05 mask. Example stencil:
+#     one (1.3) aperture on the thermal pad, "86 % printed solder coverage" (1.3^2 / 1.4^2). KiCad's generic
+#     VQFN-32 4x4 has a 2.8 mm pad, which leaves 0.2 mm to the leads and floods the part with paste.
+#     Pins 1-8 down the left side (pin 1 top), 9-16 along the bottom, 17-24 up the right, 25-32 along the top.
+fp = FP("TI_RSM0032A_VQFN-32_4x4mm_P0.4mm_EP1.4x1.4mm",
+        "TI RSM0032A VQFN-32 4 x 4 mm, 0.4 mm pitch, 1.4 mm thermal pad (BQ40Z50-R2); TI example land pattern and stencil",
+        "VQFN-32 RSM0032A BQ40Z50")
+for i in range(8):
+    o = -1.4 + 0.4 * i
+    fp.smd(str(1 + i), -1.9, o, 0.6, 0.2, shape="roundrect")
+    fp.smd(str(9 + i), o, 1.9, 0.2, 0.6, shape="roundrect")
+    fp.smd(str(17 + i), 1.9, -o, 0.6, 0.2, shape="roundrect")
+    fp.smd(str(25 + i), -o, -1.9, 0.2, 0.6, shape="roundrect")
+fp.smd("33", 0, 0, 1.4, 1.4, layers=("F.Cu", "F.Mask"))
+fp.paste(0, 0, 1.3, 1.3)
+fp.rect(-2.0, -2.0, 2.0, 2.0, "F.Fab", 0.1)
+fp.line(-2.0, -1.5, -1.5, -2.0, "F.Fab", 0.1)
+for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+    fp.line(sx * 2.11, sy * 1.71, sx * 2.11, sy * 2.11, "F.SilkS")
+    fp.line(sx * 1.71, sy * 2.11, sx * 2.11, sy * 2.11, "F.SilkS")
+fp.circle(-2.55, -1.4, 0.1, "F.SilkS", 0.2)
+crt(fp, -2.45, -2.45, 2.45, 2.45)
+fp.write(-3.2, 3.2)
