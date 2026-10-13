@@ -39,7 +39,8 @@ FIXED = {
     # cells: + on the left; BT101 (CELL_N end) at the top
     "BT101": (55, 15, 0), "BT102": (55, 43, 0), "BT103": (55, 71, 0), "BT104": (55, 99, 0),
     # gauge core: shunt by BT101's - contact, protection FETs and fuse down the column
-    "RS101": (115, 20, 90), "U101": (123, 42, 0), "Q101": (130, 24, 0), "Q102": (130, 32, 0),
+    # RS101 turned so its CELL_N pad faces BT101's - contact and its GND pad drops into the GND planes
+    "RS101": (115, 20, 270), "U101": (123, 42, 0), "Q101": (130, 24, 0), "Q102": (130, 32, 0),
     # BQ40Z50 cell-input filter ladder (TI fig. 9-1): 100R per tap in a column (1206 so an open cell's fault
     # current doesn't burn them), 0.1u between adjacent VC nodes staggered in two columns right at the VC pins;
     # nodes VC4..VC1, CELL_N at 2.5 mm pitch

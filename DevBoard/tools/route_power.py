@@ -346,6 +346,87 @@ for idx in ("4", "5"):
     P.zone("PP5V_U401", "PP5V", F, [(173.6, 19.2), (176.2, 19.2), (176.2, 21.0), (173.6, 21.0)], prio=2)
     P.via(190.6, 20.9, "PP5V"); P.track("PP5V", [(190.6, 20.9), (191.78, 20.9)], 0.5)      # TP403
 
+# ---- pack path (11 A): cells -> RS101 -> Q101/Q102 -> F101 -> PACK_P -> both ports ------------------------------
+class Pack(Port):
+    def __init__(self):
+        super().__init__("4")
+        self.group.SetName("route_power_pack")
+
+    def n(self, name):
+        return net(name if name in ("GND", "CELL_N", "PACK_P") else "/Cells and Gauge/" + name)
+
+
+K = Pack()
+# cell-to-cell links: the holders all face the same way, so each link runs diagonally under the holders from one
+# holder's + pad (left end) to the next holder's - pad (right end): ~8.5 mm bands on F.Cu and B.Cu (~1 mOhm each)
+for i, nm in enumerate(("CELL1", "CELL2", "CELL3")):
+    d = 28.0 * i
+    band = [(8.2, 10.5 + d), (15.7, 10.5 + d), (101.8, 38.5 + d), (101.8, 47.5 + d), (94.3, 47.5 + d), (8.2, 19.5 + d)]
+    K.zone("LINK_F_" + nm, nm, F, band, prio=1)
+    K.zone("LINK_B_" + nm, nm, B, band, prio=1)
+    K.vias(nm, [(11.95, 20.3 + d), (13.5, 20.3 + d), (98.05, 37.7 + d), (96.5, 37.7 + d)] +
+           [(x, 15.0 + d + (x - 11.95) * 28.0 / 86.1) for x in (30.0, 45.0, 60.0, 75.0)])
+# CELL_N: BT101's - pad into RS101's CELL_N pad (RS101 turned so that pad faces the cells; TP102 sits in it), plus a
+# column between the NTC headers and R101-R104 down to the welded-pack connector J101 (pin 1). One outline per layer
+# (overlapping same-net zones don't merge); the B.Cu column stops above the CELL_P_RAW strip so that strip can pass
+# under to F101 and J101 pin 5.
+K.zone("CELLN_F", "CELL_N", F, [(100.0, 10.5), (116.7, 10.5), (116.7, 17.75), (110.0, 17.75), (110.0, 106.6),
+                                (112.6, 106.6), (112.6, 108.6), (108.35, 108.6), (108.35, 17.75), (100.0, 17.75)],
+       prio=1)
+K.zone("CELLN_B", "CELL_N", B, [(100.0, 10.5), (116.7, 10.5), (116.7, 17.75), (110.2, 17.75), (110.2, 103.5),
+                                (107.4, 103.5), (107.4, 17.75), (100.0, 17.75)], prio=1)
+K.vias("CELL_N", [(x, y) for x in (102.0, 103.2, 109.2, 110.4, 111.6, 112.8) for y in (11.4, 12.6, 16.8)])
+K.vias("CELL_N", [(109.2, y) for y in range(22, 104, 6)])
+# RS101 GND side: into the GND planes (pack current returns through them)
+K.zone("RS_GND", "GND", F, [(112.4, 22.1), (117.4, 22.1), (117.4, 25.4), (112.4, 25.4)], prio=1)
+K.vias("GND", [(x, y) for x in (113.0, 114.0, 115.0, 116.0, 117.0) for y in (24.2, 25.0)] + [(112.85, 22.9), (117.15, 22.9)])
+# CELL_P_RAW: BT104's + pad, under BT104's body (below its pads) on F.Cu + B.Cu, under the CELL_N column to F101 and
+# along the J101 pins to J101 pin 5
+K.zone("PRAW_F", "CELL_P_RAW", F, [(8.2, 103.0), (15.7, 103.0), (15.7, 104.0), (104.2, 104.0), (104.2, 107.5),
+                                   (8.2, 107.5)], prio=1)
+K.zone("PRAW_F101", "CELL_P_RAW", F, [(110.6, 96.5), (116.6, 96.5), (116.6, 103.8), (110.6, 103.8)], prio=1)
+K.zone("PRAW_B", "CELL_P_RAW", B, [(8.2, 103.0), (15.7, 103.0), (15.7, 104.0), (110.6, 104.0), (110.6, 96.5),
+                                   (116.6, 96.5), (116.6, 102.0), (134.8, 102.0), (134.8, 109.3), (131.8, 109.3),
+                                   (131.8, 106.2), (110.6, 106.2), (110.6, 107.5), (8.2, 107.5)], prio=1)
+K.vias("CELL_P_RAW", [(x, 104.6) for x in (9.0, 10.2, 11.4, 12.6, 13.8, 15.0)] +
+       [(x, 105.8) for x in (9.6, 10.8, 12.0, 13.2, 14.4)] + [(x, 105.75) for x in range(28, 101, 8)] +
+       [(x, y) for x in (111.2, 112.4, 113.6, 114.8, 116.0) for y in (99.4, 100.6, 101.8, 103.0)])
+K.track("CELL_P_RAW", [(116.3, 97.4), (118.1, 97.4)], 0.5)              # TP108 second pad
+# CELL_P: F101 up between the pack probe columns on F.Cu, under the gauge on B.Cu, into Q101's source pins from the left
+K.zone("CELLP_F", "CELL_P", F, [(112.95, 95.4), (115.05, 95.4), (115.05, 92.2), (118.0, 92.2), (118.0, 58.8),
+                                (115.0, 58.8), (115.0, 91.0), (112.95, 91.0)], prio=1)
+K.zone("CELLP_B", "CELL_P", B, [(112.95, 95.5), (118.0, 95.5), (118.0, 58.8), (127.0, 58.8), (127.0, 26.0),
+                                (115.0, 26.0), (115.0, 58.8), (112.95, 58.8)], prio=1)
+K.zone("CELLP_Q101", "CELL_P", F, [(117.8, 25.9), (128.6, 25.9), (128.6, 25.1), (130.6, 25.1), (130.6, 27.0),
+                                   (117.8, 27.0)], prio=1)
+K.vias("CELL_P", [(x, 26.55) for x in (118.0, 119.0, 120.0, 121.0, 122.0, 123.0, 124.0)] +
+       [(116.5, y) for y in (59.4, 60.6, 66.0, 72.0, 78.0, 84.0, 90.0)] + [(113.5, 91.8), (114.5, 91.8), (113.5, 92.9)])
+K.track("CELL_P", [(114.5, 62.0), (115.3, 62.0)], 0.5)                  # TP101
+K.track("CELL_P", [(128.6, 26.8), (128.6, 27.7)], 0.5)                  # C110
+# FET_MID: Q101 and Q102 face the same way, so their drain pads join on B.Cu through a 3x3 via grid in each pad
+K.zone("FETMID_B", "FET_MID", B, [(127.6, 21.6), (131.9, 21.6), (131.9, 33.0), (127.6, 33.0)], prio=1)
+K.vias("FET_MID", [(x, y + o) for o in (0.0, 8.0) for x in (129.2, 130.0, 130.8) for y in (22.65, 23.35, 24.05)], **GV)
+# PACK_P: Q102 source pins -> F.Cu strip -> B.Cu bus beside the port-1 output banks, to R430 (port 1), R530 (port 2),
+# R431/R531 (5 V bucks) and the bench-supply diode
+K.zone("PACKP_Q102", "PACK_P", F, [(128.6, 33.1), (130.6, 33.1), (130.6, 34.2), (136.0, 34.2), (136.0, 35.25),
+                                   (128.6, 35.25)], prio=1)
+K.track("PACK_P", [(130.55, 35.2), (130.55, 35.6)], 0.5)                # C107
+K.zone("PACKP_B", "PACK_P", B, [(131.6, 13.4), (136.0, 13.4), (136.0, 46.9), (157.5, 46.9), (157.5, 49.3),
+                                (136.0, 49.3), (136.0, 83.6), (157.5, 83.6), (157.5, 86.2), (133.5, 86.2),
+                                (133.5, 54.8), (131.6, 54.8), (131.6, 36.2), (128.6, 36.2), (128.6, 33.6),
+                                (132.2, 33.6), (132.2, 21.0), (131.6, 21.0)], prio=1)
+K.vias("PACK_P", [(x, 34.75) for x in (129.0, 129.8, 130.6, 132.8, 133.6, 134.4, 135.2)])
+for oy in (0.0, 37.0):                                                  # R430 / R530 PACK_P pads
+    K.zone("PACKP_R30_%d" % oy, "PACK_P", F, [(131.7, 13.6 + oy), (135.7, 13.6 + oy), (135.7, 17.7 + oy),
+                                              (131.7, 17.7 + oy)], prio=1)
+    K.vias("PACK_P", [(132.1, 14.2 + oy), (132.1, 15.2 + oy), (132.1, 16.2 + oy), (133.0, 17.15 + oy),
+                      (133.8, 17.15 + oy), (134.6, 17.15 + oy)])
+for oy in (0.0, 37.0):                                                  # R431 / R531 (5 V buck inputs)
+    K.via(156.25, 48.1 + oy, "PACK_P"); K.track("PACK_P", [(156.25, 48.1 + oy), (157.2, 48.1 + oy)], 0.8)
+K.track("PACK_P", [(119.9, 57.3), (119.9, 59.5), (134.8, 59.5)], 1.0)   # D104 (bench supply) -> bus
+K.track("PACK_P", [(119.9, 59.5), (120.65, 60.25), (120.65, 61.7)], 0.5)   # TP106
+K.via(134.8, 59.5, "PACK_P")
+
 # ---- In1 solid GND plane, In2 GND fill (whole board; fill clips to the outline and the antenna keep-out) ---------
 for lay, name in ((IN1, "GND_PLANE_In1"), (IN2, "GND_PLANE_In2")):
     z = pcbnew.ZONE(board)

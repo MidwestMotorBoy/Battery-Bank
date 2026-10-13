@@ -250,8 +250,15 @@ Found while checking against datasheets:
         - FB is taken from the output caps (divider top at the regulation point); EN and SS fit in the remaining gaps.
         - 5V_IN runs from the R431 link along y 48.
         - PP5V (3 A when the port sources 5 V): L402 → C441/C442 on F.Cu, then up the right edge on In2 + B.Cu between J401's pads and its shell, to C443, TP403 and U401's PP5V pin through C407.
+    - **Pack path (11 A), in `route_power.py`'s pack section:**
+        - **Cell links:** CELL1–CELL3 are 8.5 mm diagonal bands on F.Cu and B.Cu under the holders, from one holder's + pad (left end) to the next holder's − pad (right end), about 1 mΩ each. The holders all face the same way, hence the diagonals.
+        - **CELL_N:** a 7 mm block from BT101's − pad into RS101, which is now turned so its CELL_N pad faces the cells and its GND pad drops into a 12-via field in the GND planes. A column between the NTC headers and R101–R104 carries CELL_N down to the welded-pack connector J101 pin 1. That column is about 5 mΩ (0.6 W at 11 A, welded-pack mode only).
+        - **CELL_P_RAW:** a strip under BT104's body (below its pads) on F.Cu and B.Cu. It passes under the CELL_N column to F101 and runs along J101's pins to pin 5.
+        - **CELL_P:** from F101 up between the pack probe columns on F.Cu, under the gauge on B.Cu, then into Q101's source pins from the left.
+        - **FET_MID:** Q101 and Q102 face the same way, so their drain pads join on B.Cu through a 3×3 via grid in each pad (18 vias, also their heat path).
+        - **PACK_P:** from Q102's source pins through an F.Cu strip to a B.Cu bus beside the port-1 output bank. The bus feeds R430/R530 (6 vias each), R431/R531 (5 V buck inputs) and the bench-supply diode D104.
+        - One zone outline per net per layer: overlapping same-net zones with different priorities don't merge.
     - **Still to route:**
-        - the pack path (holders → RS101 → protection FETs → F101 → PACK_P → both ports), and the cell links under the holders;
         - the ACP/ACN and SRP/SRN Kelvin pairs from the filter resistors to the BQ25756 (the input pair has to cross the gate lanes' corridor);
         - the small PPHV taps (VAC pins, ACUV divider, C409, TP402) and REGN to R415/TP404;
         - then the signals.
