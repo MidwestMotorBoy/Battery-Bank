@@ -27,7 +27,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 |---|---|
 | #1 U203 EN tied to PACK_P | **Fixed**: EN floats (internal pull-up). |
 | #2 Charge ceiling | **Fixed**: R413/R513 = 9.09k → 5.5 A per port (revised from 17.8k / 2.8 A so one port can charge at about 1C). Both-port sum, watchdog behaviour and gauge OCC1 are configuration/firmware items (firmware item 14). |
-| #3 Discharge-side overload | Configuration: source PDOs, IBAT_REV, gauge OCD1. |
+| #3 Discharge-side overload | **F101 raised to 15 A** (1206FA-15A) so 100 W out at the 12 V low end (about 10 A) is within rating. Total-output sharing, gauge OLD and OCD1 are configuration/firmware items (firmware items 3 and 4). |
 | #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. |
 | #5 U101 exposed pad | **Fixed**: TI RSM0032A footprint (1.4 mm pad). |
 | #6 D± ESD vs GPIO4/5 | **Fixed**: D403/D503 → PESD5V0S2BT. No OVP switch for a D±-to-20 V short. |
@@ -232,10 +232,10 @@ This is the discharge-side counterpart of #2.
    - VFB_REG = 0x0F (1.534 V → 16.80 V). The power-on default gives 16.84 V, up to 16.96 V worst case; the documented "1.527 V" isn't on the 2 mV grid and ignores the FBG resistance.
    - Also set ICHG_REG, IPRECHG, ITERM (power-on value is 2.0 A), the watchdog, and EN_CHG_BIT_RESET_BEHAVIOR = 0.
 2. **Charger temperature input (JEITA):** the network on the FET NTC puts the "cool" threshold at 16 °C, so charge current drops to 20 % below about 16 °C by default. Set EN_JEITA = 0, or TS_T2/JEITA_ISETC accordingly. In charge mode an open NTC is caught as cold (only 0.75 % margin); in reverse mode it is not detected.
-3. **Source PDOs:** total about 60–80 W and IBAT_REV = 5 A (see #3).
+3. **Source power sharing (see #3; F101 is 15 A since rev A4):** keep the total pack current at or below about 10–11 A, i.e. the product rule of 100 W total out (USB1 up to 100 W alone, 80 W + 20 W with both ports). IBAT_REV only steps 20/15/10/5 A, so it is a coarse backstop (10 A per port); the real limit is the source PDOs the TPS25751 offers. The MCU lowers USB1's offer when USB2 attaches (attach interrupt), mirroring the charge-current rule in item 14. In holder mode cap the total much lower (#4).
 4. **Gauge data flash before the first charge:**
    - 4S and the EVE chemistry.
-   - Thresholds: COV ≤ 4.25 V, CUV, OCC1 ≤ 5.6 A, OCD1 ≤ 6 A, OLD at minimum, a short SCD1 delay.
+   - Thresholds: COV ≤ 4.25 V, CUV, OCC1 about 6 A, OCD1 about 10–11 A for the welded pack (100 W at the 12 V low end) and about 2–3 A in holder mode, OLD about 16–20 A (its 8.3 A minimum would cut 100 W at low pack voltage), a short SCD1 delay. F101 (15 A) is the backstop above these.
    - VIMR/VIMA enabled, and a sleep-current threshold above the ±10 mA coulomb-counter offset.
    - Then send FET enable.
    - Factory defaults found in the TRM (SLUUBK0B): `DA Configuration` = 0x12 (**3S**), `Manufacturing Status Init` = 0x0000 (**FET_EN off**, so a fresh board does not power from its cells; first power comes from USB or the J104 bench header).

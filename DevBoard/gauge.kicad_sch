@@ -11183,7 +11183,7 @@
 				)
 			)
 		)
-		(property "Value" "8A 32V"
+		(property "Value" "15A 32V"
 			(at 111.61 50.23 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11226,7 +11226,7 @@
 				)
 			)
 		)
-		(property "Notes" "Hand-fit after checking all four cells at TP102-TP105 (JLC leaves it off). prosemi 1206FA-8A, LCSC C21261118"
+		(property "Notes" "Hand-fit after checking all four cells at TP102-TP105 (JLC leaves it off). 15 A for 100 W out at the 12 V low end (~10 A continuous, 75 % derating). Interrupt 300 A at 24 Vdc (pack max 16.8 V). 3.9 mOhm: 0.4 W at 10 A, give it copper"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -11237,7 +11237,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21261118"
+		(property "LCSC" "C2838894"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11248,7 +11248,7 @@
 				)
 			)
 		)
-		(property "MPN" "prosemi 1206FA-8A"
+		(property "MPN" "prosemi 1206FA-15A"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)

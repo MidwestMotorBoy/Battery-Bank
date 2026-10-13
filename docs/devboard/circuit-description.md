@@ -41,7 +41,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
   - No published current rating; treat as a few amps (normal charging and modest loads only).
   - Open holders don't stop a cell going in backwards. Silkscreen + and − at both ends of every holder, orient all four the same way, and check each cell's voltage with a meter at the tap test points before closing the fuse/link. A reversed cell can push the gauge's VC pins below ground (the 100 Ω filter resistors limit the current).
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
-- **Fuse** in series with CELL_P, sized for holder use (*TBD*, ~5–7 A).
+- **Fuse** in series with CELL_P: prosemi 1206FA-15A (C2838894), 15 A, 300 A interrupt at 24 Vdc, sized for 100 W out at the 12 V low end (rev A4; was 8 A for holder use). DNP, hand-fitted after the cells are checked.
 - **Kelvin cell taps:** CELL1–CELL3 and the stack ends for the gauge are taken from the cell end of each holder contact (separate small traces), not from the power traces, so spring resistance isn't measured as cell resistance.
 - **Cell thermistor:** 10 kΩ NTC (103AT type) on two wires to the gauge's TS1 input, taped to a cell at mid-height.
 
