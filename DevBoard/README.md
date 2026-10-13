@@ -150,12 +150,24 @@ Found while checking against datasheets:
 
 26. **SMD test loops instead of Keystone through-hole (rev A5, 2026-10-13).** All 45 loop test points are now ronghe RH-S2761-46R (LCSC C55121754, about $0.12–0.20 each, about 10k in stock): an SMT loop 1.60 × 0.80 × 1.15 mm on an 0603 land pattern, the JLC-stocked equivalent of the Harwin S2761-46R (3.5 A). Footprint `MonolithDev:TestPoint_Harwin_S2761_0603` (tools/make_footprints.py section 11): two 0603 pads, both pin 1 and marked jumpered, since the loop joins them. JLC places them with the rest; no through-hole assembly. They are small: fine for hook probes and mini-grabbers, but too small for a scope's alligator ground clip, so use a ground spring or a short ground lead on the GND loops. The bare 1.5 mm probe pads (TP306, TP307, TP413/TP513, TP414/TP514, TP206, TP207) stay pads.
 
+27. **Open-item pass (rev A5, 2026-10-13).**
+    - **D104 SS34** (C8678) in series with the J104 bench input: blocks a reversed lead, and keeps a live PACK_P off the bare header pins.
+    - **D401** is drawn with a zener-style (unidirectional) symbol, cathode on VBUS.
+    - **Headers have JLC numbers** (XFCN PZ254V-11 family, like J102): J103 4P C2691448; J302 and J402/J502 3P C2937625; J303 7P C492406; JP201 2P C492401.
+    - **Shunts:** JP201/JP202 notes say each needs a 2.54 mm shunt (hand).
+    - **J301** notes now say keyed shroud, all pins fitted (not "pin 7 removed").
+    - **Sheet text:** port sheet "5.08 V" and "ILIM 5.6 A".
+    - **Thermistor notes:** state Murata B25/50 = 3380 K / B25/85 = 3435 K; use the R-T table.
+    - **Gauge note 4:** insulated cell NTCs only.
+    - **Antenna keep-out rule area** on the board.
+    - **Bring-up checklist:** [`../docs/devboard/bringup-config-checklist.md`](../docs/devboard/bringup-config-checklist.md) gathers every configuration item, with review 2's precharge correction.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).
 
 - **Optional gauge-BAT INA190** from the description (DNP) is not drawn.
-- **STM32WB1MMC antenna keep-out:** the datasheet (DS14096) gives no copper keep-out for the integrated antenna. Get ST's hardware guidelines for the module before placing it, and keep it at a board edge with no copper or parts beside the antenna end until then.
+- **STM32WB1MMC antenna keep-out:** ST publishes no keep-out drawing for the module (DS14096 has none; ST community threads confirm). The board follows ST's reference PCB: module at the top edge, antenna (pin-1) end 0.5 mm from it. Since rev A5 a rule area `ANT_KEEPOUT` (place_parts.py) bans tracks, vias and pours on all copper layers in the strip either side of and above the module (x 141–159, y 0–4.2 mm). Check BLE range at bring-up.
 - **Pin map** checked against the STM32WB15 datasheet (DS13258 table 15): ADC1_IN6/8/9/10 on PA1/PA3/PA4/PA5, WKUP1/WKUP4 on PA0/PA2, I2C1 on PB6/PB7, USART1 on PA9/PA10, SWD on PA13/PA14. A final pass in STM32CubeMX when the firmware project is set up is still worthwhile (it also catches clock-tree and peripheral conflicts).
 
 ## Footprints

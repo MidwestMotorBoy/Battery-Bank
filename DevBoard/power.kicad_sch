@@ -6081,6 +6081,17 @@
 				)
 			)
 		)
+		(property "Notes" "Fit a 2.54 mm shunt (hand, not in the JLC BOM) to power the measurement section"
+			(at 50.8 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b5f90d72-32a8-48f1-8fe7-4ee5aa08e279")
 		)
@@ -7142,8 +7153,30 @@
 				)
 			)
 		)
-		(property "Notes" "pull = amps off"
+		(property "Notes" "pull = amps off. Needs a 2.54 mm shunt (hand, not in the JLC BOM)"
 			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 132.08 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 132.08 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

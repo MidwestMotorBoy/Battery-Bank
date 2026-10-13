@@ -230,6 +230,8 @@ This is the discharge-side counterpart of #2.
 
 ## Firmware and configuration (no schematic change)
 
+Consolidated, with review 2 corrections, in `bringup-config-checklist.md`.
+
 1. **Charger setup in the TPS25751 config:**
    - VFB_REG = 0x0F (1.534 V → 16.80 V). The power-on default gives 16.84 V, up to 16.96 V worst case; the documented "1.527 V" isn't on the 2 mV grid and ignores the FBG resistance.
    - Also set ICHG_REG, IPRECHG, ITERM (power-on value is 2.0 A), the watchdog, and EN_CHG_BIT_RESET_BEHAVIOR = 0.
@@ -242,7 +244,7 @@ This is the discharge-side counterpart of #2.
    - VIMR/VIMA enabled, and a sleep-current threshold above the ±10 mA coulomb-counter offset.
    - Then send FET enable.
    - Factory defaults found in the TRM (SLUUBK0B): `DA Configuration` = 0x12 (**3S**), `Manufacturing Status Init` = 0x0000 (**FET_EN off**, so a fresh board does not power from its cells; first power comes from USB or the J104 bench header).
-   - **Precharge:** `FET Options[PCHG_COMM]` defaults to 0 = external precharge FET, which this board does not have. Set `Precharge Start Voltage` = `Charging Voltage Low` = 0 mV to disable the gauge precharge (the BQ25756 already precharges at 0.56 A below about 3.0 V/cell) and leave `PCHG_COMM` = 0 so the gauge 0-V charging circuit stays off (decision Q4).
+   - **Precharge (SUPERSEDED by review 2 A-3: keep Precharge Start Voltage = 2500 mV, set Charging Voltage Low ≤ 2500 mV; see `bringup-config-checklist.md`):** `FET Options[PCHG_COMM]` defaults to 0 = external precharge FET, which this board does not have. Set `Precharge Start Voltage` = `Charging Voltage Low` = 0 mV to disable the gauge precharge (the BQ25756 already precharges at 0.56 A below about 3.0 V/cell) and leave `PCHG_COMM` = 0 so the gauge 0-V charging circuit stays off (decision Q4).
    - Keep `OCD:Recovery Delay` / `OCC:Recovery Delay` short: after an OCD trip DSG stays off until charge current is seen for that delay, and the charge current meanwhile flows through Q102's body diode (decision Q1).
 5. **Dead-battery flag:** after any start where VBUS arrives before 3V3, the MCU must clear the TPS25751 dead-battery flag (DBfg, tps25751 §8.3.2). Until then, LDO_3V3 (EEPROM and I2Cc pull-ups) runs from VBUS. Add this to `docs/project/tps25751-eeprom-programming.md`.
 6. **Gating EN_5Vx and charging:** refuse both unless the gauge reports four valid cells and both FETs on.

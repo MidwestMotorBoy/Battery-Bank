@@ -200,6 +200,8 @@ LAYOUT = [
     ("at", "TP206", 145.46, 101.35, 0), ("at", "TP207", 148.82, 101.58, 0),
     ("at", "TP108", 117.25, 97.4, 0),
     ("at", "TP109", 113.5, 74.0, 0), ("at", "TP309", 119.85, 74.0, 0),
+    # J104 series Schottky (reverse-lead / back-feed protection) between the bench header and the probe field
+    ("at", "D104", 121.9, 56.4, 0),
 ]
 
 # small silkscreen notes (text, x, y): UART pin functions over J302 (pin 1 = MCU TX out)
@@ -523,6 +525,24 @@ for txt, x, y, rot in TITLES:              # block titles
     t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(1.2), pcbnew.FromMM(1.2))); t.SetTextThickness(pcbnew.FromMM(0.2))
     t.SetPosition(k(x, y)); t.SetTextAngleDegrees(rot)
     board.Add(t)
+# antenna keep-out: no tracks, vias or pours on any copper layer around the STM32WB1MMC antenna end (pin-1 end at the
+# top edge). ST gives no keep-out drawing for the module; this follows its reference PCB (module at the board edge,
+# nothing past the antenna end) and covers the placement-reserved strip either side of and above the module.
+for z in list(board.Zones()):
+    if z.GetZoneName() == "ANT_KEEPOUT":
+        board.Remove(z)
+ux0, uy0, ux1, uy1 = (v / 1e6 - o for v, o in zip(crt(fps["U301"], 0), (ORIGIN[0], ORIGIN[1], ORIGIN[0], ORIGIN[1])))
+z = pcbnew.ZONE(board)
+z.SetZoneName("ANT_KEEPOUT")
+z.SetIsRuleArea(True)
+z.SetDoNotAllowTracks(True); z.SetDoNotAllowVias(True)
+(z.SetDoNotAllowZoneFills if hasattr(z, "SetDoNotAllowZoneFills") else z.SetDoNotAllowCopperPour)(True)
+z.SetDoNotAllowPads(False); z.SetDoNotAllowFootprints(False)
+z.SetLayerSet(pcbnew.LSET.AllCuMask())
+ol = z.Outline(); ol.NewOutline()
+for x, y in ((141, 0), (159, 0), (159, 4.2), (ux1, 4.2), (ux1, uy0), (ux0, uy0), (ux0, 4.2), (141, 4.2)):
+    pt = k(x, y); ol.Append(pt.x, pt.y)
+board.Add(z)
 boxes = {ref: crt(fp, 0) for ref, fp in fps.items() if not ref.startswith("H")}
 refs = sorted(boxes)
 clash = [(a, b) for i, a in enumerate(refs) for b in refs[i + 1:] if hit(boxes[a], [boxes[b]])]

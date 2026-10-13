@@ -5817,7 +5817,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH2 port 2 stage"
+		(property "Notes" "TH2 port 2 stage. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -5929,7 +5929,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH3 connectors"
+		(property "Notes" "TH3 connectors. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -6507,7 +6507,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH4 heatsink pad"
+		(property "Notes" "TH4 heatsink pad. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -6619,7 +6619,7 @@
 				)
 			)
 		)
-		(property "Notes" "Keyed (pin 7 removed) so standard Cortex debug cables only fit one way (review m15)"
+		(property "Notes" "Keyed by its shroud (-K): Cortex 10-pin cables seat one way only (review m15; all 10 pins fitted, pin 7 is NOT removed). Hand-fit, not in the JLC BOM"
 			(at -148.59 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -9937,7 +9937,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH1 port 1 stage"
+		(property "Notes" "TH1 port 1 stage. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -10405,6 +10405,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C2937625"
+			(at 304.8 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-03P"
+			(at 304.8 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "29a27881-9f59-4f79-8cd7-276411eba07b")
 		)
@@ -10554,6 +10576,28 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x07, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 304.8 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C492406"
+			(at 304.8 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-07P"
 			(at 304.8 165.1 0)
 			(hide yes)
 			(show_name no)

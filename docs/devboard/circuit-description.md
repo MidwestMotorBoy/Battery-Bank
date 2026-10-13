@@ -66,7 +66,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 3. Power path split and sleep-current measurement
 
 - PACK_P feeds the **high-current branch** directly: both BQ25756 power stages (battery side) and both TPS62933 inputs. No measurement resistor on these.
-- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (1%, 0.5 W, 1206 or larger) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
+- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (R201, 1 %, 1206; the fitted 1206W4F100JT5E is 1/4 W: fine for the ~0.4 W start-up pulse and < 2 mW steady state, and it opens as a fuse if U204 fails short) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
 - The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. Optional (low-current, no bypass needed): a 10 Ω in series with the gauge's BAT feed plus a third INA190 footprint (DNP) to see the gauge's ~50–340 µA on the scope.
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
   - **U_AMP_LO: INA190A5IDDFR** (gain 500, SOT-23-8 with ENABLE) → 5 mV per µA, ~0.99 mA full scale on a 5 V supply, 27 kHz bandwidth (sleep detail). If JLC doesn't stock the A5, use INA190A4 (gain 200 → 2 mV/µA, ~2.5 mA full scale; LCSC C2059766, SC-70-6, no ENABLE pin)

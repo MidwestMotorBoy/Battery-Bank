@@ -4200,7 +4200,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell). PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5)."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F101) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP, FUSE tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P (after fuse, before FETs) via D101 + R105.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (DNP) clamps Q102 VGS in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5)."
 		(exclude_from_sim no)
 		(at 266.7 236.22 0)
 		(effects
@@ -4357,6 +4357,16 @@
 	)
 	(wire
 		(pts
+			(xy 293.37 58.42) (xy 299.72 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f914a67-4810-485e-94a4-5b5242977512")
+	)
+	(wire
+		(pts
 			(xy 186.69 33.02) (xy 189.23 33.02)
 		)
 		(stroke
@@ -4394,16 +4404,6 @@
 			(type default)
 		)
 		(uuid "b9525f65-8680-47a4-a03a-57a725b41cb9")
-	)
-	(wire
-		(pts
-			(xy 299.72 58.42) (xy 294.64 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "154e8aa7-c5a6-43e8-8d25-463a69248d78")
 	)
 	(wire
 		(pts
@@ -7100,6 +7100,28 @@
 			)
 		)
 		(property "Notes" "Same pin order as the EV2400 SMBus port (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT (unused)"
+			(at 332.74 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2691448"
+			(at 332.74 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-04P"
 			(at 332.74 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -13715,7 +13737,7 @@
 				)
 			)
 		)
-		(property "Notes" "Bench supply onto PACK_P (gauge wake, EV2400 work with FETs off). Current-limit the supply"
+		(property "Notes" "Bench supply onto PACK_P through D104 (gauge wake, EV2400 work with FETs off). Current-limit the supply; D104 blocks a reversed lead and keeps PACK_P off the header"
 			(at 304.8 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -13743,7 +13765,7 @@
 	)
 	(symbol
 		(lib_id "power:VCC")
-		(at 294.64 58.42 0)
+		(at 285.75 58.42 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13764,7 +13786,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 293.37 54.10 0)
+			(at 285.75 61.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13774,7 +13796,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 294.64 58.42 0)
+			(at 285.75 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13785,7 +13807,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 294.64 58.42 0)
+			(at 285.75 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13796,7 +13818,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 294.64 58.42 0)
+			(at 285.75 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15143,6 +15165,118 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR135")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 289.56 58.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e32a5599-a8f3-4f8f-a8f9-fcba963800a9")
+		(property "Reference" "D104"
+			(at 289.41 53.40 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SS34"
+			(at 289.41 55.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMA"
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C8678"
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34 (MDD)"
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "J104 series diode: a reversed bench lead cannot drive PACK_P negative (TI 9.2.2.3.3), and a live PACK_P (up to 16.8 V) does not appear on the bare header pins. ~0.4 V drop at bench currents"
+			(at 289.56 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8494a980-39df-4c2b-8daa-d94ef902dedd")
+		)
+		(pin "2"
+			(uuid "e5b5a983-3d5b-4b5f-9783-bd82757dd5e8")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "D104")
 					(unit 1)
 				)
 			)

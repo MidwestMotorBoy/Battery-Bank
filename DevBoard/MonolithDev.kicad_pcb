@@ -1364,7 +1364,7 @@
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "04d84027-0497-4b15-a0cc-ee24fc301ce7")
-		(at 188.299047 140.213333)
+		(at 188.323571 140.212857)
 		(descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x02 2.54mm single row")
 		(property "Reference" "JP202"
@@ -1440,6 +1440,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c59526ee-9340-48ff-9ddc-1df86308ca9b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "Fit a 2.54 mm shunt (hand, not in the JLC BOM) to power the measurement section"
+			(at 188.299047 140.213333 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ca239228-93e1-48aa-ab8e-ebf9479c671b")
 			(effects
 				(font
 					(size 1 1)
@@ -2118,7 +2130,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH3 connectors"
+		(property "Notes" "TH3 connectors. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -2969,6 +2981,30 @@
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "1c8a4084-5c73-4b13-a53e-17c5dac10b02")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2937625"
+			(at 187.95 115.46 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "29422f3c-8cef-4038-aee4-1a8fc601871f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-03P"
+			(at 187.95 115.46 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7166327c-f3ba-4135-80ea-36ea51eaea57")
 			(effects
 				(font
 					(size 1 1)
@@ -9280,6 +9316,30 @@
 				)
 			)
 		)
+		(property "LCSC" "C492406"
+			(at 218 56 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "85114b75-5c9c-442c-b2a0-b46ff6d21946")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-07P"
+			(at 218 56 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6ddb9056-517c-4654-8599-36b6f046df87")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/e4198070-c3b0-42da-8abd-9e94aee9a19e")
 		(sheetname "MCU and NTCs")
 		(sheetfile "mcu.kicad_sch")
@@ -9555,7 +9615,7 @@
 				)
 			)
 		)
-		(property "Notes" "Keyed (pin 7 removed) so standard Cortex debug cables only fit one way (review m15)"
+		(property "Notes" "Keyed by its shroud (-K): Cortex 10-pin cables seat one way only (review m15; all 10 pins fitted, pin 7 is NOT removed). Hand-fit, not in the JLC BOM"
 			(at 170 56 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -13075,6 +13135,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4bed7e36-34bd-4c50-afbc-2c93a94ec91c")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "SMAJ22A is unidirectional: drawn as a zener-style TVS, cathode (pin 1) on VBUS"
+			(at 236.9 120.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bf3a1608-5477-40c1-aebf-03e59ef58fdb")
 			(effects
 				(font
 					(size 1 1)
@@ -16742,7 +16814,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH1 port 1 stage"
+		(property "Notes" "TH1 port 1 stage. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -17779,7 +17851,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH2 port 2 stage"
+		(property "Notes" "TH2 port 2 stage. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -22279,6 +22351,18 @@
 				)
 			)
 		)
+		(property "Notes" "SMAJ22A is unidirectional: drawn as a zener-style TVS, cathode (pin 1) on VBUS"
+			(at 236.9 83.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "93843038-ab66-42c4-854d-b2cdc8558a89")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/61ae8a81-ed75-4872-9cbb-4b4daa53f6f8")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -25065,7 +25149,7 @@
 				)
 			)
 		)
-		(property "Notes" "TH4 heatsink pad"
+		(property "Notes" "TH4 heatsink pad. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -28191,11 +28275,35 @@
 				)
 			)
 		)
-		(property "Notes" "pull = amps off"
+		(property "Notes" "pull = amps off. Needs a 2.54 mm shunt (hand, not in the JLC BOM)"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b5ec5d8c-1556-455a-bc3f-9a4d101efb05")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C492401"
+			(at 190 153 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "085b21c6-8d53-4df3-8bbc-4fd7b397c53e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-02P"
+			(at 190 153 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fc45461a-827d-430c-a917-56ad7c2911a9")
 			(effects
 				(font
 					(size 1 1)
@@ -28832,6 +28940,30 @@
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "fca403e0-6c35-4a13-a2b6-1114fc60c7d1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2937625"
+			(at 187.95 78.46 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "516e3c21-1d67-49a6-af56-6e17aaea21e5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-03P"
+			(at 187.95 78.46 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "253186f0-6bad-4a52-b900-6a1bbafb65ea")
 			(effects
 				(font
 					(size 1 1)
@@ -44621,7 +44753,7 @@
 				)
 			)
 		)
-		(property "Notes" "Bench supply onto PACK_P (gauge wake, EV2400 work with FETs off). Current-limit the supply"
+		(property "Notes" "Bench supply onto PACK_P through D104 (gauge wake, EV2400 work with FETs off). Current-limit the supply; D104 blocks a reversed lead and keeps PACK_P off the header"
 			(at 260 69 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -44776,7 +44908,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "PACK_P")
+			(net "Net-(D104-A)")
 			(uuid "f14bf64c-dc6f-48b1-a4f3-13a525bcdf67")
 		)
 		(pad "2" thru_hole circle
@@ -51513,6 +51645,312 @@
 			)
 		)
 	)
+	(footprint "Diode_SMD:D_SMA"
+		(layer "F.Cu")
+		(uuid "ac136bb7-9787-4d95-9b79-82665d915b20")
+		(at 171.9 106.4)
+		(descr "Diode SMA (DO-214AC)")
+		(tags "Diode SMA (DO-214AC)")
+		(property "Reference" "D104"
+			(at 0 -2.5 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "4888cc3c-7b6f-4a93-8418-d368816b99d3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "SS34"
+			(at 0 2.6 0)
+			(layer "F.Fab")
+			(uuid "86ee9109-48ae-48bb-aaff-1764ada828b5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ec2b0be4-d5f3-4f9c-a5df-05819b29966d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "74362680-9da8-45bc-8e73-6c4cda864328")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C8678"
+			(at 260 60 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "987dd45f-7bf6-441a-8146-c3684d6bb17f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "SS34 (MDD)"
+			(at 260 60 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "221d95bc-7a01-4a0c-a9f1-3ab8011226b8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "J104 series diode: a reversed bench lead cannot drive PACK_P negative (TI 9.2.2.3.3), and a live PACK_P (up to 16.8 V) does not appear on the bare header pins. ~0.4 V drop at bench currents"
+			(at 260 60 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3f1272c6-6d33-4f1e-a05d-abfddddfaab0")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/e32a5599-a8f3-4f8f-a8f9-fcba963800a9")
+		(sheetname "Cells and Gauge")
+		(sheetfile "gauge.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -3.51 -1.65)
+			(end -3.51 1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "7dd4e009-30b1-4d6e-9189-e4fc28e21147")
+		)
+		(fp_line
+			(start -3.51 -1.65)
+			(end 2 -1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "49d98f0c-de2b-4f95-bf01-fc5d315a941f")
+		)
+		(fp_line
+			(start -3.51 1.65)
+			(end 2 1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "cf6c1cdf-46cb-4868-a865-b26b8a49299a")
+		)
+		(fp_line
+			(start -3.5 -1.75)
+			(end 3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "68efd89d-a0cb-4875-be45-bd5adbc20f86")
+		)
+		(fp_line
+			(start -3.5 1.75)
+			(end -3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "4ea87a5c-6246-4dd0-bf06-8d34fafea743")
+		)
+		(fp_line
+			(start 3.5 -1.75)
+			(end 3.5 1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "ca130bb4-6dd8-466a-a2c5-db977602407e")
+		)
+		(fp_line
+			(start 3.5 1.75)
+			(end -3.5 1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "265372e5-99fc-4385-8e42-ee3cb59a461a")
+		)
+		(fp_line
+			(start -2.3 1.5)
+			(end -2.3 -1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "98473d49-453c-4b19-92f7-9acdc1d748cb")
+		)
+		(fp_line
+			(start -0.64944 -0.79908)
+			(end -0.64944 0.80112)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "6e83dcba-9158-4fa8-aaf2-f17f29c23392")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end -1.55114 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "6ba12f1b-b817-4a5b-8723-b586b6ca5ca0")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "238ffc91-3529-4900-8bbd-5c796ae70c0b")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 0.75032)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "ba92f30f-7385-4820-b687-c8dbfdfc43f8")
+		)
+		(fp_line
+			(start 0.50118 0.00102)
+			(end 1.4994 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "afc4002b-dda9-4d2f-81cf-2d97665ea6ea")
+		)
+		(fp_line
+			(start 0.50118 0.75032)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "2540cc31-dc22-4793-a04b-db63447cc881")
+		)
+		(fp_line
+			(start 2.3 -1.5)
+			(end -2.3 -1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "0bdc8d1a-1aa8-4df2-8882-04b3b4f35a2b")
+		)
+		(fp_line
+			(start 2.3 -1.5)
+			(end 2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "f642835e-7895-43fd-893c-59fa737d3c2c")
+		)
+		(fp_line
+			(start 2.3 1.5)
+			(end -2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "0686851f-e91d-4c6e-975c-2eadc2fc911b")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -2.5 0)
+			(layer "F.Fab")
+			(uuid "d37d7e5b-2f28-4ef5-a551-74a5efeb6467")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -2 0)
+			(size 2.5 1.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1388888889)
+			(net "PACK_P")
+			(uuid "08781d13-29d4-469c-b11d-2e22b53ccd13")
+		)
+		(pad "2" smd roundrect
+			(at 2 0)
+			(size 2.5 1.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1388888889)
+			(net "Net-(D104-A)")
+			(uuid "3d8b19c5-5682-4671-af66-60847a9f2479")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "ad52b316-b4f7-46db-86da-13229d6f38f9")
@@ -51928,6 +52366,30 @@
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "bfb30f70-b05e-47d9-b3b5-1af7dac74f75")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2937625"
+			(at 181 56 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cacdbfc8-b796-4f74-8372-d6821fd952fb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-03P"
+			(at 181 56 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "37fb7ad2-621f-4a80-922f-1a11576831e1")
 			(effects
 				(font
 					(size 1 1)
@@ -54470,7 +54932,7 @@
 				)
 			)
 		)
-		(property "Notes" "beside FETs"
+		(property "Notes" "beside FETs. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware and in the TS divider math"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -57727,6 +58189,30 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "73345b9c-4ff8-4469-a9f2-35a8f8f4a9d5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2691448"
+			(at 182.5 142.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5aaa5be0-02b1-4214-a96d-0aa01f5629ba")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PZ254V-11-04P"
+			(at 182.5 142.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ae03444f-198a-49d1-84b4-a2cfea883230")
 			(effects
 				(font
 					(size 1 1)
@@ -72426,7 +72912,7 @@
 				)
 			)
 		)
-		(property "Notes" "beside FETs"
+		(property "Notes" "beside FETs. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the \"B3435\" in the value); use Murata's R-T table in firmware and in the TS divider math"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -74174,7 +74660,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "c940a6a0-666c-490f-a310-b5b78458e221")
+		(uuid "03546ce0-64f7-486b-b067-21d9a98d75e4")
 	)
 	(gr_line
 		(start 50 50)
@@ -74184,7 +74670,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "a81a99f7-a64c-4bac-a879-c1554a7202eb")
+		(uuid "5f5245c2-d652-4c69-bb42-87e24d290d29")
 	)
 	(gr_line
 		(start 50 165)
@@ -74194,7 +74680,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "277b37f7-a99b-4afe-b95c-4068cd5bced4")
+		(uuid "aa531228-ce4d-49e6-b797-4f41ce9ab418")
 	)
 	(gr_line
 		(start 246 50)
@@ -74204,7 +74690,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "33f6c93a-b77a-4523-a319-5d11df826678")
+		(uuid "6f4fa224-29f5-4c4c-b0bf-586628e6271e")
 	)
 	(gr_line
 		(start 246 87.1)
@@ -74214,7 +74700,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "523a8d61-3942-44eb-a036-77d831d7c818")
+		(uuid "10031bbc-125b-4945-a168-79e01f76339c")
 	)
 	(gr_line
 		(start 246 123.1)
@@ -74224,12 +74710,12 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "0d97a0ca-ccb4-4d66-9fe5-3f240b197772")
+		(uuid "01da431c-12bf-49f1-8a38-805f5f123ce8")
 	)
 	(gr_text "not GND"
 		(at 156.3 67.6 0)
 		(layer "F.SilkS")
-		(uuid "28718825-2a7f-4b2e-a4ed-db227a52f222")
+		(uuid "3adbac7d-4c09-4ed5-a48f-2648b6cd6fc6")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74240,7 +74726,7 @@
 	(gr_text "TX"
 		(at 181 53.3 0)
 		(layer "F.SilkS")
-		(uuid "0beacb5f-10fa-4cac-905f-ddf3db7a2971")
+		(uuid "8ab1c11a-6599-48ba-aa9d-f21d42cc1838")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74251,7 +74737,7 @@
 	(gr_text "RX"
 		(at 183.54 53.3 0)
 		(layer "F.SilkS")
-		(uuid "e0c11754-ad01-4b57-9df8-c303b50aea91")
+		(uuid "df8849d7-0045-47bb-be10-13c7ce5daaa5")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74262,7 +74748,7 @@
 	(gr_text "G"
 		(at 186.08 53.3 0)
 		(layer "F.SilkS")
-		(uuid "fb80061c-e5dd-4418-a700-6e8c07ac8891")
+		(uuid "7a4ee040-321e-4506-bbe5-4e40ab3014f0")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -74273,7 +74759,7 @@
 	(gr_text "FIT CELLS BEFORE USB"
 		(at 105 163.3 0)
 		(layer "F.SilkS")
-		(uuid "cc8025ae-f620-4d17-ba5c-89192e699ef6")
+		(uuid "86cc36e6-71a6-454c-8c20-df29ba8bb8b3")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74284,7 +74770,7 @@
 	(gr_text "MCU"
 		(at 164 56 0)
 		(layer "F.SilkS")
-		(uuid "1740a6e1-8b66-4439-ba8f-0041a953b694")
+		(uuid "291c51ef-203b-4abc-ae2b-6c367b1e554c")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74295,7 +74781,7 @@
 	(gr_text "GAUGE"
 		(at 171.5 67 0)
 		(layer "F.SilkS")
-		(uuid "ae39039e-85ec-4950-8c3d-eb317f1dc3c0")
+		(uuid "72ca6ee4-b868-4114-a466-a593e2d6536b")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74306,7 +74792,7 @@
 	(gr_text "SLEEP CURRENT"
 		(at 198.5 161.5 0)
 		(layer "F.SilkS")
-		(uuid "0a5e2aa5-fda3-4c95-93aa-73221b9db1e5")
+		(uuid "912f15cf-deec-4190-838e-a14681b1ff3d")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74317,7 +74803,7 @@
 	(gr_text "USB 1"
 		(at 241.5 89.6 0)
 		(layer "F.SilkS")
-		(uuid "fe460940-5a5c-4424-8378-b61f7369afea")
+		(uuid "1d0f54b9-5de8-4afe-9bf3-38768fc9cbad")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74328,7 +74814,7 @@
 	(gr_text "USB 2"
 		(at 241.5 125.6 0)
 		(layer "F.SilkS")
-		(uuid "2b586f79-f45d-4fb2-8b7f-dfa6ea873da4")
+		(uuid "bb73d31f-f8c5-4291-90b5-514e9b7e3d2c")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74339,7 +74825,7 @@
 	(gr_text "PORT 1"
 		(at 184.8 96 90)
 		(layer "F.SilkS")
-		(uuid "556ddcc2-3658-40bd-bf49-dd273f566b6e")
+		(uuid "142504a6-d9de-42c3-9887-f42f8c22c97c")
 		(effects
 			(font
 				(size 1.2 1.2)
@@ -74350,11 +74836,43 @@
 	(gr_text "PORT 2"
 		(at 184.8 133 90)
 		(layer "F.SilkS")
-		(uuid "402f63fa-7809-4a8d-acd8-8ef40e812029")
+		(uuid "df85674d-3bb3-4793-b244-22b6aa6e55ae")
 		(effects
 			(font
 				(size 1.2 1.2)
 				(thickness 0.2)
+			)
+		)
+	)
+	(zone
+		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
+		(uuid "282bcb75-d1bd-496b-ad33-cf605c92e27d")
+		(name "ANT_KEEPOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks not_allowed)
+			(vias not_allowed)
+			(pads allowed)
+			(copperpour not_allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 191 50) (xy 209 50) (xy 209 54.2) (xy 203.525 54.2) (xy 203.525 50.525) (xy 196.475 50.525)
+				(xy 196.475 54.2) (xy 191 54.2)
 			)
 		)
 	)

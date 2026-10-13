@@ -170,7 +170,8 @@ Firmware and configuration items added by these decisions:
 | H10 PPHV/VBUS caps | C449/C549 0.1 µF PPHV; C450/C550 10 nF VBUS |
 | H12 LED | R306 330 Ω |
 | C-6 LCSC | Every resistor and capacitor now has a JLC number |
-| Not done | H8 TH305 FET thermistor, H11 J104 keying, H14 J101 Kelvin (rev 2), H15 NTC insulation note; LCSC numbers for headers (test loops are now SMD RH-S2761-46R, C55121754: README item 26). U301 hand-soldered (out of stock at LCSC, user decision) |
+| Open-item pass | H11 J104: D104 SS34 series diode. H15: insulated-NTC sheet note. B-13 D401 symbol. C-5 J301 wording. C-12 B-constant notes. C-13 R201 text. C-15 shunt notes. Header LCSC numbers. Antenna keep-out rule area. Configuration checklist (`bringup-config-checklist.md`) |
+| Not done | H8 TH305 FET thermistor, H14 J101 Kelvin (rev 2); LCSC numbers for headers (test loops are now SMD RH-S2761-46R, C55121754: README item 26). U301 hand-soldered (out of stock at LCSC, user decision) |
 
 ## Decisions that were asked (kept for the record)
 
