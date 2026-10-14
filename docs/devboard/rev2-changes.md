@@ -38,5 +38,5 @@ These came up while placing rev 1 (2026-10-12). Any that are wanted could still 
 - Add a signal + GND pad pair spaced for a probe ground spring, or a DNP U.FL/MMCX footprint, at each switch node and at the BQ25756 input/output caps.
 
 ## Check after rev 1 bring-up
-- **Q402 gate drive:** with the half-bridge package it isn't possible to make both FETs' gate pins face the BQ25756, so HG2/LG2 route around or under Q402. Measure gate ringing on Q402 versus Q401. If it's worse, rearrange the port 2 side of the power stage in rev 2.
+- **Q402 gate drive:** *(resolved in rev 1 by the 2026-10-14 cost-down: the legs are now discrete PGQ04N070 FETs, so every gate can face the BQ25756.)* With the half-bridge package it wasn't possible to make both FETs' gate pins face the BQ25756, so HG2/LG2 routed around or under Q402. Measure gate ringing on Q402 versus Q401. If it's worse, rearrange the port 2 side of the power stage in rev 2.
 - **Hot loops:** measure switch-node ringing and overshoot on both half-bridges and the TPS62933 to confirm the HF cap placement.
