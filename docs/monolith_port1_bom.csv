@@ -49,6 +49,8 @@ C22,CC2 cap,330pF,0402,confirmed from TI datasheet,
 U3,I2C EEPROM,size and address per TPS25751 datasheet,SOT-23-5 or UDFN,to be selected,
 D1,VBUS TVS,TVS2200 or equivalent,SON,confirmed from TI datasheet,
 D2,CC/D+/D- ESD array,"4-channel, 24V-tolerant on CC",SOT/DFN,to be selected,
+D3,Bootstrap diode DRV_SUP->BTST1,"Schottky 40V (LRB521S-40T1G)",SOD-523,TI BQ25756 schematic checklist: required (added 2026-10-12),C135802
+D4,Bootstrap diode DRV_SUP->BTST2,"Schottky 40V (LRB521S-40T1G)",SOD-523,TI BQ25756 schematic checklist: required (added 2026-10-12),C135802
 J1,Amphenol 12402082E512A,Port 1 USB-C,vertical SMT,"assumed, verify",
 (block),BQ77915 + 2 FETs + 5mOhm sense + 15A fuse,Protector: between cell stack and VBAT_SYS,,pinout not yet pulled,
 (block),TPS709 LDO,3.3V rail: VBAT_SYS -> 3V3,,pinout not yet pulled,

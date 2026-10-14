@@ -41,9 +41,9 @@ A roomy prototype of the complete Monolith production circuit, used for:
   - No published current rating; treat as a few amps (normal charging and modest loads only).
   - Open holders don't stop a cell going in backwards. Silkscreen + and − at both ends of every holder, orient all four the same way, and check each cell's voltage with a meter at the tap test points before closing the fuse/link. A reversed cell can push the gauge's VC pins below ground (the 100 Ω filter resistors limit the current).
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
-- **Fuse** in series with CELL_P, sized for holder use (*TBD*, ~5–7 A).
+- **Fuse** in series with CELL_P: prosemi 1206FA-15A (C2838894), 15 A, 300 A interrupt at 24 Vdc, sized for 100 W out at the 12 V low end (rev A4; was 8 A for holder use). JLC-placed (rev A5; was DNP and hand-fitted). Check the cells before waking the gauge: the FETs stay off until FET_EN.
 - **Kelvin cell taps:** CELL1–CELL3 and the stack ends for the gauge are taken from the cell end of each holder contact (separate small traces), not from the power traces, so spring resistance isn't measured as cell resistance.
-- **Cell thermistor:** 10 kΩ NTC (103AT type) on two wires to the gauge's TS1 input, taped to a cell at mid-height.
+- **Cell thermistors (rev A4: one per cell):** 10 kΩ NTC (103AT type) on two wires to each of the gauge's TS1–TS4 inputs (J102, J105, J106, J107), taped to BT101–BT104 at mid-height over the sleeve. Each can is that cell's negative terminal (up to about 12.6 V above VSS on BT104) and the TS pins are rated 2.1 V, so use insulated sensors.
 
 ## 2. Gauge and protection (BQ40Z50-R2, same as production)
 
@@ -51,13 +51,13 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 - **U_GAUGE:** BQ40Z50RSMR-R2 (LCSC C2845123).
 - **Cell inputs:** VC1–VC4 each through **100 Ω** in series from the Kelvin taps, with **0.1 µF** from each VC pin to the node below (VC4→VC3, VC3→VC2, VC2→VC1, VC1→VSS). The 100 Ω also sets internal balancing current (internal FETs ~200 Ω, up to ~10 mA); balancing settings in data flash.
-- **BAT supply:** from CELL_P (after the fuse, before the protection FETs) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
+- **BAT supply (rev A5: from the cell top before the fuse, TI fig. 9-12):** from CELL_P_RAW (the VC4 node, before F101) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
 - **PBI:** 2.2 µF ceramic to VSS.
 - **Sense resistor RS_GAUGE:** Yageo PA2512FKE7W0R001E, 1 mΩ 1% 2 W 2512, ±50 ppm/°C (LCSC C326570), low side between CELL_N and GND. **100 Ω** from each end of the sense resistor to SRP / SRN (Kelvin traces), **0.1 µF** across SRP–SRN at the pins.
-- **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals).
+- **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals). Two **0.1 µF 50 V** ceramics in series from CELL_P to PACK_P, across the FET pair (TI fig. 9-2 C1/C2; C110/C111, added rev A4).
 - **PCHG:** no precharge FET (the BQ25756 does precharge itself); leave PCHG unconnected or 20 kΩ to VSS, and set data flash so precharge uses the CHG FET.
 - **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
-- **TS1:** cell thermistor (10 kΩ 103-type NTC; internal 18 kΩ pull-up). **TS2–TS4:** tie to VSS and disable in data flash.
+- **TS1–TS4:** one cell thermistor each (10 kΩ 103-type NTC; internal 18 kΩ pull-up), enabled in data flash.
 - **PRES/SHUTDN:** to VSS (system always present). **FUSE:** to VSS. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
 - **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
 - **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
@@ -66,15 +66,15 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 3. Power path split and sleep-current measurement
 
 - PACK_P feeds the **high-current branch** directly: both BQ25756 power stages (battery side) and both TPS62933 inputs. No measurement resistor on these.
-- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (1%, 0.5 W, 1206 or larger) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
-- The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. Optional (low-current, no bypass needed): a 10 Ω in series with the gauge's BAT feed plus a third INA190 footprint (DNP) to see the gauge's ~50–340 µA on the scope.
+- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (R201, 1 %, 1206; the fitted 1206W4F100JT5E is 1/4 W: fine for the ~0.4 W start-up pulse and < 2 mW steady state, and it opens as a fuse if U204 fails short) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
+- The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. (Dropped 2026-10-13: a third INA190 on the gauge's BAT feed. Measure the gauge current as the drop across R105, 100 Ω in the BAT feed: 50–340 µA = 5–34 mV, with the pack on battery only.)
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
   - **U_AMP_LO: INA190A5IDDFR** (gain 500, SOT-23-8 with ENABLE) → 5 mV per µA, ~0.99 mA full scale on a 5 V supply, 27 kHz bandwidth (sleep detail). If JLC doesn't stock the A5, use INA190A4 (gain 200 → 2 mV/µA, ~2.5 mA full scale; LCSC C2059766, SC-70-6, no ENABLE pin)
   - **U_AMP_HI: INA190A1IDDFR** (gain 25, JLC C1852068, SOT-23-8) → 0.25 V per mA, ~20 mA full scale, 45 kHz bandwidth (Bluetooth bursts)
   - INA190 (datasheet): offset ±15 µV max (≈ ±1.5 µA on 10 Ω; typically much less), input bias 0.5 nA typ, common mode −0.2 to 40 V, 48 µA supply, output swings to within 40 mV of VS and 3 mV of GND
   - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
   - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
-  - Outputs to two vertical SMA connectors (OUT_LO, OUT_HI; the edge-launch part needs a 1.6 mm board) plus test points; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
+  - Outputs on test loops (OUT_LO TP201, OUT_HI TP202), each with a GND loop beside it (TP208, TP209) for a short probe ground; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
   - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 
@@ -110,8 +110,9 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | PA9 / PA10 | UART debug TX / RX (USART1) |
 | PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT through a 2N7002 (Q103), 100 kΩ pull-up: **active low** |
 | PB5 | status LED |
-| PB8 | CHG_INH (rev A4) — high stops both chargers at their CE pins (1 k to each) |
-| Spares | PA7 → 2.54 mm header (with NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
+| PB8 | CHG_INH (rev A4; polarity rev A5) — drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
+| PA7 | NTC_TH5 (rev A5): TH305 at the protection FETs, ADC1_IN2, same 10k/0.1 µF divider from NTC_EN; also on J303 pin 2 for probing |
+| Spares | 2.54 mm header J303 (NTC_TH5, NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
 
 - **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
 - **UART header:** 3-pin (TX, RX, GND).
@@ -120,7 +121,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 ## 6. Board NTCs (STM32WB)
 
 - Four 10 kΩ 1% NTCs (B ≈ 3380–3435, 0603): TH1 beside port 1 FETs/inductor, TH2 beside port 2, TH3 between the two USB-C connectors on VBUS/GND copper, TH4 on a bare copper pad where the heatsink plate would sit.
-- Each NTC from its ADC pin to GND, with a 10.0 kΩ 0.1% (Yageo RT0805BRD0710KL, C110775) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
+- Each NTC from its ADC pin to GND, with a 10 kΩ 1 % (UNI-ROYAL 0805W8F1002T5E, C17414; was 0.1 %, about 0.25 °C difference) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 
@@ -150,20 +151,20 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
   - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
   - Battery side: 3 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 136 µF effective at 16.8 V
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
-- **Resistors (Yageo RT 0.1%):**
-  - FSW_SYNC: 40.2 kΩ (C865475) → ~600 kHz
+- **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
+  - FSW_SYNC: 40.2 kΩ 1 % (C17678) → ~600 kHz
   - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG set to ~1.527 V in firmware for 16.8 V)
-  - ICHG: 17.8 kΩ (C705729) → ~2.8 A hardware ceiling (rev A4; was 5.11 kΩ / 9.8 A, above the cells' 5.6 A)
-  - ILIM_HIZ: 3.65 kΩ (C705773) → ~5.5 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
-  - TS: RT1 1.74 kΩ (C784581) REGN→TS, RT2 5.11 kΩ (C705788) TS→GND, with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
-  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** (top, from VAC), **RAC2 40.2 kΩ** (C865475), **RAC3 10.0 kΩ** (C110775, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
+  - ICHG: 9.1 kΩ 1 % (C23260) → ~5.5 A hardware ceiling per port (rev A4; was 5.11 kΩ / 9.8 A). One port can charge at about 1C; with both ports charging, configuration/firmware hold each at 2.8 A (ICHG_REG).
+  - ILIM_HIZ: 3.6 kΩ 1 % (C22980) → ~5.6 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
+  - TS: RT1 1.8 kΩ 1 % (C4177) REGN→TS, RT2 5.6 kΩ 1 % (C23189) TS→GND (rev A4; was 1.74k/5.11k), with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
+  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** 1 % 0603 (C22872; top, from VAC), **RAC2 40.2 kΩ** 1 % (C17678), **RAC3 10 kΩ** 1 % (C17414, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
     - Overvoltage stop: 1.2 V × 187.2 / 10.0 = **22.5 V** (above PD's 21 V max, below the SMAJ22A's 24.4 V breakdown)
     - Undervoltage stop: 1.1 V × 187.2 / 50.2 = **4.1 V**
     - Hardware input-voltage regulation floor (ACUV reaching 1.21 V): **4.5 V**, so a weak 5 V source or panel is never pulled into collapse; firmware can raise it further via the input DPM / MPPT settings
     - Divider draws ~107 µA only while VAC is powered (cable attached)
-    - 137 kΩ is the only new value (Yageo RT0805 0.1%; check stock, 1% is acceptable for these thresholds)
+    - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the SMAJ22A breakdown
     - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
-- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet; VAC feed and capacitor per `monolith_port1_netlist.csv`.
+- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv`.
 - STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
 
 ### 7.4 5 V supply for PP5V (TPS62933)

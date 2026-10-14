@@ -26,12 +26,12 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | Item | Status |
 |---|---|
 | #1 U203 EN tied to PACK_P | **Fixed**: EN floats (internal pull-up). |
-| #2 Charge ceiling | **Fixed**: R413/R513 = 17.8k → 2.8 A per port. The watchdog bit and gauge OCC1 are configuration items. |
-| #3 Discharge-side overload | Configuration: source PDOs, IBAT_REV, gauge OCD1. |
-| #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. |
+| #2 Charge ceiling | **Fixed**: R413/R513 = 9.1k 1 % → 5.5 A per port (revised from 17.8k / 2.8 A so one port can charge at about 1C). Both-port sum, watchdog behaviour and gauge OCC1 are configuration/firmware items (firmware item 14). |
+| #3 Discharge-side overload | **F101 raised to 15 A** (1206FA-15A) so 100 W out at the 12 V low end (about 10 A) is within rating. Total-output sharing, gauge OLD and OCD1 are configuration/firmware items (firmware items 3 and 4). |
+| #4 Holder contact resistance | Configuration and bring-up: holder mode ≈ 2 A, measure each holder. **Accepted** 2026-10-13: MYOUNG BH-21700-B1BJ001 (C20606791) stays for rev 1 despite its 100 mΩ maximum; high-current tests and learning cycles run on the welded pack (J101). |
 | #5 U101 exposed pad | **Fixed**: TI RSM0032A footprint (1.4 mm pad). |
 | #6 D± ESD vs GPIO4/5 | **Fixed**: D403/D503 → PESD5V0S2BT. No OVP switch for a D±-to-20 V short. |
-| #7 Open or reversed cell | **Fixed in hardware**: R101–R104 1206, F101 DNP (hand-fit after checking the cells), J101 DNP. Firmware gating and VIMR/VIMA are configuration items. |
+| #7 Open or reversed cell | **Fixed in hardware**: R101–R104 1206, J101 DNP. F101 was DNP (hand-fit after checking the cells) until rev A5; now JLC-placed, and the check comes before waking the gauge (protection FETs off until FET_EN), see README item 25. Firmware gating and VIMR/VIMA are configuration items. |
 | #8 DSG inrush | **Fixed**: DNP C109 (gate→GND) + D102 (across R111). Fit at bring-up if SCD trips. |
 | #9 EV2400 with 3V3 dead | **Fixed**: pull-ups on SMB_PU via R312 0R, plus TP308. Also J104 bench PACK_P header. |
 | #10 BTP_INT → PA6 | **Fixed**: Q103 2N7002 buffer; GAUGE_BTP is now active low. |
@@ -39,7 +39,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | m1 Q102 VGS | **Fixed**: DNP D103 15 V clamp. |
 | m2, m3, m4, m7, m9, m12, m14, m15, m16, m17, m19, m20 | **Fixed** (values, footprints, parts as listed). |
 | m5 SMAJ22A clamp | Not changed: TVS2200 has no LCSC/JLC stock; SMAJ22A meets TPS25751 footnote 4. |
-| m6 Edge SMA on 0.8 mm board | **Fixed**: vertical SMAs. |
+| m6 Edge SMA on 0.8 mm board | **Fixed**: vertical SMAs; later replaced by test loops TP201/TP202 + GND TP208/TP209 (rev A5). |
 | m8 TS1 NTC protection | Sheet note: tape the NTC to BT101. |
 | m10 J101 + holders | **Fixed**: J101 DNP. |
 | m11 TP102 | **Fixed**: "not GND" silkscreen. |
@@ -49,6 +49,8 @@ Fixed in the schematic and board unless marked otherwise. Details are in DevBoar
 | m22 FSW / output C | Not changed: verify at bring-up. |
 | Firmware items 1–11 | Open: TPS25751/gauge configuration and STM32 firmware. The DBfg step is now in docs/project/tps25751-eeprom-programming.md. |
 | Q3 wake from SHUTDOWN | **Fixed**: SW101 wake button + J104. |
+| Missed by the review: BQ25756 bootstrap diodes | **Fixed** 2026-10-12: TI's BQ25756 schematic checklist marks D2/D3 (DRV_SUP → BTST1/BTST2 Schottky) as required; the review accepted the datasheet pin table, which only names the capacitor. D404/D405 per port, LRB521S-40T1G. |
+| Missed by the review: ESD caps across the FET pair | **Fixed** 2026-10-12: TI fig. 9-2 C1/C2 (two 0.1 µF in series, CELL_P to PACK_P) were missing; only the PACK+/PACK− pair (C107/C108) was drawn. Added C110/C111. |
 | Q1, Q2, Q4–Q7 | Decided (see "Decisions on the open questions"): Q5 fixed (J103 EV2400 order), Q2 → CHG_INH line added, others configuration/documentation. |
 
 ---
@@ -228,18 +230,21 @@ This is the discharge-side counterpart of #2.
 
 ## Firmware and configuration (no schematic change)
 
+Consolidated, with review 2 corrections, in `bringup-config-checklist.md`.
+
 1. **Charger setup in the TPS25751 config:**
    - VFB_REG = 0x0F (1.534 V → 16.80 V). The power-on default gives 16.84 V, up to 16.96 V worst case; the documented "1.527 V" isn't on the 2 mV grid and ignores the FBG resistance.
    - Also set ICHG_REG, IPRECHG, ITERM (power-on value is 2.0 A), the watchdog, and EN_CHG_BIT_RESET_BEHAVIOR = 0.
-2. **Charger temperature input (JEITA):** the network on the FET NTC puts the "cool" threshold at 16 °C, so charge current drops to 20 % below about 16 °C by default. Set EN_JEITA = 0, or TS_T2/JEITA_ISETC accordingly. In charge mode an open NTC is caught as cold (only 0.75 % margin); in reverse mode it is not detected.
-3. **Source PDOs:** total about 60–80 W and IBAT_REV = 5 A (see #3).
+2. **Charger temperature input (JEITA):** with the rev A4 network (1.8k/5.6k) the "cool" threshold on the FET NTC is about 18.8 °C (was 16 °C), so charge current drops to 20 % below that by default. Set EN_JEITA = 0, or TS_T2/JEITA_ISETC accordingly. In charge mode an open NTC is caught as cold (only 0.75 % margin); in reverse mode it is not detected.
+3. **Source power sharing (see #3; F101 is 15 A since rev A4):** keep the total pack current at or below about 10–11 A, i.e. the product rule of 100 W total out (USB1 up to 100 W alone, 80 W + 20 W with both ports). IBAT_REV only steps 20/15/10/5 A, so it is a coarse backstop (10 A per port); the real limit is the source PDOs the TPS25751 offers. The MCU lowers USB1's offer when USB2 attaches (attach interrupt), mirroring the charge-current rule in item 14. In holder mode cap the total much lower (#4).
 4. **Gauge data flash before the first charge:**
    - 4S and the EVE chemistry.
-   - Thresholds: COV ≤ 4.25 V, CUV, OCC1 ≤ 5.6 A, OCD1 ≤ 6 A, OLD at minimum, a short SCD1 delay.
+   - Enable all four cell thermistors TS1–TS4 (rev A4 adds J105–J107) and use the maximum for the temperature protections.
+   - Thresholds: COV ≤ 4.25 V, CUV, OCC1 about 6 A, OCD1 about 10–11 A for the welded pack (100 W at the 12 V low end) and about 2–3 A in holder mode, OLD about 16–20 A (its 8.3 A minimum would cut 100 W at low pack voltage), a short SCD1 delay. F101 (15 A) is the backstop above these.
    - VIMR/VIMA enabled, and a sleep-current threshold above the ±10 mA coulomb-counter offset.
    - Then send FET enable.
    - Factory defaults found in the TRM (SLUUBK0B): `DA Configuration` = 0x12 (**3S**), `Manufacturing Status Init` = 0x0000 (**FET_EN off**, so a fresh board does not power from its cells; first power comes from USB or the J104 bench header).
-   - **Precharge:** `FET Options[PCHG_COMM]` defaults to 0 = external precharge FET, which this board does not have. Set `Precharge Start Voltage` = `Charging Voltage Low` = 0 mV to disable the gauge precharge (the BQ25756 already precharges at 0.56 A below about 3.0 V/cell) and leave `PCHG_COMM` = 0 so the gauge 0-V charging circuit stays off (decision Q4).
+   - **Precharge (SUPERSEDED by review 2 A-3: keep Precharge Start Voltage = 2500 mV, set Charging Voltage Low ≤ 2500 mV; see `bringup-config-checklist.md`):** `FET Options[PCHG_COMM]` defaults to 0 = external precharge FET, which this board does not have. Set `Precharge Start Voltage` = `Charging Voltage Low` = 0 mV to disable the gauge precharge (the BQ25756 already precharges at 0.56 A below about 3.0 V/cell) and leave `PCHG_COMM` = 0 so the gauge 0-V charging circuit stays off (decision Q4).
    - Keep `OCD:Recovery Delay` / `OCC:Recovery Delay` short: after an OCD trip DSG stays off until charge current is seen for that delay, and the charge current meanwhile flows through Q102's body diode (decision Q1).
 5. **Dead-battery flag:** after any start where VBUS arrives before 3V3, the MCU must clear the TPS25751 dead-battery flag (DBfg, tps25751 §8.3.2). Until then, LDO_3V3 (EEPROM and I2Cc pull-ups) runs from VBUS. Add this to `docs/project/tps25751-eeprom-programming.md`.
 6. **Gating EN_5Vx and charging:** refuse both unless the gauge reports four valid cells and both FETs on.
@@ -248,8 +253,9 @@ This is the discharge-side counterpart of #2.
 9. **EV2400 mode:** release the I2C peripheral (or hold the MCU in reset) while bqStudio is connected, because there are two masters on SDA/SCL.
 10. **PA6 (BTP):** it is not a WKUP pin, so the gauge can wake the MCU from Stop but not from Standby or Shutdown. Never enable PA6's internal pull resistors.
 11. **NTC readings:** wait at least 5 ms after raising NTC_EN (τ = 0.5 ms). PA8's drive drop costs about 0.5–0.8 °C near 100 °C. Jumpering J303 PA7 to NTC_EN lets firmware measure the excitation directly.
-12. **CHG_INH (PB8, rev A4):** drive high to stop both chargers at their CE pins. Assert it when the gauge stops answering for about 2 s; when its read-back configuration is wrong (cell count, COV/CUV/OCC); when the gauge stack voltage, the sum of its cells and the chargers' VBAT ADC (read through the TPS25751 with I2Cr) disagree by more than about 300 mV; when any cell is outside 2.5-4.25 V; or when the gauge reports CHG off but charge current still flows (FET stuck on). Leave it low (or as input) otherwise, so a dead pack still recovers from USB. The TPS25751 configuration must keep `DIS_CE_PIN` = 0.
+12. **CHG_INH (PB8, rev A4; polarity reversed in rev A5, see review 2 D1):** drive **low** to allow charging, high (or release) to stop both chargers at their CE pins. Before rev A5 it was: drive high to stop both chargers. Assert it when the gauge stops answering for about 2 s; when its read-back configuration is wrong (cell count, COV/CUV/OCC); when the gauge stack voltage, the sum of its cells and the chargers' VBAT ADC (read through the TPS25751 with I2Cr) disagree by more than about 300 mV; when any cell is outside 2.5-4.25 V; or when the gauge reports CHG off but charge current still flows (FET stuck on). Drive it low only while a port is charging and these checks pass; drive it high otherwise. Since rev A5, low costs 138 µA (two 47k CE pull-ups), so idle must be high. See `mcu-io-power-states.md`. (Rev A5: input or reset stops charging; a dead pack still recovers from USB because 3V3 is down.) The TPS25751 configuration must keep `DIS_CE_PIN` = 0.
 13. **Body-diode limit (decision Q1):** while the gauge reports XDSG = 1 and charge current flows, hold the chargers at the precharge level (ICHG_REG via I2Cw) until DSG is back on.
+14. **Charge-current sharing (ICHG pin = 5.5 A per port):** TPS25751 configuration starts each BQ25756 at ICHG_REG = 2.8 A, EN_ICHG_PIN = 1, EN_CHG_BIT_RESET_BEHAVIOR = 0, IPRECHG ≈ 0.5 A, ITERM = 0.25 A. When only one port is charging, the MCU raises it (I2Cw) to the full rate: 5.5 A for the welded pack; in holder mode limited by the measured holder contact resistance (#4). On the other port's attach interrupt (IRQ1/IRQ2), the MCU drops the first port back to 2.8 A before the new contract closes PPHV. Gauge OCC1 about 6 A with a short delay. The cell maximum is 1C (5.6 A, "not for cycle life"); the project target is 0.5C, so the full rate belongs in a "fast charge" mode.
 
 ## Open questions
 
@@ -270,12 +276,12 @@ _Decided 2026-10-12; see "Decisions on the open questions" below._
 | # | Decision |
 |---|---|
 | Q1 | The BQ40Z50-R2 has no body-diode protection (TRM SLUUBK0B). Configuration + firmware: short OCD/OCC recovery delays, chargers held at precharge level while XDSG = 1 (firmware item 13). Measure Q102 temperature at bring-up. No hardware change. |
-| Q2 | Rev 1: no hardware second-level protector. Instead the MCU cross-checks the gauge (alive, configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and can stop both chargers through the new CHG_INH line (PB8 → 1 k → each BQ25756 CE). This is firmware-dependent; a hardware secondary OVP + chemical fuse for production is an open decision in rev2-changes.md. |
+| Q2 | Rev 1: no hardware second-level protector. Instead the MCU cross-checks the gauge (alive, configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and can stop both chargers through the new CHG_INH line (PB8 → 1 k → each BQ25756 CE). This is firmware-dependent; decided 2026-10-12: no hardware secondary OVP or chemical fuse for production either; software is the second layer (rev2-changes.md 1b). |
 | Q3 | Fixed: SW101 wake button and J104 bench PACK_P header. |
 | Q4 | Rule + configuration: fit cells before USB (silkscreen and sheet note); gauge precharge and 0-V charging disabled (firmware item 4). |
 | Q5 | Fixed: J103 is now 4-pin in the EV2400 SMBus order (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT unused. The old 3-pin order would have shorted SCL to ground on a straight cable. EV2400 pull-ups are 20 k to 3.3 V, so with 3V3 down R312 must be removed (see #9). |
 | Q6 | No change: the TPS25751 GPIO event table (TRM SLVUCR8B Table 5-6) has no input event for a charger PG line; the TPS25751 manages the BQ25756 over I2Cc and its INT line. PG stays on its test point. |
-| Q7 | Documented: R_MEAS covers the 3V3 branch only. For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. |
+| Q7 | Documented: R_MEAS covers the 3V3 branch only. (Rev A5: the gauge BAT feed now comes from before F101, so this reading excludes the gauge's own supply current.) For the total pack drain, measure across the (DNP) F101 pads with a meter before fitting the fuse. (Rev A5: F101 is JLC-placed, so this method is gone; use the gauge's current reading.) |
 
 ## Verified correct (coverage)
 
