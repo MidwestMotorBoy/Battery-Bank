@@ -84,7 +84,7 @@ Found while checking against datasheets:
 14. **INA190s (U201/U202) are hand-soldered**, bought from DigiKey/Mouser (decided 2026-10-11). JLC had only 7 INA190A5 and no INA190A1, and the in-stock look-alikes (INA180/181/185/296) draw tens of µA of input bias, which flows through R_MEAS and swamps µA readings. Both parts are excluded from the position file and have no LCSC number, so JLC leaves the pads empty; MPN and a `Sourcing` note are in their properties. **Update 2026-10-13:** JLC now stocks INA190A1IDDFR (C1852068, 1,700), so **U202 is JLC-assembled** (LCSC set, back in the position file). U201 (INA190A5, gain 500; 7 at JLC) stays hand-soldered. INA190A4 (gain 200, C1852066) would be the JLC option for U201, at 2 mV/µA and about 2.5 mA full scale. The INA21x family is no substitute: 15–35 µA input bias through R_MEAS and no enable pin.
 15. **PPHV bulk above 100 µF is kept.** The TPS25751 table limits sink bulk to 100 µF (USB PD cSnkBulkPd) unless VBUS surge current is limited. The TPS25751D's PPHV sink switch ramps with a slew-rate loop (§6.9: 0.35–0.47 V/ms at setting 0, up to 3.8 V/ms at setting 3), so the BQ25756 input bank (about 125 µF effective at 20 V since rev A5 made C421 100 µF, item 24) charges at about C × SS = 0.06 A (setting 0), 0.5 A worst case at setting 3. The TPS25751 configuration must use PPHV soft-start setting 0 or 1; this is in the usb_port sheet notes.
 16. **Charger bulk is polymer plus MLCC, not all MLCC** (2026-10-12). The 1210 X5R banks lost most of their value to DC bias (a 22 µF 35 V keeps about 8.5 µF at 20 V, a 47 µF 25 V about 12 µF at 16.8 V), so meeting the BQ25756's ≥ 80 µF effective per side (datasheet §6.3, TI asks for "a combination of ceramic and bulk capacitors", §7.2.1.2.5–6) took 10 + 7 parts per port. Each bank now has one solid polymer cap for the bulk and keeps only the MLCCs that carry the switching-frequency ripple next to the FETs:
-    - USB side (AC_SNS_N): C420/C423/C424/C427 22 µF 35 V 1210 + **C421 68 µF 35 V polymer**, ChuangHui SV680M350E5R8R4Z00ZZ (C49435121), 6.3 × 5.8 mm, 30 mΩ, 2 A at 100 kHz. About 34 + 68 ≈ 100 µF effective at 20 V (≥ 88 µF at −20 % tolerance). 35 V gives margin over ACOV (22.5 V) and the SMAJ22A clamp.
+    - USB side (AC_SNS_N): C420/C423/C424/C427 22 µF 35 V 1210 + **C421 polymer**, 35 V. It was 68 µF here (ChuangHui SV680M350E5R8R4Z00ZZ, C49435121); rev A5 made it **100 µF** (Honor HV1V107M0607PZ, C5246554, item 24), because the MLCCs keep only 5.9–6.8 µF each at 20 V (review 2, B-5). About 99 µF effective worst case. 35 V gives margin over ACOV (22.5 V) and the SMAJ22A clamp.
     - Battery side (BAT_SNS_P): C431/C434/C435 47 µF 25 V 1210 + **C432 100 µF 25 V polymer**, JIERR MA25V100M6x6 (C46550465), 6.3 × 6 mm, 30 mΩ, 2.65 A at 100 kHz. About 36 + 100 ≈ 136 µF effective at 16.8 V (≥ 116 µF at −20 %).
     - Removed per port: C422, C425, C426, C428, C429, C433, C436, C437 (16 MLCCs on the board).
     - Ripple: worst-case input RMS is ICHG/2 (§7.2.1.2.5); the MLCCs (a few mΩ each) take nearly all of it at 600 kHz, so the polymer's 2 A rating is not the limit.
@@ -355,8 +355,47 @@ Found while checking against datasheets:
         - Without C109, the gate partly follows the source down through the FET's own capacitance and the weak DSG pump recharges it slowly, which is why it was optional.
         - With C109 (still DNP) the gate is held up and the clamp is mandatory.
         - Fitting it always also covers fast PACK_P transients (connector shorts, ESD).
-    - **No effect in normal operation:** the Zener's 13.8 V minimum sits above the 10.5–12 V on-state gate drive, and its leakage at 12 V (tens of nA) is well within the pump's drive.
+    - **No effect in normal operation:** the Zener's 14.25 V minimum (BZT52C15 datasheet, at 5 mA) sits above the 10.5–12 V on-state gate drive, and its leakage at 12 V (tens of nA) is well within the pump's drive.
     - TI's reference (BQ40Z50-R2 fig. 9-2) has no gate clamp. This is an addition, not a departure from a required part. Keep the SCD1 delay short in data flash as well.
+
+35. **USB-C liquid detection (2026-10-14, both ports), TPS25751 datasheet sec. 9.2.2.2 / fig. 9-8.** The product is sealed (IP65 enclosure, IP68 connector), but the receptacle cavity still gets wet. Water bridging VBUS to CC/SBU corrodes the contacts, and water between CC and GND can look like an attached sink and make the port turn VBUS on.
+    - **How it works:** the TPS25751 measures the SBU1/SBU2 pins (unused until now) through its GPIO4/GPIO5 ADC inputs. GPIO6 and GPIO7 switch a 100 kΩ pull-up (AO3401A Q403/Q404 + R436/R437, from LDO_3V3) and a 1 MΩ pull-down (AO3400A Q405/Q406 + R438/R439) on each sense line.
+        - If the voltage says SBU is wet or shorted, it disables the power paths and reports a liquid-detected event over I2C.
+        - It keeps sampling and recovers by itself when the receptacle dries.
+    - **U405, TPD2S300YFFR** (C2650411, JLC extended, DSBGA-9 0.4 mm): its two short-to-VBUS OVP channels sit between SBU1/SBU2 and the sense nodes. They protect GPIO4/5 (6 V max) and LDO_3V3 if liquid bridges VBUS (up to 20 V) to SBU.
+        - VPWR and VM are on LDO_3V3, each with 1 µF (C452/C453). VM at 3.3 V selects low-voltage CC/PD mode.
+        - VBIAS has 0.1 µF 50 V (C451). FLT goes to GPIO3 since review 3 (item 36).
+        - New symbol `TPD2S300`, footprint `TI_YFF0009_DSBGA-9_P0.4mm` (datasheet land pattern: 0.23 mm NSMD pads, 0.05 mm mask margin, 0.25 mm paste) and a 3D model.
+        - Place it close to the connector.
+    - **BC1.2 is given up:** GPIO4/5 are the TPS25751's D+/D− pins, so it no longer does BC1.2. D403 (D+/D− ESD) is removed.
+        - **R440** (0 Ω) shorts D+ to D− at the connector instead: a passive BC1.2 dedicated-charging-port signature, so legacy devices behind adapter cables still draw full current when the bank is sourcing. DNP R440 to leave D+/D− open.
+        - Sinking from an old USB-A charger without BC1.2 is limited by the cable's Rp (default USB power), which is acceptable.
+    - **TPS25751 configuration (Application Customization Tool):**
+        - GPIO6 event = liquid_pmos_control (155) on net LIQ_PU; GPIO7 event = liquid_nmos_control (156) on net LIQ_PD. TI's EVM guide contradicts itself on this mapping (table 4-5 against table 4-6); go by the event names, which match this wiring.
+        - GPIO3 event = Fault_Input_Event (33) on net SBU_FLT (item 36). GPIO0–2 and GPIO11 stay inputs: they are tied to GND.
+        - Enable the Liquid Detection Configuration register (0x98): liquid detection and corrosion mitigation, ADC thresholds per TI's guidance, sample and wait times.
+        - Disable BC1.2 and leave GPIO4/5 as ADC inputs.
+        - Unmask the Liquid Detection event so the MCU can report it.
+    - **Parts:** all JLC basic except U405. ERC is unchanged apart from four fewer GPIO-to-GND pin-type warnings. Layout: to be placed in the board redo; `place_parts.py` no longer places D403.
+
+36. **Schematic review 3 changes (2026-10-14, both ports).** Review: [`../docs/devboard/schematic-review-3-2026-10-14.md`](../docs/devboard/schematic-review-3-2026-10-14.md).
+    - **H1, U405 FLT → TPS25751 GPIO3 (net SBU_FLT), R441 100k pull-up to LDO_3V3.**
+        - **Why:** a VBUS-to-SBU short makes the TPD2S300 open its switch, so the ADC sees only Rup/Rdown, reads "dry" and leaves VBUS on. With FLT on a fault input the port enters Type-C error recovery and VBUS turns off, as on TI's TPS25751EVM (SLVUCP9 §4.4, which uses GPIO2).
+        - GPIO3 came off the GPIO0–3 GND tie. GPIO3 was used rather than GPIO2 because it is the end of the tie bar, so the label stays clear of it.
+        - **Configuration:** GPIO3 = Fault_Input_Event (33).
+    - **H2, R442/R443 100k:** R442 pulls LIQ_PU up to LDO_3V3 and R443 pulls LIQ_PD down to GND. Both hold the liquid-detect FETs off while GPIO6/7 are Hi-Z (from reset until the configuration loads), as TI's EVM does with R105/R110.
+    - **H3, BQ25756 tuning parts (TI EVM SLUUCT7 fig. 3-1):**
+        - R444–R447 0 Ω in the gate lines. The controller-side nets are named after the pins (HIDRV1, LODRV1, HIDRV2, LODRV2); the FET-side nets keep HG1/LG1/HG2/LG2.
+        - R448/R449 0 Ω in the BTST lines (BTST1 → BTST1_C at C412/D404, BTST2 → BTST2_C at C413/D405).
+        - DNP RC snubbers R450/C454 on SW1 and R451/C455 on SW2 (3.3 Ω 0805 + 33 pF C0G, the EVM placeholders).
+        - All are drawn in a "GATE / BOOTSTRAP TUNING" block.
+        - **Layout:** each 0 Ω sits right at its FET gate or BTST pin, so a few ohms can go in if the edges ring.
+    - **H4, U401/U501 symbol:** now `MonolithDev:TPS25751D`, a copy of KiCad's stock symbol (made by `tools/make_symbols.py`) with GPIO11 typed bidirectional as the datasheet says. ERC is down to the 8 expected GPIO-to-GND warnings, with no errors.
+    - **Data flash and procedure (in `../docs/devboard/bringup-config-checklist.md`):**
+        - Min Blow Fuse Voltage = 10500 mV, because the WSFB1514 heater works only from 10.5–19.6 V.
+        - COV Delay = 1 s, so the gauge acts before U102 (1–2 s) on a step overvoltage.
+        - Never insert or remove a cell with USB or J104 power on (gauge sheet note 15).
+    - **Layout:** new parts not placed yet (board redo). On the port sheet, the NOTES block moved under the tuning block.
 
 ## Open items (defaults I picked; confirm or change)
 

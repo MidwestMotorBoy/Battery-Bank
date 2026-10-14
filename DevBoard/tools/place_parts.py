@@ -283,7 +283,7 @@ for blk, (cx, cy) in PORT_CENTRE.items():
 # with its CC caps above the CC/DP/DN pin rows, the DP/DN ESD D403 in line with the data pins, the VBUS TVS D401
 # lying below them, its VBUS pad against the connector's lower VBUS pins (offsets from (W, USB_Y))
 CONN_EXTRA = {"D02": (183.0, -4.0, 90), "C02": (185.38, -4.0, 90), "C01": (186.435, -4.0, 90),
-              "D03": (184.6, -0.2, 0), "D01": (184.85, 3.5, 180)}
+              "D01": (184.85, 3.5, 180)}   # D403 (D+/D- ESD) removed 2026-10-14: D+/D- shorted by R440
 for blk, yc in (("4", USB_Y[0]), ("5", USB_Y[1])):
     for suf, (x, dy, r) in CONN_EXTRA.items():
         put(suf[0] + blk + suf[1:], x, yc + dy, r)

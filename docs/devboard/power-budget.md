@@ -27,9 +27,9 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 
 | State | Gauge | Chargers ×2 | 5 V bucks ×2 | 3.3 V branch (R201) | **Total from the pack** |
 |---|---|---|---|---|---|
-| **Shipping**: gauge SHUTDOWN, FETs off | 1.6 µA | 0 (PACK_P cut off) | 0 | 0 | **≈ 2 µA**; cell self-discharge dominates |
-| **Idle, no cable** (MCU Stop2, slow BLE, TPS62177 in sleep mode, gauge SLEEP) | 75 µA | 34 µA | 4 µA | ≈ 44 µA | **≈ 157 µA**: about 1.4 Ah/yr, about 2 %/month |
-| Idle, gauge not sleeping (`[IN_SYSTEM_SLEEP]` = 0) | 336 µA | 34 µA | 4 µA | ≈ 44 µA | **≈ 420 µA**: about 5 %/month |
+| **Shipping**: gauge SHUTDOWN, FETs off | 1.6 µA + U102 1–2 µA | 0 (PACK_P cut off) | 0 | 0 | **≈ 3–4 µA**; cell self-discharge dominates |
+| **Idle, no cable** (MCU Stop2, slow BLE, TPS62177 in sleep mode, gauge SLEEP) | 75 µA + U102 1–2 µA | 34 µA | 4 µA | ≈ 47 µA | **≈ 161 µA**: about 1.4 Ah/yr, about 2 %/month |
+| Idle, gauge not sleeping (`[IN_SYSTEM_SLEEP]` = 0) | 338 µA | 34 µA | 4 µA | ≈ 47 µA | **≈ 423 µA**: about 5 %/month |
 | Idle, measurement section on (JP202 and JP201 fitted) | | | | | **+ ≈ 100 µA** |
 | **Charging**, one port at 5.5 A | 336 µA | 17 µA idle port; the active one runs from USB | 4 µA | ≈ 3 mA *est.* | Pack **gains about 5.5 A**, minus about 3 mA |
 | **Sourcing 100 W** at 20 V (BQ25756 reverse mode) | 336 µA | 0.75 mA | 4 µA | ≈ 3–4 mA *est.* | **6.3 A** at 16.8 V, **7.3 A** at 14.4 V, **8.8 A** at 12.0 V, **9.4 A** at the 2.8 V/cell cut-off |
@@ -44,19 +44,21 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 |---|---|---|
 | 2 × TPS25751 | 112 µA (56 each) | 3–6 mA each active (1 mA idle-attached) |
 | 2 × M24512 EEPROM (on each LDO_3V3) | ≤ 4 µA | ≤ 4 µA |
+| 2 × TPD2S300 (liquid detection, on each LDO_3V3; rev A6) | ≈ 8.5 µA (16 µA max) | ≈ 8.5 µA, plus liquid-detect sampling (measure) |
 | STM32WB1MMC | ≈ 15 µA *est.* (Stop2 about 2 µA plus advertising at about 1 s) | 2.3–4.5 mA run; radio 4.5 / 5.2 mA RX / TX |
 | Gauge SMBus pull-downs via the 4.7k pull-ups | 6.6 µA | 6.6 µA |
 | CHG_INH (PB8) | 0 (high) | 138 µA while charging (low) |
 | NTC dividers (5 × 10k) | 0 | ≈ 825 µA during the ~1 ms sample |
 | Status LED | 0 | ≈ 1 mA if on |
 | IRQ/BTP pull-ups | 0 | 33 µA per line while asserted |
-| **Total at 3.3 V** | **≈ 138 µA** | **≈ 8–15 mA** |
-| **At PACK_LP, through R201** | **≈ 44 µA** | **≈ 2–4 mA** (R201 drops 20–40 mV) |
+| **Total at 3.3 V** | **≈ 147 µA** | **≈ 8–15 mA** |
+| **At PACK_LP, through R201** | **≈ 47 µA** | **≈ 2–4 mA** (R201 drops 20–40 mV) |
 
 ## Notes
 
+- **U102 (BQ294700) and F102 add a fixed 1–2 µA** from the cells in every state, including shipping (BQ2947 IDD). The TPD2S300 figure is IVPWR + IVM typical/maximum at 3.3 V (datasheet 6.5); the liquid-detection sampling current is not specified, so measure it at bring-up (review 3, P2).
 - **The gauge is about half the idle budget.** Confirm it sleeps at bring-up: across R105, about 7.5 mV means asleep and about 34 mV means awake.
 - **BQ25756 IQ_BAT is specified at 28 V.** At 14.4 V it is likely a little lower.
 - **BLE advertising rate is the biggest unknown.** At a 100 ms interval the MCU average is nearer 100 µA, and the idle total rises to about 190 µA.
-- **No single point measures total pack drain** now that F101 is placed. Use R201 (3.3 V branch) plus R105 (gauge), plus about 38 µA for the chargers and bucks from the datasheets. The gauge's own current reading cannot resolve µA (±10 mA offset).
-- **Sourcing at the 2.8 V/cell cut-off (9.4 A)** sets F101's 15 A rating and about 1 W per protection FET, which TH305 watches.
+- **No single point measures total pack drain** (F102 is a fused part, not a jumper). Use R201 (3.3 V branch) plus R105 (gauge), plus about 38 µA for the chargers and bucks from the datasheets. The gauge's own current reading cannot resolve µA (±10 mA offset).
+- **Sourcing at the 2.8 V/cell cut-off (9.4 A)** sets the 15 A rating of F102's fuse element (F101 was deleted in rev A6) and about 1 W per protection FET, which TH305 watches.

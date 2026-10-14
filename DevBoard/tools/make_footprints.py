@@ -28,6 +28,7 @@ MODELS = {
     "ST_LGA-77_STM32WB1MMC_6.5x10mm": ("${KIPRJMOD}/3dmodels/ST_LGA-77_STM32WB1MMC_6.5x10mm.step", 0),  # tools/make_3d_simple.py
     "ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm": ("${KIPRJMOD}/3dmodels/ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", 0),  # tools/make_3d_simple.py
     "TestPoint_Harwin_S2761_0603": ("${KIPRJMOD}/3dmodels/TestPoint_Harwin_S2761_0603.step", 0),  # tools/make_3d_simple.py
+    "TI_YFF0009_DSBGA-9_P0.4mm": ("${KIPRJMOD}/3dmodels/TI_YFF0009_DSBGA-9.step", 0),  # tools/make_3d_simple.py
     "TLC_WSFB_4x3mm": ("${KIPRJMOD}/3dmodels/TLC_WSFB_4x3mm.step", 0),  # tools/make_3d_simple.py
     "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
 }
@@ -470,3 +471,24 @@ fp.line(-2.15, 0.95, -2.15, 1.6, "F.SilkS")
 fp.circle(2.35, -2.2, 0.1, "F.SilkS", 0.2)                  # pin 1 (top fuse pad, cell side)
 crt(fp, -2.25, -2.25, 2.25, 2.25)
 fp.write(-3.0, 3.0)
+
+# ---------------------------------------------------------------------------
+# 14. TI YFF0009 DSBGA-9 (U405/U505, TPD2S300YFFR). Datasheet SLVSDL1 pp. 34-36 (4219552/A): 3 x 3 balls on a
+#     0.4 mm pitch, body 1.33-1.39 mm square, 0.625 mm max height. Land pattern: 0.23 mm round NSMD copper with a
+#     0.05 mm mask expansion; stencil 0.25 mm square, 0.1 mm thick. Ball A1 top left in the top view, rows A-C down,
+#     columns 1-3 to the right. Origin = array centre.
+fp = FP("TI_YFF0009_DSBGA-9_P0.4mm", "TI YFF0009 DSBGA-9, 0.4 mm pitch, 1.36 mm body (TPD2S300YFF)",
+        "DSBGA WCSP YFF 9 0.4mm TPD2S300")
+for r, row in enumerate("ABC"):
+    for c in range(3):
+        fp.smd(f"{row}{c + 1}", (c - 1) * 0.4, (r - 1) * 0.4, 0.23, 0.23, layers=("F.Cu", "F.Mask"), shape="circle",
+               extra=" (solder_mask_margin 0.05)")
+        fp.paste((c - 1) * 0.4, (r - 1) * 0.4, 0.25, 0.25)
+fp.rect(-0.68, -0.68, 0.68, 0.68, "F.Fab", 0.1)
+fp.line(-0.68, -0.38, -0.38, -0.68, "F.Fab", 0.1)
+for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+    fp.line(sx * 0.8, sy * 0.5, sx * 0.8, sy * 0.8, "F.SilkS")
+    fp.line(sx * 0.5, sy * 0.8, sx * 0.8, sy * 0.8, "F.SilkS")
+fp.circle(-1.0, -1.0, 0.08, "F.SilkS", 0.16)                # ball A1
+crt(fp, -0.95, -0.95, 0.95, 0.95)
+fp.write(-1.6, 1.6)

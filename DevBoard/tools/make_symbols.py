@@ -4,6 +4,7 @@ Pin numbers checked against the datasheets in ../../datasheets (2026-10-11).
 Run: python make_symbols.py  (writes ../MonolithDev.kicad_sym)
 """
 import os
+import re
 
 G = 2.54
 F = '(effects (font (size 1.27 1.27)))'
@@ -157,7 +158,33 @@ syms.append(symbol("WSFB1514", "F",
     fp="MonolithDev:TLC_WSFB_4x3mm", ds="https://www.lcsc.com/datasheet/C42463217.pdf",
     desc="3-terminal self-control fuse, 4 cells: fuse 1-2, heater to pin 3 (blown by a FET to VSS)", width=7.62))
 
-lib = "(kicad_symbol_lib (version 20241209) (generator \"make_symbols.py\") (generator_version \"1.0\")\n" + "\n".join(syms) + "\n)\n"
+# TPD2S300YFFR, YFF DSBGA-9 (3 x 3, 0.4 mm). Datasheet SLVSDL1 section 5: A1 C_CC1, A2 VBIAS, A3 C_CC2, B1 CC1,
+# B2 GND, B3 CC2, C1 FLT, C2 VPWR, C3 VM. Here its two OVP channels protect the SBU liquid-detection sense lines
+# (TPS25751 datasheet fig. 9-8): connector side left, system (TPS25751 GPIO4/5) side right.
+syms.append(symbol("TPD2S300", "U",
+    left=[("A1", "C_CC1", B), ("A3", "C_CC2", B), None, ("A2", "VBIAS", P)],
+    right=[("B1", "CC1", B), ("B3", "CC2", B), None, ("C1", "~{FLT}", OC)],
+    top=[("C2", "VPWR", PI), ("C3", "VM", PI)], bottom=[("B2", "GND", PI)],
+    fp="MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm", ds=TI + "tpd2s300.pdf",
+    desc="USB Type-C CC/SBU short-to-VBUS OVP + ESD, 2 channels", width=25.4))
+
+# TPS25751D: KiCad's stock symbol (Interface_USB), copied so GPIO11 can be typed bidirectional like GPIO0-7. The
+# datasheet (table 5-1) lists it as a GPIO; the stock symbol types it as an output, so ERC reports the GND tie that the
+# datasheet asks for on unused GPIOs as an output-to-output error.
+STOCK = r"C:/Program Files/KiCad/10.0/share/kicad/symbols/Interface_USB.kicad_sym"
+stock = open(STOCK, encoding="utf-8").read()
+a = stock.index('(symbol "TPS25751D"')
+depth = 0
+for b in range(a, len(stock)):
+    depth += {"(": 1, ")": -1}.get(stock[b], 0)
+    if depth == 0:
+        break
+tps = stock[a:b + 1]
+tps, n = re.subn(r'\(pin output line(\s*\(at [^)]*\)\s*\(length [^)]*\)\s*\(name "GPIO11")', r"(pin bidirectional line\1", tps)
+assert n == 1, n
+syms.append(tps)
+
+lib = "(kicad_symbol_lib (version 20251024) (generator \"make_symbols.py\") (generator_version \"1.0\")\n" + "\n".join(syms) + "\n)\n"
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "MonolithDev.kicad_sym")
 with open(out, "w", newline="\n") as f:
     f.write(lib)

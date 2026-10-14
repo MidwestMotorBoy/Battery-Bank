@@ -27,3 +27,22 @@ tmk325abj476mm.pdf,Taiyo Yuden TMK325ABJ476MM-P,Battery-side caps 47 uF 25 V 121
 usb-c-16pcb0.8-ip68.pdf,Shou Han TYPE-C 16PCB0.8 IP68,USB-C connector (x2),https://www.lcsc.com/datasheet/C55629727.pdf
 bh-21700-b1bj001.pdf,MYOUNG BH-21700-B1BJ001,Dev board 21700 holders (x4),https://www.lcsc.com/datasheet/C20606791.pdf
 eve-inr21700-58e.pdf,EVE INR21700-58E,Cells,https://www.nkon.nl/en/amfile/file/download/file/806/product/5882/
+bq2947.pdf,TI BQ2947 / BQ294700,Second-level 4S overvoltage protector,https://www.ti.com/lit/ds/symlink/bq2947.pdf
+tlc-wsfb1514.pdf,TLC WSFB1514,3-terminal self-control fuse (SCP),https://www.lcsc.com/datasheet/C42463217.pdf
+tpd2s300.pdf,TI TPD2S300,USB-C CC/SBU short-to-VBUS protection (x2),https://www.ti.com/lit/ds/symlink/tpd2s300.pdf
+bq40z50-r2-trm-sluubk0.pdf,TI BQ40Z50-R2 Technical Reference Manual,Gauge data flash / commands,https://www.ti.com/lit/pdf/sluubk0
+slua660-bq40z50-circuit-design.pdf,TI SLUA660,BQ40Z50 family circuit design and layout,https://www.ti.com/lit/pdf/slua660
+bq25756evm-sluuct7.pdf,TI SLUUCT7,BQ25756 EVM user guide (reference schematic),https://www.ti.com/lit/pdf/sluuct7
+tps25751evm-slvucp9.pdf,TI SLVUCP9,TPS25751 EVM user guide (reference schematic),https://www.ti.com/lit/pdf/slvucp9
+ao3400a.pdf,AOS AO3400A,N-FET (fuse ignition / liquid detect / misc),https://www.lcsc.com/datasheet/C20917.pdf
+ao3401a.pdf,AOS AO3401A,P-FET (liquid detect pull-ups / misc),https://www.lcsc.com/datasheet/C15127.pdf
+bss138.pdf,BSS138,Small-signal N-FET (level shift / switching),https://www.lcsc.com/datasheet/C52895.pdf
+bzt52c15.pdf,BZT52C15,15 V zener (D103 gate clamp),https://www.lcsc.com/datasheet/C173427.pdf
+bat54ws.pdf,BAT54WS,Small Schottky,https://www.lcsc.com/datasheet/C7502694.pdf
+ss34.pdf,SS34,3 A 40 V Schottky,https://www.lcsc.com/datasheet/C8678.pdf
+1n4148ws.pdf,1N4148WS,Small-signal diode,https://www.lcsc.com/datasheet/C2128.pdf
+lrb520s-40t1g.pdf,LRB520S-40T1G,40 V Schottky,https://www.lcsc.com/datasheet/C132124.pdf
+ncp18xh103f03rb.pdf,Murata NCP18XH103F03RB,10k NTC (cell / board temperature),https://www.lcsc.com/datasheet/C13564.pdf
+ts-1187a-switch.pdf,XKB TS-1187A,Tactile switch,https://www.lcsc.com/datasheet/C318884.pdf
+rh-s2761-46r-testloop.pdf,Test loop,Dev board test points,https://www.lcsc.com/datasheet/C55121754.pdf
+cl31-4u7-50v-c406.pdf,4.7 uF 50 V 1206 (C406),Charger input cap,https://www.lcsc.com/datasheet/C20416422.pdf
