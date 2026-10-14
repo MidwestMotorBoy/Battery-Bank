@@ -48,7 +48,13 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, E
         - Re-plan each power stage: two PDFN3333 FETs per leg, the 11.5 × 10 mm SMMS1040 inductor, and C430/C438 across each pair's high-side drain and low-side source. Q402's gate can now face the BQ25756.
         - Put F102 at the end of BT104's CELL_P_RAW strip with Q104 beside it, keeping it away from the FET heat (65 °C rating).
         - Re-add the antenna keep-out.
-        - **TPD2S300 (U405/U505):** its centre ball B2 (GND, 0.4 mm pitch) can't escape under the board's 0.15 mm rules. Use a local rule area at JLC's 0.09 mm minimum around it (a diagonal escape between A2 and B3 has 0.34 mm), or via-in-pad.
+        - **TPD2S300 (U405/U505) escape: done (2026-10-14) as via-in-pad.**
+            - **Why via-in-pad:** the centre ball B2 (GND) is boxed in by the other eight. There are only 0.17 mm between ball edges, so no trace fits even at JLC's 0.09 mm minimum, and no via fits between the balls. (The earlier "diagonal escape" idea was wrong: the gap between A2 and B3 leads only to a spot enclosed by A2, A3 and B3.)
+            - **The via:** B2 in `TI_YFF0009_DSBGA-9_P0.4mm` is a plated 0.15 mm drill in a 0.25 mm pad (JLC's minimum via; 5:1 aspect ratio on the 0.8 mm board), down to the In1 GND plane, 0.16 mm from its neighbours. Top mask and paste are the same as the other balls.
+            - **Rules:** the board-setup floors are now 0.15 mm hole / 0.05 mm ring. `MonolithDev.kicad_dru` keeps 0.2 mm / 0.1 mm for every other hole and allows the smaller size only for U405/U505 B2. `setup_board.py` writes the same floors.
+            - **The eight outer balls** escape straight out on F.Cu at the normal 0.15 mm rules.
+            - **Order:** via-in-pad filled and capped (JLC POFV, an extra charge on 4 layers), and check JLC's DFM report for the 0.15 mm drill with 2 oz outer copper.
+            - **Fallback if JLC refuses it:** TPD8S300RUKR (WQFN-20 3 × 3, C571205, $1.16, 188 in stock), which protects CC and SBU together.
     - `place_parts.py`, `route_power.py`, `route_signals.py` and `fanout_gnd.py` were written for the old placement and still need the new parts. Their `.uuids` sidecars point at deleted copper. The notes below describe that earlier placement.
 - **Placement (first pass, 2026-10-12):** all 326 footprints placed by `tools/place_parts.py`; DRC clean apart from the unrouted connections. Board grew to **196 × 115 mm**: the holder courtyards (94.7 mm) collided with corner holes, so the holder block moved right and the middle holes moved to x = 106 mm. USB notches at y = 32 and 68 mm.
   - Hand-placed: holders, gauge core (IC, shunt by BT101's − contact, protection FETs, fuse, and the VC filter ladder at the VC pins), the sleep-current section, MCU (antenna end at the top edge with a clear zone), connectors, and each charger power train. Port 2 is port 1 shifted 37 mm down.
@@ -375,7 +381,7 @@ Found while checking against datasheets:
     - **U405, TPD2S300YFFR** (C2650411, JLC extended, DSBGA-9 0.4 mm): its two short-to-VBUS OVP channels sit between SBU1/SBU2 and the sense nodes. They protect GPIO4/5 (6 V max) and LDO_3V3 if liquid bridges VBUS (up to 20 V) to SBU.
         - VPWR and VM are on LDO_3V3, each with 1 µF (C452/C453). VM at 3.3 V selects low-voltage CC/PD mode.
         - VBIAS has 0.1 µF 50 V (C451). FLT goes to GPIO3 since review 3 (item 36).
-        - New symbol `TPD2S300`, footprint `TI_YFF0009_DSBGA-9_P0.4mm` (datasheet land pattern: 0.23 mm NSMD pads, 0.05 mm mask margin, 0.25 mm paste) and a 3D model.
+        - New symbol `TPD2S300`, footprint `TI_YFF0009_DSBGA-9_P0.4mm` (datasheet land pattern: 0.23 mm NSMD pads, 0.05 mm mask margin, 0.25 mm paste; B2 is a 0.15/0.25 mm via-in-pad since 2026-10-14, see the layout reset notes) and a 3D model.
         - Place it close to the connector.
     - **BC1.2 is given up:** GPIO4/5 are the TPS25751's D+/D− pins, so it no longer does BC1.2. D403 (D+/D− ESD) is removed.
         - **R440** (0 Ω) shorts D+ to D− at the connector instead: a passive BC1.2 dedicated-charging-port signature, so legacy devices behind adapter cables still draw full current when the bank is sourcing. DNP R440 to leave D+/D− open.

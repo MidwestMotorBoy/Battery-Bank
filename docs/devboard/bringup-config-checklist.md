@@ -9,6 +9,11 @@ This is the order of work from a bare assembled board to a configured pack. It g
 
 Where review 2 corrected review 1, the corrected value is used here, and the source is marked.
 
+## Board order (JLC)
+
+- [ ] Via-in-pad, filled and capped (POFV): needed for the TPD2S300 B2 vias (U405/U505), 0.15 mm drill / 0.25 mm pad. It's an extra charge on 4 layers.
+- [ ] Check JLC's DFM report for that 0.15 mm drill with 2 oz outer copper. If it's refused, swap to TPD8S300RUKR (DevBoard README, layout reset notes).
+
 ## 0. Hand-fit parts (not in the JLC BOM)
 
 - [ ] U301 STM32WB1MMC: buy from ST eStore or DigiKey and consign it to JLC for placement (LGA-77).

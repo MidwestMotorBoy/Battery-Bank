@@ -15,7 +15,7 @@
 	(pad "" smd rect (at 0.4 -0.4) (size 0.25 0.25) (layers "F.Paste"))
 	(pad "B1" smd circle (at -0.4 0) (size 0.23 0.23) (layers "F.Cu" "F.Mask") (solder_mask_margin 0.05))
 	(pad "" smd rect (at -0.4 0) (size 0.25 0.25) (layers "F.Paste"))
-	(pad "B2" smd circle (at 0 0) (size 0.23 0.23) (layers "F.Cu" "F.Mask") (solder_mask_margin 0.05))
+	(pad "B2" thru_hole circle (at 0 0) (size 0.25 0.25) (drill 0.15) (layers "*.Cu" "F.Mask") (remove_unused_layers no) (solder_mask_margin 0.04))
 	(pad "" smd rect (at 0 0) (size 0.25 0.25) (layers "F.Paste"))
 	(pad "B3" smd circle (at 0.4 0) (size 0.23 0.23) (layers "F.Cu" "F.Mask") (solder_mask_margin 0.05))
 	(pad "" smd rect (at 0.4 0) (size 0.25 0.25) (layers "F.Paste"))

@@ -480,11 +480,21 @@ fp.write(-3.0, 3.0)
 #     columns 1-3 to the right. Origin = array centre.
 fp = FP("TI_YFF0009_DSBGA-9_P0.4mm", "TI YFF0009 DSBGA-9, 0.4 mm pitch, 1.36 mm body (TPD2S300YFF)",
         "DSBGA WCSP YFF 9 0.4mm TPD2S300")
+#     Escape: the centre ball B2 (GND) is boxed in by the other eight (0.17 mm between ball edges: no trace or via fits
+#     between them, even at JLC's 0.09 mm minimum), so it drops through a via-in-pad to the In1 GND plane: 0.15 mm
+#     drill in a 0.25 mm pad (JLC's minimum via; 5:1 aspect ratio on the 0.8 mm board), 0.16 mm from the neighbours.
+#     Order the board with via-in-pad filled and capped (JLC POFV, extra cost on 4 layers) so solder can't wick away.
+#     The eight outer balls escape outward on F.Cu.
 for r, row in enumerate("ABC"):
     for c in range(3):
-        fp.smd(f"{row}{c + 1}", (c - 1) * 0.4, (r - 1) * 0.4, 0.23, 0.23, layers=("F.Cu", "F.Mask"), shape="circle",
-               extra=" (solder_mask_margin 0.05)")
-        fp.paste((c - 1) * 0.4, (r - 1) * 0.4, 0.25, 0.25)
+        x, y = (c - 1) * 0.4, (r - 1) * 0.4
+        if row + str(c + 1) == "B2":
+            fp.items.append(f'(pad "B2" thru_hole circle (at {f(x)} {f(y)}) (size 0.25 0.25) (drill 0.15) '
+                            f'(layers "*.Cu" "F.Mask") (remove_unused_layers no) (solder_mask_margin 0.04))')
+        else:
+            fp.smd(f"{row}{c + 1}", x, y, 0.23, 0.23, layers=("F.Cu", "F.Mask"), shape="circle",
+                   extra=" (solder_mask_margin 0.05)")
+        fp.paste(x, y, 0.25, 0.25)
 fp.rect(-0.68, -0.68, 0.68, 0.68, "F.Fab", 0.1)
 fp.line(-0.68, -0.38, -0.38, -0.68, "F.Fab", 0.1)
 for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):

@@ -122,7 +122,9 @@ def write_rules():
         # JLC 4-layer, 2 oz outer: 0.15/0.15 mm track/gap. Vias: 0.2-0.25 mm drills are standard price only
         # with a >= 0.45 mm pad. Copper >= 0.2 mm from routed edges (JLC floor; 0.25 by custom rule except at the USB-C notches). Legend text >= 0.8 mm.
         "min_clearance": 0.15, "min_track_width": 0.15, "min_connection": 0.15,
-        "min_via_diameter": 0.45, "min_via_annular_width": 0.1, "min_through_hole_diameter": 0.2,
+        "min_via_diameter": 0.45, "min_via_annular_width": 0.05, "min_through_hole_diameter": 0.15,
+        # (floors lowered for the TPD2S300 B2 via-in-pad only; MonolithDev.kicad_dru keeps 0.2 mm holes and
+        # 0.1 mm rings for everything else)
         "min_hole_to_hole": 0.25, "min_hole_clearance": 0.2, "min_copper_edge_clearance": 0.2,
         "min_microvia_diameter": 0.2, "min_microvia_drill": 0.1, "allow_microvias": False, "allow_blind_buried_vias": False,
         "min_silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
