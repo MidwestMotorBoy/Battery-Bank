@@ -9,7 +9,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | tps25751 | 56 µA sleep, 3–6 mA active |
 | tps62177 | 22 µA IQ, 4.8 µA sleep IQ |
 | tps62933 | 2 µA shutdown, 12 µA IQ |
-| tps709 | 1.4 µA |
+| HT7550-1 (was TPS70950) | 2.5 µA typ, 4 µA max (only with JP202 fitted) |
 | ina190 | 48 µA |
 | m24512 | ≤ 2 µA standby |
 | STM32WB15 | 2.3–4.5 mA run at 64 MHz; RX 4.5 mA, TX 5.2 mA |
@@ -21,7 +21,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | Gauge (BQ40Z50-R2) | Cells, via D101 → R105 → BAT | Drop across R105 (100 Ω): 50–340 µA = 5–34 mV |
 | 3.3 V rail: MCU, both TPS25751, SMBus pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (TP201/TP202) |
 | Chargers (2 × BQ25756), 5 V bucks (2 × TPS62933) | PACK_P directly | Not separately (datasheet values) |
-| Measurement section (TPS70950 + 2 × INA190) | PACK_P via JP202 | Off unless the JP202 shunt is fitted |
+| Measurement section (HT7550-1 + 2 × INA190) | PACK_P via JP202 | Off unless the JP202 shunt is fitted |
 
 ## Pack current by state
 

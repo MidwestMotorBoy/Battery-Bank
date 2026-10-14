@@ -30,6 +30,7 @@ MODELS = {
     "TestPoint_Harwin_S2761_0603": ("${KIPRJMOD}/3dmodels/TestPoint_Harwin_S2761_0603.step", 0),  # tools/make_3d_simple.py
     "TI_YFF0009_DSBGA-9_P0.4mm": ("${KIPRJMOD}/3dmodels/TI_YFF0009_DSBGA-9.step", 0),  # tools/make_3d_simple.py
     "TLC_WSFB_4x3mm": ("${KIPRJMOD}/3dmodels/TLC_WSFB_4x3mm.step", 0),  # tools/make_3d_simple.py
+    "L_Coilank_APS0530": ("Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step", 0),   # same body class (5.7 x 5.2 x 3.0)
     "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
 }
 
@@ -492,3 +493,17 @@ for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
 fp.circle(-1.0, -1.0, 0.08, "F.SilkS", 0.16)                # ball A1
 crt(fp, -0.95, -0.95, 0.95, 0.95)
 fp.write(-1.6, 1.6)
+
+# ---------------------------------------------------------------------------
+# 15. Coilank APS0530 molded power inductor (L402/L502, APS0530M3R3H, LCSC C49073587; cost-down 2026-10-14).
+#     Datasheet "APSW-H Series" p.1: body A 5.2 +/- 0.3 x B 6.0 max x C 3.0 max, terminals at the B ends.
+#     Recommended pattern: F 6.0 overall, G 2.5 pad width, H 2.2 gap, so each pad is 1.9 x 2.5 at x = +/-2.05.
+fp = FP("L_Coilank_APS0530", "Inductor, Coilank APS0530, 6.0x5.2x3.0mm, datasheet recommended land pattern",
+        "inductor molded APS0530")
+fp.smd("1", -2.05, 0, 1.9, 2.5)
+fp.smd("2", 2.05, 0, 1.9, 2.5)
+fp.rect(-3.0, -2.6, 3.0, 2.6, "F.Fab", 0.1)
+fp.line(-1.0, -2.75, 1.0, -2.75, "F.SilkS")
+fp.line(-1.0, 2.75, 1.0, 2.75, "F.SilkS")
+crt(fp, -3.25, -2.85, 3.25, 2.85)
+fp.write(-3.6, 3.6)

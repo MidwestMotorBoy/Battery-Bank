@@ -1,0 +1,28 @@
+(footprint "L_Coilank_APS0530"
+	(version 20241229)
+	(generator "make_footprints.py")
+	(layer "F.Cu")
+	(descr "Inductor, Coilank APS0530, 6.0x5.2x3.0mm, datasheet recommended land pattern")
+	(tags "inductor molded APS0530")
+	(property "Reference" "REF**" (at 0 -3.6 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
+	(property "Value" "L_Coilank_APS0530" (at 0 3.6 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))
+	(attr smd)
+	(pad "1" smd rect (at -2.05 0) (size 1.9 2.5) (layers "F.Cu" "F.Paste" "F.Mask"))
+	(pad "2" smd rect (at 2.05 0) (size 1.9 2.5) (layers "F.Cu" "F.Paste" "F.Mask"))
+	(fp_rect (start -3 -2.6) (end 3 2.6) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))
+	(fp_line (start -1 -2.75) (end 1 -2.75) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+	(fp_line (start -1 2.75) (end 1 2.75) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+	(fp_rect (start -3.25 -2.85) (end 3.25 2.85) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
+	(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.5 0.5) (thickness 0.08))))
+	(model "${KICAD10_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

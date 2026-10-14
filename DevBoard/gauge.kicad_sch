@@ -7543,7 +7543,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "18c15035-c6f3-419e-bc2a-c83df9c4b16a")
 		(property "Reference" "J107"
@@ -7588,7 +7588,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7599,7 +7599,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7891,7 +7891,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 181.305 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -7924,7 +7924,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2762602"
+		(property "LCSC" "C50254"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7935,7 +7935,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21B225KBYNNNE"
+		(property "MPN" "CL31B225KBHNNNE"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7946,7 +7946,7 @@
 				)
 			)
 		)
-		(property "Notes" "PBI sits near VBAT (16.8 V): 50 V X7R 0805 keeps most of its 2.2 uF (review m2)"
+		(property "Notes" "PBI sits near VBAT (16.8 V): 50 V X7R 1206 keeps more of its 2.2 uF than the old 0805 (review m2; JLC basic since the 2026-10-14 cost-down)"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -9075,7 +9075,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C173427"
+		(property "LCSC" "C19077412"
 			(at 241.3 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -9086,7 +9086,7 @@
 				)
 			)
 		)
-		(property "MPN" "BZT52C15"
+		(property "MPN" "BZT52C15 (JLC preferred C19077412)"
 			(at 241.3 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -9129,7 +9129,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -9155,7 +9155,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 96.52 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -9178,28 +9178,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 91.44 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 91.44 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 91.44 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -9485,7 +9463,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "36e9e7b1-2b13-480b-94fd-46bcc548bd51")
 		(property "Reference" "J103"
@@ -9530,6 +9508,17 @@
 				)
 			)
 		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C2691448 PZ254V-11-04P)"
+			(at 332.74 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 332.74 157.48 0)
 			(hide yes)
@@ -9542,17 +9531,6 @@
 			)
 		)
 		(property "Notes" "Same pin order as the EV2400 SMBus port (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT (unused)"
-			(at 332.74 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2691448"
 			(at 332.74 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -9678,7 +9656,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -9704,7 +9682,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 271.78 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -9727,28 +9705,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 266.7 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 266.7 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 266.7 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -12371,7 +12327,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -12397,7 +12353,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 81.28 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12420,28 +12376,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 76.2 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 76.2 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 76.2 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -13553,7 +13487,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -13579,7 +13513,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 50.8 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -13602,28 +13536,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 45.72 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 45.72 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 45.72 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -14739,7 +14651,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
 		(property "Reference" "J102"
@@ -14784,7 +14696,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -14795,7 +14707,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -15600,7 +15512,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -15626,7 +15538,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 111.76 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -15649,28 +15561,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 106.68 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 106.68 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 106.68 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -16198,7 +16088,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "d0d5a3a5-ce1e-4040-b4ad-2332f135008d")
 		(property "Reference" "J104"
@@ -16243,7 +16133,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 304.8 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16254,7 +16144,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 304.8 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16896,7 +16786,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e3a51db9-69e0-4d8c-a39a-1e79cb9d628d")
 		(property "Reference" "J105"
@@ -16941,7 +16831,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -16952,7 +16842,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -17163,7 +17053,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "ea00f53a-bc22-4075-8cf5-dc9760e31611")
 		(property "Reference" "J106"
@@ -17208,7 +17098,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17219,7 +17109,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17273,7 +17163,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -17299,7 +17189,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 66.04 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -17322,28 +17212,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 60.96 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 60.96 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 60.96 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -17387,7 +17255,7 @@
 				)
 			)
 		)
-		(property "Value" "BSS138"
+		(property "Value" "AO3400A"
 			(at 349.22 187.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17430,7 +17298,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C52895"
+		(property "LCSC" "C20917"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17441,7 +17309,7 @@
 				)
 			)
 		)
-		(property "MPN" "BSS138 (onsemi)"
+		(property "MPN" "AO3400A (AOS)"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17452,7 +17320,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). BSS138 Vgs(th) max 1.5 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10: 2N7002 max 2.5 V was marginal). PA6 allows 4.0 V unpowered"
+		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). AO3400A Vgs(th) 0.65-1.45 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10/H6 asks for <= 1.5 V max); JLC basic, same part as Q104 (cost-down 2026-10-14, was BSS138). PA6 allows 4.0 V unpowered"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17742,7 +17610,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -17768,7 +17636,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 317.5 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -17791,28 +17659,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 312.42 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 312.42 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 312.42 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -18070,7 +17916,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -18095,7 +17941,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 121.92 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -18129,28 +17975,6 @@
 			)
 		)
 		(property "Notes" "Cell top, before F102: check BT104 / the stack here"
-			(at 121.92 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 121.92 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 121.92 264.16 0)
 			(hide yes)
 			(show_name no)

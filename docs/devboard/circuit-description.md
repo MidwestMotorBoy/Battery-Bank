@@ -75,13 +75,13 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
   - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
   - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
   - Outputs on test loops (OUT_LO TP201, OUT_HI TP202), each with a GND loop beside it (TP208, TP209) for a short probe ground; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
-  - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
+  - **Amplifier supply: on-board Holtek HT7550-1 5 V LDO** (LCSC C16106, SOT-89, JLC preferred, ~$0.13; 30 V in, 2.5 µA quiescent, ±3 %, 100 mA; was the TPS70950DBVR until the cost-down 2026-10-14, `cost-down-2026-10-14.md`), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 10 µF 50 V in and 10 µF out (Holtek basic circuit), 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 
 ## 4. 3.3 V always-on rail
 
 - **U_3V3:** TPS62177DQCR fixed 3.3 V buck (LCSC C91241), input from PACK_LP.
-- Inductor: Bourns SRN4018TA-100M, 10 µH (LCSC C2044417). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
+- Inductor: Changjiang FNR4030S100MT, 10 µH, 130 mΩ (LCSC C167879; was Bourns SRN4018TA-100M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
 - SNOOZE / sleep pin to an STM32WB GPIO (spare pin; *TBD*).
 - 0 Ω link in the 3V3 output (to break the rail for debugging) and a test point.
 - Loads: STM32WB, both TPS25751 VIN_3V3, I2C pull-ups, NTC dividers.
@@ -146,11 +146,11 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.3 Charger and power stage (BQ25756) — copy of production layout
 - **U_CHGx:** BQ25756RRVR (LCSC C19272232).
 - **FETs:** two Infineon IAUC45N04S6L063H half-bridges (JLC C3288896): leg A (USB side: HIDRV1/LODRV1, SW1), leg B (battery side: HIDRV2/LODRV2, SW2).
-- **Inductor:** Coilcraft XAL7030-222MEC, 2.2 µH (JLC C19191686) between SW1 and SW2.
+- **Inductor:** SXN SMMS1040-2R2M, 2.2 µH, Isat 18 A, Irms 12 A, 9 mΩ max, 11.5 × 10 mm (LCSC C149591), between SW1 and SW2. It was Coilcraft XAL7030-222MEC until the cost-down 2026-10-14, `cost-down-2026-10-14.md`.
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**
   - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
-  - Battery side: 3 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 136 µF effective at 16.8 V
+  - Battery side: 3 × Samsung CL31A226KAHNNNE, 22 µF 25 V X5R 1206 (C12891, JLC basic) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 114 µF effective at 16.8 V (≥ 80 µF). They were 47 µF 1210s until the cost-down 2026-10-14, `cost-down-2026-10-14.md`
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
 - **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
   - FSW_SYNC: 40.2 kΩ 1 % (C17678) → ~600 kHz
@@ -171,7 +171,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.4 5 V supply for PP5V (TPS62933)
 - **U_5Vx:** TPS62933DRLR (LCSC C3200405), input from PACK_P (high-current branch), output PP5Vx.
 - RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
-- Inductor: Bourns SRP5030T-3R3M, 3.3 µH (LCSC C189931).
+- Inductor: Coilank APS0530M3R3H, 3.3 µH, 38 mΩ, Irms 5 A, Isat 8 A (LCSC C49073587; was Bourns SRP5030T-3R3M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`).
 - Output 2 × 22 µF 35 V 1206 plus at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
 - EN ← EN_5Vx (STM32WB) with a pull-down so it's off by default.
 

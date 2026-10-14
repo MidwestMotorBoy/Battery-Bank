@@ -11,10 +11,11 @@ Where review 2 corrected review 1, the corrected value is used here, and the sou
 
 ## 0. Hand-fit parts (not in the JLC BOM)
 
-- [ ] U301 STM32WB1MMC (out of stock at LCSC).
+- [ ] U301 STM32WB1MMC: buy from ST eStore or DigiKey and consign it to JLC for placement (LGA-77).
 - [ ] U201 INA190A5 (DigiKey/Mouser). U202 INA190A1 is JLC-assembled since 2026-10-13.
 - [ ] J301 Samtec FTSH-105-01-L-DV-K (keyed shroud).
 - [ ] Two 2.54 mm shunts (JP201, JP202).
+- [ ] Pin headers, hand-soldered since the 2026-10-14 cost-down: J102–J107, J302, J303, J402, J502, JP201, JP202 (PZ254V-11, part numbers in each part's `Sourcing` property).
 - [ ] Wired NTCs on J102, J105–J107, insulated, taped to BT101–BT104.
 
 ## 1. First power, no cells
