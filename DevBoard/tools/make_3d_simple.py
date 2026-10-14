@@ -86,3 +86,8 @@ save("TestPoint_Harwin_S2761_0603", [
                   box(-0.8, 0.8, -0.4, 0.4, 0.95, 1.15),
                   box(-0.8, -0.35, -0.4, 0.4, 0.0, 0.2), box(0.35, 0.8, -0.4, 0.4, 0.0, 0.2)), (0.85, 0.85, 0.87)),
 ])
+# TLC WSFB1514 (F102): 4.0 (X) x 3.0 (Y) x 1.0 max glass-epoxy chip, centred on the land pattern, pin 1 top right
+save("TLC_WSFB_4x3mm", [
+    ("body", box(-2.0, 2.0, -1.5, 1.5, 0.0, 0.95), (0.15, 0.35, 0.2)),
+    ("pin 1 mark", dot(1.6, 1.1, 0.95, 0.3), (0.9, 0.9, 0.9)),
+])

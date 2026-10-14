@@ -2054,10 +2054,22 @@
 		(uuid "7d5cf44c-6ad8-4274-ac26-7cc94929f410")
 	)
 	(junction
+		(at 62.23 229.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "858a7b33-f17b-48cf-8689-78b1ba09f676")
+	)
+	(junction
 		(at 190.5 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8f6310a1-85d3-4beb-acbe-c0100a92f08f")
+	)
+	(junction
+		(at 99.06 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "935c542d-d27c-475a-b4a9-28370ecd5582")
 	)
 	(junction
 		(at 152.4 182.88)
@@ -2078,12 +2090,6 @@
 		(uuid "b13f61f7-77a6-4acd-87f1-1542ae28c01e")
 	)
 	(junction
-		(at 142.24 55.88)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d706a56c-0962-4c78-8ddf-f729ccc88912")
-	)
-	(junction
 		(at 106.68 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2102,10 +2108,6 @@
 		(uuid "fff99f0b-2f7d-41d9-bbc5-211e72d046be")
 	)
 	(no_connect
-		(at 80.01 232.41)
-		(uuid "c86a2134-ceb3-414c-a5da-63b7214eec27")
-	)
-	(no_connect
 		(at 118.11 147.32)
 		(uuid "0978e07e-ac0d-4fa3-a61f-5c50e162cdd7")
 	)
@@ -2117,45 +2119,9 @@
 		(at 118.11 185.42)
 		(uuid "830bf01b-8d94-4f19-819e-7fe9d68164ba")
 	)
-	(wire
-		(pts
-			(xy 207.01 55.88) (xy 207.01 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a2692f3-c537-4be5-a75d-f72f8e43f1ad")
-	)
-	(wire
-		(pts
-			(xy 62.23 229.87) (xy 68.58 229.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "73e45f91-d62a-47e2-8b64-8dbe3058267a")
-	)
-	(wire
-		(pts
-			(xy 55.88 229.87) (xy 62.23 229.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0ab38819-0e5e-4798-8576-e6b4b6efaa13")
-	)
-	(wire
-		(pts
-			(xy 99.06 55.88) (xy 106.68 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5e5debbc-f6fd-4290-a6f8-24ea03f10c98")
+	(no_connect
+		(at 80.01 232.41)
+		(uuid "c86a2134-ceb3-414c-a5da-63b7214eec27")
 	)
 	(wire
 		(pts
@@ -2166,16 +2132,6 @@
 			(type default)
 		)
 		(uuid "064576bd-e096-496a-9869-1975d906bbc5")
-	)
-	(wire
-		(pts
-			(xy 142.24 55.88) (xy 139.7 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "067f2b98-729f-4304-89e5-34e85121b595")
 	)
 	(wire
 		(pts
@@ -2199,13 +2155,13 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 229.87) (xy 80.01 229.87)
+			(xy 55.88 229.87) (xy 62.23 229.87)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "159e03c4-9d04-4248-8707-0d7af7bd8b10")
+		(uuid "0ab38819-0e5e-4798-8576-e6b4b6efaa13")
 	)
 	(wire
 		(pts
@@ -2249,7 +2205,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 55.88) (xy 127 55.88)
+			(xy 121.92 55.88) (xy 142.24 55.88)
 		)
 		(stroke
 			(width 0)
@@ -2299,7 +2255,17 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 229.87) (xy 77.47 229.87)
+			(xy 99.06 55.88) (xy 106.68 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e5debbc-f6fd-4290-a6f8-24ea03f10c98")
+	)
+	(wire
+		(pts
+			(xy 68.58 229.87) (xy 80.01 229.87)
 		)
 		(stroke
 			(width 0)
@@ -2339,6 +2305,16 @@
 	)
 	(wire
 		(pts
+			(xy 207.01 55.88) (xy 207.01 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a2692f3-c537-4be5-a75d-f72f8e43f1ad")
+	)
+	(wire
+		(pts
 			(xy 121.92 170.18) (xy 129.54 170.18)
 		)
 		(stroke
@@ -2359,6 +2335,16 @@
 	)
 	(wire
 		(pts
+			(xy 62.23 229.87) (xy 68.58 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73e45f91-d62a-47e2-8b64-8dbe3058267a")
+	)
+	(wire
+		(pts
 			(xy 137.16 229.87) (xy 142.24 229.87)
 		)
 		(stroke
@@ -2376,16 +2362,6 @@
 			(type default)
 		)
 		(uuid "7a6f459f-7f67-4bd0-ab55-bed80f0f6002")
-	)
-	(wire
-		(pts
-			(xy 127 55.88) (xy 142.24 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7d81955e-ef67-4a9f-9a59-c0621bc2daf6")
 	)
 	(wire
 		(pts
@@ -2717,26 +2693,6 @@
 		)
 		(uuid "fae07c20-dfb7-446b-b770-8e1bd98a7096")
 	)
-	(label "5V_AMP"
-		(at 83.82 248.92 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "17f2f7d0-db86-4da8-aeba-aa244df80745")
-	)
-	(label "LDO_IN"
-		(at 68.58 248.92 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fd919c1c-d6cd-474a-8dba-ac9f2c94eb25")
-	)
 	(label "OUT_LO"
 		(at 167.64 144.78 180)
 		(effects
@@ -2756,6 +2712,16 @@
 			(justify right bottom)
 		)
 		(uuid "1243cd69-b492-41cf-ba65-28b4d350b76e")
+	)
+	(label "5V_AMP"
+		(at 83.82 248.92 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "17f2f7d0-db86-4da8-aeba-aa244df80745")
 	)
 	(label "OUT_LO_R"
 		(at 135.89 144.78 180)
@@ -2947,6 +2913,16 @@
 		)
 		(uuid "de4a0bd1-5149-4212-81d4-c18124a5c7f1")
 	)
+	(label "LDO_IN"
+		(at 68.58 248.92 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fd919c1c-d6cd-474a-8dba-ac9f2c94eb25")
+	)
 	(global_label "3V3_SLEEP"
 		(shape bidirectional)
 		(at 142.24 63.5 180)
@@ -3058,7 +3034,7 @@
 		(dnp no)
 		(uuid "06c986de-356f-4816-b42a-391ad87e199a")
 		(property "Reference" "TP203"
-			(at 190.50 159.25 0)
+			(at 190.5 159.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3504,7 +3480,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.50 169.42 0)
+			(at 190.5 169.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3580,7 +3556,7 @@
 			)
 		)
 		(property "Value" "0R"
-			(at 65.89 136.90 90)
+			(at 65.89 136.9 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4234,7 +4210,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 152.40 83.06 0)
+			(at 152.4 83.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4490,7 +4466,7 @@
 		(dnp no)
 		(uuid "475210ca-1c61-498a-a5a4-e58a5b94ab9f")
 		(property "Reference" "TP201"
-			(at 152.40 138.93 0)
+			(at 152.4 138.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4572,105 +4548,6 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "TP201")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 172.72 152.4 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d4516b56-2b4f-41aa-a4c6-48a344959cd3")
-		(property "Reference" "TP208"
-			(at 172.72 146.55 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 167.54 150.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
-			(at 177.8 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 177.8 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 172.72 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 172.72 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
-			(at 172.72 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bdaffb64-b327-409e-ad89-087b6225f86f")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "TP208")
 					(unit 1)
 				)
 			)
@@ -4777,7 +4654,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 165.10 67.82 0)
+			(at 165.1 67.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4931,7 +4808,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 88.90 241.81 0)
+			(at 88.9 241.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5081,6 +4958,82 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "R206")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 68.58 248.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6ba13e7d-480f-4cd1-b80f-653627a84983")
+		(property "Reference" "TP206"
+			(at 73.76 244.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LDO_IN"
+			(at 73.76 246.6 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 68.58 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "384ee769-789f-4ef7-bdf1-6ee6d52f7ed3")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP206")
 					(unit 1)
 				)
 			)
@@ -5819,7 +5772,7 @@
 		(dnp no)
 		(uuid "a416d5f9-1802-4233-bee6-650e4ad3f2d3")
 		(property "Reference" "JP202"
-			(at 50.80 232.16 0)
+			(at 50.8 232.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5829,7 +5782,7 @@
 			)
 		)
 		(property "Value" "Meas. section power"
-			(at 50.80 234.13 0)
+			(at 50.8 234.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6008,7 +5961,7 @@
 		(dnp no)
 		(uuid "a8a8db97-4b6a-44bf-8892-c34f1fac37a8")
 		(property "Reference" "C203"
-			(at 137.20 172.86 0)
+			(at 137.2 172.86 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6018,7 +5971,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 137.20 174.82 0)
+			(at 137.2 174.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6109,7 +6062,7 @@
 		(dnp no)
 		(uuid "ab2bd199-2c31-47a2-bf89-3de451141d49")
 		(property "Reference" "C202"
-			(at 137.20 134.76 0)
+			(at 137.2 134.76 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6119,7 +6072,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 137.20 136.72 0)
+			(at 137.2 136.72 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6375,7 +6328,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.50 71.63 0)
+			(at 190.5 71.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6441,7 +6394,7 @@
 		(dnp no)
 		(uuid "d374f7f1-78dd-4537-a8a1-9329476030f7")
 		(property "Reference" "U203"
-			(at 88.90 223.58 0)
+			(at 88.9 223.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6451,7 +6404,7 @@
 			)
 		)
 		(property "Value" "TPS70950DBVR"
-			(at 88.90 225.55 0)
+			(at 88.9 225.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6523,6 +6476,105 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "U203")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 172.72 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d4516b56-2b4f-41aa-a4c6-48a344959cd3")
+		(property "Reference" "TP208"
+			(at 172.72 146.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 167.54 150.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+			(at 177.8 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 177.8 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 172.72 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 172.72 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 172.72 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bdaffb64-b327-409e-ad89-087b6225f86f")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP208")
 					(unit 1)
 				)
 			)
@@ -6694,7 +6746,7 @@
 		(dnp no)
 		(uuid "dcd76e59-c91f-46d3-b2b4-bb27a2ed541b")
 		(property "Reference" "U204"
-			(at 152.40 49.59 0)
+			(at 152.4 49.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6704,7 +6756,7 @@
 			)
 		)
 		(property "Value" "TPS62177DQCR"
-			(at 152.40 51.56 0)
+			(at 152.4 51.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6907,6 +6959,82 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "JP201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 83.82 248.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ddcfcee6-68ed-4e23-b4de-23ee03030234")
+		(property "Reference" "TP207"
+			(at 82.55 241.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "5V_AMP"
+			(at 82.55 243.07 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 83.82 248.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4af1dd7a-45c0-4977-8b74-863ea7af62ea")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP207")
 					(unit 1)
 				)
 			)
@@ -7216,312 +7344,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
-		(at 45.72 229.87 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e736e4a0-a55b-46ae-811a-14f68ae0654c")
-		(property "Reference" "#PWR216"
-			(at 45.72 229.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK_P"
-			(at 45.72 225.55 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 45.72 229.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 45.72 229.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 45.72 229.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3a7eb6ed-53f8-4ab9-9e13-1fafad837a91")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR216")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MonolithDev:INA190A5_DDF")
-		(at 109.22 182.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "e8ec2433-0680-40af-961f-5dd44afafc97")
-		(property "Reference" "U202"
-			(at 109.22 171.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "INA190A1IDDFR"
-			(at 109.22 173.48 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-8"
-			(at 109.22 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/ina190.pdf"
-			(at 109.22 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "INA190A5 current-sense amplifier, gain 500, DDF package"
-			(at 109.22 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "gain 25, 0.25 V/mA"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TI INA190A1IDDFR"
-			(at 109.22 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sourcing" "DigiKey/Mouser, hand-solder (not JLC assembled)"
-			(at 109.22 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e8bbcd62-7caf-4e97-b836-91621e9e89c5")
-		)
-		(pin "2"
-			(uuid "36241774-a8e7-4b0f-831c-33c7ac6c8346")
-		)
-		(pin "3"
-			(uuid "291b52a0-781d-4175-8879-998317968f4c")
-		)
-		(pin "4"
-			(uuid "b6f74777-731b-48ba-8fe1-1107de6ba8ff")
-		)
-		(pin "5"
-			(uuid "168beb45-da74-4306-89f2-660380495f65")
-		)
-		(pin "6"
-			(uuid "1f9657d1-56c6-41ff-9e74-e5cdb2ac8434")
-		)
-		(pin "7"
-			(uuid "7adbb67d-f8d9-49ad-9779-164d9fdb6144")
-		)
-		(pin "8"
-			(uuid "37a6f6ee-f047-4d61-8d81-5b3a5f54ddb1")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "U202")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 152.4 182.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ef967bbc-7bef-48c5-aba5-3c10935b7b90")
-		(property "Reference" "TP202"
-			(at 152.40 177.03 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "OUT_HI"
-			(at 147.22 180.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
-			(at 157.48 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 157.48 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 152.4 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 152.4 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
-			(at 152.4 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2aea38f8-f931-42ba-ac43-e0062fa423d8")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "TP202")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 172.72 190.5 0)
 		(unit 1)
@@ -7615,6 +7437,400 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "TP209")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 45.72 229.87 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e736e4a0-a55b-46ae-811a-14f68ae0654c")
+		(property "Reference" "#PWR216"
+			(at 45.72 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 45.72 225.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 45.72 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 45.72 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 45.72 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3a7eb6ed-53f8-4ab9-9e13-1fafad837a91")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "#PWR216")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MonolithDev:INA190A5_DDF")
+		(at 109.22 182.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e8ec2433-0680-40af-961f-5dd44afafc97")
+		(property "Reference" "U202"
+			(at 109.22 171.51 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "INA190A1IDDFR"
+			(at 109.22 173.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-8"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/ina190.pdf"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "INA190A1 current-sense amplifier, gain 25, DDF package"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "gain 25, 0.25 V/mA"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TI INA190A1IDDFR"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1852068"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "JLC assembled (LCSC C1852068, 1,700 in stock 2026-10-13)"
+			(at 109.22 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e8bbcd62-7caf-4e97-b836-91621e9e89c5")
+		)
+		(pin "2"
+			(uuid "36241774-a8e7-4b0f-831c-33c7ac6c8346")
+		)
+		(pin "3"
+			(uuid "291b52a0-781d-4175-8879-998317968f4c")
+		)
+		(pin "4"
+			(uuid "b6f74777-731b-48ba-8fe1-1107de6ba8ff")
+		)
+		(pin "5"
+			(uuid "168beb45-da74-4306-89f2-660380495f65")
+		)
+		(pin "6"
+			(uuid "1f9657d1-56c6-41ff-9e74-e5cdb2ac8434")
+		)
+		(pin "7"
+			(uuid "7adbb67d-f8d9-49ad-9779-164d9fdb6144")
+		)
+		(pin "8"
+			(uuid "37a6f6ee-f047-4d61-8d81-5b3a5f54ddb1")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "U202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 152.4 182.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ef967bbc-7bef-48c5-aba5-3c10935b7b90")
+		(property "Reference" "TP202"
+			(at 152.4 177.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "OUT_HI"
+			(at 147.22 180.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+			(at 157.48 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 157.48 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 152.4 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C55121754"
+			(at 152.4 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 152.4 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2aea38f8-f931-42ba-ac43-e0062fa423d8")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "TP202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 147.32 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "f31a718f-f366-43fc-b03a-f156fd51b627")
+		(property "Reference" "#PWR222"
+			(at 147.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 147.32 80.52 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 147.32 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bfd64186-cf34-42bb-9738-866a5efea0ad")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "#PWR222")
 					(unit 1)
 				)
 			)
@@ -7924,247 +8140,6 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "#FLG203")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(junction
-		(at 62.23 229.87)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "858a7b33-f17b-48cf-8689-78b1ba09f676")
-	)
-	(junction
-		(at 99.06 55.88)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "935c542d-d27c-475a-b4a9-28370ecd5582")
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 147.32 76.2 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "f31a718f-f366-43fc-b03a-f156fd51b627")
-		(property "Reference" "#PWR222"
-			(at 147.32 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 147.32 80.52 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 147.32 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 147.32 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bfd64186-cf34-42bb-9738-866a5efea0ad")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR222")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 68.58 248.92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "6ba13e7d-480f-4cd1-b80f-653627a84983")
-		(property "Reference" "TP206"
-			(at 73.76 244.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LDO_IN"
-			(at 73.76 246.60 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 68.58 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 68.58 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 68.58 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "384ee769-789f-4ef7-bdf1-6ee6d52f7ed3")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "TP206")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 83.82 248.92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ddcfcee6-68ed-4e23-b4de-23ee03030234")
-		(property "Reference" "TP207"
-			(at 82.55 241.10 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "5V_AMP"
-			(at 82.55 243.07 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 83.82 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 83.82 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 83.82 248.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4af1dd7a-45c0-4977-8b74-863ea7af62ea")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "TP207")
 					(unit 1)
 				)
 			)

@@ -7,7 +7,7 @@ First complete schematic draft of the dev board described in `../docs/devboard/c
 | File | Contents |
 |---|---|
 | `MonolithDev.kicad_sch` | Root: sheet blocks, PD controller address straps (R1–R4) |
-| `gauge.kicad_sch` | 4 × 21700 holders, pack connector, fuse, BQ40Z50-R2, 1 mΩ shunt, CHG/DSG FETs, EV2400 header (1xx) |
+| `gauge.kicad_sch` | 4 × 21700 holders, pack connector, fuse, BQ40Z50-R2, 1 mΩ shunt, CHG/DSG FETs, second-level protection (BQ294700 + chemical fuse F102), EV2400 header (1xx) |
 | `power.kicad_sch` | 10 Ω R_MEAS, INA190 ×2 with test-loop outputs, TPS70950 5 V LDO, TPS62177 3.3 V rail (2xx) |
 | `mcu.kicad_sch` | STM32WB1MMC, SWD / UART / spare headers, status LED, board NTCs TH1–TH4 (3xx) |
 | `usb_port.kicad_sch` | One USB-C port: connector, TVS, ESD, TPS25751D, EEPROM, BQ25756 power stage, TPS62933. Placed twice: port 1 = 4xx, port 2 = 5xx |
@@ -46,7 +46,7 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, E
   - The remaining ~200 small parts are auto-placed next to the pins they connect to (no courtyard overlaps). Worth a review pass in KiCad before routing.
   - Silkscreen: labels on test points (net name centred above every loop), connectors, jumpers and holders only; block titles (MCU, GAUGE, PORT 1, PORT 2, SLEEP CURRENT); "USB 1"/"USB 2" below the connectors.
 - **Placement (second pass, 2026-10-12): structured instead of nearest-free-spot.** The ~200 small parts are no longer auto-placed; `place_parts.py` lists every one in `PORT_LAYOUT` / `LAYOUT` as rows and columns, and the auto placer is only a fallback (it places nothing now).
-  - Support parts sit in rows on the side of the pin they serve, each row turned the same way (0/180 chosen so the signal pad faces its pin). BQ25756: FB divider, SRP/SRN filter caps and DRV_SUP left; ILIM/ICHG/TS/CE resistors above; ACUV/ACOV divider, FSW and the ACP/ACN filter caps right (C414 was 37 mm from the IC before). TPS25751: supply caps in a column on the left, the ADCIN straps as a 2 × 3 grid (divider top / bottom / 0R) with the EEPROM and its pull-ups above.
+  - Support parts sit in rows on the side of the pin they serve, each row turned the same way (0/180 chosen so the signal pad faces its pin). BQ25756: FB divider, SRP/SRN filter caps and DRV_SUP left; ILIM/ICHG/TS/CE resistors above; ACUV/ACOV divider, FSW and the ACP/ACN filter caps right (C414 was 37 mm from the IC before). TPS25751: supply caps in a column on the left, the ADCIN straps (R1/R2 for port 1, R3/R4 for port 2, 0R to LDO_3V3 or GND; the DNP divider footprints R405–R408 were removed on 2026-10-14, as SafeMode at 0x20/0x21 needs only ties) with the EEPROM and its pull-ups above.
   - **Port 2 is an exact copy of port 1**, 37 mm lower (before, only the power train matched).
   - **Hot loops first.** Each half-bridge has its 0603 HF cap (C430, C438) straddling its drain and ground pads (0603 pad pitch = the FET's 1.6 mm drain-to-ground spacing); the 1210 MLCCs sit in one row right behind each FET (three on the input side, two on the output side), with one more MLCC stood on end beside each FET's drain edge, and the polymer bulk cap one row further back (since the polymer change below). The TPS62933 runs in one line, input bulk → 0.1 µF across VIN/GND (pins 3/4) → U404 → BST cap → L402, with the output caps above L402. The VBUS TVS D401 moved beside the CC caps at the connector to make room. L201 now touches the TPS62177.
   - Test points in labelled probe rows: each port has a 2 × 5 field under its power stage (SW1/SW2 straight below their inductor pads, STAT/PG pull-ups under their test points); VBUS and PP5V at the connector edge; pack and system signals in a 2 × 4 field in the gauge column; cell taps CELL_N–CELL3 in a column beside the holder contact each one measures.
@@ -81,7 +81,7 @@ Found while checking against datasheets:
 11. **Gauge VSS = CELL_N** (TI: "IC ground should be connected to the 1N cell tab"). The system GND is on the other side of the 1 mΩ shunt.
 12. **TPS25751 capacitors** checked against datasheet table 6.4 (values are after derating): LDO_3V3 (C404/C504) 4.7 µF 0603 → 10 µF 25 V 0805 (≥ 5 µF needed); LDO_1V5 (C405/C505) 4.7 µF → 10 µF (4.5–12 µF); VBUS (C406/C506) 1 µF 35 V 0603 → 4.7 µF 50 V 0805 (1–10 µF, a 1 µF 0603 drops below 1 µF at 20 V); VIN_3V3 (C403/C503) 10 µF is fine.
 13. **Fuse F101:** prosemi 1206FA-8A (C21261118), 1206, 8 A fast, 32 V, 300 A interrupt at 24 V. That allows about 6 A continuous after 75 % derating, inside the description's 5–7 A. The 2410 7 A alternative only lists an AC interrupt rating. **D101:** BAT54WS (C7502694, JLC preferred part). **Rev A4 (2026-10-12): changed to prosemi 1206FA-15A (C2838894)**, same footprint and interrupt rating (300 A at 24 Vdc; the pack never exceeds 16.8 V): the 8 A part only allowed about 6 A continuous, i.e. 60–70 W out, short of the 100 W goal (about 10 A from the pack at the 12 V low end). 3.9 mΩ, about 0.4 W at 10 A. Holder-mode current is now limited by firmware and the gauge settings, not the fuse.
-14. **INA190s (U201/U202) are hand-soldered**, bought from DigiKey/Mouser (decided 2026-10-11). JLC had only 7 INA190A5 and no INA190A1, and the in-stock look-alikes (INA180/181/185/296) draw tens of µA of input bias, which flows through R_MEAS and swamps µA readings. Both parts are excluded from the position file and have no LCSC number, so JLC leaves the pads empty; MPN and a `Sourcing` note are in their properties.
+14. **INA190s (U201/U202) are hand-soldered**, bought from DigiKey/Mouser (decided 2026-10-11). JLC had only 7 INA190A5 and no INA190A1, and the in-stock look-alikes (INA180/181/185/296) draw tens of µA of input bias, which flows through R_MEAS and swamps µA readings. Both parts are excluded from the position file and have no LCSC number, so JLC leaves the pads empty; MPN and a `Sourcing` note are in their properties. **Update 2026-10-13:** JLC now stocks INA190A1IDDFR (C1852068, 1,700), so **U202 is JLC-assembled** (LCSC set, back in the position file). U201 (INA190A5, gain 500; 7 at JLC) stays hand-soldered. INA190A4 (gain 200, C1852066) would be the JLC option for U201, at 2 mV/µA and about 2.5 mA full scale. The INA21x family is no substitute: 15–35 µA input bias through R_MEAS and no enable pin.
 15. **PPHV bulk above 100 µF is kept.** The TPS25751 table limits sink bulk to 100 µF (USB PD cSnkBulkPd) unless VBUS surge current is limited. The TPS25751D's PPHV sink switch ramps with a slew-rate loop (§6.9: 0.35–0.47 V/ms at setting 0, up to 3.8 V/ms at setting 3), so the BQ25756 input bank (about 125 µF effective at 20 V since rev A5 made C421 100 µF, item 24) charges at about C × SS = 0.06 A (setting 0), 0.5 A worst case at setting 3. The TPS25751 configuration must use PPHV soft-start setting 0 or 1; this is in the usb_port sheet notes.
 16. **Charger bulk is polymer plus MLCC, not all MLCC** (2026-10-12). The 1210 X5R banks lost most of their value to DC bias (a 22 µF 35 V keeps about 8.5 µF at 20 V, a 47 µF 25 V about 12 µF at 16.8 V), so meeting the BQ25756's ≥ 80 µF effective per side (datasheet §6.3, TI asks for "a combination of ceramic and bulk capacitors", §7.2.1.2.5–6) took 10 + 7 parts per port. Each bank now has one solid polymer cap for the bulk and keeps only the MLCCs that carry the switching-frequency ripple next to the FETs:
     - USB side (AC_SNS_N): C420/C423/C424/C427 22 µF 35 V 1210 + **C421 68 µF 35 V polymer**, ChuangHui SV680M350E5R8R4Z00ZZ (C49435121), 6.3 × 5.8 mm, 30 mΩ, 2 A at 100 kHz. About 34 + 68 ≈ 100 µF effective at 20 V (≥ 88 µF at −20 % tolerance). 35 V gives margin over ACOV (22.5 V) and the SMAJ22A clamp.
@@ -318,6 +318,45 @@ Found while checking against datasheets:
     - **Still to route:**
         - the small PPHV taps (VAC pins, ACUV divider, C409, TP402) and REGN to R415/TP404;
         - then the signals.
+
+33. **Second-level protection: BQ294700 + chemical fuse (2026-10-13, branch hand-review).** Reverses the 2026-10-12 decision to rely on software as the second layer ([rev2-changes.md 1b](../docs/devboard/rev2-changes.md)). Hardware now guards per-cell overvoltage independently of the gauge, its data flash and the MCU, as in TI's BQ40Z50-R2 reference (datasheet fig. 9-11, BQ2947 fig. 8-1). Gauge sheet, new block "SECOND-LEVEL PROTECTION":
+    - **F102**, TLC Electronic WSFB1514 (C42463217, about 3,900 in stock), a 3-terminal self-control fuse, sits in the cell-top path: CELL_P_RAW → F102 (pin 1 → pin 2) → CELL_P. Pin 3 is the heater.
+        - **Ratings:** 4-cell part (UL E467707), 15 A at 40 °C, cuts in under 1 min at 2× rated current, 50 A interrupt, 36 V.
+        - **Heater:** working range 10.5–19.6 V. TLC gives no heater resistance; the Littelfuse part with the same range is 11.2–20 Ω, and Q104 has ample margin.
+        - **Losses:** its 1–3 mΩ fuse path adds about 0.2 W at 10 A.
+        - **Why this part:** it replaced the Littelfuse ITV4030L1415NR first chosen: same 4 × 3 mm land pattern, a fifth of the resistance, and plenty of stock (LCSC had only 15 Littelfuse parts). The Littelfuse part, or Eaton SCF4030-15-04, could still fit the same pads, but both number their pins differently (fuse 1–3, heater 2), so the symbol and footprint would change. Not the WSFB1524 (C42463216): that is the 6-cell version, whose heater needs 17.3–28 V.
+        - **F101 deleted (2026-10-13, after F102 went in):** F102's 15 A element is now the pack's only fuse, as in TI's reference (no separate fuse).
+            - **Trade-off accepted:** F102 interrupts 50 A, while a dead short across the cell top before Q101/Q102 can reach about 200 A (4 × ~20 mΩ cells). F101 (1206FA-15A) could break 300 A. Shorts after the FETs are cleared first by the gauge's short-circuit protection (Q101/Q102 open within microseconds).
+            - With R127 fitted (bench only) the pack has no fuse at all.
+            - Items 13 and 25 above describe the old F101.
+    - **U102**, BQ294700DSGR (C414622, JLC extended): 4.35 V/cell overvoltage trip, 0.30 V hysteresis, active-high output (about 7 V).
+        - Its own 1 kΩ + 0.1 µF filter ladder on the cell taps (R119–R122, C112–C115). TI calibrates the device with 1 kΩ.
+        - VDD from the cell top through 100 Ω + 0.1 µF (R123, C116).
+        - CD 0.1 µF (C117) gives a 1–2 s delay. An open or shorted CD also trips the output during an overvoltage.
+        - The trip point sits above the gauge's own cell overvoltage setting (about 4.3 V) and the 4.2 V charge voltage.
+    - **Ignition:** U102 OUT → R124 5.1 kΩ → Q104 gate ← R126 5.1 kΩ ← gauge FUSE pin (net GAUGE_FUSE). R125 51 kΩ ∥ C118 0.1 µF pull the gate to CELL_N.
+        - Q104 is an AO3400A (C20917, JLC basic): 30 V, Vgs max ±12 V; its gate sees at most about 8 V.
+        - Q104 sinks the heater current (0.5–1.5 A) from F102 pin 2 to CELL_N, which blows both fuse elements.
+        - The gauge FUSE pin was tied to VSS. It now both blows the fuse on a permanent failure and sees U102's trip (it reads the pin as an input).
+    - **R127**, 0 Ω 2512, DNP: a bench-only bypass across F102 for a blown part (a ≥ 10 A 0 Ω jumper or an AWG18 wire). Never fitted on a pack in use, because it defeats the second level.
+    - **A trip is permanent:** F102 opens and must be replaced. The gauge stays powered from the cell top through D101 (BAT feed from CELL_P_RAW), so its logs and permanent-failure flags remain readable.
+    - **Parts:** passives are JLC basic parts (1k C21190, 100 Ω C22775, 5.1k C23186, 51k C23196, 0.1 µF 50 V C14663).
+    - **Library:** new symbols `BQ294700` and `WSFB1514` (`tools/make_symbols.py`), footprint `TLC_WSFB_4x3mm` from the datasheet land pattern (`tools/make_footprints.py` section 13), and a 3D box model (`tools/make_3d_simple.py`).
+    - **Firmware / data flash, to do:**
+        - Enable the gauge's fuse-blow and permanent-failure settings (FUSE pin use, Fuse Failure, and the secondary-protector input). The secondary-protector input is checked against TI's technical reference manual.
+        - Decide which permanent failures blow the fuse.
+        - Make the MCU read the gauge's permanent-failure status so a blown F102 is reported, not just a dead pack.
+    - **Layout:** not on the board yet.
+        - Placement and routing must put F102 where F101 was, at the end of BT104's CELL_P_RAW strip, with Q104 beside its heater pad and U102 near the gauge.
+        - `place_parts.py` and the pack-path copper (route_power: CELL_P_RAW strip, F101 pads, CELL_P) still reference F101 and have to change, then re-run the routing workflow above.
+
+34. **D103 fitted (2026-10-13, dev board and production).** The 15 V Zener from Q102's gate (DSG_G) to its source (PACK_P) was DNP since review 1 (m1), as an option tied to C109. It is now placed (BZT52C15, SOD-123, LCSC C173427).
+    - **Why:** in a hard PACK_P short, Q102's source falls to about 0 V while DSG holds the gate at VBAT + 10.5–12 V until the short-circuit trip opens the FETs (SCD1 delay up to 915 µs). That approaches about 28 V gate-source against the AGM404AP1's ±20 V.
+        - Without C109, the gate partly follows the source down through the FET's own capacitance and the weak DSG pump recharges it slowly, which is why it was optional.
+        - With C109 (still DNP) the gate is held up and the clamp is mandatory.
+        - Fitting it always also covers fast PACK_P transients (connector shorts, ESD).
+    - **No effect in normal operation:** the Zener's 13.8 V minimum sits above the 10.5–12 V on-state gate drive, and its leakage at 12 V (tens of nA) is well within the pump's drive.
+    - TI's reference (BQ40Z50-R2 fig. 9-2) has no gate clamp. This is an addition, not a departure from a required part. Keep the SCD1 delay short in data flash as well.
 
 ## Open items (defaults I picked; confirm or change)
 

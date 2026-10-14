@@ -142,6 +142,21 @@ syms.append(symbol("STM32WB1MMC", "U",
     fp="", ds="https://www.st.com/resource/en/datasheet/stm32wb1mmc.pdf",
     desc="STM32WB15 Bluetooth LE module with integrated antenna", width=22.86))
 
+# BQ294700DSGR, DSG WSON-8 2x2, EP = 9 (VSS). Datasheet SLUSB15K table 5-1. Cell inputs and right-side pins on a
+# 7.62 mm pitch so the 1k / 0.1 uF filter ladder (fig. 8-1) lines up with them on the sheet.
+syms.append(symbol("BQ294700", "U",
+    left=[(2, "V4", I), None, None, (3, "V3", I), None, None, (4, "V2", I), None, None, (5, "V1", I)],
+    right=[(1, "VDD", PI), None, None, ([6, 9], "VSS", PI), None, None, (7, "CD", P), None, None, (8, "OUT", O)],
+    fp="Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm", ds=TI + "bq2947.pdf",
+    desc="2-4S Li-ion second-level overvoltage protector, 4.35 V OVP, active-high CMOS output", width=12.7))
+
+# TLC Electronic WSFB1514 three-terminal battery protector (self-control fuse, 4 cells): fuse 1-2 (two elements in
+# series), heater from their midpoint to pin 3. Datasheet "WSFB Series" rev A/2, p.3 "Device Circuit".
+syms.append(symbol("WSFB1514", "F",
+    left=[(1, "1", P)], right=[(2, "2", P)], bottom=[(3, "HTR", P)],
+    fp="MonolithDev:TLC_WSFB_4x3mm", ds="https://www.lcsc.com/datasheet/C42463217.pdf",
+    desc="3-terminal self-control fuse, 4 cells: fuse 1-2, heater to pin 3 (blown by a FET to VSS)", width=7.62))
+
 lib = "(kicad_symbol_lib (version 20241209) (generator \"make_symbols.py\") (generator_version \"1.0\")\n" + "\n".join(syms) + "\n)\n"
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "MonolithDev.kicad_sym")
 with open(out, "w", newline="\n") as f:

@@ -28,6 +28,7 @@ MODELS = {
     "ST_LGA-77_STM32WB1MMC_6.5x10mm": ("${KIPRJMOD}/3dmodels/ST_LGA-77_STM32WB1MMC_6.5x10mm.step", 0),  # tools/make_3d_simple.py
     "ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm": ("${KIPRJMOD}/3dmodels/ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", 0),  # tools/make_3d_simple.py
     "TestPoint_Harwin_S2761_0603": ("${KIPRJMOD}/3dmodels/TestPoint_Harwin_S2761_0603.step", 0),  # tools/make_3d_simple.py
+    "TLC_WSFB_4x3mm": ("${KIPRJMOD}/3dmodels/TLC_WSFB_4x3mm.step", 0),  # tools/make_3d_simple.py
     "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
 }
 
@@ -450,3 +451,22 @@ fp.line(-3.6, 5.0, 3.6, 5.0, "F.SilkS")
 fp.circle(-3.9, -3.3, 0.15, "F.SilkS", 0.3)
 crt(fp, -3.7, -5.1, 3.7, 5.1)
 fp.write(-6.2, 6.2)
+
+# ---------------------------------------------------------------------------
+# 13. TLC Electronic WSFB three-terminal battery protector (F102, WSFB1514, LCSC C42463217). Datasheet "WSFB Series"
+#     rev A/2 p.3 "Board and Solder Layout Recommend": heater pad (3) C1 1.20 x D2 1.60 on the left, its left edge
+#     C2 1.55 from the fuse pads; fuse pads (1 top, 2 bottom) C3 2.40 x D3/D5 1.55 with a D4 0.90 gap; heater pad top
+#     D1 1.20 below the top fuse pad's top edge (same land pattern as the Littelfuse ITV4030). Body 4.0 x 3.0 x 1.0 max,
+#     heater side on the left. Origin = centre of the land pattern (3.95 x 4.0).
+fp = FP("TLC_WSFB_4x3mm",
+        "TLC Electronic WSFB 3-terminal battery protector (fuse 1-2, heater 3), datasheet recommended land pattern",
+        "SCP self control fuse chemical fuse battery WSFB")
+fp.smd("3", -1.375, 0, 1.2, 1.6)
+fp.smd("1", 0.775, -1.225, 2.4, 1.55)
+fp.smd("2", 0.775, 1.225, 2.4, 1.55)
+fp.rect(-2.0, -1.5, 2.0, 1.5, "F.Fab", 0.1)
+fp.line(-2.15, -1.6, -2.15, -0.95, "F.SilkS")
+fp.line(-2.15, 0.95, -2.15, 1.6, "F.SilkS")
+fp.circle(2.35, -2.2, 0.1, "F.SilkS", 0.2)                  # pin 1 (top fuse pad, cell side)
+crt(fp, -2.25, -2.25, 2.25, 2.25)
+fp.write(-3.0, 3.0)

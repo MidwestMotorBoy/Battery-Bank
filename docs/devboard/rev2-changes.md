@@ -17,12 +17,13 @@ Changes to make in the next revision of the dev board. Add items as rev 1 is rou
   - Whether the welded-pack connector J101 needs extra pins so the real pack's thermistors can use the same inputs.
 - **Status:** **done in rev 1 (rev A4, 2026-10-12)**: one wired 10k NTC per cell (TS1–TS4), each on its own 2-pin header (J102, J105–J107) beside the tap test point of the cell it watches. The welded pack's thermistors plug into the same headers, so J101 needs no extra pins. Firmware still to do: enable TS2–TS4 in data flash and use them in the throttle and broken-sensor rules.
 
-### 1b. Second-level protection for production (decided: none)
+### 1b. Second-level protection (decided 2026-10-13: hardware, BQ294700 + chemical fuse)
 - **Why:** the BQ40Z50-R2 is the only per-cell protection. A protection FET failing short, a wrong data-flash setting or a dead gauge leaves per-cell overvoltage unguarded. TI's reference adds a bq294700-class secondary OVP that blows a 3-terminal chemical fuse (the gauge FUSE pin can blow it too; on rev 1 FUSE is tied to VSS).
 - **Rev 1 decision (2026-10-12):** no hardware protector. The MCU cross-checks the gauge and can stop both chargers through CHG_INH (PB8 → each BQ25756 CE). That depends on firmware, which certification bodies usually only credit with software evaluation.
 - **Decision (2026-10-12):** no hardware second-level protector or chemical fuse, for rev 2 or production. The second layer is software: the STM32 cross-checks the gauge (alive, read-back configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and stops charging through CHG_INH (review doc firmware item 12), backed by the charger's stack CV regulation and BAT_OVP, gauge hardware SCD/OLD and F101.
 - **Consequences to keep in mind:** that layer only works while the MCU firmware runs, so it needs a hardware watchdog, a fail-safe boot path and test coverage of each check. Certification bodies usually credit software protection only after software evaluation (IEC 60730-1 Annex H / UL 1998 style); plan for that if the product is certified.
-- **Status:** closed.
+- **Reversed (2026-10-13):** hardware second level added in rev 1 after all: BQ294700 (4.35 V/cell OVP) and the gauge FUSE pin blow a TLC WSFB1514 chemical fuse (F102, 4-cell, 15 A) at the cell top; F102 replaces F101 as the pack fuse, TI fig. 9-11. A DNP bench bypass (R127) sits across it. Details: DevBoard/README.md item 33. The software checks above stay as a third layer.
+- **Status:** done in the schematic (rev 1, branch hand-review); layout still to do.
 
 ## Candidates found during rev 1 layout (confirm before adding)
 

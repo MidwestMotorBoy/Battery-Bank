@@ -102,8 +102,8 @@ PORT_LAYOUT = [
     # TPS25751 (U401): supply caps left, address straps (divider top / bottom / 0R) and EEPROM above,
     # VBUS/PP5V caps right, CC caps between the ESD parts and the connector (VBUS TVS D401 beside them)
     ("col", ["R401", "C403", "C404", "C408", "C405"], 171.7, 16.4, 0, 0.08),
-    ("row", ["R405", "R406", "R1"], 163.475, 13.88, 0, 0.08),
-    ("row", ["R407", "R408", "R2"], 163.475, 15.51, 0, 0.08),
+    ("row", ["R1"], 163.475, 13.88, 0, 0.08),
+    ("row", ["R2"], 163.475, 15.51, 0, 0.08),
     ("at", "U402", 175.1, 14.65, 0),
     ("row", ["R402", "R403", "R404"], 173.55, 17.5, 90, 0.08),
     # VBUS cap right of U401's VBUS power pad (the VBUS feed passes over its VBUS pad); the PP5V cap (0603) above U401
