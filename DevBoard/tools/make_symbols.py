@@ -130,6 +130,13 @@ syms.append(symbol("AGM404AP1", "Q",
     fp="Package_TO_SOT_SMD:TDSON-8-1", ds="https://www.lcsc.com/datasheet/C41349455.pdf",
     desc="40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3", width=7.62))
 
+# JinYu PGQ04N070 single N-FET, PDFN3333: S 1-3, G 4, D 5-8 (datasheet V2.0 p.6, standard PDFN3333 pinout; it fits
+# the AGM PDFN3.3x3.3 land). Charger half-bridge switches Q401/Q402/Q407/Q408 (cost-down 2026-10-14).
+syms.append(symbol("PGQ04N070", "Q",
+    left=[(4, "G", I)], right=[([5, 6, 7, 8], "D", P), ([1, 2, 3], "S", P)],
+    fp="MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm", ds="https://www.lcsc.com/datasheet/C49384056.pdf",
+    desc="40 V N-MOSFET, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC, PDFN3333", width=7.62))
+
 # STM32WB1MMC module, 77 pads. DS14096 table 1.
 gnd = [1, 2, 3, 4, 15, 17, 19, 24, 31] + list(range(43, 78))
 syms.append(symbol("STM32WB1MMC", "U",

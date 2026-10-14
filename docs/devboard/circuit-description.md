@@ -145,7 +145,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ### 7.3 Charger and power stage (BQ25756) — copy of production layout
 - **U_CHGx:** BQ25756RRVR (LCSC C19272232).
-- **FETs:** two Infineon IAUC45N04S6L063H half-bridges (JLC C3288896): leg A (USB side: HIDRV1/LODRV1, SW1), leg B (battery side: HIDRV2/LODRV2, SW2).
+- **FETs (rev A6 cost-down, 2026-10-14):** four discrete JinYu PGQ04N070 per port (JLC C49384056, PDFN3333; 40 V, 7 mΩ max at 10 V, 10 mΩ max at 4.5 V, Qg 14.7 nC). Leg A (USB side): Q401 high side (HIDRV1), Q407 low side (LODRV1), SW1. Leg B (battery side): Q402 high side (HIDRV2), Q408 low side (LODRV2), SW2. This matches the production BOM's plan of four discrete 40 V logic-level 3.3 × 3.3 mm FETs. Until then the legs were Infineon IAUC45N04S6L063H half-bridges (C3288896, 8.5 mΩ max at 4.5 V, $1.16, 62 at JLC).
 - **Inductor:** SXN SMMS1040-2R2M, 2.2 µH, Isat 18 A, Irms 12 A, 9 mΩ max, 11.5 × 10 mm (LCSC C149591), between SW1 and SW2. It was Coilcraft XAL7030-222MEC until the cost-down 2026-10-14, `cost-down-2026-10-14.md`.
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**

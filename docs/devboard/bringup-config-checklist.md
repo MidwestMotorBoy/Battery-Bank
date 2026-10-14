@@ -125,7 +125,7 @@ Pin states per power state are in `mcu-io-power-states.md`.
 - [ ] A phone attaching is detected with EN_5Vx low (idle). If not, keep EN_5Vx high in idle and raise R432/R532 to 1 MΩ.
 - [ ] The 3V3 rail survives an attach while the TPS62177 is in sleep mode (15 mA limit).
 - [ ] Capture J402 (I2Cc): does the bundle rewrite ICHG_REG on every attach?
-- [ ] Bootstrap diodes D404/D405 and the protection FETs (about 1 W each at 100 W): measure their temperature.
+- [ ] Bootstrap diodes D404/D405, the protection FETs (about 1 W each at 100 W) and the discrete charger FETs Q401/Q402/Q407/Q408 (and 5xx; about 0.5 W each at 100 W from 12 V): measure their temperature.
 - [ ] Holder contact resistance (accepted risk, 100 mΩ maximum per holder; review 1 #4): measure each holder. Holder mode stays at about 2 A (ICHG_REG, PDOs, OCD1 2–3 A). Run high-current tests and gauge learning on the welded pack via J101.
 - [ ] Sleep current: R_MEAS for the 3V3 branch, the gauge's current reading for the pack.
 - [ ] Gauge supply current: with the pack on battery only (no USB, no J104), measure across R105 (100 Ω): 50–340 µA = 5–34 mV. Expect about 75 µA once the gauge sleeps (needs `[IN_SYSTEM_SLEEP]` = 1); about 336 µA means it is not sleeping. Budget about 150 µA.

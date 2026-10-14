@@ -4217,232 +4217,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "MonolithDev:IAUC45N04S6L063H"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "Q"
-				(at -6.35 6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "IAUC45N04S6L063H"
-				(at -6.35 -6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.infineon.com/dgdl/Infineon-IAUC45N04S6L063H-DataSheet-v01_00-EN.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "40 V 6.3 mOhm N-channel half-bridge (high side D = pins 7,8; low side S = pins 5,6)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "IAUC45N04S6L063H_0_1"
-				(rectangle
-					(start -6.35 5.08)
-					(end 6.35 -5.08)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "IAUC45N04S6L063H_1_1"
-				(pin input line
-					(at -8.89 2.54 0)
-					(length 2.54)
-					(name "G_HS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 0 180)
-					(length 2.54)
-					(name "PHASE"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 0 180)
-					(length 2.54)
-					(hide yes)
-					(name "PHASE"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -8.89 -2.54 0)
-					(length 2.54)
-					(name "G_LS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 -2.54 180)
-					(length 2.54)
-					(name "S_LS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 -2.54 180)
-					(length 2.54)
-					(hide yes)
-					(name "S_LS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 2.54 180)
-					(length 2.54)
-					(name "D_HS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 8.89 2.54 180)
-					(length 2.54)
-					(hide yes)
-					(name "D_HS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Regulator_Switching:TPS62933"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -6011,6 +5785,31 @@
 			)
 			(embedded_fonts no)
 		)
+			(symbol "MonolithDev:PGQ04N070" (pin_names (offset 1.016)) (exclude_from_sim no) (in_bom yes) (on_board yes)
+    (property "Reference" "Q" (at -3.81 5.08 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PGQ04N070" (at -3.81 -5.08 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "https://www.lcsc.com/datasheet/C49384056.pdf" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Description" "40 V N-MOSFET, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC, PDFN3333" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (symbol "PGQ04N070_0_1"
+      (rectangle (start -3.81 3.81) (end 3.81 -3.81) (stroke (width 0.254) (type default)) (fill (type background))))
+    (symbol "PGQ04N070_1_1"
+      (pin input line (at -6.35 1.27 0) (length 2.54)
+        (name "G" (effects (font (size 1.27 1.27)))) (number "4" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 1.27 180) (length 2.54)
+        (name "D" (effects (font (size 1.27 1.27)))) (number "5" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 1.27 180) (length 2.54) (hide yes)
+        (name "D" (effects (font (size 1.27 1.27)))) (number "6" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 1.27 180) (length 2.54) (hide yes)
+        (name "D" (effects (font (size 1.27 1.27)))) (number "7" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 1.27 180) (length 2.54) (hide yes)
+        (name "D" (effects (font (size 1.27 1.27)))) (number "8" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 -1.27 180) (length 2.54)
+        (name "S" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 -1.27 180) (length 2.54) (hide yes)
+        (name "S" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 6.35 -1.27 180) (length 2.54) (hide yes)
+        (name "S" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))))
 	)
 	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.08 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
@@ -6670,16 +6469,7 @@
 		)
 		(uuid "2323b39d-1f6c-4d3f-8287-8e36309d50bc")
 	)
-	(wire
-		(pts
-			(xy 406.4 71.12) (xy 406.4 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2354da6f-9e4a-4000-8347-e2d119d2eb32")
-	)
+
 	(wire
 		(pts
 			(xy 393.7 213.36) (xy 406.4 213.36)
@@ -6830,16 +6620,7 @@
 		)
 		(uuid "383e7cd4-9695-4af7-b1ff-ff86c7f771fd")
 	)
-	(wire
-		(pts
-			(xy 410.21 76.2) (xy 406.4 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3896bab9-b1cc-449a-9602-5a11ab07dff2")
-	)
+
 	(wire
 		(pts
 			(xy 436.88 86.36) (xy 440.69 86.36)
@@ -6911,16 +6692,7 @@
 		)
 		(uuid "44a64951-1891-4ff4-bff9-dc7773f6b880")
 	)
-	(wire
-		(pts
-			(xy 359.41 76.2) (xy 363.22 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "44ccdbd5-d93b-472e-b2f3-616ab9ebf31c")
-	)
+
 	(wire
 		(pts
 			(xy 368.3 190.5) (xy 353.06 190.5)
@@ -7031,16 +6803,7 @@
 		)
 		(uuid "518b4f73-544b-4b8d-8cfb-44ab874f0b25")
 	)
-	(wire
-		(pts
-			(xy 363.22 71.12) (xy 359.41 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "52169f5b-7d48-4dbc-9442-14fb0d14a45c")
-	)
+
 	(wire
 		(pts
 			(xy 350.52 218.44) (xy 368.3 218.44)
@@ -7152,16 +6915,7 @@
 		)
 		(uuid "5f990a38-8c0f-4b19-a374-5a27f5cc89f0")
 	)
-	(wire
-		(pts
-			(xy 363.22 76.2) (xy 363.22 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61281256-c08e-4912-b5c5-bb8a827ab29c")
-	)
+
 	(wire
 		(pts
 			(xy 104.14 87.63) (xy 104.14 90.17)
@@ -7665,16 +7419,7 @@
 		)
 		(uuid "a9c52351-0a93-4230-bfc8-ff229d4dd0fe")
 	)
-	(wire
-		(pts
-			(xy 363.22 60.96) (xy 363.22 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa5c46bc-61d7-4856-8aec-9a9823c70746")
-	)
+
 	(wire
 		(pts
 			(xy 209.55 67.31) (xy 209.55 93.98)
@@ -8126,16 +7871,7 @@
 		)
 		(uuid "ef036b4b-b343-418f-a840-cbde0877b92e")
 	)
-	(wire
-		(pts
-			(xy 406.4 76.2) (xy 406.4 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f11df6e4-06d6-45ba-b0be-646f5cb4fdfa")
-	)
+
 	(wire
 		(pts
 			(xy 436.88 80.01) (xy 436.88 86.36)
@@ -8187,16 +7923,7 @@
 		)
 		(uuid "f480fccf-e243-41e6-ae04-50efbe9fcfa0")
 	)
-	(wire
-		(pts
-			(xy 359.41 73.66) (xy 381 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f4bdff02-f999-4735-ae87-0e4d574dc4ed")
-	)
+
 
 	(wire
 		(pts
@@ -8218,16 +7945,7 @@
 		)
 		(uuid "f7d5496d-9f91-4ef6-a8da-1b6e04d0ad4e")
 	)
-	(wire
-		(pts
-			(xy 388.62 73.66) (xy 410.21 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f89fce31-c701-4d84-8c15-ce90f0f642ad")
-	)
+
 	(wire
 		(pts
 			(xy 358.14 118.11) (xy 368.3 118.11)
@@ -8258,16 +7976,7 @@
 		)
 		(uuid "fb655f3c-4d7f-4993-97c5-6da22a8caf29")
 	)
-	(wire
-		(pts
-			(xy 410.21 71.12) (xy 406.4 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fc5e87d6-dd0e-4e71-8dde-70c03a7706cc")
-	)
+
 	(wire
 		(pts
 			(xy 162.56 203.2) (xy 167.64 203.2)
@@ -8529,16 +8238,7 @@
 		)
 		(uuid "418ff521-d442-4cb9-8be0-fffdc3ad530e")
 	)
-	(label "LG1"
-		(at 341.63 76.2 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "45905a67-d0b5-4f43-bd45-797adc8e8af7")
-	)
+
 	(label "SRN_F"
 		(at 448.31 86.36 90)
 		(effects
@@ -8980,16 +8680,7 @@
 		)
 		(uuid "befd5157-a508-43ea-b50e-3e1f06719920")
 	)
-	(label "HG1"
-		(at 341.63 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "bf4e5f01-971e-4818-ab05-a10c66339020")
-	)
+
 	(label "ACP_F"
 		(at 367.03 182.88 180)
 		(effects
@@ -9020,16 +8711,7 @@
 		)
 		(uuid "cb977311-0261-4a2c-8760-b9afba12ca19")
 	)
-	(label "HG2"
-		(at 427.99 71.12 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d02c7910-f3a0-42c1-8217-b482279a1541")
-	)
+
 	(label "REGN"
 		(at 91.44 289.56 270)
 		(effects
@@ -9060,16 +8742,7 @@
 		)
 		(uuid "d2f0de9e-5b08-4b65-ad68-c9d1a0d206af")
 	)
-	(label "LG2"
-		(at 427.99 76.2 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d46c831f-748f-499f-8f01-a861bdbee7d4")
-	)
+
 	(label "STAT2"
 		(at 365.76 205.74 180)
 		(effects
@@ -15279,87 +14952,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:GND")
-		(at 363.22 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5b4ad4a9-6324-4a08-999c-b0fc6de9c6fb")
-		(property "Reference" "#PWR424"
-			(at 363.22 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 363.22 85.6 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 363.22 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 363.22 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 363.22 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e83a1384-462a-4c09-b227-d18d90543b6f")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR524")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR424")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
 		(at 284.48 152.4 0)
@@ -19073,129 +18666,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "MonolithDev:IAUC45N04S6L063H")
-		(at 350.52 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "98e872ed-aaed-4bd5-8b30-e0d99d5e6116")
-		(property "Reference" "Q401"
-			(at 350.52 64.83 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "IAUC45N04S6L063H"
-			(at 350.52 66.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8-57_HalfBridge"
-			(at 350.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.infineon.com/dgdl/Infineon-IAUC45N04S6L063H-DataSheet-v01_00-EN.pdf"
-			(at 350.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "40 V 6.3 mOhm N-channel half-bridge (high side D = pins 7,8; low side S = pins 5,6)"
-			(at 350.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "leg A, USB side"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C3288896"
-			(at 350.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5aaa07d2-94a6-40cd-bb9a-e2990064410a")
-		)
-		(pin "2"
-			(uuid "f14cc30a-6473-4a86-8e24-b286e7ef569a")
-		)
-		(pin "3"
-			(uuid "35c3d6e3-d4a4-4824-9ac3-62766d8a10cb")
-		)
-		(pin "4"
-			(uuid "23004a7c-d7f5-4d10-b820-ec7c0ffbed90")
-		)
-		(pin "5"
-			(uuid "751a6f07-f62b-4a14-b00e-20d8e13dd6aa")
-		)
-		(pin "6"
-			(uuid "b1201844-8af3-43d6-a077-ae8c40aeefce")
-		)
-		(pin "7"
-			(uuid "ef59f2b2-6bdd-41a3-95a0-59cd23d2b413")
-		)
-		(pin "8"
-			(uuid "01d0590d-00fb-4fde-bf81-2c80ccffbcdf")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "Q501")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "Q401")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "power:GND")
 		(at 213.36 289.56 0)
@@ -19753,130 +19224,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "MonolithDev:IAUC45N04S6L063H")
-		(at 419.1 73.66 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ab02687e-cf14-487d-8698-08aa56db0d9f")
-		(property "Reference" "Q402"
-			(at 419.1 64.83 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "IAUC45N04S6L063H"
-			(at 419.1 66.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8-57_HalfBridge"
-			(at 419.1 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.infineon.com/dgdl/Infineon-IAUC45N04S6L063H-DataSheet-v01_00-EN.pdf"
-			(at 419.1 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "40 V 6.3 mOhm N-channel half-bridge (high side D = pins 7,8; low side S = pins 5,6)"
-			(at 419.1 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "leg B, battery side"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C3288896"
-			(at 419.1 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5f3bc4c2-5b94-46be-9e8e-042eeee482d4")
-		)
-		(pin "2"
-			(uuid "382b0de3-c1a6-46a7-acb1-101dc31ae1c4")
-		)
-		(pin "3"
-			(uuid "04988829-90f7-480f-a432-f2150368c11b")
-		)
-		(pin "4"
-			(uuid "32ed9220-4f99-4eda-afea-9045c56566d9")
-		)
-		(pin "5"
-			(uuid "71d983e2-c015-40bf-becd-a1c63f00fe2c")
-		)
-		(pin "6"
-			(uuid "173ac499-f369-42e9-99cd-9bda4a4c3f58")
-		)
-		(pin "7"
-			(uuid "167fc2b6-366c-4f7a-ae13-3445b86d3066")
-		)
-		(pin "8"
-			(uuid "a73d15b0-0f00-4bc8-825d-0689b5b50c55")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "Q502")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "Q402")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "Device:C")
 		(at 436.88 93.98 0)
@@ -20389,87 +19737,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:GND")
-		(at 406.4 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "b1e9c645-7672-4a20-b2eb-4246daeb1fb5")
-		(property "Reference" "#PWR425"
-			(at 406.4 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 406.4 85.6 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 406.4 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 406.4 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 406.4 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "08db411d-8d32-4a3c-ad72-1001cebf1468")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR525")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR425")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "power:GND")
 		(at 137.16 78.74 0)
@@ -30538,6 +29806,918 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "MonolithDev:PGQ04N070")
+		(at 350.52 71.12 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "bdc88c36-ca91-4c52-a0c6-8fc5cd449131")
+		(property "Reference" "Q401"
+			(at 350.52 63.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PGQ04N070"
+			(at 350.52 65.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40 V N-MOSFET, PDFN3333"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C49384056"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PGQ04N070 (JinYu)"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "USB side high side (HIDRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f86657fb-4d39-476a-bff7-f8dcf447dd84")
+		)
+		(pin "2"
+			(uuid "9f61eda0-2bc2-4c39-8080-881f83c3623d")
+		)
+		(pin "3"
+			(uuid "c45dfc6f-6912-4a14-8423-51e9614bd8fd")
+		)
+		(pin "4"
+			(uuid "c2c6ad19-74b9-4b71-8756-fd8b5ba621cd")
+		)
+		(pin "5"
+			(uuid "caef1c3f-f635-4f15-803b-03881f302146")
+		)
+		(pin "6"
+			(uuid "6d2143e5-0659-47ac-bcd3-a7ed3a0363f0")
+		)
+		(pin "7"
+			(uuid "7af581c8-7657-4cd3-8fe7-e1f92e9eed93")
+		)
+		(pin "8"
+			(uuid "15967cf1-d4f0-48b7-86e8-6580207bb5d9")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "Q501")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "Q401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MonolithDev:PGQ04N070")
+		(at 350.52 83.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "bb229b87-3e95-442a-abb2-a4994a084a08")
+		(property "Reference" "Q407"
+			(at 350.52 76.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PGQ04N070"
+			(at 350.52 78.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40 V N-MOSFET, PDFN3333"
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C49384056"
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PGQ04N070 (JinYu)"
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "USB side low side (LODRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+			(at 350.52 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c547a350-8e2e-4a7b-acea-a9b0e58b99a6")
+		)
+		(pin "2"
+			(uuid "e5fc4913-6b36-49e6-abb2-32ef66b31cef")
+		)
+		(pin "3"
+			(uuid "9f2f395b-cd69-4f8e-aa85-bc62e0bae419")
+		)
+		(pin "4"
+			(uuid "71ce40c2-4065-49a9-b370-8bd519e1d104")
+		)
+		(pin "5"
+			(uuid "6e70e40e-2e3c-478c-bd42-ffa97cbb37ad")
+		)
+		(pin "6"
+			(uuid "f2789296-705f-452c-aa34-bf932aa82626")
+		)
+		(pin "7"
+			(uuid "f00bd2fd-38aa-41fe-8172-e1caf947801b")
+		)
+		(pin "8"
+			(uuid "aeea8332-c5e7-452e-b723-40e9b2dbaad0")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "Q507")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "Q407")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MonolithDev:PGQ04N070")
+		(at 419.10 71.12 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3c2bc996-8e07-43bd-91b1-8190cd7959bf")
+		(property "Reference" "Q402"
+			(at 419.10 63.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PGQ04N070"
+			(at 419.10 65.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40 V N-MOSFET, PDFN3333"
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C49384056"
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PGQ04N070 (JinYu)"
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "battery side high side (HIDRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+			(at 419.10 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5b822039-dc32-4592-8cc9-a2ab0548ac49")
+		)
+		(pin "2"
+			(uuid "96d848cf-a46f-476b-b58a-8a0ecb7894ba")
+		)
+		(pin "3"
+			(uuid "b07e098c-b433-4355-b093-10da94d68041")
+		)
+		(pin "4"
+			(uuid "5eac2bda-5e9e-48d3-9482-c6be64ad4951")
+		)
+		(pin "5"
+			(uuid "b0a20692-68db-47a3-8f64-793a22bb63fe")
+		)
+		(pin "6"
+			(uuid "bd74efa2-08e4-43c5-9476-3b8099ea8c01")
+		)
+		(pin "7"
+			(uuid "ed0dc4be-20d8-4bc0-9ac7-bde9e4594109")
+		)
+		(pin "8"
+			(uuid "f70cc0d4-0c5a-4363-8bf4-2df4254942b2")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "Q502")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "Q402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MonolithDev:PGQ04N070")
+		(at 419.10 83.82 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "de9bbb59-810f-4085-9ed0-3e289204cffa")
+		(property "Reference" "Q408"
+			(at 419.10 76.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PGQ04N070"
+			(at 419.10 78.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40 V N-MOSFET, PDFN3333"
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C49384056"
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PGQ04N070 (JinYu)"
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "battery side low side (LODRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+			(at 419.10 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "45251692-3ed5-4449-829b-41e82aa7240d")
+		)
+		(pin "2"
+			(uuid "14f5364f-b42c-4f66-b528-ceca8507a01d")
+		)
+		(pin "3"
+			(uuid "2e02900b-fa87-46ab-b91b-c6ebe8297965")
+		)
+		(pin "4"
+			(uuid "810dced7-ef64-4a39-b3ac-b00b9b68ab61")
+		)
+		(pin "5"
+			(uuid "f7b57887-4acf-4e1f-a9d5-6ed987bb0de1")
+		)
+		(pin "6"
+			(uuid "75d418ea-3401-47cb-9d64-f5af56f5c913")
+		)
+		(pin "7"
+			(uuid "53ed4a64-475b-4ffa-b98b-c435e3b74059")
+		)
+		(pin "8"
+			(uuid "fbba7499-798b-418f-86fe-a4410faffe73")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "Q508")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "Q408")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 363.22 60.96) (xy 363.22 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7226afc9-3e56-4200-b079-2936bdf7fdbf")
+	)
+	(wire
+		(pts
+			(xy 356.87 69.85) (xy 363.22 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a71c0a07-f404-4f0b-bd4b-ce6f4375b6cc")
+	)
+	(wire
+		(pts
+			(xy 356.87 72.39) (xy 360.68 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4795cc1-2921-492e-971b-9cc9961bd2e0")
+	)
+	(wire
+		(pts
+			(xy 360.68 72.39) (xy 360.68 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd82493e-f880-462a-a8b6-0c87dc29cf7e")
+	)
+	(wire
+		(pts
+			(xy 360.68 82.55) (xy 356.87 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "759a0ecb-a831-4d2f-8dcf-0912344ad682")
+	)
+	(wire
+		(pts
+			(xy 360.68 73.66) (xy 381.00 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dcd385c0-5314-47d1-8c79-7a8a2b1eb866")
+	)
+	(junction
+		(at 360.68 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "49b36ccc-5262-4ab2-8dcf-d87167cc30f7")
+	)
+	(wire
+		(pts
+			(xy 356.87 85.09) (xy 363.22 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f576df8f-6e0c-423c-8c8f-d70f71862010")
+	)
+	(wire
+		(pts
+			(xy 363.22 85.09) (xy 363.22 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df0a953d-5c72-47e4-b12e-9c81dd026e5e")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 363.22 87.63 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "45d94e66-24f9-4bd7-ae81-52754ee755fa")
+		(property "Reference" "#PWR599"
+			(at 363.22 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 363.22 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 363.22 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 363.22 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 363.22 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9abeff07-6669-4be1-9353-a73f5165706b")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR600")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR599")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "HG1"
+		(at 344.17 69.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c34826ec-6643-4f42-9c84-c5efde621e45")
+	)
+	(label "LG1"
+		(at 344.17 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
+	)
+	(wire
+		(pts
+			(xy 406.40 60.96) (xy 406.40 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40f90a2c-a5e8-4075-8932-2e4b0b6f1f4a")
+	)
+	(wire
+		(pts
+			(xy 412.75 69.85) (xy 406.40 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3bc2f249-61d6-4082-8a5d-f902c6a5a9c1")
+	)
+	(wire
+		(pts
+			(xy 412.75 72.39) (xy 408.94 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8fc02b1b-2049-4af6-81c1-f4e776fc8dbc")
+	)
+	(wire
+		(pts
+			(xy 408.94 72.39) (xy 408.94 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dbd77199-7a24-438d-a95b-40a6413e7b10")
+	)
+	(wire
+		(pts
+			(xy 408.94 82.55) (xy 412.75 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ab23fa2-2d12-4b29-9f52-a8dd6b389ff2")
+	)
+	(wire
+		(pts
+			(xy 388.62 73.66) (xy 408.94 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bc290041-b34d-4ca0-912a-cbb05b2f7f6b")
+	)
+	(junction
+		(at 408.94 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d15e6376-2641-40e2-9d86-059e3a825ad0")
+	)
+	(wire
+		(pts
+			(xy 412.75 85.09) (xy 406.40 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b2cb3f82-a093-4a9a-bcb4-a727450d1f21")
+	)
+	(wire
+		(pts
+			(xy 406.40 85.09) (xy 406.40 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5323f4d4-cc22-4a1d-a519-1fb07d31c6f2")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 406.40 87.63 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b316d706-5367-45ba-9a34-fd020eddcf8b")
+		(property "Reference" "#PWR601"
+			(at 406.40 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 406.40 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 406.40 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 406.40 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 406.40 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "00781a67-e916-4980-8c6f-10a1015cbc02")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR602")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR601")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "HG2"
+		(at 425.45 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2218fc1a-9b57-4962-95ed-a6588a4194a7")
+	)
+	(label "LG2"
+		(at 425.45 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
 	)
 	(sheet_instances
 		(path "/"
