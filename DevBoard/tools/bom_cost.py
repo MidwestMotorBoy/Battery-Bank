@@ -25,6 +25,48 @@ OUTSIDE = {"U301": (10.65, "ST eStore, qty 1, 2026-10-14")}
 CONSIGNED = {"U301"}
 
 
+def _ports(*refs):
+    """Port-sheet refs are listed as 4xx; add the 5xx twin."""
+    return set(refs) | {r[0:len(r) - 3] + "5" + r[-2:] for r in refs if re.match(r"[A-Z]+4\d\d$", r)}
+
+
+# Planned for the production board? The dev board is the complete production circuit (circuit-description.md,
+# "Purpose") plus test and measurement extras; this map is the dev-only / undecided part of it.
+DEV_ONLY = {
+    **{r: "21700 holders; production uses a welded pack" for r in ("BT101", "BT102", "BT103", "BT104")},
+    **{r: "NTC wire header; production solders the NTC leads" for r in ("J102", "J105", "J106", "J107")},
+    "J103": "EV2400 header", "J104": "bench PACK_P input", "D104": "bench input diode",
+    **{r: "sleep-current measurement section" for r in ("R201", "R202", "R203", "R204", "R205", "R206", "U201", "U202",
+                                                         "U203", "C202", "C203", "C204", "C205", "JP201", "JP202")},
+    "R207": "0R measurement link", "R301": "0R measurement link", "R307": "0R LED link (sleep measurement)",
+    "R312": "0R EV2400 helper link",
+    "J301": "SWD header; production uses pogo pads", "SW301": "reset button; production uses a test pad",
+    "J302": "UART header", "J303": "spare-GPIO header",
+    **{r: "series resistor to the J303 header" for r in ("R316", "R317", "R318", "R319")},
+    **{r: "I2Cc logic-analyzer header" for r in _ports("J402")},
+}
+MAYBE = {
+    "SW101": "wake button (production wake method not decided)", "R118": "wake button resistor",
+    **{r: "BTP_INT level shift (production may tie BTP_INT to VSS)" for r in ("Q103", "R114", "R117")},
+    **{r: "board NTCs (production thermal sensing not decided)" for r in
+       ("TH301", "TH302", "TH303", "TH304", "TH305", "R308", "R309", "R310", "R311", "R320",
+        "C308", "C309", "C310", "C311", "C312")},
+    "D301": "status LED (production has its own LED set)", "R306": "status LED resistor",
+    **{r: "0R gate/BTST tuning placeholder (keep if EMI needs it)" for r in
+       _ports("R444", "R445", "R446", "R447", "R448", "R449")},
+}
+
+
+def production(ref):
+    if ref.startswith("TP"):
+        return "no", "test point"
+    if ref in DEV_ONLY:
+        return "no", DEV_ONLY[ref]
+    if ref in MAYBE:
+        return "maybe", MAYBE[ref]
+    return "yes", ""
+
+
 def parse(t):
     toks = re.findall(r'\(|\)|"(?:[^"\\]|\\.)*"|[^\s()]+', t)
     st = [[]]
@@ -109,6 +151,7 @@ def main():
         return (m.group(1), int(m.group(2))) if m else (r, 0)
 
     rows, tot, fees = [], 0.0, 0
+    prod_tot = [0.0, 0.0]          # parts planned for production: "yes" only, and "yes" + "maybe"
     for (lcsc, mpn, value, fp), refs in sorted(groups.items(), key=lambda kv: refkey(min(kv[1], key=refkey))):
         refs = sorted(refs, key=refkey)
         n = len(refs)
@@ -140,8 +183,22 @@ def main():
             src = comps[refs[0]]["fields"].get("Sourcing", "hand-fit")
         line = None if unit is None else unit * n
         tot += line or 0.0
+        status = [(r, *production(r)) for r in refs]
+        kinds = {s for _, s, _ in status}
+        prod = kinds.pop() if len(kinds) == 1 else "partly"
+        n_prod = sum(s == "yes" for _, s, _ in status)
+        n_maybe = sum(s == "maybe" for _, s, _ in status)
+        if unit is not None:
+            prod_tot[0] += unit * n_prod
+            prod_tot[1] += unit * (n_prod + n_maybe)
+        why = defaultdict(list)
+        for r, s, w in status:
+            if s != "yes":
+                why[f"{s}: {w}"].append(r)
+        note = "; ".join(f"{','.join(rs)} {w}" if prod == "partly" else w for w, rs in why.items())
         rows.append([",".join(refs), n, value, mpn, lcsc, fp, lib, stock, buy,
-                     "" if unit is None else f"{unit:.4f}", "" if line is None else f"{line:.2f}", src])
+                     "" if unit is None else f"{unit:.4f}", "" if line is None else f"{line:.2f}", src,
+                     prod, n_prod, note])
 
     fee_board = FEE * fees / boards
     path = os.path.join(ROOT, "bom_cost.csv")
@@ -149,10 +206,15 @@ def main():
         w = csv.writer(fh)
         w.writerow([f"Monolith dev board costed BOM, {boards} boards, JLC prices fetched by tools/bom_cost.py"])
         w.writerow(["refs", "qty_per_board", "value", "mpn", "lcsc", "footprint", "library", "jlc_stock",
-                    f"jlc_buy_qty_{boards}_boards", "unit_usd_incl_min_buy", "per_board_usd", "source"])
+                    f"jlc_buy_qty_{boards}_boards", "unit_usd_incl_min_buy", "per_board_usd", "source",
+                    "in_production", "production_qty_per_board", "production_note"])
         w.writerows(rows)
         w.writerow([])
         w.writerow(["parts per board", "", "", "", "", "", "", "", "", "", f"{tot:.2f}"])
+        w.writerow(["production-intent parts at these dev-board prices: in_production = yes", "", "", "", "", "", "",
+                    "", "", "", f"{prod_tot[0]:.2f}"])
+        w.writerow(["production-intent parts at these dev-board prices: yes + maybe", "", "", "", "", "", "", "", "",
+                    "", f"{prod_tot[1]:.2f}"])
         w.writerow([f"JLC extended-part fees: {fees} x ${FEE:.0f} per order / {boards} boards", "", "", "", "", "", "", "",
                     "", "", f"{fee_board:.2f}"])
         w.writerow(["total per board (excl. PCB, assembly, shipping, cells, blank-price parts)", "", "", "", "", "", "",
