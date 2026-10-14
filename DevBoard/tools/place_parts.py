@@ -77,7 +77,7 @@ PORT["C34"] = (15.9, 0.35, 270)
 PORT["C32"] = (13.3, 13.0, 180)      # 100u 25V polymer
 PORT_CENTRE = {"4": (158, 31.5), "5": (158, 68.5)}
 PORT_EXTRA = {  # board offsets from the port centre for the PD controller side (not turned)
-    "U01": (19, -8, 0), "D01": (28.9, 2.0, 90), "D02": (25, -4, 90), "D03": (25, 3.5, 90),
+    "U01": (19, -8, 0),
     "U04": (25.84, 15.5, 0), "L02": (32.39, 14.5, 0), "C43": (25.5, -14.5, 0),
 }
 
@@ -109,7 +109,6 @@ PORT_LAYOUT = [
     # VBUS cap right of U401's VBUS power pad (the VBUS feed passes over its VBUS pad); the PP5V cap (0603) above U401
     # beside PP5V pin 34, clear of the VBUS pad
     ("fix", "C406", 183.75, 23.0, 270), ("fix", "C407", 176.5, 20.0, 0),
-    ("row", ["C402", "C401"], 184.9, 27.5, 90, 0.08),
     ("row", ["R425", "R426"], 176.6, 34.9, 90, 0.08),
     # TPS62933 5 V buck in a line, hot loop first: input bulk, 0.1u straddling VIN/GND (pins 3/4), U404, BST cap
     # between the SW/BST pins and L402, L402 touching; FB/SS/EN above U404, output caps above L402
@@ -139,7 +138,7 @@ PORT_LAYOUT = [
     # rev A5: scope-ground loop beside the SW1/SW2 probe points (TH304 moved 1 mm left to make room), PPHV and VBUS
     # HF caps by their pins, CE_N and LDO_3V3 probe pads
     ("at", "TP412", 162.2, 43.6, 0),
-    ("at", "C449", 179.24, 27.35, 0), ("at", "C450", 183.15, 31.87, 0),
+    ("at", "C449", 179.24, 27.35, 0), ("fix", "C450", 185.6, 23.3, 270),  # VBUS cap: VBUS pad in the VBUS strip, GND pad below it
     ("at", "TP413", 161.6, 14.37, 0), ("at", "TP414", 177.87, 29.83, 0),  # CE_N pad beside R435
 ]
 PORT_DY = 37.0
@@ -175,13 +174,14 @@ LAYOUT = [
     ("at", "TP305", 132.55, 68.0, 0),
     # MCU: antenna link at its pins, BOOT0/NRST/decoupling column at the supply corner, 3V3 link and status LED
     # beside it; NTC dividers as a 4-row array (TH1..TH4), I2C pull-ups by SDA/SCL
-    ("at", "R303", 145.4, 4.75, 0),
-    ("col", ["R302", "C304", "C301", "C302", "C303"], 144.7, 5.6, 0, 0.1),
-    ("col", ["R301", "D301", "R306", "R307"], 140.9, 5.0, 0, 0.1),
+    ("fix", "R303", 145.4, 4.75, 180),          # ANT_IN pad (1) towards U301 so the two RF links don't cross
+    # (both columns sit back from the module's pins: a 2 mm via channel for the left-side signal pins, route_power.py)
+    ("col", ["R302", "C304", "C301", "C302", "C303"], 143.0, 5.6, 0, 0.1),
+    ("col", ["R301", "D301", "R306", "R307"], 139.7, 5.0, 0, 0.1),
     ("col", ["R308", "R309", "R310", "R311"], 161.0, 4.4, 0, 0.1),
     ("col", ["C308", "C309", "C310", "C311"], 164.4, 4.62, 0, 0.54),
-    ("col", ["R314", "R315", "R304", "R305"], 155.4, 6.0, 0, 0.1),
-    ("at", "R312", 157.8, 10.6, 90),
+    ("col", ["R314", "R315", "R304", "R305"], 156.2, 6.0, 0, 0.1),     # 2 mm via channel right of the module
+    ("at", "R312", 158.5, 10.6, 90),
     # bring-up aids: reset button between the SWD and UART headers; J303 series resistors under pins 3-5;
     # BOOT0 pad under the MCU
     ("at", "SW301", 128.0, 11.2, 0),
@@ -279,6 +279,14 @@ for blk, (cx, cy) in PORT_CENTRE.items():
         put(suf[0] + blk + suf[1:], cx - x, cy - y, (r + 180) % 360)
     for suf, (x, y, r) in PORT_EXTRA.items():
         put(suf[0] + blk + suf[1:], cx + x, cy + y, r)
+# USB-C front end, placed from the connector (J501 sits 36 mm below J401, the rest of port 2 37 mm): CC ESD D402
+# with its CC caps above the CC/DP/DN pin rows, the DP/DN ESD D403 in line with the data pins, the VBUS TVS D401
+# lying below them, its VBUS pad against the connector's lower VBUS pins (offsets from (W, USB_Y))
+CONN_EXTRA = {"D02": (183.0, -4.0, 90), "C02": (185.38, -4.0, 90), "C01": (186.435, -4.0, 90),
+              "D03": (184.6, -0.2, 0), "D01": (184.85, 3.5, 180)}
+for blk, yc in (("4", USB_Y[0]), ("5", USB_Y[1])):
+    for suf, (x, dy, r) in CONN_EXTRA.items():
+        put(suf[0] + blk + suf[1:], x, yc + dy, r)
 for ref in list(HOLES) + ["J401", "J501"]:
     placed[ref] = fps[ref]
 

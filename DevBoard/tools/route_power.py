@@ -288,20 +288,26 @@ for idx in ("4", "5"):
     jy = P.jdy                                          # connector-side items follow J401/J501
     P.zone("VBUS_F", "VBUS", F, [(179.9, 21.3), (188.95, 21.3), (188.95, 30.0 + jy), (187.9, 30.0 + jy),
                                  (187.9, 23.3), (179.55, 23.3), (179.55, 22.2), (179.9, 22.2)], prio=2)
-    P.zone("VBUS_J", "VBUS", F, [(187.9, 33.3 + jy), (188.95, 33.3 + jy), (188.95, 36.4), (187.9, 36.4)], prio=2)
+    # VBUS_J: J401's lower VBUS pins (A4/B9) onto the TVS D401's VBUS pad (D401 lies below the CC/DP/DN rows)
+    P.zone("VBUS_J", "VBUS", F, [(185.5, 33.9 + jy), (188.95, 33.9 + jy), (188.95, 36.5 + jy), (185.5, 36.5 + jy)], prio=2)
     P.zone("VBUS_B", "VBUS", B, [(180.3, 21.3), (189.0, 21.3), (189.0, 37.1), (182.0, 37.1), (182.0, 23.3),
                                  (180.3, 23.3)], prio=2)
     P.track("VBUS", [(188.9, 29.6 + jy), (189.6, 29.6 + jy)], 0.5)        # A9/B4
     P.track("VBUS", [(188.9, 34.4 + jy), (189.6, 34.4 + jy)], 0.5)        # A4/B9 (VBUS_J joins the TVS pad)
-    P.vias("VBUS", [(188.45, 28.85 + jy), (188.45, 29.65 + jy), (187.75, 29.25 + jy), (188.45, 33.85 + jy),
-                    (188.45, 35.35), (188.45, 36.1)])
+    P.vias("VBUS", [(188.45, 28.85 + jy), (188.45, 29.65 + jy), (187.75, 29.25 + jy), (188.45, 35.35 + jy),
+                    (188.45, 36.1 + jy)])
     P.vias("VBUS", [(180.85, 21.75), (180.85, 22.85), (181.75, 21.75), (181.75, 22.85), (182.65, 21.75)])
-    P.via(184.85, 31.87, "VBUS"); P.track("VBUS", [(184.3, 31.87), (184.85, 31.87)], 0.4)   # C450
-    P.vias("GND", [(183.75, 24.95), (182.37, 30.9), (186.5, 33.15), (187.3, 33.15)])        # C406, C450, D401
-    P.track("VBUS", [(176.8, 21.3), (176.8, 20.9), (180.6, 20.9), (180.6, 21.5)], 0.3)     # U401 pin 32
+    # C406 / C450 GND pads to one via between them (clear of the In2 signal lanes); D401's GND pad: vias in the pad
+    P.via(184.85, 24.95, "GND", **GV)
+    P.track("GND", [(183.75, 23.95), (184.85, 24.95)], 0.3); P.track("GND", [(185.6, 24.075), (184.85, 24.95)], 0.3)
+    P.vias("GND", [(182.35, 35.5 + jy), (183.35, 35.5 + jy)])
+    # U401 pin 32 (VBUS sense): straight up to a via, then B.Cu under the pin row to the VBUS pour, so the CC/DP/DN
+    # pins beside it can escape upwards
+    P.track("VBUS", [(176.795, 21.58), (176.8, 20.875)], 0.3); P.via(176.8, 20.875, "VBUS", **GV)
+    P.track("VBUS", [(176.8, 20.875), (177.4, 21.5), (180.6, 21.5)], 0.3, B)
     # U401 PP5V cap, PD_DRAIN pins onto their exposed pad
     P.track("PP5V", [(175.8, 20.45), (176.0, 21.4)], 0.4)
-    P.via(178.4, 19.55, "GND"); P.track("GND", [(177.6, 20.0), (178.4, 19.55)], 0.4)
+    P.via(176.45, 19.15, "GND", **GV); P.track("GND", [(177.27, 20.0), (176.45, 19.15)], 0.3)   # C407
     P.track("PD_DRAIN", [(177.8, 21.6), (177.8, 22.4)], 0.2)
     P.track("PD_DRAIN", [(177.8, 25.4), (177.8, 24.6)], 0.2)
     P.track("GND", [(177.4, 21.6), (177.4, 22.4)], 0.2)                  # U401 GND pins 31, 36, 37 onto the exposed pad
@@ -343,15 +349,101 @@ for idx in ("4", "5"):
                                  (191.5, 47.0), (191.5, 43.4), (189.1, 43.4)], prio=2)
     P.track("PP5V", [(189.6, 40.2), (189.6, 37.6), (189.25, 37.25), (180.9, 37.25), (180.73, 37.6)], 0.25)
     P.track("PP5V", [(180.7, 38.5), (180.7, 39.4)], 0.25)                 # C447 - R433
-    PP5V_RUN = [(173.6, 19.1), (190.9, 19.1), (190.9, 41.6), (189.3, 41.6), (189.3, 21.0), (173.6, 21.0)]
+    # (top run kept above y 18.9 so U401's CC/DP/DN vias and their In2 lanes fit under it; a tab drops to pin 34)
+    PP5V_RUN = [(173.6, 16.9), (190.9, 16.9), (190.9, 41.6), (189.3, 41.6), (189.3, 18.9), (176.2, 18.9),
+                (176.2, 21.0), (173.6, 21.0)]
     P.zone("PP5V_IN2", "PP5V", IN2, PP5V_RUN, prio=2)
     P.zone("PP5V_B", "PP5V", B, PP5V_RUN, prio=2)
     P.vias("PP5V", [(189.75, 39.85), (190.55, 39.85), (190.55, 40.75)])          # bottom end, beside the output caps
-    P.vias("PP5V", [(180.4, 19.4), (181.6, 19.4)])                        # C443 (under its body)
-    P.track("PP5V", [(180.8, 17.6), (180.4, 19.4)], 0.6); P.track("PP5V", [(181.4, 17.6), (181.6, 19.4)], 0.6)
+    P.vias("PP5V", [(180.4, 18.5), (181.6, 18.5)])                        # C443 (under its body)
+    P.track("PP5V", [(180.8, 17.6), (180.4, 18.5)], 0.6); P.track("PP5V", [(181.4, 17.6), (181.6, 18.5)], 0.6)
     P.vias("PP5V", [(174.75, 20.45), (174.0, 20.45), (174.4, 19.65)])     # top end, at C407 / pin 34
     P.zone("PP5V_U401", "PP5V", F, [(173.6, 19.2), (176.2, 19.2), (176.2, 21.0), (173.6, 21.0)], prio=2)
     P.via(190.6, 20.9, "PP5V"); P.track("PP5V", [(190.6, 20.9), (191.78, 20.9)], 0.5)      # TP403
+
+    # ---------------- USB-C CC / DP / DN (hand-placed) ----------------
+    # Connector side (F.Cu, follows J401): the six signal pins leave straight left between the VBUS pins. DP's A6 pin
+    # hops on In2 to B6's line (V1 -> V2), which frees its row so B7's DN line runs straight on and A7's DN line drops
+    # into it: the pair then passes through D403 (DP pad top, DN pad bottom). CC2 turns up into the D402 / C402 pair;
+    # CC1 runs under D403 and up the PPHV corridor's edge to D402's CC1 pad; C401 (CC1) is boxed in by CC2, so it
+    # joins on In2. U401 side: the four pins escape upwards to a via row (pin 32's VBUS link moved to B.Cu for it),
+    # then four In2 lanes under the PP5V strip run east and down to D403 / D402 (DP inner ... CC2 outer, no crossing).
+    LW = 0.15
+    pin = {"DP": 179.4, "DN": 179.0, "CC1": 178.6, "CC2": 178.2}
+    uvia = {"CC2": (178.2, 20.4), "CC1": (178.85, 20.4), "DN": (179.5, 20.4), "DP": (180.3, 20.4)}
+    for nm, (vx, vy) in uvia.items():
+        x0 = pin[nm]
+        P.track(nm, [(x0, 21.575), (x0, 21.1), (vx, vy)] if vx != x0 else [(x0, 21.575), (vx, vy)], LW)
+        P.via(vx, vy, nm, **GV)
+    c = lambda x, y: (x, y + jy)                           # connector-side point
+    # In2 lanes (U401 via row -> east under the PP5V strip -> down to the front end)
+    P.track("CC2", [(178.2, 20.4), (178.2, 19.325), (187.1, 19.325), c(187.1, 30.25)], LW, IN2)
+    P.track("CC1", [(178.85, 20.4), (178.85, 19.625), (186.4, 19.625), c(186.4, 29.4), c(186.3, 33.45)], LW, IN2)
+    P.track("DN", [(179.5, 20.4), (179.5, 19.925), (183.7, 19.925), c(183.7, 32.75), c(182.35, 32.75)], LW, IN2)
+    P.track("DP", [(180.3, 20.4), (183.3, 20.4), c(183.3, 30.85), c(182.35, 30.85)], LW, IN2)
+    P.vias("CC2", [c(187.1, 30.25)], **GV)
+    P.vias("CC1", [c(186.4, 29.4), c(186.3, 33.45)], **GV)
+    P.vias("DN", [c(182.35, 32.75)], **GV)
+    P.vias("DP", [c(182.35, 30.85), c(188.3, 32.25), c(187.6, 31.25)], **GV)
+    # connector rows (J401 pads x 189.15-190.15): CC2 30.25, DP 31.25, DN 31.75, DP 32.25, DN 32.75, CC1 33.25
+    P.track("CC2", [c(189.65, 30.25), c(184.66, 30.25), c(184.66, 29.1), c(185.38, 28.48)], 0.2)
+    P.track("CC2", [c(184.66, 29.1), c(183.95, 28.94)], 0.2)                             # D402.2
+    P.track("DP", [c(189.65, 31.25), c(187.6, 31.25), c(187.2, 30.95), c(183.66, 30.95)], 0.2)   # B6 -> D403.1
+    P.track("DP", [c(189.65, 32.25), c(188.3, 32.25)], 0.2)                              # A6 -> V1
+    P.track("DP", [c(188.3, 32.25), c(187.6, 31.25)], 0.2, IN2)                         # V1 -> V2
+    P.track("DP", [c(183.66, 30.85), c(182.35, 30.85)], 0.2)                             # D403.1 -> In2 lane
+    P.track("DN", [c(189.65, 32.75), c(183.66, 32.75), c(182.35, 32.75)], 0.2)           # B7 -> D403.2 -> lane
+    P.track("DN", [c(189.65, 31.75), c(187.9, 31.75), c(187.4, 32.75)], 0.2)             # A7 joins B7's line
+    P.track("CC1", [c(189.65, 33.25), c(188.9, 33.25), c(188.7, 33.45), c(181.75, 33.45), c(181.75, 29.9),
+                    c(182.05, 29.2)], 0.2)                                               # A5 -> D402.1
+    P.track("CC1", [c(186.435, 28.48), c(186.4, 29.4)], 0.2)                             # C401 -> its via
+    P.track("GND", [c(185.5375, 31.8), c(187.0, 31.9)], 0.3); P.via(*c(187.0, 31.9), "GND", **GV)   # D403.3
+    P.track("GND", [c(183.0, 27.06), c(182.2, 27.06)], 0.3); P.via(*c(182.2, 27.06), "GND", **GV)   # D402.3
+    P.track("GND", [c(185.38, 27.52), c(185.75, 26.6)], 0.3); P.track("GND", [c(186.435, 27.52), c(185.75, 26.6)], 0.3)
+    P.via(*c(185.75, 26.6), "GND", **GV)                                                 # C401 / C402
+
+    # ---------------- charge-current sense SRP_F / SRN_F (Kelvin, hand-placed) ----------------
+    # RBAT's quiet-end taps R428 (SRP) / R429 (SRN) drop straight to In2 (under the In1 plane) and run as a pair at
+    # 0.5 mm pitch along y 16.6 / 17.1, above the output bank's via field, to the filter caps and U403 pins 13/14.
+    # The cap pads alternate (C417 SRP|SRN on top, C419 GND|SRN, C418 GND|SRP) and the pins run FBG, FB, SRN, SRP
+    # top to bottom, so SRP comes up twice (A at C417.1, C below C418) and SRN once (B on its run to pin 13); SRN
+    # stays the outer lane all the way so the pair never crosses.
+    SV = dict(d=0.5, drill=0.3)
+    P.track("SRN_F", [(135.1, 21.18), (136.0, 21.4)], 0.2)
+    P.track("SRP_F", [(135.1, 23.62), (136.6, 22.6)], 0.2)
+    P.vias("SRN_F", [(136.0, 21.4), (152.95, 20.0)], **SV)
+    P.vias("SRP_F", [(136.6, 22.6), (149.75, 17.8), (152.2, 22.4)], **SV)
+    P.track("SRN_F", [(136.0, 21.4), (136.0, 16.6), (152.95, 16.6), (152.95, 20.0)], 0.2, IN2)
+    P.track("SRP_F", [(136.6, 22.6), (136.6, 17.1), (149.75, 17.1), (149.75, 22.4), (152.2, 22.4)], 0.2, IN2)
+    P.track("SRP_F", [(149.75, 17.8), (150.62, 17.8)], 0.2)                              # A -> C417.1
+    P.track("SRP_F", [(152.2, 22.4), (152.2, 21.655), (152.17, 20.93)], 0.2)             # C -> C418.1
+    P.track("SRP_F", [(152.2, 21.655), (155.1, 21.655)], 0.2)                            #   -> pin 14
+    P.track("SRN_F", [(152.17, 17.8), (152.17, 19.37), (152.95, 19.6), (152.95, 21.155), (155.1, 21.155)], 0.2)
+    # Feedback divider R418/R419 (above the caps) to pins 11/12: FB sits above FBG at the resistors but below it at
+    # the pins, so FB takes In2 down the gap between the caps and R414 while FBG runs on F.Cu beside it.
+    P.track("Net-(U403-FB)", [(152.31, 14.03), (151.4, 15.0), (150.49, 16.03)], 0.2)     # R418 - R419
+    P.track("Net-(U403-FB)", [(152.31, 14.03), (153.5, 14.03)], 0.2)
+    P.vias("Net-(U403-FB)", [(153.5, 14.03), (153.75, 20.6)], **SV)
+    P.track("Net-(U403-FB)", [(153.5, 14.03), (153.75, 14.3), (153.75, 20.6)], 0.2, IN2)
+    P.track("Net-(U403-FB)", [(153.75, 20.6), (155.1, 20.655)], 0.2)
+    P.track("Net-(U403-FBG)", [(152.31, 16.03), (153.55, 16.03), (153.55, 19.2), (154.5, 20.155), (155.1, 20.155)], 0.2)
+
+    # ---------------- input-current sense ACP_F / ACN_F (Kelvin, hand-placed) ----------------
+    # RAC's filter resistors R425 (ACP) / R426 (ACN) sit beside the PPHV corridor; U403 pins 30/29 and the filter
+    # caps C414 (diff) / C415 / C416 are 15 mm away on the far side of Q401's gate drive. Both legs run on In2:
+    # up the open strip between the AC bank's via field and U401, then west above the HG1 lane. ACN is the inner
+    # lane at both ends (left vertical, lower run), so the pair never crosses. C415's GND pad splits the ACN row,
+    # so ACN passes under it on F.Cu (between C415 and D405).
+    P.track("ACP_F", [(160.9, 23.155), (161.65, 23.13), (164.1, 23.11)], 0.2)          # pin 30 - C414.1 - C415.1
+    P.track("ACP_F", [(161.65, 22.35), (161.65, 23.13)], 0.2)
+    P.track("ACN_F", [(160.9, 23.655), (161.5, 23.655), (162.5, 24.65), (162.9, 25.53), (165.3, 25.53),
+                      (165.69, 24.65), (166.45, 24.85)], 0.2)                          # pin 29 - C414.2 - C416.1
+    P.vias("ACP_F", [(161.65, 22.35), (176.4, 31.6)], **SV)
+    P.vias("ACN_F", [(166.45, 24.85), (177.6, 32.2)], **SV)
+    P.track("ACP_F", [(161.65, 22.35), (162.0, 22.0), (172.0, 22.0), (172.0, 31.6), (176.4, 31.6)], 0.2, IN2)
+    P.track("ACN_F", [(166.45, 24.85), (171.5, 24.85), (171.5, 32.2), (177.6, 32.2)], 0.2, IN2)
+    P.track("ACP_F", [(176.4, 31.6), (177.355, 34.07)], 0.2)                           # -> R425.2
+    P.track("ACN_F", [(177.6, 32.2), (178.945, 34.07)], 0.2)                           # -> R426.2
 
 # ---- pack path (11 A): cells -> RS101 -> Q101/Q102 -> F101 -> PACK_P -> both ports ------------------------------
 class Pack(Port):
@@ -442,6 +534,70 @@ K.track("GND", [(114.6, 21.6), (111.8, 21.6), (111.8, 51.2), (117.6, 51.2)], 0.2
 K.via(119.1, 51.9, "CELL_N", **GV); K.via(117.6, 51.2, "GND", **GV)
 K.track("CELL_N", [(119.1, 51.9), (119.1, 50.4)], 0.25)
 K.track("GND", [(117.6, 51.2), (117.6, 50.4)], 0.25)
+# filter outputs to C106 and U101 pins 6/8 (F.Cu): SRP straight up into C106's lower pad and round its right side;
+# SRN over R107's top, up the 0.69 mm gap between C104 and C106 into C106's upper pad, then over to pin 6
+K.track("SRP", [(119.14, 48.57), (119.45, 46.075), (120.35, 45.65), (120.35, 43.4), (121.1, 43.4)], 0.2)
+K.track("SRN", [(117.575, 48.57), (117.575, 47.875), (118.625, 47.875), (118.625, 44.525), (119.45, 44.525),
+                (119.45, 43.3), (120.15, 42.6), (121.1, 42.6)], 0.2)
+
+
+class Sheet(Port):
+    """Board-level copper on one schematic sheet's nets (port 1 frame, no offset)."""
+    def __init__(self, pfx, group):
+        super().__init__("4")
+        self.pfx = pfx
+        self.group.SetName(group)
+
+    def n(self, name):                                   # sheet-local name first, else a global net
+        return net(self.pfx + name if board.FindNet(self.pfx + name) is not None else name)
+
+
+# ---- sleep-current amplifiers: shunt R201 -> filter R202/R203 -> diff cap C201 -> U201 (low range), U202 (high) ---
+# Kelvin taps straight up from the shunt's pads to the filter resistors; MEAS_P / MEAS_N east as a pair, down the
+# right of C201 / R204, back west between R204 and R205 and down beside U202 (MEAS_N inner at both amplifiers).
+# C201 and U201 pins 7/8 hang off the pair on short links; MEAS_P's link has to cross MEAS_N, so it hops on In2.
+S = Sheet("/Sleep Current and 3V3/", "route_power_sleep")
+S.track("PACK_P", [(148.405, 93.72), (148.535, 95.5)], 0.25)                       # R202 - R201 (Kelvin)
+S.track("PACK_LP", [(151.595, 93.72), (151.465, 95.5)], 0.25)                      # R203 - R201 (Kelvin)
+S.track("MEAS_P", [(148.405, 92.075), (148.405, 91.0), (165.5, 91.0), (165.5, 100.5), (162.65, 100.5),
+                   (162.65, 103.68), (161.13, 103.68)], 0.2)                       # -> U202 pin 7
+S.track("MEAS_N", [(151.595, 92.075), (151.595, 91.6), (164.9, 91.6), (164.9, 100.0), (162.15, 100.0),
+                   (162.15, 103.03), (161.13, 103.03)], 0.2)                       # -> U202 pin 8
+S.track("MEAS_N", [(161.13, 94.03), (162.4, 94.03), (162.86, 93.57), (164.9, 93.57)], 0.2)   # U201.8 - C201.2
+S.track("MEAS_P", [(161.13, 94.68), (162.4, 94.68), (162.84, 95.12), (163.5, 95.12), (164.35, 95.4)], 0.2)
+S.vias("MEAS_P", [(164.35, 95.4), (165.5, 95.4)], d=0.5, drill=0.3)
+S.track("MEAS_P", [(164.35, 95.4), (165.5, 95.4)], 0.2, IN2)                       # under the MEAS_N column
+
+# ---- STM32WB1MMC RF: 0R R303 between RF out (pin 7) and the module's antenna (pin 6) -----------------------------
+# R303 is turned so its ANT_IN pad faces the module: pin 6 runs straight in (kept just below the antenna keep-out),
+# pin 7 passes under R303 to the far pad.
+A = Sheet("", "route_power_rf")
+A.track("Net-(U301-ANT_IN)", [(147.15, 4.33), (146.5, 4.33), (145.91, 4.75)], 0.2)
+A.track("Net-(U301-ANT_OUT)", [(147.22, 4.8), (146.7, 4.8), (146.4, 5.4), (145.2, 5.4), (144.89, 4.75)], 0.2)
+
+# ---- STM32WB1MMC fanout: every side signal pin gets its own via in a 2 mm channel beside the module ---------------
+# The passive columns stand back from the module (place_parts.py) so the channels exist. Vias in two staggered
+# columns, 1 mm pitch in each, so the track to the outer column passes midway between two inner vias (0.15 mm
+# tracks, 0.175 mm clearance). The router continues from the vias on In2 / B.Cu.
+M = Sheet("/MCU and NTCs/", "route_power_mcu")
+MV = dict(d=0.5, drill=0.3)
+for pin_y, via, name in ((5.8, (146.1, 5.95), "NTC_TH3"), (6.3, (145.15, 6.45), "NTC_EN"),
+                         (6.8, (146.1, 6.95), "NTC_TH1"), (7.3, (145.15, 7.45), "GAUGE_BTP"),
+                         (7.8, (146.1, 7.95), "IRQ2"), (8.3, (145.15, 8.45), "CHG_INH")):
+    pts = [(147.22, pin_y), via] if via[0] > 146 else [(147.22, pin_y), (146.75, via[1]), via]
+    M.track(name, pts, 0.15)
+    M.via(*via, name, **MV)
+for pin_y, via, name in ((6.3, (153.5, 6.3), "UART_TX"), (7.3, (153.5, 7.3), "UART_RX"),
+                         (7.8, (154.4, 7.8), "Net-(J301-Pin_2)"), (8.3, (153.5, 8.3), "Net-(J301-Pin_4)"),
+                         (8.8, (154.4, 8.8), "3V3_SLEEP"), (9.3, (153.5, 9.3), "EN_5V1"),
+                         (10.33, (153.5, 10.33), "EN_5V2")):
+    M.track(name, [(152.77, pin_y), via], 0.15)
+    M.via(*via, name, **MV)
+M.track("IRQ1", [(152.77, 6.8), (155.375, 6.8)], 0.15)                    # straight to its pull-up R314
+# 3V3_MCU: pins 16 / 18 / 20 to the decoupling column C301-C303 under the left via field
+M.track("3V3_MCU", [(147.22, 9.3), (143.77, 9.3), (143.77, 9.035)], 0.3)
+M.track("3V3_MCU", [(147.22, 10.33), (143.48, 10.375), (143.48, 11.445)], 0.3)
+M.track("3V3_MCU", [(148.2, 10.33), (148.2, 10.95), (147.22, 10.95), (147.22, 10.33)], 0.25)
 
 # ---- In1 solid GND plane, In2 GND fill (whole board; fill clips to the outline and the antenna keep-out) ---------
 for lay, name in ((IN1, "GND_PLANE_In1"), (IN2, "GND_PLANE_In2")):

@@ -14,6 +14,8 @@ import os
 
 import pcbnew
 
+from pcb_text import strip_items
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "..", "MonolithDev.kicad_pcb")
 PRO = os.path.join(HERE, "..", "MonolithDev.kicad_pro")
@@ -23,11 +25,9 @@ VIA_D, VIA_DRILL, STUB_W, CLR = 0.5, 0.3, 0.3, 0.2
 mm, MM = pcbnew.FromMM, pcbnew.ToMM
 
 pro_backup = open(PRO, encoding="utf-8").read()
-board = pcbnew.LoadBoard(PCB)
 old = set(open(IDS).read().split()) if os.path.exists(IDS) else set()
-stale = [t for t in board.GetTracks() if t.m_Uuid.AsString() in old]
-for t in stale:
-    board.Remove(t)
+n_old = strip_items(PCB, old)            # as text: pcbnew Remove() left the old vias in place after a place_parts run
+board = pcbnew.LoadBoard(PCB)
 gnd = board.FindNet("GND")
 gcode = gnd.GetNetCode()
 
@@ -153,4 +153,5 @@ pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 board.Save(PCB)
 open(PRO, "w", encoding="utf-8", newline="\n").write(pro_backup)
 open(IDS, "w", newline="\n").write("\n".join(added) + "\n")
+print("old fanout items removed: %d" % n_old)
 print("GND vias added: %d; already on GND copper: %d; no room: %d %s" % (len(added) // 2, n_skip, len(missing), missing))

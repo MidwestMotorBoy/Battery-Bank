@@ -263,13 +263,59 @@ Found while checking against datasheets:
         - Re-runnable, using `tools/fanout_gnd.uuids`.
         - Kelvin ends (R108/R208) are skipped. U401/U501 GND pins 31/36/37 tie into the exposed pad instead.
         - The RBAT and RS101 Kelvin taps are hand-routed. The RS101 pair runs on In2 to R107/R108.
+    - **Routing workflow:**
+        - **Order** (KiCad 10's python, each script re-runnable and owning the items listed in its `.uuids` file):
+            1. `place_parts.py`
+            2. `route_power.py` (power, gate drive, Kelvin taps; hand-planned coordinates)
+            3. `fanout_gnd.py`
+            4. `kicad-cli pcb drc` (to a report)
+            5. `route_signals.py <report>` (A* signal router)
+        - Re-running an earlier step means re-running the later ones.
+        - `route_signals.py` must get the DRC report of the board *before* its own tracks, since it removes them first.
+        - **Kept out of the router:** the nets in its `HAND` list (sense pairs, MEAS±, antenna feed), which are routed by hand.
+        - **Re-runs strip as text:** `route_signals.py` and `fanout_gnd.py` remove their old tracks by editing the board file as text before loading (`tools/pcb_text.py`). Mass removal through pcbnew leaves dead SWIG wrappers, and once (right after a `place_parts.py` run) it silently left all 288 old fanout items in the saved board.
+    - **Sense pairs and small hand routes (`route_power.py`, branch claude-router):** all DRC-clean before the signal router runs.
+        - **SRP_F/SRN_F (charge current):**
+            - From RBAT's taps R428/R429 straight down to In2, under the In1 plane.
+            - Runs as a 0.5 mm-pitch pair along y 16.6/17.1, above the output bank's via field, to C417–C419 and U403 pins 13/14.
+            - The filter caps' pads alternate (SRP|SRN, GND|SRN, GND|SRP), so SRP surfaces twice (at C417 and below C418) and SRN once.
+            - SRN stays the outer lane at both ends, so the pair never crosses.
+        - **FB/FBG:** the divider R418/R419 has FB above FBG, but the pins have FBG on top. FB drops to In2 down the gap between the caps and R414.
+        - **ACP_F/ACN_F (input current):**
+            - From R425/R426 beside the PPHV corridor, both legs on In2.
+            - Up the strip between the AC bank's via field and U401, then west above the HG1 lane to C414–C416 and pins 29/30.
+            - ACN is the inner lane at both ends.
+            - On F.Cu, ACN passes under C415's GND pad.
+        - **Gauge SRP/SRN:** from R107/R108 to C106 and U101 pins 6/8 on F.Cu. SRN goes up the 0.69 mm gap between C104 and C106.
+        - **MEAS_P/MEAS_N:**
+            - Kelvin taps run straight up from shunt R201 to R202/R203.
+            - The pair runs east, down the right of C201/R204, back west between R204 and R205, and down beside U202. MEAS_N is the inner lane at both amplifiers.
+            - MEAS_P's link to C201/U201 has to cross MEAS_N, so it hops on In2 (two vias).
+        - **RF:**
+            - R303 is turned 180° (place_parts `fix`) so the module's antenna pin (6) and RF output (7) reach its pads without crossing.
+            - Pin 6's track stays just below the antenna keep-out.
+        - **MCU fanout (STM32WB1MMC):**
+            - The BOOT0/NRST/decoupling column and the LED/3V3 column moved 1.2–1.7 mm left, and the I2C/IRQ pull-up column and R312 0.8 mm right. That opens a 2 mm via channel on each side of the module.
+            - Every side signal pin gets its own via in two staggered columns (1 mm pitch each, 0.15 mm tracks, 0.175 mm clearance). The router continues from the vias.
+            - IRQ1 runs straight to its pull-up. The 3V3_MCU pins link to C301–C303 under the left via field.
+        - **USB-C front end (both ports), reworked:**
+            - **Placement:** the VBUS TVS D401 sat directly in front of the connector's CC/DP/DN pins, and U401's VBUS-sense track ran over its CC/DP/DN pins. Both blocked those lines completely. The front-end parts (D401–D403, C401, C402) are now placed from the connector (`CONN_EXTRA`), so port 2's copy follows J501's 36 mm offset:
+                - D401 lies below the signal rows, its VBUS pad on the lower VBUS pins (VBUS_J).
+                - D403 sits in line with the data pins.
+                - C450 now spans the VBUS strip.
+            - **DP/DN:** the connector's interleaved DP/DN pins join with one In2 hop (A6 → B6's line). That frees a row, so the DN pins merge on F.Cu and the pair passes straight through D403's pads.
+            - **CC lines:** CC2 rises into D402/C402. CC1 runs under D403 to D402. C401 (boxed in by CC2) joins CC1 on In2.
+            - **U401 corner:** pin 32's VBUS link now goes through a via and B.Cu. The PP5V run on In2/B moved up (y 16.9–18.9, with a tab to pin 34). The four pins escape to a via row and four In2 lanes run east and down to the front end without crossing.
     - **Autorouter tried and rejected (2026-10-13):**
         - `tools/autoroute.py` runs Freerouting 2.5.0 (Java 25; the native CLI build crashes) with the power routing locked.
         - Five passes plateaued at 211–264 of 637 connections unrouted.
         - The single-pass result broke DRC in 42 places (0.05 mm via rings, 0.12 mm tracks), altered locked items, and ran the sense pairs and signals across the power stages.
         - Reverted. The signals will be hand-routed instead. The script is kept for reference.
+    - **State when paused (2026-10-13, branch claude-router):** the board holds placement, power, hand-routed sense pairs / MCU fanout / USB-C front end and the GND fanout, but **no router tracks**.
+        - DRC: 0 errors except 13 dangling MCU fanout vias, which wait for the router.
+        - The last full router run (before the USB-C rework) reached 250 of 379 connections.
+        - Paused for a schematic-first manual review. Re-run the workflow above after schematic changes.
     - **Still to route:**
-        - the ACP/ACN and SRP/SRN Kelvin pairs from the filter resistors to the BQ25756 (the input pair has to cross the gate lanes' corridor);
         - the small PPHV taps (VAC pins, ACUV divider, C409, TP402) and REGN to R415/TP404;
         - then the signals.
 
