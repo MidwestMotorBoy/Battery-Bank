@@ -1,17 +1,5 @@
 (version 1)
 
-# Board-setup floors are 0.15 mm hole / 0.05 mm ring only so the TPD2S300 B2 via-in-pad passes (rule at the end).
-# Everything else keeps 0.2 mm holes and 0.1 mm rings (JLC standard price). Listed first so the more specific
-# rules below override them.
-(rule "Holes >= 0.2 mm"
-	(constraint hole_size (min 0.2))
-	(condition "(A.Type == 'Via' || A.Type == 'Pad') && !(A.Type == 'Pad' && A.Pad_Number == 'B2' && (A.Parent.Reference == 'U405' || A.Parent.Reference == 'U505'))"))
-
-(rule "Annular ring >= 0.1 mm"
-	(constraint annular_width (min 0.1))
-	(condition "(A.Type == 'Via' || A.Type == 'Pad') && !(A.Type == 'Pad' && A.Pad_Number == 'B2' && (A.Parent.Reference == 'U405' || A.Parent.Reference == 'U505'))"))
-
-
 # JLC multilayer: component-hole annular ring >= 0.254 mm on 2 oz outer copper. Holes under 0.5 mm are vias
 # (including the thermal vias inside exposed pads) and follow the via rules. The Shou Han USB-C shell slots
 # (0.5 x 1.0 drill in 0.9 x 1.4 pads) follow the maker's layout instead.
@@ -35,10 +23,3 @@
 (rule "HighCurrent copper to small signals"
 	(constraint clearance (min 0.25))
 	(condition "A.NetClass == 'HighCurrent' && B.NetClass == 'Default' && A.Type != 'Pad' && B.Type != 'Pad'"))
-
-# TPD2S300 (U405/U505, DSBGA 0.4 mm pitch): the centre ball B2 can only escape through a via-in-pad, at JLC's
-# minimum via (0.15 mm drill, 0.25 mm pad, 0.05 mm ring). Order with via-in-pad filled and capped (POFV).
-(rule "TPD2S300 B2 via-in-pad"
-	(constraint hole_size (min 0.15))
-	(constraint annular_width (min 0.05))
-	(condition "A.Type == 'Pad' && A.Pad_Number == 'B2' && (A.Parent.Reference == 'U405' || A.Parent.Reference == 'U505')"))

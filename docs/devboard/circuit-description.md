@@ -14,7 +14,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## Board
 
-- 4 layers, **0.8 mm** thick (the production USB-C connector is a mid-mount part made for a 0.8 mm board), 2 oz outer / 1 oz inner, **196 × 115 mm** (the four holders need ~96 × 110 mm and their courtyards push the mid holes out; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
+- **6 layers, 1.6 mm** thick, 2 oz outer / 0.5 oz inner, vias epoxy-filled and capped (2026-10-14; was 4 layers, 0.8 mm, 2 oz / 1 oz, chosen to match production's 0.8 mm mid-mount USB-C; production thickness is open), **196 × 115 mm** (the four holders need ~96 × 110 mm and their courtyards push the mid holes out; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
 - Everything assembled by JLC except the cell holders and connectors you choose to hand-fit.
 - Each charger power stage (BQ25756, two FET pairs, inductor, sense resistors, capacitor bank) is laid out as an **exact copy of the production power stage**, so switching and thermal results carry over. Everything else can be spread out.
 - Silkscreen: label every test point, jumper, header pin and cell polarity.
@@ -128,11 +128,11 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (checked against TI datasheets), with these updates.
 
 ### 7.1 Connector and protection
-- **J1 / J2:** Shou Han TYPE-C 16PCB0.8 IP68 (LCSC C55629727), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
+- **J1 / J2:** Shou Han TYPE-C 16PCB1.6 IP68 (LCSC C55629729; the 1.6 mm board version of the 16PCB0.8, same land pattern), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
 - VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2.
 - **Rev A6:** D+/D− (A6/B6, A7/B7) are shorted by R440/R540 (0 Ω, a passive BC1.2 DCP signature); the TPS25751 no longer does BC1.2. SBU1/SBU2 feed liquid detection: TPD2S300 (U405/U505) → GPIO4/5, with switched 100 kΩ pull-up / 1 MΩ pull-down (GPIO6/7) and the TPD2S300 FLT on GPIO3. Before rev A6, D+/D− went to TPS25751 USB_P/USB_N and SBU was unconnected. See DevBoard README items 35–36.
 - **TVS:** Littelfuse SMAJ22A (C148220) VBUSx to GND, right at the connector.
-- **ESD protection (rev A6: the D± array D403/D503 is removed, because D± now only meet each other through R440/R540; CC keeps the ESD2CAN24.) (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
+- **ESD protection (rev A6, 2026-10-14: CC and SBU are protected by the TPD4S201 port protector U405/U505, so the ESD2CAN24s D402/D502 are removed too; the D± array D403/D503 was removed earlier, because D± now only meet each other through R440/R540.) (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
 - 330 pF on each CC line (TPS25751 datasheet).
 
 ### 7.2 PD controller (TPS25751D)

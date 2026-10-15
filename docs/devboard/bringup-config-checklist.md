@@ -11,8 +11,9 @@ Where review 2 corrected review 1, the corrected value is used here, and the sou
 
 ## Board order (JLC)
 
-- [ ] Via-in-pad, filled and capped (POFV): needed for the TPD2S300 B2 vias (U405/U505), 0.15 mm drill / 0.25 mm pad. It's an extra charge on 4 layers.
-- [ ] Check JLC's DFM report for that 0.15 mm drill with 2 oz outer copper. If it's refused, swap to TPD8S300RUKR (DevBoard README, layout reset notes).
+- [ ] 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG; set the real JLC 6-layer stack-up.
+- [ ] Via covering: epoxy filled and capped (free on 6+ layers), for the via-in-pad under exposed pads.
+- [ ] Minimum via 0.3 mm / (0.4/0.45 mm): JLC's standard; nothing on the board needs smaller.
 
 ## 0. Hand-fit parts (not in the JLC BOM)
 
@@ -93,7 +94,7 @@ The two ports have separate EEPROMs, so use per-port bundles (review 2, M-B3). S
 - [ ] After a start where VBUS arrived before 3V3, the MCU clears the dead-battery flag (DBfg).
 - [ ] Liquid detection and GPIOs (README items 35–36; review 3, C3–C5):
   - [ ] GPIO6 = LIQUID_PMOS_CONTROL (155), GPIO7 = LIQUID_NMOS_CONTROL (156). TI's EVM guide contradicts itself on this mapping; go by the event names.
-  - [ ] GPIO3 = Fault_Input_Event (33), from the TPD2S300 FLT (SBU_FLT).
+  - [ ] GPIO3 = Fault_Input_Event (33), from the TPD4S201 FLT (SBU_FLT).
   - [ ] GPIO4/5 multiplexed to the ADC. BC1.2 off.
   - [ ] Liquid Detection Configuration (0x98): liquid detection and corrosion mitigation on. Start from the tool's default thresholds (Rup 100 kΩ / Rdown 1 MΩ as the datasheet's table 9-3).
   - [ ] Unmask the Liquid Detection event.

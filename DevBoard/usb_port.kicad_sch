@@ -4084,139 +4084,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "MonolithDev:ESD2CAN24"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "D"
-				(at -5.08 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "ESD2CAN24"
-				(at -5.08 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esd2can24-q1.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "2-ch 24 V bidirectional ESD diode"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "ESD2CAN24_0_1"
-				(rectangle
-					(start -5.08 3.81)
-					(end 5.08 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "ESD2CAN24_1_1"
-				(pin passive line
-					(at -7.62 1.27 0)
-					(length 2.54)
-					(name "IO1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -7.62 -1.27 0)
-					(length 2.54)
-					(name "IO2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 7.62 1.27 180)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Regulator_Switching:TPS62933"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -4967,33 +4834,6 @@
 			)
 			(embedded_fonts no)
 		)
-			(symbol "MonolithDev:TPD2S300" (pin_names (offset 1.016)) (exclude_from_sim no) (in_bom yes) (on_board yes)
-    (property "Reference" "U" (at -12.70 7.62 0) (effects (font (size 1.27 1.27))))
-    (property "Value" "TPD2S300" (at -12.70 -7.62 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd2s300.pdf" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (property "Description" "USB Type-C CC/SBU short-to-VBUS OVP + ESD, 2 channels" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (symbol "TPD2S300_0_1"
-      (rectangle (start -12.70 6.35) (end 12.70 -6.35) (stroke (width 0.254) (type default)) (fill (type background))))
-    (symbol "TPD2S300_1_1"
-      (pin bidirectional line (at -15.24 3.81 0) (length 2.54)
-        (name "C_CC1" (effects (font (size 1.27 1.27)))) (number "A1" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at -15.24 1.27 0) (length 2.54)
-        (name "C_CC2" (effects (font (size 1.27 1.27)))) (number "A3" (effects (font (size 1.27 1.27)))))
-      (pin passive line (at -15.24 -3.81 0) (length 2.54)
-        (name "VBIAS" (effects (font (size 1.27 1.27)))) (number "A2" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at 15.24 3.81 180) (length 2.54)
-        (name "CC1" (effects (font (size 1.27 1.27)))) (number "B1" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at 15.24 1.27 180) (length 2.54)
-        (name "CC2" (effects (font (size 1.27 1.27)))) (number "B3" (effects (font (size 1.27 1.27)))))
-      (pin open_collector line (at 15.24 -3.81 180) (length 2.54)
-        (name "~{FLT}" (effects (font (size 1.27 1.27)))) (number "C1" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at -2.54 8.89 270) (length 2.54)
-        (name "VPWR" (effects (font (size 1.27 1.27)))) (number "C2" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at 2.54 8.89 270) (length 2.54)
-        (name "VM" (effects (font (size 1.27 1.27)))) (number "C3" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at 0.00 -8.89 90) (length 2.54)
-        (name "GND" (effects (font (size 1.27 1.27)))) (number "B2" (effects (font (size 1.27 1.27)))))))
 		(symbol "Transistor_FET:Q_PMOS_GSD"
 		(pin_names
 			(offset 0)
@@ -5810,10 +5650,61 @@
         (name "S" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
       (pin passive line (at 6.35 -1.27 180) (length 2.54) (hide yes)
         (name "S" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))))
+			(symbol "MonolithDev:TPD4S201" (pin_names (offset 1.016)) (exclude_from_sim no) (in_bom yes) (on_board yes)
+    (property "Reference" "U" (at -13.97 15.24 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "TPD4S201" (at -13.97 -15.24 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd4s201-q1.pdf" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Description" "USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels, integrated dead-battery Rd" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (symbol "TPD4S201_0_1"
+      (rectangle (start -13.97 13.97) (end 13.97 -13.97) (stroke (width 0.254) (type default)) (fill (type background))))
+    (symbol "TPD4S201_1_1"
+      (pin bidirectional line (at -16.51 11.43 0) (length 2.54)
+        (name "C_CC1" (effects (font (size 1.27 1.27)))) (number "4" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at -16.51 8.89 0) (length 2.54)
+        (name "C_CC2" (effects (font (size 1.27 1.27)))) (number "5" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at -16.51 3.81 0) (length 2.54)
+        (name "RPD_G1" (effects (font (size 1.27 1.27)))) (number "7" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at -16.51 1.27 0) (length 2.54)
+        (name "RPD_G2" (effects (font (size 1.27 1.27)))) (number "6" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at -16.51 -3.81 0) (length 2.54)
+        (name "C_SBU1" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at -16.51 -6.35 0) (length 2.54)
+        (name "C_SBU2" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at 16.51 11.43 180) (length 2.54)
+        (name "CC1" (effects (font (size 1.27 1.27)))) (number "12" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at 16.51 8.89 180) (length 2.54)
+        (name "CC2" (effects (font (size 1.27 1.27)))) (number "11" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at 16.51 -3.81 180) (length 2.54)
+        (name "SBU1" (effects (font (size 1.27 1.27)))) (number "15" (effects (font (size 1.27 1.27)))))
+      (pin bidirectional line (at 16.51 -6.35 180) (length 2.54)
+        (name "SBU2" (effects (font (size 1.27 1.27)))) (number "14" (effects (font (size 1.27 1.27)))))
+      (pin open_collector line (at 16.51 -11.43 180) (length 2.54)
+        (name "~{FLT}" (effects (font (size 1.27 1.27)))) (number "9" (effects (font (size 1.27 1.27)))))
+      (pin power_in line (at -2.54 16.51 270) (length 2.54)
+        (name "VPWR" (effects (font (size 1.27 1.27)))) (number "10" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at 2.54 16.51 270) (length 2.54)
+        (name "VBIAS" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))
+      (pin power_in line (at -2.54 -16.51 90) (length 2.54)
+        (name "GND" (effects (font (size 1.27 1.27)))) (number "8" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at -2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "GND" (effects (font (size 1.27 1.27)))) (number "13" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at -2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "GND" (effects (font (size 1.27 1.27)))) (number "18" (effects (font (size 1.27 1.27)))))
+      (pin passive line (at -2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "GND" (effects (font (size 1.27 1.27)))) (number "21" (effects (font (size 1.27 1.27)))))
+      (pin no_connect line (at 2.54 -16.51 90) (length 2.54)
+        (name "NC" (effects (font (size 1.27 1.27)))) (number "16" (effects (font (size 1.27 1.27)))))
+      (pin no_connect line (at 2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "NC" (effects (font (size 1.27 1.27)))) (number "17" (effects (font (size 1.27 1.27)))))
+      (pin no_connect line (at 2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "NC" (effects (font (size 1.27 1.27)))) (number "19" (effects (font (size 1.27 1.27)))))
+      (pin no_connect line (at 2.54 -16.51 90) (length 2.54) (hide yes)
+        (name "NC" (effects (font (size 1.27 1.27)))) (number "20" (effects (font (size 1.27 1.27)))))))
 	)
 	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.08 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
-		(at 40.64 182.88 0)
+		(at 40.64 184.15 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -5919,7 +5810,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. At the connector pins: D402 CC ESD (24 V), C401/C402. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD2S300);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU to drive CHG_INH low through R435.\n    Reset, IWDG reset, a hang or an unprogrammed MCU stop charging; a dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers.\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU to drive CHG_INH low through R435.\n    Reset, IWDG reset, a hang or an unprogrammed MCU stop charging; a dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers.\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -6399,16 +6290,7 @@
 		)
 		(uuid "12cfdfca-6ed4-4a17-bfb1-e73bb59bc6ee")
 	)
-	(wire
-		(pts
-			(xy 101.6 87.63) (xy 104.14 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "14e342b3-3726-4c67-bdee-614f404f8f3b")
-	)
+
 	(wire
 		(pts
 			(xy 200.66 96.52) (xy 200.66 101.6)
@@ -6916,16 +6798,7 @@
 		(uuid "5f990a38-8c0f-4b19-a374-5a27f5cc89f0")
 	)
 
-	(wire
-		(pts
-			(xy 104.14 87.63) (xy 104.14 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61aacab3-cd6f-45ab-b2d2-21e77b66304a")
-	)
+
 	(wire
 		(pts
 			(xy 314.96 60.96) (xy 314.96 72.39)
@@ -8017,16 +7890,7 @@
 		)
 		(uuid "02897785-3cb5-43f0-96b9-87d436a77e71")
 	)
-	(label "CC2"
-		(at 86.36 90.17 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "07b07391-bd41-4c2b-8093-fd01732b6cd6")
-	)
+
 	(label "LODRV1"
 		(at 396.24 187.96 0)
 		(effects
@@ -8529,7 +8393,7 @@
 		)
 		(uuid "8d572f29-2022-4ea2-b2c8-634990d5bec0")
 	)
-	(label "CC2"
+	(label "C_CC2"
 		(at 60.96 88.9 0)
 		(effects
 			(font
@@ -8620,7 +8484,7 @@
 		)
 		(uuid "acc81783-cbeb-43d7-abb7-33d9fbd4102e")
 	)
-	(label "CC1"
+	(label "C_CC1"
 		(at 60.96 86.36 0)
 		(effects
 			(font
@@ -8630,16 +8494,7 @@
 		)
 		(uuid "b1cdbe97-55a6-45ce-93b5-b070a1b7d6ac")
 	)
-	(label "CC1"
-		(at 86.36 87.63 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "b3ad6325-cab5-488e-bc55-28b24418527f")
-	)
+
 	(label "SRP_F"
 		(at 396.24 205.74 0)
 		(effects
@@ -18313,103 +18168,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "MonolithDev:ESD2CAN24")
-		(at 93.98 88.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "9486863d-9d99-4a69-a901-3e8d141729d5")
-		(property "Reference" "D402"
-			(at 93.98 94.49 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "ESD2CAN24DBZRQ1"
-			(at 93.98 96.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 93.98 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esd2can24-q1.pdf"
-			(at 93.98 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "2-ch 24 V bidirectional ESD diode"
-			(at 93.98 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5736151"
-			(at 93.98 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8c18ae51-1dab-4a98-a50f-652892da30b4")
-		)
-		(pin "2"
-			(uuid "d1c4030d-654a-4464-a56b-04975f1f096e")
-		)
-		(pin "3"
-			(uuid "dd679e14-4883-4b02-901f-0a8d1738c730")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D502")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D402")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "power:GND")
 		(at 231.14 104.14 0)
@@ -21283,7 +21042,7 @@
 				)
 			)
 		)
-		(property "Value" "TYPE-C 16PCB0.8 IP68"
+		(property "Value" "TYPE-C 16PCB1.6 IP68"
 			(at 45.72 76.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21293,7 +21052,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
+		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68"
 			(at 49.53 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21326,7 +21085,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55629727"
+		(property "LCSC" "C55629729"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21337,7 +21096,7 @@
 				)
 			)
 		)
-		(property "MPN" "TYPE-C 16PCB0.8 IP68"
+		(property "MPN" "TYPE-C 16PCB1.6 IP68 (Shou Han)"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -22713,87 +22472,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:GND")
-		(at 104.14 90.17 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "dfbfc107-bbca-491b-923d-7bfc13e0bf0a")
-		(property "Reference" "#PWR404"
-			(at 104.14 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 108.02 91.44 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 104.14 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 104.14 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 104.14 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6f8c2208-b16f-4240-876d-04c481709c7b")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR504")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR404")
-					(unit 1)
-				)
-			)
-		)
-	)
+
 	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 137.16 289.56 0)
@@ -26781,954 +26460,30 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "MonolithDev:TPD2S300")
-		(at 114.30 156.21 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f7244967-b489-4311-bd20-0e6ca3c280b7")
-		(property "Reference" "U405"
-			(at 135.04 164.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "TPD2S300YFFR"
-			(at 135.04 166.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm"
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "USB Type-C CC/SBU short-to-VBUS OVP + ESD, 2 channels"
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2650411"
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TPD2S300YFFR"
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Protects GPIO4/5 (6 V) and LDO_3V3 when liquid or a fault bridges VBUS (up to 20 V) to SBU1/2. VM at LDO_3V3 = CC/PD (low-voltage) mode; FLT unused. Place close to the connector (TPD2S300 layout guide)"
-			(at 114.30 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "A1"
-			(uuid "e0e56139-6ec1-4bf0-b249-329d5c814709")
-		)
-		(pin "A2"
-			(uuid "6c8a02e4-5005-4e3f-9d7a-d52370e852f1")
-		)
-		(pin "A3"
-			(uuid "426b3b00-7def-445d-abde-bafadad8017f")
-		)
-		(pin "B1"
-			(uuid "cb05253a-0634-4740-84eb-86e4ac0f093b")
-		)
-		(pin "B2"
-			(uuid "30b49444-b7ba-4dc2-88df-4c165ef3f371")
-		)
-		(pin "B3"
-			(uuid "2f09e0f2-e17c-4712-a5ec-a004f2325a6a")
-		)
-		(pin "C1"
-			(uuid "dc76aa54-e1c2-4974-b33b-c23b685c89b3")
-		)
-		(pin "C2"
-			(uuid "5d09b801-cf32-420a-8cd0-7ce5ac96b20a")
-		)
-		(pin "C3"
-			(uuid "be250108-864b-4278-b372-440f32ae6a4b")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "U505")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "U405")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(label "SBU1"
-		(at 99.06 152.40 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "69365d7c-65f7-4b38-989e-2592fec68c0e")
-	)
-	(label "SBU2"
-		(at 99.06 154.94 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6044a2f2-3365-4599-affe-44e7a463a8f2")
-	)
-	(label "SBU1_SNS"
-		(at 129.54 152.40 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "5d7d1e8c-9f11-4d90-bbd4-364f68ceffa4")
-	)
-	(label "SBU2_SNS"
-		(at 129.54 154.94 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "04f96d92-4d81-4417-9f3b-b6361aa92949")
-	)
 
-	(wire
-		(pts
-			(xy 99.06 160.02) (xy 93.98 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3a43d75f-a589-43e9-9a4f-5fe8224660de")
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 93.98 163.83 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "75b7e828-943d-49ab-8b4c-0e6e709555f5")
-		(property "Reference" "C451"
-			(at 92.71 156.12 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0.1u 50V"
-			(at 92.71 158.09 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C14663"
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CC0603KRX7R9BB104"
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "TPD2S300 VBIAS (ESD support): 0.1 uF, >= 35 V rated (50 V recommended)"
-			(at 93.98 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1e511bf2-4047-49f5-96bb-93c4a6459585")
-		)
-		(pin "2"
-			(uuid "7e35504f-9e78-4f69-a941-b7899e991f3d")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C551")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C451")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 93.98 167.64 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "3b336cca-2c9f-4a84-b612-d0beb7e9f6d9")
-		(property "Reference" "#PWR585"
-			(at 93.98 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 93.98 171.96 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 93.98 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 93.98 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 93.98 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c3f8209b-88f9-4e6e-8ba3-34e861b3e2a9")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR586")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR585")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 114.30 165.10 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ae1bde25-03be-474f-b720-7ba9f888a4af")
-		(property "Reference" "#PWR587"
-			(at 114.30 165.10 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 114.30 169.42 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 114.30 165.10 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.30 165.10 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 114.30 165.10 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "394d4d9c-f8a1-4fae-9d78-0554e66bd824")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR588")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR587")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 111.76 147.32) (xy 111.76 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c68fac00-e59d-4f4b-be74-b78fa3ced7e6")
-	)
-	(wire
-		(pts
-			(xy 116.84 147.32) (xy 116.84 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7d323311-bddd-4029-be5a-93960d2c85ff")
-	)
-	(wire
-		(pts
-			(xy 106.68 137.16) (xy 111.76 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd414d3e-0bb9-4d99-807d-ac7c72af26f7")
-	)
-	(wire
-		(pts
-			(xy 111.76 137.16) (xy 116.84 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b94f496e-34f9-4dca-8479-ec7c521522c0")
-	)
-	(wire
-		(pts
-			(xy 116.84 137.16) (xy 132.08 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b37d204f-6c33-4c19-8560-dbd4ff85215a")
-	)
-	(wire
-		(pts
-			(xy 132.08 137.16) (xy 142.24 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "19d9ed5a-0bb3-4e21-bfc6-8ca98c495e03")
-	)
-	(junction
-		(at 111.76 137.16)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a47cec35-4142-4413-8cc0-c1b76269d94b")
-	)
-	(junction
-		(at 116.84 137.16)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "30a6a074-3783-46f1-bfc4-a54970c66758")
-	)
-	(junction
-		(at 132.08 137.16)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e07899e3-864c-4799-8fdd-a434e5662908")
-	)
-	(label "LDO_3V3"
-		(at 106.68 137.16 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d13d0a44-0136-449d-a7f6-6b7c4bc562e3")
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 132.08 140.97 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "0456232e-8fb6-4220-9ec1-f32b1ec1bb54")
-		(property "Reference" "C452"
-			(at 125.63 139.84 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1u 50V"
-			(at 125.63 141.80 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C15849"
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CL10A105KB8NNNC"
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "TPD2S300 VPWR decoupling (0.3-1 uF recommended)"
-			(at 132.08 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "009c8596-f57a-4825-ae3a-4e22434a2386")
-		)
-		(pin "2"
-			(uuid "eb6b8e73-fc0d-44ec-8384-f79b2443433e")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C552")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C452")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 132.08 144.78 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ee688e51-f918-4b12-9e28-52fa9ab7465a")
-		(property "Reference" "#PWR589"
-			(at 132.08 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 132.08 149.10 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 132.08 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 132.08 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 132.08 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "27cfba0b-4f36-4b2f-a514-5efbfd03fd00")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR590")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR589")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 142.24 140.97 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "aca2a9b3-04a1-493b-9786-70af4557be9e")
-		(property "Reference" "C453"
-			(at 148.69 139.84 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1u 50V"
-			(at 148.69 141.80 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C15849"
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CL10A105KB8NNNC"
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "TPD2S300 VM decoupling (0.3-1 uF recommended)"
-			(at 142.24 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "010b77ea-80d5-4596-a31c-dd63ce7a373e")
-		)
-		(pin "2"
-			(uuid "098e0c16-aa1e-48c2-8157-b63ce1c6e360")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C553")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C453")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 142.24 144.78 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f8231e4f-afd3-4080-b13f-4f8bbf94604d")
-		(property "Reference" "#PWR591"
-			(at 142.24 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 142.24 149.10 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 142.24 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 142.24 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "88d76226-d6dd-4ded-8fa9-c1b791178560")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR592")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR591")
-					(unit 1)
-				)
-			)
-		)
-	)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	(label "SBU_FLT"
 		(at 154.94 106.68 180)
 		(effects
@@ -27739,55 +26494,14 @@
 		)
 		(uuid "056a9b33-05e7-4f64-b9fa-d4b14740951e")
 	)
-	(wire
-		(pts
-			(xy 129.54 160.02) (xy 149.86 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a739ef50-bcbe-4cdb-9ae5-827993624d17")
-	)
-	(wire
-		(pts
-			(xy 149.86 160.02) (xy 151.13 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "443b9d7d-40b5-4223-83a2-256ec33a873e")
-	)
-	(wire
-		(pts
-			(xy 149.86 158.75) (xy 149.86 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "333716fd-0628-4948-a24a-9b7123335a42")
-	)
-	(junction
-		(at 149.86 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "36109684-cec2-4fd9-87b0-f6a4ca7fdfe3")
-	)
-	(label "SBU_FLT"
-		(at 151.13 160.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f32263fa-5577-4344-bd06-fa9f2cbef121")
-	)
+
+
+
+
+
 	(symbol
 		(lib_id "Device:R")
-		(at 149.86 154.94 0)
+		(at 152.4 154.94 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -27797,7 +26511,7 @@
 		(dnp no)
 		(uuid "5a2fe091-0b17-441f-86e0-d711c5741f21")
 		(property "Reference" "R441"
-			(at 154.09 153.81 0)
+			(at 156.64 153.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -27807,7 +26521,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 154.09 155.77 0)
+			(at 156.64 155.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -27817,7 +26531,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27828,7 +26542,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27839,7 +26553,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27850,7 +26564,7 @@
 			)
 		)
 		(property "LCSC" "C25803"
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27861,7 +26575,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1003T5E"
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27872,7 +26586,7 @@
 			)
 		)
 		(property "Notes" "TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM"
-			(at 149.86 154.94 0)
+			(at 152.4 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -27902,7 +26616,7 @@
 		)
 	)
 	(label "LDO_3V3"
-		(at 149.86 151.13 0)
+		(at 152.4 151.13 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -30680,6 +29394,846 @@
 			(justify left bottom)
 		)
 		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
+	)
+	(symbol
+		(lib_id "MonolithDev:TPD4S201")
+		(at 121.92 157.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "589aa16b-72d8-434e-a4b5-9de2925e90da")
+		(property "Reference" "U405"
+			(at 108.00 142.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TPD4S201TRGRRQ1"
+			(at 126.00 175.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm"
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels"
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C49305973"
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPD4S201TRGRRQ1 (TPD4S201-Q1)"
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Replaces the TPD2S300 DSBGA (2026-10-14, 6-layer board with 0.3 mm vias). Wiring as TI TPS25751EVM fig. 5-5: CC and SBU both pass through it; RPD_G1/2 to C_CC1/2 (dead-battery Rd, DRP); VPWR 1 uF, VBIAS 0.1 uF 50 V; FLT -> GPIO3. Place close to the connector"
+			(at 121.92 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "beaf490a-eb3a-41b2-b769-9a07954894c1")
+		)
+		(pin "2"
+			(uuid "efbe3031-d897-4390-9802-994ce2999894")
+		)
+		(pin "3"
+			(uuid "019087e8-b537-481a-924c-ef2698741832")
+		)
+		(pin "4"
+			(uuid "50f34ddd-5dcd-44e3-a2f2-13813086a81e")
+		)
+		(pin "5"
+			(uuid "e2dd0dee-57f1-4bed-957f-b79599f30150")
+		)
+		(pin "6"
+			(uuid "0bfbb95f-3827-4de5-9da1-d192de54ae7a")
+		)
+		(pin "7"
+			(uuid "b12b3940-d715-44f8-a9d3-1c1874c59123")
+		)
+		(pin "8"
+			(uuid "733bb4ee-48d7-4d31-8ea0-3e22e7c76224")
+		)
+		(pin "9"
+			(uuid "4e59b713-96c6-481b-ae52-adb38cbf7307")
+		)
+		(pin "10"
+			(uuid "07410c33-1bf3-4f45-9df7-5d3fd0525493")
+		)
+		(pin "11"
+			(uuid "8316a714-34de-4a7e-9017-4c0a485d453e")
+		)
+		(pin "12"
+			(uuid "5b2b2a15-8cfe-42d9-b58c-5ea09cb31d7e")
+		)
+		(pin "13"
+			(uuid "fd1a21b7-5340-46b8-8621-73e18886b45a")
+		)
+		(pin "14"
+			(uuid "d5bf30f2-3600-4083-ad8d-ee48e8e706b4")
+		)
+		(pin "15"
+			(uuid "054a2f30-42bd-4c06-a2fc-7dc568a88730")
+		)
+		(pin "16"
+			(uuid "470dae5e-0b1c-4a39-8e89-7d2aa7ace6c9")
+		)
+		(pin "17"
+			(uuid "993a44ef-a3df-4e76-a5be-7d881b979b68")
+		)
+		(pin "18"
+			(uuid "eeeb089c-0f32-43fa-8b74-42c95a5acc14")
+		)
+		(pin "19"
+			(uuid "9e3ec187-1224-44ca-a57b-18d10cb52c2a")
+		)
+		(pin "20"
+			(uuid "c8262598-39cf-4b13-8cfe-a31aa7ca0f1a")
+		)
+		(pin "21"
+			(uuid "740f97e5-f7c7-475f-87d4-aeddf67798e4")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "U505")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "U405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "C_CC1"
+		(at 105.41 146.05 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "16d7914c-e0f8-4b9f-9663-8466ec7ad7b8")
+	)
+	(label "C_CC2"
+		(at 105.41 148.59 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "98fcf556-4a52-4e84-ad87-9152f5b52693")
+	)
+	(label "C_CC1"
+		(at 105.41 153.67 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "131757b7-3bb7-4fe3-8c19-d05f21b5e1b6")
+	)
+	(label "C_CC2"
+		(at 105.41 156.21 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4f580455-bd16-42b4-b2c1-ea063d1024fd")
+	)
+	(label "SBU1"
+		(at 105.41 161.29 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "845e80f5-f14a-43f1-81e1-83f9a8b019fd")
+	)
+	(label "SBU2"
+		(at 105.41 163.83 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "baf3d8d6-36a6-414f-b948-ff2e0df25589")
+	)
+	(label "CC1"
+		(at 138.43 146.05 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6e344345-4093-4a64-ab80-4582c9eaf8c5")
+	)
+	(label "CC2"
+		(at 138.43 148.59 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "64d1bbb6-cee8-41c7-a6b2-a4c93def70e9")
+	)
+	(label "SBU1_SNS"
+		(at 138.43 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f20e17d7-28c3-4bdf-9877-a3e6d8df4f1d")
+	)
+	(label "SBU2_SNS"
+		(at 138.43 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "23c0e642-be53-4dc3-88ee-2cf1a086665b")
+	)
+	(label "SBU_FLT"
+		(at 138.43 168.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2fc0252e-d902-4265-a8a5-4a234599bf8c")
+	)
+	(wire
+		(pts
+			(xy 119.38 140.97) (xy 119.38 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3e8b19fe-8632-4c91-9712-45a39f245246")
+	)
+	(wire
+		(pts
+			(xy 81.28 137.16) (xy 93.98 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "88f09772-1933-4da1-8c0a-27aa111f6f4d")
+	)
+	(wire
+		(pts
+			(xy 93.98 137.16) (xy 119.38 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7159d851-8161-4baa-8206-7a2b5ef20133")
+	)
+	(junction
+		(at 93.98 137.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2d0e045b-b25a-4328-973a-4a6fcba6e548")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 93.98 140.97 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ea80ad51-dabf-4116-8b2d-31b5a9fe18c9")
+		(property "Reference" "C452"
+			(at 95.89 140.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u 50V"
+			(at 95.89 141.99 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10A105KB8NNNC"
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "TPD4S201 VPWR decoupling (EVM C68: 1 uF)"
+			(at 93.98 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "eb10b2ef-3169-44e7-a2ee-85542005db66")
+		)
+		(pin "2"
+			(uuid "8cf3b4fe-76c4-4fbf-8a9e-255998929601")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "C552")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "C452")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 93.98 144.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e7cf7ddd-651d-475c-bdcf-c63ddb2c713b")
+		(property "Reference" "#PWR603"
+			(at 93.98 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 93.98 148.59 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 93.98 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 93.98 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 93.98 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "082de1ea-50a4-4126-b8a0-35db54e268b6")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR604")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR603")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 124.46 140.97) (xy 124.46 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc1c25fb-3a9c-4b71-af1a-513059e51f4e")
+	)
+	(wire
+		(pts
+			(xy 124.46 138.43) (xy 144.78 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b64fa5f1-c4ac-4fc8-a7af-ce16ab4bc332")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 144.78 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8db62e07-9285-4b5e-aeec-9bbadfc74f06")
+		(property "Reference" "C451"
+			(at 146.69 141.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1u 50V"
+			(at 146.69 143.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)"
+			(at 144.78 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bce8b9cd-040d-484d-a637-9955600b9b9e")
+		)
+		(pin "2"
+			(uuid "0bd2b4cc-0cee-4e6e-b363-2f7069bd62dc")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "C551")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "C451")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 144.78 146.05 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ec22ba27-d0de-4e13-af55-3b8f1d33f1b0")
+		(property "Reference" "#PWR605"
+			(at 144.78 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 144.78 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 144.78 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 144.78 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 144.78 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2492eb68-2990-4281-a313-8d38279d3832")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR606")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR605")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 119.38 173.99 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8ed19a68-2902-499c-b731-aa0f31a944ce")
+		(property "Reference" "#PWR607"
+			(at 119.38 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 119.38 177.80 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 119.38 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 119.38 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 119.38 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "36e44eb4-248a-4db6-94db-9328974a6eff")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR608")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR607")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 152.4 158.75) (xy 152.4 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9182e7c4-7f99-44fc-bd48-90b715a5fd4d")
+	)
+	(wire
+		(pts
+			(xy 138.43 168.91) (xy 152.4 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f84be3d-6e4b-4496-a9cf-f52496704b45")
 	)
 	(sheet_instances
 		(path "/"

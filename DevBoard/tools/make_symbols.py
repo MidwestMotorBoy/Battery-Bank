@@ -130,6 +130,17 @@ syms.append(symbol("AGM404AP1", "Q",
     fp="Package_TO_SOT_SMD:TDSON-8-1", ds="https://www.lcsc.com/datasheet/C41349455.pdf",
     desc="40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3", width=7.62))
 
+# TPD4S201-Q1 (TPD4S201TRGRRQ1), RGR VQFN-20. Datasheet SLVSI17 table 4-1: C_SBU1 1, C_SBU2 2, VBIAS 3, C_CC1 4,
+# C_CC2 5, RPD_G2 6, RPD_G1 7, GND 8/13/18 + thermal pad 21, FLT 9, VPWR 10, CC2 11, CC1 12, SBU2 14, SBU1 15,
+# NC 16/17/19/20. Connector side left, CC/PD-controller side right (TI TPS25751EVM fig. 5-5).
+syms.append(symbol("TPD4S201", "U",
+    left=[(4, "C_CC1", B), (5, "C_CC2", B), None, (7, "RPD_G1", B), (6, "RPD_G2", B), None, (1, "C_SBU1", B),
+          (2, "C_SBU2", B)],
+    right=[(12, "CC1", B), (11, "CC2", B), None, None, None, None, (15, "SBU1", B), (14, "SBU2", B), None, (9, "~{FLT}", OC)],
+    top=[(10, "VPWR", PI), (3, "VBIAS", P)], bottom=[([8, 13, 18, 21], "GND", PI), ([16, 17, 19, 20], "NC", NC)],
+    fp="MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm", ds=TI + "tpd4s201-q1.pdf",
+    desc="USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels, integrated dead-battery Rd", width=27.94))
+
 # JinYu PGQ04N070 single N-FET, PDFN3333: S 1-3, G 4, D 5-8 (datasheet V2.0 p.6, standard PDFN3333 pinout; it fits
 # the AGM PDFN3.3x3.3 land). Charger half-bridge switches Q401/Q402/Q407/Q408 (cost-down 2026-10-14).
 syms.append(symbol("PGQ04N070", "Q",

@@ -33,11 +33,23 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, E
 
 ## Board (set up 2026-10-12, not yet placed or routed)
 
-- **196 × 115 mm (planned 175 × 115; see placement), 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, ENIG.** The four holders need ~96 × 110 mm, so the spec's 100 × 80 mm grew; holders on the left, electronics on the right (floorplan below). 0.8 mm matches production and the mid-mount USB-C.
-- Stack-up (approximate, confirm against JLC's 0.8 mm 4-layer stack at order time): F.Cu 70 µm, prepreg 0.1, In1.Cu (GND) 35 µm, core 0.37, In2.Cu (power) 35 µm, prepreg 0.1, B.Cu 70 µm. No impedance-controlled nets.
+- **196 × 115 mm (planned 175 × 115; see placement), 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, vias epoxy-filled and capped (2026-10-14; was 4 layers, 0.8 mm, 2 oz / 1 oz).** The four holders need ~96 × 110 mm, so the spec's 100 × 80 mm grew; holders on the left, electronics on the right (floorplan below).
+    - **Why 6 layers:** JLC quoted $88.20 against $119.90 for the 4-layer board at this size (5 boards). Via-in-pad filling (POFV) is free on 6+ layers, and the board gets two solid GND planes under the power stages.
+    - **Why 1.6 mm:** your choice; it uses Shou Han's 1.6 mm version of the IP68 USB-C connector (same land pattern). Production thickness is still open: 0.8 mm was chosen to match production.
+- **Stack-up** (approximate; set it to JLC's 6-layer 1.6 mm stack at order time). No impedance-controlled nets. High current stays on the 2 oz outer layers.
+
+| Layer | Copper | Dielectric below | Use |
+|---|---|---|---|
+| F.Cu | 70 µm | prepreg 0.2 | parts, power pours |
+| In1.Cu | 17.5 µm | core 0.3 | solid GND |
+| In2.Cu | 17.5 µm | prepreg 0.37 | signals + 3V3 |
+| In3.Cu | 17.5 µm | core 0.3 | signals + 5 V |
+| In4.Cu | 17.5 µm | prepreg 0.2 | solid GND |
+| B.Cu | 70 µm | | power pours |
+
 - Six M3 board-only mounting holes (H1–H6) at the corners and at x = 106 mm top and bottom, so the heavy holder block is supported at all four corners.
 - J401/J501 are placed and locked on the right edge at y = 32 and 68 mm (from the top-left corner); the outline is broken there and each connector footprint draws its own 10.2 × 5.65 mm notch.
-- Rules (JLC 4-layer, 2 oz outer): 0.15 mm track/gap, vias ≥ 0.2 mm drill with ≥ 0.45 mm pad (presets 0.25/0.45, 0.3/0.6, 0.4/0.8), component-hole ring ≥ 0.25 mm, copper ≥ 0.25 mm from edges (0.2 mm at the USB-C notches, JLC's floor), legend ≥ 0.8 mm. Custom rules in `MonolithDev.kicad_dru`.
+- Rules (JLC 6-layer, 2 oz outer): 0.15 mm track/gap, vias ≥ 0.3 mm drill with ≥ 0.45 mm pad (JLC's standard; smaller costs extra; presets 0.3/0.45, 0.3/0.6, 0.4/0.8), component-hole ring ≥ 0.25 mm, copper ≥ 0.25 mm from edges (0.2 mm at the USB-C notches, JLC's floor), legend ≥ 0.8 mm. Custom rules in `MonolithDev.kicad_dru`.
 - Net classes: HighCurrent (2.5 mm: pack bus, cells, FET mid-point, VBAT_SYS, PPHV, VBUS, switch nodes, sense-resistor power sides), Power (0.8 mm: 5 V / 3.3 V rails), GND, GateDrive (0.4 mm), Default (0.2 mm).
 - Netlist loaded: 320 footprints, `kicad-cli pcb drc --schematic-parity` reports 0 parity issues.
 - **Layout reset for the next attempt (2026-10-14, `tools/reset_board.py`).** The board now holds only the outline (Edge.Cuts), the mounting holes and the parts.
@@ -48,13 +60,10 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ1/2, E
         - Re-plan each power stage: two PDFN3333 FETs per leg, the 11.5 × 10 mm SMMS1040 inductor, and C430/C438 across each pair's high-side drain and low-side source. Q402's gate can now face the BQ25756.
         - Put F102 at the end of BT104's CELL_P_RAW strip with Q104 beside it, keeping it away from the FET heat (65 °C rating).
         - Re-add the antenna keep-out.
-        - **TPD2S300 (U405/U505) escape: done (2026-10-14) as via-in-pad.**
-            - **Why via-in-pad:** the centre ball B2 (GND) is boxed in by the other eight. There are only 0.17 mm between ball edges, so no trace fits even at JLC's 0.09 mm minimum, and no via fits between the balls. (The earlier "diagonal escape" idea was wrong: the gap between A2 and B3 leads only to a spot enclosed by A2, A3 and B3.)
+        - **TPD2S300 escape → replaced by TPD4S201 (2026-10-14).** The TPD2S300's centre ball B2 (GND) is boxed in by the other eight (0.17 mm between ball edges), so it needed a 0.15 mm via-in-pad, a costly JLC option. With the 6-layer board at JLC's standard 0.3 mm via, U405/U505 became TPD4S201 (VQFN-20, item 39), which escapes from its perimeter pads and exposed pad. History of the via-in-pad attempt:
             - **The via:** B2 in `TI_YFF0009_DSBGA-9_P0.4mm` is a plated 0.15 mm drill in a 0.25 mm pad (JLC's minimum via; 5:1 aspect ratio on the 0.8 mm board), down to the In1 GND plane, 0.16 mm from its neighbours. Top mask and paste are the same as the other balls.
-            - **Rules:** the board-setup floors are now 0.15 mm hole / 0.05 mm ring. `MonolithDev.kicad_dru` keeps 0.2 mm / 0.1 mm for every other hole and allows the smaller size only for U405/U505 B2. `setup_board.py` writes the same floors.
+            - **Rules (removed with the swap):** board-setup floors of 0.15 mm hole / 0.05 mm ring, with DRU rules keeping 0.2 mm / 0.1 mm elsewhere.
             - **The eight outer balls** escape straight out on F.Cu at the normal 0.15 mm rules.
-            - **Order:** via-in-pad filled and capped (JLC POFV, an extra charge on 4 layers), and check JLC's DFM report for the 0.15 mm drill with 2 oz outer copper.
-            - **Fallback if JLC refuses it:** TPD8S300RUKR (WQFN-20 3 × 3, C571205, $1.16, 188 in stock), which protects CC and SBU together.
     - `place_parts.py`, `route_power.py`, `route_signals.py` and `fanout_gnd.py` were written for the old placement and still need the new parts. Their `.uuids` sidecars point at deleted copper. The notes below describe that earlier placement.
 - **Placement (first pass, 2026-10-12):** all 326 footprints placed by `tools/place_parts.py`; DRC clean apart from the unrouted connections. Board grew to **196 × 115 mm**: the holder courtyards (94.7 mm) collided with corner holes, so the holder block moved right and the middle holes moved to x = 106 mm. USB notches at y = 32 and 68 mm.
   - Hand-placed: holders, gauge core (IC, shunt by BT101's − contact, protection FETs, fuse, and the VC filter ladder at the VC pins), the sleep-current section, MCU (antenna end at the top edge with a clear zone), connectors, and each charger power train. Port 2 is port 1 shifted 37 mm down.
@@ -378,10 +387,10 @@ Found while checking against datasheets:
     - **How it works:** the TPS25751 measures the SBU1/SBU2 pins (unused until now) through its GPIO4/GPIO5 ADC inputs. GPIO6 and GPIO7 switch a 100 kΩ pull-up (AO3401A Q403/Q404 + R436/R437, from LDO_3V3) and a 1 MΩ pull-down (AO3400A Q405/Q406 + R438/R439) on each sense line.
         - If the voltage says SBU is wet or shorted, it disables the power paths and reports a liquid-detected event over I2C.
         - It keeps sampling and recovers by itself when the receptacle dries.
-    - **U405, TPD2S300YFFR** (C2650411, JLC extended, DSBGA-9 0.4 mm): its two short-to-VBUS OVP channels sit between SBU1/SBU2 and the sense nodes. They protect GPIO4/5 (6 V max) and LDO_3V3 if liquid bridges VBUS (up to 20 V) to SBU.
-        - VPWR and VM are on LDO_3V3, each with 1 µF (C452/C453). VM at 3.3 V selects low-voltage CC/PD mode.
+    - **U405** (now TPD4S201, item 39; first a TPD2S300YFFR, C2650411, DSBGA-9 0.4 mm): its short-to-VBUS OVP channels sit between SBU1/SBU2 and the sense nodes. They protect GPIO4/5 (6 V max) and LDO_3V3 if liquid bridges VBUS (up to 20 V) to SBU.
+        - VPWR is on LDO_3V3 with 1 µF (C452). (The TPD2S300's VM pin and C453 went with the swap.)
         - VBIAS has 0.1 µF 50 V (C451). FLT goes to GPIO3 since review 3 (item 36).
-        - New symbol `TPD2S300`, footprint `TI_YFF0009_DSBGA-9_P0.4mm` (datasheet land pattern: 0.23 mm NSMD pads, 0.05 mm mask margin, 0.25 mm paste; B2 is a 0.15/0.25 mm via-in-pad since 2026-10-14, see the layout reset notes) and a 3D model.
+        - Symbol `TPD2S300` and footprint `TI_YFF0009_DSBGA-9_P0.4mm` stay in the libraries, unused since item 39.
         - Place it close to the connector.
     - **BC1.2 is given up:** GPIO4/5 are the TPS25751's D+/D− pins, so it no longer does BC1.2. D403 (D+/D− ESD) is removed.
         - **R440** (0 Ω) shorts D+ to D− at the connector instead: a passive BC1.2 dedicated-charging-port signature, so legacy devices behind adapter cables still draw full current when the bank is sourcing. DNP R440 to leave D+/D− open.
@@ -441,6 +450,19 @@ Found while checking against datasheets:
     - **Saving:** $3.60 per board; the costed BOM is now about $77 per board (5 boards).
     - **Bring-up:** measure the FET temperatures and SW1/SW2 ringing; R444–R449 and the DNP snubbers are there to tune it.
 
+39. **6-layer 1.6 mm board, TPD4S201 and the 1.6 mm USB-C connector (2026-10-14).**
+    - **Board:** 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, vias epoxy-filled and capped. JLC's standard 0.3 mm / 0.45 mm via is the minimum. Stack-up, layer table, rules and net classes come from `tools/setup_board.py`, which now always rewrites the stack-up and keeps net classes it doesn't manage (Kelvin).
+    - **U405/U505 → TPD4S201TRGRRQ1** (TPD4S201-Q1, VQFN-20 RGR 3.5 × 3.5 mm, C49305973, $2.03, 128 in stock), wired as TI's TPS25751EVM fig. 5-5. It replaces the TPD2S300, whose centre ball needed a 0.15 mm via-in-pad.
+        - CC and SBU both pass through it. The connector-side nets are C_CC1/C_CC2 and SBU1/SBU2; the controller side is CC1/CC2 (C401/C402, U401) and SBU1_SNS/SBU2_SNS (GPIO4/5).
+        - RPD_G1/RPD_G2 tie to C_CC1/C_CC2, so its dead-battery Rd is present: this is a dual-role port that must charge a dead pack.
+        - VPWR on LDO_3V3 with 1 µF (C452), VBIAS 0.1 µF 50 V (C451), FLT → GPIO3 (SBU_FLT, R441).
+        - Footprint `TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm` from the datasheet land pattern (pads 0.6 × 0.24 at ±1.65 mm, 2.05 mm exposed pad, four 0.3 mm vias). New symbol `TPD4S201`.
+    - **D402/D502 (ESD2CAN24 on CC) removed:** the TPD4S201 has IEC ESD and ±35 V surge protection on CC and SBU, and TI's EVM has no separate CC ESD.
+    - **J401/J501 → TYPE-C 16PCB1.6 IP68** (C55629729, $0.97, 695 in stock): the same land pattern and notch as the 0.8 mm part. New footprint name and 3D model (`tools/make_3d_usbc.py 1.6`).
+    - **TPS25751 exposed-pad thermal vias:** 0.2 → 0.3 mm drill in the same 0.5 mm pads.
+    - **Board file:** `reset_board.py` (new `REF,...` force-reload option) reloaded the changed footprints and removed D402/D502 and C453/C553. Parity: 0 issues.
+    - **Open:** the BQ25756 footprint (U403/U503) shows a library-mismatch warning since the 6-layer change, although it was reloaded from the library. Check it with KiCad's "Compare Footprint with Library" during layout.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).
@@ -456,7 +478,7 @@ Changes planned for the next board revision are listed in [`../docs/devboard/rev
 | Footprint | Used by | Source / notes |
 |---|---|---|
 | `BatteryHolder_MYOUNG_BH-21700-B1BJ001` | BT101–BT104 | MYOUNG drawing. Its "PCB layout, bottom view" is the top view flipped about the long axis; checked against the top view (+ on the left, left peg low). Pads 7.5 × 9.0, Ø4.0 holes for the Ø3.2 pegs. Add stitching vias under the pads in layout. |
-| `USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68` | J401, J501 | Shou Han recommended layout. Mid-mount: the footprint draws a 10.20 × 5.65 mm board-edge cutout on Edge.Cuts; origin is the board edge. Pad order matches KiCad's HRO TYPE-C-31-M-12. The maker's signal pads start right on the notch's back edge (5.65–6.65 mm from the edge); they're moved 0.2 mm inward (5.85–6.85 mm) for JLC's 0.2 mm copper-to-routed-edge minimum. |
+| `USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68` (and `...16PCB0.8_IP68`, unused since the 1.6 mm board) | J401, J501 | Shou Han recommended layout, the same for both variants (only the body depth through the board differs; `tools/make_3d_usbc.py 1.6`). Mid-mount: the footprint draws a 10.20 × 5.65 mm board-edge cutout on Edge.Cuts; origin is the board edge. Pad order matches KiCad's HRO TYPE-C-31-M-12. The maker's signal pads start right on the notch's back edge (5.65–6.65 mm from the edge); they're moved 0.2 mm inward (5.85–6.85 mm) for JLC's 0.2 mm copper-to-routed-edge minimum. |
 | `Infineon_PG-TDSON-8-57_HalfBridge` | Q401, Q402, Q501, Q502 | Infineon land pattern and 0.15 mm stencil (datasheet p. 8). The drain pad (8) and the phase pad (3) sit beside their lead bars; Infineon joins each pair with copper under mask, so connect them with copper in layout. |
 | `ST_LGA-77_STM32WB1MMC_6.5x10mm` | U301 | Pad centres read from the vector drawing in DS14096 fig. 11 (bottom view, mirrored). The drawing labels two centre pads "73"; the lower-middle one is 72 by the numbering order. 1:1 lands. |
 | `ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm` | U402, U502 | ST recommended footprint (DS6520 fig. 16). Replaces KiCad's generic DFN-8 2 × 3, whose 0.61 × 2.2 exposed pad didn't fit this package. The exposed pad is pad 4 (VSS), which ST allows. |

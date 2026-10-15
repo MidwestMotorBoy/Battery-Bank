@@ -9,7 +9,7 @@ for new schematic parts in a staging area below the board, grouped by sheet.
 Then run netlist_to_board.py for nets, fields and symbol links.
 
     kicad-cli sch export netlist --format kicadsexpr -o net.sexp MonolithDev.kicad_sch
-    python tools/reset_board.py net.sexp            # step 1
+    python tools/reset_board.py net.sexp [REF,...]  # step 1; listed refs are reloaded even if the name is unchanged
     python tools/reset_board.py net.sexp --load     # step 2 (KiCad's python)
 """
 import json
@@ -80,7 +80,7 @@ def top_blocks(s):
         yield m.group(1), a, i + 1
 
 
-def step1(netfile):
+def step1(netfile, force=()):
     sch = schematic_parts(netfile)
     s = open(PCB, encoding="utf-8").read()
     shutil.copy(PCB, PCB + ".before_reset")
@@ -100,7 +100,7 @@ def step1(netfile):
             elif ref not in sch:
                 drop = True
                 kind = "footprint (not in schematic)"
-            elif sch[ref]["fp"] and sch[ref]["fp"] != lib_id:
+            elif sch[ref]["fp"] and (sch[ref]["fp"] != lib_id or ref in force):
                 at = re.search(r'\n\t\t\(at ([-\d.]+) ([-\d.]+)(?: ([-\d.]+))?\)', blk)
                 layer = re.search(r'\n\t\t\(layer "([^"]+)"\)', blk).group(1)
                 swaps.append(dict(ref=ref, fp=sch[ref]["fp"], x=float(at.group(1)), y=float(at.group(2)),
@@ -178,4 +178,4 @@ if __name__ == "__main__":
     if "--load" in sys.argv:
         step2()
     else:
-        step1(sys.argv[1])
+        step1(sys.argv[1], set(sys.argv[2].split(",")) if len(sys.argv) > 2 else ())
