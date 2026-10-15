@@ -597,3 +597,19 @@ fp.line(-1.45, -1.85, -1.85, -1.85, "F.SilkS")
 fp.circle(-2.3, -1.0, 0.1, "F.SilkS", 0.2)                  # pin 1
 crt(fp, -2.25, -2.25, 2.25, 2.25)
 fp.write(-2.9, 2.9)
+
+# ---------------------------------------------------------------------------
+# 17. TI DSG0008A WSON-8 2 x 2 mm with exposed-pad vias (TMP1075 board sensors U302-U306, rev A7). KiCad's
+#     ..._ThermalVias footprint (TI's land pattern) with its two exposed-pad vias at 0.3 mm drill instead of 0.2 mm,
+#     JLC's standard via on this board, in the same 0.5 mm pads (0.1 mm ring, the pad edge on the 1.6 mm pad's ends),
+#     filled and capped. The vias join the planes solid: the pad is the sensor's heat path into the GND planes.
+src = r"C:/Program Files/KiCad/10.0/share/kicad/footprints/Package_SON.pretty/Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias.kicad_mod"
+name = "TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
+s = open(src, encoding="utf-8").read()
+s = re.sub(r'\(footprint "[^"]+"', f'(footprint "{name}"', s, count=1)
+s = re.sub(r'(\(property "Value" )"[^"]+"', lambda m: m.group(1) + f'"{name}"', s, count=1)
+s, n = re.subn(r'\(drill 0\.2\)(\s*\(property pad_prop_heatsink\))', r'(drill 0.3)\1\n\t\t(zone_connect 2)', s)
+assert n == 2, n
+with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
+    fh.write(s)
+print("wrote", name)

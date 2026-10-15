@@ -1,14 +1,15 @@
-"""Block placement for the Monolith dev board (rev A6, 6-layer): every part inside its subsystem's zone.
+"""Block placement for the Monolith dev board (rev A7, 6-layer): every part inside its subsystem's zone.
 
 Zones (board mm from the top-left corner; the cells' holders take x < 103):
     gauge column   x 104-134   Cells and Gauge sheet (BQ40Z50, BQ294700 second protector, pack connector)
-    MCU band       y 0-13      MCU and NTCs sheet (module at the top edge, headers, NTC dividers)
+    MCU band       y 0-13      MCU and NTCs sheet (module at the top edge, headers, sensor pull-ups)
     port 1 / 2     x 134-196   USB Port sheet, one 36 mm band per USB-C connector (port 2 = port 1 moved 36 mm down)
     sleep band     y 88-115    Sleep Current and 3V3 sheet
 
 The gauge, MCU and sleep blocks keep the positions they already have (tools/place_parts.py placed them before the
 layout reset); this script adds the parts that are not placed yet and lays the port block out again around the
-discrete half-bridges and the 10 x 11.5 mm inductor.
+discrete half-bridges and the 10 x 11.5 mm inductor. Rev A7 (CC2340R5MODA, TMP1075 sensors) re-places the U301
+corner of the MCU band (MCU_LAYOUT) and puts the sensors on the copper they measure (SENSOR_LAYOUT).
 
 Port power stage (port 1, centred on the inductor at (157, 32), the connector's centre line):
   output bank | Q402/Q408 | L401 | Q407/Q401 | input bank
@@ -112,10 +113,33 @@ PORT_LAYOUT = [
 # parts placed by the nearest-free-spot pass inside the port zone (both copies must fit)
 PORT_AUTO = []
 
-# MCU-sheet NTCs that sense the power stages (placed after the ports): TH1/TH2 beside each output bridge, TH3
-# between the connectors, TH4 under port 1's inductor
-NTC_LAYOUT = [("at", "TH301", 141.0, 37.2, 0), ("at", "TH302", 141.0, 37.2 + PORT_DY, 0),
-              ("at", "TH304", 158.6, 39.0, 0), ("at", "TH303", 193.8, 42.0, 0)]
+# CC2340R5MODA (SWRS349A fig. 9-1 / 9-2): antenna (pin-1) end at the top edge, courtyard on the edge. The RF match
+# sits in the corner left of RFIO (pin 4) / ANT_IN (pin 3): C313 (CA1) and R321 (Z61) in series, pads facing their
+# pins, joined on the left where C314 (Z60, DNP) shunts the node to GND; C315 (Z62) stands on ANT_IN with its GND
+# pad up beside the module's GND pin 1. Below the match one column by the 3V3_MCU pins 6/7: the two 0.1u, the 4.7u,
+# then the RSTN pull-up and cap. The pins left of the 7.0 x 3.2 mm keep-out stay clear; the keep-out itself is in
+# the footprint.
+MCU_LAYOUT = [
+    ("fix", "U301", 150.0, 5.45, 0),
+    ("at", "C315", 145.33, 1.36, 90),
+    ("at", "R321", 144.85, 2.88, 0), ("at", "C313", 144.85, 3.91, 0),
+    ("at", "C314", 142.9, 3.395, 0),
+    ("at", "C302", 144.85, 5.9, 0), ("at", "C303", 144.85, 6.92, 0),
+    ("at", "C301", 144.35, 8.25, 0), ("at", "R302", 144.35, 9.85, 0), ("at", "C304", 144.85, 11.2, 0),
+]
+
+# TMP1075 board sensors (MCU sheet, placed after the ports), exposed pad (GND) on the copper being measured with
+# its thermal vias into the GND planes, the 0.1u at the V+ pin: U302/U303 under each output bank's PGND strip
+# beside the output bridge, U304 between the connectors, U305 (DNP) under port 1's inductor, U306 (DNP) between
+# the protection FETs with C110/C111 (the cap across the FETs) moved into the gap beside it, CELL_P cap up at Q101.
+SENSOR_LAYOUT = [
+    ("fix", "U302", 140.4, 36.4, 0), ("at", "C308", 142.6, 36.4, 90),
+    ("fix", "U303", 140.4, 36.4 + PORT_DY, 0), ("at", "C309", 142.6, 36.4 + PORT_DY, 90),
+    ("fix", "U304", 193.15, 42.62, 0), ("at", "C310", 195.25, 42.62, 90),
+    ("fix", "U305", 158.85, 38.85, 0), ("at", "C311", 158.85, 40.7, 0),
+    ("fix", "U306", 130.0, 28.0, 90), ("at", "C312", 127.9, 28.0, 90),
+    ("at", "C110", 132.95, 27.2, 0), ("at", "C111", 132.95, 28.8, 0),
+]
 
 # second-level protector (BQ294700) under the gauge, beside the fuse it blows: tap resistors in a column at the
 # cell-tap side, caps between adjacent taps right at the V pins, the heater FET by the fuse's heater pin
@@ -267,14 +291,15 @@ for ref in run_layout(PORT_LAYOUT):
 
 # everything that is not re-placed here keeps its position and is an obstacle
 redo = set(port_refs) | {port2(r) for r in port_refs} | set(PORT_AUTO) | {port2(r) for r in PORT_AUTO}
-redo |= {it[1] for it in NTC_LAYOUT + GAUGE_LAYOUT + SLEEP_LAYOUT if isinstance(it[1], str)}
+redo |= {it[1] for it in MCU_LAYOUT + SENSOR_LAYOUT + GAUGE_LAYOUT + SLEEP_LAYOUT if isinstance(it[1], str)}
 redo |= {r for it in GAUGE_LAYOUT if isinstance(it[1], list) for r in it[1]}
 for ref, fp in fps.items():
     if ref not in redo:
         placed[ref] = fp
 run_layout(GAUGE_LAYOUT)
 run_layout(SLEEP_LAYOUT)
-run_layout(NTC_LAYOUT)
+run_layout(MCU_LAYOUT)
+run_layout(SENSOR_LAYOUT)
 
 # ---- nearest-free-spot pass for the remaining port parts (port 1 and its port 2 copy must both be free) --------
 MARGIN = 0.15

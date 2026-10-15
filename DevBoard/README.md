@@ -2,9 +2,9 @@
 
 Dev board for the Monolith battery bank, described in `../docs/devboard/circuit-description.md`. The schematic was first drawn on 2026-10-11 with the KiCad MCP.
 
-**Status (rev A6, 2026-10-14):**
+**Status (rev A7, 2026-10-14):**
 - **Schematic:** three datasheet reviews done (`../docs/devboard/schematic-review-*.md`), cost-down applied.
-- **Board:** 6-layer, every part placed by block (`tools/place_blocks.py`). **Not routed, not built.**
+- **Board:** 6-layer, every part placed by block (`tools/place_blocks.py`), updated for rev A7. **Not routed, not built.**
 
 See [Status](#status) for the checks and the costed BOM.
 
@@ -27,7 +27,7 @@ See [Status](#status) for the checks and the costed BOM.
 Wiring pass (rev A3): wires instead of labels wherever parts sit on the same block. Passives are placed on the row of the pin they serve (datasheet style): the BQ40Z50 cell-tap filters are an R/C ladder fanning into the VC pins; BAT/VCC/PBI/PACK/SMBus, the BQ25756 VAC divider, pull-down comb, bootstrap caps, FB divider and DRV_SUP, the TPS25751 I2Cc pull-ups (off a short LDO_3V3 rail), the STM32 BOOT0/NRST/SWD header and the TPS62177 PG pull-up are all drawn with wires. Labels remain for genuinely long runs and cross-sheet nets (I2C buses, gate drive to the FETs, cell taps from the holders, NTC dividers, test points). Local labels went from 275 to 198 and wires from 272 to 350. Nets that are fully wired lost their old names and now carry KiCad's automatic names (for example `Net-(U101-VC1)`).
 
 Tools:
-- `tools/place_blocks.py` places every footprint in its sheet's zone (current placement, rev A6). It changes footprint positions only; no copper or silkscreen.
+- `tools/place_blocks.py` places every footprint in its sheet's zone (current placement, rev A7). It changes footprint positions only; no copper or silkscreen.
 - `tools/reset_board.py net.sexp [REF,...]` then `reset_board.py x --load` strips copper, silk text and zones, deletes footprints the schematic no longer has, and reloads footprints whose library footprint changed (or the listed refs) at their old positions.
 - `tools/bom_cost.py [boards]` exports the netlist and prices it from JLC into `bom_cost.csv`.
 - `tools/make_footprints.py`, `tools/make_symbols.py`, `tools/make_3d_*.py` generate the project footprints, symbols and 3D models.
@@ -87,7 +87,17 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ_N, EN
         - The gate resistors sit at each gate pin (LS-input and HS-output gates face the BQ25756). The DNP snubbers are under the bridges.
     - **Port controllers:** the BQ25756 sits above the inductor, turned so its gate-drive pins face the power stage. Its bootstrap / DRV_SUP / REGN parts form one row between them, the SRP/SRN/FB parts are on the output side, ACP/ACN/ACUV/FSW on the input side, and the programming resistors on top. The TPS25751 and EEPROM are to its right, the TPD4S201 and liquid detection in the corner above the connector.
     - **Port buck and probes:** the PP5V buck runs along the bottom of the band (input caps, IC, inductor, output caps, with the EN/SS/FB row under it). SW1/SW2/GND probe loops are under the inductor, with a 2 × 4 probe field for logic and rails and the I2CC header in the top-left corner.
-    - **Still to do:** a silkscreen pass (reference text, test-point labels, block titles), the antenna keep-out, then routing.
+    - **Still to do:** a silkscreen pass (reference text, test-point labels, block titles), then routing.
+- **Rev A7 board update (2026-10-14, item 40).** `reset_board.py` deleted the 14 parts the schematic dropped (TH301–TH305, R303, R308–R311, R316, R320, TP305, TP306), reloaded U301 (CC2340R5MODA footprint) and C308–C312 (now 0402) at their old spots, and added U302–U306, C313–C315 and R321; `netlist_to_board.py` set the nets. `place_blocks.py` then placed them (`MCU_LAYOUT`, `SENSOR_LAYOUT`); nothing else moved. No courtyard overlaps; DRC parity 0.
+    - **U301:** antenna (pin-1) end at the top edge, courtyard on the edge (module body 0.3 mm in, pads 0.6 mm in), x = 150 mm. The board edge either side is free of rule areas, so the GND planes run 46 mm to the right edge and the full width to the left (TI fig. 9-2 asks for A, B ≥ 10 mm, 20 mm for ~50 % efficiency). Parts on top in that strip (J302, J303, the match) are fine as long as the planes stay solid under them.
+    - **RF match** in the corner left of pins 3/4: C313 (RFIO) and R321 (ANT_IN) in series, pads facing their pins, joined on the left, where C314 (DNP) shunts the node to GND. C315 stands on ANT_IN with its GND pad beside the module's GND pin 1. Every match pad is within 2 mm of its pin. Below it, one column by the 3V3 pins 6/7: C302, C303, C301, then R302/C304 for RSTN.
+    - **`ANT_KEEPOUT` dropped.** The rev A5 rule area banned pours either side of the ST module's antenna. TI asks for the opposite: ground along the edge either side, and a no-copper area only under the antenna. The footprint carries that area (7.0 × 3.2 mm on the inner and bottom layers, 5.4 mm between the pads on F.Cu).
+    - **TMP1075s:** the exposed pad (GND) sits on GND copper next to what each one measures, with its 0.1 µF at the V+ pin.
+        - U302/U303 are under each output bank's PGND strip, beside Q408/Q508 (TH301/TH302's spot).
+        - U304 is between D401 and the port 2 liquid-detection column, below TP402 (TH303's spot).
+        - U305 (DNP) is under L401, between the SW1 and GND probe loops.
+        - U306 (DNP) is between Q101 and Q102. C110/C111, the cap pair across the protection FETs, moved into the gap to its right, with CELL_P up toward Q101 and PACK_P down toward Q102. The FETs' drains are FET_MID, not GND, so U306 reads them through the board.
+    - **Sensor footprint:** U302–U306 use `MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm`. KiCad's `..._ThermalVias` version had 0.2 mm via drills, below this board's 0.3 mm minimum (10 DRC errors). The schematic field was changed and the parts were reloaded in place.
 - **History: the rev A5 placement (superseded by the block placement above).**
 - **Placement (first pass, 2026-10-12):** all 326 footprints placed by `tools/place_parts.py`; DRC clean apart from the unrouted connections. Board grew to **196 × 115 mm**: the holder courtyards (94.7 mm) collided with corner holes, so the holder block moved right and the middle holes moved to x = 106 mm. USB notches at y = 32 and 68 mm.
   - Hand-placed: holders, gauge core (IC, shunt by BT101's − contact, protection FETs, fuse, and the VC filter ladder at the VC pins), the sleep-current section, MCU (antenna end at the top edge with a clear zone), connectors, and each charger power train. Port 2 is port 1 shifted 37 mm down.
@@ -107,13 +117,13 @@ Cross-sheet signal nets use global labels (PACK_P, GND, 3V3, SDA, SCL, IRQ_N, EN
 Floorplan (board mm from the top-left corner):
 - **Holders:** BT101–BT104 stacked at x ≈ 55, y = 15/43/71/99 (BT101 at the top, all the same way round).
 - **Gauge column (x ≈ 104–134):** gauge, protection FETs, shunt, BQ294700 and F102, J101 and the EV2400 header.
-- **MCU band (top edge):** SWD/UART/spare headers, then the STM32WB1MMC with its antenna end at the top edge (ST reference PCB).
+- **MCU band (top edge):** SWD/UART/spare headers, then the CC2340R5MODA with its antenna end at the top edge (rev A7; was the STM32WB1MMC).
 - **Port bands:** one 36 mm band per connector on the right (y ≈ 13–49 and 49–85).
 - **Sleep-current section (bottom edge):** R_MEAS, INA190s, LDO and TPS62177, with test loops at the edge.
 
 ## Status
 
-- **Rev A7 (2026-10-14): 411 parts.** CC2340R5MODA MCU, TMP1075 sensors, one IRQ line (item 40). The board file is still rev A6: it hasn't been updated for item 40.
+- **Rev A7 (2026-10-14): 411 parts.** CC2340R5MODA MCU, TMP1075 sensors, one IRQ line (item 40). The board is updated to match (placement only).
 - **Rev A6 (2026-10-14): 416 parts.** Changes since rev A4:
     - review 3 and liquid detection (item 36);
     - cost-down (item 37);
@@ -533,7 +543,6 @@ Found while checking against datasheets:
     - **Not done yet:**
         - LCSC numbers for U301–U306, C313–C315, R321 and R313.
         - Stock and price check.
-        - Board update: footprint swap, antenna edge placement, the old `ANT_KEEPOUT` question, TMP1075 placement.
         - Firmware-facing rewrite of `mcu-io-power-states.md`.
         - The STM32 notes in items 7, 10, 23 and 28 above are history.
 
@@ -542,7 +551,7 @@ Found while checking against datasheets:
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).
 
 - ~~Optional gauge-BAT INA190~~ **dropped (2026-10-13):** not needed. With the pack on battery only, the gauge's whole supply current flows through R105 (100 Ω, TI's BAT network D101 → R105 → BAT): 50–340 µA reads as 5–34 mV across R105 on a multimeter.
-- **STM32WB1MMC antenna keep-out (rev A6; the CC2340R5MODA footprint carries TI's keep-out, item 40):** ST publishes no keep-out drawing for the module (DS14096 has none; ST community threads confirm). The board follows ST's reference PCB: module at the top edge, antenna (pin-1) end 0.5 mm from it. Rev A5 had a rule area `ANT_KEEPOUT` (place_parts.py) banning tracks, vias and pours on all copper layers in the strip either side of and above the module (x 141–159, y 0–4.2 mm). The layout reset removed it: **re-add it before routing.** Nothing is placed in that strip. Check BLE range at bring-up.
+- **STM32WB1MMC antenna keep-out (rev A6; the CC2340R5MODA footprint carries TI's keep-out, item 40):** ST publishes no keep-out drawing for the module (DS14096 has none; ST community threads confirm). The board follows ST's reference PCB: module at the top edge, antenna (pin-1) end 0.5 mm from it. Rev A5 had a rule area `ANT_KEEPOUT` (place_parts.py) banning tracks, vias and pours on all copper layers in the strip either side of and above the module (x 141–159, y 0–4.2 mm). The layout reset removed it. **Rev A7: not re-added.** TI wants ground on both sides of the CC2340 antenna, and the footprint carries the keep-out under it (Board, rev A7 update). Check BLE range at bring-up.
 - **Pin map (rev A6, STM32; rev A7 map in item 40)** checked against the STM32WB15 datasheet (DS13258 table 15): ADC1_IN6/8/9/10 on PA1/PA3/PA4/PA5, WKUP1/WKUP4 on PA0/PA2, I2C1 on PB6/PB7, USART1 on PA9/PA10, SWD on PA13/PA14. A final pass in STM32CubeMX when the firmware project is set up is still worthwhile (it also catches clock-tree and peripheral conflicts).
 
 ## Footprints
@@ -555,6 +564,7 @@ Changes planned for the next board revision are listed in [`../docs/devboard/rev
 | `USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68` (and `...16PCB0.8_IP68`, unused since the 1.6 mm board) | J401, J501 | Shou Han recommended layout, the same for both variants (only the body depth through the board differs; `tools/make_3d_usbc.py 1.6`). Mid-mount: the footprint draws a 10.20 × 5.65 mm board-edge cutout on Edge.Cuts; origin is the board edge. Pad order matches KiCad's HRO TYPE-C-31-M-12. The maker's signal pads start right on the notch's back edge (5.65–6.65 mm from the edge); they're moved 0.2 mm inward (5.85–6.85 mm) for JLC's 0.2 mm copper-to-routed-edge minimum. |
 | `Infineon_PG-TDSON-8-57_HalfBridge` | unused since item 38 (was Q401, Q402, Q501, Q502) | Infineon land pattern and 0.15 mm stencil (datasheet p. 8). The drain pad (8) and the phase pad (3) sit beside their lead bars; Infineon joins each pair with copper under mask, so connect them with copper in layout. |
 | `TI_MHA0024A_CC2340R5MODA_7x10mm` | U301 (rev A7) | TI land pattern (SWRS349A p.64): side pads 1.1 × 0.6, bottom pads 0.6 × 1.1, 1.0 mm pitch. Fig. 9-2 antenna keep-out as two rule areas (F.Cu between the pads, all other layers 7.0 wide), both 3.2 mm deep from the antenna edge. No 3D model yet. |
+| `TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm` | U302–U306 (TMP1075, rev A7) | KiCad's `Texas_DSG0008A_..._ThermalVias` (TI land pattern) with its two exposed-pad vias at 0.3 mm drill (was 0.2) in the same 0.5 mm pads, joined to the planes solid. Filled and capped. |
 | `ST_LGA-77_STM32WB1MMC_6.5x10mm` | U301 until rev A6 | Pad centres read from the vector drawing in DS14096 fig. 11 (bottom view, mirrored). The drawing labels two centre pads "73"; the lower-middle one is 72 by the numbering order. 1:1 lands. |
 | `ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm` | U402, U502 | ST recommended footprint (DS6520 fig. 16). Replaces KiCad's generic DFN-8 2 × 3, whose 0.61 × 2.2 exposed pad didn't fit this package. The exposed pad is pad 4 (VSS), which ST allows. |
 | `TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm` | U403, U503 | Antmicro open-hardware footprint (Apache-2.0, copy in `tools/third_party/`), checked against TI's RRV0036A land pattern. Add the exposed-pad thermal vias in layout. |

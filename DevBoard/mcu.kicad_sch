@@ -8782,7 +8782,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"
+		(property "Footprint" "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
 			(at 60.96 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -9584,7 +9584,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"
+		(property "Footprint" "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
 			(at 101.6 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10386,7 +10386,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"
+		(property "Footprint" "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
 			(at 142.24 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -11188,7 +11188,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"
+		(property "Footprint" "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
 			(at 124.46 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -11990,7 +11990,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"
+		(property "Footprint" "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"
 			(at 165.1 241.3 0)
 			(hide yes)
 			(show_name no)

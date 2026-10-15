@@ -287,7 +287,7 @@ SENS = [  # ref, cap, x, y, (A2, A1, A0), dnp, note
 ]
 for ref, cref, x, y, (a2, a1, a0), dnp, note in SENS:
     add.append(new_symbol("Sensor_Temperature:TMP1075DSG", ref, "TMP1075", x, y, [str(n) for n in range(1, 10)], PATH,
-                          [("Footprint", "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias"),
+                          [("Footprint", "MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm"),
                            ("Datasheet", TI + "tmp1075.pdf"),
                            ("Description", "I2C temperature sensor, +-1 C, open-drain ALERT"),
                            ("LCSC", ""), ("MPN", "TMP1075DSGR")], dnp=dnp))
