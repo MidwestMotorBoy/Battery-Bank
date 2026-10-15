@@ -6431,7 +6431,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 294.64 181.61 270)
 		(effects
@@ -6475,7 +6475,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 312.42 190.5 270)
 		(effects
@@ -6541,7 +6541,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 342.9 179.07 90)
 		(effects
@@ -8913,7 +8913,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "2d9e2c58-8b91-4bbb-bd85-4f557be0b4d4")
 		(property "Reference" "R114"
 			(at 298.87 176.67 0)

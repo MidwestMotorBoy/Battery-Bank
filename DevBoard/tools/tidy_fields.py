@@ -20,7 +20,7 @@ TITLES = {
     "MonolithDev.kicad_sch": ("Monolith dev board - top level", "Sheet index, PD address straps"),
     "gauge.kicad_sch": ("Cells and gauge", "4S input, BQ40Z50-R2 gauge/protector, protection FETs"),
     "power.kicad_sch": ("Sleep-current measurement and 3.3 V rail", "R_MEAS + INA190 x2, HT7550-1, TPS62177"),
-    "mcu.kicad_sch": ("MCU and board NTCs", "STM32WB1MMC, debug headers, NTC TH1-TH4"),
+    "mcu.kicad_sch": ("MCU and board temperature", "CC2340R5MODA, debug headers, TMP1075 x3 (+2 DNP)"),
     "usb_port.kicad_sch": ("USB-C PD port (used twice)", "TPS25751D + BQ25756 + TPS62933; port 1 = 4xx, port 2 = 5xx"),
 }
 

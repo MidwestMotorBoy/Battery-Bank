@@ -270,7 +270,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "MONOLITH DEV BOARD - SHEET INDEX\n2.  Cells and Gauge:  4S holders / pack input, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, SMBus\n3.  Sleep Current and 3V3:  R_MEAS + 2x INA190 to test loops, HT7550-1 amp supply, TPS62177 3V3 rail\n4.  MCU and NTCs:  STM32WB1MMC, debug headers, board NTCs TH1-TH5, status LED\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD4S201 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec: docs/devboard/circuit-description.md.  Changes and open items: DevBoard/README.md"
+	(text "MONOLITH DEV BOARD - SHEET INDEX\n2.  Cells and Gauge:  4S holders / pack input, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, SMBus\n3.  Sleep Current and 3V3:  R_MEAS + 2x INA190 to test loops, HT7550-1 amp supply, TPS62177 3V3 rail\n4.  MCU and NTCs:  CC2340R5MODA, debug headers, TMP1075 board temperature sensors, status LED\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD4S201 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec: docs/devboard/circuit-description.md.  Changes and open items: DevBoard/README.md"
 		(exclude_from_sim no)
 		(at 30.48 205.74 0)
 		(effects
@@ -407,7 +407,7 @@
 		)
 		(uuid "e0b289d9-a2f2-44f0-982f-864dc505239a")
 	)
-	(global_label "IRQ1"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 90 104.14 0)
 		(effects
@@ -451,7 +451,7 @@
 			)
 		)
 	)
-	(global_label "IRQ2"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 220 104.14 0)
 		(effects

@@ -123,7 +123,10 @@ Pin states per power state are in `mcu-io-power-states.md`.
   - [ ] PB4 goes high first on every wake.
   - [ ] Enter TPS62177 sleep mode only with no cable attached.
   - [ ] NTC_EN high only while sampling; wait 5 ms or more after raising it.
-- [ ] **FET temperature (TH305, PA7 / ADC1_IN2):** include it in the over-temperature limits, and cross-check it against the gauge current (about 1 W per FET at 100 W).
+- [ ] **FET temperature (gauge internal sensor; TH305 is DNP if the board moves to the CC2340, see `cc2340-pin-budget.md`):**
+  - [ ] Enable the BQ40Z50 internal temperature sensor and its OTD/OTC protection in data flash.
+  - [ ] Include its reading in the firmware over-temperature limits.
+  - [ ] At 100 W (about 1 W per FET), compare it with a thermocouple on Q101/Q102. If it lags badly, fit the DNP sensor.
 - [ ] **Port-to-itself cable loop:** detect it and stop (review 2, B-12).
 
 ## 5. Bring-up measurements

@@ -298,6 +298,42 @@ fp.text("Antenna keep-out: see ST hardware guidelines", 0, -6.4, "Cmts.User", 0.
 fp.write(-6.0, 6.0)
 
 # ---------------------------------------------------------------------------
+# 4b. TI CC2340R5MODA, MHA0024A QFM-24, 7 x 10 mm. cc2340r5moda.pdf p.63-64 (package outline, example board layout).
+#     Top view: pins 1-9 down the left side from y = -4.4 (1.0 pitch), 10-15 along the bottom (y = 4.75), 16-24 up
+#     the right side. Side pads 1.1 x 0.6, bottom pads 0.6 x 1.1, NSMD. The antenna is the top (pin 1) end: it goes at
+#     a board edge with ground 10-20 mm either side (fig. 9-2). Keep-out per fig. 9-2: 7.0 x 3.2 mm from the module's
+#     top edge on all layers, narrowed to the 5.4 mm between the pads on the top layer.
+fp = FP("TI_MHA0024A_CC2340R5MODA_7x10mm",
+        "TI CC2340R5MODA Bluetooth LE module, MHA0024A QFM-24 7 x 10 mm, 1.0 mm pitch (SWRS349A p.63-64)",
+        "CC2340R5MODA MHA0024A module BLE")
+RR = " (roundrect_rratio 0.08)"
+for n in range(1, 10):
+    fp.items.append(f'(pad "{n}" smd roundrect (at -3.25 {f(-4.4 + (n - 1))}) (size 1.1 0.6) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+for n in range(10, 16):
+    fp.items.append(f'(pad "{n}" smd roundrect (at {f(-2.5 + (n - 10))} 4.75) (size 0.6 1.1) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+for n in range(16, 25):
+    fp.items.append(f'(pad "{n}" smd roundrect (at 3.25 {f(3.6 - (n - 16))}) (size 1.1 0.6) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+KEEP = ('(keepout (tracks not_allowed) (vias not_allowed) (pads allowed) (copperpour not_allowed) (footprints allowed)) '
+        '(placement (enabled no) (sheetname "")) (fill (thermal_gap 0.5) (thermal_bridge_width 0.5))')
+for name, layers, hw in (("antenna top", '"F.Cu"', 2.7), ("antenna inner+bottom", '"In1.Cu" "In2.Cu" "In3.Cu" "In4.Cu" "B.Cu"', 3.5)):
+    pts = " ".join(f"(xy {f(x)} {f(y)})" for x, y in ((-hw, -5.0), (hw, -5.0), (hw, -1.8), (-hw, -1.8)))
+    fp.items.append(f'(zone (net 0) (net_name "") (layers {layers}) (name "{name}") (hatch full 0.5) '
+                    f'(connect_pads (clearance 0)) (min_thickness 0.25) (filled_areas_thickness no) {KEEP} (polygon (pts {pts})))')
+fp.rect(-3.5, -5.0, 3.5, 5.0, "F.Fab", 0.1)
+fp.line(-3.5, -1.8, 3.5, -1.8, "F.Fab", 0.1)
+fp.text("ANT", 0, -3.4, "F.Fab", 0.8)
+fp.line(-3.5, -4.0, -3.0, -4.6, "F.Fab", 0.1)
+fp.line(-3.9, -5.15, 3.9, -5.15, "F.SilkS")
+fp.line(-2.85, 5.45, -3.9, 5.45, "F.SilkS")
+fp.line(-3.9, 5.45, -3.9, 4.0, "F.SilkS")
+fp.line(2.85, 5.45, 3.9, 5.45, "F.SilkS")
+fp.line(3.9, 5.45, 3.9, 4.0, "F.SilkS")
+fp.circle(-4.25, -4.4, 0.12, "F.SilkS", 0.24)                     # pin 1
+crt(fp, -4.05, -5.25, 4.05, 5.55)
+fp.text("Antenna end at the board edge; ground 10-20 mm each side (SWRS349A fig. 9-2)", 0, -6.4, "Cmts.User", 0.5)
+fp.write(-6.0, 6.6)
+
+# ---------------------------------------------------------------------------
 # 5. ST UFDFPN8 2 x 3 mm (M24512-DF). m24512.pdf p.30 fig. 16 recommended footprint:
 #    leads 0.3 x 0.6 at 0.5 pitch, rows 1.3 from centre, exposed pad 1.4 x 1.2.
 #    ST: the exposed pad goes to VSS or floats -> numbered 4 (VSS) here.

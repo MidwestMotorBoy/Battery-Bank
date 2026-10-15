@@ -1,5 +1,7 @@
 # MCU I/O versus power states (rev A5, 2026-10-13)
 
+> **Out of date since rev A7 (2026-10-14).** U301 is now a CC2340R5MODA (`cc2340-pin-budget.md`, `DevBoard/README.md` item 40), so the STM32 pin names, Stop2/IWDG rules and the NTC_EN rows below no longer match the schematic. What carries over: the power states S0–S4, the CHG_INH / EN_5Vx / 3V3_SLEEP / LED policies, the S2 entry conditions and the gauge-sleep rule. The changes: IRQ1/IRQ2/GAUGE_BTP become one IRQ_N; NTC_EN is gone (I2C sensors); 3V3_SLEEP's reset state comes from R313 (470k), not PB4's pull-up; Stop2 becomes CC2340 Standby; the IWDG becomes the CC2340 WDT. A full rewrite is pending.
+
 This document sets the state of every STM32WB1MMC (U301) pin in every power state. It is reconciled against two things:
 
 - The sleep plan: about 150 µA idle at the pack, the MCU asleep between slow BLE advertising events, the TPS62177 in sleep mode with no cable attached, and the NTC dividers powered only while sampling (`docs/project/monolith-next-actions.md`).
