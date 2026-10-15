@@ -4363,7 +4363,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C23178"
 			(at 81.28 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4374,7 +4374,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "0603WAF4703T5E"
 			(at 81.28 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -8216,7 +8216,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C76950"
 			(at 180.34 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -8328,7 +8328,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C17168"
 			(at 187.96 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -8530,7 +8530,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C76952"
 			(at 191.77 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -8815,7 +8815,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C2870250"
 			(at 60.96 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -9617,7 +9617,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C2870250"
 			(at 101.6 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10419,7 +10419,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C2870250"
 			(at 142.24 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -11221,7 +11221,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C2870250"
 			(at 124.46 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -12023,7 +12023,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C2870250"
 			(at 165.1 241.3 0)
 			(hide yes)
 			(show_name no)

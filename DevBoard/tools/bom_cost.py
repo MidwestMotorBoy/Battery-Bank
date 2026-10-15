@@ -21,7 +21,9 @@ KICAD_CLI = r"C:/Program Files/KiCad/10.0/bin/kicad-cli.exe"
 URL = "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList"
 FEE = 3.0          # JLC loading fee per unique extended part per order (basic and preferred parts: none)
 # Bought outside JLC: ref prefix -> (unit price USD, source). U301 is consigned to JLC for placement.
-OUTSIDE = {"U301": (10.65, "ST eStore, qty 1, 2026-10-14")}
+# Rev A7: U301 is the CC2340R5MODA. JLC lists it (C55046847) with 0 stock, and on 2026-10-14 neither TI.com
+# ("Out of stock", no price) nor DigiKey/Mouser/LCSC listed it, so it stays unpriced until a quote is in hand.
+OUTSIDE = {}
 CONSIGNED = {"U301"}
 
 
@@ -42,15 +44,14 @@ DEV_ONLY = {
     "R312": "0R EV2400 helper link",
     "J301": "SWD header; production uses pogo pads", "SW301": "reset button; production uses a test pad",
     "J302": "UART header", "J303": "spare-GPIO header",
-    **{r: "series resistor to the J303 header" for r in ("R316", "R317", "R318", "R319")},
+    **{r: "series resistor to the J303 header" for r in ("R317", "R318", "R319")},
     **{r: "I2Cc logic-analyzer header" for r in _ports("J402")},
 }
 MAYBE = {
     "SW101": "wake button (production wake method not decided)", "R118": "wake button resistor",
     **{r: "BTP_INT level shift (production may tie BTP_INT to VSS)" for r in ("Q103", "R114", "R117")},
-    **{r: "board NTCs (production thermal sensing not decided)" for r in
-       ("TH301", "TH302", "TH303", "TH304", "TH305", "R308", "R309", "R310", "R311", "R320",
-        "C308", "C309", "C310", "C311", "C312")},
+    **{r: "board temperature sensors (production thermal sensing not decided)" for r in
+       ("U302", "U303", "U304", "U305", "U306", "C308", "C309", "C310", "C311", "C312")},
     "D301": "status LED (production has its own LED set)", "R306": "status LED resistor",
     **{r: "0R gate/BTST tuning placeholder (keep if EMI needs it)" for r in
        _ports("R444", "R445", "R446", "R447", "R448", "R449")},
