@@ -281,7 +281,14 @@ Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
 
 ## Status
 
-Proposed only: nothing in the schematic, board or docs has been changed by this review.
+- **Applied in rev A8 (2026-10-14, `DevBoard/README.md` item 41):** A-1b, A-5, A-6, A-7, A-9, A-10, B-3 (1206 0.66 W; the 2010 didn't fit), C-3, C-4 (TVS2200DRVR) and C-8. The board is synced.
+- **Decided:** S-1 (Shutdown Voltage 2700 mV, ship mode), and B-1 (keep the PGQ04N070; gate-drive test at bring-up). Both are recorded in the checklist.
+- **Still open:**
+    - A-2: the EV2400 procedure text.
+    - D-5: J104 clamp, optional.
+    - The DOC items.
+    - The remaining CONFIG items: they go into firmware and the checklist rewrite.
+    - The other MINORs, which are bring-up measurements or production choices: B-2, B-4–B-6, C-2, C-5–C-7 and D-3.
 
 **Suggested order**
 1. B-1: choose and stock-check the high-side FETs. This is the only item that changes a part's electrical spec.

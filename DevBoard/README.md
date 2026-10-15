@@ -2,9 +2,9 @@
 
 Dev board for the Monolith battery bank, described in `../docs/devboard/circuit-description.md`. The schematic was first drawn on 2026-10-11 with the KiCad MCP.
 
-**Status (rev A7, 2026-10-14):**
-- **Schematic:** three datasheet reviews done (`../docs/devboard/schematic-review-*.md`), cost-down applied.
-- **Board:** 6-layer, every part placed by block (`tools/place_blocks.py`), updated for rev A7. **Not routed, not built.**
+**Status (rev A8, 2026-10-14):**
+- **Schematic:** four datasheet reviews done (`../docs/devboard/schematic-review-*.md`), cost-down applied, review 4's pre-routing hardware fixes in (rev A8, item 41).
+- **Board:** 6-layer, every part placed by block (`tools/place_blocks.py`), updated for rev A8. **Not routed, not built.**
 
 See [Status](#status) for the checks and the costed BOM.
 
@@ -123,6 +123,7 @@ Floorplan (board mm from the top-left corner):
 
 ## Status
 
+- **Rev A8 (2026-10-14): 428 parts.** Review 4's pre-routing hardware fixes (item 41). The board is updated to match (placement only): 0 parity issues, no courtyard overlaps.
 - **Rev A7 (2026-10-14): 411 parts.** CC2340R5MODA MCU, TMP1075 sensors, one IRQ line (item 40). The board is updated to match (placement only).
 - **Rev A6 (2026-10-14): 416 parts.** Changes since rev A4:
     - review 3 and liquid detection (item 36);
@@ -545,6 +546,32 @@ Found while checking against datasheets:
         - Stock and price check.
         - Firmware-facing rewrite of `mcu-io-power-states.md`.
         - The STM32 notes in items 7, 10, 23 and 28 above are history.
+
+41. **Rev A8: review 4 pre-routing hardware fixes (2026-10-14).** From [`../docs/devboard/schematic-review-4-2026-10-14.md`](../docs/devboard/schematic-review-4-2026-10-14.md). Applied by `tools/review4_fixes.py` (one-shot, from the rev A7 sheets). Part numbers checked against JLC's parts API the same day.
+
+    | Review item | Change | Part (LCSC) |
+    |---|---|---|
+    | A-1b | R313 470k → **220k**: 3V3_SLEEP reads about 0.92 × VDDS in reset instead of 0.83 (VIH 0.8). 15 µA while firmware holds SLEEP low | 0603WAF2203T5E (C22961, basic) |
+    | A-5 | R314 100k → **47k** (IRQ_N pull-up) | 0603WAF4702T5E (C25819) |
+    | A-6 | R304/R305 4.7k → **3.3k** (SCL/SDA rise time; run the bus at 100 kHz) | 0603WAF3301T5E (C22978) |
+    | A-7 | **R324 1k** in series with J303 pin 2 (IRQ_N probe) | 0603WAF1001T5E (C21190) |
+    | A-9 | **R322/R323 1k** in series with J302 TX/RX. Connect a USB-UART adapter only with 3V3 up | 0603WAF1001T5E (C21190) |
+    | A-10 | C314 (Z60) placeholder **1p C0G**, still DNP | GRM1555C1H1R0BA01D (C76952) |
+    | B-3 | R450/R451 (and 5xx) DNP snubber resistors 0805 → **1206 anti-surge 0.66 W**. A 2010 or 0612 doesn't fit between Q401/Q408 and C443 | ERJ-P08J3R3V (C3998398, 0 stock; DNP) |
+    | C-3 | C401/C402 (CC caps) 330p → **220p** C0G | CL05C221JB5NNNC (C307445) |
+    | C-4 | D401/D501 SMAJ22A → **TVS2200DRVR** flat clamp (28 V at 40 A 8/20 µs). Stock KiCad symbol `Power_Protection:TVS2200DRV` and footprint `WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm` (TI DRV0006A pinout and 1.0 × 1.6 mm pad; KiCad's lands are 0.375 × 0.4 mm against TI's 0.3 × 0.45). Datasheet: `../datasheets/tvs2200.pdf` | TVS2200DRVR (C523793, about 2.8k stock) |
+    | C-8 | **TP415–TP421** (and 5xx), 1 mm pads: CC1, CC2, SBU_FLT, SBU1_SNS, SBU2_SNS, LIQ_PU, LIQ_PD | TestPoint_Pad_D1.0mm |
+
+    - **Placement** (`place_blocks.py`):
+        - R322/R323 sit under J302, and R324 under J303 pin 2 in the R317–R319 row.
+        - TP415/TP416 sit under U401's CC pins, TP417–TP419 in a column beside J401, and TP420/TP421 by the liquid-detect gates. Port 2 is the same layout 36 mm down.
+        - R450/R451 are back in the snubber row.
+        - D401/D501 stay at the SMAJ22A's spot.
+    - **Checks:** ERC shows the 8 known warnings only; `check_overlaps.py` finds 0 text overlaps; board DRC shows 0 parity issues and no courtyard overlaps.
+    - **Not done (review 4):**
+        - A-2: the EV2400 procedure in checklist §2 step 4 and R312's Notes. D-5's J104 clamp (optional).
+        - The documentation items: stale Notes and sheet text, the top-sheet revision log, `power-budget.md`, `circuit-description.md` and the checklist's STM32 sections.
+        - BOM fields: 28 parts without an MPN; U301/J301 LCSC.
 
 ## Open items (defaults I picked; confirm or change)
 

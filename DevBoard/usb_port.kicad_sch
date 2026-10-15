@@ -5701,6 +5701,413 @@
         (name "NC" (effects (font (size 1.27 1.27)))) (number "19" (effects (font (size 1.27 1.27)))))
       (pin no_connect line (at 2.54 -16.51 90) (length 2.54) (hide yes)
         (name "NC" (effects (font (size 1.27 1.27)))) (number "20" (effects (font (size 1.27 1.27)))))))
+		(symbol "Power_Protection:TVS2200DRV"
+		(pin_names
+			(offset 0)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "U"
+			(at 2.54 1.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TVS2200DRV"
+			(at 2.54 -1.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_SON:WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm"
+			(at 5.08 -8.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tvs2200.pdf"
+			(at -2.54 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Flat-Clamp Surge Protection Device. 22Vrwm, WSON-6"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "EMI, ESD, TVS protection transient"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "WSON*1EP*2x2mm*P0.65mm*EP1x1.6mm*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "TVS2200DRV_0_0"
+			(rectangle
+				(start -11.43 2.54)
+				(end -5.08 -2.54)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -8.255 2.54) (xy -8.255 3.81) (xy 0 3.81)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -8.255 -2.54) (xy -8.255 -3.81) (xy 0 -3.81)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 1.27) (xy -1.778 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(text "Det &"
+				(at -8.255 0.635 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(text "Drv"
+				(at -8.255 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+		)
+		(symbol "TVS2200DRV_0_1"
+			(rectangle
+				(start -12.065 5.08)
+				(end 2.54 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.286 1.397) (xy -2.286 -1.524)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.286 0) (xy -5.08 0)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -1.778 1.778) (xy -1.778 -1.778)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center -0.889 0)
+				(radius 2.794)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -0.127 -1.27) (xy -1.143 -1.651) (xy -1.143 -0.889) (xy -0.127 -1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type outline)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 5.08) (xy 0 2.54)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 2.54) (xy 0 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 -2.54) (xy 0 -5.08)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 -2.54) (xy 0 -1.27) (xy -1.778 -1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "TVS2200DRV_1_1"
+			(pin power_in line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(hide yes)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(hide yes)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 7.62 270)
+				(length 2.54)
+				(name "IN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 7.62 270)
+				(length 2.54)
+				(hide yes)
+				(name "IN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 7.62 270)
+				(length 2.54)
+				(hide yes)
+				(name "IN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(hide yes)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
 	)
 	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.08 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
@@ -5810,7 +6217,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU to drive CHG_INH low through R435.\n    Reset, IWDG reset, a hang or an unprogrammed MCU stop charging; a dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers.\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU to drive CHG_INH low through R435.\n    Reset, IWDG reset, a hang or an unprogrammed MCU stop charging; a dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -5888,12 +6295,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "43b01c97-045b-4367-b4e0-050f554dd781")
-	)
-	(junction
-		(at 73.66 81.28)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4fe72fbf-1b34-4cb4-8f5a-2262e6d228eb")
 	)
 	(junction
 		(at 147.32 203.2)
@@ -7432,16 +7833,6 @@
 			(type default)
 		)
 		(uuid "c3700f83-4695-4ecb-96eb-3dd422538947")
-	)
-	(wire
-		(pts
-			(xy 73.66 81.28) (xy 73.66 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c39596b6-13c3-4fda-972d-52d7823d4142")
 	)
 	(wire
 		(pts
@@ -15104,122 +15495,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_Zener")
-		(at 73.66 88.9 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "61ae8a81-ed75-4872-9cbb-4b4daa53f6f8")
-		(property "Reference" "D401"
-			(at 73.66 96.88 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SMAJ22A"
-			(at 73.66 98.85 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMA"
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SMAJ22A (JLC preferred C41376403)"
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bidirectional transient-voltage-suppression diode"
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C41376403"
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "SMAJ22A is unidirectional: drawn as a zener-style TVS, cathode (pin 1) on VBUS"
-			(at 73.66 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "df60ede9-ef49-405b-bc87-3c2a58fef442")
-		)
-		(pin "2"
-			(uuid "b0ae683a-9734-42c8-b8e4-8d796b3e154c")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D501")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D401")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 495.3 125.73 0)
 		(unit 1)
@@ -18509,7 +18784,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 73.66 92.71 0)
+		(at 93.98 100.33 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18519,7 +18794,7 @@
 		(dnp no)
 		(uuid "9d5cb062-8f4c-4f62-b7b9-8e5298f1cdf9")
 		(property "Reference" "#PWR403"
-			(at 73.66 92.71 0)
+			(at 93.98 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18530,7 +18805,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 77.54 93.98 0)
+			(at 97.86 101.60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18540,7 +18815,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 92.71 0)
+			(at 93.98 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18551,7 +18826,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 92.71 0)
+			(at 93.98 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18562,7 +18837,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 73.66 92.71 0)
+			(at 93.98 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20963,7 +21238,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 82.62 91.44 0)
+			(at 74.86 90.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -21435,7 +21710,7 @@
 				)
 			)
 		)
-		(property "Value" "330p 50V"
+		(property "Value" "220p 50V"
 			(at 127.04 94.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21478,7 +21753,7 @@
 				)
 			)
 		)
-		(property "Notes" "50V C0G"
+		(property "Notes" "50V C0G. 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -21489,7 +21764,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13533"
+		(property "LCSC" "C307445"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -21500,7 +21775,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05C331JB5NNNC"
+		(property "MPN" "CL05C221JB5NNNC"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -21553,7 +21828,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 115.64 99.06 0)
+			(at 111.76 102.11 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22671,7 +22946,7 @@
 		(dnp no)
 		(uuid "e492b9e4-90d5-49a0-822e-06f405244e1b")
 		(property "Reference" "C401"
-			(at 111.76 101.96 0)
+			(at 104.10 92.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22680,8 +22955,8 @@
 				)
 			)
 		)
-		(property "Value" "330p 50V"
-			(at 111.76 103.93 0)
+		(property "Value" "220p 50V"
+			(at 104.10 94.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22723,7 +22998,7 @@
 				)
 			)
 		)
-		(property "Notes" "50V C0G"
+		(property "Notes" "50V C0G. 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -22734,7 +23009,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13533"
+		(property "LCSC" "C307445"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -22745,7 +23020,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05C331JB5NNNC"
+		(property "MPN" "CL05C221JB5NNNC"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -25131,7 +25406,7 @@
 		(dnp no)
 		(uuid "2cfdb8e9-1530-412d-99e8-e1398e1404e3")
 		(property "Reference" "R440"
-			(at 91.29 101.91 90)
+			(at 91.29 109.48 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25141,7 +25416,7 @@
 			)
 		)
 		(property "Value" "0R"
-			(at 91.29 103.88 90)
+			(at 91.29 111.45 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25440,7 +25715,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 55.03 154.5 0)
+			(at 55.03 154.50 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25676,7 +25951,7 @@
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 57.73 173.7 0)
+			(at 57.73 173.70 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25806,7 +26081,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 54.68 176.53 0)
+			(at 50.80 179.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26036,7 +26311,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 80.43 154.5 0)
+			(at 80.43 154.50 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26262,7 +26537,7 @@
 		(dnp no)
 		(uuid "a38ec61d-4c96-4b12-80fd-40f554f54cf1")
 		(property "Reference" "Q406"
-			(at 83.13 169.2 0)
+			(at 83.13 169.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26402,7 +26677,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 80.08 176.53 0)
+			(at 76.20 179.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26511,7 +26786,7 @@
 		(dnp no)
 		(uuid "5a2fe091-0b17-441f-86e0-d711c5741f21")
 		(property "Reference" "R441"
-			(at 156.64 156.35 0)
+			(at 156.63 156.35 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26521,7 +26796,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 156.64 158.31 0)
+			(at 156.63 158.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -27878,7 +28153,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 375.92 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -27911,7 +28186,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C16257"
+		(property "LCSC" "C3998398"
 			(at 375.92 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -27922,7 +28197,7 @@
 				)
 			)
 		)
-		(property "MPN" "0805W8F330KT5E"
+		(property "MPN" "ERJ-P08J3R3V"
 			(at 375.92 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -27933,7 +28208,7 @@
 				)
 			)
 		)
-		(property "Notes" "DNP RC snubber on SW1 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw"
+		(property "Notes" "DNP RC snubber on SW1 (EVM R14/R15 placeholder). 1206 anti-surge 0.66 W: R loss is about C x V^2 x fsw, 0.3-0.55 W at the sizes the ring may need (review 4 B-3). Size R and C from the measured ring"
 			(at 375.92 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -28201,7 +28476,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 391.16 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -28234,7 +28509,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C16257"
+		(property "LCSC" "C3998398"
 			(at 391.16 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -28245,7 +28520,7 @@
 				)
 			)
 		)
-		(property "MPN" "0805W8F330KT5E"
+		(property "MPN" "ERJ-P08J3R3V"
 			(at 391.16 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -28256,7 +28531,7 @@
 				)
 			)
 		)
-		(property "Notes" "DNP RC snubber on SW2 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw"
+		(property "Notes" "DNP RC snubber on SW2 (EVM R14/R15 placeholder). 1206 anti-surge 0.66 W: R loss is about C x V^2 x fsw, 0.3-0.55 W at the sizes the ring may need (review 4 B-3). Size R and C from the measured ring"
 			(at 391.16 273.05 0)
 			(hide yes)
 			(show_name no)
@@ -29407,25 +29682,23 @@
 		(dnp no)
 		(uuid "589aa16b-72d8-434e-a4b5-9de2925e90da")
 		(property "Reference" "U405"
-			(at 108 144.78 0)
+			(at 98.10 175.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "TPD4S201TRGRRQ1"
-			(at 126 177.8 0)
+			(at 98.10 177.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm"
@@ -29728,25 +30001,23 @@
 		(dnp no)
 		(uuid "ea80ad51-dabf-4116-8b2d-31b5a9fe18c9")
 		(property "Reference" "C452"
-			(at 95.89 142.75 0)
+			(at 100.43 142.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "1u 50V"
-			(at 95.89 144.53 0)
+			(at 100.43 144.34 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -29857,7 +30128,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 93.98 151.13 0)
+			(at 93.98 151.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29947,25 +30218,23 @@
 		(dnp no)
 		(uuid "8db62e07-9285-4b5e-aeec-9bbadfc74f06")
 		(property "Reference" "C451"
-			(at 146.69 144.02 0)
+			(at 144.78 137.07 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 146.69 145.8 0)
+			(at 144.78 139.04 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -30076,7 +30345,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 144.78 152.4 0)
+			(at 144.78 152.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -30157,7 +30426,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 119.38 180.34 0)
+			(at 123.26 177.80 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -30234,6 +30503,783 @@
 			(type default)
 		)
 		(uuid "0f84be3d-6e4b-4496-a9cf-f52496704b45")
+	)
+	(wire
+		(pts
+			(xy 93.98 81.28) (xy 93.98 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "77bc3244-aef4-4547-8eee-9a65dfb403b8")
+	)
+	(junction
+		(at 93.98 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "80c66588-2efd-454b-aa47-bdce0b97286e")
+	)
+	(symbol
+		(lib_id "Power_Protection:TVS2200DRV")
+		(at 93.98 92.71 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "fe91825d-7a06-4886-9815-9ec6dce3af5f")
+		(property "Reference" "D401"
+			(at 74.48 93.00 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TVS2200DRVR"
+			(at 74.48 94.96 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SON:WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tvs2200.pdf"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Flat-clamp surge protection, 22 V standoff, WSON-6 2x2"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C523793"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TVS2200DRVR"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "VBUS flat-clamp TVS (TI's recommendation for the TPS25751; on its EVM): 22 V standoff, 24.6 V breakdown min, 28 V clamp at 40 A 8/20 us, 105 pF. Replaces the SMAJ22A (35.5 V clamp; review 4 C-4). Pins 1-3 + EP to GND, 4-6 to VBUS"
+			(at 93.98 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6dbb758c-0a2c-43da-8f90-463389a490b6")
+		)
+		(pin "2"
+			(uuid "2b2aeacb-7701-49da-9b4f-0d65263727aa")
+		)
+		(pin "3"
+			(uuid "71ff0cd8-8430-40fe-8c82-b1a59ac4fef4")
+		)
+		(pin "4"
+			(uuid "f3fb652a-12f4-46d8-9a05-262eb24cb574")
+		)
+		(pin "5"
+			(uuid "d5c4b7b5-8df1-4420-a916-831fc1be3f87")
+		)
+		(pin "6"
+			(uuid "85848c27-bee6-425d-97fb-3351735ae5ab")
+		)
+		(pin "7"
+			(uuid "f79f1137-3772-4691-97eb-b508fcc03788")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D501")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 121.92 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6d410b3d-7a3b-4826-a91b-9ef035faba2e")
+		(property "Reference" "TP415"
+			(at 121.92 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CC1"
+			(at 121.92 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 121.92 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 121.92 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1d2fd218-9efe-4308-bd69-05069fe6be95")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP515")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP415")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "CC1"
+		(at 121.92 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f1458e1f-ea22-4f22-b8d1-e524f8b30cd1")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 137.16 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "5625838d-fbdd-41c7-ac3c-89db16c0df17")
+		(property "Reference" "TP416"
+			(at 137.16 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CC2"
+			(at 137.16 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 137.16 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3c4f0efa-c66b-449b-8944-098e3eb59bc6")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP516")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP416")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "CC2"
+		(at 137.16 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c0862b6a-6d81-4b13-a630-b54a1d45fbfd")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 152.4 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ee3f6299-a075-409e-a552-bac1b8135f3f")
+		(property "Reference" "TP417"
+			(at 152.40 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SBU_FLT"
+			(at 152.40 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 152.4 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 152.4 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1fbadfa4-0b79-437e-ab84-78860afe880a")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP517")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP417")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SBU_FLT"
+		(at 152.4 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9c15911b-2961-4863-93a4-23e77ed7625d")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 167.64 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "50e2a1d3-5f60-45d8-8d31-80d6814a2d44")
+		(property "Reference" "TP418"
+			(at 167.64 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SBU1_SNS"
+			(at 167.64 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 167.64 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 167.64 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 167.64 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "640d1cac-d5f8-48ea-a05a-86855ea705c8")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP518")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP418")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SBU1_SNS"
+		(at 167.64 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d30d3d76-c6c3-41e1-b638-13e3df307633")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 182.88 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0907756c-29b0-424d-9606-19edd1cf37d9")
+		(property "Reference" "TP419"
+			(at 182.88 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SBU2_SNS"
+			(at 182.88 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 182.88 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 182.88 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 182.88 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ea369bab-23e5-4e01-9382-52b40efc812e")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP519")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP419")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SBU2_SNS"
+		(at 182.88 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9ef57378-d0dc-46f3-92be-c8f2ce947a95")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 198.12 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "adbd4bdb-8999-4e51-bfd8-bdb526675878")
+		(property "Reference" "TP420"
+			(at 198.12 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LIQ_PU"
+			(at 198.12 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 198.12 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 198.12 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 198.12 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3d7866db-fece-406f-9223-230f1dfa90b3")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP520")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP420")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "LIQ_PU"
+		(at 198.12 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0a9666f8-3bd2-4830-8e4d-ad50c4841dc1")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 213.36 312.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4d185e77-dad8-4108-9d0d-83560f94f860")
+		(property "Reference" "TP421"
+			(at 213.36 304.60 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LIQ_PD"
+			(at 213.36 306.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 213.36 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 213.36 312.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c41195d6-7f6c-4eac-95f2-0ad00384b248")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP521")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP421")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "LIQ_PD"
+		(at 213.36 312.42 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cd9df4f0-5fb7-43a1-aa8b-1b4f26b98bd9")
 	)
 	(sheet_instances
 		(path "/"
