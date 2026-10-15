@@ -8,7 +8,7 @@ Draft 5, 2026-10-11 (gauge network, charger ACUV/ACOV, USB ESD and cell holders 
 
 A roomy prototype of the complete Monolith production circuit, used for:
 - BQ40Z50-R2 gauge chemistry ID, learning cycle and golden-image export
-- STM32WB firmware, Bluetooth and iPhone app bring-up
+- CC2340 firmware (TI LPF3 SDK), Bluetooth and iPhone app bring-up
 - Testing both USB-C PD ports together (shared I2C bus, pass-through, dual-port charging, USB1/USB2 power sharing)
 - Measuring sleep current on an oscilloscope
 
@@ -32,7 +32,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 | VBUS1 / VBUS2 | USB-C port 1 / port 2 VBUS |
 | PPHV1 / PPHV2 | Each TPS25751's high-voltage power path node to its charger |
 | PP5V1 / PP5V2 | Each port's 5 V supply into its TPS25751 PP5V pin |
-| SDA / SCL | STM32WB I2C bus (gauge + both PD controllers) |
+| SDA / SCL | MCU I2C bus (gauge, both PD controllers, TMP1075 sensors) |
 | I2CC1_SDA/SCL, I2CC2_SDA/SCL | Each TPS25751's private controller bus (its BQ25756 + its EEPROM) |
 
 ## 1. Cell inputs
@@ -59,14 +59,14 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
 - **TS1–TS4:** one cell thermistor each (10 kΩ 103-type NTC; internal 18 kΩ pull-up), enabled in data flash.
 - **PRES/SHUTDN:** to VSS (system always present). **FUSE (rev A6):** to Q104's gate through R126 5.1 kΩ (net GAUGE_FUSE); it drives the F102 heater and reads U102's trip. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
-- **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
+- **BTP_INT:** through Q103 onto the shared IRQ_N line (rev A7; R114 now DNP, pull-up R314 on the MCU sheet) and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
 - **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
 - **EV2400 header:** 4-pin 2.54 mm in the EV2400 SMBus port order (rev A4): 1 VSS, 2 SMBC, 3 SMBD, 4 not used.
 
 ## 3. Power path split and sleep-current measurement
 
 - PACK_P feeds the **high-current branch** directly: both BQ25756 power stages (battery side) and both TPS62933 inputs. No measurement resistor on these.
-- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (R201, 1 %, 1206; the fitted 1206W4F100JT5E is 1/4 W: fine for the ~0.4 W start-up pulse and < 2 mW steady state, and it opens as a fuse if U204 fails short) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ STM32WB, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
+- PACK_P also feeds the **low-current branch** through **R_MEAS = 10 Ω** (R201, 1 %, 1206; the fitted 1206W4F100JT5E is 1/4 W: fine for the ~0.4 W start-up pulse and < 2 mW steady state, and it opens as a fuse if U204 fails short) to PACK_LP. PACK_LP feeds the TPS62177 3.3 V converter (→ CC2340R5MODA, both TPS25751s). Expected draw is a few mA at most (~80 mV drop at 8 mA).
 - The gauge itself is **not** on this branch: TI requires its BAT supply straight from the cells so it stays alive with the protection FETs off. (Dropped 2026-10-13: a third INA190 on the gauge's BAT feed. Measure the gauge current as the drop across R105, 100 Ω in the BAT feed: 50–340 µA = 5–34 mV, with the pack on battery only.)
 - **Two TI INA190 current-sense amplifiers** across R_MEAS (IN+ = PACK_P side, IN− = PACK_LP side; high-side, common mode ~12–17 V is within range):
   - **U_AMP_LO: INA190A5IDDFR** (gain 500, SOT-23-8 with ENABLE) → 5 mV per µA, ~0.99 mA full scale on a 5 V supply, 27 kHz bandwidth (sleep detail). If JLC doesn't stock the A5, use INA190A4 (gain 200 → 2 mV/µA, ~2.5 mA full scale; LCSC C2059766, SC-70-6, no ENABLE pin)
@@ -82,50 +82,58 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 - **U_3V3:** TPS62177DQCR fixed 3.3 V buck (LCSC C91241), input from PACK_LP.
 - Inductor: Changjiang FNR4030S100MT, 10 µH, 130 mΩ (LCSC C167879; was Bourns SRN4018TA-100M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
-- SNOOZE / sleep pin to an STM32WB GPIO (spare pin; *TBD*).
+- SLEEP pin to CC2340 DIO21 (3V3_SLEEP), with R313 470 kΩ to 3V3 to hold normal mode while the MCU is in reset.
 - 0 Ω link in the 3V3 output (to break the rail for debugging) and a test point.
-- Loads: STM32WB, both TPS25751 VIN_3V3, I2C pull-ups, NTC dividers.
+- Loads: CC2340R5MODA, both TPS25751 VIN_3V3, I2C pull-ups, TMP1075 sensors.
 
-## 5. MCU and Bluetooth (STM32WB1MMC)
+## 5. MCU and Bluetooth (CC2340R5MODA, rev A7)
 
-- **U_MCU:** STM32WB1MMC module, powered from 3V3 with the module datasheet's decoupling; antenna end at a board edge with the module's keep-out (no copper, no ground pour).
-- Pin map (same as production; checked against DS13258 table 15 on 2026-10-11, see `DevBoard/README.md`):
+- **U301:** TI CC2340R5MODA module (BLE only; Cortex-M0+, 512 kB flash, 64 kB RAM; on-chip OTA updates), wired per SWRS349A fig. 9-1. It replaced the STM32WB1MMC in rev A7 (`cc2340-pin-budget.md`, `DevBoard/README.md` item 40).
+- **Supply:** VDDS from 3V3 through R301 (0 Ω) as 3V3_MCU, with C301–C303.
+- **Reset:** R302 100k pull-up and C304 100 nF on RSTN (fig. 9-1 R1/C92); reset button SW301.
+- **Antenna:** integrated, at a board edge with ground 10–20 mm either side. A 7.0 × 3.2 mm keep-out on all layers is drawn in the footprint (fig. 9-2).
+    - RFIO → C313 15 pF (CA1) → R321 0 Ω (Z61) → ANT_IN.
+    - Shunts: C314 (Z60) DNP, C315 1 pF (Z62). These are the LaunchPad values; retune them on the real board.
+- **Clock:** no 32 kHz crystal. LFOSC, calibrated against the module's 48 MHz crystal, is fine for BLE.
+- **Pin map:** 12 DIOs, two of them SWD, so 10 for the board. All 10 are used:
 
-| Pin | Net / use |
+| DIO (pad) | Net / use |
 |---|---|
-| PA0 | IRQ1 — TPS25751 port 1 I2Ct_IRQ (internal pull-up) |
-| PA2 | IRQ2 — TPS25751 port 2 I2Ct_IRQ (internal pull-up) |
-| PB6 / PB7 | SCL / SDA (I2C1), 4.7 kΩ pull-ups to 3V3, 100 kHz |
-| PA1 | NTC TH1 (port 1 power stage) |
-| PA3 | NTC TH2 (port 2 power stage) |
-| PA4 | NTC TH3 (connectors) |
-| PA5 | NTC TH4 (heatsink position) |
-| PA8 | NTC_EN — supply for the four NTC dividers |
-| PA11 | EN_5V1 — TPS62933 port 1 enable |
-| PA12 | EN_5V2 — TPS62933 port 2 enable |
-| PB0 / PB1 / PB2 | not connected (ST: RF-sensitive pins) |
-| PB4 | 3V3_SLEEP — TPS62177 SLEEP (resets with a pull-up, so the rail boots in normal mode) |
-| PA13 / PA14 / NRST | SWD |
-| BOOT0 | 10 kΩ pull-down; TP306 pad to pull it high for the UART bootloader (reset button SW301 on NRST) |
-| PA9 / PA10 | UART debug TX / RX (USART1) |
-| PA6 | GAUGE_BTP — BQ40Z50-R2 BTP_INT through a 2N7002 (Q103), 100 kΩ pull-up: **active low** |
-| PB5 | status LED |
-| PB8 | CHG_INH (rev A4; polarity rev A5) — drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
-| PA7 | NTC_TH5 (rev A5): TH305 at the protection FETs, ADC1_IN2, same 10k/0.1 µF divider from NTC_EN; also on J303 pin 2 for probing |
-| Spares | 2.54 mm header J303 (NTC_TH5, NTC_EN, EN_5V1, EN_5V2, CHG_INH through 1 k for probing) |
+| DIO6 (9) / DIO8 (10) | SCL / SDA (I2C0; SCL can only use DIO6 or DIO24), 4.7 kΩ pull-ups to 3V3, 100 kHz |
+| DIO18 (16) / DIO20 (17) | UART debug TX / RX (UART0) |
+| DIO12 (18) | Status LED (high-drive) |
+| DIO24 (11) | CHG_INH: drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
+| DIO3 (12) / DIO4 (13) | EN_5V1 / EN_5V2: TPS62933 enables, 100 kΩ pull-downs |
+| DIO21 (15) | 3V3_SLEEP: TPS62177 SLEEP. R313 470 kΩ holds the rail in normal mode while the MCU is in reset |
+| DIO11 (21) | IRQ_N: TPS25751 I2Ct_IRQ ×2, gauge BTP (via Q103) and the TMP1075 ALERTs, all open-drain, wire-ORed; one 100 kΩ pull-up (R314). Active low; wakes the MCU from standby |
+| DIO16 (20) / DIO17 (19) / RSTN (14) | SWD |
+| Spares | 2.54 mm header J303: 3V3, IRQ_N probe, EN_5V1, EN_5V2, CHG_INH (the last three through 1 k for probing/override) |
 
-- **SWD header:** standard 10-pin 1.27 mm Cortex debug (or 5-pin 2.54 mm: 3V3, SWDIO, SWCLK, NRST, GND) for an ST-LINK.
+- **SWD header:** J301, 10-pin 1.27 mm Cortex debug, for a TI XDS110.
 - **UART header:** 3-pin (TX, RX, GND).
-- One status LED on a spare GPIO (with a 0 Ω link so it can be removed for sleep measurements).
+- **Status LED:** one, with a 0 Ω link (R307) so it can be removed for sleep measurements.
+- **Bootloader:** the ROM serial bootloader runs on a blank part; later, a CCFG backdoor pin set in firmware.
+- **Watchdog:** the WDT runs in active, idle and standby, and can't be stopped once enabled. GPIOs are latched in standby.
 
-## 6. Board NTCs (STM32WB)
+## 6. Board temperature sensors (TMP1075, rev A7)
 
-- Four 10 kΩ 1% NTCs (B ≈ 3380–3435, 0603): TH1 beside port 1 FETs/inductor, TH2 beside port 2, TH3 between the two USB-C connectors on VBUS/GND copper, TH4 on a bare copper pad where the heatsink plate would sit.
-- Each NTC from its ADC pin to GND, with a 10 kΩ 1 % (UNI-ROYAL 0805W8F1002T5E, C17414; was 0.1 %, about 0.25 °C difference) from the ADC pin to NTC_EN (PA8). 100 nF at each ADC pin.
+- **TMP1075DSGR (WSON-8 2 × 2 mm) on the shared I2C bus.** Each exposed pad sits on the copper it measures, tied to GND with thermal vias. 0.1 µF bypass at each (C308–C312).
+
+| Ref | Address | Where | Fitted |
+|---|---|---|---|
+| U302 | 0x48 | Port 1 power stage (FETs/inductor PGND copper; was TH301) | Yes |
+| U303 | 0x49 | Port 2 power stage (was TH302) | Yes |
+| U304 | 0x4A | Between the USB-C connectors, on GND copper (TH303 sat on VBUS) | Yes |
+| U305 | 0x4B | Heatsink-plate spot (was TH304) | DNP |
+| U306 | 0x4C | Protection FETs Q101/Q102 (was TH305) | DNP: FET over-temperature comes from the gauge's internal sensor (OTD/OTC); fit this if the gauge die lags the FETs |
+
+- **Address straps:** A0/A1/A2 tied to GND or 3V3 (SBOS854F table 7-2).
+- **ALERT:** open-drain, comparator mode, active low; power-up default trip is 80 °C. All ALERTs share IRQ_N, so an over-temperature wakes the MCU.
+- **What other parts already sense:** cells on gauge TS1–TS4; each charger stage on its BQ25756 TS NTC (hardware stop at about 95 °C). The MCU sensors drive the 20 W throttle before that hard stop.
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 
-Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (checked against TI datasheets), with these updates.
+Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`; checked against TI datasheets), with these updates.
 
 ### 7.1 Connector and protection
 - **J1 / J2:** Shou Han TYPE-C 16PCB1.6 IP68 (LCSC C55629729; the 1.6 mm board version of the 16PCB0.8, same land pattern), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
@@ -138,7 +146,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.2 PD controller (TPS25751D)
 - **U_PDx:** TPS25751DREFR (LCSC C30169739). VIN_3V3 from 3V3; LDO_3V3, LDO_1V5, VBUS, PP5V capacitors per datasheet.
 - **I2C address / dead-battery straps (SafeMode):** port 1: ADCIN1 → LDO_3V3, ADCIN2 → GND (address 0x20). Port 2: ADCIN1 → GND, ADCIN2 → GND (0x21). Add unpopulated divider footprints on each ADCIN so other strap options can be tried.
-- I2Ct (target) SDA/SCL → shared SDA/SCL. I2Ct_IRQ → IRQ1 / IRQ2.
+- I2Ct (target) SDA/SCL → shared SDA/SCL. I2Ct_IRQ → IRQ_N (shared with the other port, the gauge BTP and the TMP1075 ALERTs, rev A7).
 - I2Cc (controller) → this port's private bus I2CCx_SDA/SCL with pull-ups to this TPS25751's **LDO_3V3** (TI guidance); I2Cc_IRQ ← its BQ25756 INT.
 - PPHV → PPHVx (to the charger's input side). PP5V ← PP5Vx.
 - **EEPROM:** ST M24512-DFMC6TG, 512 Kbit, DFN8 2 × 3 mm (LCSC C222237) on I2CCx at address 0x50, powered from this TPS25751's LDO_3V3. WC (write control) to GND. Add a 3-pin header on each I2CCx bus (SDA, SCL, GND) for a logic analyzer.
@@ -165,7 +173,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
     - Divider draws ~107 µA only while VAC is powered (cable attached)
     - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the SMAJ22A breakdown
     - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
-- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv`.
+- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`).
 - STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
 
 ### 7.4 5 V supply for PP5V (TPS62933)
@@ -173,15 +181,15 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
 - Inductor: Coilank APS0530M3R3H, 3.3 µH, 38 mΩ, Irms 5 A, Isat 8 A (LCSC C49073587; was Bourns SRP5030T-3R3M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`).
 - Output 2 × 22 µF 35 V 1206 plus at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
-- EN ← EN_5Vx (STM32WB) with a pull-down so it's off by default.
+- EN ← EN_5Vx (MCU) with a pull-down so it's off by default.
 
 ## 8. Test points and links
 
-- Test points on: CELL_P, CELL_N, CELL1–3, PACK_P, PACK_LP, 3V3, each VBUSx, PPHVx, PP5Vx, REGNx, SW1x/SW2x (scope-probe friendly, with nearby GND), SDA, SCL, each I2CCx, IRQ1, IRQ2.
+- Test points on: CELL_P, CELL_N, CELL1–3, PACK_P, PACK_LP, 3V3, each VBUSx, PPHVx, PP5Vx, REGNx, SW1x/SW2x (scope-probe friendly, with nearby GND), SDA, SCL, each I2CCx, IRQ_N.
 - 0 Ω links (0805) to isolate blocks: 3V3 to each TPS25751 VIN_3V3, 3V3 to the MCU, PACK_P to each TPS62933, PACK_P to each charger's battery side (use a wide copper link footprint rated for the full current).
 - Mounting holes ×6 (M3) and rubber feet or standoffs.
 
 ## Open items before ProtoFlow
 
 - INA190A5 / INA190A1: decided 2026-10-11 to buy from DigiKey/Mouser and hand-solder (JLC stock too low)
-- Confirm the STM32WB1MMC pin map in CubeMX
+- Confirm the CC2340R5MODA pin map in SysConfig when the firmware project is set up

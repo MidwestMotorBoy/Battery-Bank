@@ -6,12 +6,12 @@
 	(paper "A2")
 	(title_block
 		(title "USB-C PD port (used twice)")
-		(date "2026-10-11")
-		(rev "A (draft)")
+		(date "2026-10-14")
+		(rev "A6")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "TPS25751D + BQ25756 + TPS62933; port 1 = 4xx, port 2 = 5xx")
 		(comment 2 "Spec + open items: DevBoard/README.md")
-		(comment 3 "Not reviewed, laid out, built or tested")
+		(comment 3 "Reviewed 3x (docs/devboard); board placed, not routed or built")
 	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"
@@ -5704,7 +5704,7 @@
 	)
 	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.08 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
-		(at 40.64 184.15 0)
+		(at 40.64 186.69 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -5740,7 +5740,7 @@
 	)
 	(text "I2Cc BUS: EEPROM + PULL-UPS"
 		(exclude_from_sim no)
-		(at 238.76 111.76 0)
+		(at 238.76 121.92 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -25255,7 +25255,7 @@
 		)
 		(uuid "b56cb527-ae11-4704-88c4-1d130ddd8ef7")
 	)
-	(text "LIQUID DETECTION  (TPS25751 fig. 9-8)"
+	(text "CC/SBU PROTECTION (TPD4S201) + LIQUID DETECTION"
 		(exclude_from_sim no)
 		(at 30.48 133.35 0)
 		(effects
@@ -25270,7 +25270,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.80 137.16) (xy 55.88 137.16)
+			(xy 50.8 139.7) (xy 55.88 139.7)
 		)
 		(stroke
 			(width 0)
@@ -25279,7 +25279,7 @@
 		(uuid "d54a1a5e-1a4f-45e1-9330-8f7b13465020")
 	)
 	(label "LDO_3V3"
-		(at 55.88 137.16 0)
+		(at 55.88 139.7 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25290,7 +25290,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:Q_PMOS_GSD")
-		(at 48.26 142.24 0)
+		(at 48.26 144.78 0)
 		(mirror x)
 		(unit 1)
 		(body_style 1)
@@ -25301,7 +25301,7 @@
 		(dnp no)
 		(uuid "5e5aadc2-a18d-45eb-889c-e3d8c6590ff8")
 		(property "Reference" "Q403"
-			(at 49.21 133.15 0)
+			(at 49.21 135.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25311,7 +25311,7 @@
 			)
 		)
 		(property "Value" "AO3401A"
-			(at 49.21 135.12 0)
+			(at 49.21 137.66 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25321,7 +25321,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25332,7 +25332,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25343,7 +25343,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25354,7 +25354,7 @@
 			)
 		)
 		(property "LCSC" "C15127"
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25365,7 +25365,7 @@
 			)
 		)
 		(property "MPN" "AO3401A (AOS)"
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25376,7 +25376,7 @@
 			)
 		)
 		(property "Notes" "Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low"
-			(at 48.26 142.24 0)
+			(at 48.26 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25409,7 +25409,7 @@
 		)
 	)
 	(label "LIQ_PU"
-		(at 43.18 142.24 180)
+		(at 43.18 144.78 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25420,7 +25420,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 50.80 151.13 0)
+		(at 50.8 153.67 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25430,7 +25430,7 @@
 		(dnp no)
 		(uuid "af94c8a1-b54b-4e50-a4f5-bb9661675793")
 		(property "Reference" "R436"
-			(at 55.03 150.00 0)
+			(at 55.03 152.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25440,7 +25440,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 55.03 151.96 0)
+			(at 55.03 154.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25450,7 +25450,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 50.80 151.13 0)
+			(at 50.8 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25461,7 +25461,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 50.80 151.13 0)
+			(at 50.8 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25472,7 +25472,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 50.80 151.13 0)
+			(at 50.8 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25483,7 +25483,7 @@
 			)
 		)
 		(property "LCSC" "C25803"
-			(at 50.80 151.13 0)
+			(at 50.8 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25494,7 +25494,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1003T5E"
-			(at 50.80 151.13 0)
+			(at 50.8 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25525,7 +25525,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.80 154.94) (xy 55.88 154.94)
+			(xy 50.8 157.48) (xy 55.88 157.48)
 		)
 		(stroke
 			(width 0)
@@ -25534,7 +25534,7 @@
 		(uuid "d1216262-1112-4fef-87ee-04e94e64c559")
 	)
 	(label "SBU1_SNS"
-		(at 55.88 154.94 0)
+		(at 55.88 157.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25544,14 +25544,14 @@
 		(uuid "5909bad2-ce05-469d-a257-23c9c5392cb0")
 	)
 	(junction
-		(at 50.80 154.94)
+		(at 50.8 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "20cc66f7-20e0-4aea-94b6-a6abb3fd5b94")
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 50.80 158.75 0)
+		(at 50.8 161.29 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25561,7 +25561,7 @@
 		(dnp no)
 		(uuid "fbc5db66-5291-4024-8e7e-44639dd7b4de")
 		(property "Reference" "R438"
-			(at 55.03 157.62 0)
+			(at 55.03 160.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25571,7 +25571,7 @@
 			)
 		)
 		(property "Value" "1M"
-			(at 55.03 159.58 0)
+			(at 55.03 162.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25581,7 +25581,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 50.80 158.75 0)
+			(at 50.8 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25592,7 +25592,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 50.80 158.75 0)
+			(at 50.8 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25603,7 +25603,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 50.80 158.75 0)
+			(at 50.8 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25614,7 +25614,7 @@
 			)
 		)
 		(property "LCSC" "C22935"
-			(at 50.80 158.75 0)
+			(at 50.8 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25625,7 +25625,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1004T5E"
-			(at 50.80 158.75 0)
+			(at 50.8 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25656,7 +25656,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 48.26 167.64 0)
+		(at 48.26 170.18 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25666,7 +25666,7 @@
 		(dnp no)
 		(uuid "eb755b8d-e3e5-43f4-925b-cb3ce0d59a2a")
 		(property "Reference" "Q405"
-			(at 57.73 169.20 0)
+			(at 57.73 171.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25676,7 +25676,7 @@
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 57.73 171.16 0)
+			(at 57.73 173.7 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25686,7 +25686,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25697,7 +25697,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25708,7 +25708,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25719,7 +25719,7 @@
 			)
 		)
 		(property "LCSC" "C20917"
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25730,7 +25730,7 @@
 			)
 		)
 		(property "MPN" "AO3400A (AOS)"
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25741,7 +25741,7 @@
 			)
 		)
 		(property "Notes" "Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high"
-			(at 48.26 167.64 0)
+			(at 48.26 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25774,7 +25774,7 @@
 		)
 	)
 	(label "LIQ_PD"
-		(at 43.18 167.64 180)
+		(at 43.18 170.18 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25785,7 +25785,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 50.80 172.72 0)
+		(at 50.8 175.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25795,7 +25795,7 @@
 		(dnp no)
 		(uuid "aa50bd75-ba0a-4a78-9693-eef196e42fa4")
 		(property "Reference" "#PWR581"
-			(at 50.80 172.72 0)
+			(at 50.8 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25806,7 +25806,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 54.68 173.99 0)
+			(at 54.68 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25816,7 +25816,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 50.80 172.72 0)
+			(at 50.8 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25827,7 +25827,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 50.80 172.72 0)
+			(at 50.8 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25838,7 +25838,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 50.80 172.72 0)
+			(at 50.8 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25866,7 +25866,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.20 137.16) (xy 81.28 137.16)
+			(xy 76.2 139.7) (xy 81.28 139.7)
 		)
 		(stroke
 			(width 0)
@@ -25875,7 +25875,7 @@
 		(uuid "b5563383-eafe-453e-98cd-ff9550e72088")
 	)
 	(label "LDO_3V3"
-		(at 81.28 137.16 0)
+		(at 81.28 139.7 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25886,7 +25886,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:Q_PMOS_GSD")
-		(at 73.66 142.24 0)
+		(at 73.66 144.78 0)
 		(mirror x)
 		(unit 1)
 		(body_style 1)
@@ -25897,7 +25897,7 @@
 		(dnp no)
 		(uuid "9a6c7bd4-10ca-46ed-9586-c10223f329ed")
 		(property "Reference" "Q404"
-			(at 74.61 133.15 0)
+			(at 74.61 135.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25907,7 +25907,7 @@
 			)
 		)
 		(property "Value" "AO3401A"
-			(at 74.61 135.12 0)
+			(at 74.61 137.66 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25917,7 +25917,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25928,7 +25928,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25939,7 +25939,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25950,7 +25950,7 @@
 			)
 		)
 		(property "LCSC" "C15127"
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25961,7 +25961,7 @@
 			)
 		)
 		(property "MPN" "AO3401A (AOS)"
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25972,7 +25972,7 @@
 			)
 		)
 		(property "Notes" "Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low"
-			(at 73.66 142.24 0)
+			(at 73.66 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26005,7 +26005,7 @@
 		)
 	)
 	(label "LIQ_PU"
-		(at 68.58 142.24 180)
+		(at 68.58 144.78 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26016,7 +26016,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 76.20 151.13 0)
+		(at 76.2 153.67 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26026,7 +26026,7 @@
 		(dnp no)
 		(uuid "a20ed51c-ec54-41ed-b3c5-1d54e7f3d06a")
 		(property "Reference" "R437"
-			(at 80.43 150.00 0)
+			(at 80.43 152.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26036,7 +26036,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 80.43 151.96 0)
+			(at 80.43 154.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26046,7 +26046,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 76.20 151.13 0)
+			(at 76.2 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26057,7 +26057,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.20 151.13 0)
+			(at 76.2 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26068,7 +26068,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 76.20 151.13 0)
+			(at 76.2 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26079,7 +26079,7 @@
 			)
 		)
 		(property "LCSC" "C25803"
-			(at 76.20 151.13 0)
+			(at 76.2 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26090,7 +26090,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1003T5E"
-			(at 76.20 151.13 0)
+			(at 76.2 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26121,7 +26121,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.20 154.94) (xy 81.28 154.94)
+			(xy 76.2 157.48) (xy 81.28 157.48)
 		)
 		(stroke
 			(width 0)
@@ -26130,7 +26130,7 @@
 		(uuid "fcd8792a-3345-4d1a-8049-b6595ceb8f12")
 	)
 	(label "SBU2_SNS"
-		(at 81.28 154.94 0)
+		(at 81.28 157.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26140,14 +26140,14 @@
 		(uuid "680751c7-e7ee-4a8a-bedd-671376a194a7")
 	)
 	(junction
-		(at 76.20 154.94)
+		(at 76.2 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7a2f132c-f5ea-4453-a480-b673c0a9bf15")
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 76.20 158.75 0)
+		(at 76.2 161.29 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26157,7 +26157,7 @@
 		(dnp no)
 		(uuid "1a41d165-a968-4b8a-a091-f5052617c1cb")
 		(property "Reference" "R439"
-			(at 80.43 157.62 0)
+			(at 80.43 160.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26167,7 +26167,7 @@
 			)
 		)
 		(property "Value" "1M"
-			(at 80.43 159.58 0)
+			(at 80.43 162.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26177,7 +26177,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 76.20 158.75 0)
+			(at 76.2 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26188,7 +26188,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.20 158.75 0)
+			(at 76.2 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26199,7 +26199,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 76.20 158.75 0)
+			(at 76.2 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26210,7 +26210,7 @@
 			)
 		)
 		(property "LCSC" "C22935"
-			(at 76.20 158.75 0)
+			(at 76.2 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26221,7 +26221,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1004T5E"
-			(at 76.20 158.75 0)
+			(at 76.2 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26252,7 +26252,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 73.66 167.64 0)
+		(at 73.66 170.18 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26262,7 +26262,7 @@
 		(dnp no)
 		(uuid "a38ec61d-4c96-4b12-80fd-40f554f54cf1")
 		(property "Reference" "Q406"
-			(at 83.13 166.66 0)
+			(at 83.13 169.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26272,7 +26272,7 @@
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 83.13 168.62 0)
+			(at 83.13 171.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26282,7 +26282,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26293,7 +26293,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26304,7 +26304,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26315,7 +26315,7 @@
 			)
 		)
 		(property "LCSC" "C20917"
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26326,7 +26326,7 @@
 			)
 		)
 		(property "MPN" "AO3400A (AOS)"
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26337,7 +26337,7 @@
 			)
 		)
 		(property "Notes" "Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high"
-			(at 73.66 167.64 0)
+			(at 73.66 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26370,7 +26370,7 @@
 		)
 	)
 	(label "LIQ_PD"
-		(at 68.58 167.64 180)
+		(at 68.58 170.18 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26381,7 +26381,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 76.20 172.72 0)
+		(at 76.2 175.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26391,7 +26391,7 @@
 		(dnp no)
 		(uuid "0e560212-72e5-4b50-b501-643a6a0fda74")
 		(property "Reference" "#PWR583"
-			(at 76.20 172.72 0)
+			(at 76.2 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26402,7 +26402,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 80.08 173.99 0)
+			(at 80.08 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26412,7 +26412,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 76.20 172.72 0)
+			(at 76.2 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26423,7 +26423,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.20 172.72 0)
+			(at 76.2 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26434,7 +26434,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 76.20 172.72 0)
+			(at 76.2 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26501,7 +26501,7 @@
 
 	(symbol
 		(lib_id "Device:R")
-		(at 152.4 154.94 0)
+		(at 152.4 157.48 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26511,7 +26511,7 @@
 		(dnp no)
 		(uuid "5a2fe091-0b17-441f-86e0-d711c5741f21")
 		(property "Reference" "R441"
-			(at 156.64 153.81 0)
+			(at 156.64 156.35 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26521,7 +26521,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 156.64 155.77 0)
+			(at 156.64 158.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26531,7 +26531,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26542,7 +26542,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26553,7 +26553,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26564,7 +26564,7 @@
 			)
 		)
 		(property "LCSC" "C25803"
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26575,7 +26575,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1003T5E"
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26586,7 +26586,7 @@
 			)
 		)
 		(property "Notes" "TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM"
-			(at 152.4 154.94 0)
+			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26616,7 +26616,7 @@
 		)
 	)
 	(label "LDO_3V3"
-		(at 152.4 151.13 0)
+		(at 152.4 153.67 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29397,7 +29397,7 @@
 	)
 	(symbol
 		(lib_id "MonolithDev:TPD4S201")
-		(at 121.92 157.48 0)
+		(at 121.92 160.02 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -29407,7 +29407,7 @@
 		(dnp no)
 		(uuid "589aa16b-72d8-434e-a4b5-9de2925e90da")
 		(property "Reference" "U405"
-			(at 108.00 142.24 0)
+			(at 108 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29418,7 +29418,7 @@
 			)
 		)
 		(property "Value" "TPD4S201TRGRRQ1"
-			(at 126.00 175.26 0)
+			(at 126 177.8 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29429,7 +29429,7 @@
 			)
 		)
 		(property "Footprint" "MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm"
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29440,7 +29440,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29451,7 +29451,7 @@
 			)
 		)
 		(property "Description" "USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels"
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29462,7 +29462,7 @@
 			)
 		)
 		(property "LCSC" "C49305973"
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29473,7 +29473,7 @@
 			)
 		)
 		(property "MPN" "TPD4S201TRGRRQ1 (TPD4S201-Q1)"
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29484,7 +29484,7 @@
 			)
 		)
 		(property "Notes" "Replaces the TPD2S300 DSBGA (2026-10-14, 6-layer board with 0.3 mm vias). Wiring as TI TPS25751EVM fig. 5-5: CC and SBU both pass through it; RPD_G1/2 to C_CC1/2 (dead-battery Rd, DRP); VPWR 1 uF, VBIAS 0.1 uF 50 V; FLT -> GPIO3. Place close to the connector"
-			(at 121.92 157.48 0)
+			(at 121.92 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29571,7 +29571,7 @@
 		)
 	)
 	(label "C_CC1"
-		(at 105.41 146.05 180)
+		(at 105.41 148.59 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29581,7 +29581,7 @@
 		(uuid "16d7914c-e0f8-4b9f-9663-8466ec7ad7b8")
 	)
 	(label "C_CC2"
-		(at 105.41 148.59 180)
+		(at 105.41 151.13 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29591,7 +29591,7 @@
 		(uuid "98fcf556-4a52-4e84-ad87-9152f5b52693")
 	)
 	(label "C_CC1"
-		(at 105.41 153.67 180)
+		(at 105.41 156.21 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29601,7 +29601,7 @@
 		(uuid "131757b7-3bb7-4fe3-8c19-d05f21b5e1b6")
 	)
 	(label "C_CC2"
-		(at 105.41 156.21 180)
+		(at 105.41 158.75 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29611,7 +29611,7 @@
 		(uuid "4f580455-bd16-42b4-b2c1-ea063d1024fd")
 	)
 	(label "SBU1"
-		(at 105.41 161.29 180)
+		(at 105.41 163.83 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29621,7 +29621,7 @@
 		(uuid "845e80f5-f14a-43f1-81e1-83f9a8b019fd")
 	)
 	(label "SBU2"
-		(at 105.41 163.83 180)
+		(at 105.41 166.37 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29631,7 +29631,7 @@
 		(uuid "baf3d8d6-36a6-414f-b948-ff2e0df25589")
 	)
 	(label "CC1"
-		(at 138.43 146.05 0)
+		(at 138.43 148.59 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29641,7 +29641,7 @@
 		(uuid "6e344345-4093-4a64-ab80-4582c9eaf8c5")
 	)
 	(label "CC2"
-		(at 138.43 148.59 0)
+		(at 138.43 151.13 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29651,7 +29651,7 @@
 		(uuid "64d1bbb6-cee8-41c7-a6b2-a4c93def70e9")
 	)
 	(label "SBU1_SNS"
-		(at 138.43 161.29 0)
+		(at 138.43 163.83 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29661,7 +29661,7 @@
 		(uuid "f20e17d7-28c3-4bdf-9877-a3e6d8df4f1d")
 	)
 	(label "SBU2_SNS"
-		(at 138.43 163.83 0)
+		(at 138.43 166.37 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29671,7 +29671,7 @@
 		(uuid "23c0e642-be53-4dc3-88ee-2cf1a086665b")
 	)
 	(label "SBU_FLT"
-		(at 138.43 168.91 0)
+		(at 138.43 171.45 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -29682,7 +29682,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 140.97) (xy 119.38 137.16)
+			(xy 119.38 143.51) (xy 119.38 139.7)
 		)
 		(stroke
 			(width 0)
@@ -29692,7 +29692,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 137.16) (xy 93.98 137.16)
+			(xy 81.28 139.7) (xy 93.98 139.7)
 		)
 		(stroke
 			(width 0)
@@ -29702,7 +29702,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 137.16) (xy 119.38 137.16)
+			(xy 93.98 139.7) (xy 119.38 139.7)
 		)
 		(stroke
 			(width 0)
@@ -29711,14 +29711,14 @@
 		(uuid "7159d851-8161-4baa-8206-7a2b5ef20133")
 	)
 	(junction
-		(at 93.98 137.16)
+		(at 93.98 139.7)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2d0e045b-b25a-4328-973a-4a6fcba6e548")
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 93.98 140.97 0)
+		(at 93.98 143.51 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -29728,7 +29728,7 @@
 		(dnp no)
 		(uuid "ea80ad51-dabf-4116-8b2d-31b5a9fe18c9")
 		(property "Reference" "C452"
-			(at 95.89 140.21 0)
+			(at 95.89 142.75 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29739,7 +29739,7 @@
 			)
 		)
 		(property "Value" "1u 50V"
-			(at 95.89 141.99 0)
+			(at 95.89 144.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29750,7 +29750,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29761,7 +29761,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29772,7 +29772,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29783,7 +29783,7 @@
 			)
 		)
 		(property "LCSC" "C15849"
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29794,7 +29794,7 @@
 			)
 		)
 		(property "MPN" "CL10A105KB8NNNC"
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29805,7 +29805,7 @@
 			)
 		)
 		(property "Notes" "TPD4S201 VPWR decoupling (EVM C68: 1 uF)"
-			(at 93.98 140.97 0)
+			(at 93.98 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29836,7 +29836,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 93.98 144.78 0)
+		(at 93.98 147.32 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -29846,7 +29846,7 @@
 		(dnp no)
 		(uuid "e7cf7ddd-651d-475c-bdcf-c63ddb2c713b")
 		(property "Reference" "#PWR603"
-			(at 93.98 144.78 0)
+			(at 93.98 147.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29857,7 +29857,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 93.98 148.59 0)
+			(at 93.98 151.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29867,7 +29867,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 93.98 144.78 0)
+			(at 93.98 147.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29878,7 +29878,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 93.98 144.78 0)
+			(at 93.98 147.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29889,7 +29889,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 93.98 144.78 0)
+			(at 93.98 147.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29917,7 +29917,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 140.97) (xy 124.46 138.43)
+			(xy 124.46 143.51) (xy 124.46 140.97)
 		)
 		(stroke
 			(width 0)
@@ -29927,7 +29927,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 138.43) (xy 144.78 138.43)
+			(xy 124.46 140.97) (xy 144.78 140.97)
 		)
 		(stroke
 			(width 0)
@@ -29937,7 +29937,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 144.78 142.24 0)
+		(at 144.78 144.78 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -29947,7 +29947,7 @@
 		(dnp no)
 		(uuid "8db62e07-9285-4b5e-aeec-9bbadfc74f06")
 		(property "Reference" "C451"
-			(at 146.69 141.48 0)
+			(at 146.69 144.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29958,7 +29958,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 146.69 143.26 0)
+			(at 146.69 145.8 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -29969,7 +29969,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29980,7 +29980,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29991,7 +29991,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30002,7 +30002,7 @@
 			)
 		)
 		(property "LCSC" "C14663"
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30013,7 +30013,7 @@
 			)
 		)
 		(property "MPN" "CC0603KRX7R9BB104"
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30024,7 +30024,7 @@
 			)
 		)
 		(property "Notes" "TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)"
-			(at 144.78 142.24 0)
+			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30055,7 +30055,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 144.78 146.05 0)
+		(at 144.78 148.59 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -30065,7 +30065,7 @@
 		(dnp no)
 		(uuid "ec22ba27-d0de-4e13-af55-3b8f1d33f1b0")
 		(property "Reference" "#PWR605"
-			(at 144.78 146.05 0)
+			(at 144.78 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30076,7 +30076,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 144.78 149.86 0)
+			(at 144.78 152.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -30086,7 +30086,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 144.78 146.05 0)
+			(at 144.78 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30097,7 +30097,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 144.78 146.05 0)
+			(at 144.78 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30108,7 +30108,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 144.78 146.05 0)
+			(at 144.78 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30136,7 +30136,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 119.38 173.99 0)
+		(at 119.38 176.53 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -30146,7 +30146,7 @@
 		(dnp no)
 		(uuid "8ed19a68-2902-499c-b731-aa0f31a944ce")
 		(property "Reference" "#PWR607"
-			(at 119.38 173.99 0)
+			(at 119.38 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30157,7 +30157,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 119.38 177.80 0)
+			(at 119.38 180.34 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -30167,7 +30167,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 119.38 173.99 0)
+			(at 119.38 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30178,7 +30178,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 119.38 173.99 0)
+			(at 119.38 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30189,7 +30189,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 119.38 173.99 0)
+			(at 119.38 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30217,7 +30217,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 158.75) (xy 152.4 168.91)
+			(xy 152.4 161.29) (xy 152.4 171.45)
 		)
 		(stroke
 			(width 0)
@@ -30227,7 +30227,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 168.91) (xy 152.4 168.91)
+			(xy 138.43 171.45) (xy 152.4 171.45)
 		)
 		(stroke
 			(width 0)

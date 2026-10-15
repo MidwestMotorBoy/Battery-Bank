@@ -49,3 +49,5 @@ cl31-4u7-50v-c406.pdf,4.7 uF 50 V 1206 (C406),Charger input cap,https://www.lcsc
 tpd4s201.pdf,TI TPD4S201,USB-C CC + SBU port protector (RUK),https://www.ti.com/lit/ds/symlink/tpd4s201.pdf
 tpd4s201-q1.pdf,TI TPD4S201-Q1,USB-C CC + SBU port protector U405/U505 (RGR package fitted),https://www.ti.com/lit/ds/symlink/tpd4s201-q1.pdf
 usb-c-16pcb1.6-ip68.pdf,Shou Han TYPE-C 16PCB1.6 IP68,USB-C connector for the 1.6 mm board (x2),https://www.lcsc.com/datasheet/C55629729.pdf
+cc2340r5moda.pdf,TI CC2340R5MODA,BLE module U301 (rev A7; replaces STM32WB1MMC),https://www.ti.com/lit/ds/symlink/cc2340r5moda.pdf
+tmp1075.pdf,TI TMP1075,I2C board temperature sensors U302-U306 (rev A7; replace the NTCs),https://www.ti.com/lit/ds/symlink/tmp1075.pdf

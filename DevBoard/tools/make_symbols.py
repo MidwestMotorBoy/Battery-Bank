@@ -161,6 +161,17 @@ syms.append(symbol("STM32WB1MMC", "U",
     fp="", ds="https://www.st.com/resource/en/datasheet/stm32wb1mmc.pdf",
     desc="STM32WB15 Bluetooth LE module with integrated antenna", width=22.86))
 
+# TI CC2340R5MODA Bluetooth LE module, MHA0024A QFM-24 7 x 10 mm. SWRS349A table 6-1 / fig. 9-1.
+# Right side grouped by the pin plan in docs/devboard/cc2340-pin-budget.md (I2C, UART, outputs, IRQ).
+syms.append(symbol("CC2340R5MODA", "U",
+    left=[([6, 7], "VDDS", PI), None, (14, "RSTN", I), None, (3, "ANT_IN", P), (4, "RFIO", P), None,
+          (20, "DIO16/SWDIO", B), (19, "DIO17/SWDCK", B), None, ([1, 2, 5, 8, 22, 23, 24], "GND", PI)],
+    right=[(9, "DIO6_A1", B), (10, "DIO8", B), None, (16, "DIO18", B), (17, "DIO20_A11", B), (18, "DIO12", B), None,
+           (11, "DIO24_A7", B), (12, "DIO3_X32P", B), (13, "DIO4_X32N", B), (15, "DIO21_A10", B), None,
+           (21, "DIO11", B)],
+    fp="MonolithDev:TI_MHA0024A_CC2340R5MODA_7x10mm", ds=TI + "cc2340r5moda.pdf",
+    desc="CC2340R5 Bluetooth LE module, Cortex-M0+, 512 kB flash, integrated antenna", width=27.94))
+
 # BQ294700DSGR, DSG WSON-8 2x2, EP = 9 (VSS). Datasheet SLUSB15K table 5-1. Cell inputs and right-side pins on a
 # 7.62 mm pitch so the 1k / 0.1 uF filter ladder (fig. 8-1) lines up with them on the sheet.
 syms.append(symbol("BQ294700", "U",

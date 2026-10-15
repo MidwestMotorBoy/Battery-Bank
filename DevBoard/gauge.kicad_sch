@@ -6,12 +6,12 @@
 	(paper "A3")
 	(title_block
 		(title "Cells and gauge")
-		(date "2026-10-11")
-		(rev "A (draft)")
+		(date "2026-10-14")
+		(rev "A6")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "4S input, BQ40Z50-R2 gauge/protector, protection FETs")
 		(comment 2 "Spec + open items: DevBoard/README.md")
-		(comment 3 "Not reviewed, laid out, built or tested")
+		(comment 3 "Reviewed 3x (docs/devboard); board placed, not routed or built")
 	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"
@@ -4552,7 +4552,7 @@
 	)
 	(text "CELL STACK (4S)"
 		(exclude_from_sim no)
-		(at 22.86 35.56 0)
+		(at 22.86 33.02 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -6431,7 +6431,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 294.64 181.61 270)
 		(effects
@@ -6475,7 +6475,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 312.42 190.5 270)
 		(effects
@@ -6541,7 +6541,7 @@
 			)
 		)
 	)
-	(global_label "GAUGE_BTP"
+	(global_label "IRQ_N"
 		(shape bidirectional)
 		(at 342.9 179.07 90)
 		(effects
@@ -8913,7 +8913,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "2d9e2c58-8b91-4bbb-bd85-4f557be0b4d4")
 		(property "Reference" "R114"
 			(at 298.87 176.67 0)
@@ -9646,7 +9646,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 266.7 50.8 0)
+		(at 152.4 264.16 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9656,7 +9656,7 @@
 		(dnp no)
 		(uuid "3b26ddea-bc53-4ad0-8154-b9dd298c4c8f")
 		(property "Reference" "TP106"
-			(at 266.70 44.95 0)
+			(at 152.4 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9666,7 +9666,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 271.88 48.48 0)
+			(at 157.58 261.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9677,7 +9677,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 271.78 50.8 0)
+			(at 157.48 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9688,7 +9688,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 271.78 50.8 0)
+			(at 157.48 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9699,7 +9699,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 266.7 50.8 0)
+			(at 152.4 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10534,7 +10534,7 @@
 	)
 	(symbol
 		(lib_id "power:VCC")
-		(at 266.7 50.8 180)
+		(at 152.4 264.16 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10544,7 +10544,7 @@
 		(dnp no)
 		(uuid "52ce98fe-10c4-4e9c-b531-82d41084e7ca")
 		(property "Reference" "#PWR122"
-			(at 266.7 50.8 0)
+			(at 152.4 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10555,7 +10555,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 266.70 55.12 0)
+			(at 152.4 268.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10565,7 +10565,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 266.7 50.8 0)
+			(at 152.4 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10576,7 +10576,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 266.7 50.8 0)
+			(at 152.4 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10587,7 +10587,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 266.7 50.8 0)
+			(at 152.4 264.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
