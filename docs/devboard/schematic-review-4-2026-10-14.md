@@ -283,15 +283,6 @@ Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
 
 - **Applied in rev A8 (2026-10-14, `DevBoard/README.md` item 41):** A-1b, A-5, A-6, A-7, A-9, A-10, B-3 (1206 0.66 W; the 2010 didn't fit), C-3, C-4 (TVS2200DRVR) and C-8. The board is synced.
 - **Decided:** S-1 (Shutdown Voltage 2700 mV, ship mode), and B-1 (keep the PGQ04N070; gate-drive test at bring-up). Both are recorded in the checklist.
-- **Still open:**
-    - A-2: the EV2400 procedure text.
-    - D-5: J104 clamp, optional.
-    - The DOC items.
-    - The remaining CONFIG items: they go into firmware and the checklist rewrite.
-    - The other MINORs, which are bring-up measurements or production choices: B-2, B-4–B-6, C-2, C-5–C-7 and D-3.
-
-**Suggested order**
-1. B-1: choose and stock-check the high-side FETs. This is the only item that changes a part's electrical spec.
-2. A-2 and the checklist rewrite (D-10), before anyone does gauge bring-up.
-3. The cheap hardware MINORs before routing: A-1b, A-5, A-6, A-7, A-9, B-3, C-3, C-4, C-8 and D-5.
-4. The DOC fixes.
+- **Closed in rev A8 part 2 (2026-10-14, `DevBoard/README.md` item 42):** A-2 (procedure, Notes and sheet note), D-5 (D105 SMAJ18A on J104), all DOC items (A-11, A-12, B-10, C-12–C-14, D-8–D-11), and every CONFIG item, now written into `bringup-config-checklist.md` and `mcu-io-power-states.md`.
+- **Left to bring-up:** the MINORs that are measurements or production choices (B-2, B-4–B-6, C-2, C-5–C-7, D-3), each with a line in the checklist §5.
+- **Open decisions:** the low-SOC ship-mode threshold; J301's replacement header.

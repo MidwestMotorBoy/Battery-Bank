@@ -7,7 +7,7 @@
 	(title_block
 		(title "MCU and board temperature")
 		(date "2026-10-14")
-		(rev "A7")
+		(rev "A8")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "CC2340R5MODA, debug headers, TMP1075 x3 (+2 DNP)")
 		(comment 2 "Spec + open items: DevBoard/README.md")
@@ -2364,9 +2364,9 @@
 		(embedded_fonts no)
 	)
 	)
-	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92).\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO18 TX, DIO20 RX, DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2,\n   DIO21 3V3_SLEEP, DIO11 IRQ_N; no spares (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103) + TMP1075 ALERTs, all open-drain.\n   One pull-up: R314 47k (R315, R114 DNP). Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. SW301 resets the MCU. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. TP307 probes it. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work.\n11. R317-R319: J303 overrides EN_5V1/EN_5V2/CHG_INH without shorting the MCU; pin 2 = IRQ_N via R324.\n    R322/R323: 1k in the UART lines; connect a USB-UART adapter only with 3V3 up.\n12. DIO24 = CHG_INH (rev A5): LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n13. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n14. FET over-temperature: gauge internal sensor (OTD/OTC); U306 is the fallback."
+	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92).\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO18 TX, DIO20 RX, DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2,\n   DIO21 3V3_SLEEP, DIO11 IRQ_N; no spares (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103) + TMP1075 ALERTs, all open-drain.\n   One pull-up: R314 47k (R315, R114 DNP). Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. SW301 resets the MCU. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. TP307 probes it. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R312 feeds the SMBus pull-ups. EV2400 work only with 3V3 up (J104 powered) and U301 held in reset:\n    an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V max). Never feed TP308 with 3V3 down (review 4 A-2).\n11. R317-R319: J303 overrides EN_5V1/EN_5V2/CHG_INH without shorting the MCU; pin 2 = IRQ_N via R324.\n    R322/R323: 1k in the UART lines; connect a USB-UART adapter only with 3V3 up.\n12. DIO24 = CHG_INH (rev A5): LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n13. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n14. FET over-temperature: gauge internal sensor (OTD/OTC); U306 is the fallback."
 		(exclude_from_sim no)
-		(at 287.02 222.25 0)
+		(at 287.02 224.79 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2375,7 +2375,7 @@
 		)
 		(uuid "00cd53dd-10d2-4b43-b0a8-c9f4291ee4b3")
 	)
-	(text "I2C1 + IRQ PULL-UPS"
+	(text "I2C0 + IRQ PULL-UPS"
 		(exclude_from_sim no)
 		(at 226.06 177.8 0)
 		(effects
@@ -3266,7 +3266,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "3V3 -> 3V3_MCU link (VDDS). Never remove it while 3V3 is up: the bus pull-ups would then drive SCL/SDA of an unpowered U301 above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -4028,7 +4028,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "2c7b18a6-480b-4537-bdbb-13da01f61114")
 		(property "Reference" "J301"
@@ -4096,6 +4096,17 @@
 			)
 		)
 		(property "MPN" "Samtec FTSH-105-01-L-DV-K"
+			(at 156.21 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-fit, not JLC assembled. Samtec part to be replaced by an unkeyed 2x5 1.27 mm header JLC stocks (silk shows pin 1 and the cable-key side)"
 			(at 156.21 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -5095,7 +5106,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "DNP spare IRQ_N pull-up (R314 is the one fitted)"
 			(at 276.86 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5941,7 +5952,7 @@
 				)
 			)
 		)
-		(property "Notes" "Remove to isolate the SMBus pull-ups from 3V3 (dead 3V3 = 4.7k pull-downs); then feed TP308 for EV2400 work"
+		(property "Notes" "Feeds the SMBus/I2C pull-ups from 3V3. Keep it fitted: do EV2400 work with J104 powered (3V3 up) and U301 held in reset (SW301 or J301 nRESET). Feeding TP308 with 3V3 down drives the unpowered CC2340's SCL/SDA above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 218.44 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -7150,7 +7161,7 @@
 				)
 			)
 		)
-		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting PB8"
+		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting DIO24"
 			(at 124.46 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -7430,6 +7441,17 @@
 			)
 		)
 		(property "MPN" "CC2340R5MODAN0MHAR"
+			(at 190.5 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "TI.com (CC2340R5MODAN0MHAR), consigned to JLC for placement; JLC C55046847 had no stock on 2026-10-14"
 			(at 190.5 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8106,7 +8128,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "RSTN pull-up: SWRS349A fig. 9-1 R1 (100k), with C304 = C92 as the power-on reset"
 			(at 152.4 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -8317,7 +8339,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "Z61 series element of the antenna pi match (TI LaunchPad: 0R). Retune on this board"
 			(at 60.96 5.08 0)
 			(hide yes)
 			(show_name no)

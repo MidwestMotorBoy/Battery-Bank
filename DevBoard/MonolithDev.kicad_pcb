@@ -702,6 +702,18 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD0720KL"
+			(at 194.225 133.55 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ef52edd7-a315-43ca-aa4f-b811f49ef4d4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5279a7a1-113d-4a80-b1cf-737ba19b6809/0ba7de35-d3c7-4912-a6c4-c1922d5bf085")
 		(sheetname "USB Port 2")
 		(sheetfile "usb_port.kicad_sch")
@@ -1038,7 +1050,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "3V3 -> 3V3_MCU link (VDDS). Never remove it while 3V3 is up: the bus pull-ups would then drive SCL/SDA of an unpowered U301 above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -1075,7 +1087,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/07d537c1-2e9a-4275-ac20-9d82eaece753")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -1145,7 +1157,7 @@
 			(size 1.025 1.4)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.243902)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "0ebd7431-15dd-47dd-b4e2-2380e4d0020c")
 		)
 		(embedded_fonts no)
@@ -1241,6 +1253,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "873a7109-7ca4-4ebf-adfe-d1af88b4b4fb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "RT0805BRD07100KL"
+			(at 193.6 101.194999 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2a367a69-059e-4594-a8fe-0579e4c09ed3")
 			(effects
 				(font
 					(size 1 1)
@@ -2058,7 +2082,7 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (VSS above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
 			(at 177 145.5 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -2732,7 +2756,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "Z61 series element of the antenna pi match (TI LaunchPad: 0R). Retune on this board"
 			(at 62.514999 173.545 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -2769,7 +2793,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/b7c48db1-a2bf-493c-8a6e-08b38e788abc")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -2839,7 +2863,7 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/ANT_IN")
+			(net "/MCU and Sensors/ANT_IN")
 			(uuid "a2c3a85e-4fa0-401f-8b63-a1f6d7b24f7c")
 		)
 		(embedded_fonts no)
@@ -2941,7 +2965,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM"
+		(property "Notes" "TPD4S201 FLT pull-up (open drain; 1.7-300 kOhm to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event (33): CC or SBU OVP (and an ESD-triggered OVP) forces Type-C error recovery, as on TI's TPS25751EVM"
 			(at 136.435 183.48 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -3096,6 +3120,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "8efe70fd-a567-4b47-aab6-afcfc0f16fe1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BQ40Z50RSMR-R2"
+			(at 173 92 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9dab8ba8-8827-42ba-ae82-bd32640e93d7")
 			(effects
 				(font
 					(size 1 1)
@@ -5594,7 +5630,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/34a99f8b-1844-4471-bc36-454947fa2010")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -5928,7 +5964,7 @@
 				)
 			)
 		)
-		(property "Notes" "PA2512FKE7W0R001E"
+		(property "Notes" "1 mOhm 1 % 2 W sense resistor (YAGEO)"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -5945,6 +5981,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "aad961ad-a520-4682-8ee3-0f8ebf10b8f6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "PA2512FKE7W0R001E"
+			(at 165 70 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1a699ca2-f5ea-498a-a833-7c86507b913b")
 			(effects
 				(font
 					(size 1 1)
@@ -7743,7 +7791,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)"
+		(property "Notes" "TPD4S201 VBIAS (ESD support), 0.1 uF 50 V X7R. The part's own clamps hold VBIAS to about 28 V (-Q1 6.3.1); the >= 63 V footnote is about capacitance loss, and 50 V X7R keeps more than the 0.04 uF effective minimum. TI's EVM uses 50 V (review 4 C-1/C-13)"
 			(at 51.455 193.155 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -8280,6 +8328,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "bd17143a-7fe1-495c-97b9-6daa00c5b4f6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "TPS62933DRLR"
+			(at 194.8 93.6 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "79aa63f7-f8d3-4a8b-bab1-393f4d965bc1")
 			(effects
 				(font
 					(size 1 1)
@@ -8958,7 +9018,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/7dd192dd-f4bc-4300-b269-7b56d93ee738")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -9020,7 +9080,7 @@
 			(size 0.9 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "ef126712-0d29-45e1-979a-204170ac7986")
 		)
 		(pad "2" smd roundrect
@@ -9130,7 +9190,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV1 -> Q401 high-side gate (EVM R8). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV1 -> Q401/Q501 high-side gate (EVM R8). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 151.464999 183.48 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -10169,7 +10229,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV2 -> Q402 high-side gate (EVM R3). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV2 -> Q402/Q502 high-side gate (EVM R3). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 161.484999 183.48 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -10772,7 +10832,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/e4198070-c3b0-42da-8abd-9e94aee9a19e")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -10914,7 +10974,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "0119a1e1-49e9-425c-92f0-a564ee6641e8")
 		)
 		(pad "2" thru_hole circle
@@ -10941,7 +11001,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/MCU and NTCs/J303_EN_5V1")
+			(net "/MCU and Sensors/J303_EN_5V1")
 			(uuid "d86bd5d7-38cf-4c39-a9a9-a8ed4480f34a")
 		)
 		(pad "5" thru_hole circle
@@ -10950,7 +11010,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/MCU and NTCs/J303_EN_5V2")
+			(net "/MCU and Sensors/J303_EN_5V2")
 			(uuid "1a41c1d4-68d1-4a12-8448-601473c08ed2")
 		)
 		(pad "6" thru_hole circle
@@ -10959,7 +11019,7 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/MCU and NTCs/J303_CHG_INH")
+			(net "/MCU and Sensors/J303_CHG_INH")
 			(uuid "2ab84eb3-9ad5-48bc-9ced-e2dd508f96df")
 		)
 		(pad "7" thru_hole circle
@@ -11070,7 +11130,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV1 -> Q401 high-side gate (EVM R8). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV1 -> Q401/Q501 high-side gate (EVM R8). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 151.464999 193.155 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -12103,6 +12163,18 @@
 				)
 			)
 		)
+		(property "MPN" "BAT54WS (R+O)"
+			(at 172.954999 87.2 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "951eb3cd-276b-4c7c-bd88-6406d4a26230")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/81fe6c08-948e-40ee-81b6-9b93a816daf3")
 		(sheetname "Cells and Gauge")
 		(sheetfile "gauge.kicad_sch")
@@ -12746,6 +12818,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b37207db-87d7-44f3-b74c-012ec6ef9406")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "RT0805BRD0710KL"
+			(at 193.6 103.335 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4fecfd4d-f1ed-4bb3-b47d-75d74b663f5a")
 			(effects
 				(font
 					(size 1 1)
@@ -13679,6 +13763,18 @@
 				)
 			)
 		)
+		(property "MPN" "CL21A106KAYNNNE"
+			(at 223.2 106.765 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f968a87c-6991-4723-8ad3-2a9d9d969c8f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5279a7a1-113d-4a80-b1cf-737ba19b6809/c3c5b47f-5cbf-491a-b54d-19ad5fd06e8c")
 		(sheetname "USB Port 2")
 		(sheetfile "usb_port.kicad_sch")
@@ -14499,7 +14595,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/5477ed87-52c3-4fb8-a3cd-9abed714ba16")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -14685,7 +14781,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/4aacd936-7a80-427b-821b-e56ebe8a3e9f")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -14747,7 +14843,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/LED_DRV")
+			(net "/MCU and Sensors/LED_DRV")
 			(uuid "6f505e92-a4e5-4fec-955b-43942419c78a")
 		)
 		(pad "2" smd roundrect
@@ -15012,6 +15108,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4262c91b-7a40-4046-8212-60726e4be498")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "CL21A106KAYNNNE"
+			(at 223.2 102.525 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "05458240-5520-46d1-a97a-4d950c909192")
 			(effects
 				(font
 					(size 1 1)
@@ -15551,7 +15659,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV1 -> Q401 low-side gate (EVM R20). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV1 -> Q407/Q507 low-side gate (EVM R20). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 156.474999 183.48 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -17203,7 +17311,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/29559ea5-cad4-4d7b-95f0-741e6fa20129")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -18096,7 +18204,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 197 73.75 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -18306,7 +18414,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/4e6df3b1-d757-4116-a5e7-5b9f9cd57c0b")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -18801,7 +18909,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A (review 2: > 5.8 A IHS limit)"
+		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A defined at a 40 % drop (not like-for-like with the SRP5030T); fine, as the 5.8 A IHS limit is a fault-only peak"
 			(at 240.39 133 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -19426,7 +19534,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/281ab45b-f903-44b4-98ad-aa2ce890147f")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -21681,7 +21789,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/8852d7fc-ba5e-45f9-bb49-e2d03d95ce15")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -23334,7 +23442,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/fca1829b-641a-4ecc-92f4-de2666ccf69f")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -23396,7 +23504,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "6ebfb78a-ab27-4f5e-a97f-12298c209d13")
 		)
 		(pad "2" smd roundrect
@@ -24689,6 +24797,18 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD0720KL"
+			(at 194.225 97.55 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1c70c708-7fde-41e4-8567-0b0a7e799d57")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/0ba7de35-d3c7-4912-a6c4-c1922d5bf085")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -25137,7 +25257,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV2 -> Q402 low-side gate (EVM R17). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV2 -> Q408/Q508 low-side gate (EVM R17). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 166.494999 183.48 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -25755,6 +25875,18 @@
 				)
 			)
 		)
+		(property "MPN" "AGM404AP1 (AGMSEMI)"
+			(at 180 74 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1f1eb7cc-7517-43e0-b240-c30a26ab0b23")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/226fa0b7-df56-4174-ac6e-f3100a73f3a3")
 		(sheetname "Cells and Gauge")
 		(sheetfile "gauge.kicad_sch")
@@ -26014,7 +26146,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/261ea465-c796-4289-a294-f1bd19060ece")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -26369,7 +26501,7 @@
 				)
 			)
 		)
-		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH low (reset, hang, unprogrammed or Standby all inhibit). With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
+		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH (DIO24) low. Reset, WDT reset, ROM bootloader or an unprogrammed MCU all inhibit (pins float). CC2340 Standby keeps the GPIO state, so a low CHG_INH keeps charging in Standby. With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435/R535: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -26752,7 +26884,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)"
+		(property "Notes" "TPD4S201 VBIAS (ESD support), 0.1 uF 50 V X7R. The part's own clamps hold VBIAS to about 28 V (-Q1 6.3.1); the >= 63 V footnote is about capacitance loss, and 50 V X7R keeps more than the 0.04 uF effective minimum. TI's EVM uses 50 V (review 4 C-1/C-13)"
 			(at 51.455 183.48 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -28413,7 +28545,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/2c4bb4ba-a13c-445c-a866-72f40dd333bf")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -28561,7 +28693,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 192.1 81.15 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -33074,6 +33206,18 @@
 				)
 			)
 		)
+		(property "MPN" "TPS62933DRLR"
+			(at 194.8 129.6 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "17b4ee5c-c28a-4e83-a2e1-33900417fe7a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5279a7a1-113d-4a80-b1cf-737ba19b6809/27f79a5a-93f1-4951-8796-f7fac8804ad2")
 		(sheetname "USB Port 2")
 		(sheetfile "usb_port.kicad_sch")
@@ -34638,7 +34782,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST1 pin -> C412/D404 (EVM R13). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST1 pin -> C412/D404 (C512/D504) (EVM R13). 0R; raise to a few ohms to slow the switching edges"
 			(at 171.504999 183.48 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -34817,7 +34961,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/c9e21779-aaf4-45b7-aa7d-505c205753bd")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -35203,14 +35347,14 @@
 			(at -3 -1.875)
 			(size 1 0.75)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "7bb95239-2694-4594-8fba-d855df17449b")
 		)
 		(pad "1" smd rect
 			(at 3 -1.875)
 			(size 1 0.75)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "1c8df597-6489-49f7-aa01-e21a73fca9e8")
 		)
 		(pad "2" smd rect
@@ -35502,7 +35646,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/9241da87-3c61-4c7a-a5cd-986a28dcb4eb")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -35564,7 +35708,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/SMB_PU")
+			(net "/MCU and Sensors/SMB_PU")
 			(uuid "a2489b83-1b25-4671-8eb3-a0fb06605da6")
 		)
 		(pad "2" smd roundrect
@@ -35824,7 +35968,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 197 110.75 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -36034,7 +36178,7 @@
 				)
 			)
 		)
-		(property "Notes" "Holds Q103 off when BTP_INT floats; 10-20 uA BTP source gives 4.7-9.4 V gate"
+		(property "Notes" "Holds Q103 off when BTP_INT floats (BTP_INT VOH is at most about 3.5 V)"
 			(at 260 75 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -37417,7 +37561,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/4953c541-62fa-4692-bb46-d2d52b90b819")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -37977,7 +38121,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 192.4 73.75 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -38155,6 +38299,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e04a61d9-18da-49e1-8391-13df9642260d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 105 93 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "62043e25-c8f0-4443-8c8e-3790fe3ef999")
 			(effects
 				(font
 					(size 1 1)
@@ -38727,7 +38883,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM"
+		(property "Notes" "TPD4S201 FLT pull-up (open drain; 1.7-300 kOhm to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event (33): CC or SBU OVP (and an ESD-triggered OVP) forces Type-C error recovery, as on TI's TPS25751EVM"
 			(at 136.435 193.155 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -39086,7 +39242,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/5857dd5a-174a-4648-8ad9-ade180a9fa5e")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -39433,7 +39589,7 @@
 				)
 			)
 		)
-		(property "Notes" "Remove to isolate the SMBus pull-ups from 3V3 (dead 3V3 = 4.7k pull-downs); then feed TP308 for EV2400 work"
+		(property "Notes" "Feeds the SMBus/I2C pull-ups from 3V3. Keep it fitted: do EV2400 work with J104 powered (3V3 up) and U301 held in reset (SW301 or J301 nRESET). Feeding TP308 with 3V3 down drives the unpowered CC2340's SCL/SDA above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 260 81 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -39446,7 +39602,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/b98dab8a-fc6b-461d-871a-a992ba44e265")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -39516,7 +39672,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/SMB_PU")
+			(net "/MCU and Sensors/SMB_PU")
 			(uuid "0565c65e-f51c-415e-a721-fb73d69b705c")
 		)
 		(embedded_fonts no)
@@ -39612,6 +39768,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f05a5532-6525-4a6a-9643-1c54c78e1695")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "CL10A106KP8NNNC"
+			(at 223.2 109.774999 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "33f7014d-5155-45a5-b581-ab80d7ae8152")
 			(effects
 				(font
 					(size 1 1)
@@ -41308,8 +41476,20 @@
 				)
 			)
 		)
+		(property "Sourcing" "Hand-fit, not JLC assembled. Samtec part to be replaced by an unkeyed 2x5 1.27 mm header JLC stocks (silk shows pin 1 and the cable-key side)"
+			(at 168.8 56 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c1750739-89aa-4f75-a184-ad7a417e780d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/2c7b18a6-480b-4537-bdbb-13da01f61114")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -41391,7 +41571,7 @@
 			(at -2.035 -2.54 90)
 			(size 2.79 0.74)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "b1a18331-8bad-4398-a200-8c9664632c0f")
 		)
 		(pad "2" smd rect
@@ -41454,7 +41634,7 @@
 			(at 2.035 2.54 90)
 			(size 2.79 0.74)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "122758ac-15ef-47e0-a5dd-2c441b46a771")
 		)
 		(embedded_fonts no)
@@ -41556,7 +41736,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV1 -> Q401 low-side gate (EVM R20). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV1 -> Q407/Q507 low-side gate (EVM R20). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 156.474999 193.155 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -42563,7 +42743,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/d2bfe2bf-00c3-471f-8f15-47596b4119d4")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -42625,7 +42805,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "8bd5b64c-7cab-4157-bffb-a0ab659607e5")
 		)
 		(pad "2" smd roundrect
@@ -42666,7 +42846,7 @@
 				)
 			)
 		)
-		(property "Value" "0R DNP"
+		(property "Value" "0R"
 			(at 0 2.63 180)
 			(layer "F.Fab")
 			(uuid "e6f48844-882f-4700-8ad5-7d10ce724feb")
@@ -43269,7 +43449,7 @@
 				)
 			)
 		)
-		(property "Notes" "CHG_INH from the MCU (PB8): low allows charging; high or hi-Z (reset, IWDG reset, unprogrammed) stops it at the CE pin via the R417 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
+		(property "Notes" "CHG_INH from the MCU (DIO24): low allows charging; high or hi-Z (reset, WDT reset, ROM bootloader, unprogrammed) stops it at the CE pin via the R417/R517 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
 			(at 260 66 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -44314,7 +44494,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/145de5d0-eabd-4264-8475-076f408b9c8c")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -44517,6 +44697,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7d7383d9-6d4e-4fe8-be4e-b0168f6dae97")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "M24512-DFMC6TG"
+			(at 227.5 65.9 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8fb4e3b7-ac08-4530-bed9-05a63dd94f35")
 			(effects
 				(font
 					(size 1 1)
@@ -44746,6 +44938,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "463d43b6-a02b-45f7-9905-62e70fb108bd")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BQ25756RRVR"
+			(at 207 105.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9dc248cd-090e-4cec-be57-c782d077ccd2")
 			(effects
 				(font
 					(size 1 1)
@@ -45698,7 +45902,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 192.4 110.75 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -46950,7 +47154,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "DNP spare IRQ_N pull-up (R314 is the one fitted)"
 			(at 260 90 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -46963,7 +47167,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/6cba705b-f047-4f37-91b5-0f7c15a91388")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -47309,7 +47513,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST1 pin -> C412/D404 (EVM R13). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST1 pin -> C412/D404 (C512/D504) (EVM R13). 0R; raise to a few ohms to slow the switching edges"
 			(at 171.504999 193.155 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -47865,6 +48069,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "dc0a57bc-0efd-4272-aed6-55120202dbc4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BQ25756RRVR"
+			(at 207 69.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cd83b51c-9a5d-4db3-90a8-b4034125bb86")
 			(effects
 				(font
 					(size 1 1)
@@ -48581,7 +48797,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/e9485a56-fbee-47c2-b886-a08dafc1653a")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -48651,7 +48867,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/J303_EN_5V1")
+			(net "/MCU and Sensors/J303_EN_5V1")
 			(uuid "73e2d446-cf52-4926-91bd-6b2669e24c21")
 		)
 		(embedded_fonts no)
@@ -49474,6 +49690,18 @@
 				)
 			)
 		)
+		(property "MPN" "CL21A106KAYNNNE"
+			(at 223.2 70.765 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6b39f293-0424-4612-8b0e-b4b6902a8a93")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/c3c5b47f-5cbf-491a-b54d-19ad5fd06e8c")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -49954,7 +50182,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/777175d6-f7b4-4424-82ba-b49724b65ce6")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -50016,7 +50244,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/ANT_IN")
+			(net "/MCU and Sensors/ANT_IN")
 			(uuid "fb76319a-5e8a-4336-b418-ac43f562d8e9")
 		)
 		(pad "2" smd roundrect
@@ -50301,7 +50529,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). AO3400A Vgs(th) 0.65-1.45 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10/H6 asks for <= 1.5 V max); JLC basic, same part as Q104 (cost-down 2026-10-14, was BSS138). PA6 allows 4.0 V unpowered"
+		(property "Notes" "BTP_INT level shift onto the shared open-drain IRQ_N (inverts: IRQ_N low while BTP_INT is high). AO3400A Vgs(th) 0.65-1.45 V against BTP_INT VOH >= 1.8 V at 10 uA (DS 7.12); JLC basic, same part as Q104. Firmware: BTP_POL = 1 whenever BTP_EN = 1 (review 4 D-2)"
 			(at 260 72 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -50707,7 +50935,7 @@
 				)
 			)
 		)
-		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting PB8"
+		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting DIO24"
 			(at 260 60 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -50720,7 +50948,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/f5159bb4-9a50-4226-8193-c2f50e75b296")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -50790,7 +51018,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/J303_CHG_INH")
+			(net "/MCU and Sensors/J303_CHG_INH")
 			(uuid "fcb1cec6-2153-4886-afb5-e0c61a0e4b91")
 		)
 		(embedded_fonts no)
@@ -51042,8 +51270,20 @@
 				)
 			)
 		)
+		(property "Sourcing" "TI.com (CC2340R5MODAN0MHAR), consigned to JLC for placement; JLC C55046847 had no stock on 2026-10-14"
+			(at 200 55.3 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9d18e677-39db-46d8-9011-c7f699b57352")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/84982dd8-eff9-4d37-ab4d-6c8e272c52d1")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -51204,7 +51444,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/ANT_IN")
+			(net "/MCU and Sensors/ANT_IN")
 			(uuid "95751384-1462-44e4-8424-a3d02fdc6ecc")
 		)
 		(pad "4" smd roundrect
@@ -51212,7 +51452,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/RFIO")
+			(net "/MCU and Sensors/RFIO")
 			(uuid "e7c59210-bb37-49d5-8169-0b85e804142f")
 		)
 		(pad "5" smd roundrect
@@ -51228,7 +51468,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "ec898330-0c77-4694-ba82-65525211480b")
 		)
 		(pad "7" smd roundrect
@@ -51236,7 +51476,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "1e1c35fd-0701-4cfc-b4b8-9acf810cbf52")
 		)
 		(pad "8" smd roundrect
@@ -51292,7 +51532,7 @@
 			(size 0.6 1.1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "42512386-6b1c-4e19-9ac2-b36357399031")
 		)
 		(pad "15" smd roundrect
@@ -51308,7 +51548,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/UART_TX")
+			(net "/MCU and Sensors/UART_TX")
 			(uuid "2319fd3c-49b9-4b55-a822-d128cebf73df")
 		)
 		(pad "17" smd roundrect
@@ -51316,7 +51556,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/UART_RX")
+			(net "/MCU and Sensors/UART_RX")
 			(uuid "eba39a67-0bda-4510-85d1-c41773fd4893")
 		)
 		(pad "18" smd roundrect
@@ -51324,7 +51564,7 @@
 			(size 1.1 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.08)
-			(net "/MCU and NTCs/LED_DRV")
+			(net "/MCU and Sensors/LED_DRV")
 			(uuid "f9eb9d35-001c-42dc-ad98-97e0498ed83c")
 		)
 		(pad "19" smd roundrect
@@ -51507,6 +51747,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "aba1801f-a09d-43c9-8312-759bb1c06921")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "AGM404AP1 (AGMSEMI)"
+			(at 180 82 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e1e460d6-451c-48b7-b14d-848214accb1e")
 			(effects
 				(font
 					(size 1 1)
@@ -51748,7 +52000,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222, $9.43): 2.2 uH, Isat 18 A, Irms 12 A (40 C rise), DCR 9 mOhm max; review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm; its datasheet land (4.1 mm pads, 13.6 overall, 5.4 gap) is the FXL1040 footprint. Check its temperature at 600 kHz at bring-up"
+		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222): 2.2 uH, DCR 9 mOhm max; Isat 18 A and Irms 12 A are typical values (L -17 % at 15 A, soft saturation; about 30-33 C rise at 12 A). Review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm, FXL1040 footprint. Check its temperature at bring-up"
 			(at 208 118.5 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -52616,7 +52868,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/181331e3-4b0a-454e-95e9-b6ae405faebc")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -53476,7 +53728,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/834131f0-0b5f-4703-949f-1232be10d2cf")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -53538,7 +53790,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/UART_RX")
+			(net "/MCU and Sensors/UART_RX")
 			(uuid "274fc2f5-ac0a-4106-9670-ec37cfa80425")
 		)
 		(pad "2" smd roundrect
@@ -53624,7 +53876,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222, $9.43): 2.2 uH, Isat 18 A, Irms 12 A (40 C rise), DCR 9 mOhm max; review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm; its datasheet land (4.1 mm pads, 13.6 overall, 5.4 gap) is the FXL1040 footprint. Check its temperature at 600 kHz at bring-up"
+		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222): 2.2 uH, DCR 9 mOhm max; Isat 18 A and Irms 12 A are typical values (L -17 % at 15 A, soft saturation; about 30-33 C rise at 12 A). Review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm, FXL1040 footprint. Check its temperature at bring-up"
 			(at 208 81.5 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -53983,7 +54235,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/aaea32e3-ffd8-4b57-9924-59466de9c598")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -54353,7 +54605,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/ccd8459c-1f9f-4fd9-b900-ace44546a2ad")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -54415,7 +54667,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/UART_TX")
+			(net "/MCU and Sensors/UART_TX")
 			(uuid "f8e3ab3a-b522-4fa8-804a-8d9b27bb76d3")
 		)
 		(pad "2" smd roundrect
@@ -55545,7 +55797,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/7ff8d0b8-cb03-41e2-8b2b-dd59986f429a")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -56324,7 +56576,7 @@
 				)
 			)
 		)
-		(property "Notes" "CHG_INH from the MCU (PB8): low allows charging; high or hi-Z (reset, IWDG reset, unprogrammed) stops it at the CE pin via the R417 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
+		(property "Notes" "CHG_INH from the MCU (DIO24): low allows charging; high or hi-Z (reset, WDT reset, ROM bootloader, unprogrammed) stops it at the CE pin via the R417/R517 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
 			(at 260 63 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -56479,7 +56731,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/56f777cb-48cd-4db4-9b29-8ae6b0bf342a")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -56889,7 +57141,7 @@
 				)
 			)
 		)
-		(property "Value" "GAUGE_BTP"
+		(property "Value" "IRQ_N"
 			(at 0 1.75 0)
 			(layer "F.Fab")
 			(uuid "24b7bb3f-2130-4297-b050-c81122a3673b")
@@ -59444,7 +59696,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST2 pin -> C413/D405 (EVM R23). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST2 pin -> C413/D405 (C513/D505) (EVM R23). 0R; raise to a few ohms to slow the switching edges"
 			(at 176.514999 193.155 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -59952,7 +60204,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A (review 2: > 5.8 A IHS limit)"
+		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A defined at a 40 % drop (not like-for-like with the SRP5030T); fine, as the 5.8 A IHS limit is a fault-only peak"
 			(at 240.39 96 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -60670,6 +60922,18 @@
 				)
 			)
 		)
+		(property "MPN" "M24512-DFMC6TG"
+			(at 227.5 101.9 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a0c033f5-e018-40a7-8df8-634d4f32d3de")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5279a7a1-113d-4a80-b1cf-737ba19b6809/028d75e8-c7f7-44ea-989c-0f7eb425d795")
 		(sheetname "USB Port 2")
 		(sheetfile "usb_port.kicad_sch")
@@ -60842,7 +61106,7 @@
 	(footprint "Diode_SMD:D_SMA"
 		(layer "F.Cu")
 		(uuid "ac136bb7-9787-4d95-9b79-82665d915b20")
-		(at 171.9 106.4)
+		(at 164.05 106.4)
 		(descr "Diode SMA (DO-214AC)")
 		(tags "Diode SMA (DO-214AC)")
 		(property "Reference" "D104"
@@ -61233,7 +61497,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/3e57b320-715b-439e-8bf7-88dab1c149c7")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -61295,7 +61559,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "b55c28cd-14cb-4056-8c17-a4020b047cb4")
 		)
 		(pad "2" smd roundrect
@@ -61693,7 +61957,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/8b94057a-3fbc-4249-a69a-1f8eed12a0ee")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -62102,7 +62366,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/e1c0c82c-c099-4b09-bc25-09377ffd78da")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -62539,6 +62803,18 @@
 				)
 			)
 		)
+		(property "MPN" "TPS62177DQCR"
+			(at 230 146 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ec2e4dea-40fb-42ff-a138-3ac0db6bade3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/d9806540-c841-409c-9faa-82254b30b220/dcd76e59-c91f-46d3-b2b4-bb27a2ed541b")
 		(sheetname "Sleep Current and 3V3")
 		(sheetfile "power.kicad_sch")
@@ -62920,6 +63196,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "d091f607-bed5-4122-ae73-54d82baa18ed")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 105 121 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c9d9f9de-a7be-4f26-90dd-4a852a25a1e3")
 			(effects
 				(font
 					(size 1 1)
@@ -63659,6 +63947,311 @@
 			)
 		)
 	)
+	(footprint "Diode_SMD:D_SMA"
+		(layer "F.Cu")
+		(uuid "b3b4221e-a7da-4e50-83bf-1a32ea8783ff")
+		(at 171.9 106.4)
+		(descr "Diode SMA (DO-214AC)")
+		(tags "Diode SMA (DO-214AC)")
+		(property "Reference" "D105"
+			(at 0 -2.5 0)
+			(layer "F.SilkS")
+			(uuid "087dbec5-90ab-4f31-8d2a-20fddbd905d5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "SMAJ18A"
+			(at 0 2.6 0)
+			(layer "F.Fab")
+			(uuid "13036c70-84d1-4140-a1a8-c28411ee011c")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-smaj-datasheet"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "59a1584f-be14-4555-a314-40367f7a2c92")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "18 V standoff unidirectional TVS, SMA"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cd165846-ecac-4773-b6e1-e86359931297")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C148219"
+			(at 53.52 174.825 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9c209e80-5486-4896-8494-94887d48c86a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "SMAJ18A (Littelfuse)"
+			(at 53.52 174.825 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f3d779ad-c0e1-4be2-8f3a-9c37f443ba2e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Notes" "J104 overvoltage clamp (review 4 D-5): 18 V standoff, 20-22.1 V breakdown, so a bench supply left above about 22 V is clamped before it reaches the 25 V parts on PACK_P. On the header side of D104, so it draws nothing from the pack. Sacrificial: keep the bench current limit low. Cathode (pin 1) to the J104 line"
+			(at 53.52 174.825 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0165990d-bb8e-494c-9dfa-df65422aff1a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/51d3ee3d-fe12-4827-b9fc-df318b5cc9cd")
+		(sheetname "Cells and Gauge")
+		(sheetfile "gauge.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -3.51 -1.65)
+			(end -3.51 1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "09d00303-df8d-4aca-a806-4e1171b1ad64")
+		)
+		(fp_line
+			(start -3.51 -1.65)
+			(end 2 -1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "abc24e43-83ec-46d5-aa38-1fcb60bd1417")
+		)
+		(fp_line
+			(start -3.51 1.65)
+			(end 2 1.65)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "16c5544c-fbad-43ff-abe7-1cb04a40c5c3")
+		)
+		(fp_line
+			(start -3.5 -1.75)
+			(end 3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "3f195a04-dc7e-42d4-8a86-df6339136a2e")
+		)
+		(fp_line
+			(start -3.5 1.75)
+			(end -3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "a0088d8f-4a8d-4eb7-96bb-f8ff73a01bff")
+		)
+		(fp_line
+			(start 3.5 -1.75)
+			(end 3.5 1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "fbb9fc46-1120-4083-91e7-d78871acb595")
+		)
+		(fp_line
+			(start 3.5 1.75)
+			(end -3.5 1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "e76f21b1-e978-47da-ae39-b38eee979d86")
+		)
+		(fp_line
+			(start -2.3 1.5)
+			(end -2.3 -1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "c82f2ba6-6d7e-4c5d-b24d-d283f7ce9401")
+		)
+		(fp_line
+			(start -0.64944 -0.79908)
+			(end -0.64944 0.80112)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a2ae9e77-0bc0-44fe-8feb-5cb036310fea")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end -1.55114 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "fc0a35f2-8d53-4be0-9897-aa6c28be58a4")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "243c2198-cbaf-4173-a699-7b1717a15573")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 0.75032)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a6165ab0-e412-4435-bcda-01e1f9668a6b")
+		)
+		(fp_line
+			(start 0.50118 0.00102)
+			(end 1.4994 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "c275ce37-0cde-4eaf-96b2-6bf7dd4b4ec9")
+		)
+		(fp_line
+			(start 0.50118 0.75032)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "14bdc533-e684-44c6-9e88-01ab698a2b5f")
+		)
+		(fp_line
+			(start 2.3 -1.5)
+			(end -2.3 -1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "c68808e8-14b2-47f2-9b0d-cc82b348fdc3")
+		)
+		(fp_line
+			(start 2.3 -1.5)
+			(end 2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "bc6c6d1c-1e24-4ee5-bf62-b11ba567e52f")
+		)
+		(fp_line
+			(start 2.3 1.5)
+			(end -2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "db705e4a-6af2-4c4f-a65a-1f07f193c508")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -2.5 0)
+			(layer "F.Fab")
+			(uuid "00bd68bd-dcbf-48c7-9935-bbda560a2abb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -2 0)
+			(size 2.5 1.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1388888889)
+			(net "Net-(D104-A)")
+			(uuid "70111aee-ce26-44d7-b70e-45b9808413ec")
+		)
+		(pad "2" smd roundrect
+			(at 2 0)
+			(size 2.5 1.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1388888889)
+			(net "GND")
+			(uuid "699c304c-6a8e-459e-b429-24e3d85120b0")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b3bdf4c8-a4a1-4fb3-b919-cb62304c3c20")
@@ -63895,7 +64488,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 192.1 118.15 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -65222,6 +65815,18 @@
 				)
 			)
 		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 105 149 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e0df61bc-975c-4f0f-9b25-19140afb2352")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/a6289f2f-eac6-4aae-9c28-2920249c0e42")
 		(sheetname "Cells and Gauge")
 		(sheetfile "gauge.kicad_sch")
@@ -66332,7 +66937,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/e368b59c-845c-4681-a3c3-0e5393bb389d")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -66473,6 +67078,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b6ed5a73-b7f2-4305-b2a1-463efa3ac3f3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 105 65 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e40640bb-3e48-4fe7-ba46-581b7e1bb6e1")
 			(effects
 				(font
 					(size 1 1)
@@ -70706,6 +71323,18 @@
 				)
 			)
 		)
+		(property "MPN" "CL10A106KP8NNNC"
+			(at 223.2 73.774999 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "626fa8d1-6e00-464c-bd75-82a0baddcff5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/ef7f416e-df8b-4d9a-b0dd-f71380860f15")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -71186,7 +71815,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/45fa1627-62fb-4351-bd72-518c4d6e7df9")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -73072,7 +73701,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/02a7df74-df5c-4ac6-8894-75756be71a95")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -73134,7 +73763,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/RFIO")
+			(net "/MCU and Sensors/RFIO")
 			(uuid "ac7aa6e2-9323-4382-bbb2-6c0308044734")
 		)
 		(pad "2" smd roundrect
@@ -73551,7 +74180,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/9afdae9e-ffe2-4599-8eb1-d6e43539ec58")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -73621,7 +74250,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/J303_EN_5V2")
+			(net "/MCU and Sensors/J303_EN_5V2")
 			(uuid "7e659498-9803-4501-9838-95b79c72eb2e")
 		)
 		(embedded_fonts no)
@@ -76267,7 +76896,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/2728300f-2c8d-4922-b30d-74a3e17a2aa9")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -76308,7 +76937,7 @@
 			(at 0 0)
 			(size 1.5 1.5)
 			(layers "F.Cu" "F.Mask")
-			(net "/MCU and NTCs/SMB_PU")
+			(net "/MCU and Sensors/SMB_PU")
 			(uuid "310c4351-7824-4a1b-8147-0cd051daa945")
 		)
 		(embedded_fonts no)
@@ -77150,7 +77779,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV2 -> Q402 high-side gate (EVM R3). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV2 -> Q402/Q502 high-side gate (EVM R3). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 161.484999 193.155 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -77337,7 +77966,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/bfbf98ef-4634-44ef-ae33-b76fba9606a0")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -77399,7 +78028,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/SMB_PU")
+			(net "/MCU and Sensors/SMB_PU")
 			(uuid "8bfc736b-931c-4f22-8a35-2b400d95aac2")
 		)
 		(pad "2" smd roundrect
@@ -77680,7 +78309,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/c3738212-9466-47ec-af1e-3d29b9d780bb")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -78638,6 +79267,18 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD0710KL"
+			(at 193.6 67.335 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7e4cd841-a63c-47da-aa51-32e4293bff37")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/257c34bf-92e6-40a4-b16a-8c3d624dfa82")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -79099,6 +79740,18 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD07100KL"
+			(at 193.6 65.194999 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e77f5d72-ea6a-4fab-b602-aa1d9eafbeef")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/ac72c9a4-7723-4f18-89ba-289142807a08/bf2f4f99-97f6-4b63-9f8f-f35c527e6a7b")
 		(sheetname "USB Port 1")
 		(sheetfile "usb_port.kicad_sch")
@@ -79254,6 +79907,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "160c36f5-57d8-4c26-8e27-af91782be842")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "CL21A106KAYNNNE"
+			(at 223.2 66.525 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cf167786-1fd0-4238-aed9-e98aca4283f6")
 			(effects
 				(font
 					(size 1 1)
@@ -80477,7 +81142,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/091347bd-c66d-4fb2-9d33-d2cecf25bdd4")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers yes)
@@ -81116,7 +81781,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/36ad4b4d-df68-475d-8f8a-410c87e16db5")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -82152,7 +82817,7 @@
 				)
 			)
 		)
-		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH low (reset, hang, unprogrammed or Standby all inhibit). With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
+		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH (DIO24) low. Reset, WDT reset, ROM bootloader or an unprogrammed MCU all inhibit (pins float). CC2340 Standby keeps the GPIO state, so a low CHG_INH keeps charging in Standby. With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435/R535: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -82336,6 +83001,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6937e553-1cad-4e86-a08e-d9d8d1eba6f5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "TPS25751DREFR"
+			(at 228.5 73 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "53488170-0177-4284-b445-3317518457c2")
 			(effects
 				(font
 					(size 1 1)
@@ -84756,7 +85433,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/d4002b24-85ed-4b4e-9462-3889313a9b0e")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -85983,7 +86660,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST2 pin -> C413/D405 (EVM R23). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST2 pin -> C413/D405 (C513/D505) (EVM R23). 0R; raise to a few ohms to slow the switching edges"
 			(at 176.514999 183.48 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -86354,7 +87031,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV2 -> Q402 low-side gate (EVM R17). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV2 -> Q408/Q508 low-side gate (EVM R17). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 166.494999 193.155 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -86726,7 +87403,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "RSTN pull-up: SWRS349A fig. 9-1 R1 (100k), with C304 = C92 as the power-on reset"
 			(at 193 56.355 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -86739,7 +87416,7 @@
 			)
 		)
 		(path "/6a5b5100-a69b-4069-8141-b35cace08af3/6465cf0e-11c0-418d-8d94-9c4ebe7f0b1a")
-		(sheetname "MCU and NTCs")
+		(sheetname "MCU and Sensors")
 		(sheetfile "mcu.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -86801,7 +87478,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/3V3_MCU")
+			(net "/MCU and Sensors/3V3_MCU")
 			(uuid "5d12be8f-d60e-4592-9254-91b8736df951")
 		)
 		(pad "2" smd roundrect
@@ -86809,7 +87486,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/MCU and NTCs/NRST")
+			(net "/MCU and Sensors/NRST")
 			(uuid "b984b4d8-ab07-445c-a667-d2b9a4166a32")
 		)
 		(embedded_fonts no)
@@ -87546,6 +88223,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f9cd773a-e3b7-4e2d-b0a0-ec5a8e771bd8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "TPS25751DREFR"
+			(at 228.5 109 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0b71d9b0-8661-4fa4-8061-b0debf967b5f")
 			(effects
 				(font
 					(size 1 1)

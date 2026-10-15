@@ -2,7 +2,7 @@
 
 Zones (board mm from the top-left corner; the cells' holders take x < 103):
     gauge column   x 104-134   Cells and Gauge sheet (BQ40Z50, BQ294700 second protector, pack connector)
-    MCU band       y 0-13      MCU and NTCs sheet (module at the top edge, headers, sensor pull-ups)
+    MCU band       y 0-13      MCU and Sensors sheet (module at the top edge, headers, sensor pull-ups)
     port 1 / 2     x 134-196   USB Port sheet, one 36 mm band per USB-C connector (port 2 = port 1 moved 36 mm down)
     sleep band     y 88-115    Sleep Current and 3V3 sheet
 
@@ -161,6 +161,8 @@ GAUGE_LAYOUT = [
     ("col", ["C112", "C113", "C114", "C115"], 115.0, 79.0, 0, 0.15),
     ("col", ["R123", "C116", "C117"], 124.0, 79.5, 0, 0.15),
     ("at", "C105", 118.75, 37.2, 90),                         # 1206 now: clear of R105
+    # rev A8 (review 4 D-5): D105 clamp on the J104 side of D104, so D104 moves left one body width
+    ("at", "D104", 114.05, 56.4, 0), ("at", "D105", 121.9, 56.4, 0),
 ]
 # HT7550-1 (SOT-89) LDO for the amplifiers: input cap left, output cap right, probe pads above
 SLEEP_LAYOUT = [

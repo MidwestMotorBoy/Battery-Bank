@@ -7,7 +7,7 @@
 	(title_block
 		(title "USB-C PD port (used twice)")
 		(date "2026-10-14")
-		(rev "A6")
+		(rev "A8")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "TPS25751D + BQ25756 + TPS62933; port 1 = 4xx, port 2 = 5xx")
 		(comment 2 "Spec + open items: DevBoard/README.md")
@@ -6217,7 +6217,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU to drive CHG_INH low through R435.\n    Reset, IWDG reset, a hang or an unprogrammed MCU stop charging; a dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the polymer (C421/C432) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -9661,6 +9661,17 @@
 				)
 			)
 		)
+		(property "MPN" "M24512-DFMC6TG"
+			(at 254 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "6c1adabe-70b1-44b4-b2cc-f50a019802ff")
 		)
@@ -10111,7 +10122,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A (review 2: > 5.8 A IHS limit)"
+		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A defined at a 40 % drop (not like-for-like with the SRP5030T); fine, as the 5.8 A IHS limit is a fault-only peak"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -10354,6 +10365,17 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD0720KL"
+			(at 167.64 218.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "5463d828-f5f4-4a3a-a38d-28d291275cbf")
 		)
@@ -10426,7 +10448,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 464.82 121.92 0)
 			(hide yes)
 			(show_name no)
@@ -11826,6 +11848,17 @@
 				)
 			)
 		)
+		(property "MPN" "BQ25756RRVR"
+			(at 381 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "47293ec9-4af2-4e7a-a0b0-2028e7746d25")
 		)
@@ -12465,6 +12498,17 @@
 				)
 			)
 		)
+		(property "MPN" "RT0805BRD0710KL"
+			(at 411.48 214.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "c09d3c32-c4fa-4e3e-ba8d-a6fcef1fee89")
 		)
@@ -12723,7 +12767,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 495.3 121.92 0)
 			(hide yes)
 			(show_name no)
@@ -12851,6 +12895,17 @@
 			)
 		)
 		(property "LCSC" "C3200405"
+			(at 101.6 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPS62933DRLR"
 			(at 101.6 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -13857,7 +13912,7 @@
 				)
 			)
 		)
-		(property "Notes" "CHG_INH from the MCU (PB8): low allows charging; high or hi-Z (reset, IWDG reset, unprogrammed) stops it at the CE pin via the R417 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
+		(property "Notes" "CHG_INH from the MCU (DIO24): low allows charging; high or hi-Z (reset, WDT reset, ROM bootloader, unprogrammed) stops it at the CE pin via the R417/R517 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0"
 			(at 323.85 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -17276,7 +17331,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222, $9.43): 2.2 uH, Isat 18 A, Irms 12 A (40 C rise), DCR 9 mOhm max; review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm; its datasheet land (4.1 mm pads, 13.6 overall, 5.4 gap) is the FXL1040 footprint. Check its temperature at 600 kHz at bring-up"
+		(property "Notes" "Cost-down 2026-10-14 (was Coilcraft XAL7030-222): 2.2 uH, DCR 9 mOhm max; Isat 18 A and Irms 12 A are typical values (L -17 % at 15 A, soft saturation; about 30-33 C rise at 12 A). Review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm, FXL1040 footprint. Check its temperature at bring-up"
 			(at 384.81 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -18414,6 +18469,17 @@
 			)
 		)
 		(property "LCSC" "C15850"
+			(at 137.16 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21A106KAYNNNE"
 			(at 137.16 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -19917,7 +19983,7 @@
 				)
 			)
 		)
-		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH low (reset, hang, unprogrammed or Standby all inhibit). With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
+		(property "Notes" "CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH (DIO24) low. Reset, WDT reset, ROM bootloader or an unprogrammed MCU all inhibit (pins float). CC2340 Standby keeps the GPIO state, so a low CHG_INH keeps charging in Standby. With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435/R535: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)"
 			(at 665.48 425.45 0)
 			(hide yes)
 			(show_name no)
@@ -20313,7 +20379,7 @@
 				)
 			)
 		)
-		(property "Notes" "Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up"
+		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
 			(at 485.14 121.92 0)
 			(hide yes)
 			(show_name no)
@@ -20557,6 +20623,17 @@
 			)
 		)
 		(property "LCSC" "C122537"
+			(at 411.48 207.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RT0805BRD07100KL"
 			(at 411.48 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -21070,6 +21147,17 @@
 			)
 		)
 		(property "Notes" "LDO_3V3: TPS25751 needs 5 uF min after derating"
+			(at 231.14 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21A106KAYNNNE"
 			(at 231.14 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -23748,6 +23836,17 @@
 				)
 			)
 		)
+		(property "MPN" "CL10A106KP8NNNC"
+			(at 220.98 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "30425a6f-80e2-47b7-ba69-0466c500467b")
 		)
@@ -24840,6 +24939,17 @@
 			)
 		)
 		(property "LCSC" "C30169739"
+			(at 170.18 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPS25751DREFR"
 			(at 170.18 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -26860,7 +26970,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM"
+		(property "Notes" "TPD4S201 FLT pull-up (open drain; 1.7-300 kOhm to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event (33): CC or SBU OVP (and an ESD-triggered OVP) forces Type-C error recovery, as on TI's TPS25751EVM"
 			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -27382,7 +27492,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV1 -> Q401 high-side gate (EVM R8). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV1 -> Q401/Q501 high-side gate (EVM R8). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -27518,7 +27628,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV1 -> Q401 low-side gate (EVM R20). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV1 -> Q407/Q507 low-side gate (EVM R20). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 309.88 279.40 0)
 			(hide yes)
 			(show_name no)
@@ -27654,7 +27764,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV2 -> Q402 high-side gate (EVM R3). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "HIDRV2 -> Q402/Q502 high-side gate (EVM R3). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 309.88 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -27790,7 +27900,7 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV2 -> Q402 low-side gate (EVM R17). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "LODRV2 -> Q408/Q508 low-side gate (EVM R17). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
 			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
@@ -27926,7 +28036,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST1 pin -> C412/D404 (EVM R13). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST1 pin -> C412/D404 (C512/D504) (EVM R13). 0R; raise to a few ohms to slow the switching edges"
 			(at 345.44 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -28062,7 +28172,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTST2 pin -> C413/D405 (EVM R23). 0R; raise to a few ohms to slow the switching edges (EMI tuning)"
+		(property "Notes" "BTST2 pin -> C413/D405 (C513/D505) (EVM R23). 0R; raise to a few ohms to slow the switching edges"
 			(at 345.44 279.40 0)
 			(hide yes)
 			(show_name no)
@@ -30292,7 +30402,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)"
+		(property "Notes" "TPD4S201 VBIAS (ESD support), 0.1 uF 50 V X7R. The part's own clamps hold VBIAS to about 28 V (-Q1 6.3.1); the >= 63 V footnote is about capacitance loss, and 50 V X7R keeps more than the 0.04 uF effective minimum. TI's EVM uses 50 V (review 4 C-1/C-13)"
 			(at 144.78 144.78 0)
 			(hide yes)
 			(show_name no)

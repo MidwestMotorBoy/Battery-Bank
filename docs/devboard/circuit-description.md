@@ -137,15 +137,15 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ### 7.1 Connector and protection
 - **J1 / J2:** Shou Han TYPE-C 16PCB1.6 IP68 (LCSC C55629729; the 1.6 mm board version of the 16PCB0.8, same land pattern), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
-- VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2.
-- **Rev A6:** D+/D− (A6/B6, A7/B7) are shorted by R440/R540 (0 Ω, a passive BC1.2 DCP signature); the TPS25751 no longer does BC1.2. SBU1/SBU2 feed liquid detection: TPD2S300 (U405/U505) → GPIO4/5, with switched 100 kΩ pull-up / 1 MΩ pull-down (GPIO6/7) and the TPD2S300 FLT on GPIO3. Before rev A6, D+/D− went to TPS25751 USB_P/USB_N and SBU was unconnected. See DevBoard README items 35–36.
-- **TVS:** Littelfuse SMAJ22A (C148220) VBUSx to GND, right at the connector.
-- **ESD protection (rev A6, 2026-10-14: CC and SBU are protected by the TPD4S201 port protector U405/U505, so the ESD2CAN24s D402/D502 are removed too; the D± array D403/D503 was removed earlier, because D± now only meet each other through R440/R540.) (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
-- 330 pF on each CC line (TPS25751 datasheet).
+- VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → U405 C_CC1/C_CC2 → CC1/CC2 → TPS25751 CC1/CC2.
+- **Rev A6:** D+/D− (A6/B6, A7/B7) are shorted by R440/R540 (0 Ω, a passive BC1.2 DCP signature); the TPS25751 no longer does BC1.2. SBU1/SBU2 feed liquid detection: TPD4S201 (U405/U505, item 39) → GPIO4/5, with switched 100 kΩ pull-up / 1 MΩ pull-down (GPIO6/7) and the TPD4S201 FLT on GPIO3. Before rev A6, D+/D− went to TPS25751 USB_P/USB_N and SBU was unconnected. See DevBoard README items 35–36.
+- **TVS (rev A8):** TI TVS2200DRVR (LCSC C523793; flat clamp, 22 V standoff, 24.6 V breakdown min, 28 V clamp at 40 A 8/20 µs) VBUSx to GND, right at the connector. It replaced the SMAJ22A (35.5 V clamp), which let a live 20 V hot-plug reach the 28 V abs max of the TPS25751 and TPD4S201 (review 4 C-4).
+- **ESD protection:** CC and SBU: TPD4S201 port protector U405/U505 (IEC ±8 kV contact, ±35 V surge, 28 V short-to-VBUS tolerance). D±: none, as they only meet each other through R440/R540. History: rev A4 used ESD2CAN24 on CC and PESD5V0S2BT on D±; rev A6 had a TPD2S300 on SBU; both were replaced by the TPD4S201 (README item 39).
+- 220 pF on each CC line (rev A8; was 330 pF): with the TPD4S201's 40–120 pF the total stays under the TPS25751's 480 pF maximum; TI's EVM value with this protector (review 4 C-3).
 
 ### 7.2 PD controller (TPS25751D)
 - **U_PDx:** TPS25751DREFR (LCSC C30169739). VIN_3V3 from 3V3; LDO_3V3, LDO_1V5, VBUS, PP5V capacitors per datasheet.
-- **I2C address / dead-battery straps (SafeMode):** port 1: ADCIN1 → LDO_3V3, ADCIN2 → GND (address 0x20). Port 2: ADCIN1 → GND, ADCIN2 → GND (0x21). Add unpopulated divider footprints on each ADCIN so other strap options can be tried.
+- **I2C address / dead-battery straps (SafeMode):** port 1: ADCIN1 → LDO_3V3, ADCIN2 → GND (address 0x20). Port 2: ADCIN1 → GND, ADCIN2 → GND (0x21). The straps are single 0 Ω parts (R1–R4) on the root sheet. To try another option, change which rail each 0 Ω goes to; moving port 1's R1 to GND gives decoded 0, and SafeMode #2 then collides with port 2's 0x21.
 - I2Ct (target) SDA/SCL → shared SDA/SCL. I2Ct_IRQ → IRQ_N (shared with the other port, the gauge BTP and the TMP1075 ALERTs, rev A7).
 - I2Cc (controller) → this port's private bus I2CCx_SDA/SCL with pull-ups to this TPS25751's **LDO_3V3** (TI guidance); I2Cc_IRQ ← its BQ25756 INT.
 - PPHV → PPHVx (to the charger's input side). PP5V ← PP5Vx.
@@ -154,39 +154,40 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.3 Charger and power stage (BQ25756) — copy of production layout
 - **U_CHGx:** BQ25756RRVR (LCSC C19272232).
 - **FETs (rev A6 cost-down, 2026-10-14):** four discrete JinYu PGQ04N070 per port (JLC C49384056, PDFN3333; 40 V, 7 mΩ max at 10 V, 10 mΩ max at 4.5 V, Qg 14.7 nC). Leg A (USB side): Q401 high side (HIDRV1), Q407 low side (LODRV1), SW1. Leg B (battery side): Q402 high side (HIDRV2), Q408 low side (LODRV2), SW2. This matches the production BOM's plan of four discrete 40 V logic-level 3.3 × 3.3 mm FETs. Until then the legs were Infineon IAUC45N04S6L063H half-bridges (C3288896, 8.5 mΩ max at 4.5 V, $1.16, 62 at JLC).
-- **Inductor:** SXN SMMS1040-2R2M, 2.2 µH, Isat 18 A, Irms 12 A, 9 mΩ max, 11.5 × 10 mm (LCSC C149591), between SW1 and SW2. It was Coilcraft XAL7030-222MEC until the cost-down 2026-10-14, `cost-down-2026-10-14.md`.
+- **Inductor:** SXN SMMS1040-2R2M, 2.2 µH, Isat 18 A and Irms 12 A (typical values; soft saturation, −17 % at 15 A), 9 mΩ max, 11.5 × 10 mm (LCSC C149591), between SW1 and SW2. It was Coilcraft XAL7030-222MEC until the cost-down 2026-10-14, `cost-down-2026-10-14.md`.
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**
-  - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
+  - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × Honor HV1V107M0607PZ 100 µF 35 V solid polymer (C5246554) as bulk; ≥ 80 µF effective at 20 V
   - Battery side: 3 × Samsung CL31A226KAHNNNE, 22 µF 25 V X5R 1206 (C12891, JLC basic) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 114 µF effective at 16.8 V (≥ 80 µF). They were 47 µF 1210s until the cost-down 2026-10-14, `cost-down-2026-10-14.md`
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
 - **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
-  - FSW_SYNC: 40.2 kΩ 1 % (C17678) → ~600 kHz
-  - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG set to ~1.527 V in firmware for 16.8 V)
+  - FSW_SYNC: 40.2 kΩ 1 % 0603 (C12447) → about 598 kHz
+  - FB: 100 kΩ (C122537) from battery side to FB, 10.0 kΩ (C110775) FB to FBG (VFB_REG = 0x0F, 1.534 V, written by the bundle for 16.8 V; the power-on value gives 16.70–16.96 V)
   - ICHG: 9.1 kΩ 1 % (C23260) → ~5.5 A hardware ceiling per port (rev A4; was 5.11 kΩ / 9.8 A). One port can charge at about 1C; with both ports charging, configuration/firmware hold each at 2.8 A (ICHG_REG).
   - ILIM_HIZ: 3.6 kΩ 1 % (C22980) → ~5.6 A hardware input ceiling (KILIM = 20 A·kΩ with 5 mΩ)
-  - TS: RT1 1.8 kΩ 1 % (C4177) REGN→TS, RT2 5.6 kΩ 1 % (C23189) TS→GND (rev A4; was 1.74k/5.11k), with this port's own 10 kΩ NTC (TH5 / TH6) beside its FETs → ~−20 °C to ~95 °C window
-  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** 1 % 0603 (C22872; top, from VAC), **RAC2 40.2 kΩ** 1 % (C17678), **RAC3 10 kΩ** 1 % (C17414, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
-    - Overvoltage stop: 1.2 V × 187.2 / 10.0 = **22.5 V** (above PD's 21 V max, below the SMAJ22A's 24.4 V breakdown)
+  - TS: RT1 1.8 kΩ 1 % (C4177) REGN→TS, RT2 5.6 kΩ 1 % (C23189) TS→GND (rev A4; was 1.74k/5.11k), with this port's own 10 kΩ NTC (TH401 / TH501) on its FET copper → about −7.6 °C to 94.5 °C window (TS_T5 = 81 °C configured)
+  - ACUV / ACOV divider, three resistors in series from VAC to PGND: **RAC1 137 kΩ** 1 % 0603 (C22872; top, from VAC), **RAC2 40.2 kΩ** 1 % 0603 (C12447), **RAC3 10 kΩ** 1 % (C17414, bottom, to PGND). **ACUV** connects at the RAC1/RAC2 junction and **ACOV** at the RAC2/RAC3 junction (datasheet: VACOV = 1.2 V × total / RAC3; VACUV = 1.1 V × total / (RAC2 + RAC3)).
+    - Overvoltage stop: 1.2 V × 187.2 / 10.0 = **22.5 V** (above PD's 21 V max, below the TVS2200's 24.6 V minimum breakdown)
     - Undervoltage stop: 1.1 V × 187.2 / 50.2 = **4.1 V**
     - Hardware input-voltage regulation floor (ACUV reaching 1.21 V): **4.5 V**, so a weak 5 V source or panel is never pulled into collapse; firmware can raise it further via the input DPM / MPPT settings
     - Divider draws ~107 µA only while VAC is powered (cable attached)
-    - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the SMAJ22A breakdown
-    - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
-- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`).
-- STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
+    - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the TVS breakdown
+    - Reverse (sourcing) mode: the converter stops on its own reverse-mode undervoltage (review 4 C-7); how ACUV/ACOV act there is still to confirm at bring-up
+- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB520S-40T1G, C132124; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`).
+- STAT1, STAT2, PG to test points (pulled up to 3V3). CE: R417/R517 47k pull-up to 3V3, so charging needs the MCU to drive CHG_INH (DIO24) low through R435/R535 (rev A5; fails safe in reset).
+- High-side gate drive: at 100 % duty (Q402 in reverse boost and forward buck, Q401 in forward boost) the BQ25756 holds the gate up with an internal charge pump (TI E2E; not in the datasheet). Keep the high-side gates free of pull-down resistors; verify the gate voltage at bring-up (review 4 B-1).
 
 ### 7.4 5 V supply for PP5V (TPS62933)
 - **U_5Vx:** TPS62933DRLR (LCSC C3200405), input from PACK_P (high-current branch), output PP5Vx.
 - RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
 - Inductor: Coilank APS0530M3R3H, 3.3 µH, 38 mΩ, Irms 5 A, Isat 8 A (LCSC C49073587; was Bourns SRP5030T-3R3M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`).
-- Output 2 × 22 µF 35 V 1206 plus at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
+- Output 2 × 22 µF 25 V 1206 (CL31A226KAHNNNE) plus a 220 µF 16 V polymer (C443/C543) and at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
 - EN ← EN_5Vx (MCU) with a pull-down so it's off by default.
 
 ## 8. Test points and links
 
 - Test points on: CELL_P, CELL_N, CELL1–3, PACK_P, PACK_LP, 3V3, each VBUSx, PPHVx, PP5Vx, REGNx, SW1x/SW2x (scope-probe friendly, with nearby GND), SDA, SCL, each I2CCx, IRQ_N.
-- 0 Ω links (0805) to isolate blocks: 3V3 to each TPS25751 VIN_3V3, 3V3 to the MCU, PACK_P to each TPS62933, PACK_P to each charger's battery side (use a wide copper link footprint rated for the full current).
+- Links to isolate blocks: 0 Ω (0805) from 3V3 to each TPS25751 VIN_3V3 and to the MCU (R301); solder jumper R431/R531 from PACK_P to each TPS62933; a 10 A net-tie copper link (R430/R530) from PACK_P to each charger's battery side.
 - Mounting holes ×6 (M3) and rubber feet or standoffs.
 
 ## Open items before ProtoFlow
