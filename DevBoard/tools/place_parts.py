@@ -46,7 +46,7 @@ FIXED = {
     # nodes VC4..VC1, CELL_N at 2.5 mm pitch
     "R104": (112.6, 37.6, 0), "R103": (112.6, 40.1, 0), "R102": (112.6, 42.6, 0), "R101": (112.6, 45.1, 0),
     "C101": (116.0, 38.85, 90), "C102": (117.8, 41.35, 90), "C103": (116.0, 43.85, 90), "C104": (117.8, 46.35, 90),
-    "F101": (114, 96, 90), "J101": (113, 108, 0), "J103": (132.5, 92.5, 0),
+    "F102": (114, 96, 90), "J101": (113, 108, 0), "J103": (132.5, 92.5, 0),
     # cell NTC headers (TS1..TS4), each beside the tap test point of the cell it watches
     "J102": (106.3, 20.0, 0), "J105": (106.3, 47.0, 0), "J106": (106.3, 75.0, 0), "J107": (106.3, 103.0, 0),
     # sleep-current section: R_MEAS, amplifiers, LDO, 3.3 V buck; output probe loops on the bottom edge
@@ -283,7 +283,7 @@ for blk, (cx, cy) in PORT_CENTRE.items():
 # with its CC caps above the CC/DP/DN pin rows, the DP/DN ESD D403 in line with the data pins, the VBUS TVS D401
 # lying below them, its VBUS pad against the connector's lower VBUS pins (offsets from (W, USB_Y))
 CONN_EXTRA = {"D02": (183.0, -4.0, 90), "C02": (185.38, -4.0, 90), "C01": (186.435, -4.0, 90),
-              "D03": (184.6, -0.2, 0), "D01": (184.85, 3.5, 180)}
+              "D01": (184.85, 3.5, 180)}   # D403 (D+/D- ESD) removed 2026-10-14: D+/D- shorted by R440
 for blk, yc in (("4", USB_Y[0]), ("5", USB_Y[1])):
     for suf, (x, dy, r) in CONN_EXTRA.items():
         put(suf[0] + blk + suf[1:], x, yc + dy, r)

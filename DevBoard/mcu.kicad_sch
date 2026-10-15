@@ -6203,7 +6203,7 @@
 				)
 			)
 		)
-		(property "Value" "Green status"
+		(property "Value" "Red status"
 			(at 71.43 239.77 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6235,6 +6235,17 @@
 				)
 			)
 		)
+		(property "Notes" "Red 0603 (Vf 1.8-2.4 V), JLC basic: about 4 mA through R306. The green Everlight 19-217 (C72043) went out of stock at JLC (cost-down 2026-10-14)"
+			(at 71.12 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Light emitting diode"
 			(at 71.12 243.84 0)
 			(hide yes)
@@ -6246,7 +6257,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C72043"
+		(property "LCSC" "C2286"
 			(at 71.12 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -6257,7 +6268,7 @@
 				)
 			)
 		)
-		(property "MPN" "19-217/GHC-YR1S2/3T"
+		(property "MPN" "KT-0603R (Hubei KENTO)"
 			(at 71.12 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -6590,7 +6601,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -6615,7 +6626,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 223.52 193.04 0)
 			(hide yes)
 			(show_name no)
@@ -6648,28 +6659,6 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
-			(at 223.52 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
-			(at 223.52 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "1"
 			(uuid "d33d958b-cf46-4939-beef-1a84d1f3b3c7")
 		)
@@ -6688,7 +6677,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -6714,7 +6703,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 236.22 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -6737,28 +6726,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 231.14 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 231.14 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 231.14 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -7615,6 +7582,17 @@
 				)
 			)
 		)
+		(property "Sourcing" "Buy from ST eStore ($10.65 at 1, $9.87 at 10 on 2026-10-14) or DigiKey; consign to JLC for placement (LGA-77)"
+			(at 190.5 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "STM32WB15 Bluetooth LE module with integrated antenna"
 			(at 190.5 139.7 0)
 			(hide yes)
@@ -7648,7 +7626,7 @@
 				)
 			)
 		)
-		(property "Notes" "LGA-77, JLC-placed only: check JLC stock at order time (LCSC had 0 on 2026-10-12); consign if needed"
+		(property "Notes" "LGA-77: have JLC place it from consigned stock (JLC had 0 on 2026-10-14). LCSC number kept only to identify the part"
 			(at 190.5 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -7905,7 +7883,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -7931,7 +7909,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 276.86 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -7954,28 +7932,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 271.78 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 271.78 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 271.78 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -8661,7 +8617,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -8687,7 +8643,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 215.9 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -8710,28 +8666,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 210.82 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 210.82 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 210.82 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -8840,7 +8774,7 @@
 				)
 			)
 		)
-		(property "Notes" "InGaN green (Vf ~3 V): 330R gives ~1 mA from 3.3 V (1k gave ~0.5 mA, barely visible)"
+		(property "Notes" "330R with the red KT-0603R (Vf ~2 V): about 4 mA from 3.3 V"
 			(at 55.88 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -11239,7 +11173,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -11265,7 +11199,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 256.54 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -11288,28 +11222,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 251.46 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 251.46 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 251.46 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12164,7 +12076,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e1c0c82c-c099-4b09-bc25-09377ffd78da")
 		(property "Reference" "J302"
@@ -12209,7 +12121,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C2937625 PZ254V-11-03P)"
 			(at 304.8 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -12220,7 +12132,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2937625"
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 304.8 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -12345,7 +12257,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e4198070-c3b0-42da-8abd-9e94aee9a19e")
 		(property "Reference" "J303"
@@ -12390,7 +12302,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x07, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492406 PZ254V-11-07P)"
 			(at 304.8 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -12401,7 +12313,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492406"
+		(property "Description" "Generic connector, single row, 01x07, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 304.8 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -12459,7 +12371,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -12485,7 +12397,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 297.18 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12508,28 +12420,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 292.1 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 292.1 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 292.1 264.16 0)
 			(hide yes)
 			(show_name no)

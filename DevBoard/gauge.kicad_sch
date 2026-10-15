@@ -4562,7 +4562,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (fitted) clamps Q102 VGS at 15 V in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse (no F101).\n    R127 (DNP) is a bench bypass for a blown F102 only: never fitted on a pack in use."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (fitted) clamps Q102 VGS at 15 V in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse (no F101).\n    R127 (DNP) is a bench bypass for a blown F102 only: never fitted on a pack in use.\n15. Never insert or remove a cell with USB or J104 power on: an empty holder slot sees PACK_P minus the other cells\n    (> 4.35 V), U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -6841,7 +6841,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 321.31 92.71 0)
+			(at 320.04 92.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6907,25 +6907,23 @@
 		(dnp no)
 		(uuid "0a7ab9be-f8e2-4621-adc2-150eaa469cba")
 		(property "Reference" "C118"
-			(at 330.83 122.3 0)
+			(at 332.74 115.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 330.83 124.21 0)
+			(at 332.74 117.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -7087,25 +7085,23 @@
 		(dnp no)
 		(uuid "0c2cd340-8aa3-4231-bb68-a8cef0a58130")
 		(property "Reference" "C113"
-			(at 287.02 107.06 0)
+			(at 292.14 106.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 287.02 108.97 0)
+			(at 292.14 108.78 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -7267,7 +7263,7 @@
 		(dnp no)
 		(uuid "1323d4f7-eca5-43ae-a079-2e45a083488f")
 		(property "Reference" "R121"
-			(at 276.86 108.08 90)
+			(at 276.71 106.99 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7277,7 +7273,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 276.86 109.98 90)
+			(at 276.71 108.96 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7368,7 +7364,7 @@
 		(dnp no)
 		(uuid "1738958f-ecc1-4668-b4b6-a27daccb8d00")
 		(property "Reference" "R123"
-			(at 328.93 92.84 90)
+			(at 328.78 91.75 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7378,7 +7374,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 328.93 94.74 90)
+			(at 328.78 93.72 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7543,7 +7539,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "18c15035-c6f3-419e-bc2a-c83df9c4b16a")
 		(property "Reference" "J107"
@@ -7588,7 +7584,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7599,7 +7595,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7659,7 +7655,7 @@
 		(dnp no)
 		(uuid "19f7ddf9-6375-4c75-a1cb-5c2a6c5f243d")
 		(property "Reference" "C106"
-			(at 124.5 219.85 0)
+			(at 124.50 219.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7669,7 +7665,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 124.5 221.81 0)
+			(at 124.50 221.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7770,7 +7766,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 182.73 29.2 90)
+			(at 182.73 29.20 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7891,7 +7887,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 181.305 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -7924,7 +7920,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2762602"
+		(property "LCSC" "C50254"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7935,7 +7931,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21B225KBYNNNE"
+		(property "MPN" "CL31B225KBHNNNE"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7946,7 +7942,7 @@
 				)
 			)
 		)
-		(property "Notes" "PBI sits near VBAT (16.8 V): 50 V X7R 0805 keeps most of its 2.2 uF (review m2)"
+		(property "Notes" "PBI sits near VBAT (16.8 V): 50 V X7R 1206 keeps more of its 2.2 uF than the old 0805 (review m2; JLC basic since the 2026-10-14 cost-down)"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7984,7 +7980,7 @@
 		(dnp no)
 		(uuid "2001919c-80c5-4578-9e7b-5043338f9f44")
 		(property "Reference" "U101"
-			(at 215.9 129.6 0)
+			(at 215.90 129.60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7994,7 +7990,7 @@
 			)
 		)
 		(property "Value" "BQ40Z50RSMR-R2"
-			(at 215.9 131.57 0)
+			(at 215.90 131.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8244,7 +8240,7 @@
 		(dnp no)
 		(uuid "2072e02a-185e-47e3-9b00-7a94e21fb21c")
 		(property "Reference" "R124"
-			(at 323.85 115.7 90)
+			(at 323.70 114.61 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8254,7 +8250,7 @@
 			)
 		)
 		(property "Value" "5.1k"
-			(at 323.85 117.6 90)
+			(at 323.70 116.58 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8652,7 +8648,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 190.5 35.57 90)
+			(at 190.50 35.57 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8718,7 +8714,7 @@
 		(dnp no)
 		(uuid "29f4bea2-f9c4-4433-9e73-05a851a888ca")
 		(property "Reference" "C107"
-			(at 243.8 82.69 0)
+			(at 243.80 82.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8728,7 +8724,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.8 84.65 0)
+			(at 243.80 84.65 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8819,25 +8815,23 @@
 		(dnp no)
 		(uuid "2d30109a-0271-458a-8ec0-f5f049782adb")
 		(property "Reference" "C114"
-			(at 287.02 114.68 0)
+			(at 292.14 114.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 287.02 116.59 0)
+			(at 292.14 116.40 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -9023,7 +9017,7 @@
 		(dnp no)
 		(uuid "2da0b1dc-35d1-4ebd-b816-b1e60953e9b0")
 		(property "Reference" "D103"
-			(at 248.2 53.48 90)
+			(at 248.20 53.48 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9033,7 +9027,7 @@
 			)
 		)
 		(property "Value" "BZT52C15"
-			(at 248.2 55.44 90)
+			(at 248.20 55.44 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9075,7 +9069,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C173427"
+		(property "LCSC" "C19077412"
 			(at 241.3 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -9086,7 +9080,7 @@
 				)
 			)
 		)
-		(property "MPN" "BZT52C15"
+		(property "MPN" "BZT52C15 (JLC preferred C19077412)"
 			(at 241.3 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -9129,7 +9123,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -9155,7 +9149,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 96.52 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -9178,28 +9172,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 91.44 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 91.44 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 91.44 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -9322,7 +9294,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 74.32 139.7 90)
+			(at 74.32 139.70 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9388,7 +9360,7 @@
 		(dnp no)
 		(uuid "34c7e62d-18e0-46c4-bb8b-2f91b770df40")
 		(property "Reference" "R120"
-			(at 276.86 100.46 90)
+			(at 276.71 99.37 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9398,7 +9370,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 276.86 102.36 90)
+			(at 276.71 101.34 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9485,7 +9457,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "36e9e7b1-2b13-480b-94fd-46bcc548bd51")
 		(property "Reference" "J103"
@@ -9530,6 +9502,17 @@
 				)
 			)
 		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C2691448 PZ254V-11-04P)"
+			(at 332.74 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 332.74 157.48 0)
 			(hide yes)
@@ -9542,17 +9525,6 @@
 			)
 		)
 		(property "Notes" "Same pin order as the EV2400 SMBus port (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT (unused)"
-			(at 332.74 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2691448"
 			(at 332.74 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -9678,13 +9650,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "3b26ddea-bc53-4ad0-8154-b9dd298c4c8f")
 		(property "Reference" "TP106"
-			(at 266.7 44.95 0)
+			(at 266.70 44.95 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9704,7 +9676,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 271.78 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -9727,28 +9699,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 266.7 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 266.7 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 266.7 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -10108,7 +10058,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 91.44 238 0)
+			(at 91.44 238.00 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10451,7 +10401,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 342.9 196.09 0)
+			(at 342.90 196.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10605,7 +10555,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 266.7 55.12 0)
+			(at 266.70 55.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10671,7 +10621,7 @@
 		(dnp no)
 		(uuid "53a52761-e64c-4484-9a3e-4b1b2151619a")
 		(property "Reference" "R119"
-			(at 276.86 92.84 90)
+			(at 276.71 91.75 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10681,7 +10631,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 276.86 94.74 90)
+			(at 276.71 93.72 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10926,7 +10876,7 @@
 		(dnp no)
 		(uuid "54f322ab-2e8a-4451-9ac9-db888af97098")
 		(property "Reference" "R122"
-			(at 276.86 115.7 90)
+			(at 276.71 114.61 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10936,7 +10886,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 276.86 117.6 90)
+			(at 276.71 116.58 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11227,7 +11177,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 215.9 69.09 0)
+			(at 215.90 69.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11304,7 +11254,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 241.3 62.74 0)
+			(at 241.30 62.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11548,7 +11498,7 @@
 		(dnp no)
 		(uuid "640f0fb6-8fed-40e9-8d8b-677cb0c1282c")
 		(property "Reference" "R115"
-			(at 239.88 143.82 90)
+			(at 239.88 155.20 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11558,7 +11508,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 239.88 145.79 90)
+			(at 239.88 157.17 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11649,25 +11599,23 @@
 		(dnp no)
 		(uuid "64a08ec5-b76e-49b4-a8a0-a320aadce41b")
 		(property "Reference" "C116"
-			(at 323.22 99.57 0)
+			(at 328.97 99.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 323.22 101.35 0)
+			(at 328.97 101.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -11864,7 +11812,7 @@
 		(dnp no)
 		(uuid "65fd7dc7-9300-4219-a586-a413f065e6fb")
 		(property "Reference" "C108"
-			(at 243.8 97.93 0)
+			(at 243.80 97.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11874,7 +11822,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.8 99.89 0)
+			(at 243.80 99.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12197,25 +12145,23 @@
 		(dnp no)
 		(uuid "6c98240a-a5aa-438f-9ba2-08bff26040d3")
 		(property "Reference" "R126"
-			(at 354.97 122.3 0)
+			(at 357.29 122.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "5.1k"
-			(at 354.97 124.21 0)
+			(at 357.29 124.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
@@ -12371,13 +12317,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "71c8ea85-e687-424d-affc-3c497c2068e2")
 		(property "Reference" "TP104"
-			(at 76.2 258.31 0)
+			(at 76.20 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12397,7 +12343,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 81.28 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12420,28 +12366,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 76.2 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 76.2 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 76.2 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12476,7 +12400,7 @@
 		(dnp no)
 		(uuid "74e562ff-a0ea-4b47-9529-8a8a82cd5be5")
 		(property "Reference" "BT101"
-			(at 38.1 146.41 0)
+			(at 38.10 146.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12486,7 +12410,7 @@
 			)
 		)
 		(property "Value" "BH-21700-B1BJ001"
-			(at 38.1 148.38 0)
+			(at 38.10 148.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12643,7 +12567,7 @@
 		(dnp no)
 		(uuid "789b7cc7-738b-43e1-9ef4-77e8666b0e51")
 		(property "Reference" "BT102"
-			(at 50.84 111.9 0)
+			(at 50.84 111.90 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12733,7 +12657,7 @@
 		(dnp no)
 		(uuid "79bb631e-cf59-42ac-b6ca-de05d4610fdc")
 		(property "Reference" "Q102"
-			(at 228.6 38.16 0)
+			(at 228.60 38.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12743,7 +12667,7 @@
 			)
 		)
 		(property "Value" "AGM404AP1"
-			(at 228.6 40.13 0)
+			(at 228.60 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12852,7 +12776,7 @@
 		(dnp no)
 		(uuid "7b0801c1-1206-4ae9-9dfc-f702484f5ab3")
 		(property "Reference" "R118"
-			(at 311 39.68 90)
+			(at 311.00 39.68 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12862,7 +12786,7 @@
 			)
 		)
 		(property "Value" "4.7k"
-			(at 311 41.65 90)
+			(at 311.00 41.65 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13321,25 +13245,23 @@
 		(dnp no)
 		(uuid "94a058b8-828b-42ff-807e-30671de21501")
 		(property "Reference" "U102"
-			(at 300.99 92.71 0)
+			(at 307.34 90.23 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "BQ294700DSGR"
-			(at 300.99 123.83 0)
+			(at 307.34 92.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm"
@@ -13456,25 +13378,23 @@
 		(dnp no)
 		(uuid "9891914b-9aeb-46b4-a25c-b9cc274f0899")
 		(property "Reference" "R125"
-			(at 344.81 122.3 0)
+			(at 347.13 122.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "51k"
-			(at 344.81 124.21 0)
+			(at 347.13 124.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
@@ -13553,7 +13473,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -13579,7 +13499,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 50.8 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -13602,28 +13522,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 45.72 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 45.72 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 45.72 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -13770,7 +13668,7 @@
 		(dnp no)
 		(uuid "a3386614-4fea-4082-8161-f10b0044fd7f")
 		(property "Reference" "R103"
-			(at 152.85 156.5 90)
+			(at 152.85 156.50 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13893,7 +13791,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 318.77 47 90)
+			(at 318.77 47.00 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14161,7 +14059,7 @@
 		(dnp no)
 		(uuid "a6289f2f-eac6-4aae-9c28-2920249c0e42")
 		(property "Reference" "BT104"
-			(at 50.84 61.1 0)
+			(at 50.84 61.10 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14251,25 +14149,23 @@
 		(dnp no)
 		(uuid "a6d2b51f-09da-4ecb-a089-9155e6ccaff3")
 		(property "Reference" "C117"
-			(at 330.84 107.06 0)
+			(at 336.59 106.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 330.84 108.97 0)
+			(at 336.59 108.78 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -14375,7 +14271,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 172.57 29.2 90)
+			(at 172.57 29.20 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14600,7 +14496,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 228.6 193.55 0)
+			(at 228.60 193.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14739,7 +14635,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
 		(property "Reference" "J102"
@@ -14784,7 +14680,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -14795,7 +14691,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -15134,7 +15030,7 @@
 		(dnp no)
 		(uuid "babadc40-2607-4856-aaf1-92c5fd949f5e")
 		(property "Reference" "F102"
-			(at 375.92 95.25 0)
+			(at 385.36 100.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15144,14 +15040,13 @@
 			)
 		)
 		(property "Value" "WSFB1514"
-			(at 378.46 104.14 0)
+			(at 385.36 102.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "MonolithDev:TLC_WSFB_4x3mm"
@@ -15600,7 +15495,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -15626,7 +15521,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 111.76 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -15649,28 +15544,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 106.68 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 106.68 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 106.68 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -15705,7 +15578,7 @@
 		(dnp no)
 		(uuid "c54bf014-d957-47ce-ac53-78030697bc05")
 		(property "Reference" "BT103"
-			(at 50.84 86.5 0)
+			(at 50.84 86.50 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15960,7 +15833,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 342.9 131.32 0)
+			(at 342.90 131.32 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16198,11 +16071,11 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "d0d5a3a5-ce1e-4040-b4ad-2332f135008d")
 		(property "Reference" "J104"
-			(at 304.8 53.4 0)
+			(at 304.80 53.40 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16212,7 +16085,7 @@
 			)
 		)
 		(property "Value" "Bench PACK_P"
-			(at 304.8 55.37 0)
+			(at 304.80 55.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16243,7 +16116,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 304.8 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16254,7 +16127,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 304.8 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16314,25 +16187,23 @@
 		(dnp no)
 		(uuid "d4f68899-6ce6-4561-824b-b6ef6471c581")
 		(property "Reference" "C112"
-			(at 287.02 99.44 0)
+			(at 292.14 99.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 287.02 101.35 0)
+			(at 292.14 101.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -16494,7 +16365,7 @@
 		(dnp yes)
 		(uuid "d8c3bc27-0938-4049-82ed-54d3ba5386dc")
 		(property "Reference" "R127"
-			(at 375.92 87.88 90)
+			(at 375.77 86.67 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16504,7 +16375,7 @@
 			)
 		)
 		(property "Value" "0R DNP"
-			(at 375.92 89.66 90)
+			(at 375.77 88.64 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16584,25 +16455,23 @@
 		(dnp no)
 		(uuid "da794072-a455-4cd4-926a-fe78ca4ae540")
 		(property "Reference" "C115"
-			(at 287.02 122.3 0)
+			(at 292.14 122.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 287.02 124.21 0)
+			(at 292.14 124.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -16697,7 +16566,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 177.84 167.2 0)
+			(at 177.84 167.20 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16788,7 +16657,7 @@
 		(dnp no)
 		(uuid "e32a5599-a8f3-4f8f-a8f9-fcba963800a9")
 		(property "Reference" "D104"
-			(at 289.41 53.4 0)
+			(at 289.41 53.40 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16896,7 +16765,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e3a51db9-69e0-4d8c-a39a-1e79cb9d628d")
 		(property "Reference" "J105"
@@ -16941,7 +16810,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -16952,7 +16821,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -17163,7 +17032,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "ea00f53a-bc22-4075-8cf5-dc9760e31611")
 		(property "Reference" "J106"
@@ -17208,7 +17077,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17219,7 +17088,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" ""
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17273,7 +17142,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -17299,7 +17168,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 66.04 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -17322,28 +17191,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 60.96 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 60.96 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 60.96 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -17378,7 +17225,7 @@
 		(dnp no)
 		(uuid "f163a514-ff42-4bf1-be52-2170b58f5a9b")
 		(property "Reference" "Q103"
-			(at 349.22 185.71 0)
+			(at 349.83 185.71 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17387,8 +17234,8 @@
 				)
 			)
 		)
-		(property "Value" "BSS138"
-			(at 349.22 187.67 0)
+		(property "Value" "AO3400A"
+			(at 349.83 187.67 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17430,7 +17277,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C52895"
+		(property "LCSC" "C20917"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17441,7 +17288,7 @@
 				)
 			)
 		)
-		(property "MPN" "BSS138 (onsemi)"
+		(property "MPN" "AO3400A (AOS)"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17452,7 +17299,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). BSS138 Vgs(th) max 1.5 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10: 2N7002 max 2.5 V was marginal). PA6 allows 4.0 V unpowered"
+		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). AO3400A Vgs(th) 0.65-1.45 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10/H6 asks for <= 1.5 V max); JLC basic, same part as Q104 (cost-down 2026-10-14, was BSS138). PA6 allows 4.0 V unpowered"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17742,7 +17589,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -17768,7 +17615,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 317.5 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -17791,28 +17638,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 312.42 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 312.42 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 312.42 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -17847,25 +17672,23 @@
 		(dnp no)
 		(uuid "f9661e1c-cb1f-4994-a87e-d2f394174aff")
 		(property "Reference" "Q104"
-			(at 378.46 118.75 0)
+			(at 382.85 118.40 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 378.46 120.65 0)
+			(at 382.85 120.36 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
@@ -18070,7 +17893,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -18095,7 +17918,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 121.92 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -18139,28 +17962,6 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
-			(at 121.92 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
-			(at 121.92 264.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "1"
 			(uuid "60a47108-8375-4bd4-a36b-45fcfeb023bf")
 		)
@@ -18185,7 +17986,7 @@
 		(dnp no)
 		(uuid "fccf03bd-22cf-4444-b6d3-300983b3a0df")
 		(property "Reference" "C101"
-			(at 162.52 150 0)
+			(at 162.52 150.00 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18296,7 +18097,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 98.91 225.8 90)
+			(at 98.91 225.80 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

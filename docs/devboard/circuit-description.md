@@ -14,7 +14,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 
 ## Board
 
-- 4 layers, **0.8 mm** thick (the production USB-C connector is a mid-mount part made for a 0.8 mm board), 2 oz outer / 1 oz inner, **196 × 115 mm** (the four holders need ~96 × 110 mm and their courtyards push the mid holes out; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
+- **6 layers, 1.6 mm** thick, 2 oz outer / 0.5 oz inner, vias epoxy-filled and capped (2026-10-14; was 4 layers, 0.8 mm, 2 oz / 1 oz, chosen to match production's 0.8 mm mid-mount USB-C; production thickness is open), **196 × 115 mm** (the four holders need ~96 × 110 mm and their courtyards push the mid holes out; decided 2026-10-12), six M3 mounting holes (corners plus two between the holders and the electronics).
 - Everything assembled by JLC except the cell holders and connectors you choose to hand-fit.
 - Each charger power stage (BQ25756, two FET pairs, inductor, sense resistors, capacitor bank) is laid out as an **exact copy of the production power stage**, so switching and thermal results carry over. Everything else can be spread out.
 - Silkscreen: label every test point, jumper, header pin and cell polarity.
@@ -41,7 +41,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
   - No published current rating; treat as a few amps (normal charging and modest loads only).
   - Open holders don't stop a cell going in backwards. Silkscreen + and − at both ends of every holder, orient all four the same way, and check each cell's voltage with a meter at the tap test points before closing the fuse/link. A reversed cell can push the gauge's VC pins below ground (the 100 Ω filter resistors limit the current).
 - **Pack connector** in parallel with the holder stack (CELL_N, CELL1, CELL2, CELL3, CELL_P, plus thermistor pair), for running the final learning cycle on the real welded pack. Use one or the other, never both.
-- **Fuse** in series with CELL_P: prosemi 1206FA-15A (C2838894), 15 A, 300 A interrupt at 24 Vdc, sized for 100 W out at the 12 V low end (rev A4; was 8 A for holder use). JLC-placed (rev A5; was DNP and hand-fitted). Check the cells before waking the gauge: the FETs stay off until FET_EN.
+- **Fuse (rev A6):** F102, TLC WSFB1514 (C42463217), a 3-terminal self-control fuse between CELL_P_RAW and CELL_P. Its 15 A element (50 A interrupt, 36 V) is the pack's only fuse, and its heater lets U102 (BQ294700, 4.35 V/cell) or the gauge FUSE pin blow it through Q104 (TI BQ40Z50-R2 fig. 9-11). Until rev A5 the fuse was F101, prosemi 1206FA-15A (300 A interrupt). See DevBoard README items 33 and 36. Check the cells before waking the gauge: the FETs stay off until FET_EN.
 - **Kelvin cell taps:** CELL1–CELL3 and the stack ends for the gauge are taken from the cell end of each holder contact (separate small traces), not from the power traces, so spring resistance isn't measured as cell resistance.
 - **Cell thermistors (rev A4: one per cell):** 10 kΩ NTC (103AT type) on two wires to each of the gauge's TS1–TS4 inputs (J102, J105, J106, J107), taped to BT101–BT104 at mid-height over the sleeve. Each can is that cell's negative terminal (up to about 12.6 V above VSS on BT104) and the TS pins are rated 2.1 V, so use insulated sensors.
 
@@ -51,14 +51,14 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 - **U_GAUGE:** BQ40Z50RSMR-R2 (LCSC C2845123).
 - **Cell inputs:** VC1–VC4 each through **100 Ω** in series from the Kelvin taps, with **0.1 µF** from each VC pin to the node below (VC4→VC3, VC3→VC2, VC2→VC1, VC1→VSS). The 100 Ω also sets internal balancing current (internal FETs ~200 Ω, up to ~10 mA); balancing settings in data flash.
-- **BAT supply (rev A5: from the cell top before the fuse, TI fig. 9-12):** from CELL_P_RAW (the VC4 node, before F101) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
+- **BAT supply (rev A5: from the cell top before the fuse, TI fig. 9-12):** from CELL_P_RAW (the VC4 node, before the fuse: F101 until rev A5, F102 since rev A6) through a **30 V diode** and **100 Ω** to BAT, so the gauge stays powered with the FETs off and rides through load dips. VCC is fed internally (no external parts). REG18 needs no external capacitor (internal LDO, per the datasheet).
 - **PBI:** 2.2 µF ceramic to VSS.
 - **Sense resistor RS_GAUGE:** Yageo PA2512FKE7W0R001E, 1 mΩ 1% 2 W 2512, ±50 ppm/°C (LCSC C326570), low side between CELL_N and GND. **100 Ω** from each end of the sense resistor to SRP / SRN (Kelvin traces), **0.1 µF** across SRP–SRN at the pins.
 - **Protection FETs:** AGM404AP1 ×2, back-to-back N-FETs in the high side between CELL_P (after the fuse) and PACK_P. CHG and DSG pins each drive their FET gate through **5.1 kΩ**, with **10 MΩ** gate-to-source on each FET to hold it off if the drive is open. The reversed-charger clamp FET from TI's schematic is not needed (no external charger connects to the pack terminals). Two **0.1 µF 50 V** ceramics in series from CELL_P to PACK_P, across the FET pair (TI fig. 9-2 C1/C2; C110/C111, added rev A4).
 - **PCHG:** no precharge FET (the BQ25756 does precharge itself); leave PCHG unconnected or 20 kΩ to VSS, and set data flash so precharge uses the CHG FET.
 - **PACK pin:** to PACK_P (10 kΩ input resistor is internal). Two 0.1 µF ceramics in series from PACK_P to GND at the gauge.
 - **TS1–TS4:** one cell thermistor each (10 kΩ 103-type NTC; internal 18 kΩ pull-up), enabled in data flash.
-- **PRES/SHUTDN:** to VSS (system always present). **FUSE:** to VSS. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
+- **PRES/SHUTDN:** to VSS (system always present). **FUSE (rev A6):** to Q104's gate through R126 5.1 kΩ (net GAUGE_FUSE); it drives the F102 heater and reads U102's trip. **DISP:** to VSS. **LEDCNTLA/B/C:** leave floating. **PTC and PTCEN:** both to VSS (PTC disabled).
 - **BTP_INT:** to STM32WB **PA6** with a 100 kΩ pull-up to 3V3 and a test point (battery trip point interrupt, lets the gauge wake the MCU on SOC thresholds). On production this can tie to VSS if unused.
 - **SMBus:** SMBC/SMBD through **100 Ω** series resistors to the shared SCL/SDA (address 0x0B). Internal ESD is enough on board (no external TVS).
 - **EV2400 header:** 4-pin 2.54 mm in the EV2400 SMBus port order (rev A4): 1 VSS, 2 SMBC, 3 SMBD, 4 not used.
@@ -75,13 +75,13 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
   - REF pins to GND (unidirectional: charging current reads as zero). ENABLE pins to VS through a 2-pin jumper with a 100 kΩ pull-down, so pulling the jumper shuts both amps off
   - Input filter footprints: 100 Ω in each input lead + 22 nF across IN+/IN− (36 kHz corner, TI's example); fit 0 Ω / DNP to start
   - Outputs on test loops (OUT_LO TP201, OUT_HI TP202), each with a GND loop beside it (TP208, TP209) for a short probe ground; 49.9 Ω series resistor fitted at each output to keep cable capacitance from making the amp ring
-  - **Amplifier supply: on-board TI TPS70950DBVR 5 V LDO** (LCSC C96028, SOT-23-5, 18k+ in stock, ~$0.57; 2.7–30 V in, ~1 µA quiescent, 150 mA), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 1 µF in/out, 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
+  - **Amplifier supply: on-board Holtek HT7550-1 5 V LDO** (LCSC C16106, SOT-89, JLC preferred, ~$0.13; 30 V in, 2.5 µA quiescent, ±3 %, 100 mA; was the TPS70950DBVR until the cost-down 2026-10-14, `cost-down-2026-10-14.md`), fed from PACK_P on the high-current side of R_MEAS, so the amps' ~100 µA never passes through the 10 Ω. No external supply or USB cable needed, which also avoids a ground loop between a PC-powered supply and the scope. 10 µF 50 V in and 10 µF out (Holtek basic circuit), 0.1 µF at each amp. 2-pin jumper in the LDO input to switch the whole measurement section off
 - Ground test point next to the scope connectors for the scope ground clip.
 
 ## 4. 3.3 V always-on rail
 
 - **U_3V3:** TPS62177DQCR fixed 3.3 V buck (LCSC C91241), input from PACK_LP.
-- Inductor: Bourns SRN4018TA-100M, 10 µH (LCSC C2044417). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
+- Inductor: Changjiang FNR4030S100MT, 10 µH, 130 mΩ (LCSC C167879; was Bourns SRN4018TA-100M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
 - SNOOZE / sleep pin to an STM32WB GPIO (spare pin; *TBD*).
 - 0 Ω link in the 3V3 output (to break the rail for debugging) and a test point.
 - Loads: STM32WB, both TPS25751 VIN_3V3, I2C pull-ups, NTC dividers.
@@ -128,10 +128,11 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (checked against TI datasheets), with these updates.
 
 ### 7.1 Connector and protection
-- **J1 / J2:** Shou Han TYPE-C 16PCB0.8 IP68 (LCSC C55629727), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
-- VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2; D+/D− (A6/B6, A7/B7) → TPS25751 USB_P/USB_N (BC1.2); SBU unconnected.
+- **J1 / J2:** Shou Han TYPE-C 16PCB1.6 IP68 (LCSC C55629729; the 1.6 mm board version of the 16PCB0.8, same land pattern), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
+- VBUS (A4/A9/B4/B9) → VBUSx; GND (A1/A12/B1/B12) → GND; CC1/CC2 → TPS25751 CC1/CC2.
+- **Rev A6:** D+/D− (A6/B6, A7/B7) are shorted by R440/R540 (0 Ω, a passive BC1.2 DCP signature); the TPS25751 no longer does BC1.2. SBU1/SBU2 feed liquid detection: TPD2S300 (U405/U505) → GPIO4/5, with switched 100 kΩ pull-up / 1 MΩ pull-down (GPIO6/7) and the TPD2S300 FLT on GPIO3. Before rev A6, D+/D− went to TPS25751 USB_P/USB_N and SBU was unconnected. See DevBoard README items 35–36.
 - **TVS:** Littelfuse SMAJ22A (C148220) VBUSx to GND, right at the connector.
-- **ESD protection (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
+- **ESD protection (rev A6, 2026-10-14: CC and SBU are protected by the TPD4S201 port protector U405/U505, so the ESD2CAN24s D402/D502 are removed too; the D± array D403/D503 was removed earlier, because D± now only meet each other through R440/R540.) (rev A4: D± uses Nexperia PESD5V0S2BT, C49338, because D± go to TPS25751 GPIO4/5, rated 6 V; CC keeps the ESD2CAN24): originally 2 × TI ESD2CAN24DBZRQ1 per port** (LCSC C5736151, SOT-23, ~$0.30): one on CC1/CC2, one on D+/D−. Two-channel bidirectional, ±24 V working voltage, so it survives a CC or D± line shorted to 20 V VBUS by a bad cable (a 5 V ESD array would not). ±25 kV IEC 61000-4-2, ~2.5–4.2 pF per line. Place right at the connector pins, before the 330 pF CC caps.
 - 330 pF on each CC line (TPS25751 datasheet).
 
 ### 7.2 PD controller (TPS25751D)
@@ -144,12 +145,12 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ### 7.3 Charger and power stage (BQ25756) — copy of production layout
 - **U_CHGx:** BQ25756RRVR (LCSC C19272232).
-- **FETs:** two Infineon IAUC45N04S6L063H half-bridges (JLC C3288896): leg A (USB side: HIDRV1/LODRV1, SW1), leg B (battery side: HIDRV2/LODRV2, SW2).
-- **Inductor:** Coilcraft XAL7030-222MEC, 2.2 µH (JLC C19191686) between SW1 and SW2.
+- **FETs (rev A6 cost-down, 2026-10-14):** four discrete JinYu PGQ04N070 per port (JLC C49384056, PDFN3333; 40 V, 7 mΩ max at 10 V, 10 mΩ max at 4.5 V, Qg 14.7 nC). Leg A (USB side): Q401 high side (HIDRV1), Q407 low side (LODRV1), SW1. Leg B (battery side): Q402 high side (HIDRV2), Q408 low side (LODRV2), SW2. This matches the production BOM's plan of four discrete 40 V logic-level 3.3 × 3.3 mm FETs. Until then the legs were Infineon IAUC45N04S6L063H half-bridges (C3288896, 8.5 mΩ max at 4.5 V, $1.16, 62 at JLC).
+- **Inductor:** SXN SMMS1040-2R2M, 2.2 µH, Isat 18 A, Irms 12 A, 9 mΩ max, 11.5 × 10 mm (LCSC C149591), between SW1 and SW2. It was Coilcraft XAL7030-222MEC until the cost-down 2026-10-14, `cost-down-2026-10-14.md`.
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**
   - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × ChuangHui SV680M350E5R8R4Z00ZZ 68 µF 35 V solid polymer (C49435121) as bulk; about 100 µF effective at 20 V
-  - Battery side: 3 × Taiyo Yuden TMK325ABJ476MM-P, 47 µF 25 V X5R 1210 (C90142) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 136 µF effective at 16.8 V
+  - Battery side: 3 × Samsung CL31A226KAHNNNE, 22 µF 25 V X5R 1206 (C12891, JLC basic) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 114 µF effective at 16.8 V (≥ 80 µF). They were 47 µF 1210s until the cost-down 2026-10-14, `cost-down-2026-10-14.md`
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
 - **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
   - FSW_SYNC: 40.2 kΩ 1 % (C17678) → ~600 kHz
@@ -170,7 +171,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.4 5 V supply for PP5V (TPS62933)
 - **U_5Vx:** TPS62933DRLR (LCSC C3200405), input from PACK_P (high-current branch), output PP5Vx.
 - RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
-- Inductor: Bourns SRP5030T-3R3M, 3.3 µH (LCSC C189931).
+- Inductor: Coilank APS0530M3R3H, 3.3 µH, 38 mΩ, Irms 5 A, Isat 8 A (LCSC C49073587; was Bourns SRP5030T-3R3M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`).
 - Output 2 × 22 µF 35 V 1206 plus at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
 - EN ← EN_5Vx (STM32WB) with a pull-down so it's off by default.
 

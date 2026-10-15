@@ -9,7 +9,7 @@
 		(date "2026-10-11")
 		(rev "A (draft)")
 		(company "Monolith 100 W battery bank - dev board")
-		(comment 1 "R_MEAS + INA190 x2, TPS70950, TPS62177")
+		(comment 1 "R_MEAS + INA190 x2, HT7550-1, TPS62177")
 		(comment 2 "Spec + open items: DevBoard/README.md")
 		(comment 3 "Not reviewed, laid out, built or tested")
 	)
@@ -999,175 +999,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "MonolithDev:TPS70950DBV"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at -6.35 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TPS70950DBV"
-				(at -6.35 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps709.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "5.0 V 150 mA 1 uA Iq LDO"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "TPS70950DBV_0_1"
-				(rectangle
-					(start -6.35 3.81)
-					(end 6.35 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "TPS70950DBV_1_1"
-				(pin power_in line
-					(at -8.89 1.27 0)
-					(length 2.54)
-					(name "IN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -6.35 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -8.89 -1.27 0)
-					(length 2.54)
-					(name "EN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 8.89 -1.27 180)
-					(length 2.54)
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 8.89 1.27 180)
-					(length 2.54)
-					(name "OUT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Regulator_Switching:TPS62177DQC"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1975,6 +1806,160 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Regulator_Linear:HT75xx-1-SOT89"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at -5.08 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "HT75xx-1-SOT89"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-89-3"
+				(at 0 8.255 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.holtek.com/documents/10179/116711/HT75xx-1v250.pdf"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "100mA Low Dropout Voltage Regulator, Fixed Output, SOT89"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "100mA LDO Regulator Fixed Positive"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOT?89*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "HT75xx-1-SOT89_0_1"
+				(rectangle
+					(start -5.08 5.08)
+					(end 5.08 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "HT75xx-1-SOT89_1_1"
+				(pin power_in line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "VIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 7.62 2.54 180)
+					(length 2.54)
+					(name "VOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(text "AMPLIFIER SUPPLY  (5 V LDO, fed from PACK_P so amp current bypasses R_MEAS)"
 		(exclude_from_sim no)
@@ -2111,18 +2096,12 @@
 		(at 118.11 147.32)
 		(uuid "0978e07e-ac0d-4fa3-a61f-5c50e162cdd7")
 	)
-	(no_connect
-		(at 97.79 232.41)
-		(uuid "7764ea0b-c159-4287-ad41-0580e598e08d")
-	)
+
 	(no_connect
 		(at 118.11 185.42)
 		(uuid "830bf01b-8d94-4f19-819e-7fe9d68164ba")
 	)
-	(no_connect
-		(at 80.01 232.41)
-		(uuid "c86a2134-ceb3-414c-a5da-63b7214eec27")
-	)
+
 	(wire
 		(pts
 			(xy 92.71 55.88) (xy 99.06 55.88)
@@ -3153,7 +3132,7 @@
 				)
 			)
 		)
-		(property "Value" "1u 50V"
+		(property "Value" "10u 50V"
 			(at 75.03 234.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3163,7 +3142,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 69.545 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -3185,6 +3164,17 @@
 				)
 			)
 		)
+		(property "Notes" "HT7550 input: Holtek basic circuit 10 uF; 50 V and more C damp the JP202 hot-plug ring"
+			(at 68.58 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Unpolarized capacitor"
 			(at 68.58 233.68 0)
 			(hide yes)
@@ -3196,7 +3186,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C28323"
+		(property "LCSC" "C13585"
 			(at 68.58 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3207,7 +3197,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21B105KBFNNNE"
+		(property "MPN" "CL31A106KBHNNNE"
 			(at 68.58 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3366,7 +3356,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u 25V"
+		(property "Value" "10u 25V"
 			(at 114.34 234.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3409,7 +3399,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C1779"
+		(property "LCSC" "C15850"
 			(at 106.68 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3420,7 +3410,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21A475KAQNNNE"
+		(property "MPN" "CL21A106KAYNNNE"
 			(at 106.68 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3431,7 +3421,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS709 needs >= 1.5 uF effective at 5 V (review m3)"
+		(property "Notes" "HT7550 output: Holtek basic circuit 10 uF (was 4.7 uF for the TPS709, review m3)"
 			(at 106.68 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -3677,7 +3667,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 122.885 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3710,7 +3700,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2762602"
+		(property "LCSC" "C50254"
 			(at 121.92 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -3721,7 +3711,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL21B225KBYNNNE"
+		(property "MPN" "CL31B225KBHNNNE"
 			(at 121.92 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -3753,7 +3743,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -3779,7 +3769,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 132.08 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -3802,28 +3792,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 127 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 127 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 127 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -3964,7 +3932,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -3990,7 +3958,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 111.76 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -4013,28 +3981,6 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 106.68 55.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C55121754"
-			(at 106.68 55.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
 			(at 106.68 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -5768,7 +5714,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "a416d5f9-1802-4233-bee6-650e4ad3f2d3")
 		(property "Reference" "JP202"
@@ -5813,7 +5759,7 @@
 				)
 			)
 		)
-		(property "Description" "Jumper, 2-pole, open"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 50.8 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -5824,7 +5770,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C492401"
+		(property "Description" "Jumper, 2-pole, open"
 			(at 50.8 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -6383,8 +6329,8 @@
 		)
 	)
 	(symbol
-		(lib_id "MonolithDev:TPS70950DBV")
-		(at 88.9 231.14 0)
+		(lib_id "Regulator_Linear:HT75xx-1-SOT89")
+		(at 88.90 232.41 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6403,7 +6349,7 @@
 				)
 			)
 		)
-		(property "Value" "TPS70950DBVR"
+		(property "Value" "HT7550-1"
 			(at 88.9 225.55 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6413,7 +6359,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-89-3"
 			(at 88.9 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -6424,7 +6370,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps709.pdf"
+		(property "Datasheet" "https://www.farnell.com/datasheets/2047678.pdf"
 			(at 88.9 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -6435,7 +6381,7 @@
 				)
 			)
 		)
-		(property "Description" "5.0 V 150 mA 1 uA Iq LDO"
+		(property "Notes" "Cost-down 2026-10-14 (was TPS70950DBVR): JLC preferred. Supplies only the two INA190s. +/-3 %, 30 V max input: the JP202 hot-plug ring (review 2 C-3, 23-30 V) is why C204 is 10 uF 50 V. Holtek basic circuit: 10 uF in and out. No EN pin (the TPS709 EN was left open)"
 			(at 88.9 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -6446,7 +6392,29 @@
 				)
 			)
 		)
-		(property "LCSC" "C96028"
+		(property "MPN" "HT7550-1 (Holtek)"
+			(at 88.9 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Holtek HT7550-1 5 V LDO, 30 V input, 2.5 uA Iq, SOT-89 (1 GND, 2 VIN, 3 VOUT)"
+			(at 88.9 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C16106"
 			(at 88.9 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -6465,12 +6433,6 @@
 		)
 		(pin "3"
 			(uuid "ffca9cf8-e7ae-4b5f-8474-864b66e3a2f2")
-		)
-		(pin "4"
-			(uuid "e5cf4d12-74aa-451f-99a7-d7f0ff979dfe")
-		)
-		(pin "5"
-			(uuid "2e423ddc-e202-4425-8469-1b5bb11a63ef")
 		)
 		(instances
 			(project "MonolithDev"
@@ -6860,7 +6822,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "dd5f5e93-f4db-4d47-8ef8-97ef62185f70")
 		(property "Reference" "JP201"
@@ -6905,6 +6867,17 @@
 				)
 			)
 		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+			(at 132.08 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Jumper, 2-pole, open"
 			(at 132.08 229.87 0)
 			(hide yes)
@@ -6918,17 +6891,6 @@
 		)
 		(property "Notes" "pull = amps off. Needs a 2.54 mm shunt (hand, not in the JLC BOM)"
 			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C492401"
-			(at 132.08 229.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7172,7 +7134,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Bourns-SRN4018"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR4030S"
 			(at 175.26 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -7194,6 +7156,17 @@
 				)
 			)
 		)
+		(property "Notes" "10 uH as in the TPS62177 datasheet application (LPS4018-103); 130 mOhm, 1.6 A Irms / 2.4 A Isat for a 0.5 A converter. Cost-down 2026-10-14 (was SRN4018TA-100M)"
+			(at 175.26 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Inductor"
 			(at 175.26 55.88 0)
 			(hide yes)
@@ -7205,7 +7178,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2044417"
+		(property "LCSC" "C167879"
 			(at 175.26 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -7216,7 +7189,7 @@
 				)
 			)
 		)
-		(property "MPN" "SRN4018TA-100M"
+		(property "MPN" "FNR4030S100MT (Changjiang)"
 			(at 175.26 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -8144,6 +8117,26 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 80.01 229.87) (xy 81.28 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa61df5f-3261-4864-b217-9ce8873be6af")
+	)
+	(wire
+		(pts
+			(xy 96.52 229.87) (xy 97.79 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca6ec889-3c89-4460-b13e-e01da7388cdb")
 	)
 	(sheet_instances
 		(path "/"

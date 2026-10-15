@@ -143,8 +143,8 @@
         "min_track_width": 0.15,
         "min_connection": 0.15,
         "min_via_diameter": 0.45,
-        "min_via_annular_width": 0.1,
-        "min_through_hole_diameter": 0.2,
+        "min_via_annular_width": 0.075,
+        "min_through_hole_diameter": 0.3,
         "min_hole_to_hole": 0.25,
         "min_hole_clearance": 0.2,
         "min_copper_edge_clearance": 0.2,
@@ -252,7 +252,7 @@
         },
         {
           "diameter": 0.45,
-          "drill": 0.25
+          "drill": 0.3
         },
         {
           "diameter": 0.6,
@@ -648,6 +648,42 @@
     "netclass_assignments": {},
     "netclass_patterns": [
       {
+        "netclass": "Kelvin",
+        "pattern": "*/ACP_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/ACN_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/SRP_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "*/SRN_F"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "/Cells and Gauge/SRP"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "/Cells and Gauge/SRN"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-VC*)"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-BAT)"
+      },
+      {
+        "netclass": "Kelvin",
+        "pattern": "Net-(U101-PACK)"
+      },
+      {
         "netclass": "HighCurrent",
         "pattern": "PACK_P"
       },
@@ -769,43 +805,15 @@
       },
       {
         "netclass": "GateDrive",
+        "pattern": "*/HIDRV*"
+      },
+      {
+        "netclass": "GateDrive",
+        "pattern": "*/LODRV*"
+      },
+      {
+        "netclass": "GateDrive",
         "pattern": "/Cells and Gauge/*_G"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "*/ACP_F"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "*/ACN_F"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "*/SRP_F"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "*/SRN_F"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "/Cells and Gauge/SRP"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "/Cells and Gauge/SRN"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "Net-(U101-VC*)"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "Net-(U101-BAT)"
-      },
-      {
-        "netclass": "Kelvin",
-        "pattern": "Net-(U101-PACK)"
       }
     ]
   },

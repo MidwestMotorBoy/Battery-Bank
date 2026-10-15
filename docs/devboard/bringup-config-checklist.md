@@ -1,19 +1,27 @@
-# Bring-up and configuration checklist (rev A5, 2026-10-13)
+# Bring-up and configuration checklist (rev A6, 2026-10-14)
 
 This is the order of work from a bare assembled board to a configured pack. It gathers every configuration item from both schematic reviews into one list:
 
 - `schematic-review-2026-10-12.md`, "Firmware and configuration", items 1–14;
 - `schematic-review-2-2026-10-12.md`, configuration items 1–17;
+- `schematic-review-3-2026-10-14.md`, items C1–C5 and P1–P2;
 - `mcu-io-power-states.md`.
 
 Where review 2 corrected review 1, the corrected value is used here, and the source is marked.
 
+## Board order (JLC)
+
+- [ ] 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG; set the real JLC 6-layer stack-up.
+- [ ] Via covering: epoxy filled and capped (free on 6+ layers), for the via-in-pad under exposed pads.
+- [ ] Minimum via 0.3 mm / (0.4/0.45 mm): JLC's standard; nothing on the board needs smaller.
+
 ## 0. Hand-fit parts (not in the JLC BOM)
 
-- [ ] U301 STM32WB1MMC (out of stock at LCSC).
-- [ ] U201/U202 INA190 (DigiKey/Mouser).
+- [ ] U301 STM32WB1MMC: buy from ST eStore or DigiKey and consign it to JLC for placement (LGA-77).
+- [ ] U201 INA190A5 (DigiKey/Mouser). U202 INA190A1 is JLC-assembled since 2026-10-13.
 - [ ] J301 Samtec FTSH-105-01-L-DV-K (keyed shroud).
 - [ ] Two 2.54 mm shunts (JP201, JP202).
+- [ ] Pin headers, hand-soldered since the 2026-10-14 cost-down: J102–J107, J302, J303, J402, J502, JP201, JP202 (PZ254V-11, part numbers in each part's `Sourcing` property).
 - [ ] Wired NTCs on J102, J105–J107, insulated, taped to BT101–BT104.
 
 ## 1. First power, no cells
@@ -25,9 +33,11 @@ Where review 2 corrected review 1, the corrected value is used here, and the sou
 
 ## 2. Cells in, gauge woken and configured
 
-Rule: fit the cells before USB (silkscreen). Never attach USB with no cells.
+Rules:
+- Fit the cells before USB (silkscreen). Never attach USB with no cells.
+- **Never insert or remove a cell with USB or J104 power on.** An empty holder slot sees PACK_P minus the other cells (more than 4.35 V), U102 trips after 1–2 s and F102 blows for good (review 3, P1; gauge sheet note 15).
 
-1. [ ] Insert BT101–BT104.
+1. [ ] Turn J104 off, then insert BT101–BT104.
 2. [ ] Check each cell at TP102–TP105 and the stack at TP108 (CELL_P_RAW). Every cell should be 2.5–4.25 V, and none reversed. Q101/Q102 stay off on a fresh gauge (`Manufacturing Status Init` = 0x0000, FET_EN off), so nothing loads the cells yet.
 3. [ ] Wake the gauge: SW101 (hold about 0.5 s), J104, or USB.
 4. [ ] Connect the EV2400 to J103: 1 VSS, 2 SCL, 3 SDA. Release the MCU's I2C or hold the MCU in reset (review 1 item 9). With 3V3 down, remove R312 and feed TP308.
@@ -38,12 +48,16 @@ Rule: fit the cells before USB (silkscreen). Never attach USB with no cells.
 | `DA Configuration` cell count | **4S** | factory default is 3S (0x12) |
 | Chemistry | EVE INR21700-58E | review 1 item 4 |
 | TS1–TS4 | all enabled; protections use the maximum | rev A4 per-cell NTCs |
-| COV / CUV | COV ≤ 4.25 V; CUV and terminate voltage set so 100 W never runs below **2.8 V/cell under load** | F101 = 15 A (review 2, D3) |
+| COV / CUV | COV ≤ 4.25 V; CUV and terminate voltage set so 100 W never runs below **2.8 V/cell under load** | F102's 15 A element is the only fuse (review 2, D3; F101 deleted) |
+| **COV Delay** | **1 s** (default 2 s) | U102 trips after 1–2 s; on a step overvoltage the gauge must open CHG first (review 3, C2) |
 | OCC1 | about 6 A, short delay | review 1 item 14 |
 | OCD1 | about 10–11 A (welded pack); 2–3 A in holder mode | review 1 item 4 |
 | **OCD2** | **about 12–13 A for 1–2 s** | the default of 8 A for 3 s trips a single 100 W port at low pack voltage (review 2, M-B1) |
 | OLD (AOLD) | about 16–20 A | review 1 item 4 |
-| SCD1 delay | short enough to clear a hard short before F101 melts (about 0.5 ms at 185 A) | review 2, A N-2 |
+| SCD1 delay | the shortest that does not nuisance-trip: the FETs must open a hard short before F102 has to break it (F102 interrupts only 50 A; a short can reach about 185 A) | review 2, A N-2; review 3, D2 |
+| **Min Blow Fuse Voltage** | **10500 mV** (default 3500 mV) | WSFB1514 heater works only from 10.5–19.6 V (review 3, C1) |
+| `FET Options[PACK_FUSE]` | 0 | F102 is on the battery side, so the stack voltage is checked |
+| Fuse / permanent fail | enable the FUSE pin action ([FUSE_EN]), the second-level protector input (2LVL) and the chosen permanent fails | README item 33 |
 | **Precharge Start Voltage** | **2500 mV** (keep the default) | **replaces review 1's "0 mV"**: it is the only non-MCU block on charging a reversed or dead cell (review 2, A-3, major) |
 | **Charging Voltage Low** | **≤ 2500 mV** | the default of 2900 mV would block USB recovery after a CUV trip (review 2, A-3) |
 | `FET Options[PCHG_COMM]` | 0 | no precharge FET on this board; the 0-V charging circuit stays off |
@@ -78,6 +92,13 @@ The two ports have separate EEPROMs, so use per-port bundles (review 2, M-B3). S
   - [ ] EN_JEITA = 0, or set TS_T2/JEITA_ISETC to suit (review 1 item 2).
   - [ ] Watchdog: confirm something services it. Otherwise sourcing drops every 40 s and ICHG_REG returns to 20 A (review 2, B-11).
 - [ ] After a start where VBUS arrived before 3V3, the MCU clears the dead-battery flag (DBfg).
+- [ ] Liquid detection and GPIOs (README items 35–36; review 3, C3–C5):
+  - [ ] GPIO6 = LIQUID_PMOS_CONTROL (155), GPIO7 = LIQUID_NMOS_CONTROL (156). TI's EVM guide contradicts itself on this mapping; go by the event names.
+  - [ ] GPIO3 = Fault_Input_Event (33), from the TPD4S201 FLT (SBU_FLT).
+  - [ ] GPIO4/5 multiplexed to the ADC. BC1.2 off.
+  - [ ] Liquid Detection Configuration (0x98): liquid detection and corrosion mitigation on. Start from the tool's default thresholds (Rup 100 kΩ / Rdown 1 MΩ as the datasheet's table 9-3).
+  - [ ] Unmask the Liquid Detection event.
+  - [ ] GPIO0–2 and GPIO11 stay inputs: they are tied to GND.
 
 ## 4. MCU firmware
 
@@ -110,8 +131,12 @@ Pin states per power state are in `mcu-io-power-states.md`.
 - [ ] A phone attaching is detected with EN_5Vx low (idle). If not, keep EN_5Vx high in idle and raise R432/R532 to 1 MΩ.
 - [ ] The 3V3 rail survives an attach while the TPS62177 is in sleep mode (15 mA limit).
 - [ ] Capture J402 (I2Cc): does the bundle rewrite ICHG_REG on every attach?
-- [ ] Bootstrap diodes D404/D405 and the protection FETs (about 1 W each at 100 W): measure their temperature.
+- [ ] Bootstrap diodes D404/D405, the protection FETs (about 1 W each at 100 W) and the discrete charger FETs Q401/Q402/Q407/Q408 (and 5xx; about 0.5 W each at 100 W from 12 V): measure their temperature.
 - [ ] Holder contact resistance (accepted risk, 100 mΩ maximum per holder; review 1 #4): measure each holder. Holder mode stays at about 2 A (ICHG_REG, PDOs, OCD1 2–3 A). Run high-current tests and gauge learning on the welded pack via J101.
 - [ ] Sleep current: R_MEAS for the 3V3 branch, the gauge's current reading for the pack.
 - [ ] Gauge supply current: with the pack on battery only (no USB, no J104), measure across R105 (100 Ω): 50–340 µA = 5–34 mV. Expect about 75 µA once the gauge sleeps (needs `[IN_SYSTEM_SLEEP]` = 1); about 336 µA means it is not sleeping. Budget about 150 µA.
 - [ ] BLE range with the module at the board edge (antenna keep-out `ANT_KEEPOUT` on all copper layers).
+- [ ] F102 intact: TP108 (CELL_P_RAW) and TP101 (CELL_P) within a few mV.
+- [ ] Liquid detection: scope LIQ_PU/LIQ_PD to confirm the GPIO6/7 mapping. Then put salt water across SBU–GND and SBU–VBUS in the receptacle: the port must report liquid and turn VBUS off (SBU–VBUS goes through the FLT path). Then dry it and confirm recovery.
+- [ ] Liquid-detection current: R201 current with liquid detection on and off (review 3, P2).
+- [ ] Switching edges: probe SW1/SW2 ringing at full load. If needed, put a few ohms in R444–R449 or fit the R450/C454 and R451/C455 snubbers.

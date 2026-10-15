@@ -4,6 +4,7 @@ Pin numbers checked against the datasheets in ../../datasheets (2026-10-11).
 Run: python make_symbols.py  (writes ../MonolithDev.kicad_sym)
 """
 import os
+import re
 
 G = 2.54
 F = '(effects (font (size 1.27 1.27)))'
@@ -129,6 +130,24 @@ syms.append(symbol("AGM404AP1", "Q",
     fp="Package_TO_SOT_SMD:TDSON-8-1", ds="https://www.lcsc.com/datasheet/C41349455.pdf",
     desc="40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3", width=7.62))
 
+# TPD4S201-Q1 (TPD4S201TRGRRQ1), RGR VQFN-20. Datasheet SLVSI17 table 4-1: C_SBU1 1, C_SBU2 2, VBIAS 3, C_CC1 4,
+# C_CC2 5, RPD_G2 6, RPD_G1 7, GND 8/13/18 + thermal pad 21, FLT 9, VPWR 10, CC2 11, CC1 12, SBU2 14, SBU1 15,
+# NC 16/17/19/20. Connector side left, CC/PD-controller side right (TI TPS25751EVM fig. 5-5).
+syms.append(symbol("TPD4S201", "U",
+    left=[(4, "C_CC1", B), (5, "C_CC2", B), None, (7, "RPD_G1", B), (6, "RPD_G2", B), None, (1, "C_SBU1", B),
+          (2, "C_SBU2", B)],
+    right=[(12, "CC1", B), (11, "CC2", B), None, None, None, None, (15, "SBU1", B), (14, "SBU2", B), None, (9, "~{FLT}", OC)],
+    top=[(10, "VPWR", PI), (3, "VBIAS", P)], bottom=[([8, 13, 18, 21], "GND", PI), ([16, 17, 19, 20], "NC", NC)],
+    fp="MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm", ds=TI + "tpd4s201-q1.pdf",
+    desc="USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels, integrated dead-battery Rd", width=27.94))
+
+# JinYu PGQ04N070 single N-FET, PDFN3333: S 1-3, G 4, D 5-8 (datasheet V2.0 p.6, standard PDFN3333 pinout; it fits
+# the AGM PDFN3.3x3.3 land). Charger half-bridge switches Q401/Q402/Q407/Q408 (cost-down 2026-10-14).
+syms.append(symbol("PGQ04N070", "Q",
+    left=[(4, "G", I)], right=[([5, 6, 7, 8], "D", P), ([1, 2, 3], "S", P)],
+    fp="MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm", ds="https://www.lcsc.com/datasheet/C49384056.pdf",
+    desc="40 V N-MOSFET, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC, PDFN3333", width=7.62))
+
 # STM32WB1MMC module, 77 pads. DS14096 table 1.
 gnd = [1, 2, 3, 4, 15, 17, 19, 24, 31] + list(range(43, 78))
 syms.append(symbol("STM32WB1MMC", "U",
@@ -157,7 +176,33 @@ syms.append(symbol("WSFB1514", "F",
     fp="MonolithDev:TLC_WSFB_4x3mm", ds="https://www.lcsc.com/datasheet/C42463217.pdf",
     desc="3-terminal self-control fuse, 4 cells: fuse 1-2, heater to pin 3 (blown by a FET to VSS)", width=7.62))
 
-lib = "(kicad_symbol_lib (version 20241209) (generator \"make_symbols.py\") (generator_version \"1.0\")\n" + "\n".join(syms) + "\n)\n"
+# TPD2S300YFFR, YFF DSBGA-9 (3 x 3, 0.4 mm). Datasheet SLVSDL1 section 5: A1 C_CC1, A2 VBIAS, A3 C_CC2, B1 CC1,
+# B2 GND, B3 CC2, C1 FLT, C2 VPWR, C3 VM. Here its two OVP channels protect the SBU liquid-detection sense lines
+# (TPS25751 datasheet fig. 9-8): connector side left, system (TPS25751 GPIO4/5) side right.
+syms.append(symbol("TPD2S300", "U",
+    left=[("A1", "C_CC1", B), ("A3", "C_CC2", B), None, ("A2", "VBIAS", P)],
+    right=[("B1", "CC1", B), ("B3", "CC2", B), None, ("C1", "~{FLT}", OC)],
+    top=[("C2", "VPWR", PI), ("C3", "VM", PI)], bottom=[("B2", "GND", PI)],
+    fp="MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm", ds=TI + "tpd2s300.pdf",
+    desc="USB Type-C CC/SBU short-to-VBUS OVP + ESD, 2 channels", width=25.4))
+
+# TPS25751D: KiCad's stock symbol (Interface_USB), copied so GPIO11 can be typed bidirectional like GPIO0-7. The
+# datasheet (table 5-1) lists it as a GPIO; the stock symbol types it as an output, so ERC reports the GND tie that the
+# datasheet asks for on unused GPIOs as an output-to-output error.
+STOCK = r"C:/Program Files/KiCad/10.0/share/kicad/symbols/Interface_USB.kicad_sym"
+stock = open(STOCK, encoding="utf-8").read()
+a = stock.index('(symbol "TPS25751D"')
+depth = 0
+for b in range(a, len(stock)):
+    depth += {"(": 1, ")": -1}.get(stock[b], 0)
+    if depth == 0:
+        break
+tps = stock[a:b + 1]
+tps, n = re.subn(r'\(pin output line(\s*\(at [^)]*\)\s*\(length [^)]*\)\s*\(name "GPIO11")', r"(pin bidirectional line\1", tps)
+assert n == 1, n
+syms.append(tps)
+
+lib = "(kicad_symbol_lib (version 20251024) (generator \"make_symbols.py\") (generator_version \"1.0\")\n" + "\n".join(syms) + "\n)\n"
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "MonolithDev.kicad_sym")
 with open(out, "w", newline="\n") as f:
     f.write(lib)

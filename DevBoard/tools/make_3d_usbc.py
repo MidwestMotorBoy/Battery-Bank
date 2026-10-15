@@ -56,9 +56,12 @@ from OCP.TopoDS import TopoDS
 from OCP.XCAFDoc import XCAFDoc_ColorType, XCAFDoc_DocumentTool
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "..", "3dmodels", "USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step")
+# Board thickness: 0.8 (TYPE-C 16PCB0.8 IP68) or 1.6 (TYPE-C 16PCB1.6 IP68). The two variants share the land pattern,
+# notch and body; the body drops through the board so that its bottom is flush with the board bottom.
+BOARD_T = float(sys.argv[1]) if len(sys.argv) > 1 else 0.8
+OUT = os.path.join(HERE, "..", "3dmodels", f"USB_C_Receptacle_ShouHan_TYPE-C_16PCB{BOARD_T:g}_IP68.step")
 
-ZC = 0.827                    # receptacle centreline above the board top
+ZC = 1.632 - BOARD_T - 0.005  # receptacle centreline above the board top (0.827 on the 0.8 mm board: "0.83")
 Y0 = -1.949                   # mating face (Y = d + Y0)
 
 
@@ -148,7 +151,7 @@ for sx in (-1, 1):
     for d0, d1 in ((2.546, 3.251), (5.659, 6.354)):
         y0, y1 = Y(d0), Y(d1)
         shelf = box(5.0035 if sx > 0 else -5.6, 5.6 if sx > 0 else -5.0035, y0, y1, 0.0, 0.2)
-        foot = box(5.7 if sx > 0 else -5.9, 5.9 if sx > 0 else -5.7, y0, y1, -0.809, -0.1)
+        foot = box(5.7 if sx > 0 else -5.9, 5.9 if sx > 0 else -5.7, y0, y1, -BOARD_T - 0.009, -0.1)
         # bend: quarter annulus, centre (+-5.6, -0.1), R0.1 / R0.3, axis along Y
         outer = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(sx * 5.6, y0, -0.1), gp_Dir(0, 1, 0)), 0.3, y1 - y0).Shape()
         inner = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(sx * 5.6, y0, -0.1), gp_Dir(0, 1, 0)), 0.1, y1 - y0).Shape()

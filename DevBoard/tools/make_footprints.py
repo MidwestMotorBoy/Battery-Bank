@@ -22,13 +22,17 @@ MODELS = {
     "TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm": ("Package_DFN_QFN.3dshapes/QFN-36-1EP_5x6mm_P0.5mm_EP3.6x4.6mm.step", 0),
     "TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz": ("Package_DFN_QFN.3dshapes/Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm.step", 0),
     "USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68": ("${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step", 0),  # tools/make_3d_usbc.py
+    "USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68": ("${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68.step", 0),  # tools/make_3d_usbc.py 1.6
+    "TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm": ("Package_DFN_QFN.3dshapes/Texas_VQFN-RGR-20-1EP_3.5x3.5mm_Pitch0.5mm.step", 0),
     "BatteryHolder_MYOUNG_BH-21700-B1BJ001": [   # tools/make_3d_holder.py; the cell is a separate model (provisional height)
         ("${KIPRJMOD}/3dmodels/BatteryHolder_MYOUNG_BH-21700-B1BJ001.step", 0),
         ("${KIPRJMOD}/3dmodels/Cell_EVE_INR21700-58E_in_BH-21700.step", 0)],
     "ST_LGA-77_STM32WB1MMC_6.5x10mm": ("${KIPRJMOD}/3dmodels/ST_LGA-77_STM32WB1MMC_6.5x10mm.step", 0),  # tools/make_3d_simple.py
     "ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm": ("${KIPRJMOD}/3dmodels/ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", 0),  # tools/make_3d_simple.py
     "TestPoint_Harwin_S2761_0603": ("${KIPRJMOD}/3dmodels/TestPoint_Harwin_S2761_0603.step", 0),  # tools/make_3d_simple.py
+    "TI_YFF0009_DSBGA-9_P0.4mm": ("${KIPRJMOD}/3dmodels/TI_YFF0009_DSBGA-9.step", 0),  # tools/make_3d_simple.py
     "TLC_WSFB_4x3mm": ("${KIPRJMOD}/3dmodels/TLC_WSFB_4x3mm.step", 0),  # tools/make_3d_simple.py
+    "L_Coilank_APS0530": ("Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step", 0),   # same body class (5.7 x 5.2 x 3.0)
     "Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm": ("Connector_PinHeader_1.27mm.3dshapes/PinHeader_2x05_P1.27mm_Vertical_SMD.step", 0),
 }
 
@@ -175,28 +179,32 @@ fp.write(-14.2, 14.2)
 # 2. Shou Han TYPE-C 16PCB0.8 IP68 mid-mount receptacle. usb-c-16pcb0.8-ip68.pdf p.1 "Recommend P.C.B layout".
 #    Origin = board edge centre; board interior is -y. Needs a 10.20 wide x 5.65 deep edge cutout
 #    (drawn on Edge.Cuts here). Signal pads 1.0 long, 5.85-6.85 mm from the edge (see yp).
-fp = FP("USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68",
-        "Shou Han TYPE-C 16PCB0.8 IP68 USB 2.0 receptacle, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge",
-        "USB C Type-C receptacle USB2.0 16P mid-mount")
-yp = -6.35   # maker's layout: pads 5.65-6.65 from the edge, starting right on the notch's back edge. Moved
-             # 0.2 mm in (5.85-6.85) for JLC's 0.2 mm copper-to-routed-edge rule (edge tolerance is +/-0.2 mm).
-for nums, x, w in ((("A1", "B12"), -3.2, 0.6), (("A4", "B9"), -2.4, 0.6), (("B8",), -1.75, 0.3), (("A5",), -1.25, 0.3),
-                   (("B7",), -0.75, 0.3), (("A6",), -0.25, 0.3), (("A7",), 0.25, 0.3), (("B6",), 0.75, 0.3),
-                   (("A8",), 1.25, 0.3), (("B5",), 1.75, 0.3), (("B4", "A9"), 2.4, 0.6), (("B1", "A12"), 3.2, 0.6)):
-    for n in nums:
-        fp.smd(n, x, yp, w, 1.0)
-for x in (-5.8, 5.8):
-    for y in (-0.95, -4.05):
-        fp.slot("SH", x, y, 0.9, 1.4, 0.5, 1.0)
-# board cutout
-fp.line(-5.1, 0, -5.1, -5.65, "Edge.Cuts", 0.1)
-fp.line(-5.1, -5.65, 5.1, -5.65, "Edge.Cuts", 0.1)
-fp.line(5.1, -5.65, 5.1, 0, "Edge.Cuts", 0.1)
-fp.text("PCB edge", 0, 0.8, "Dwgs.User", 0.6)
-fp.line(-7, 0, 7, 0, "Dwgs.User", 0.1)
-fp.rect(-5.0, -6.4, 5.0, 2.5, "F.Fab", 0.1)
-crt(fp, -6.5, -7.0, 6.5, 2.75)
-fp.write(-8.0, 3.6)
+#    The 1.6 mm board variant TYPE-C 16PCB1.6 IP68 (usb-c-16pcb1.6-ip68.pdf, rev A4, C55629729) has the same
+#    recommended layout (pads, slots, 10.20 x 5.65 notch); only the body depth through the board differs (3D model).
+for t in (0.8, 1.6):
+    fp = FP(f"USB_C_Receptacle_ShouHan_TYPE-C_16PCB{t:g}_IP68",
+            f"Shou Han TYPE-C 16PCB{t:g} IP68 USB 2.0 receptacle for a {t:g} mm board, mid-mount in a 10.2 x 5.65 board-edge "
+            f"cutout, origin = board edge",
+            "USB C Type-C receptacle USB2.0 16P mid-mount")
+    yp = -6.35   # maker's layout: pads 5.65-6.65 from the edge, starting right on the notch's back edge. Moved
+                 # 0.2 mm in (5.85-6.85) for JLC's 0.2 mm copper-to-routed-edge rule (edge tolerance is +/-0.2 mm).
+    for nums, x, w in ((("A1", "B12"), -3.2, 0.6), (("A4", "B9"), -2.4, 0.6), (("B8",), -1.75, 0.3), (("A5",), -1.25, 0.3),
+                       (("B7",), -0.75, 0.3), (("A6",), -0.25, 0.3), (("A7",), 0.25, 0.3), (("B6",), 0.75, 0.3),
+                       (("A8",), 1.25, 0.3), (("B5",), 1.75, 0.3), (("B4", "A9"), 2.4, 0.6), (("B1", "A12"), 3.2, 0.6)):
+        for n in nums:
+            fp.smd(n, x, yp, w, 1.0)
+    for x in (-5.8, 5.8):
+        for y in (-0.95, -4.05):
+            fp.slot("SH", x, y, 0.9, 1.4, 0.5, 1.0)
+    # board cutout
+    fp.line(-5.1, 0, -5.1, -5.65, "Edge.Cuts", 0.1)
+    fp.line(-5.1, -5.65, 5.1, -5.65, "Edge.Cuts", 0.1)
+    fp.line(5.1, -5.65, 5.1, 0, "Edge.Cuts", 0.1)
+    fp.text("PCB edge", 0, 0.8, "Dwgs.User", 0.6)
+    fp.line(-7, 0, 7, 0, "Dwgs.User", 0.1)
+    fp.rect(-5.0, -6.4, 5.0, 2.5, "F.Fab", 0.1)
+    crt(fp, -6.5, -7.0, 6.5, 2.75)
+    fp.write(-8.0, 3.6)
 
 # ---------------------------------------------------------------------------
 # 3. Infineon PG-TDSON-8-57 half-bridge (IAUC45N04S6L063H). iauc45n04s6l063h.pdf p.8 "Footprint".
@@ -382,6 +390,10 @@ for num, y0, y1 in (("20", "0.6625", "0.675"), ("23", "-0.6625", "-0.675")):
 # plane between the GND and PD_DRAIN via rows)
 s, n = re.subn(r'(\(drill 0\.2\)\s*\(property pad_prop_heatsink\))', r'\1\n\t\t(zone_connect 2)', s)
 assert n == 8, n
+# 6-layer board (2026-10-14): JLC's standard via is 0.3 mm, so the eight exposed-pad thermal vias go from 0.2 to 0.3 mm
+# drill in the same 0.5 mm pads (0.1 mm ring); they are filled and capped (POFV, free on 6+ layers).
+s, n = re.subn(r"\(drill 0\.2\)", "(drill 0.3)", s)
+assert n == 8, n
 s = with_model(s, name)                                          # KiCad 10 ships no REF0038A model
 with open(os.path.join(LIB, name + ".kicad_mod"), "w", newline="\n") as fh:
     fh.write(s)
@@ -470,3 +482,82 @@ fp.line(-2.15, 0.95, -2.15, 1.6, "F.SilkS")
 fp.circle(2.35, -2.2, 0.1, "F.SilkS", 0.2)                  # pin 1 (top fuse pad, cell side)
 crt(fp, -2.25, -2.25, 2.25, 2.25)
 fp.write(-3.0, 3.0)
+
+# ---------------------------------------------------------------------------
+# 14. TI YFF0009 DSBGA-9 (U405/U505, TPD2S300YFFR). Datasheet SLVSDL1 pp. 34-36 (4219552/A): 3 x 3 balls on a
+#     0.4 mm pitch, body 1.33-1.39 mm square, 0.625 mm max height. Land pattern: 0.23 mm round NSMD copper with a
+#     0.05 mm mask expansion; stencil 0.25 mm square, 0.1 mm thick. Ball A1 top left in the top view, rows A-C down,
+#     columns 1-3 to the right. Origin = array centre.
+fp = FP("TI_YFF0009_DSBGA-9_P0.4mm", "TI YFF0009 DSBGA-9, 0.4 mm pitch, 1.36 mm body (TPD2S300YFF)",
+        "DSBGA WCSP YFF 9 0.4mm TPD2S300")
+#     Escape: the centre ball B2 (GND) is boxed in by the other eight (0.17 mm between ball edges: no trace or via fits
+#     between them, even at JLC's 0.09 mm minimum), so it drops through a via-in-pad to the In1 GND plane: 0.15 mm
+#     drill in a 0.25 mm pad (JLC's minimum via; 5:1 aspect ratio on the 0.8 mm board), 0.16 mm from the neighbours.
+#     Order the board with via-in-pad filled and capped (JLC POFV, extra cost on 4 layers) so solder can't wick away.
+#     The eight outer balls escape outward on F.Cu.
+for r, row in enumerate("ABC"):
+    for c in range(3):
+        x, y = (c - 1) * 0.4, (r - 1) * 0.4
+        if row + str(c + 1) == "B2":
+            fp.items.append(f'(pad "B2" thru_hole circle (at {f(x)} {f(y)}) (size 0.25 0.25) (drill 0.15) '
+                            f'(layers "*.Cu" "F.Mask") (remove_unused_layers no) (solder_mask_margin 0.04))')
+        else:
+            fp.smd(f"{row}{c + 1}", x, y, 0.23, 0.23, layers=("F.Cu", "F.Mask"), shape="circle",
+                   extra=" (solder_mask_margin 0.05)")
+        fp.paste(x, y, 0.25, 0.25)
+fp.rect(-0.68, -0.68, 0.68, 0.68, "F.Fab", 0.1)
+fp.line(-0.68, -0.38, -0.38, -0.68, "F.Fab", 0.1)
+for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+    fp.line(sx * 0.8, sy * 0.5, sx * 0.8, sy * 0.8, "F.SilkS")
+    fp.line(sx * 0.5, sy * 0.8, sx * 0.8, sy * 0.8, "F.SilkS")
+fp.circle(-1.0, -1.0, 0.08, "F.SilkS", 0.16)                # ball A1
+crt(fp, -0.95, -0.95, 0.95, 0.95)
+fp.write(-1.6, 1.6)
+
+# ---------------------------------------------------------------------------
+# 15. Coilank APS0530 molded power inductor (L402/L502, APS0530M3R3H, LCSC C49073587; cost-down 2026-10-14).
+#     Datasheet "APSW-H Series" p.1: body A 5.2 +/- 0.3 x B 6.0 max x C 3.0 max, terminals at the B ends.
+#     Recommended pattern: F 6.0 overall, G 2.5 pad width, H 2.2 gap, so each pad is 1.9 x 2.5 at x = +/-2.05.
+fp = FP("L_Coilank_APS0530", "Inductor, Coilank APS0530, 6.0x5.2x3.0mm, datasheet recommended land pattern",
+        "inductor molded APS0530")
+fp.smd("1", -2.05, 0, 1.9, 2.5)
+fp.smd("2", 2.05, 0, 1.9, 2.5)
+fp.rect(-3.0, -2.6, 3.0, 2.6, "F.Fab", 0.1)
+fp.line(-1.0, -2.75, 1.0, -2.75, "F.SilkS")
+fp.line(-1.0, 2.75, 1.0, 2.75, "F.SilkS")
+crt(fp, -3.25, -2.85, 3.25, 2.85)
+fp.write(-3.6, 3.6)
+
+# ---------------------------------------------------------------------------
+# 16. TI RGR0020C VQFN-20 3.5 x 3.5 mm, 0.5 mm pitch (U405/U505, TPD4S201TRGRRQ1, LCSC C49305973; replaces the
+#     TPD2S300 DSBGA on 2026-10-14). TPD4S201-Q1 datasheet SLVSI17 pp. 26-28 (4225699/B): body 3.35-3.65, thermal pad
+#     2.05 +/- 0.1. Example board layout: 20 pads 0.6 x 0.24 (R0.05), 0.5 mm pitch, 3.3 mm between opposite pad
+#     centres (so +/-1.65, 0.2 mm past the body); exposed pad 2.05 square (pad 21) with optional vias at (+/-0.775, 0) and (0, +/-0.775).
+#     Stencil: four 0.92 squares at +/-0.56 on the exposed pad (81 % coverage). Top view: pins 1-5 down the left side
+#     from the top, 6-10 along the bottom left to right, 11-15 up the right side, 16-20 along the top right to left.
+#     The vias are 0.3 mm drill / 0.45 mm (JLC standard, filled and capped on the 6-layer board).
+fp = FP("TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm",
+        "TI RGR0020C VQFN-20 3.5x3.5 mm, 0.5 mm pitch, 2.05 mm exposed pad (TPD4S201-Q1), datasheet land pattern",
+        "VQFN QFN RGR 20 TPD4S201")
+RR = " (roundrect_rratio 0.2)"
+for i in range(5):
+    d = -1.0 + 0.5 * i
+    fp.items.append(f'(pad "{1 + i}" smd roundrect (at -1.65 {f(d)}) (size 0.6 0.24) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+    fp.items.append(f'(pad "{6 + i}" smd roundrect (at {f(d)} 1.65) (size 0.24 0.6) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+    fp.items.append(f'(pad "{11 + i}" smd roundrect (at 1.65 {f(-d)}) (size 0.6 0.24) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+    fp.items.append(f'(pad "{16 + i}" smd roundrect (at {f(-d)} -1.65) (size 0.24 0.6) (layers "F.Cu" "F.Paste" "F.Mask"){RR})')
+fp.smd("21", 0, 0, 2.05, 2.05, layers=("F.Cu", "F.Mask"))
+for x, y in ((-0.56, -0.56), (0.56, -0.56), (-0.56, 0.56), (0.56, 0.56)):
+    fp.paste(x, y, 0.92, 0.92)
+for x, y in ((-0.775, 0), (0.775, 0), (0, -0.775), (0, 0.775)):
+    fp.items.append(f'(pad "21" thru_hole circle (at {f(x)} {f(y)}) (size 0.45 0.45) (drill 0.3) (layers "*.Cu") '
+                    f'(remove_unused_layers no) (zone_connect 2))')
+fp.rect(-1.75, -1.75, 1.75, 1.75, "F.Fab", 0.1)
+fp.line(-1.75, -1.25, -1.25, -1.75, "F.Fab", 0.1)
+for sx, sy in ((1, -1), (1, 1), (-1, 1)):
+    fp.line(sx * 1.85, sy * 1.45, sx * 1.85, sy * 1.85, "F.SilkS")
+    fp.line(sx * 1.45, sy * 1.85, sx * 1.85, sy * 1.85, "F.SilkS")
+fp.line(-1.45, -1.85, -1.85, -1.85, "F.SilkS")
+fp.circle(-2.3, -1.0, 0.1, "F.SilkS", 0.2)                  # pin 1
+crt(fp, -2.25, -2.25, 2.25, 2.25)
+fp.write(-2.9, 2.9)
