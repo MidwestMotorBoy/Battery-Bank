@@ -6,12 +6,12 @@
 	(paper "A3")
 	(title_block
 		(title "Sleep-current measurement and 3.3 V rail")
-		(date "2026-10-11")
-		(rev "A (draft)")
+		(date "2026-10-14")
+		(rev "A6")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "R_MEAS + INA190 x2, HT7550-1, TPS62177")
 		(comment 2 "Spec + open items: DevBoard/README.md")
-		(comment 3 "Not reviewed, laid out, built or tested")
+		(comment 3 "Reviewed 3x (docs/devboard); board placed, not routed or built")
 	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"

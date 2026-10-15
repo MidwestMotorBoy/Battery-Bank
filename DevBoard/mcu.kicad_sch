@@ -6,12 +6,12 @@
 	(paper "A3")
 	(title_block
 		(title "MCU and board NTCs")
-		(date "2026-10-11")
-		(rev "A (draft)")
+		(date "2026-10-14")
+		(rev "A6")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "STM32WB1MMC, debug headers, NTC TH1-TH4")
 		(comment 2 "Spec + open items: DevBoard/README.md")
-		(comment 3 "Not reviewed, laid out, built or tested")
+		(comment 3 "Reviewed 3x (docs/devboard); board placed, not routed or built")
 	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"
@@ -3829,9 +3829,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES\n1. U301 at a board edge, as on ST's reference PCB (DS14096 fig. 6): copper-free notch past the antenna end.\n2. C301-C303 at the VDD pads; C304 at NRST.\n3. PB0/PB1/PB2 left unconnected (ST: RF-sensitive pins). NTC_EN = PA8, EN_5V1 = PA11, EN_5V2 = PA12.\n4. R303 0R joins ANT_IN/ANT_OUT for the internal antenna (ST fig. 2).\n5. Pin map checked against DS13258 table 15: NTC ADC1_IN6/8/9/10 (+ IN2 on PA7 for TH305), IRQs on WKUP1/WKUP4, I2C1, USART1.\n   PB4 = 3V3_SLEEP: PB4 resets as NJTRST with pull-up, so the 3V3 rail boots in normal mode;\n   firmware makes PB4 a GPIO output before using sleep mode. PB5 = LED, PA6 = GAUGE_BTP.\n6. R307 removes the LED for sleep-current measurements.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. SW301 resets the MCU. TP306 is BOOT0: hold it at 3V3 while releasing reset for the UART bootloader.\n9. R313 (DNP) holds 3V3_SLEEP high (normal mode) while the MCU is off. TP307 probes it.\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work while 3V3 is down.\n11. R316-R319: J303 can override NTC_EN/EN_5V1/EN_5V2/CHG_INH without shorting the MCU outputs.\n12. PB8 = CHG_INH (rev A5): drive LOW to allow charging. High or hi-Z stops both chargers (R417/R517 pull CE up to 3V3),\n    so reset/hang/unprogrammed stops charging. Low only while charging (69 uA per port), high in idle. No Standby.\n13. Watchdog: IWDG in hardware mode (option byte IWDG_SW = 0) restarts a hung MCU; it runs from LSI, also in Stop/Standby."
+	(text "NOTES\n1. U301 at a board edge, as on ST's reference PCB (DS14096 fig. 6): copper-free notch past the antenna end.\n2. C301-C303 at the VDD pads; C304 at NRST.\n3. PB0/PB1/PB2 left unconnected (ST: RF-sensitive pins). NTC_EN = PA8, EN_5V1 = PA11, EN_5V2 = PA12.\n4. R303 0R joins ANT_IN/ANT_OUT for the internal antenna (ST fig. 2).\n5. Pin map checked against DS13258 table 15: NTC ADC1_IN6/8/9/10 (+ IN2 on PA7 for TH305),\n   IRQs on WKUP1/WKUP4, I2C1, USART1.\n   PB4 = 3V3_SLEEP: PB4 resets as NJTRST with pull-up, so the 3V3 rail boots in normal mode;\n   firmware makes PB4 a GPIO output before using sleep mode. PB5 = LED, PA6 = GAUGE_BTP.\n6. R307 removes the LED for sleep-current measurements.\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. SW301 resets the MCU. TP306 is BOOT0: hold it at 3V3 while releasing reset for the UART bootloader.\n9. R313 (DNP) holds 3V3_SLEEP high (normal mode) while the MCU is off. TP307 probes it.\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work while 3V3 is down.\n11. R316-R319: J303 can override NTC_EN/EN_5V1/EN_5V2/CHG_INH without shorting the MCU outputs.\n12. PB8 = CHG_INH (rev A5): drive LOW to allow charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up to 3V3), so reset/hang/unprogrammed stops charging.\n    Low only while charging (69 uA per port), high in idle. No Standby.\n13. Watchdog: IWDG in hardware mode (option byte IWDG_SW = 0) restarts a hung MCU;\n    it runs from LSI, also in Stop/Standby."
 		(exclude_from_sim no)
-		(at 287.02 215.9 0)
+		(at 287.02 222.25 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3876,6 +3876,18 @@
 			(justify left bottom)
 		)
 		(uuid "4149126a-f994-4ff9-873c-14575273ec5a")
+	)
+	(text "TEST POINTS"
+		(exclude_from_sim no)
+		(at 205.74 233.68 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "a1d3ae72-c2f6-481d-bd34-00ec3bf9852f")
 	)
 	(text "STATUS LED"
 		(exclude_from_sim no)
@@ -5233,7 +5245,7 @@
 	)
 	(global_label "IRQ2"
 		(shape bidirectional)
-		(at 292.1 264.16 270)
+		(at 287.02 241.3 270)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5242,7 +5254,7 @@
 		)
 		(uuid "0d2d891a-03d7-4570-a6fa-9404ff21275a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 292.1 264.16 0)
+			(at 287.02 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5255,7 +5267,7 @@
 	)
 	(global_label "IRQ1"
 		(shape bidirectional)
-		(at 271.78 264.16 270)
+		(at 266.7 241.3 270)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5264,7 +5276,7 @@
 		)
 		(uuid "0eedbb55-0637-4c67-803b-cee057ece3dd")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 271.78 264.16 0)
+			(at 266.7 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5277,7 +5289,7 @@
 	)
 	(global_label "SCL"
 		(shape bidirectional)
-		(at 251.46 264.16 270)
+		(at 246.38 241.3 270)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5286,7 +5298,7 @@
 		)
 		(uuid "18fec9d6-fc48-4951-833a-404bcf75fbde")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 251.46 264.16 0)
+			(at 246.38 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5387,7 +5399,7 @@
 	)
 	(global_label "SDA"
 		(shape bidirectional)
-		(at 231.14 264.16 270)
+		(at 226.06 241.3 270)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5396,7 +5408,7 @@
 		)
 		(uuid "5739e7ed-8563-492b-ad02-bc052b05bdde")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 231.14 264.16 0)
+			(at 226.06 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5897,7 +5909,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 312.42 264.16 0)
+		(at 307.34 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5907,7 +5919,7 @@
 		(dnp no)
 		(uuid "091347bd-c66d-4fb2-9d33-d2cecf25bdd4")
 		(property "Reference" "TP309"
-			(at 312.42 256.34 0)
+			(at 307.34 233.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5917,7 +5929,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 312.42 258.31 0)
+			(at 307.34 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5927,7 +5939,7 @@
 			)
 		)
 		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5938,7 +5950,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5949,7 +5961,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5960,7 +5972,7 @@
 			)
 		)
 		(property "LCSC" "C55121754"
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5971,7 +5983,7 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6107,7 +6119,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 210.82 264.16 180)
+		(at 205.74 241.3 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6117,7 +6129,7 @@
 		(dnp no)
 		(uuid "11f9e928-a861-4527-97f9-9d4d314b8af9")
 		(property "Reference" "#PWR325"
-			(at 210.82 264.16 0)
+			(at 205.74 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6128,7 +6140,7 @@
 			)
 		)
 		(property "Value" "3V3"
-			(at 210.82 268.48 0)
+			(at 205.74 245.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6138,7 +6150,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 210.82 264.16 0)
+			(at 205.74 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6149,7 +6161,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 210.82 264.16 0)
+			(at 205.74 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6160,7 +6172,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 210.82 264.16 0)
+			(at 205.74 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6673,7 +6685,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 231.14 264.16 0)
+		(at 226.06 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6683,7 +6695,7 @@
 		(dnp no)
 		(uuid "281ab45b-f903-44b4-98ad-aa2ce890147f")
 		(property "Reference" "TP302"
-			(at 231.14 258.31 0)
+			(at 226.06 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6693,7 +6705,7 @@
 			)
 		)
 		(property "Value" "SDA"
-			(at 235.72 261.84 0)
+			(at 230.64 238.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6704,7 +6716,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 236.22 264.16 0)
+			(at 231.14 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6715,7 +6727,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 264.16 0)
+			(at 231.14 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6726,7 +6738,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 231.14 264.16 0)
+			(at 226.06 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7879,7 +7891,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 271.78 264.16 0)
+		(at 266.7 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7889,7 +7901,7 @@
 		(dnp no)
 		(uuid "36ad4b4d-df68-475d-8f8a-410c87e16db5")
 		(property "Reference" "TP304"
-			(at 271.78 258.31 0)
+			(at 266.7 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7899,7 +7911,7 @@
 			)
 		)
 		(property "Value" "IRQ1"
-			(at 276.36 261.84 0)
+			(at 271.28 238.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7910,7 +7922,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 276.86 264.16 0)
+			(at 271.78 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7921,7 +7933,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 276.86 264.16 0)
+			(at 271.78 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7932,7 +7944,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 271.78 264.16 0)
+			(at 266.7 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8613,7 +8625,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 210.82 264.16 0)
+		(at 205.74 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8623,7 +8635,7 @@
 		(dnp no)
 		(uuid "4953c541-62fa-4692-bb46-d2d52b90b819")
 		(property "Reference" "TP301"
-			(at 210.82 258.31 0)
+			(at 205.74 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8633,7 +8645,7 @@
 			)
 		)
 		(property "Value" "3V3"
-			(at 215.4 261.84 0)
+			(at 210.32 238.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8644,7 +8656,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 215.9 264.16 0)
+			(at 210.82 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8655,7 +8667,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 215.9 264.16 0)
+			(at 210.82 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8666,7 +8678,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 210.82 264.16 0)
+			(at 205.74 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11169,7 +11181,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 251.46 264.16 0)
+		(at 246.38 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11179,7 +11191,7 @@
 		(dnp no)
 		(uuid "c3738212-9466-47ec-af1e-3d29b9d780bb")
 		(property "Reference" "TP303"
-			(at 251.46 258.31 0)
+			(at 246.38 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11189,7 +11201,7 @@
 			)
 		)
 		(property "Value" "SCL"
-			(at 256.04 261.84 0)
+			(at 250.96 238.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11200,7 +11212,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 256.54 264.16 0)
+			(at 251.46 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11211,7 +11223,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 264.16 0)
+			(at 251.46 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11222,7 +11234,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 251.46 264.16 0)
+			(at 246.38 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12367,7 +12379,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 292.1 264.16 0)
+		(at 287.02 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12377,7 +12389,7 @@
 		(dnp no)
 		(uuid "e9245f6b-ea94-42f4-95db-46ff81de045d")
 		(property "Reference" "TP305"
-			(at 292.1 258.31 0)
+			(at 287.02 235.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12387,7 +12399,7 @@
 			)
 		)
 		(property "Value" "IRQ2"
-			(at 296.68 261.84 0)
+			(at 291.6 238.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12398,7 +12410,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 297.18 264.16 0)
+			(at 292.1 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12409,7 +12421,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 297.18 264.16 0)
+			(at 292.1 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12420,7 +12432,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 292.1 264.16 0)
+			(at 287.02 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13035,7 +13047,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 312.42 264.16 0)
+		(at 307.34 241.3 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13045,7 +13057,7 @@
 		(dnp no)
 		(uuid "fdf3e6e7-3c08-4168-9ffc-00e36ca31cd0")
 		(property "Reference" "#PWR326"
-			(at 312.42 261.62 0)
+			(at 307.34 238.76 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13056,7 +13068,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 312.42 268.48 0)
+			(at 307.34 245.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13066,7 +13078,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13077,7 +13089,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13088,7 +13100,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 312.42 264.16 0)
+			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

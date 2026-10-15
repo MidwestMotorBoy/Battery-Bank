@@ -15,7 +15,7 @@ import sys
 BS = chr(92)
 TWO_PIN = ("Device:R", "Device:C", "Device:L", "Device:D_Schottky", "Device:Fuse", "Device:Thermistor_NTC",
            "Device:LED", "Device:D_TVS", "Device:Battery_Cell", "Jumper:Jumper_2_Open")
-DATE = "2026-10-11"
+DATE = "2026-10-14"
 TITLES = {
     "MonolithDev.kicad_sch": ("Monolith dev board - top level", "Sheet index, PD address straps"),
     "gauge.kicad_sch": ("Cells and gauge", "4S input, BQ40Z50-R2 gauge/protector, protection FETs"),
@@ -133,11 +133,11 @@ def tidy(path):
     # title block
     name = path.replace(BS, '/').split('/')[-1]
     title, comment = TITLES.get(name, (name, ''))
-    tb = (f'\t(title_block\n\t\t(title "{title}")\n\t\t(date "{DATE}")\n\t\t(rev "A (draft)")\n'
+    tb = (f'\t(title_block\n\t\t(title "{title}")\n\t\t(date "{DATE}")\n\t\t(rev "A6")\n'
           f'\t\t(company "Monolith 100 W battery bank - dev board")\n'
           f'\t\t(comment 1 "{comment}")\n'
           f'\t\t(comment 2 "Spec: docs/devboard/circuit-description.md; changes and open items: DevBoard/README.md")\n'
-          f'\t\t(comment 3 "Not reviewed, laid out, built or tested")\n\t)\n')
+          f'\t\t(comment 3 "Reviewed 3x (docs/devboard); board placed, not routed or built")\n\t)\n')
     s = re.sub(r'\t\(title_block\n.*?\n\t\)\n', '', s, flags=re.S)
     s = re.sub(r'(\t\(paper "[^"]+"\)\n)', r'\1' + tb.replace(BS, BS + BS), s, count=1)
     open(path, 'w', encoding='utf-8', newline='\n').write(s)
