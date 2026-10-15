@@ -1,0 +1,54 @@
+ERC report (2026-10-14T22:19:14, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+
+***** Sheet /Cells and Gauge/
+
+***** Sheet /Sleep Current and 3V3/
+
+***** Sheet /MCU and NTCs/
+
+***** Sheet /USB Port 1/
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 99.06 mm): Symbol U401 Pin 5 [GPIO0, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 101.60 mm): Symbol U401 Pin 6 [GPIO1, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 104.14 mm): Symbol U401 Pin 7 [GPIO2, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 119.38 mm): Symbol U401 Pin 13 [GPIO11, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+
+***** Sheet /USB Port 2/
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 99.06 mm): Symbol U501 Pin 5 [GPIO0, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 101.60 mm): Symbol U501 Pin 6 [GPIO1, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 104.14 mm): Symbol U501 Pin 7 [GPIO2, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(154.94 mm, 119.38 mm): Symbol U501 Pin 13 [GPIO11, Bidirectional, Line]
+    @(71.12 mm, 215.90 mm): Symbol #FLG105 Pin 1 [Power output, Line]
+
+ ** ERC messages: 8  Errors 0  Warnings 8
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters
