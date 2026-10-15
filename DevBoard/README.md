@@ -136,7 +136,7 @@ Floorplan (board mm from the top-left corner):
     - the U403/U503 library-mismatch warning (item 39).
 
   If KiCad has the board open, revert/reload it before saving.
-- **Cost (rev A7, 2026-10-14):** `bom_cost.csv` at 5 boards gives $51.13 parts plus $20.40 JLC extended-part fees (34 unique extended parts) = **$71.53 per board, without U301**. The CC2340R5MODA has no price yet: JLC lists it (C55046847) with 0 stock, and TI.com shows it out of stock with no price. Also left out: the PCB, assembly, shipping, cells, U201 and J301. Rev A6 was $78.65 including the $10.65 STM32 module, so like-for-like, rev A7 is about $1.70 dearer for its parts (three TMP1075s and the RF match) and $1.80 dearer in JLC fees, before the module's price.
+- **Cost (rev A7, 2026-10-14):** `bom_cost.csv` at 5 boards gives $55.16 parts plus $20.40 JLC extended-part fees (34 unique extended parts) = **$75.56 per board**, against $78.65 for rev A6. U301 (CC2340R5MODA) is costed at TI.com's $4.028 (qty 1-99; $2.189 at 1k+), consigned to JLC. JLC (C55046847) had 0 stock and TI showed it "Not available" on 2026-10-14, so check stock before ordering. The STM32 module was $10.65. Not included: the PCB, assembly, shipping, cells, U201 and J301.
 - PWR_FLAGs (the diamonds) sit where each rail is sourced through a passive part; each sheet's NOTES says so.
 
 ## Changes from the circuit description (draft 5)

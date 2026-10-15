@@ -21,9 +21,9 @@ KICAD_CLI = r"C:/Program Files/KiCad/10.0/bin/kicad-cli.exe"
 URL = "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList"
 FEE = 3.0          # JLC loading fee per unique extended part per order (basic and preferred parts: none)
 # Bought outside JLC: ref prefix -> (unit price USD, source). U301 is consigned to JLC for placement.
-# Rev A7: U301 is the CC2340R5MODA. JLC lists it (C55046847) with 0 stock, and on 2026-10-14 neither TI.com
-# ("Out of stock", no price) nor DigiKey/Mouser/LCSC listed it, so it stays unpriced until a quote is in hand.
-OUTSIDE = {}
+# Rev A7: U301 is the CC2340R5MODA. JLC lists it (C55046847) with 0 stock; TI.com prices it at $4.028 (1-99),
+# $3.284 (100-249), $2.581 (250-999), $2.189 (1k+), but showed it "Not available" on 2026-10-14.
+OUTSIDE = {"U301": (4.028, "TI.com CC2340R5MODAN0MHAR, qty 1-99, 2026-10-14 (not available then)")}
 CONSIGNED = {"U301"}
 
 
