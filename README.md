@@ -4,8 +4,9 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 
 **Status (2026-10-14):** nothing has been built, test-fitted or bench-tested yet.
 - **Dev board** (`DevBoard/`): the active work, a bench version of the electronics.
-    - **Schematic:** rev A6, three datasheet reviews.
-    - **Board:** 6-layer, all parts placed, not routed.
+    - **Schematic:** rev A7, three datasheet reviews. Rev A7 swapped the MCU to a TI CC2340R5MODA (cost-down) and the board NTCs to TMP1075 I2C sensors.
+    - **Board:** 6-layer, all parts placed for rev A7, not routed.
+    - **Firmware:** not started. It targets TI's LPF3 SDK (SysConfig, TI Arm Clang, XDS110 debugger).
 - **Product top board** (`BatteryBank.kicad_*`): still the early draft from 2026-10-09.
 
 ## Contents
@@ -17,7 +18,8 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - the circuit description;
     - schematic reviews 1–3;
     - the cost-down list;
-    - the power budget and the MCU pin-by-power-state plan;
+    - the power budget and the MCU pin-by-power-state plan (STM32-era, rewrite pending);
+    - the CC2340R5MODA pin budget (`cc2340-pin-budget.md`);
     - the bring-up configuration checklist;
     - changes planned for rev 2.
 - `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
@@ -38,14 +40,17 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - BQ25756 buck-boost charger with four discrete PGQ04N070 FETs;
     - TPS62933 5 V source.
 - **Supply and sleep current:** TPS62177 3.3 V rail, and INA190 amplifiers on a 10 Ω R_MEAS for measuring sleep current.
-- **MCU:** STM32WB1MMC Bluetooth module.
+- **MCU:** TI CC2340R5MODA Bluetooth LE module (rev A7; was the STM32WB1MMC). Its 10 usable GPIOs are all assigned.
+- **Board temperature:** TMP1075 I2C sensors at each charger stage and the USB-C connectors, plus two DNP spots. Their alerts share one IRQ_N line with the PD controllers and the gauge.
 
 ## Known open items
 
 **Dev board:**
 - silkscreen pass;
-- antenna keep-out;
 - routing;
+- LCSC numbers, stock and price for the rev A7 parts (CC2340R5MODA, TMP1075, RF match);
+- antenna match tuning (C314/C315) and a BLE range check on the real board;
+- rewrite of the MCU pin-by-power-state plan for the CC2340;
 - the U403/U503 footprint library warning;
 - production board thickness.
 
