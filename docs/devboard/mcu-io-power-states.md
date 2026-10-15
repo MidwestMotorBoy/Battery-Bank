@@ -18,6 +18,7 @@ Loads come from the netlist and are given at 3.3 V.
 | **S2 Idle** | No cable | **Stop2**, BLE slow advertising | **Sleep mode** (PB4 low), 15 mA max |
 | **S3 Reset** | Power-on, SW301, IWDG, brown-out | Reset (pins analog/hi-Z) | Normal (PB4 has its NJTRST pull-up) |
 | **S4 MCU unpowered** | Dead pack, gauge FETs off | — | Off |
+| **S5 Ship (storage)** | App command, two weeks with no cable or button, or low SOC; never with a cable attached (added 2026-10-14, review 4 S-1) | Unpowered: the MCU sends the gauge MAC 0x0010 SHUTDOWN, then the rail collapses | Off. Pack drain about 3–4 µA. Wakes on a USB charger or SW101, not on a phone |
 
 **Standby and Shutdown are not used.**
 - BLE needs Stop2.

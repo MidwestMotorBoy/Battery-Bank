@@ -65,6 +65,7 @@ Rules:
 | SOCD | keep disabled, or above the 100 W discharge current | review 2, A-3 |
 | VIMR / VIMA | enabled | review 1 item 4 |
 | Sleep current threshold | above the ±10 mA coulomb-counter offset | review 1 item 4 |
+| **Shutdown Voltage** | **2700 mV** (default 1750 mV); keep Shutdown Time at 10 s | after a CUV trip the gauge and U102 keep drawing 75–336 µA from the cells. With the default it shuts down only at 1.75 V/cell, deep in over-discharge. 2700 mV stays below CUV so CUV still trips first (review 4 follow-up, S-1) |
 | `[IN_SYSTEM_SLEEP]` | 1 | the bus idles high, so without it the gauge never sleeps (336 µA instead of 75 µA) |
 | `[BCAST]` | 0 | review 2, C-16 |
 | OCD / OCC recovery delays | short | body-diode heating (review 1, decision Q1) |
@@ -128,18 +129,38 @@ Pin states per power state are in `mcu-io-power-states.md`.
   - [ ] Include its reading in the firmware over-temperature limits.
   - [ ] At 100 W (about 1 W per FET), compare it with a thermocouple on Q101/Q102. If it lags badly, fit the DNP sensor.
 - [ ] **Port-to-itself cable loop:** detect it and stop (review 2, B-12).
+- [ ] **Ship mode (storage, review 4 follow-up S-1, decided 2026-10-14).** Ship mode opens the gauge FETs and puts the gauge in SHUTDOWN, so the pack drains about 3–4 µA instead of about 240 µA in idle.
+  - [ ] **Entry triggers:**
+    - [ ] an app command over BLE;
+    - [ ] two weeks with no cable attached and no button press;
+    - [ ] low state of charge. The RSOC threshold is still to be chosen (about 5 % suggested); it must sit above the CUV point.
+  - [ ] **How:** send the gauge SHUTDOWN command (MAC 0x0010), then let the rail collapse. Before sending it, release CHG_INH and drop EN_5Vx.
+  - [ ] **Refuse with a cable attached:** while USB holds PACK_P up, the gauge never completes SHUTDOWN. Make the app command report "unplug first", and restart the 2-week timer on every attach.
+  - [ ] **Wake:** a USB charger plug-in or SW101. A phone plugged into a sleeping board does not wake it; that is expected for a power bank, so say so in the app and docs.
 
 ## 5. Bring-up measurements
 
 - [ ] A phone attaching is detected with EN_5Vx low (idle). If not, keep EN_5Vx high in idle and raise R432/R532 to 1 MΩ.
 - [ ] The 3V3 rail survives an attach while the TPS62177 is in sleep mode (15 mA limit).
 - [ ] Capture J402 (I2Cc): does the bundle rewrite ICHG_REG on every attach?
-- [ ] Bootstrap diodes D404/D405, the protection FETs (about 1 W each at 100 W) and the discrete charger FETs Q401/Q402/Q407/Q408 (and 5xx; about 0.5 W each at 100 W from 12 V): measure their temperature.
+- [ ] Bootstrap diodes D404/D405, the protection FETs (about 1 W each at 100 W) and the discrete charger FETs Q401/Q402/Q407/Q408 (and 5xx; about 1–1.6 W each at 100 W reverse from a 12 V pack, review 4 B-2): measure their temperature.
 - [ ] Holder contact resistance (accepted risk, 100 mΩ maximum per holder; review 1 #4): measure each holder. Holder mode stays at about 2 A (ICHG_REG, PDOs, OCD1 2–3 A). Run high-current tests and gauge learning on the welded pack via J101.
 - [ ] Sleep current: R_MEAS for the 3V3 branch, the gauge's current reading for the pack.
+- [ ] **Ship mode:**
+  - [ ] Send the app command (or MAC 0x0010 from the EV2400) with no cable attached. PACK_P (TP106) falls and the board goes dark.
+  - [ ] Pack drain is about 3–4 µA: R105 reads about 0.2 mV or less, and the gauge current is 1.6 µA plus U102 at 1–2 µA.
+  - [ ] It wakes on a USB charger and on SW101, and does not wake on a phone.
+- [ ] **Storage:** store boards at 40–60 % charge, in ship mode. EVE rates 1 year at −20 to 25 °C at shipping charge (3.4–3.6 V per cell).
 - [ ] Gauge supply current: with the pack on battery only (no USB, no J104), measure across R105 (100 Ω): 50–340 µA = 5–34 mV. Expect about 75 µA once the gauge sleeps (needs `[IN_SYSTEM_SLEEP]` = 1); about 336 µA means it is not sleeping. Budget about 150 µA.
 - [ ] BLE range with the module at the board edge (antenna keep-out `ANT_KEEPOUT` on all copper layers).
 - [ ] F102 intact: TP108 (CELL_P_RAW) and TP101 (CELL_P) within a few mV.
 - [ ] Liquid detection: scope LIQ_PU/LIQ_PD to confirm the GPIO6/7 mapping. Then put salt water across SBU–GND and SBU–VBUS in the receptacle: the port must report liquid and turn VBUS off (SBU–VBUS goes through the FLT path). Then dry it and confirm recovery.
 - [ ] Liquid-detection current: R201 current with liquid detection on and off (review 3, P2).
+- [ ] **High-side gate drive at 100 % duty (review 4 B-1, follow-up).** The BQ25756 holds one high side fully on in each direction and keeps its gate up with an undocumented internal charge pump. TI E2E documents the pump; its voltage and current are unpublished.
+  - [ ] **Q402/Q502 (HIDRV2–SW2):** reverse boost, pack to 20 V at full load (start at the interim IBAT_REV = 5 A, then the final limit), with the board hot (70–80 °C at the FETs).
+  - [ ] **Q401/Q501 (HIDRV1–SW1):** forward boost from a 5 V and a 9 V source at full charge current.
+  - [ ] **How:** differential or isolated probe across gate and source (SW). Record the minimum gate voltage over several seconds, and whether it sawtooths down to the 2.7–3.9 V refresh threshold.
+  - [ ] **Pass:** the gate stays at 4.5 V or more, and the FET case temperature agrees with the B-2 loss estimate (about 1–1.6 W per FET at 100 W).
+  - [ ] **Fail:** swap that position to the review's fallback part (AON7520 for Q402/Q502, SiS488DN for Q401/Q501; same footprint). Keep IBAT_REV at 5 A until then.
+  - [ ] Keep the high-side gates free of pull-down resistors (TI: the pump can't drive them).
 - [ ] Switching edges: probe SW1/SW2 ringing at full load. If needed, put a few ohms in R444–R449 or fit the R450/C454 and R451/C455 snubbers.

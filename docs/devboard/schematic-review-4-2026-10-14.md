@@ -32,7 +32,7 @@ Everything else got a fresh-eyes pass.
 |---|---|---|---|---|
 | 0 | 2 | 20 | 12 | 9 |
 
-Duplicates found by more than one reviewer are counted once.
+Duplicates found by more than one reviewer are counted once. After the follow-up at the end of this report, B-1 is MINOR: **1 major, 21 minor**.
 
 **Nothing is wired wrongly.** The checks that came back clean are listed under "Checked and correct" at the end.
 
@@ -223,6 +223,61 @@ Also from D-11: 28 fitted parts have no MPN, and J301 and U301 have no LCSC numb
 - All 93 LCSC numbers resolve to the stated part.
 - Every package matches its footprint.
 - ERC: 8 known warnings, all benign, 0 errors.
+
+## Follow-up (2026-10-14, after the review)
+
+### B-1 re-graded: MAJOR → MINOR (verify at bring-up)
+
+All four reviewers worked from the datasheet. It documents only the bootstrap-refresh comparator (VBTST_REFRESH 2.7/3.1/3.9 V) and says nothing about how a high side is held on at 100 % duty. TI's own material says more:
+
+- **The chip has an undocumented charge pump.** A TI applications engineer (Ethan Galloway) states on E2E that "the high-side FETs are powered by a charge pump during a 100% duty-cycle". In a BQ25756E thread he says the charge pump works only while the buck or boost side is at 100 % duty, and that the non-E part behaves the same. So the gate does not simply sag to the comparator threshold and get refreshed: the pump holds it up, and the comparator is the backstop.
+    - [E2E 1635491](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1635491/bq25756-bq25756-buck-boost-charger-stability-issues-and-unexpected-current-draw), read in full.
+    - [E2E 1381108](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1381108/bq25756e-bq25756e), known only from search excerpts; TI blocks automated access.
+- **The pump is weak.** In the same thread TI says the high-side FETs "can't have pull down resistors on them". A 10 kΩ gate pull-down draws about 0.4–0.5 mA, so the pump sources less than that. Our high-side gates have no pull-downs (HG1/HG2 connect only to R444/R446 and the gate). Verified in the netlist.
+- **TI's own reference uses the same threshold class as ours.**
+    - TI's BQ25756 EVM uses Vishay SiR680LDP at Q1–Q4 (SLUUCT7 schematic). Its Vgs(th) maximum is 2.5 V, the same as the PGQ04N070's.
+    - When a user's FETs had a 2.6–3.6 V threshold, TI called that a potential problem and suggested SiR680LDP or SiR880BDP.
+    - So a 1.0–2.5 V threshold is inside what TI designs with.
+- **What remains is margin, not a defect.**
+    - The pump's output voltage and current are unspecified.
+    - The PGQ04N070 is a smaller die than the SiR680LDP (7.2 mΩ typ at 4.5 V against 3.55 mΩ max), so it has less current capability if the gate settles below 4.5 V.
+    - The pump also has to supply D405's reverse leakage while Q402 is held on. The diode then sits at about VBAT reverse bias. LRB520S-40: ≤ 1 µA at 10 V and 25 °C, rising steeply with temperature.
+
+**New disposition (B-1, MINOR):**
+- Keep the PGQ04N070.
+- At bring-up, scope HIDRV2–SW2 (Q402) in reverse boost at full load, hot (board at 70–80 °C), and HIDRV1–SW1 (Q401) in forward boost from 5/9 V. Pass if the gate stays at 4.5 V or more.
+- Keep IBAT_REV ≤ 5 A until that measurement is done.
+- B's replacement spec (AON7520 / SiS488DN class) becomes the fallback if the gate sags.
+
+Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
+
+### Storage and the idle drain (added after the review)
+
+| | Pack drain | Effect |
+|---|---|---|
+| Idle (FETs on, 3V3 up, both ports armed) | about 240 µA typ, 290 µA max, plus C432/C532 polymer leakage (spec max 0.5 mA each, unmeasured) | about 3 %/month typ (+ 1–2 %/month cell self-discharge), up to about 16 %/month if the polymer leakage were at spec max |
+| Ship mode (gauge SHUTDOWN, MAC 0x0010) | about 3–4 µA (gauge 1.6 + U102 1–2) | about 0.05 %/month; cell self-discharge dominates |
+
+**Where the idle 240 µA goes:**
+- the 3V3 branch, about 126 µA at the pack: two TPD4S201 about 70, two TPS25751 about 35, TMP1075 about 9, the rest about 12;
+- the gauge sleeping, 75 µA;
+- the two BQ25756 battery-side Iq, 34 µA;
+- U102 and the bucks, about 6 µA.
+
+**New CONFIG item S-1: gauge Shutdown Voltage.**
+- The default is **1750 mV/cell** (TRM §5.4 and 15.5.2.1), and the checklist doesn't set it.
+- In idle, the pack runs down to CUV. DSG then opens and the board goes dark, but the gauge (75–336 µA) and U102 keep drawing from the cells until the lowest cell reaches 1.75 V. That takes weeks to a few months, and leaves the cells deeply over-discharged.
+- Fix:
+    - Set Shutdown Voltage to about 2700 mV, below CUV, so CUV still trips first, but well above damage.
+    - Firmware enters ship mode (MAC 0x0010) on an app command, after two weeks with no cable or button activity, or at low SOC.
+    - USB charger attach or SW101 wakes the board. A phone plugged in can't wake it, because the port is unpowered and the TPD4S201 presents only Rd.
+    - Store at 40–60 % SOC. EVE rates storage at shipping SOC for 1 year at −20 to 25 °C.
+- **Decided (2026-10-14):**
+    - Shutdown Voltage is 2700 mV.
+    - Ship mode is entered by an app command, after two weeks with no cable or button activity, or at low SOC (threshold to be chosen).
+    - A USB charger or SW101 wakes the board.
+    - Boards are stored at 40–60 %.
+    - Recorded in `bringup-config-checklist.md` (gauge table, §4 and §5) and `mcu-io-power-states.md` (state S5).
 
 ## Status
 
