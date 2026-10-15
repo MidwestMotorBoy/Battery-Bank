@@ -7,7 +7,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - **Schematic:** rev A7, three datasheet reviews. Rev A7 swapped the MCU to a TI CC2340R5MODA (cost-down) and the board NTCs to TMP1075 I2C sensors.
     - **Board:** 6-layer, all parts placed for rev A7, not routed.
     - **Firmware:** not started. It targets TI's LPF3 SDK (SysConfig, TI Arm Clang, XDS110 debugger).
-- **Product top board** (`BatteryBank.kicad_*`): still the early draft from 2026-10-09.
+- **Product top board:** not started. It will be drawn from the dev board results. The 2026-10-09 draft was removed on 2026-10-14; it is kept in git as the tag `product-draft-2026-10-09`.
 
 ## Contents
 
@@ -23,13 +23,9 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - the bring-up configuration checklist;
     - changes planned for rev 2.
 - `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
-- `docs/*.csv` holds the product net list and the port 1 parts list.
 - `datasheets/` holds the datasheets and app notes the designs were checked against, indexed in `datasheets/sources.csv`.
-- `BatteryBank.kicad_*`, `Monolith.kicad_sym`, `sym-lib-table` are the product top board.
-    - Its schematic is a first draft connected by net labels.
-    - Its PCB has only the outline and mechanical reference marks.
 - `mechanical/` holds STL models for the shell, cap and test-print parts, the bottom board outline (DXF), and the Python scripts that generate them.
-- `tools/` holds the scripts that generated the product schematic and fetched the datasheets.
+- `tools/fetch_datasheets.sh` fetches the datasheets.
 
 ## Dev board main parts
 
@@ -56,4 +52,4 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 
 Details are in `DevBoard/README.md`, and rev 2 changes in `docs/devboard/rev2-changes.md`.
 
-**Product top board:** still has placeholder parts and no footprints. It will follow from the dev board results.
+**Product top board:** not started; it will follow from the dev board results. The board outline is `mechanical/monolith_bottom_pcb.dxf`.

@@ -133,7 +133,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 
-Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (checked against TI datasheets), with these updates.
+Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`; checked against TI datasheets), with these updates.
 
 ### 7.1 Connector and protection
 - **J1 / J2:** Shou Han TYPE-C 16PCB1.6 IP68 (LCSC C55629729; the 1.6 mm board version of the 16PCB0.8, same land pattern), mid-mount: 10.2 × 4.7 mm notch at the board edge, four slotted plated shell holes, pads per the drawing (rev A5). Shell to GND.
@@ -173,7 +173,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
     - Divider draws ~107 µA only while VAC is powered (cable attached)
     - All three are 1 % since rev A4: the thresholds move by about ±1.5 %, still between PD's 21 V and the SMAJ22A breakdown
     - Check in the full datasheet how ACUV/ACOV behave in reverse (sourcing) mode
-- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv`.
+- REGN and DRV_SUP 4.7 µF; bootstrap caps per datasheet plus a Schottky bootstrap diode from DRV_SUP to each BTST pin (TI BQ25756 schematic checklist D2/D3, required; LRB521S-40T1G, C135802; added rev A4); VAC feed and capacitor per `monolith_port1_netlist.csv` (git tag `product-draft-2026-10-09`).
 - STAT1, STAT2, PG to test points (pulled up to 3V3); CE pulled low (charge enabled).
 
 ### 7.4 5 V supply for PP5V (TPS62933)
