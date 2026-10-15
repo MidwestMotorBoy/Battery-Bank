@@ -137,7 +137,7 @@ Floorplan (board mm from the top-left corner):
     - the U403/U503 library-mismatch warning (item 39).
 
   If KiCad has the board open, revert/reload it before saving.
-- **Cost (rev A7, 2026-10-14):** `bom_cost.csv` at 5 boards gives $55.16 parts plus $20.40 JLC extended-part fees (34 unique extended parts) = **$75.56 per board**, against $78.65 for rev A6. U301 (CC2340R5MODA) is costed at TI.com's $4.028 (qty 1-99; $2.189 at 1k+), consigned to JLC. JLC (C55046847) had 0 stock and TI showed it "Not available" on 2026-10-14, so check stock before ordering. The STM32 module was $10.65. Not included: the PCB, assembly, shipping, cells, U201 and J301.
+- **Cost (rev A7, 2026-10-14):** `bom_cost.csv` at 5 boards gives $55.16 parts plus $20.40 JLC extended-part fees (34 unique extended parts) = **$75.56 per board**, against $78.65 for rev A6. U301 (CC2340R5MODA) is costed at TI.com's $4.028 (qty 1-99; $2.189 at 1k+), consigned to JLC. JLC (C55046847) had 0 stock on 2026-10-14; TI.com has it in stock (2026-10-15, logged in; logged out it shows "Not available"). The STM32 module was $10.65. Not included: the PCB, assembly, shipping, cells, U201 and J301.
 - PWR_FLAGs (the diamonds) sit where each rail is sourced through a passive part; each sheet's NOTES says so.
 
 ## Changes from the circuit description (draft 5)
@@ -164,7 +164,7 @@ Found while checking against datasheets:
     - Battery side (BAT_SNS_P): C431/C434/C435 47 µF 25 V 1210 + **C432 100 µF 25 V polymer**, JIERR MA25V100M6x6 (C46550465), 6.3 × 6 mm, 30 mΩ, 2.65 A at 100 kHz. About 36 + 100 ≈ 136 µF effective at 16.8 V (≥ 116 µF at −20 %).
     - Removed per port: C422, C425, C426, C428, C429, C433, C436, C437 (16 MLCCs on the board).
     - Ripple: worst-case input RMS is ICHG/2 (§7.2.1.2.5); the MLCCs (a few mΩ each) take nearly all of it at 600 kHz, so the polymer's 2 A rating is not the limit.
-    - Leakage: C432 is biased from PACK_P whenever the gauge FETs are on. Solid polymer leakage is specified loosely (typically 0.1–0.2 CV, i.e. up to a few hundred µA, after 2 min); real parts are far lower, but measure the pack drain with and without C432 at bring-up. A hybrid polymer (for example Panasonic ZA/ZC, 0.01 CV) is the fallback if it matters.
+    - Leakage (superseded by item 43: C432 is now a hybrid polymer, 25 µA max): C432 is biased from PACK_P whenever the gauge FETs are on. Solid polymer leakage is specified loosely (typically 0.1–0.2 CV, i.e. up to a few hundred µA, after 2 min); real parts are far lower, but measure the pack drain with and without C432 at bring-up. A hybrid polymer (for example Panasonic ZA/ZC, 0.01 CV) is the fallback if it matters.
     - This is the same structure as the production BOM (`docs/monolith_port1_bom.csv`, removed 2026-10-14; in git tag `product-draft-2026-10-09`: 4 MLCC + 68 µF polymer per side). The production polymer is a ≤ 5 mm D-case 25 V part on the 20 V input; 25 V at 20 V is tight for a polymer cap, so 35 V is used here.
 
 17. **Design-review fixes (rev A4, 2026-10-12)** from [`../docs/devboard/schematic-review-2026-10-12.md`](../docs/devboard/schematic-review-2026-10-12.md). Item numbers refer to that review; its "Status" section lists every item.
@@ -543,7 +543,7 @@ Found while checking against datasheets:
         - J303 pin 2 now probes IRQ_N; pin 3 is unconnected.
     - **R313 fitted at 470k** (was DNP 100k). CC2340 pins float in reset, and the TPS62177's 1.4 µA SLEEP pull-down would otherwise put 3V3 in sleep mode (15 mA max) during boot. This costs 7 µA in S2.
     - **Not done yet:**
-        - U301 has no LCSC number by design: TI.com, consigned (its `Sourcing` property says so since rev A8). Check stock before ordering.
+        - U301 has no LCSC number by design: TI.com, consigned (its `Sourcing` property says so since rev A8). In stock at TI.com when logged in (2026-10-15).
         - `mcu-io-power-states.md` and the bring-up checklist were rewritten for the CC2340 in rev A8 (item 42).
         - The STM32 notes in items 7, 10, 23 and 28 above are history.
 
@@ -585,7 +585,17 @@ Found while checking against datasheets:
     - **BOM (D-11):** MPN added on BT101–BT104, D101, Q101/Q102, U101, U204, RS101, C403–C405, R418/R419/R434 and U401–U404 (and 5xx). `Sourcing` on U301 (TI.com, consigned) and J301 (hand-fit; Samtec to be replaced by an unkeyed header JLC stocks). J301 is out of the position file.
     - **Documents rewritten for the CC2340 and rev A8:** `bringup-config-checklist.md` (with every review 4 CONFIG item: CCFG bootloader pin, IRQ_N rules, TMP1075 modes, I2C 100 kHz and bus clear, EN_5Vx first after reset, [NR] and Latch Limits, BTP_POL, [XL], EN_JEITA = 0, IBAT_REV interim, Q12/Q13, liquid-detect thresholds, INT_EVENT1 clear), `mcu-io-power-states.md`, `power-budget.md` (idle about 230–240 µA). Corrections in `circuit-description.md` §7–8, `cost-down-2026-10-14.md` (A3, A16) and `cc2340-pin-budget.md`.
     - **Checks:** ERC shows the 8 known warnings only; 0 text overlaps; board DRC shows 0 parity issues and no courtyard overlaps (429 parts).
-    - **Not closed by design:** J301's replacement part (open, see its `Sourcing`); the low-SOC ship-mode threshold; the bench measurements listed in the checklist §5.
+    - **Not closed by design:** J301's replacement part (open, see its `Sourcing`); the bench measurements listed in the checklist §5. The ship-mode SOC threshold is 5 % (decided 2026-10-15).
+
+43. **C432/C532 → hybrid polymer (2026-10-15).** The battery-side bulk is the only bulk capacitor biased while the board idles (from PACK_P whenever the gauge FETs are on). Its leakage is therefore idle drain, and the JIERR MA25V100M6x6 solid polymer was specified at 0.2CV = 500 µA max each (review 4 B-4).
+    - **Now:** Panasonic **EEH-ZA1E101XP** (ZA hybrid: conductive polymer plus liquid electrolyte, C264047, $0.81, about 1.9k in stock). 100 µF 25 V, 30 mΩ, 2 A at 100 kHz, 10,000 h at 105 °C. Leakage ≤ 0.01CV = **25 µA**.
+    - **Footprint:** `CP_Elec_6.3x7.7` (same pads as the 6.3 × 5.8; the can is taller).
+    - **Cost:** +$0.64 per port, +$1.28 per board. Both parts are JLC extended, so the fee count doesn't change.
+    - **Options rejected:**
+        - Plain aluminium electrolytic: the same 0.01CV leakage limit and about $0.03–0.14, but 0.3–1 Ω ESR leaves only the MLCCs working at 600 kHz.
+        - All-MLCC: about 13 × 1210 to reach 80 µF effective at 16.8 V, about $3.50 per port.
+    - **Kept:** the solid polymers that are biased only while a port is active (USB side C421/C521, PP5V C443/C543); their leakage doesn't reach the idle budget.
+    - **Checks:** ERC unchanged (the 8 known warnings); board DRC shows 0 parity issues and no courtyard overlaps. The taller can's reference text adds 6 silkscreen overlaps for the silkscreen pass.
 
 ## Open items (defaults I picked; confirm or change)
 

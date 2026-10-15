@@ -24,7 +24,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | Gauge (BQ40Z50-R2) | Cells, via D101 → R105 → BAT | Drop across R105 (100 Ω): 50–340 µA = 5–34 mV |
 | U102 (BQ294700) | Cells | Not separately (datasheet value) |
 | 3.3 V rail: MCU, both TPS25751 + TPD4S201, TMP1075s, pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (TP201/TP202) |
-| Chargers (2 × BQ25756), 5 V bucks (2 × TPS62933), polymer C432/C532 | PACK_P directly | Not separately (datasheet values) |
+| Chargers (2 × BQ25756), 5 V bucks (2 × TPS62933), hybrid bulk C432/C532 | PACK_P directly | Not separately (datasheet values) |
 | Measurement section (HT7550-1 + 2 × INA190) | PACK_P via JP202 | Off unless the JP202 shunt is fitted |
 
 ## Pack current by state
@@ -35,7 +35,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | **Idle, no cable (S2)**: MCU Standby, BLE advertising, TPS62177 in sleep mode, gauge SLEEP, TMP1075s in shutdown | 75 µA + 1–2 µA | 34 µA | 4 µA | ≈ 118 µA | **≈ 230 µA**: about 2.0 Ah/yr, about 3 %/month |
 | Idle, TMP1075s left at their power-up default | | | | ≈ 128 µA | **≈ 240 µA** |
 | Idle, everything at datasheet maximum | | | | | **≈ 290 µA** |
-| Idle, polymer leakage (C432/C532, FETs on) | | | | | **+ up to 1 mA** at the datasheet limit (500 µA each); far less in practice. Measure at bring-up (review 4 B-4) |
+| Idle, bulk-cap leakage (C432/C532 hybrid polymer, FETs on) | | | | | **+ ≤ 50 µA** at the datasheet limit (25 µA each at the rated 25 V, after 2 min); less at 16.8 V. Was up to 1 mA with the solid polymer (0.2CV), replaced 2026-10-15 |
 | Idle, gauge not sleeping (`[IN_SYSTEM_SLEEP]` = 0) | 338 µA | 34 µA | 4 µA | ≈ 128 µA | **≈ 500 µA**: about 6 %/month |
 | Idle, measurement section on (JP202 and JP201 fitted) | | | | | **+ ≈ 100 µA** |
 | **Charging**, one port at 5.5 A | 336 µA | 17 µA idle port; the active one runs from USB | 4 µA | ≈ 3 mA *est.* | Pack **gains about 5.5 A**, minus about 3 mA |

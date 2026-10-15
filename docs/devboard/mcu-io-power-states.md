@@ -17,7 +17,7 @@ Loads come from the netlist and are given at 3.3 V. The firmware steps that go w
 | **S2 Idle** | No cable | **Standby**, BLE advertising | **Sleep mode** (DIO21 low), 15 mA max |
 | **S3 Reset** | Power-on, SW301, WDT, brown-out; also the ROM bootloader and an unprogrammed part | Reset: pins hi-Z, no pulls | Normal (R313 220k holds SLEEP high) |
 | **S4 MCU unpowered** | Dead pack (CUV), gauge FETs off | — | Off |
-| **S5 Ship (storage)** | App command, two weeks with no cable or button, or low SOC; never with a cable attached (review 4 S-1) | Unpowered: the MCU sends the gauge MAC 0x0010 SHUTDOWN, then the rail collapses | Off. Pack drain about 3–4 µA. Wakes on a USB charger or SW101, not on a phone |
+| **S5 Ship (storage)** | App command, two weeks with no cable or button, or RSOC ≤ 5 %; never with a cable attached (review 4 S-1) | Unpowered: the MCU sends the gauge MAC 0x0010 SHUTDOWN, then the rail collapses | Off. Pack drain about 3–4 µA. Wakes on a USB charger or SW101, not on a phone |
 
 **CC2340 Standby is the BLE sleep mode, and its GPIOs latch** (SWRS349A §8.11): every output keeps its level, and a pin edge (IRQ_N) or the RTC wakes it. This is the opposite of the STM32's Standby, where outputs went hi-Z. Shutdown (the CC2340's lowest mode, RTC off) is not used; S5 powers the MCU down instead.
 

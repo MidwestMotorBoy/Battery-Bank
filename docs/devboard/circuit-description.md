@@ -158,7 +158,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **Sense resistors:** Yageo PA2010FKE470R005Z, 5 mΩ 2 W 2010 (C7256567) for both RAC (ACP/ACN, USB side) and RBAT (SRP/SRN, battery side).
 - **Capacitors (≥ 80 µF effective each side after DC-bias derating):**
   - USB side: 4 × Taiyo Yuden GMK325BJ226MM-P, 22 µF 35 V X5R 1210 (C778721) at the FETs + 0.1 µF, plus 1 × Honor HV1V107M0607PZ 100 µF 35 V solid polymer (C5246554) as bulk; ≥ 80 µF effective at 20 V
-  - Battery side: 3 × Samsung CL31A226KAHNNNE, 22 µF 25 V X5R 1206 (C12891, JLC basic) at the FETs + 0.1 µF, plus 1 × JIERR MA25V100M6x6 100 µF 25 V solid polymer (C46550465) as bulk; about 114 µF effective at 16.8 V (≥ 80 µF). They were 47 µF 1210s until the cost-down 2026-10-14, `cost-down-2026-10-14.md`
+  - Battery side: 3 × Samsung CL31A226KAHNNNE, 22 µF 25 V X5R 1206 (C12891, JLC basic) at the FETs + 0.1 µF, plus 1 × Panasonic EEH-ZA1E101XP 100 µF 25 V hybrid polymer (C264047, 30 mΩ, 2 A, leakage ≤ 25 µA; was the JIERR MA25V100M6x6 solid polymer with a 500 µA limit until 2026-10-15) as bulk; about 114 µF effective at 16.8 V (≥ 80 µF). They were 47 µF 1210s until the cost-down 2026-10-14, `cost-down-2026-10-14.md`
   - Polymer for the bulk because it has no DC-bias loss; MLCCs only where the switching-frequency ripple needs them (changed from 10 + 7 MLCCs on 2026-10-12, see the README change list)
 - **Resistors** (rev A4: only the FB divider stays Yageo RT 0.1 %; the rest are UNI-ROYAL 1 %):
   - FSW_SYNC: 40.2 kΩ 1 % 0603 (C12447) → about 598 kHz

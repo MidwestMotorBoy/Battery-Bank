@@ -269,12 +269,12 @@ Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
 - In idle, the pack runs down to CUV. DSG then opens and the board goes dark, but the gauge (75–336 µA) and U102 keep drawing from the cells until the lowest cell reaches 1.75 V. That takes weeks to a few months, and leaves the cells deeply over-discharged.
 - Fix:
     - Set Shutdown Voltage to about 2700 mV, below CUV, so CUV still trips first, but well above damage.
-    - Firmware enters ship mode (MAC 0x0010) on an app command, after two weeks with no cable or button activity, or at low SOC.
+    - Firmware enters ship mode (MAC 0x0010) on an app command, after two weeks with no cable or button activity, or at RSOC ≤ 5 %.
     - USB charger attach or SW101 wakes the board. A phone plugged in can't wake it, because the port is unpowered and the TPD4S201 presents only Rd.
     - Store at 40–60 % SOC. EVE rates storage at shipping SOC for 1 year at −20 to 25 °C.
 - **Decided (2026-10-14):**
     - Shutdown Voltage is 2700 mV.
-    - Ship mode is entered by an app command, after two weeks with no cable or button activity, or at low SOC (threshold to be chosen).
+    - Ship mode is entered by an app command, after two weeks with no cable or button activity, or at RSOC ≤ 5 % (decided 2026-10-15).
     - A USB charger or SW101 wakes the board.
     - Boards are stored at 40–60 %.
     - Recorded in `bringup-config-checklist.md` (gauge table, §4 and §5) and `mcu-io-power-states.md` (state S5).
@@ -284,5 +284,6 @@ Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
 - **Applied in rev A8 (2026-10-14, `DevBoard/README.md` item 41):** A-1b, A-5, A-6, A-7, A-9, A-10, B-3 (1206 0.66 W; the 2010 didn't fit), C-3, C-4 (TVS2200DRVR) and C-8. The board is synced.
 - **Decided:** S-1 (Shutdown Voltage 2700 mV, ship mode), and B-1 (keep the PGQ04N070; gate-drive test at bring-up). Both are recorded in the checklist.
 - **Closed in rev A8 part 2 (2026-10-14, `DevBoard/README.md` item 42):** A-2 (procedure, Notes and sheet note), D-5 (D105 SMAJ18A on J104), all DOC items (A-11, A-12, B-10, C-12–C-14, D-8–D-11), and every CONFIG item, now written into `bringup-config-checklist.md` and `mcu-io-power-states.md`.
-- **Left to bring-up:** the MINORs that are measurements or production choices (B-2, B-4–B-6, C-2, C-5–C-7, D-3), each with a line in the checklist §5.
-- **Open decisions:** the low-SOC ship-mode threshold; J301's replacement header.
+- **B-4 closed (2026-10-15):** C432/C532 changed to the Panasonic EEH-ZA1E101XP hybrid polymer: same 100 µF and 30 mΩ, leakage limit 25 µA instead of 500 µA (`DevBoard/README.md` item 43).
+- **Left to bring-up:** the MINORs that are measurements or production choices (B-2, B-5, B-6, C-2, C-5–C-7, D-3), each with a line in the checklist §5.
+- **Open decisions:** J301's replacement header. (Ship-mode SOC threshold: 5 %, decided 2026-10-15.)

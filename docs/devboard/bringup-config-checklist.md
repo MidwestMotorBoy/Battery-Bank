@@ -18,7 +18,7 @@ Where a later review corrected an earlier one, the corrected value is used here,
 
 ## 0. Hand-fit and consigned parts (not in the JLC BOM)
 
-- [ ] **U301 CC2340R5MODA:** buy from TI.com (CC2340R5MODAN0MHAR) and consign it to JLC for placement. JLC (C55046847) had no stock on 2026-10-14; check TI stock before ordering.
+- [ ] **U301 CC2340R5MODA:** buy from TI.com (CC2340R5MODAN0MHAR) and consign it to JLC for placement. TI.com has it in stock (checked by Logan, logged in, 2026-10-15; TI.com shows "not available" to a logged-out visitor). JLC (C55046847) had no stock on 2026-10-14.
 - [ ] U201 INA190A5 (DigiKey/Mouser). U202 INA190A1 is JLC-assembled.
 - [ ] J301, the 2 × 5 1.27 mm SWD header: hand-fit. The Samtec FTSH-105 is to be replaced by an unkeyed header JLC stocks; the silkscreen then shows pin 1 and the cable-key side.
 - [ ] Two 2.54 mm shunts (JP201, JP202).
@@ -148,7 +148,7 @@ Pin states per power state are in `mcu-io-power-states.md`. Pins: DIO6 SCL, DIO8
   - [ ] **Entry triggers:**
     - [ ] an app command over BLE;
     - [ ] two weeks with no cable attached and no button press;
-    - [ ] low state of charge. The RSOC threshold is still to be chosen (about 5 % suggested); it must sit above the CUV point.
+    - [ ] low state of charge: **RSOC ≤ 5 %** with no cable attached (decided 2026-10-15). It must sit above the CUV point; check that 5 % RSOC is still above CUV at rest on the real pack.
   - [ ] **How:** send the gauge SHUTDOWN command (MAC 0x0010), then let the rail collapse. Before sending it, release CHG_INH and drop EN_5Vx.
   - [ ] **Refuse with a cable attached:** while USB holds PACK_P up, the gauge never completes SHUTDOWN. Make the app command report "unplug first", and restart the 2-week timer on every attach.
   - [ ] **Wake:** a USB charger plug-in or SW101. A phone plugged into a sleeping board does not wake it; that is expected for a power bank, so say so in the app and docs.
@@ -160,7 +160,7 @@ Pin states per power state are in `mcu-io-power-states.md`. Pins: DIO6 SCL, DIO8
 - [ ] Capture J402 (I2Cc): does the bundle rewrite ICHG_REG, IAC_DPM and VAC_DPM on every attach?
 - [ ] Bootstrap diodes D404/D405, the protection FETs (about 1 W each at 100 W) and the discrete charger FETs Q401/Q402/Q407/Q408 (and 5xx; about 1–1.6 W each at 100 W reverse from a 12 V pack, review 4 B-2): measure their temperature.
 - [ ] Battery-side MLCCs C431/C434/C435 (and 5xx): temperature at the worst ripple point, reverse buck to 9 V 3 A (about 1.5 A rms).
-- [ ] Polymer leakage: C432/C532 sit on PACK_P permanently, with a datasheet limit of 500 µA each; measure the pack drain with the FETs on (review 4 B-4).
+- [ ] Bulk-cap leakage: C432/C532 (Panasonic ZA hybrid polymer since 2026-10-15) sit on PACK_P whenever the FETs are on; datasheet limit 25 µA each. Confirm the pack drain with the FETs on (review 4 B-4).
 - [ ] Holder contact resistance (accepted risk, 100 mΩ maximum per holder; review 1 #4): measure each holder. Holder mode stays at about 2 A (ICHG_REG, PDOs, OCD1 2–3 A). Run high-current tests and gauge learning on the welded pack via J101.
 - [ ] Sleep current: R_MEAS for the 3V3 branch, the gauge's current reading for the pack. Expect about 400 µA on 3V3 in idle and about 240 µA from the pack (`power-budget.md`).
 - [ ] **Ship mode:**
