@@ -2,25 +2,25 @@
 
 Firmware for U301 on the dev board, a TI CC2340R5MODA (BLE, 512 KB flash / 64 KB RAM). Until the dev board exists it runs on the **LP-EM-CC2340R53 LaunchPad**, which has the same memory. The plan for that phase is [`../docs/devboard/launchpad-cc2340-plan.md`](../docs/devboard/launchpad-cc2340-plan.md).
 
-**Status (2026-10-15):** skeleton only. It was written before any TI tools were installed on this machine, so the first build will probably need fixes. Paste the full error output into the chat.
+**Status (2026-10-15):** tools installed on this machine (CCS 21.0.1, LPF3 SDK 9.23.00.27, UniFlash 9.7.0). The skeleton builds with no warnings: about 10 KB flash and 10.6 KB RAM, 8 KB of it heap. It has not run on hardware yet.
 
 ## Install (once)
 
 Install everything under `C:\ti` (the default). Paths with spaces break TI's build tools.
 
-1. **Code Composer Studio** 20.4 or newer: <https://www.ti.com/tool/CCSTUDIO>. In the installer's device list, tick the **SimpleLink CC23xx** family (low-power wireless). It brings:
+1. **Code Composer Studio** 21.0.1, installed to `C:\ti\ccs2101`: <https://www.ti.com/tool/CCSTUDIO>. Only two device families are needed: Wireless connectivity, which covers the CC23xx, and MSPM0, for the LP-MSPM0G3519's probe. Unattended install: `ccs_setup_21.0.1.00010.exe --mode unattended --prefix C:\ti\ccs2101 --enable-components PF_WCONN,PF_MSPM0`. It brings:
    - the TI Arm Clang compiler (`ccs/tools/compiler/ti-cgt-armllvm_*`);
    - SysConfig (`ccs/utils/sysconfig_*`);
    - `gmake` (`ccs/utils/bin/gmake.exe`);
    - the XDS110 USB drivers and DSLite, the command-line flasher.
    
    We don't use the CCS IDE to build. It's installed for these tools, and it's handy for single-stepping later.
-2. **SimpleLink Low Power F3 SDK**, the latest version: <https://www.ti.com/tool/download/SIMPLELINK-LOWPOWER-F3-SDK>. It installs as `C:\ti\simplelink_lowpower_f3_sdk_<version>`.
-3. **UniFlash**, latest: <https://www.ti.com/tool/UNIFLASH>. Day 1 uses it to check the probe connection and to save the target configuration (`.ccxml`).
+2. **SimpleLink Low Power F3 SDK** 9.23.00.27: <https://www.ti.com/tool/download/SIMPLELINK-LOWPOWER-F3-SDK>. It installs as `C:\ti\simplelink_lowpower_f3_sdk_9_23_00_27` and also installs SysConfig 1.26.4 at `C:\ti\sysconfig_1.26.4`, which the build uses (the SDK was tested with 1.26.x; CCS 21 ships 1.28.1). Unattended: `--mode unattended --prefix 'C:\ti'`.
+3. **UniFlash** 9.7.0, installed to `C:\ti\uniflash_9.7.0`: <https://www.ti.com/tool/UNIFLASH>. Day 1 uses it to check the probe connection and to save the target configuration (`.ccxml`).
 4. **Point the build at the tools.** In `firmware/`, copy `tools.mak.example` to `tools.mak`. Then make the three version numbers in it match the folder names that actually exist under `C:\ti`: the SDK, `sysconfig_*` and `ti-cgt-armllvm_*`.
 5. **Put gmake on the Git Bash path.** Add this line to `~/.bashrc`, with the version folder fixed to match yours, then open a new Git Bash:
    ```bash
-   export PATH="$PATH:/c/ti/ccs2040/ccs/utils/bin"
+   export PATH="$PATH:/c/ti/ccs2101/ccs/utils/bin"
    ```
 
 Then check the installs. All three commands should print a version:
@@ -29,7 +29,7 @@ Then check the installs. All three commands should print a version:
 gmake --version
 ```
 ```bash
-/c/ti/ccs2040/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang --version
+/c/ti/ccs2101/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/bin/tiarmclang --version
 ```
 ```bash
 ls /c/ti/ | grep simplelink_lowpower_f3_sdk

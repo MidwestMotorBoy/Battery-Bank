@@ -15,8 +15,8 @@ Firmware lives in [`../../firmware/`](../../firmware/README.md). Claude writes t
 ## 0. Before it arrives
 
 - [ ] **Order the LP-MSPM0G3519** if it isn't ordered yet: without it the LaunchPad can't be flashed.
-- [ ] Install the tools (`firmware/README.md`, "Install"): Code Composer Studio (brings TI Arm Clang, SysConfig, gmake and the XDS110 drivers), the LPF3 SDK, UniFlash.
-- [ ] `make` in `firmware/` builds `batterybank_launchpad.out` with no errors. The skeleton was written before any tools were installed, so expect a round of fixes here; send Claude the full error output.
+- [x] (2026-10-15: CCS 21.0.1, SDK 9.23.00.27, UniFlash 9.7.0) Install the tools (`firmware/README.md`, "Install"): Code Composer Studio (brings TI Arm Clang, SysConfig, gmake and the XDS110 drivers), the LPF3 SDK, UniFlash.
+- [x] `gmake` in `firmware/` builds `batterybank_launchpad.out` (2026-10-15: first try, no warnings, about 10 KB flash).
 - [ ] Optional: a TMP1075 breakout (or any 3.3 V I2C sensor) so the I2C code runs against real hardware before the dev board.
 
 ## 1. Day 1: probe and toolchain
