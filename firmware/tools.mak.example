@@ -1,0 +1,16 @@
+# Local tool paths. Copy this file to tools.mak (git ignores it) and fix the
+# versions to match what you installed. Paths must not contain spaces.
+
+# LPF3 SDK root (the folder that holds imports.mak and .metadata/)
+SDK ?= C:/ti/simplelink_lowpower_f3_sdk_9_23_00_27
+
+# Code Composer Studio install; the compiler and SysConfig come with it
+CCS ?= C:/ti/ccs2040/ccs
+
+TICLANG_ARMCOMPILER ?= $(CCS)/tools/compiler/ti-cgt-armllvm_4.0.4.LTS
+SYSCONFIG_TOOL      ?= $(CCS)/utils/sysconfig_1.26.4/sysconfig_cli.bat
+
+# Command-line flasher (ships with CCS and UniFlash) and the target config
+# saved from UniFlash on day 1 (XDS110 + CC2340R53)
+DSLITE ?= $(CCS)/ccs_base/DebugServer/bin/DSLite.exe
+CCXML  ?= targets/lp_em_cc2340r53_xds110.ccxml

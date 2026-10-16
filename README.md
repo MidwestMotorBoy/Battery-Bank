@@ -6,11 +6,12 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 - **Dev board** (`DevBoard/`): the active work, a bench version of the electronics.
     - **Schematic:** rev A7, three datasheet reviews. Rev A7 swapped the MCU to a TI CC2340R5MODA (cost-down) and the board NTCs to TMP1075 I2C sensors.
     - **Board:** 6-layer, all parts placed for rev A7, not routed.
-    - **Firmware:** not started. It targets TI's LPF3 SDK (SysConfig, TI Arm Clang, XDS110 debugger).
+    - **Firmware** (`firmware/`): a bring-up skeleton for the LP-EM-CC2340R53 LaunchPad, not built yet. It targets TI's LPF3 SDK (SysConfig, TI Arm Clang, XDS110 debugger). Install steps are in [`firmware/README.md`](firmware/README.md), and the LaunchPad plan is `docs/devboard/launchpad-cc2340-plan.md`.
 - **Product top board:** not started. It will be drawn from the dev board results. The 2026-10-09 draft was removed on 2026-10-14; it is kept in git as the tag `product-draft-2026-10-09`.
 
 ## Contents
 
+- `firmware/` holds the MCU firmware (CC2340, LPF3 SDK, command-line build).
 - `DevBoard/` is the dev board's KiCad 10 project.
     - It has its own library, its generator and placement scripts, and a costed BOM (`bom_cost.csv`).
     - Start with [`DevBoard/README.md`](DevBoard/README.md): files, board rules, status and the full change log.
@@ -21,6 +22,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - the power budget and the MCU pin-by-power-state plan (STM32-era, rewrite pending);
     - the CC2340R5MODA pin budget (`cc2340-pin-budget.md`);
     - the bring-up configuration checklist;
+    - the LP-EM-CC2340R53 LaunchPad plan (`launchpad-cc2340-plan.md`);
     - changes planned for rev 2.
 - `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
 - `datasheets/` holds the datasheets and app notes the designs were checked against, indexed in `datasheets/sources.csv`.
