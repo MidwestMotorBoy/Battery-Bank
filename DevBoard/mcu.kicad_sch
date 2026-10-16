@@ -3322,7 +3322,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "091347bd-c66d-4fb2-9d33-d2cecf25bdd4")
 		(property "Reference" "TP309"
@@ -3378,7 +3378,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -3390,6 +3390,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 307.34 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 307.34 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -8238,7 +8249,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C76950"
+		(property "LCSC" "C1548"
 			(at 180.34 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -8249,7 +8260,7 @@
 				)
 			)
 		)
-		(property "MPN" "GRM1555C1H150JA01D"
+		(property "MPN" "0402CG150J500NT"
 			(at 180.34 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -8462,7 +8473,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C76952"
+		(property "LCSC" "C1550"
 			(at 184.15 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -8473,7 +8484,7 @@
 				)
 			)
 		)
-		(property "MPN" "GRM1555C1H1R0BA01D"
+		(property "MPN" "0402CG1R0C500NT"
 			(at 184.15 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -8563,7 +8574,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C76952"
+		(property "LCSC" "C1550"
 			(at 191.77 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -8574,7 +8585,7 @@
 				)
 			)
 		)
-		(property "MPN" "GRM1555C1H1R0BA01D"
+		(property "MPN" "0402CG1R0C500NT"
 			(at 191.77 110.49 0)
 			(hide yes)
 			(show_name no)

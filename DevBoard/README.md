@@ -137,7 +137,7 @@ Floorplan (board mm from the top-left corner):
     - the U403/U503 library-mismatch warning (item 39).
 
   If KiCad has the board open, revert/reload it before saving.
-- **Cost (rev A8, 2026-10-15):** `bom_cost.csv` at 5 boards gives $57.00 parts plus $22.20 JLC extended-part fees (37 unique extended parts) = **$79.20 per board**, against $75.56 for rev A7 and $78.65 for rev A6. The +$3.64 is review 4: the C432/C532 hybrid bulk (+$0.90), the TVS2200 on VBUS (+$0.81), D105 (+$0.16) and three more extended parts (TVS2200, 220 pF CC caps, SMAJ18A; +$1.80 in fees); the rest is price drift. U301 (CC2340R5MODA) is costed at TI.com's $4.028 (qty 1-99; $2.189 at 1k+), consigned to JLC. JLC (C55046847) had 0 stock on 2026-10-14; TI.com has it in stock (2026-10-15, logged in; logged out it shows "Not available"). The STM32 module was $10.65. Not included: the PCB, assembly, shipping, cells, U201 and J301.
+- **Cost (2 boards, 2026-10-15):** `bom_cost.csv` (`tools/bom_cost.py 2`) gives $67.99 parts plus $40.50 JLC extended-part fees (27 unique extended parts × $3 ÷ 2 boards) = **$108.49 per board**. Before the fee cut (item 44) it was $124.28 (37 extended). At 5 boards the rev A8 BOM was $79.20. U301 (CC2340R5MODA) is costed at TI.com's $4.028 (qty 1-99; $2.189 at 1k+), consigned to JLC. JLC (C55046847) had 0 stock on 2026-10-14; TI.com has it in stock (2026-10-15, logged in; logged out it shows "Not available"). The STM32 module was $10.65. Not included: the PCB, assembly, shipping, cells, U201 and J301.
 - PWR_FLAGs (the diamonds) sit where each rail is sourced through a passive part; each sheet's NOTES says so.
 
 ## Changes from the circuit description (draft 5)
@@ -596,6 +596,16 @@ Found while checking against datasheets:
         - All-MLCC: about 13 × 1210 to reach 80 µF effective at 16.8 V, about $3.50 per port.
     - **Kept:** the solid polymers that are biased only while a port is active (USB side C421/C521, PP5V C443/C543); their leakage doesn't reach the idle budget.
     - **Checks:** ERC unchanged (the 8 known warnings); board DRC shows 0 parity issues and no courtyard overlaps. The taller can's reference text adds 6 silkscreen overlaps for the silkscreen pass.
+
+44. **Fewer JLC extended parts for a 2-board build (2026-10-15).** JLC charges $3 per unique extended part per order, so at 2 boards each costs $1.50 per board. Applied by `tools/bom_fee_cut.py`; 37 → 27 extended parts, **$124.28 → $108.49 per board** at 2 boards.
+    - **Swapped to JLC basic/preferred parts (no footprint changes):**
+        - C313 15p → 0402CG150J500NT (C1548, C0G); C315 (and DNP C314) 1p → 0402CG1R0C500NT (C1550, C0G).
+        - C401/C402 220p C0G → 0402B221K500NT (C1530, X7R).
+        - R433/R434 107k/20.0k 0.1 % → 120k (C17436) / 22k (C17560) 1 %: PP5V 5.16 V instead of 5.08 V, inside the TPS25751's 4.9–5.5 V range.
+        - C443/C543 220 µF 16 V polymer → 100 µF 35 V Honor HV1V107M0607PZ, the part C421 already uses (≈136 µF on PP5V against PD's 120 µF).
+    - **Hand-fit** (bought from LCSC, soldered by hand, out of the position file): BT101–BT104, the 13 Harwin test loops, U202 and D105. All are dev-only and easy to hand-solder.
+    - **Kept as extended (no basic part fits):** the ICs, FETs, inductors, USB-C connectors, sense resistors, polymer/hybrid bulk, TVS2200, LRB520S bootstrap diodes (the basic Schottkys leak 100–500× more), the 0.1 % charger FB divider (sets charge voltage) and R409 137k (ACOV).
+    - Board fields refreshed by `netlist_to_board.py` only (no placement changes); DRC parity 0. ERC unchanged.
 
 ## Open items (defaults I picked; confirm or change)
 

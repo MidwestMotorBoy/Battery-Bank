@@ -19,7 +19,8 @@ Where a later review corrected an earlier one, the corrected value is used here,
 ## 0. Hand-fit and consigned parts (not in the JLC BOM)
 
 - [ ] **U301 CC2340R5MODA:** buy from TI.com (CC2340R5MODAN0MHAR) and consign it to JLC for placement. TI.com has it in stock (checked by Logan, logged in, 2026-10-15; TI.com shows "not available" to a logged-out visitor). JLC (C55046847) had no stock on 2026-10-14.
-- [ ] U201 INA190A5 (DigiKey/Mouser). U202 INA190A1 is JLC-assembled.
+- [ ] U201 INA190A5 (DigiKey/Mouser) and U202 INA190A1 (LCSC C1852068): hand-solder.
+- [ ] **Hand-fit since 2026-10-15 to save JLC extended-part fees** (buy loose from LCSC; numbers in each part's `Sourcing`): BT101–BT104 holders (C20606791), the 13 Harwin test loops TP109, TP201–TP203, TP208, TP209, TP309, TP405/TP406/TP412 and TP505/TP506/TP512 (C55121754), D105 SMAJ18A (C148219).
 - [ ] J301, the 2 × 5 1.27 mm SWD header: hand-fit. The Samtec FTSH-105 is to be replaced by an unkeyed header JLC stocks; the silkscreen then shows pin 1 and the cable-key side.
 - [ ] Two 2.54 mm shunts (JP201, JP202).
 - [ ] Pin headers, hand-soldered since the 2026-10-14 cost-down: J102–J107, J302, J303, J402, J502, JP201, JP202 (PZ254V-11, part numbers in each part's `Sourcing` property).

@@ -9811,7 +9811,7 @@
 				)
 			)
 		)
-		(property "Value" "220u 16V"
+		(property "Value" "100u 35V"
 			(at 157.48 201.27 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9854,7 +9854,7 @@
 				)
 			)
 		)
-		(property "Notes" "PP5V bulk: USB PD cSrcBulkShared needs 120 uF; polymer has no DC-bias loss"
+		(property "Notes" "PP5V bulk: USB PD cSrcBulkShared needs 120 uF: 100 uF polymer (no DC-bias loss) + C441/C442 2 x 22 uF. Same part as C421 since 2026-10-15 (was a 220 uF 16 V polymer) to save a JLC extended-part fee"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -9865,7 +9865,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25503905"
+		(property "LCSC" "C5246554"
 			(at 157.48 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -9876,7 +9876,7 @@
 				)
 			)
 		)
-		(property "MPN" "ChuangHui SS221M160E7R7R4Z00ZZ (polymer)"
+		(property "MPN" "Honor Elec HV1V107M0607PZ (polymer)"
 			(at 157.48 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -10302,7 +10302,7 @@
 		(dnp no)
 		(uuid "0ba7de35-d3c7-4912-a6c4-c1922d5bf085")
 		(property "Reference" "R434"
-			(at 175.49 217.31 0)
+			(at 171.87 217.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10311,8 +10311,8 @@
 				)
 			)
 		)
-		(property "Value" "20.0k 0.1%"
-			(at 175.49 219.27 0)
+		(property "Value" "22k"
+			(at 171.87 219.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10354,7 +10354,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C469660"
+		(property "LCSC" "C17560"
 			(at 167.64 218.44 0)
 			(hide yes)
 			(show_name no)
@@ -10365,7 +10365,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD0720KL"
+		(property "MPN" "0805W8F2202T5E"
 			(at 167.64 218.44 0)
 			(hide yes)
 			(show_name no)
@@ -11480,7 +11480,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "1db45305-8711-40c1-a650-adedacad42fd")
 		(property "Reference" "TP405"
@@ -11537,7 +11537,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 106.68 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -11549,6 +11549,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 106.68 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -13256,7 +13267,7 @@
 		(dnp no)
 		(uuid "2e09d1ac-dae3-4add-bdb8-e5f0e9e9eb87")
 		(property "Reference" "R433"
-			(at 174.89 199.30 0)
+			(at 171.87 205.88 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13265,8 +13276,8 @@
 				)
 			)
 		)
-		(property "Value" "107k 0.1%"
-			(at 174.89 201.27 0)
+		(property "Value" "120k"
+			(at 171.87 207.84 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13308,7 +13319,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C865130"
+		(property "LCSC" "C17436"
 			(at 167.64 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -13319,7 +13330,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0805BRD07107KL"
+		(property "MPN" "0805W8F1203T5E"
 			(at 167.64 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -13330,7 +13341,7 @@
 				)
 			)
 		)
-		(property "Notes" "PP5V = 0.8 x (1 + 107/20) = 5.08 V: margin over the TPS25751 4.9 V minimum (review m4)"
+		(property "Notes" "PP5V = 0.8 x (1 + 120/22) = 5.16 V (1 % basic parts since 2026-10-15; was 107k/20.0k 0.1 % for 5.08 V): inside the TPS25751's 4.9-5.5 V PP5V range and USB vSafe5V"
 			(at 167.64 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -21841,7 +21852,7 @@
 				)
 			)
 		)
-		(property "Notes" "50V C0G. 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
+		(property "Notes" "50V X7R (JLC basic). 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -21852,7 +21863,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C307445"
+		(property "LCSC" "C1530"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -21863,7 +21874,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05C221JB5NNNC"
+		(property "MPN" "0402B221K500NT"
 			(at 119.38 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -23086,7 +23097,7 @@
 				)
 			)
 		)
-		(property "Notes" "50V C0G. 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
+		(property "Notes" "50V X7R (JLC basic). 220 pF: with the TPD4S201's 40-120 pF the CC total stays under the TPS25751's 480 pF (TI EVM value with this protector; review 4 C-3)"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -23097,7 +23108,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C307445"
+		(property "LCSC" "C1530"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -23108,7 +23119,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05C221JB5NNNC"
+		(property "MPN" "0402B221K500NT"
 			(at 111.76 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -23146,7 +23157,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e8b50285-b7c4-48e3-aef0-e9d83b48ec32")
 		(property "Reference" "TP406"
@@ -23203,7 +23214,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 121.92 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -23215,6 +23226,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 121.92 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -25359,7 +25381,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "fff7020d-dcec-4d4f-8e17-eed71c750eeb")
 		(property "Reference" "TP412"
@@ -25426,7 +25448,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 213.36 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -25438,6 +25460,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 213.36 289.56 0)
 			(hide yes)
 			(show_name no)

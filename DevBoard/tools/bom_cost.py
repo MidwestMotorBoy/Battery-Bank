@@ -38,7 +38,7 @@ def _ports(*refs):
 DEV_ONLY = {
     **{r: "21700 holders; production uses a welded pack" for r in ("BT101", "BT102", "BT103", "BT104")},
     **{r: "NTC wire header; production solders the NTC leads" for r in ("J102", "J105", "J106", "J107")},
-    "J103": "EV2400 header", "J104": "bench PACK_P input", "D104": "bench input diode",
+    "J103": "EV2400 header", "J104": "bench PACK_P input", "D104": "bench input diode", "D105": "bench input clamp",
     **{r: "sleep-current measurement section" for r in ("R201", "R202", "R203", "R204", "R205", "R206", "U201", "U202",
                                                          "U203", "C202", "C203", "C204", "C205", "JP201", "JP202")},
     "R207": "0R measurement link", "R301": "0R measurement link", "R307": "0R LED link (sleep measurement)",

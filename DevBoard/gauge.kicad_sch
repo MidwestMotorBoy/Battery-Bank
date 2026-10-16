@@ -12398,7 +12398,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "74e562ff-a0ea-4b47-9529-8a8a82cd5be5")
 		(property "Reference" "BT101"
@@ -12454,7 +12454,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -12466,6 +12466,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -12576,7 +12587,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "789b7cc7-738b-43e1-9ef4-77e8666b0e51")
 		(property "Reference" "BT102"
@@ -12632,7 +12643,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -12644,6 +12655,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -14112,7 +14134,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "a6289f2f-eac6-4aae-9c28-2920249c0e42")
 		(property "Reference" "BT104"
@@ -14168,7 +14190,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -14180,6 +14202,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -15642,7 +15675,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "c54bf014-d957-47ce-ac53-78030697bc05")
 		(property "Reference" "BT103"
@@ -15698,7 +15731,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -15710,6 +15743,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -16052,7 +16096,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "cf8bb59c-5452-4a15-bd86-d5a18d78751b")
 		(property "Reference" "TP109"
@@ -16108,7 +16152,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 137.16 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -16120,6 +16164,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 137.16 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -18366,7 +18421,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "51d3ee3d-fe12-4827-b9fc-df318b5cc9cd")
 		(property "Reference" "D105"
@@ -18422,7 +18477,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C148219"
+		(property "LCSC" ""
 			(at 297.18 62.23 0)
 			(hide yes)
 			(show_name no)
@@ -18445,6 +18500,17 @@
 			)
 		)
 		(property "Notes" "J104 overvoltage clamp (review 4 D-5): 18 V standoff, 20-22.1 V breakdown, so a bench supply left above about 22 V is clamped before it reaches the 25 V parts on PACK_P. On the header side of D104, so it draws nothing from the pack. Sacrificial: keep the bench current limit low. Cathode (pin 1) to the J104 line"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only bench-input clamp; saves a JLC extended-part fee; LCSC C148219 SMAJ18A (Littelfuse))"
 			(at 297.18 62.23 0)
 			(hide yes)
 			(show_name no)

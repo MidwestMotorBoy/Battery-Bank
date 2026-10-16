@@ -141,7 +141,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 - **Rev A6:** D+/D− (A6/B6, A7/B7) are shorted by R440/R540 (0 Ω, a passive BC1.2 DCP signature); the TPS25751 no longer does BC1.2. SBU1/SBU2 feed liquid detection: TPD4S201 (U405/U505, item 39) → GPIO4/5, with switched 100 kΩ pull-up / 1 MΩ pull-down (GPIO6/7) and the TPD4S201 FLT on GPIO3. Before rev A6, D+/D− went to TPS25751 USB_P/USB_N and SBU was unconnected. See DevBoard README items 35–36.
 - **TVS (rev A8):** TI TVS2200DRVR (LCSC C523793; flat clamp, 22 V standoff, 24.6 V breakdown min, 28 V clamp at 40 A 8/20 µs) VBUSx to GND, right at the connector. It replaced the SMAJ22A (35.5 V clamp), which let a live 20 V hot-plug reach the 28 V abs max of the TPS25751 and TPD4S201 (review 4 C-4).
 - **ESD protection:** CC and SBU: TPD4S201 port protector U405/U505 (IEC ±8 kV contact, ±35 V surge, 28 V short-to-VBUS tolerance). D±: none, as they only meet each other through R440/R540. History: rev A4 used ESD2CAN24 on CC and PESD5V0S2BT on D±; rev A6 had a TPD2S300 on SBU; both were replaced by the TPD4S201 (README item 39).
-- 220 pF on each CC line (rev A8; was 330 pF): with the TPD4S201's 40–120 pF the total stays under the TPS25751's 480 pF maximum; TI's EVM value with this protector (review 4 C-3).
+- 220 pF X7R (JLC basic C1530) on each CC line (rev A8; was 330 pF): with the TPD4S201's 40–120 pF the total stays under the TPS25751's 480 pF maximum; TI's EVM value with this protector (review 4 C-3).
 
 ### 7.2 PD controller (TPS25751D)
 - **U_PDx:** TPS25751DREFR (LCSC C30169739). VIN_3V3 from 3V3; LDO_3V3, LDO_1V5, VBUS, PP5V capacitors per datasheet.
@@ -179,9 +179,9 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 
 ### 7.4 5 V supply for PP5V (TPS62933)
 - **U_5Vx:** TPS62933DRLR (LCSC C3200405), input from PACK_P (high-current branch), output PP5Vx.
-- RT tied to GND → 1.2 MHz. Feedback 107 kΩ (C865130) top, 20.0 kΩ (C469660) bottom → 5.08 V (margin over the TPS25751's 4.9 V PP5V minimum).
+- RT tied to GND → 1.2 MHz. Feedback 120 kΩ 1 % (C17436) top, 22 kΩ 1 % (C17560) bottom → 5.16 V, inside the TPS25751's 4.9–5.5 V PP5V range (2026-10-15; was 107k/20.0k 0.1 % for 5.08 V, changed to JLC basic parts).
 - Inductor: Coilank APS0530M3R3H, 3.3 µH, 38 mΩ, Irms 5 A, Isat 8 A (LCSC C49073587; was Bourns SRP5030T-3R3M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`).
-- Output 2 × 22 µF 25 V 1206 (CL31A226KAHNNNE) plus a 220 µF 16 V polymer (C443/C543) and at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
+- Output 2 × 22 µF 25 V 1206 (CL31A226KAHNNNE) plus a 100 µF 35 V polymer (C443/C543, Honor HV1V107M0607PZ, the same part as C421; was 220 µF 16 V until 2026-10-15), about 136 µF with the MLCCs against PD's 120 µF cSrcBulkShared, and at least 10 µF right at the TPS25751 PP5V pin. Input 2 × 10 µF + 100 nF. Soft-start 33 nF.
 - EN ← EN_5Vx (MCU) with a pull-down so it's off by default.
 
 ## 8. Test points and links

@@ -1997,7 +1997,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. Probe OUT_LO/OUT_HI at TP201/TP202, ground lead on TP208/TP209 beside them (1 MOhm scope input).\n   R204/R205 49.9R isolate the INA190 outputs from probe/cable capacitance (1 nF max).\n6. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201 is hand-soldered (DigiKey/Mouser; not in the JLC BOM/CPL). U202 (INA190A1) is JLC-placed.\n9. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n10. U203 (HT7550-1) has no EN pin: it runs whenever JP202 feeds it (30 V operating, 33 V abs max).\n11. U204 pin 4 (NC) goes to GND, as TI recommends."
+	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. Probe OUT_LO/OUT_HI at TP201/TP202, ground lead on TP208/TP209 beside them (1 MOhm scope input).\n   R204/R205 49.9R isolate the INA190 outputs from probe/cable capacitance (1 nF max).\n6. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201 (DigiKey/Mouser) and U202 (LCSC) are hand-soldered: not in the JLC BOM/CPL.\n9. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n10. U203 (HT7550-1) has no EN pin: it runs whenever JP202 feeds it (30 V operating, 33 V abs max).\n11. U204 pin 4 (NC) goes to GND, as TI recommends."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -3009,7 +3009,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "06c986de-356f-4816-b42a-391ad87e199a")
 		(property "Reference" "TP203"
@@ -3077,7 +3077,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 190.5 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -3089,6 +3089,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 190.5 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 190.5 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -4408,7 +4419,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "475210ca-1c61-498a-a5a4-e58a5b94ab9f")
 		(property "Reference" "TP201"
@@ -4465,7 +4476,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 152.4 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -4477,6 +4488,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 152.4 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 152.4 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -6451,7 +6473,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "d4516b56-2b4f-41aa-a4c6-48a344959cd3")
 		(property "Reference" "TP208"
@@ -6508,7 +6530,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 172.72 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -6520,6 +6542,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 172.72 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 172.72 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -7335,7 +7368,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e70ad83e-8f32-4692-a87c-f758140524da")
 		(property "Reference" "TP209"
@@ -7392,7 +7425,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 172.72 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -7404,6 +7437,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 172.72 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 172.72 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -7511,7 +7555,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "e8ec2433-0680-40af-961f-5dd44afafc97")
 		(property "Reference" "U202"
@@ -7589,7 +7633,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C1852068"
+		(property "LCSC" ""
 			(at 109.22 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -7600,7 +7644,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "JLC assembled (LCSC C1852068, 1,700 in stock 2026-10-13)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only sleep-current amplifier; saves a JLC extended-part fee; LCSC C1852068 TI INA190A1IDDFR)"
 			(at 109.22 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -7652,7 +7696,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "ef967bbc-7bef-48c5-aba5-3c10935b7b90")
 		(property "Reference" "TP202"
@@ -7709,7 +7753,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 152.4 182.88 0)
 			(hide yes)
 			(show_name no)
@@ -7721,6 +7765,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 152.4 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 152.4 182.88 0)
 			(hide yes)
 			(show_name no)
