@@ -39,5 +39,5 @@ app/FakePack/                  (next) macOS simulator app
 
 ## Open questions
 - Just Works pairing vs a printed passkey: v1 is Just Works; the pairing window (cable plugged in within the last 2 min) is what stops a stranger pairing.
-- OTA: TI OAD on the CC2340. The app will need TI's OAD profile UUIDs and image format once firmware exists; out of scope for v1 of the app beyond the `ENTER_OTA` command.
+- OTA: TI OAD on the CC2340 with MCUboot; images are ECDSA-signed, verified on every boot, with swap-and-revert fail-safe (spec §8). The app side (OAD profile UUIDs, sending an MCUboot image, showing version/hardware ID before sending) comes once firmware exists; v1 of the app stops at the `ENTER_OTA` command.
 - Whether production keeps the LED (`led_mode` setting is reserved otherwise).

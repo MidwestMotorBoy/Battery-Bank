@@ -158,7 +158,7 @@ Write `u8 opcode` followed by up to 3 bytes of argument. Firmware answers with a
 | `0x01` | `CHARGE_TO_100_ONCE` | — | Next charge ignores `max_soc_pct` and runs a full balancing charge, then reverts |
 | `0x02` | `TRIP_MODE` | u8 enable, u8 hours (default 48 if 0) | Charge to 100 % for the next *hours*, then revert to `max_soc_pct` |
 | `0x03` | `CLEAR_BONDS` | u8 `0xA5` | Forget all bonded phones, then drop this connection. Arg must be `0xA5` |
-| `0x04` | `ENTER_OTA` | u8 `0x5A` | Reboot into TI OAD (over-the-air download). Arg must be `0x5A`; refused unless SOC ≥ 20 % |
+| `0x04` | `ENTER_OTA` | u8 `0x5A` | Reboot into OAD (MCUboot update mode, §8). Arg must be `0x5A`; refused unless SOC ≥ 20 % and output ≤ 20 W; `detail` says which check failed |
 | `0x05` | `SHIP_MODE` | u8 `0x3C` | Enter S5 ship/storage: gauge SHUTDOWN, pack unpowered until a charger or the button wakes it. Refused while any cable is attached |
 | `0x06` | `IDENTIFY` | — | Blink the LED for 5 s so you know which pack you're connected to |
 | `0x07` | `RESET_MCU` | u8 `0x99` | Warm reset of the MCU only; ports and gauge keep running |
@@ -271,7 +271,7 @@ bit 0 `FET_CHG_OFF`, bit 1 `FET_DSG_OFF`, bit 2 `OVERTEMP`, bit 3 `UNDERTEMP`, b
 - **Pairing window:** firmware accepts a pairing request only (a) while it has no bonds at all, (b) for 2 min after a USB cable is plugged into either port (the TPS25751 attach interrupt opens it), or (c) for 2 min after `OPEN_PAIRING` from a bonded phone. Outside the window a pairing request is rejected with "Pairing Not Supported"; bonded phones reconnect normally. `flags.PAIRING_WINDOW` tells the app when a new phone can be added.
 - Up to 4 bonds. `CLEAR_BONDS` from the app, or without the app: plug and unplug a cable 5 times within 15 s.
 - Writes to Settings and Command require an encrypted link with a bond; reads and notifications don't.
-- Firmware updates go through TI's OAD service after `ENTER_OTA`; that service has its own UUIDs and is documented by TI, not here.
+- Firmware updates go through TI's OAD service after `ENTER_OTA`; that service has its own UUIDs and is documented by TI, not here. Signing, rollback and fail-safe rules are in §8.
 
 ## 7. Connection behaviour the app relies on
 
@@ -280,6 +280,33 @@ bit 0 `FET_CHG_OFF`, bit 1 `FET_DSG_OFF`, bit 2 `OVERTEMP`, bit 3 `UNDERTEMP`, b
 - One connection at a time. A second phone sees the pack as not connectable until the first disconnects.
 - After `ENTER_OTA`, `RESET_MCU` or `CLEAR_BONDS` the link drops; the app must expect it and not show an error.
 
-## 8. Change log
+## 8. Firmware update (OTA) security
 
-- 1.0 (2026-10-16): first draft.
+The pack is potted; a bad or hostile update is the one fault that can't be fixed with a screwdriver. The CC2340's OAD uses **MCUboot** as the bootloader (TI LPF3 SDK), which gives most of this for free; the rest is our policy.
+
+**Image authenticity — mandatory.**
+- Every application image is **signed with ECDSA P-256** (MCUboot `imgtool`) by a private key that lives only on Logan's MacBook (and an offline backup). The matching public key is compiled into MCUboot and flashed once over SWD before potting. After potting it cannot be changed, so losing the private key means no more updates for that pack: back it up.
+- MCUboot verifies the signature (and SHA-256) of an image **before swapping to it, and again on every boot**. An unsigned or tampered image is never run. The app cannot bypass this; it only transfers bytes.
+- Image header carries a **version** (semver + build) and a **hardware ID** (dev board = 1, production = 2, matching `hw_rev` in §4.1). MCUboot's anti-rollback (`MCUBOOT_HW_ROLLBACK_PROT` / security counter) is enabled on production so a known-bad older image can't be reinstalled; dev boards leave it off so bisecting is possible.
+
+**Image confidentiality — optional, decide at firmware time.**
+- MCUboot can also **encrypt** images (AES-128-CTR, key wrapped with ECIES-P256). It stops someone reading the firmware out of a BLE capture or a distributed `.bin`. For a hobby pack that's mostly about not leaking the gauge golden image and the PD config; enable it if the update files will ever be posted publicly, otherwise skip it (it costs flash and boot time).
+
+**Who may start an update — our policy, in the GATT.**
+- `ENTER_OTA` (§4.6) is accepted only from a **bonded, encrypted** link, only when SOC ≥ 20 %, and never while the pack is sourcing more than 20 W (so the reboot can't drop a laptop at full load). The command result reports which check failed.
+- The TI OAD service is **not advertised and not present** in the normal application; it only exists in OAD mode after `ENTER_OTA`. An attacker can't even see the update service without a bond.
+- OAD mode times out: if no transfer starts within 2 min, or stalls for 30 s, the pack reboots into the existing application. The old image stays valid until the new one is verified (MCUboot swap or overwrite-after-verify), so a dropped connection mid-update can't brick it.
+- The app shows the image version, hardware ID and signature status (from the file's MCUboot header/TLV) **before** it offers to send, and refuses a file whose hardware ID doesn't match `hw_rev`.
+
+**Fail-safe boot — the potted-pack rule.**
+- Firmware feeds the WDT from the supervision loop; a new image that hangs is reset by the WDT. MCUboot is configured in **swap-with-revert** mode: a new image boots as "test" and must mark itself **confirmed** after passing self-checks (gauge responds, both PD controllers respond, settings CRC OK, one successful BLE connection). If it doesn't confirm before the next reset, MCUboot **reverts to the previous image** automatically.
+- The app's update flow is therefore: send → pack reboots → app reconnects → app reads Protocol Version and sees the new `fw_*` → firmware confirms itself. If the app sees the *old* version after the reboot, the update was reverted and the app says so.
+
+**Rejected alternatives.**
+- Plain CRC-only OAD (TI's default example): anyone within radio range could, after pairing in the window, load arbitrary code into a 82 Wh lithium pack. Not acceptable for a potted product even as a hobby.
+- Password or token in the app instead of signing: the token leaks the moment the app binary is shared; signing keeps the secret off the phone entirely.
+- TI's "secure OAD" naming on older CC13xx/CC26xx parts doesn't apply here; on the CC2340 it is MCUboot's own signing. Confirm the exact MCUboot options the LPF3 SDK exposes (signature type, encryption, swap mode, rollback counter) when firmware starts; this section is the requirement, the SDK release decides the mechanism.
+
+## 9. Change log
+
+- 1.0 (2026-10-16): first draft; §8 OTA security added the same day.
