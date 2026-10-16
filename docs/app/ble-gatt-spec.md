@@ -1,0 +1,285 @@
+# Monolith BLE GATT specification
+
+**Protocol version 1.0** · draft 2026-10-16
+
+This is the contract between the pack firmware (CC2340R5MODA, TI LPF3 SDK) and the iPhone app (SwiftUI + CoreBluetooth). Both are built from this file. `app/MonolithKit` is the Swift encoding of it; the firmware's GATT table must match it byte for byte.
+
+## 1. Rules that never change
+
+- **Byte order:** little-endian, always.
+- **Fixed layouts, append-only.** Within a major version, fields are never moved, resized or re-typed. New fields are appended at the end. A reader must accept a value *longer* than it expects (ignore the tail) and must treat a value *shorter* than the fields it needs as "field not available", not as an error.
+- **Versioning:** `protocol_version` is `major.minor`. Minor bumps only append fields or add enum values. A major bump may change anything; the app refuses to show live data from a major it doesn't know.
+- **Unknown enum values** are shown as "Unknown (n)", never crash, never hide the rest of the record.
+- **Invalid sentinel:** `0x7FFF` for a signed 16-bit field means "no reading / sensor broken". `0xFFFF` for an unsigned 16-bit field means "not available / not applicable".
+- **ATT MTU:** firmware requests a 128-byte MTU on connect (iOS normally grants 185). No characteristic is longer than 48 bytes, so everything still fits with the default 23-byte MTU if the exchange fails, except Temperatures (22 bytes) is at the limit by design.
+- **Units are in the field name** (`_mv`, `_ma`, `_dc` = deci-°C, `_dw` = deci-watt, `_dwh` = deci-Wh, `_min`).
+- **Security:** LE Secure Connections pairing. Bonding required for every write and for the Command characteristic. Reads and notifications of status are allowed unbonded so a quick check works with any phone. See §6.
+
+## 2. Advertising
+
+| Field | Value |
+|---|---|
+| Local name | `Monolith` (complete name in the scan response; shortened `Mono` if space is short) |
+| Advertised 16-bit services | `0x180F` Battery Service |
+| Scan response 128-bit service | Monolith Service UUID (§3) |
+| Manufacturer data | none in v1 (reserved: company ID `0xFFFF` dev ID, then `u8 soc_pct`, `u8 flags` for a future no-connect glance) |
+| Interval, idle (S2) | 1000–1250 ms, TX ≤ +4 dBm (TPS62177 sleep-mode current limit, see `docs/devboard/mcu-io-power-states.md`) |
+| Interval, cable attached (S0/S1) | 200–300 ms |
+| Connectable | always; pairing accepted only inside the pairing window (§6) |
+
+App-side filter: scan for `0x180F`, then match on local name `Monolith` or on the Monolith Service UUID in the scan response.
+
+## 3. UUIDs
+
+Base UUID: `DDE7xxxx-422D-4970-B281-8D5F2C2119C3`. The `xxxx` slot is the short ID below.
+
+| Short | Name | Props | Len | Section |
+|---|---|---|---|---|
+| **Standard** | | | | |
+| `0x180F` | Battery Service | | | |
+| `0x2A19` | Battery Level (`u8` SOC %) | R, N | 1 | |
+| `0x180A` | Device Information Service | | | |
+| `0x2A29` | Manufacturer Name String | R | | `"Monolith"` |
+| `0x2A24` | Model Number String | R | | e.g. `"MONO-4S-100"` |
+| `0x2A26` | Firmware Revision String | R | | e.g. `"0.1.0+42"` |
+| `0x2A27` | Hardware Revision String | R | | e.g. `"devboard-A7"` |
+| `0x2A25` | Serial Number String | R | | pack serial, from gauge or flash |
+| **Monolith service** `DDE70001` | | | | |
+| `DDE70101` | Protocol Version | R | 8 | §4.1 |
+| `DDE70102` | Status | R, N | 36 | §4.2 |
+| `DDE70103` | Ports | R, N | 16 | §4.3 |
+| `DDE70104` | Temperatures | R, N | 22 | §4.4 |
+| `DDE70105` | Settings | R, W (bonded) | 8 | §4.5 |
+| `DDE70106` | Command | W (bonded) | 1–4 | §4.6 |
+| `DDE70107` | Command Result | N | 4 | §4.6 |
+| `DDE70108` | Gauge Health | R | 16 | §4.7 |
+| `DDE70109` | Debug Log | N | ≤ 48 | §4.8, dev builds only |
+
+Type abbreviations: `u8/u16/u32` unsigned, `s16/s32` signed two's complement.
+
+## 4. Characteristics
+
+### 4.1 Protocol Version — `DDE70101`, read, 8 bytes
+
+| Off | Type | Field | Notes |
+|---|---|---|---|
+| 0 | u8 | `proto_major` | 1 |
+| 1 | u8 | `proto_minor` | 0 |
+| 2 | u8 | `fw_major` | firmware semver |
+| 3 | u8 | `fw_minor` | |
+| 4 | u8 | `fw_patch` | |
+| 5 | u8 | `hw_rev` | 0 = unknown, 1 = dev board, 2 = production |
+| 6 | u16 | `fw_build` | CI build number or git short count; 0 if none |
+
+The app reads this first, before subscribing to anything.
+
+### 4.2 Status — `DDE70102`, read + notify, 36 bytes
+
+Notified on change, rate-limited to one per second while connected; at least one every 10 s as a heartbeat.
+
+| Off | Type | Field | Notes |
+|---|---|---|---|
+| 0 | u8 | `soc_pct` | 0–100, gauge RelativeStateOfCharge; same value as Battery Level |
+| 1 | u8 | `charge_stage` | enum §5.1 |
+| 2 | u8 | `limit_reason` | enum §5.2, why the pack isn't doing more |
+| 3 | u8 | `reserved` | 0 |
+| 4 | u16 | `flags` | bitfield §5.3 |
+| 6 | u16 | `pack_mv` | pack voltage |
+| 8 | s16 | `pack_ma` | pack current; **positive = into the cells (charging), negative = out (discharging)**, gauge convention |
+| 10 | u16 | `remaining_dwh` | remaining energy, 0.1 Wh |
+| 12 | u16 | `time_to_empty_min` | `0xFFFF` = not discharging / unknown |
+| 14 | u16 | `time_to_full_min` | `0xFFFF` = not charging / unknown |
+| 16 | u16 | `cell1_mv` | |
+| 18 | u16 | `cell2_mv` | |
+| 20 | u16 | `cell3_mv` | |
+| 22 | u16 | `cell4_mv` | |
+| 24 | s16 | `charge_target_ma` | current the charge controller is asking for; 0 if not charging |
+| 26 | u16 | `output_dw` | total power delivered out of both ports, 0.1 W |
+| 28 | u16 | `input_dw` | total power taken in from both ports, 0.1 W |
+| 30 | u8 | `power_state` | enum §5.4 (S0 charging … S5 ship) |
+| 31 | u8 | `sensors_ok_board` | number of working board temperature sensors (0–5) |
+| 32 | u32 | `uptime_s` | seconds since last MCU reset |
+
+### 4.3 Ports — `DDE70103`, read + notify, 16 bytes
+
+Two 8-byte records, USB1 (priority port) first, USB2 second. Notified on any port event (attach, detach, new contract, role swap, fault) and with every Status heartbeat.
+
+| Off | Type | Field | Notes |
+|---|---|---|---|
+| 0 | u8 | `state` | enum §5.5 |
+| 1 | u8 | `flags` | bitfield §5.6 |
+| 2 | u16 | `contract_mv` | negotiated VBUS, 0 if none (5000 for a non-PD 5 V source) |
+| 4 | u16 | `contract_ma` | negotiated current limit, 0 if none |
+| 6 | s16 | `power_dw` | measured power, 0.1 W; **positive = out of the pack (sourcing), negative = into the pack (sinking)** |
+
+### 4.4 Temperatures — `DDE70104`, read + notify, 22 bytes
+
+Ten `s16` deci-°C readings in a fixed order, then a fault mask. `0x7FFF` = broken (firmware's sensor-fault rule tripped) and `0x7FFE` = not fitted (DNP footprint). Notified at most every 5 s while a cable is attached, every 60 s idle, and immediately when a sensor changes fault state or the throttle state changes.
+
+| Off | Index | Source | Notes |
+|---|---|---|---|
+| 0 | 0 | Cell 1, gauge TS1 | wired NTC on the cell |
+| 2 | 1 | Cell 2, gauge TS2 | |
+| 4 | 2 | Cell 3, gauge TS3 | |
+| 6 | 3 | Cell 4, gauge TS4 | |
+| 8 | 4 | Gauge die (BQ40Z50-R2 internal) | stands in for the protection FETs |
+| 10 | 5 | T1, USB1 power stage (TMP1075 0x48) | |
+| 12 | 6 | T2, USB2 power stage (TMP1075 0x49) | |
+| 14 | 7 | T3, between the USB-C connectors (TMP1075 0x4A) | |
+| 16 | 8 | T4, heatsink plate (TMP1075 0x4B, DNP) | `0x7FFE` when not fitted |
+| 18 | 9 | T5, protection FETs (TMP1075 0x4C, DNP) | `0x7FFE` when not fitted |
+| 20 | — | u16 `fault_mask` | bit *i* set = sensor *i* is marked broken by firmware |
+
+The 20 W thermal throttle state itself is `flags.THROTTLE` in Status (§5.3); the sensor that tripped it is `limit_reason` = `TOO_HOT` plus whichever index is nearest its limit — the app shows all ten and highlights any within 5 °C of its throttle point. Throttle points are firmware constants reported in Gauge Health (§4.7) so the app never hard-codes them.
+
+### 4.5 Settings — `DDE70105`, read + write (bonded), 8 bytes
+
+Persisted in MCU flash with a CRC; firmware falls back to defaults on a bad record. Writes are **whole-record**: the app reads, modifies, writes all 8 bytes. Firmware range-checks every field and rejects the whole write with `0x80` (Application Error, "value out of range") if any field is bad; a rejected write changes nothing.
+
+| Off | Type | Field | Range / default |
+|---|---|---|---|
+| 0 | u8 | `max_soc_pct` | 60–100, **default 95** |
+| 1 | u8 | `fast_charge` | 0 off (default) / 1 on; 1C between 20–80 % when the source and temperatures allow |
+| 2 | u8 | `usb2_min_w` | 10–30, default 20. Guaranteed USB2 budget while both ports source |
+| 3 | u8 | `led_mode` | 0 off, 1 normal (default), 2 dim/night. Reserved on production if there's no LED |
+| 4 | u8 | `auto_full_charge_days` | 0 = never, else do a 100 % balancing charge if none in this many days; default 30 |
+| 5 | u8 | `reserved5` | write 0 |
+| 6 | u8 | `reserved6` | write 0 |
+| 7 | u8 | `reserved7` | write 0 |
+
+Trip mode and "charge to 100 % once" are not settings; they are commands (§4.6), because they expire on their own.
+
+### 4.6 Command — `DDE70106`, write (bonded), 1–4 bytes; Command Result — `DDE70107`, notify, 4 bytes
+
+Write `u8 opcode` followed by up to 3 bytes of argument. Firmware answers with a Command Result notification within 1 s: `u8 opcode, u8 result (§5.7), u16 detail`. The app treats a missing result as a failure.
+
+| Opcode | Name | Args | Effect |
+|---|---|---|---|
+| `0x01` | `CHARGE_TO_100_ONCE` | — | Next charge ignores `max_soc_pct` and runs a full balancing charge, then reverts |
+| `0x02` | `TRIP_MODE` | u8 enable, u8 hours (default 48 if 0) | Charge to 100 % for the next *hours*, then revert to `max_soc_pct` |
+| `0x03` | `CLEAR_BONDS` | u8 `0xA5` | Forget all bonded phones, then drop this connection. Arg must be `0xA5` |
+| `0x04` | `ENTER_OTA` | u8 `0x5A` | Reboot into TI OAD (over-the-air download). Arg must be `0x5A`; refused unless SOC ≥ 20 % |
+| `0x05` | `SHIP_MODE` | u8 `0x3C` | Enter S5 ship/storage: gauge SHUTDOWN, pack unpowered until a charger or the button wakes it. Refused while any cable is attached |
+| `0x06` | `IDENTIFY` | — | Blink the LED for 5 s so you know which pack you're connected to |
+| `0x07` | `RESET_MCU` | u8 `0x99` | Warm reset of the MCU only; ports and gauge keep running |
+| `0x08` | `OPEN_PAIRING` | — | Open the pairing window for 2 min (only accepted from an already-bonded phone, to add a second phone) |
+| `0x09` | `CLEAR_SENSOR_FAULTS` | — | Re-test all board sensors now instead of waiting for the periodic retry |
+
+### 4.7 Gauge Health — `DDE70108`, read, 16 bytes
+
+Slow-changing numbers from the BQ40Z50-R2 plus firmware's throttle constants. Read on connect; no notify.
+
+| Off | Type | Field | Notes |
+|---|---|---|---|
+| 0 | u16 | `full_charge_mah` | gauge FullChargeCapacity |
+| 2 | u16 | `design_mah` | 5600 |
+| 4 | u16 | `cycle_count` | |
+| 6 | u8 | `soh_pct` | gauge StateOfHealth |
+| 7 | u8 | `gauge_status` | bitfield §5.8 |
+| 8 | u16 | `cell_delta_mv` | max − min cell at last full charge, a balance indicator |
+| 10 | s16 | `throttle_cell_dc` | cell temperature that triggers the 20 W throttle, deci-°C |
+| 12 | s16 | `throttle_board_dc` | board (T1–T5) temperature that triggers it |
+| 14 | s16 | `throttle_conn_dc` | connector (T3) temperature that triggers it |
+
+### 4.8 Debug Log — `DDE70109`, notify, up to 48 bytes
+
+UTF-8 text, one line per notification, no terminator. Only compiled into dev firmware. The app shows it in a hidden developer screen.
+
+## 5. Enums and bitfields
+
+### 5.1 `charge_stage`
+| Value | Name | Meaning |
+|---|---|---|
+| 0 | `IDLE` | no charger attached or charging finished and above the recharge point |
+| 1 | `PRECHARGE` | a cell below ~3.0 V, C/10 |
+| 2 | `NORMAL` | 0.5C constant current |
+| 3 | `FAST` | 1C constant current (fast mode, 20–80 %) |
+| 4 | `CONSTANT_VOLTAGE` | 16.8 V, current tapering |
+| 5 | `HOLD` | at `max_soc_pct` (or full), charger holds the pack and feeds pass-through |
+| 6 | `INHIBITED` | charger attached but charging stopped: see `limit_reason` |
+| 7 | `FAULT` | gauge or charger fault, see Gauge Health |
+
+### 5.2 `limit_reason`
+| Value | Name |
+|---|---|
+| 0 | `NONE` |
+| 1 | `SOURCE_TOO_SMALL` (input contract limits the rate) |
+| 2 | `TOO_COLD` |
+| 3 | `TOO_HOT` |
+| 4 | `MAX_SOC_REACHED` |
+| 5 | `SOLAR_LIMITED` (MPPT / VINDPM holding back) |
+| 6 | `THERMAL_THROTTLE` (20 W mode) |
+| 7 | `PACK_FAULT` |
+| 8 | `INPUT_UNDERVOLTAGE` (weak source, VINDPM active) |
+| 9 | `SENSORS_DEGRADED` (fewer than 3 board sensors working) |
+| 10 | `CABLE_LIMITED` (no e-marked cable, 3 A cap) |
+
+### 5.3 Status `flags` (u16)
+| Bit | Name |
+|---|---|
+| 0 | `CHARGING` |
+| 1 | `DISCHARGING` |
+| 2 | `THROTTLE` — 20 W thermal throttle active |
+| 3 | `SENSORS_DEGRADED` — fewer than 3 board sensors working |
+| 4 | `FAST_ACTIVE` — currently charging at 1C |
+| 5 | `TRIP_MODE` — trip mode armed |
+| 6 | `FULL_ONCE_PENDING` — charge-to-100-once armed |
+| 7 | `BALANCING` — gauge cell balancing active |
+| 8 | `GAUGE_FAULT` |
+| 9 | `PAIRING_WINDOW` — pairing accepted right now |
+| 10 | `HARD_SHUTDOWN` — outputs off on over-temperature |
+| 11 | `PASS_THROUGH` — one port sinking while the other sources |
+| 12 | `SOLAR` — at least one port on a solar-like source |
+| 13 | `LOW_SOC` — SOC ≤ 10 % |
+| 14 | `OTA_PENDING` |
+| 15 | reserved |
+
+### 5.4 `power_state`
+0 `S0_CHARGING`, 1 `S1_SOURCING`, 2 `S2_IDLE`, 3 `S3_RESET`, 4 `S4_PASS_THROUGH`, 5 `S5_SHIP` (never actually seen over BLE; reserved).
+
+### 5.5 Port `state`
+| Value | Name |
+|---|---|
+| 0 | `DETACHED` |
+| 1 | `ATTACHED` — cable present, no contract yet |
+| 2 | `SOURCING` |
+| 3 | `SINKING` |
+| 4 | `ATTACHED_NO_POWER` — attached but held off (e.g. loop detected, budget exhausted) |
+| 5 | `FAULT` — OVP/OCP/TSD, see flags |
+
+### 5.6 Port `flags` (u8)
+| Bit | Name |
+|---|---|
+| 0 | `PD_CONTRACT` (else plain USB-C 5 V) |
+| 1 | `EMARKED_5A` |
+| 2 | `SOLAR_SOURCE` |
+| 3 | `THROTTLED` — this port capped at 20 W |
+| 4 | `PRIORITY` — set on USB1 |
+| 5 | `LOOP_DETECTED` — cable between the pack's own ports |
+| 6 | `SOURCE_ONLY` — dual-role disabled (pass-through partner) |
+| 7 | `OVERCURRENT` |
+
+### 5.7 Command `result`
+0 `OK`, 1 `UNKNOWN_OPCODE`, 2 `BAD_ARG`, 3 `REFUSED_STATE` (e.g. ship mode with a cable attached), 4 `NOT_BONDED`, 5 `BUSY`.
+
+### 5.8 `gauge_status` (u8)
+bit 0 `FET_CHG_OFF`, bit 1 `FET_DSG_OFF`, bit 2 `OVERTEMP`, bit 3 `UNDERTEMP`, bit 4 `CELL_OV`, bit 5 `CELL_UV`, bit 6 `OVERCURRENT`, bit 7 `IMPEDANCE_TRACK_NOT_LEARNED`.
+
+## 6. Pairing and security
+
+- LE Secure Connections, Just Works in v1 (no display on the pack). An optional printed 6-digit passkey can be enabled by firmware build flag later; the app already handles the iOS passkey prompt either way.
+- **Pairing window:** firmware accepts a pairing request only (a) while it has no bonds at all, (b) for 2 min after a USB cable is plugged into either port (the TPS25751 attach interrupt opens it), or (c) for 2 min after `OPEN_PAIRING` from a bonded phone. Outside the window a pairing request is rejected with "Pairing Not Supported"; bonded phones reconnect normally. `flags.PAIRING_WINDOW` tells the app when a new phone can be added.
+- Up to 4 bonds. `CLEAR_BONDS` from the app, or without the app: plug and unplug a cable 5 times within 15 s.
+- Writes to Settings and Command require an encrypted link with a bond; reads and notifications don't.
+- Firmware updates go through TI's OAD service after `ENTER_OTA`; that service has its own UUIDs and is documented by TI, not here.
+
+## 7. Connection behaviour the app relies on
+
+- Connection parameters: firmware requests 50–100 ms interval, latency 4, timeout 4 s while connected; the app doesn't care if iOS picks something else.
+- Firmware drops a connection that stays idle (no subscriptions) for 60 s to save power; the app subscribes to Status, Ports and Temperatures right after reading Protocol Version.
+- One connection at a time. A second phone sees the pack as not connectable until the first disconnects.
+- After `ENTER_OTA`, `RESET_MCU` or `CLEAR_BONDS` the link drops; the app must expect it and not show an error.
+
+## 8. Change log
+
+- 1.0 (2026-10-16): first draft.

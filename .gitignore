@@ -19,3 +19,10 @@ DevBoard/MonolithDev.pdf
 
 # review 4 reviewers' scratch work (fetched datasheets, renders)
 docs/devboard/review4/scratch-*/
+
+# Xcode / Swift
+app/**/.build/
+app/**/.swiftpm/
+app/**/xcuserdata/
+app/**/DerivedData/
+app/**/*.xcuserstate
