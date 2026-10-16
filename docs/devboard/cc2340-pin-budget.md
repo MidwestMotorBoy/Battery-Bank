@@ -8,7 +8,7 @@ The module brings out **12 DIOs**: DIO3, 4, 6, 8, 11, 12, 16, 17, 18, 20, 21 and
 
 - Two are SWD (DIO16 and DIO17). That leaves **10 for the board**.
 - Only **4 are analog** (DIO6, DIO20, DIO21 and DIO24), and the board has **5 NTCs**.
-- I2C SCL can only go on pin 9 (DIO6) or pin 11 (DIO24). Both are analog pins, so the I2C bus costs one of the four ADC inputs.
+- I2C SCL can go on pin 9 (DIO6) or pin 11 (DIO24), or pin 19 (DIO17, but that is SWDCK). Both usable ones are analog pins, so the I2C bus costs one of the four ADC inputs.
 - DIO3 and DIO4 double as the 32 kHz crystal pins. We don't fit a 32 kHz crystal. The internal LFOSC, calibrated against the 48 MHz crystal, is fine for BLE, so both stay GPIOs.
 
 The current design uses **18 signals plus SWD**:
@@ -51,7 +51,7 @@ That is 8 signals short. No rearrangement fixes this without circuit changes.
    - **Addresses:** T1 to T5 strap to 0x48 to 0x4C (A0, A1 and A2 tied to GND or 3V3). They don't clash with the gauge (0x0B) or the TPS25751s (0x20, 0x21).
    - **What gets removed:** NTC_EN, five 10k dividers, five 100 nF caps and all five analog pins.
    - **Idle current:** firmware keeps the sensors in shutdown and wakes them for one-shot readings. That's 0.37 µA typical each, about 1 µA for three in S2.
-   - **Accuracy:** ±1 °C max, enough for derating limits.
+   - **Accuracy:** ±1 °C max from −40 to 75 °C and ±2 °C max up to 125 °C (DSG package, §6.5), so ±2 °C in the 80–95 °C derating band: enough for derating limits.
    - **Optional:** each TMP1075 has an open-drain ALERT output with a programmable trip point. Wire-ORing them onto IRQ_N (below) gives a hardware over-temperature interrupt that works even while firmware sleeps.
 2. **Wire-OR the three interrupts onto one pin.** IRQ1, IRQ2 and GAUGE_BTP are all open-drain, active-low and pulled up by 100k, so they can share one net, IRQ_N. Keep R314 as the only 100k pull-up; R315 and the gauge's R114 become DNP.
    - On a falling edge, firmware reads both TPS25751 INT_EVENT registers and the gauge status to find the source.

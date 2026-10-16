@@ -579,7 +579,7 @@ A.track("Net-(U301-ANT_OUT)", [(147.22, 4.8), (146.7, 4.8), (146.4, 5.4), (145.2
 # The passive columns stand back from the module (place_parts.py) so the channels exist. Vias in two staggered
 # columns, 1 mm pitch in each, so the track to the outer column passes midway between two inner vias (0.15 mm
 # tracks, 0.175 mm clearance). The router continues from the vias on In2 / B.Cu.
-M = Sheet("/MCU and NTCs/", "route_power_mcu")
+M = Sheet("/MCU and Sensors/", "route_power_mcu")
 MV = dict(d=0.5, drill=0.3)
 for pin_y, via, name in ((5.8, (146.1, 5.95), "NTC_TH3"), (6.3, (145.15, 6.45), "NTC_EN"),
                          (6.8, (146.1, 6.95), "NTC_TH1"), (7.3, (145.15, 7.45), "GAUGE_BTP"),

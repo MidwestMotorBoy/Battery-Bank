@@ -16,3 +16,6 @@ __pycache__/
 __pycache__/
 # duplicate default-name schematic plot (the tracked export is MonolithDev_schematic.pdf)
 DevBoard/MonolithDev.pdf
+
+# review 4 reviewers' scratch work (fetched datasheets, renders)
+docs/devboard/review4/scratch-*/

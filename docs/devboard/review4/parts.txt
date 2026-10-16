@@ -1,0 +1,411 @@
+R1	0R	Resistor_SMD:R_0603_1608Metric	MonolithDev	MPN=0603WAF0000T5E	LCSC=C21189	P1 ADCIN1 = LDO_3V3
+R2	0R	Resistor_SMD:R_0603_1608Metric	MonolithDev	MPN=0603WAF0000T5E	LCSC=C21189	P1 ADCIN2 = GND
+R3	0R	Resistor_SMD:R_0603_1608Metric	MonolithDev	MPN=0603WAF0000T5E	LCSC=C21189	P2 ADCIN1 = GND
+R4	0R	Resistor_SMD:R_0603_1608Metric	MonolithDev	MPN=0603WAF0000T5E	LCSC=C21189	P2 ADCIN2 = GND
+BT101	BH-21700-B1BJ001	MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001	Cells and Gauge	MPN=	LCSC=C20606791	
+BT102	BH-21700-B1BJ001	MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001	Cells and Gauge	MPN=	LCSC=C20606791	
+BT103	BH-21700-B1BJ001	MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001	Cells and Gauge	MPN=	LCSC=C20606791	
+BT104	BH-21700-B1BJ001	MonolithDev:BatteryHolder_MYOUNG_BH-21700-B1BJ001	Cells and Gauge	MPN=	LCSC=C20606791	
+C101	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C102	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C103	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C104	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C105	2.2u 50V	Capacitor_SMD:C_1206_3216Metric	Cells and Gauge	MPN=CL31B225KBHNNNE	LCSC=C50254	PBI sits near VBAT (16.8 V): 50 V X7R 1206 keeps more of its 2.2 uF than the old 0805 (review m2; JLC basic since the 2026-10-14 cost-down)
+C106	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C107	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C108	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C109	4.7n 50V DNP	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=0603B472K500NT	LCSC=C53987	DNP: fit only if DSG turn-on inrush trips SCD. 4.7 nF (not 0.1 uF) keeps the short-circuit turn-off fast enough for Q102 SOA (review 2 A-2). D103 (VGS clamp, now always fitted) covers it
+C110	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	ESD protection across the back-to-back protection FETs, CELL_P to PACK_P (TI BQ40Z50-R2 sec. 9.2.2.1.1 / fig. 9-2 C1, C2). Two in series so one shorted cap does not bypass the FETs; each is rated for the full pack voltage. Short, wide traces
+C111	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	ESD protection across the back-to-back protection FETs, CELL_P to PACK_P (TI BQ40Z50-R2 sec. 9.2.2.1.1 / fig. 9-2 C1, C2). Two in series so one shorted cap does not bypass the FETs; each is rated for the full pack voltage. Short, wide traces
+C112	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C113	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C114	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C115	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C116	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C117	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	CD delay: tCD = 10-20 s/uF x 0.1 uF = 1-2 s. An open or shorted CD also trips OUT during an OV.
+C118	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Cells and Gauge	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+D101	BAT54WS	Diode_SMD:D_SOD-323	Cells and Gauge	MPN=	LCSC=C7502694	BAT feed from the cell top before F102, as TI fig. 9-12 (D1 on 4P): isolates BAT from a short-circuit dip, and keeps the gauge powered and logging if F102 opens
+D102	1N4148WS DNP	Diode_SMD:D_SOD-323	Cells and Gauge	MPN=1N4148WS	LCSC=C2128	DNP: fit with C109 so DSG still turns Q102 off fast (bypasses R111)
+D103	BZT52C15	Diode_SMD:D_SOD-123	Cells and Gauge	MPN=BZT52C15 (JLC preferred C19077412)	LCSC=C19077412	Fitted (2026-10-13, dev board and production): clamps Q102 VGS (AGM404AP1 +/-20 V) in a hard PACK_P short until SCD opens the FETs (DSG = VBAT + 10.5-12 V, source near 0 V). Vz 13.8-15.6 V sits above the 10.5-12 V on-state gate drive; leakage at 12 V is tens of nA, which the DSG pump supplies. Required whenever C109 is fitted. Not in TI fig. 9-2
+D104	SS34	Diode_SMD:D_SMA	Cells and Gauge	MPN=SS34 (MDD)	LCSC=C8678	J104 series diode: a reversed bench lead cannot drive PACK_P negative (TI 9.2.2.3.3), and a live PACK_P (up to 16.8 V) does not appear on the bare header pins. ~0.4 V drop at bench currents
+F102	WSFB1514	MonolithDev:TLC_WSFB_4x3mm	Cells and Gauge	MPN=TLC Electronic WSFB1514	LCSC=C42463217	4-cell SCP (UL E467707): 15 A rated at 40 C, cut < 1 min at 2x rated, 50 A break, 36 V max, heater operating range 10.5-19.6 V (heater resistance not given; same range as Littelfuse ITV4030L1415, 11.2-20 ohm). Fuse path 1-3 mOhm: about 0.2 W at 10 A. Pin 1 to the cells. Only fuse in the pack path (F101 deleted): 50 A break, below a cell-top dead short (~200 A); faults after Q101/Q102 are cleared by the gauge SCD first Same land pattern as the Littelfuse ITV4030 (pins numbered differently: there fuse 1-3, heater 2)
+J101	Pack (welded 4S) - use instead of holders DNP	TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-5-5.08_1x05_P5.08mm_Horizontal	Cells and Gauge	MPN=	LCSC=	Fit only when the welded pack is used, and never with cells in the holders
+J102	Cell 1 NTC 10k 103AT	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-02P	LCSC=	Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (VSS above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash
+J103	EV2400 SMBus	Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-04P	LCSC=	Same pin order as the EV2400 SMBus port (SLUU446D): 1 VSS, 2 SCL, 3 SDA, 4 VOUT (unused)
+J104	Bench PACK_P	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-02P	LCSC=	Bench supply onto PACK_P through D104 (gauge wake, EV2400 work with FETs off). Current-limit the supply; D104 blocks a reversed lead and keeps PACK_P off the header
+J105	Cell 2 NTC 10k 103AT	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-02P	LCSC=	Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT102, over its sleeve. The can is that cell's negative terminal (about 4.2 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS2 in data flash
+J106	Cell 3 NTC 10k 103AT	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-02P	LCSC=	Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT103, over its sleeve. The can is that cell's negative terminal (about 8.4 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS3 in data flash
+J107	Cell 4 NTC 10k 103AT	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Cells and Gauge	MPN=PZ254V-11-02P	LCSC=	Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash
+Q101	AGM404AP1	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	Cells and Gauge	MPN=	LCSC=C41349455	CHG
+Q102	AGM404AP1	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	Cells and Gauge	MPN=	LCSC=C41349455	DSG
+Q103	AO3400A	Package_TO_SOT_SMD:SOT-23	Cells and Gauge	MPN=AO3400A (AOS)	LCSC=C20917	BTP_INT level shift (inverts: GAUGE_BTP active low). AO3400A Vgs(th) 0.65-1.45 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10/H6 asks for <= 1.5 V max); JLC basic, same part as Q104 (cost-down 2026-10-14, was BSS138). PA6 allows 4.0 V unpowered
+Q104	AO3400A	Package_TO_SOT_SMD:SOT-23	Cells and Gauge	MPN=AO3400A (AOS)	LCSC=C20917	Fuse ignition FET (TI Q5): 30 V, Vgs max +-12 V (gate sees <= 8 V through the 5.1k/51k divider), heater 11.2-20 ohm at 10.5-16.8 V = 0.5-1.5 A for < 1 min
+R101	100	Resistor_SMD:R_1206_3216Metric	Cells and Gauge	MPN=1206W4F1000T5E	LCSC=C17901	1206 (0.25 W): survives the open-cell fault current until CUV opens DSG (review #7)
+R102	100	Resistor_SMD:R_1206_3216Metric	Cells and Gauge	MPN=1206W4F1000T5E	LCSC=C17901	1206 (0.25 W): survives the open-cell fault current until CUV opens DSG (review #7)
+R103	100	Resistor_SMD:R_1206_3216Metric	Cells and Gauge	MPN=1206W4F1000T5E	LCSC=C17901	1206 (0.25 W): survives the open-cell fault current until CUV opens DSG (review #7)
+R104	100	Resistor_SMD:R_1206_3216Metric	Cells and Gauge	MPN=1206W4F1000T5E	LCSC=C17901	1206 (0.25 W): survives the open-cell fault current until CUV opens DSG (review #7)
+R105	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R106	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R107	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R108	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R109	5.1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF5101T5E	LCSC=C23186	
+R110	10M	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1005T5E	LCSC=C7250	
+R111	5.1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF5101T5E	LCSC=C23186	
+R112	10M	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1005T5E	LCSC=C7250	
+R113	10k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1002T5E	LCSC=C25804	
+R114	100k DNP	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1003T5E	LCSC=C25803	
+R115	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R116	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R117	470k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF4703T5E	LCSC=C23178	Holds Q103 off when BTP_INT floats; 10-20 uA BTP source gives 4.7-9.4 V gate
+R118	4.7k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF4701T5E	LCSC=C23162	Limits wake current into a shorted PACK_P to 3.6 mA (60 mW)
+R119	1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1001T5E	LCSC=C21190	
+R120	1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1001T5E	LCSC=C21190	
+R121	1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1001T5E	LCSC=C21190	
+R122	1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1001T5E	LCSC=C21190	
+R123	100	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF1000T5E	LCSC=C22775	
+R124	5.1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF5101T5E	LCSC=C23186	
+R125	51k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF5102T5E	LCSC=C23196	
+R126	5.1k	Resistor_SMD:R_0603_1608Metric	Cells and Gauge	MPN=0603WAF5101T5E	LCSC=C23186	
+R127	0R DNP DNP	Resistor_SMD:R_2512_6332Metric	Cells and Gauge	MPN=	LCSC=	Bench bypass for a blown F102 (2512 0R jumper rated >= 10 A, or an AWG18 wire across the pads). Never fitted on a pack in use: it defeats the second-level protection and, with no F101, leaves the pack unfused.
+RS101	1m 1% 2W	Resistor_SMD:R_2512_6332Metric	Cells and Gauge	MPN=	LCSC=C326570	PA2512FKE7W0R001E
+SW101	WAKE	Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A	Cells and Gauge	MPN=TS-1187A-B-A-B	LCSC=C318884	Wakes the gauge from SHUTDOWN (PACK > 2.45 V) without USB
+TP101	CELL_P	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP102	CELL_N	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP103	CELL1	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP104	CELL2	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP105	CELL3	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP106	PACK_P	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP107	GAUGE_BTP	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	
+TP108	CELL_P_RAW	TestPoint:TestPoint_Pad_D1.5mm	Cells and Gauge	MPN=	LCSC=	Cell top, before F102: check BT104 / the stack here
+TP109	GND	MonolithDev:TestPoint_Harwin_S2761_0603	Cells and Gauge	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+U101	BQ40Z50RSMR-R2	MonolithDev:TI_RSM0032A_VQFN-32_4x4mm_P0.4mm_EP1.4x1.4mm	Cells and Gauge	MPN=	LCSC=C2845123	
+U102	BQ294700DSGR	Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm	Cells and Gauge	MPN=BQ294700DSGR	LCSC=C414622	Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS (CELL_N).
+C201	22n 50V DNP	Capacitor_SMD:C_0603_1608Metric	Sleep Current and 3V3	MPN=CL10B223KB8NNNC	LCSC=C21122	DNP (was marked DNP in its value only): optional INA190 input differential filter
+C202	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Sleep Current and 3V3	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C203	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	Sleep Current and 3V3	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C204	10u 50V	Capacitor_SMD:C_1206_3216Metric	Sleep Current and 3V3	MPN=CL31A106KBHNNNE	LCSC=C13585	HT7550 input: Holtek basic circuit 10 uF; 50 V and more C damp the JP202 hot-plug ring
+C205	10u 25V	Capacitor_SMD:C_0805_2012Metric	Sleep Current and 3V3	MPN=CL21A106KAYNNNE	LCSC=C15850	HT7550 output: Holtek basic circuit 10 uF (was 4.7 uF for the TPS709, review m3)
+C206	2.2u 50V	Capacitor_SMD:C_1206_3216Metric	Sleep Current and 3V3	MPN=CL31B225KBHNNNE	LCSC=C50254	
+C207	22u 25V	Capacitor_SMD:C_0805_2012Metric	Sleep Current and 3V3	MPN=CL21A226MAQNNNE	LCSC=C45783	
+JP201	AMP_EN	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Sleep Current and 3V3	MPN=PZ254V-11-02P	LCSC=	pull = amps off. Needs a 2.54 mm shunt (hand, not in the JLC BOM)
+JP202	Meas. section power	Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical	Sleep Current and 3V3	MPN=PZ254V-11-02P	LCSC=	Fit a 2.54 mm shunt (hand, not in the JLC BOM) to power the measurement section
+L201	10u	Inductor_SMD:L_Changjiang_FNR4030S	Sleep Current and 3V3	MPN=FNR4030S100MT (Changjiang)	LCSC=C167879	10 uH as in the TPS62177 datasheet application (LPS4018-103); 130 mOhm, 1.6 A Irms / 2.4 A Isat for a 0.5 A converter. Cost-down 2026-10-14 (was SRN4018TA-100M)
+R201	10R 1%	Resistor_SMD:R_1206_3216Metric	Sleep Current and 3V3	MPN=1206W4F100JT5E	LCSC=C17903	R_MEAS: <= 10 mA in use (1 mW); 0.4 W for ~0.35 ms at TPS62177 start-up, within a 1206 pulse rating
+R202	0R	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF0000T5E	LCSC=C21189	100R filter option
+R203	0R	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF0000T5E	LCSC=C21189	100R filter option
+R204	49.9	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF499JT5E	LCSC=C23185	Isolates the INA190 output from cable capacitance (max 1 nF load); use a 1 MOhm scope input (review m17)
+R205	49.9	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF499JT5E	LCSC=C23185	Isolates the INA190 output from cable capacitance (max 1 nF load); use a 1 MOhm scope input (review m17)
+R206	100k	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF1003T5E	LCSC=C25803	
+R207	0R	Resistor_SMD:R_0805_2012Metric	Sleep Current and 3V3	MPN=0805W8F0000T5E	LCSC=C17477	3V3 link
+R208	100k	Resistor_SMD:R_0603_1608Metric	Sleep Current and 3V3	MPN=0603WAF1003T5E	LCSC=C25803	
+TP201	OUT_LO	MonolithDev:TestPoint_Harwin_S2761_0603	Sleep Current and 3V3	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP202	OUT_HI	MonolithDev:TestPoint_Harwin_S2761_0603	Sleep Current and 3V3	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP203	GND	MonolithDev:TestPoint_Harwin_S2761_0603	Sleep Current and 3V3	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	scope clip
+TP204	PACK_LP	TestPoint:TestPoint_Pad_D1.5mm	Sleep Current and 3V3	MPN=	LCSC=	
+TP205	PG_3V3	TestPoint:TestPoint_Pad_D1.5mm	Sleep Current and 3V3	MPN=	LCSC=	
+TP206	LDO_IN	TestPoint:TestPoint_Pad_D1.5mm	Sleep Current and 3V3	MPN=	LCSC=	
+TP207	5V_AMP	TestPoint:TestPoint_Pad_D1.5mm	Sleep Current and 3V3	MPN=	LCSC=	
+TP208	GND	MonolithDev:TestPoint_Harwin_S2761_0603	Sleep Current and 3V3	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP209	GND	MonolithDev:TestPoint_Harwin_S2761_0603	Sleep Current and 3V3	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+U201	INA190A5IDDFR	Package_TO_SOT_SMD:TSOT-23-8	Sleep Current and 3V3	MPN=TI INA190A5IDDFR	LCSC=	gain 500, 5 mV/uA
+U202	INA190A1IDDFR	Package_TO_SOT_SMD:TSOT-23-8	Sleep Current and 3V3	MPN=TI INA190A1IDDFR	LCSC=C1852068	gain 25, 0.25 V/mA
+U203	HT7550-1	Package_TO_SOT_SMD:SOT-89-3	Sleep Current and 3V3	MPN=HT7550-1 (Holtek)	LCSC=C16106	Cost-down 2026-10-14 (was TPS70950DBVR): JLC preferred. Supplies only the two INA190s. +/-3 %, 30 V max input: the JP202 hot-plug ring (review 2 C-3, 23-30 V) is why C204 is 10 uF 50 V. Holtek basic circuit: 10 uF in and out. No EN pin (the TPS709 EN was left open)
+U204	TPS62177DQCR	Package_SON:WSON-10-1EP_2x3mm_P0.5mm_EP0.84x2.4mm	Sleep Current and 3V3	MPN=	LCSC=C91241	
+C301	4.7u 16V	Capacitor_SMD:C_0603_1608Metric	MCU and NTCs	MPN=CL10A475KO8NNNC	LCSC=C19666	
+C302	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C303	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C304	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C308	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C309	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C310	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C311	0.1u 50V DNP	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C312	0.1u 50V DNP	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=CL05B104KB54PNC	LCSC=C307331	
+C313	15p C0G	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=GRM1555C1H150JA01D	LCSC=C76950	
+C314	TBD DNP	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=	LCSC=	
+C315	1p C0G	Capacitor_SMD:C_0402_1005Metric	MCU and NTCs	MPN=GRM1555C1H1R0BA01D	LCSC=C76952	
+D301	Red status	LED_SMD:LED_0603_1608Metric	MCU and NTCs	MPN=KT-0603R (Hubei KENTO)	LCSC=C2286	Red 0603 (Vf 1.8-2.4 V), JLC basic: about 4 mA through R306. The green Everlight 19-217 (C72043) went out of stock at JLC (cost-down 2026-10-14)
+J301	SWD	MonolithDev:Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm	MCU and NTCs	MPN=Samtec FTSH-105-01-L-DV-K	LCSC=	Keyed by its shroud (-K): Cortex 10-pin cables seat one way only (review m15; all 10 pins fitted, pin 7 is NOT removed). Hand-fit, not in the JLC BOM
+J302	UART debug	Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical	MCU and NTCs	MPN=PZ254V-11-03P	LCSC=	
+J303	Spare GPIO	Connector_PinHeader_2.54mm:PinHeader_1x07_P2.54mm_Vertical	MCU and NTCs	MPN=PZ254V-11-07P	LCSC=	
+R301	0R	Resistor_SMD:R_0805_2012Metric	MCU and NTCs	MPN=0805W8F0000T5E	LCSC=C17477	MCU 3V3 link
+R302	100k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1003T5E	LCSC=C25803	TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)
+R304	4.7k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF4701T5E	LCSC=C23162	
+R305	4.7k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF4701T5E	LCSC=C23162	
+R306	330	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF3300T5E	LCSC=C23138	330R with the red KT-0603R (Vf ~2 V): about 4 mA from 3.3 V
+R307	0R	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF0000T5E	LCSC=C21189	remove for sleep meas.
+R312	0R	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF0000T5E	LCSC=C21189	Remove to isolate the SMBus pull-ups from 3V3 (dead 3V3 = 4.7k pull-downs); then feed TP308 for EV2400 work
+R313	470k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF4703T5E	LCSC=C23178	DNP: fit to keep the TPS62177 out of sleep mode (15 mA max) when the MCU is unpowered or in Standby
+R314	100k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1003T5E	LCSC=C25803	TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)
+R315	100k DNP	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1003T5E	LCSC=C25803	TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)
+R317	1k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1001T5E	LCSC=C21190	Series resistor to J303: overriding the pin from the header fights 3.3 mA, not a short
+R318	1k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1001T5E	LCSC=C21190	Series resistor to J303: overriding the pin from the header fights 3.3 mA, not a short
+R319	1k	Resistor_SMD:R_0603_1608Metric	MCU and NTCs	MPN=0603WAF1001T5E	LCSC=C21190	Series resistor to J303: CHG_INH can be forced from the header without fighting PB8
+R321	0R	Resistor_SMD:R_0402_1005Metric	MCU and NTCs	MPN=0402WGF0000TCE	LCSC=C17168	MCU 3V3 link
+SW301	RESET	Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A	MCU and NTCs	MPN=TS-1187A-B-A-B	LCSC=C318884	
+TP301	3V3	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP302	SDA	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP303	SCL	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP304	IRQ_N	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP307	3V3_SLEEP	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP308	SMB_PU	TestPoint:TestPoint_Pad_D1.5mm	MCU and NTCs	MPN=	LCSC=	
+TP309	GND	MonolithDev:TestPoint_Harwin_S2761_0603	MCU and NTCs	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+U301	CC2340R5MODA	MonolithDev:TI_MHA0024A_CC2340R5MODA_7x10mm	MCU and NTCs	MPN=CC2340R5MODAN0MHAR	LCSC=	
+U302	TMP1075	MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm	MCU and NTCs	MPN=TMP1075DSGR	LCSC=C2870250	
+U303	TMP1075	MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm	MCU and NTCs	MPN=TMP1075DSGR	LCSC=C2870250	
+U304	TMP1075	MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm	MCU and NTCs	MPN=TMP1075DSGR	LCSC=C2870250	
+U305	TMP1075 DNP	MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm	MCU and NTCs	MPN=TMP1075DSGR	LCSC=C2870250	
+U306	TMP1075 DNP	MonolithDev:TI_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_Vias0.3mm	MCU and NTCs	MPN=TMP1075DSGR	LCSC=C2870250	
+C401	330p 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 1	MPN=CL05C331JB5NNNC	LCSC=C13533	50V C0G
+C402	330p 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 1	MPN=CL05C331JB5NNNC	LCSC=C13533	50V C0G
+C403	10u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 1	MPN=	LCSC=C15850	
+C404	10u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 1	MPN=	LCSC=C15850	LDO_3V3: TPS25751 needs 5 uF min after derating
+C405	10u 10V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=	LCSC=C19702	LDO_1V5: 4.5-12 uF effective
+C406	4.7u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=1206B475K500NT	LCSC=C29823	VBUS: 1-10 uF effective, 25 V+ rating
+C407	10u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10A106MA8NRNC	LCSC=C96446	at PP5V pin (0603: sits between U401 and its strap resistors, clear of the VBUS power pad)
+C408	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 1	MPN=CL05B104KB54PNC	LCSC=C307331	
+C409	1u 50V (VAC)	Capacitor_SMD:C_0805_2012Metric	USB Port 1	MPN=CL21B105KBFNNNE	LCSC=C28323	VAC cap: 50 V 0805 keeps ~1 uF at 20 V (review m20)
+C410	4.7u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 1	MPN=CL21A475KAQNNNE	LCSC=C1779	REGN
+C411	4.7u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 1	MPN=CL21A475KAQNNNE	LCSC=C1779	DRV_SUP
+C412	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C413	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C414	0.47u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10B474KA8NNNC	LCSC=C1623	
+C415	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C416	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C417	0.47u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10B474KA8NNNC	LCSC=C1623	
+C418	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C419	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C420	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 1	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C421	100u 35V	Capacitor_SMD:CP_Elec_6.3x7.7	USB Port 1	MPN=Honor Elec HV1V107M0607PZ (polymer)	LCSC=C5246554	USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): ~99 uF worst case vs the BQ25756 80 uF minimum after derating. Datasheet: ESR 48 mOhm, ripple 1.5 A rms. Worst-case bank ripple ~5 A rms (reverse mode, 10 V pack to 20 V 5 A); the four 22 uF MLCCs (~11 mOhm at 600 kHz) take ~80 %, so this cap sees ~1 A rms (~50 mW). Same 6.3 mm footprint, 7.7 mm tall
+C423	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 1	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C424	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 1	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C427	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 1	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C430	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C431	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C432	100u 25V	Capacitor_SMD:CP_Elec_6.3x5.8	USB Port 1	MPN=JIERR MA25V100M6x6 (polymer)	LCSC=C46550465	Battery-side bulk: solid polymer, no DC-bias loss (100 uF at 16.8 V vs ~12 uF per 47 uF 1210 MLCC); 30 mOhm, 2.65 A at 100 kHz; MLCCs C431/C434/C435 carry the HF ripple. Always biased from PACK_P: measure its leakage at bring-up
+C434	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C435	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C438	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C439	33n 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10B333KB8NNNC	LCSC=C21117	
+C440	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C441	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A226KAHNNNE	LCSC=C12891	
+C442	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A226KAHNNNE	LCSC=C12891	
+C443	220u 16V	Capacitor_SMD:CP_Elec_6.3x7.7	USB Port 1	MPN=ChuangHui SS221M160E7R7R4Z00ZZ (polymer)	LCSC=C25503905	PP5V bulk: USB PD cSrcBulkShared needs 120 uF; polymer has no DC-bias loss
+C444	10u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A106KBHNNNE	LCSC=C13585	
+C445	10u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 1	MPN=CL31A106KBHNNNE	LCSC=C13585	
+C446	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C447	10p DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10C100JB8NNNC	LCSC=C1634	DNP feed-forward cap across R433 (TPS62933 sec. 10.2.2.10: RFBT > 100k); fit if the PP5V load step rings
+C449	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	PPHV decoupling at the TPS25751 PPHV pins (TI layout example)
+C450	10n 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=0603B103K500NT	LCSC=C57112	VBUS 10 nF at the receptacle pins (TI layout example)
+C451	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CC0603KRX7R9BB104	LCSC=C14663	TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)
+C452	1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=CL10A105KB8NNNC	LCSC=C15849	TPD4S201 VPWR decoupling (EVM C68: 1 uF)
+C454	33p 50V DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=0603CG330J500NT	LCSC=C91368	DNP RC snubber on SW1 (EVM C14/C15 placeholder, C0G)
+C455	33p 50V DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 1	MPN=0603CG330J500NT	LCSC=C91368	DNP RC snubber on SW2 (EVM C14/C15 placeholder, C0G)
+D401	SMAJ22A	Diode_SMD:D_SMA	USB Port 1	MPN=SMAJ22A (JLC preferred C41376403)	LCSC=C41376403	SMAJ22A is unidirectional: drawn as a zener-style TVS, cathode (pin 1) on VBUS
+D404	LRB520S-40T1G	Diode_SMD:D_SOD-523	USB Port 1	MPN=LRB520S-40T1G	LCSC=C132124	Bootstrap diode DRV_SUP -> BTST (TI BQ25756 checklist: required). LRB520S-40: 9-20x lower reverse leakage than LRB521S-40 (review 2 B-3: D405 is reverse biased almost continuously)
+D405	LRB520S-40T1G	Diode_SMD:D_SOD-523	USB Port 1	MPN=LRB520S-40T1G	LCSC=C132124	Bootstrap diode DRV_SUP -> BTST (TI BQ25756 checklist: required). LRB520S-40: 9-20x lower reverse leakage than LRB521S-40 (review 2 B-3: D405 is reverse biased almost continuously)
+J401	TYPE-C 16PCB1.6 IP68	MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68	USB Port 1	MPN=TYPE-C 16PCB1.6 IP68 (Shou Han)	LCSC=C55629729	
+J402	I2CC logic analyzer	Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical	USB Port 1	MPN=PZ254V-11-03P	LCSC=	
+L401	2.2u	Inductor_SMD:L_Changjiang_FXL1040	USB Port 1	MPN=SMMS1040-2R2M (SXN)	LCSC=C149591	Cost-down 2026-10-14 (was Coilcraft XAL7030-222, $9.43): 2.2 uH, Isat 18 A, Irms 12 A (40 C rise), DCR 9 mOhm max; review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm; its datasheet land (4.1 mm pads, 13.6 overall, 5.4 gap) is the FXL1040 footprint. Check its temperature at 600 kHz at bring-up
+L402	3.3u	MonolithDev:L_Coilank_APS0530	USB Port 1	MPN=APS0530M3R3H (Coilank)	LCSC=C49073587	Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A (review 2: > 5.8 A IHS limit)
+Q401	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 1	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	USB side high side (HIDRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q402	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 1	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	battery side high side (HIDRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q403	AO3401A	Package_TO_SOT_SMD:SOT-23	USB Port 1	MPN=AO3401A (AOS)	LCSC=C15127	Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low
+Q404	AO3401A	Package_TO_SOT_SMD:SOT-23	USB Port 1	MPN=AO3401A (AOS)	LCSC=C15127	Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low
+Q405	AO3400A	Package_TO_SOT_SMD:SOT-23	USB Port 1	MPN=AO3400A (AOS)	LCSC=C20917	Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high
+Q406	AO3400A	Package_TO_SOT_SMD:SOT-23	USB Port 1	MPN=AO3400A (AOS)	LCSC=C20917	Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high
+Q407	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 1	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	USB side low side (LODRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q408	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 1	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	battery side low side (LODRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+R401	0R	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=0805W8F0000T5E	LCSC=C17477	VIN_3V3 link
+R402	3.3k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF3301T5E	LCSC=C22978	
+R403	3.3k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF3301T5E	LCSC=C22978	
+R404	10k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1002T5E	LCSC=C25804	
+R409	137k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1373T5E	LCSC=C22872	ACUV/ACOV divider top: OV stop 1.2 x 187.2/10 = 22.5 V, UV stop 4.1 V. 1 % moves them by about +/-1.5 %
+R410	40.2k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF4022T5E	LCSC=C12447	ACUV/ACOV divider middle
+R411	10k 1%	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=0805W8F1002T5E	LCSC=C17414	ACUV/ACOV divider bottom
+R412	40.2k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF4022T5E	LCSC=C12447	FSW ~600 kHz; the oscillator is +/-15 %, so 1 % is plenty
+R413	9.1k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF9101T5E	LCSC=C23260	ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin
+R414	3.6k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF3601T5E	LCSC=C22980	ILIM_HIZ hardware input ceiling 50 x 2/5 / 3.6 = 5.6 A (5.3-5.8 A): above the 5 A PD maximum, below the cable rating plus margin
+R415	1.8k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1801T5E	LCSC=C4177	TS RT1 (REGN to TS). With R416 5.6k and the 10k B3435 FET NTC: hot 94.5 C, warm 74 C, cool 18.8 C, cold -7 C; open NTC reads 75.7 % of REGN (above VT1_RISE max 73.85 %, caught as cold in charge mode)
+R416	5.6k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF5601T5E	LCSC=C23189	TS RT2 (TS to GND), see R415
+R417	47k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF4702T5E	LCSC=C25819	CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH low (reset, hang, unprogrammed or Standby all inhibit). With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)
+R418	100k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=	LCSC=C122537	FB top
+R419	10.0k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=	LCSC=C110775	FB bottom
+R420	10R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF100JT5E	LCSC=C22859	
+R421	10k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1002T5E	LCSC=C25804	
+R422	10k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1002T5E	LCSC=C25804	
+R423	10k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1002T5E	LCSC=C25804	
+R424	5m 2W (RAC)	Resistor_SMD:R_2010_5025Metric	USB Port 1	MPN=PA2010FKE470R005Z	LCSC=C7256567	
+R425	10R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF100JT5E	LCSC=C22859	
+R426	10R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF100JT5E	LCSC=C22859	
+R427	5m 2W (RBAT)	Resistor_SMD:R_2010_5025Metric	USB Port 1	MPN=PA2010FKE470R005Z	LCSC=C7256567	
+R428	10R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF100JT5E	LCSC=C22859	
+R429	10R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF100JT5E	LCSC=C22859	
+R430	Link 10A	MonolithDev:NetTie-2_SMD_3x3mm_Bridge3mm	USB Port 1	MPN=	LCSC=	copper link (net tie footprint), not a part; keeps VBAT_SYS and PACK_P as separate net names
+R431	Bridged	Jumper:SolderJumper-2_P1.3mm_Bridged2Bar_RoundedPad1.0x1.5mm	USB Port 1	MPN=	LCSC=	Cut both bars to isolate the TPS62933 input at bring-up (replaces the 2512 0R, cost-down 2026-10-14). Up to ~1.7 A: keep the bars, or bridge with solder after a cut
+R432	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	EN off by default
+R433	107k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=RT0805BRD07107KL	LCSC=C865130	PP5V = 0.8 x (1 + 107/20) = 5.08 V: margin over the TPS25751 4.9 V minimum (review m4)
+R434	20.0k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=	LCSC=C469660	
+R435	1k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1001T5E	LCSC=C21190	CHG_INH from the MCU (PB8): low allows charging; high or hi-Z (reset, IWDG reset, unprogrammed) stops it at the CE pin via the R417 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0
+R436	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	
+R437	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	
+R438	1M	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1004T5E	LCSC=C22935	
+R439	1M	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1004T5E	LCSC=C22935	
+R440	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	D+/D- short: passive BC1.2 dedicated charging port (DCP) advertisement when sourcing. The TPS25751's D+/D- pins (GPIO4/5) now do liquid detection, so it no longer does BC1.2. DNP it to leave D+/D- open
+R441	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM
+R442	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	Holds Q403/Q404 (pull-up PFETs) off while GPIO6 is Hi-Z (reset, no configuration). TI EVM R105
+R443	100k	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF1003T5E	LCSC=C25803	Holds Q405/Q406 (pull-down NFETs) off while GPIO7 is Hi-Z (reset, no configuration). TI EVM R110
+R444	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	HIDRV1 -> Q401 high-side gate (EVM R8). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R445	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	LODRV1 -> Q401 low-side gate (EVM R20). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R446	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	HIDRV2 -> Q402 high-side gate (EVM R3). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R447	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	LODRV2 -> Q402 low-side gate (EVM R17). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R448	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	BTST1 pin -> C412/D404 (EVM R13). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R449	0R	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=0603WAF0000T5E	LCSC=C21189	BTST2 pin -> C413/D405 (EVM R23). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R450	3.3R DNP	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=0805W8F330KT5E	LCSC=C16257	DNP RC snubber on SW1 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw
+R451	3.3R DNP	Resistor_SMD:R_0805_2012Metric	USB Port 1	MPN=0805W8F330KT5E	LCSC=C16257	DNP RC snubber on SW2 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw
+TH401	10k B3435	Resistor_SMD:R_0603_1608Metric	USB Port 1	MPN=NCP18XH103F03RB	LCSC=C13564	beside FETs. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the "B3435" in the value); use Murata's R-T table in firmware and in the TS divider math
+TP401	VBUS	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP402	PPHV	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP403	PP5V	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP404	REGN	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP405	SW1	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 1	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP406	SW2	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 1	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP407	I2CC_SDA	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP408	I2CC_SCL	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP409	STAT1	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP410	STAT2	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP411	PG	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP412	GND	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 1	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	GND loop for the SW1/SW2 probe points: place beside TP405/TP406
+TP413	CE_N	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+TP414	LDO_3V3	TestPoint:TestPoint_Pad_D1.5mm	USB Port 1	MPN=	LCSC=	
+U401	TPS25751DREFR	MonolithDev:TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz	USB Port 1	MPN=	LCSC=C30169739	
+U402	M24512-DFMC6TG	MonolithDev:ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm	USB Port 1	MPN=	LCSC=C222237	0x50
+U403	BQ25756RRVR	MonolithDev:TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm	USB Port 1	MPN=	LCSC=C19272232	
+U404	TPS62933DRLR	Package_TO_SOT_SMD:SOT-583-8	USB Port 1	MPN=	LCSC=C3200405	
+U405	TPD4S201TRGRRQ1	MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm	USB Port 1	MPN=TPD4S201TRGRRQ1 (TPD4S201-Q1)	LCSC=C49305973	Replaces the TPD2S300 DSBGA (2026-10-14, 6-layer board with 0.3 mm vias). Wiring as TI TPS25751EVM fig. 5-5: CC and SBU both pass through it; RPD_G1/2 to C_CC1/2 (dead-battery Rd, DRP); VPWR 1 uF, VBIAS 0.1 uF 50 V; FLT -> GPIO3. Place close to the connector
+C501	330p 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 2	MPN=CL05C331JB5NNNC	LCSC=C13533	50V C0G
+C502	330p 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 2	MPN=CL05C331JB5NNNC	LCSC=C13533	50V C0G
+C503	10u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 2	MPN=	LCSC=C15850	
+C504	10u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 2	MPN=	LCSC=C15850	LDO_3V3: TPS25751 needs 5 uF min after derating
+C505	10u 10V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=	LCSC=C19702	LDO_1V5: 4.5-12 uF effective
+C506	4.7u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=1206B475K500NT	LCSC=C29823	VBUS: 1-10 uF effective, 25 V+ rating
+C507	10u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10A106MA8NRNC	LCSC=C96446	at PP5V pin (0603: sits between U401 and its strap resistors, clear of the VBUS power pad)
+C508	0.1u 50V	Capacitor_SMD:C_0402_1005Metric	USB Port 2	MPN=CL05B104KB54PNC	LCSC=C307331	
+C509	1u 50V (VAC)	Capacitor_SMD:C_0805_2012Metric	USB Port 2	MPN=CL21B105KBFNNNE	LCSC=C28323	VAC cap: 50 V 0805 keeps ~1 uF at 20 V (review m20)
+C510	4.7u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 2	MPN=CL21A475KAQNNNE	LCSC=C1779	REGN
+C511	4.7u 25V	Capacitor_SMD:C_0805_2012Metric	USB Port 2	MPN=CL21A475KAQNNNE	LCSC=C1779	DRV_SUP
+C512	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C513	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C514	0.47u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10B474KA8NNNC	LCSC=C1623	
+C515	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C516	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C517	0.47u 25V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10B474KA8NNNC	LCSC=C1623	
+C518	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C519	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C520	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 2	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C521	100u 35V	Capacitor_SMD:CP_Elec_6.3x7.7	USB Port 2	MPN=Honor Elec HV1V107M0607PZ (polymer)	LCSC=C5246554	USB-side bulk, polymer (no DC-bias loss). 100 uF (was 68 uF, review 2 B-5): ~99 uF worst case vs the BQ25756 80 uF minimum after derating. Datasheet: ESR 48 mOhm, ripple 1.5 A rms. Worst-case bank ripple ~5 A rms (reverse mode, 10 V pack to 20 V 5 A); the four 22 uF MLCCs (~11 mOhm at 600 kHz) take ~80 %, so this cap sees ~1 A rms (~50 mW). Same 6.3 mm footprint, 7.7 mm tall
+C523	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 2	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C524	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 2	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C527	22u 35V	Capacitor_SMD:C_1210_3225Metric	USB Port 2	MPN=GMK325BJ226MM-P	LCSC=C778721	
+C530	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C531	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C532	100u 25V	Capacitor_SMD:CP_Elec_6.3x5.8	USB Port 2	MPN=JIERR MA25V100M6x6 (polymer)	LCSC=C46550465	Battery-side bulk: solid polymer, no DC-bias loss (100 uF at 16.8 V vs ~12 uF per 47 uF 1210 MLCC); 30 mOhm, 2.65 A at 100 kHz; MLCCs C431/C434/C435 carry the HF ripple. Always biased from PACK_P: measure its leakage at bring-up
+C534	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C535	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A226KAHNNNE	LCSC=C12891	Battery-side ripple MLCC (cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432 carries the bulk, bank about 114 uF effective (>= 80). Check their temperature in boost-mode charging at bring-up
+C538	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C539	33n 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10B333KB8NNNC	LCSC=C21117	
+C540	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C541	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A226KAHNNNE	LCSC=C12891	
+C542	22u 25V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A226KAHNNNE	LCSC=C12891	
+C543	220u 16V	Capacitor_SMD:CP_Elec_6.3x7.7	USB Port 2	MPN=ChuangHui SS221M160E7R7R4Z00ZZ (polymer)	LCSC=C25503905	PP5V bulk: USB PD cSrcBulkShared needs 120 uF; polymer has no DC-bias loss
+C544	10u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A106KBHNNNE	LCSC=C13585	
+C545	10u 50V	Capacitor_SMD:C_1206_3216Metric	USB Port 2	MPN=CL31A106KBHNNNE	LCSC=C13585	
+C546	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	
+C547	10p DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10C100JB8NNNC	LCSC=C1634	DNP feed-forward cap across R433 (TPS62933 sec. 10.2.2.10: RFBT > 100k); fit if the PP5V load step rings
+C549	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	PPHV decoupling at the TPS25751 PPHV pins (TI layout example)
+C550	10n 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=0603B103K500NT	LCSC=C57112	VBUS 10 nF at the receptacle pins (TI layout example)
+C551	0.1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CC0603KRX7R9BB104	LCSC=C14663	TPD4S201 VBIAS (ESD support): 0.1 uF, 50 V (C_CC/C_SBU can ring to about 40 V in a short to VBUS)
+C552	1u 50V	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=CL10A105KB8NNNC	LCSC=C15849	TPD4S201 VPWR decoupling (EVM C68: 1 uF)
+C554	33p 50V DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=0603CG330J500NT	LCSC=C91368	DNP RC snubber on SW1 (EVM C14/C15 placeholder, C0G)
+C555	33p 50V DNP	Capacitor_SMD:C_0603_1608Metric	USB Port 2	MPN=0603CG330J500NT	LCSC=C91368	DNP RC snubber on SW2 (EVM C14/C15 placeholder, C0G)
+D501	SMAJ22A	Diode_SMD:D_SMA	USB Port 2	MPN=SMAJ22A (JLC preferred C41376403)	LCSC=C41376403	SMAJ22A is unidirectional: drawn as a zener-style TVS, cathode (pin 1) on VBUS
+D504	LRB520S-40T1G	Diode_SMD:D_SOD-523	USB Port 2	MPN=LRB520S-40T1G	LCSC=C132124	Bootstrap diode DRV_SUP -> BTST (TI BQ25756 checklist: required). LRB520S-40: 9-20x lower reverse leakage than LRB521S-40 (review 2 B-3: D405 is reverse biased almost continuously)
+D505	LRB520S-40T1G	Diode_SMD:D_SOD-523	USB Port 2	MPN=LRB520S-40T1G	LCSC=C132124	Bootstrap diode DRV_SUP -> BTST (TI BQ25756 checklist: required). LRB520S-40: 9-20x lower reverse leakage than LRB521S-40 (review 2 B-3: D405 is reverse biased almost continuously)
+J501	TYPE-C 16PCB1.6 IP68	MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68	USB Port 2	MPN=TYPE-C 16PCB1.6 IP68 (Shou Han)	LCSC=C55629729	
+J502	I2CC logic analyzer	Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical	USB Port 2	MPN=PZ254V-11-03P	LCSC=	
+L501	2.2u	Inductor_SMD:L_Changjiang_FXL1040	USB Port 2	MPN=SMMS1040-2R2M (SXN)	LCSC=C149591	Cost-down 2026-10-14 (was Coilcraft XAL7030-222, $9.43): 2.2 uH, Isat 18 A, Irms 12 A (40 C rise), DCR 9 mOhm max; review 2 B-7 worst-case peak 15.4 A. 11.5 x 10 x 4 mm; its datasheet land (4.1 mm pads, 13.6 overall, 5.4 gap) is the FXL1040 footprint. Check its temperature at 600 kHz at bring-up
+L502	3.3u	MonolithDev:L_Coilank_APS0530	USB Port 2	MPN=APS0530M3R3H (Coilank)	LCSC=C49073587	Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A (review 2: > 5.8 A IHS limit)
+Q501	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 2	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	USB side high side (HIDRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q502	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 2	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	battery side high side (HIDRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q503	AO3401A	Package_TO_SOT_SMD:SOT-23	USB Port 2	MPN=AO3401A (AOS)	LCSC=C15127	Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low
+Q504	AO3401A	Package_TO_SOT_SMD:SOT-23	USB Port 2	MPN=AO3401A (AOS)	LCSC=C15127	Liquid-detect pull-up switch (TI Q_Pn, CSD25480F3 class: Vgs(th) about -0.9 V). On when LIQ_PU is low
+Q505	AO3400A	Package_TO_SOT_SMD:SOT-23	USB Port 2	MPN=AO3400A (AOS)	LCSC=C20917	Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high
+Q506	AO3400A	Package_TO_SOT_SMD:SOT-23	USB Port 2	MPN=AO3400A (AOS)	LCSC=C20917	Liquid-detect pull-down switch (TI Q_Nn, CSD15380F3 class: Vgs(th) about 1.1 V). On when LIQ_PD is high
+Q507	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 2	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	USB side low side (LODRV1). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+Q508	PGQ04N070	MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm	USB Port 2	MPN=PGQ04N070 (JinYu)	LCSC=C49384056	battery side low side (LODRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it
+R501	0R	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=0805W8F0000T5E	LCSC=C17477	VIN_3V3 link
+R502	3.3k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF3301T5E	LCSC=C22978	
+R503	3.3k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF3301T5E	LCSC=C22978	
+R504	10k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1002T5E	LCSC=C25804	
+R509	137k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1373T5E	LCSC=C22872	ACUV/ACOV divider top: OV stop 1.2 x 187.2/10 = 22.5 V, UV stop 4.1 V. 1 % moves them by about +/-1.5 %
+R510	40.2k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF4022T5E	LCSC=C12447	ACUV/ACOV divider middle
+R511	10k 1%	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=0805W8F1002T5E	LCSC=C17414	ACUV/ACOV divider bottom
+R512	40.2k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF4022T5E	LCSC=C12447	FSW ~600 kHz; the oscillator is +/-15 %, so 1 % is plenty
+R513	9.1k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF9101T5E	LCSC=C23260	ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin
+R514	3.6k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF3601T5E	LCSC=C22980	ILIM_HIZ hardware input ceiling 50 x 2/5 / 3.6 = 5.6 A (5.3-5.8 A): above the 5 A PD maximum, below the cable rating plus margin
+R515	1.8k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1801T5E	LCSC=C4177	TS RT1 (REGN to TS). With R416 5.6k and the 10k B3435 FET NTC: hot 94.5 C, warm 74 C, cool 18.8 C, cold -7 C; open NTC reads 75.7 % of REGN (above VT1_RISE max 73.85 %, caught as cold in charge mode)
+R516	5.6k 1%	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF5601T5E	LCSC=C23189	TS RT2 (TS to GND), see R415
+R517	47k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF4702T5E	LCSC=C25819	CE pull-up to 3V3: charging is inhibited unless the MCU drives CHG_INH low (reset, hang, unprogrammed or Standby all inhibit). With 3V3 down (dead pack) CE reads low, so USB can still revive the pack. MCU low through R435: CE = 3.3 x 1k/48k = 0.07 V (VIL max 0.4 V)
+R518	100k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=	LCSC=C122537	FB top
+R519	10.0k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=	LCSC=C110775	FB bottom
+R520	10R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF100JT5E	LCSC=C22859	
+R521	10k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1002T5E	LCSC=C25804	
+R522	10k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1002T5E	LCSC=C25804	
+R523	10k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1002T5E	LCSC=C25804	
+R524	5m 2W (RAC)	Resistor_SMD:R_2010_5025Metric	USB Port 2	MPN=PA2010FKE470R005Z	LCSC=C7256567	
+R525	10R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF100JT5E	LCSC=C22859	
+R526	10R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF100JT5E	LCSC=C22859	
+R527	5m 2W (RBAT)	Resistor_SMD:R_2010_5025Metric	USB Port 2	MPN=PA2010FKE470R005Z	LCSC=C7256567	
+R528	10R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF100JT5E	LCSC=C22859	
+R529	10R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF100JT5E	LCSC=C22859	
+R530	Link 10A	MonolithDev:NetTie-2_SMD_3x3mm_Bridge3mm	USB Port 2	MPN=	LCSC=	copper link (net tie footprint), not a part; keeps VBAT_SYS and PACK_P as separate net names
+R531	Bridged	Jumper:SolderJumper-2_P1.3mm_Bridged2Bar_RoundedPad1.0x1.5mm	USB Port 2	MPN=	LCSC=	Cut both bars to isolate the TPS62933 input at bring-up (replaces the 2512 0R, cost-down 2026-10-14). Up to ~1.7 A: keep the bars, or bridge with solder after a cut
+R532	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	EN off by default
+R533	107k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=RT0805BRD07107KL	LCSC=C865130	PP5V = 0.8 x (1 + 107/20) = 5.08 V: margin over the TPS25751 4.9 V minimum (review m4)
+R534	20.0k 0.1%	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=	LCSC=C469660	
+R535	1k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1001T5E	LCSC=C21190	CHG_INH from the MCU (PB8): low allows charging; high or hi-Z (reset, IWDG reset, unprogrammed) stops it at the CE pin via the R417 pull-up, independent of the TPS25751. Keep DIS_CE_PIN = 0
+R536	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	
+R537	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	
+R538	1M	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1004T5E	LCSC=C22935	
+R539	1M	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1004T5E	LCSC=C22935	
+R540	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	D+/D- short: passive BC1.2 dedicated charging port (DCP) advertisement when sourcing. The TPS25751's D+/D- pins (GPIO4/5) now do liquid detection, so it no longer does BC1.2. DNP it to leave D+/D- open
+R541	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	TPD2S300 FLT pull-up (open drain, 1.7-300k to 2.7-5.5 V). FLT -> GPIO3 = Fault_Input_Event: an SBU short to VBUS puts the port in Type-C error recovery (VBUS off), as on TI's TPS25751EVM
+R542	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	Holds Q403/Q404 (pull-up PFETs) off while GPIO6 is Hi-Z (reset, no configuration). TI EVM R105
+R543	100k	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF1003T5E	LCSC=C25803	Holds Q405/Q406 (pull-down NFETs) off while GPIO7 is Hi-Z (reset, no configuration). TI EVM R110
+R544	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	HIDRV1 -> Q401 high-side gate (EVM R8). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R545	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	LODRV1 -> Q401 low-side gate (EVM R20). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R546	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	HIDRV2 -> Q402 high-side gate (EVM R3). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R547	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	LODRV2 -> Q402 low-side gate (EVM R17). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R548	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	BTST1 pin -> C412/D404 (EVM R13). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R549	0R	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=0603WAF0000T5E	LCSC=C21189	BTST2 pin -> C413/D405 (EVM R23). 0R; raise to a few ohms to slow the switching edges (EMI tuning)
+R550	3.3R DNP	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=0805W8F330KT5E	LCSC=C16257	DNP RC snubber on SW1 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw
+R551	3.3R DNP	Resistor_SMD:R_0805_2012Metric	USB Port 2	MPN=0805W8F330KT5E	LCSC=C16257	DNP RC snubber on SW2 (EVM R14/R15 placeholder). Size R and C from the measured ring (C about 3x the node capacitance); R loss is about C x V^2 x fsw
+TH501	10k B3435	Resistor_SMD:R_0603_1608Metric	USB Port 2	MPN=NCP18XH103F03RB	LCSC=C13564	beside FETs. Murata NCP18XH103F03RB: B25/50 = 3380 K, B25/85 = 3435 K (the "B3435" in the value); use Murata's R-T table in firmware and in the TS divider math
+TP501	VBUS	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP502	PPHV	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP503	PP5V	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP504	REGN	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP505	SW1	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 2	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP506	SW2	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 2	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	
+TP507	I2CC_SDA	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP508	I2CC_SCL	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP509	STAT1	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP510	STAT2	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP511	PG	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP512	GND	MonolithDev:TestPoint_Harwin_S2761_0603	USB Port 2	MPN=RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)	LCSC=C55121754	GND loop for the SW1/SW2 probe points: place beside TP405/TP406
+TP513	CE_N	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+TP514	LDO_3V3	TestPoint:TestPoint_Pad_D1.5mm	USB Port 2	MPN=	LCSC=	
+U501	TPS25751DREFR	MonolithDev:TI_WQFN-38-2EP_REF0038A_6x4mm_P0.4mm_2oz	USB Port 2	MPN=	LCSC=C30169739	
+U502	M24512-DFMC6TG	MonolithDev:ST_UFDFPN-8-1EP_2x3mm_P0.5mm_EP1.2x1.4mm	USB Port 2	MPN=	LCSC=C222237	0x50
+U503	BQ25756RRVR	MonolithDev:TI_VQFN-36-1EP_RRV0036A_5x6mm_P0.5mm	USB Port 2	MPN=	LCSC=C19272232	
+U504	TPS62933DRLR	Package_TO_SOT_SMD:SOT-583-8	USB Port 2	MPN=	LCSC=C3200405	
+U505	TPD4S201TRGRRQ1	MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm	USB Port 2	MPN=TPD4S201TRGRRQ1 (TPD4S201-Q1)	LCSC=C49305973	Replaces the TPD2S300 DSBGA (2026-10-14, 6-layer board with 0.3 mm vias). Wiring as TI TPS25751EVM fig. 5-5: CC and SBU both pass through it; RPD_G1/2 to C_CC1/2 (dead-battery Rd, DRP); VPWR 1 uF, VBIAS 0.1 uF 50 V; FLT -> GPIO3. Place close to the connector

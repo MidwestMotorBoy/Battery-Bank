@@ -7,7 +7,7 @@
 	(title_block
 		(title "MCU and board temperature")
 		(date "2026-10-14")
-		(rev "A7")
+		(rev "A8")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "CC2340R5MODA, debug headers, TMP1075 x3 (+2 DNP)")
 		(comment 2 "Spec + open items: DevBoard/README.md")
@@ -2364,9 +2364,9 @@
 		(embedded_fonts no)
 	)
 	)
-	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92).\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO18 TX, DIO20 RX, DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2,\n   DIO21 3V3_SLEEP, DIO11 IRQ_N; no spares (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103) + TMP1075 ALERTs, all open-drain.\n   One pull-up: R314 (R315, R114 DNP). Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. SW301 resets the MCU. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 470k (fitted) holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA).\n   Costs 7 uA while driven low in S2. TP307 probes it.\n10. R312 feeds the SMBus pull-ups: remove it and supply TP308 for EV2400 work.\n11. R317-R319: J303 overrides EN_5V1/EN_5V2/CHG_INH without shorting the MCU; pin 2 = IRQ_N.\n12. DIO24 = CHG_INH (rev A5): LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n13. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n14. FET over-temperature: gauge internal sensor (OTD/OTC); U306 is the fallback."
+	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92).\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO18 TX, DIO20 RX, DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2,\n   DIO21 3V3_SLEEP, DIO11 IRQ_N; no spares (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103) + TMP1075 ALERTs, all open-drain.\n   One pull-up: R314 47k (R315, R114 DNP). Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. SW301 resets the MCU. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. TP307 probes it. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R312 feeds the SMBus pull-ups. EV2400 work only with 3V3 up (J104 powered) and U301 held in reset:\n    an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V max). Never feed TP308 with 3V3 down (review 4 A-2).\n11. R317-R319: J303 overrides EN_5V1/EN_5V2/CHG_INH without shorting the MCU; pin 2 = IRQ_N via R324.\n    R322/R323: 1k in the UART lines; connect a USB-UART adapter only with 3V3 up.\n12. DIO24 = CHG_INH (rev A5): LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n13. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n14. FET over-temperature: gauge internal sensor (OTD/OTC); U306 is the fallback."
 		(exclude_from_sim no)
-		(at 287.02 222.25 0)
+		(at 287.02 224.79 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2375,7 +2375,7 @@
 		)
 		(uuid "00cd53dd-10d2-4b43-b0a8-c9f4291ee4b3")
 	)
-	(text "I2C1 + IRQ PULL-UPS"
+	(text "I2C0 + IRQ PULL-UPS"
 		(exclude_from_sim no)
 		(at 226.06 177.8 0)
 		(effects
@@ -2871,7 +2871,7 @@
 		(uuid "38dc3ddd-6132-478d-87ce-be80836ad167")
 	)
 	(label "UART_RX"
-		(at 299.72 137.16 180)
+		(at 292.1 137.16 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2931,7 +2931,7 @@
 		(uuid "cfe2a16b-b315-46c7-b8f6-9add155319d0")
 	)
 	(label "UART_TX"
-		(at 299.72 134.62 180)
+		(at 292.1 134.62 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3266,7 +3266,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "3V3 -> 3V3_MCU link (VDDS). Never remove it while 3V3 is up: the bus pull-ups would then drive SCL/SDA of an unpowered U301 above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -3929,7 +3929,7 @@
 				)
 			)
 		)
-		(property "Value" "100k"
+		(property "Value" "47k"
 			(at 268.39 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3972,7 +3972,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25819"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -3983,7 +3983,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0603WAF4702T5E"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -3994,7 +3994,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "The one IRQ_N pull-up (TPS25751 I2Ct_IRQ x2, gauge BTP via Q103, TMP1075 ALERTs; all open drain). 47k for leakage and noise margin on a long net (review 4 A-5); 70 uA only while asserted"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -4028,7 +4028,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "2c7b18a6-480b-4537-bdbb-13da01f61114")
 		(property "Reference" "J301"
@@ -4096,6 +4096,17 @@
 			)
 		)
 		(property "MPN" "Samtec FTSH-105-01-L-DV-K"
+			(at 156.21 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-fit, not JLC assembled. Samtec part to be replaced by an unkeyed 2x5 1.27 mm header JLC stocks (silk shows pin 1 and the cable-key side)"
 			(at 156.21 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -4320,7 +4331,7 @@
 				)
 			)
 		)
-		(property "Value" "470k"
+		(property "Value" "220k"
 			(at 85.51 45.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4363,7 +4374,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23178"
+		(property "LCSC" "C22961"
 			(at 81.28 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4374,7 +4385,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4703T5E"
+		(property "MPN" "0603WAF2203T5E"
 			(at 81.28 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4385,7 +4396,7 @@
 				)
 			)
 		)
-		(property "Notes" "DNP: fit to keep the TPS62177 out of sleep mode (15 mA max) when the MCU is unpowered or in Standby"
+		(property "Notes" "3V3_SLEEP pull-up: holds the TPS62177 in normal mode while U301 is in reset or unprogrammed (pins float; SLEEP pull-down 1.4 uA typ, no max). 220k gives about 0.92 x VDDS typ against VIH 0.8 x VDDS (review 4 A-1b); 15 uA while firmware drives SLEEP low in S2"
 			(at 81.28 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -5095,7 +5106,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "DNP spare IRQ_N pull-up (R314 is the one fitted)"
 			(at 276.86 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5509,7 +5520,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7k"
+		(property "Value" "3.3k"
 			(at 237.91 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5552,7 +5563,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23162"
+		(property "LCSC" "C22978"
 			(at 233.68 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5563,7 +5574,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4701T5E"
+		(property "MPN" "0603WAF3301T5E"
 			(at 233.68 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5941,7 +5952,7 @@
 				)
 			)
 		)
-		(property "Notes" "Remove to isolate the SMBus pull-ups from 3V3 (dead 3V3 = 4.7k pull-downs); then feed TP308 for EV2400 work"
+		(property "Notes" "Feeds the SMBus/I2C pull-ups from 3V3. Keep it fitted: do EV2400 work with J104 powered (3V3 up) and U301 held in reset (SW301 or J301 nRESET). Feeding TP308 with 3V3 down drives the unpowered CC2340's SCL/SDA above its VDDS + 0.3 V abs max (review 4 A-2)"
 			(at 218.44 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -5988,7 +5999,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7k"
+		(property "Value" "3.3k"
 			(at 253.15 191.33 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6031,7 +6042,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23162"
+		(property "LCSC" "C22978"
 			(at 248.92 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -6042,7 +6053,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4701T5E"
+		(property "MPN" "0603WAF3301T5E"
 			(at 248.92 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -6168,7 +6179,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 294.64 179.58 0)
+			(at 298.52 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7150,7 +7161,7 @@
 				)
 			)
 		)
-		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting PB8"
+		(property "Notes" "Series resistor to J303: CHG_INH can be forced from the header without fighting DIO24"
 			(at 124.46 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -7430,6 +7441,17 @@
 			)
 		)
 		(property "MPN" "CC2340R5MODAN0MHAR"
+			(at 190.5 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "TI.com (CC2340R5MODAN0MHAR, in stock 2026-10-15), consigned to JLC for placement; JLC C55046847 had no stock on 2026-10-14"
 			(at 190.5 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8106,7 +8128,7 @@
 				)
 			)
 		)
-		(property "Notes" "TPS25751 I2Ct_IRQ is open drain and needs an external pull-up (Table 5-1)"
+		(property "Notes" "RSTN pull-up: SWRS349A fig. 9-1 R1 (100k), with C304 = C92 as the power-on reset"
 			(at 152.4 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -8317,7 +8339,7 @@
 				)
 			)
 		)
-		(property "Notes" "MCU 3V3 link"
+		(property "Notes" "Z61 series element of the antenna pi match (TI LaunchPad: 0R). Retune on this board"
 			(at 60.96 5.08 0)
 			(hide yes)
 			(show_name no)
@@ -8377,7 +8399,7 @@
 		(dnp yes)
 		(uuid "5477ed87-52c3-4fb8-a3cd-9abed714ba16")
 		(property "Reference" "C314"
-			(at 178.90 110.63 0)
+			(at 177.70 110.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8386,8 +8408,8 @@
 				)
 			)
 		)
-		(property "Value" "TBD"
-			(at 178.90 112.59 0)
+		(property "Value" "1p C0G"
+			(at 177.70 112.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8429,7 +8451,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "Notes" "Z60 shunt, DNP as on TI's LaunchPad. Placeholder value: TI characterised the match on 0201 parts, so retune Z60/Z61/Z62 on this board (review 4 A-10)"
 			(at 184.15 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -8440,7 +8462,18 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "LCSC" "C76952"
+			(at 184.15 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GRM1555C1H1R0BA01D"
 			(at 184.15 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -12767,7 +12800,7 @@
 	)
 	(global_label "IRQ_N"
 		(shape bidirectional)
-		(at 299.72 160.02 180)
+		(at 292.1 160.02 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -12776,7 +12809,7 @@
 		)
 		(uuid "94ec9772-3286-48af-90ad-a77ed569d72a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 299.72 160.02 0)
+			(at 292.1 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12816,6 +12849,342 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "821a5986-a392-4489-abd1-9209a61d2fa6")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 295.91 134.62 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ccd8459c-1f9f-4fd9-b900-ace44546a2ad")
+		(property "Reference" "R322"
+			(at 295.76 129.85 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 295.76 131.82 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21190"
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Series resistor at J302: limits current from a USB-UART adapter into an unpowered U301 (review 4 A-9). Connect the adapter only with 3V3 up; recovery is SWD (J301)"
+			(at 295.91 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "28b7ce45-6ab9-4018-b12b-5848b36ba591")
+		)
+		(pin "2"
+			(uuid "4425a7c0-e9ff-4c69-bdd2-1e8ffb171833")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "R322")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 295.91 137.16 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "834131f0-0b5f-4703-949f-1232be10d2cf")
+		(property "Reference" "R323"
+			(at 288.74 138.72 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 288.74 140.68 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21190"
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Series resistor at J302: limits current from a USB-UART adapter into an unpowered U301 (review 4 A-9). Connect the adapter only with 3V3 up; recovery is SWD (J301)"
+			(at 295.91 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "48ca2b67-422b-4745-b168-9ad7960df675")
+		)
+		(pin "2"
+			(uuid "5a09b348-bcc2-41a4-ae4a-6f199dfdd818")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "R323")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 295.91 160.02 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d4002b24-85ed-4b4e-9462-3889313a9b0e")
+		(property "Reference" "R324"
+			(at 295.76 151.44 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 295.76 153.41 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21190"
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Series resistor at J303 pin 2 (IRQ_N probe): a shunt on pins 1-2 can't short 3V3 through the open-drain sinks (review 4 A-7)"
+			(at 295.91 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "810a17f2-5889-4ffd-bdb2-4fcf3a771fa5")
+		)
+		(pin "2"
+			(uuid "e2f5296b-7355-4ca6-947f-b742744a0f7e")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "R324")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet_instances
 		(path "/"

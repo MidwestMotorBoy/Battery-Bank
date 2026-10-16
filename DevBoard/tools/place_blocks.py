@@ -2,7 +2,7 @@
 
 Zones (board mm from the top-left corner; the cells' holders take x < 103):
     gauge column   x 104-134   Cells and Gauge sheet (BQ40Z50, BQ294700 second protector, pack connector)
-    MCU band       y 0-13      MCU and NTCs sheet (module at the top edge, headers, sensor pull-ups)
+    MCU band       y 0-13      MCU and Sensors sheet (module at the top edge, headers, sensor pull-ups)
     port 1 / 2     x 134-196   USB Port sheet, one 36 mm band per USB-C connector (port 2 = port 1 moved 36 mm down)
     sleep band     y 88-115    Sleep Current and 3V3 sheet
 
@@ -57,8 +57,8 @@ PORT_LAYOUT = [
     # gate resistors at each gate pin; DNP RC snubbers from each switch node, under the bridges
     ("at", "R445", 168.0, 26.6, 90), ("at", "R446", 149.1, 26.6, 90),
     ("at", "R444", 164.95, 37.6, 90), ("at", "R447", 146.05, 37.6, 90),
-    ("at", "R450", 167.1, 37.6, 90), ("at", "C454", 169.1, 37.6, 90),
-    ("at", "R451", 148.0, 37.6, 90), ("at", "C455", 144.1, 37.6, 90),
+    ("at", "R450", 167.1, 38.0, 90), ("at", "C454", 169.1, 37.6, 90),          # R450/R451 1206 since rev A8
+    ("at", "R451", 148.1, 38.0, 90), ("at", "C455", 144.1, 37.6, 90),
     # ---- BQ25756 above the inductor, gate-drive pins down ----
     ("fix", "U403", 157.0, 19.5, 270),
     ("row", ["C413", "D405", "R449", "C411", "R420", "C410", "R448", "D404", "C412"], 150.1, 24.6, 90, 0.2),
@@ -108,6 +108,11 @@ PORT_LAYOUT = [
     ("fix", "TP413", 143.5, 19.8, 0),
     ("fix", "TP401", 194.3, 22.6, 0), ("fix", "TP402", 193.8, 39.85, 0),
     ("fix", "J402", 140.05, 16.7, 0),
+    # rev A8 (review 4 C-8): 1 mm probe pads, first placed by the nearest-free-spot pass and then aligned: CC1/CC2
+    # under U401's CC pins, SBU_FLT/SBU1_SNS/SBU2_SNS in a column beside the connector, LIQ_PU/LIQ_PD by their gates
+    ("fix", "TP416", 178.4, 27.05, 0), ("fix", "TP415", 180.95, 27.05, 0),
+    ("fix", "TP417", 187.5, 26.55, 0), ("fix", "TP418", 187.5, 29.15, 0), ("fix", "TP419", 187.5, 31.75, 0),
+    ("fix", "TP420", 174.7, 14.0, 0), ("fix", "TP421", 170.3, 23.4, 0),
 ]
 
 # parts placed by the nearest-free-spot pass inside the port zone (both copies must fit)
@@ -126,6 +131,9 @@ MCU_LAYOUT = [
     ("at", "C314", 142.9, 3.395, 0),
     ("at", "C302", 144.85, 5.9, 0), ("at", "C303", 144.85, 6.92, 0),
     ("at", "C301", 144.35, 8.25, 0), ("at", "R302", 144.35, 9.85, 0), ("at", "C304", 144.85, 11.2, 0),
+    # rev A8 (review 4 A-7/A-9): 1k series resistors under the header pins they protect
+    ("at", "R322", 132.8, 10.6, 90), ("at", "R323", 134.6, 10.6, 90),          # J302 TX / RX (SW301 is left of them)
+    ("at", "R324", 170.54, 10.6, 90),                                       # J303 pin 2 (IRQ_N), row of R317-R319
 ]
 
 # TMP1075 board sensors (MCU sheet, placed after the ports), exposed pad (GND) on the copper being measured with
@@ -153,6 +161,8 @@ GAUGE_LAYOUT = [
     ("col", ["C112", "C113", "C114", "C115"], 115.0, 79.0, 0, 0.15),
     ("col", ["R123", "C116", "C117"], 124.0, 79.5, 0, 0.15),
     ("at", "C105", 118.75, 37.2, 90),                         # 1206 now: clear of R105
+    # rev A8 (review 4 D-5): D105 clamp on the J104 side of D104, so D104 moves left one body width
+    ("at", "D104", 114.05, 56.4, 0), ("at", "D105", 121.9, 56.4, 0),
 ]
 # HT7550-1 (SOT-89) LDO for the amplifiers: input cap left, output cap right, probe pads above
 SLEEP_LAYOUT = [

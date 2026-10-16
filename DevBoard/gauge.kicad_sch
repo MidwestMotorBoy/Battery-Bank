@@ -7,7 +7,7 @@
 	(title_block
 		(title "Cells and gauge")
 		(date "2026-10-14")
-		(rev "A6")
+		(rev "A8")
 		(company "Monolith 100 W battery bank - dev board")
 		(comment 1 "4S input, BQ40Z50-R2 gauge/protector, protection FETs")
 		(comment 2 "Spec + open items: DevBoard/README.md")
@@ -4562,7 +4562,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT (its high level has no maximum; PA6 takes 4 V unpowered): GAUGE_BTP is active low.\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (fitted) clamps Q102 VGS at 15 V in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse (no F101).\n    R127 (DNP) is a bench bypass for a blown F102 only: never fitted on a pack in use.\n15. Never insert or remove a cell with USB or J104 power on: an empty holder slot sees PACK_P minus the other cells\n    (> 4.35 V), U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (fitted) clamps Q102 VGS at 15 V in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply\n    (12-16 V, limit <= 0.5 A). D105 clamps a mis-set supply before D104; it is a crowbar, not a regulator.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse (no F101).\n    R127 (DNP) is a bench bypass for a blown F102 only: never fitted on a pack in use.\n15. Never insert or remove a cell with USB or J104 power on: an empty holder slot sees PACK_P minus the other cells\n    (> 4.35 V), U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -4908,16 +4908,6 @@
 			(type default)
 		)
 		(uuid "0e7a0ad7-66e7-40d7-b55e-9ccec99bb8a8")
-	)
-	(wire
-		(pts
-			(xy 293.37 58.42) (xy 299.72 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0f914a67-4810-485e-94a4-5b5242977512")
 	)
 	(wire
 		(pts
@@ -5548,16 +5538,6 @@
 			(type default)
 		)
 		(uuid "b9174c80-d90b-408c-9274-cbf36de4d54b")
-	)
-	(wire
-		(pts
-			(xy 299.72 60.96) (xy 294.64 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b9525f65-8680-47a4-a03a-57a725b41cb9")
 	)
 	(wire
 		(pts
@@ -8043,6 +8023,17 @@
 				)
 			)
 		)
+		(property "MPN" "BQ40Z50RSMR-R2"
+			(at 215.9 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "d56b6acf-1708-46cb-bf39-1362e6ad442e")
 		)
@@ -8153,7 +8144,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 294.64 60.96 0)
+		(at 302.26 60.96 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8163,7 +8154,7 @@
 		(dnp no)
 		(uuid "2034825d-fbda-482e-80f3-c8b9e555bcff")
 		(property "Reference" "#PWR130"
-			(at 294.64 58.42 0)
+			(at 302.26 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8174,7 +8165,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 294.64 65.28 0)
+			(at 302.26 65.28 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8184,7 +8175,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 294.64 60.96 0)
+			(at 302.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8195,7 +8186,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 294.64 60.96 0)
+			(at 302.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8206,7 +8197,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 294.64 60.96 0)
+			(at 302.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8483,6 +8474,17 @@
 			)
 		)
 		(property "LCSC" "C41349455"
+			(at 175.26 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "AGM404AP1 (AGMSEMI)"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9656,7 +9658,7 @@
 		(dnp no)
 		(uuid "3b26ddea-bc53-4ad0-8154-b9dd298c4c8f")
 		(property "Reference" "TP106"
-			(at 152.4 258.31 0)
+			(at 152.40 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10555,7 +10557,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 152.4 268.48 0)
+			(at 152.40 268.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12079,7 +12081,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 285.75 61.47 0)
+			(at 280.57 57.15 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12463,6 +12465,17 @@
 				)
 			)
 		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "18b5977e-eda0-4562-92f9-eb936faa06e3")
 		)
@@ -12630,6 +12643,17 @@
 				)
 			)
 		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "3e08b782-4161-47bd-936e-7d5001c703e8")
 		)
@@ -12721,6 +12745,17 @@
 			)
 		)
 		(property "LCSC" "C41349455"
+			(at 228.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "AGM404AP1 (AGMSEMI)"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13053,6 +13088,17 @@
 			)
 		)
 		(property "Notes" "BAT feed from the cell top before F102, as TI fig. 9-12 (D1 on 4P): isolates BAT from a short-circuit dip, and keeps the gauge powered and logging if F102 opens"
+			(at 179.07 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAT54WS (R+O)"
 			(at 179.07 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -13909,7 +13955,7 @@
 				)
 			)
 		)
-		(property "Notes" "PA2512FKE7W0R001E"
+		(property "Notes" "1 mOhm 1 % 2 W sense resistor (YAGEO)"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -13921,6 +13967,17 @@
 			)
 		)
 		(property "LCSC" "C326570"
+			(at 63.5 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PA2512FKE7W0R001E"
 			(at 63.5 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -14112,6 +14169,17 @@
 			)
 		)
 		(property "LCSC" "C20606791"
+			(at 38.1 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
 			(at 38.1 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -14447,7 +14515,7 @@
 				)
 			)
 		)
-		(property "Notes" "Holds Q103 off when BTP_INT floats; 10-20 uA BTP source gives 4.7-9.4 V gate"
+		(property "Notes" "Holds Q103 off when BTP_INT floats (BTP_INT VOH is at most about 3.5 V)"
 			(at 332.74 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -14713,7 +14781,7 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (VSS above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
+		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -15641,6 +15709,17 @@
 				)
 			)
 		)
+		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f7d0f004-6bb3-46df-9721-189d9b0070cb")
 		)
@@ -16065,7 +16144,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
-		(at 304.8 58.42 0)
+		(at 312.42 58.42 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16075,7 +16154,7 @@
 		(dnp no)
 		(uuid "d0d5a3a5-ce1e-4040-b4ad-2332f135008d")
 		(property "Reference" "J104"
-			(at 304.80 53.40 0)
+			(at 312.42 53.40 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16085,7 +16164,7 @@
 			)
 		)
 		(property "Value" "Bench PACK_P"
-			(at 304.80 55.37 0)
+			(at 312.42 55.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16095,7 +16174,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16106,7 +16185,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16117,7 +16196,7 @@
 			)
 		)
 		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16128,7 +16207,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16139,7 +16218,7 @@
 			)
 		)
 		(property "MPN" "PZ254V-11-02P"
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16150,7 +16229,7 @@
 			)
 		)
 		(property "Notes" "Bench supply onto PACK_P through D104 (gauge wake, EV2400 work with FETs off). Current-limit the supply; D104 blocks a reversed lead and keeps PACK_P off the header"
-			(at 304.8 58.42 0)
+			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16374,7 +16453,7 @@
 				)
 			)
 		)
-		(property "Value" "0R DNP"
+		(property "Value" "0R"
 			(at 375.77 88.64 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17299,7 +17378,7 @@
 				)
 			)
 		)
-		(property "Notes" "BTP_INT level shift (inverts: GAUGE_BTP active low). AO3400A Vgs(th) 0.65-1.45 V vs ~2.6 V guaranteed BTP_INT drive (review 2 A-10/H6 asks for <= 1.5 V max); JLC basic, same part as Q104 (cost-down 2026-10-14, was BSS138). PA6 allows 4.0 V unpowered"
+		(property "Notes" "BTP_INT level shift onto the shared open-drain IRQ_N (inverts: IRQ_N low while BTP_INT is high). AO3400A Vgs(th) 0.65-1.45 V against BTP_INT VOH >= 1.8 V at 10 uA (DS 7.12); JLC basic, same part as Q104. Firmware: BTP_POL = 1 whenever BTP_EN = 1 (review 4 D-2)"
 			(at 340.36 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -17604,7 +17683,7 @@
 				)
 			)
 		)
-		(property "Value" "GAUGE_BTP"
+		(property "Value" "IRQ_N"
 			(at 319.41 188.18 0)
 			(hide yes)
 			(show_name no)
@@ -18171,6 +18250,221 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "R108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 293.37 58.42) (xy 307.34 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2367edf-2a93-4f32-8389-493e0f367d59")
+	)
+	(wire
+		(pts
+			(xy 307.34 60.96) (xy 302.26 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a7a3dc9-8cc5-418b-a9bf-84171e64eac4")
+	)
+	(junction
+		(at 297.18 58.42)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0625d860-4644-465e-b143-edb5d0a90296")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 297.18 66.04 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1b14db1e-3498-44f1-b34b-595ccfa967d1")
+		(property "Reference" "#PWR609"
+			(at 297.18 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 297.18 70.36 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f551c024-c556-4d27-b4f4-f21a5f7fa383")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR609")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 297.18 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "51d3ee3d-fe12-4827-b9fc-df318b5cc9cd")
+		(property "Reference" "D105"
+			(at 290.89 61.10 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SMAJ18A"
+			(at 290.89 63.06 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMA"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-smaj-datasheet"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "18 V standoff unidirectional TVS, SMA"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C148219"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SMAJ18A (Littelfuse)"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "J104 overvoltage clamp (review 4 D-5): 18 V standoff, 20-22.1 V breakdown, so a bench supply left above about 22 V is clamped before it reaches the 25 V parts on PACK_P. On the header side of D104, so it draws nothing from the pack. Sacrificial: keep the bench current limit low. Cathode (pin 1) to the J104 line"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6bc2ba8d-e847-4538-ba06-54e3f0b0c1b0")
+		)
+		(pin "2"
+			(uuid "ef0f1367-2362-4690-9f83-250a6826a92c")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "D105")
 					(unit 1)
 				)
 			)
