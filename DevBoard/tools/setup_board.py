@@ -150,11 +150,11 @@ def write_rules():
                             {"diameter": 0.6, "drill": 0.3}, {"diameter": 0.8, "drill": 0.4}]
     ns = p.setdefault("net_settings", {})
     managed = [
-        cls("Default", 0.2, 0.15, 0.6, 0.3, 2147483647),
+        cls("Default", 0.2, 0.15, 0.45, 0.3, 2147483647),
         cls("HighCurrent", 2.5, 0.15, 0.8, 0.4, 0),     # pack/cell path, chargers' power stage (up to ~10 A)
-        cls("Power", 0.8, 0.15, 0.6, 0.3, 1),             # 5 V / 3.3 V rails, regulator I/O
-        cls("GND", 0.5, 0.15, 0.6, 0.3, 2),
-        cls("GateDrive", 0.4, 0.15, 0.6, 0.3, 3),
+        cls("Power", 0.8, 0.15, 0.45, 0.3, 1),             # 5 V / 3.3 V rails, regulator I/O
+        cls("GND", 0.5, 0.15, 0.45, 0.3, 2),
+        cls("GateDrive", 0.4, 0.15, 0.45, 0.3, 3),
     ]
     names = {c["name"] for c in managed}
     # classes added later by hand or by the routing scripts (e.g. Kelvin) are kept, with their patterns
