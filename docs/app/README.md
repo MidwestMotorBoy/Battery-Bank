@@ -17,8 +17,8 @@ A SwiftUI + CoreBluetooth iOS app that reads the pack's state and changes its st
 docs/app/ble-gatt-spec.md      the contract (firmware and app both build from it)
 docs/app/README.md             this file
 app/MonolithKit/               Swift package: UUIDs, enums, byte-exact record encode/decode, unit tests
-app/Monolith/                  (next) the iOS app, Xcode project
-app/FakePack/                  (next) macOS simulator app
+app/Monolith/                  the iOS app (SwiftUI + CoreBluetooth); built-in demo pack for the iOS Simulator
+app/FakePack/                  macOS simulator app
 ```
 `MonolithKit` is a plain Swift package so both apps depend on it and a layout change has to be made in one place.
 
@@ -26,7 +26,7 @@ app/FakePack/                  (next) macOS simulator app
 1. **GATT spec** — drafted, see the spec. Review it, then it's frozen as 1.0 except for appended fields.
 2. **MonolithKit** — written; `swift test` on the Mac should pass (not yet run anywhere).
 3. **FakePack (macOS)** — `CBPeripheralManager`, one window: SOC slider, charge stage picker, per-port state/contract/power, ten temperature sliders with "broken"/"not fitted" toggles, throttle and pairing-window toggles, a log of settings writes and commands received. Publishes the same Status/Ports/Temperatures notifications at the same rates as the spec.
-4. **iOS app** — scan → connect → read Protocol Version → subscribe. Screens: Dashboard (SOC, Wh, time to empty/full, per-port power), Charging (stage, limit reason, cells), Temperatures (ten readings, faults, throttle points), Settings (max SOC picker 60/70/80/90/95/100, fast charge, USB2 minimum, charge-to-100-once, trip mode), Developer (raw bytes, debug log, identify, reset, clear bonds, enter OTA).
+4. **iOS app** — scan → connect → read Protocol Version → subscribe. Screens (tabs): Pack (SOC, time to full/empty, power flow with each port's voltage, current and power, battery V/A), Charging (stage, limit reason, cells), Temps (ten readings drawn on a placeholder pack model, faults, throttle points), Health (SOH, cycles, Pack Life from the gauge's Lifetime Data incl. time at temperature, spec §4.9), Settings (max SOC picker 60/70/80/90/95/100, fast charge, USB2 minimum, charge-to-100-once, trip mode; Developer inside: raw bytes, debug log, identify, reset, clear bonds, enter OTA).
 5. **Bring-up on the CC2340 dev board** — port FakePack's GATT table to TI's BLE5-Stack (SysConfig), then the app connects to real hardware with no app changes.
 
 ## Design rules for the app

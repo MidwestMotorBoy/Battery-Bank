@@ -16,6 +16,30 @@ packages:
     path: MonolithKit
 
 targets:
+  Monolith:
+    type: application
+    platform: iOS
+    sources:
+      - Monolith
+      # Same simulation as FakePack, run in-process for the app's demo pack (the iOS Simulator has no Bluetooth).
+      - path: FakePack/PackModel.swift
+    dependencies:
+      - package: MonolithKit
+    info:
+      path: Monolith/Info.plist
+      properties:
+        CFBundleDisplayName: Monolith
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSBluetoothAlwaysUsageDescription: Monolith uses Bluetooth to read your battery pack's charge and temperatures and to change its settings.
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_STYLE: Automatic
+        # DEVELOPMENT_TEAM: XXXXXXXXXX
+
   FakePack:
     type: application
     platform: macOS
@@ -42,6 +66,11 @@ targets:
         # DEVELOPMENT_TEAM: XXXXXXXXXX
 
 schemes:
+  Monolith:
+    build:
+      targets: { Monolith: all }
+    run:
+      config: Debug
   FakePack:
     build:
       targets: { FakePack: all }
