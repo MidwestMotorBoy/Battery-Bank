@@ -151,7 +151,7 @@ def write_rules():
     ns = p.setdefault("net_settings", {})
     managed = [
         cls("Default", 0.2, 0.15, 0.45, 0.3, 2147483647),
-        cls("HighCurrent", 2.5, 0.15, 0.8, 0.4, 0),     # pack/cell path, chargers' power stage (up to ~10 A)
+        cls("HighCurrent", 2.5, 0.15, 0.45, 0.3, 0),     # pack/cell path, chargers' power stage (up to ~10 A)
         cls("Power", 0.8, 0.15, 0.45, 0.3, 1),             # 5 V / 3.3 V rails, regulator I/O
         cls("GND", 0.5, 0.15, 0.45, 0.3, 2),
         cls("GateDrive", 0.4, 0.15, 0.45, 0.3, 3),
