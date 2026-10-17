@@ -11,7 +11,7 @@ This is the contract between the pack firmware (CC2340R5MODA, TI LPF3 SDK) and t
 - **Versioning:** `protocol_version` is `major.minor`. Minor bumps only append fields, add characteristics or add enum values. A major bump may change anything; the app refuses to show live data from a major it doesn't know.
 - **Unknown enum values** are shown as "Unknown (n)", never crash, never hide the rest of the record.
 - **Invalid sentinel:** `0x7FFF` for a signed 16-bit field means "no reading / sensor broken". `0xFFFF` for an unsigned 16-bit field means "not available / not applicable".
-- **ATT MTU:** firmware requests a 128-byte MTU on connect (iOS normally grants 185). No characteristic is longer than 48 bytes, so everything still fits with the default 23-byte MTU if the exchange fails, except Temperatures (22 bytes) is at the limit by design.
+- **ATT MTU:** firmware requests a 128-byte MTU on connect (iOS normally grants 185). No characteristic is longer than 48 bytes. A notification carries at most MTU − 3 bytes, so at the default 23-byte MTU (20-byte payload) Status and Temperatures don't fit; if the exchange fails, firmware notifies the first MTU − 3 bytes, which readers treat as a shorter record (fields not available). Reads use long reads and are unaffected.
 - **Units are in the field name** (`_mv`, `_ma`, `_dc` = deci-°C, `_dw` = deci-watt, `_dwh` = deci-Wh, `_min`).
 - **Security:** LE Secure Connections pairing. Bonding required for every write and for the Command characteristic. Reads and notifications of status are allowed unbonded so a quick check works with any phone. See §6.
 
@@ -188,7 +188,7 @@ UTF-8 text, one line per notification, no terminator. Only compiled into dev fir
 
 ### 4.9 Pack Life — `DDE7010A`, read, 48 bytes (added in 1.1)
 
-The BQ40Z50-R2's Lifetime Data (TRM SLUUBK0 ch. 10; `ManufacturerAccess()` 0x0060–0x0064) condensed into one record, plus the pack's manufacture date. Firmware reads the five blocks on connect and when the app reads this characteristic, at most once a minute. Read on demand; no notify.
+The BQ40Z50-R2's Lifetime Data (TRM SLUUBK0 ch. 10; MAC 0x0060–0x0064 read through `ManufacturerBlockAccess()`, which works sealed, unlike SBS 0x60–0x64) condensed into one record, plus the pack's manufacture date. Firmware reads the five blocks on connect and when the app reads this characteristic, at most once a minute. Read on demand; no notify.
 
 The gauge only collects lifetime data while `ManufacturingStatus()[LF_EN]` = 1 and writes RAM to flash every 10 h, so a value can be up to 10 h behind and is lost on a full reset before a flush. Bit 0 of `life_flags` says whether collection is on. If it's off, the app says "not recorded" rather than showing zeros.
 
@@ -203,7 +203,7 @@ The gauge only collects lifetime data while `ManufacturingStatus()[LF_EN]` = 1 a
 | 12 | u16 | `time_sth_2h` | T6–T3 |
 | 14 | u16 | `time_ht_2h` | T3–T4 |
 | 16 | u16 | `time_ot_2h` | above T4 |
-| 18 | s8 × 6 | `temp_t1_c` … | the gauge's T1, T2, T5, T6, T3, T4 in that (ascending) order, °C, from data flash *Advanced Charge Algorithm › Temperature Ranges*, so the app labels the buckets without hard-coding them |
+| 18 | s8 × 6 | `temp_t1_c` … | the gauge's T1, T2, T5, T6, T3, T4 in that (ascending) order, °C, as configured in data flash *Advanced Charge Algorithm › Temperature Ranges*, so the app labels the buckets without hard-coding them. Data flash isn't readable once the gauge is sealed, so firmware sends compile-time constants that match the gauge configuration image |
 | 24 | u16 | `cell_max_mv` | highest of Block 1 Cell 1–4 Max Voltage |
 | 26 | u16 | `cell_min_mv` | lowest of Block 1 Cell 1–4 Min Voltage; 0x7FFF (gauge default) = never measured |
 | 28 | u16 | `max_delta_cell_mv` | Block 1 Max Delta Cell Voltage (worst imbalance ever seen) |
@@ -347,4 +347,4 @@ The pack is potted; a bad or hostile update is the one fault that can't be fixed
 ## 9. Change log
 
 - 1.0 (2026-10-16): first draft; §8 OTA security added the same day.
-- 1.1 (2026-10-16): Pack Life characteristic `DDE7010A` (§4.9) from the gauge's Lifetime Data.
+- 1.1 (2026-10-16): Pack Life characteristic `DDE7010A` (§4.9) from the gauge's Lifetime Data. §1 MTU rule corrected (notifications carry MTU − 3 bytes). Firmware-side notes in `firmware-interface.md`.

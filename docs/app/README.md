@@ -15,6 +15,7 @@ A SwiftUI + CoreBluetooth iOS app that reads the pack's state and changes its st
 ## Repo layout
 ```
 docs/app/ble-gatt-spec.md      the contract (firmware and app both build from it)
+docs/app/firmware-interface.md brief for the firmware author: field sources, app behaviour, pitfalls, checklist
 docs/app/README.md             this file
 app/MonolithKit/               Swift package: UUIDs, enums, byte-exact record encode/decode, unit tests
 app/Monolith/                  the iOS app (SwiftUI + CoreBluetooth); built-in demo pack for the iOS Simulator
