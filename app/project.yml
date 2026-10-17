@@ -1,0 +1,49 @@
+# XcodeGen spec. On the Mac:
+#   brew install xcodegen
+#   cd app && xcodegen generate && open Monolith.xcodeproj
+# Regenerate whenever this file or the source tree changes; the .xcodeproj is not committed.
+name: Monolith
+options:
+  bundleIdPrefix: com.monolithpack
+  deploymentTarget:
+    macOS: "14.0"
+    iOS: "17.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+
+packages:
+  MonolithKit:
+    path: MonolithKit
+
+targets:
+  FakePack:
+    type: application
+    platform: macOS
+    sources: [FakePack]
+    dependencies:
+      - package: MonolithKit
+    info:
+      path: FakePack/Info.plist
+      properties:
+        CFBundleDisplayName: FakePack
+        NSBluetoothAlwaysUsageDescription: FakePack advertises a simulated Monolith battery pack over Bluetooth so the iPhone app can be developed without hardware.
+        LSApplicationCategoryType: public.app-category.developer-tools
+    entitlements:
+      path: FakePack/FakePack.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.device.bluetooth: true
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_STYLE: Automatic
+        # Set your Team ID once here (Xcode > Settings > Accounts), or pick it in the Signing tab.
+        # DEVELOPMENT_TEAM: XXXXXXXXXX
+
+schemes:
+  FakePack:
+    build:
+      targets: { FakePack: all }
+    run:
+      config: Debug

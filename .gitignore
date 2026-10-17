@@ -26,3 +26,6 @@ app/**/.swiftpm/
 app/**/xcuserdata/
 app/**/DerivedData/
 app/**/*.xcuserstate
+app/*.xcodeproj
+app/**/Info.plist
+app/**/*.entitlements
