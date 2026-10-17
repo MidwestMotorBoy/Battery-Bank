@@ -13,6 +13,7 @@ CPL rotations get JLC's per-part offset (ROTATION_BY_LCSC below, or a footprint 
 parts in JLC's placement preview and put the corrected offset in the field or the table when one is wrong.
 """
 import csv
+import math
 import os
 import re
 import shutil
@@ -48,6 +49,14 @@ ROTATION_BY_LCSC = {
     # not readable in the preview at this scale, assumed 0 - check in JLC's preview before ordering:
     # C7502694 BAT54WS SOD-323, C19077412 BZT52C15 SOD-123, C132124 LRB520S SOD-523, C2286 LED 0603,
     # C42463217 WSFB1514 fuse, C55629729 USB-C (ShouHan)
+}
+# JLC's placement point for a part is its own footprint origin, which is not always the KiCad footprint's origin
+# (KiCad: body centre). Offset in the KiCad footprint's own frame (mm, x right / y down at 0 deg), rotated with the
+# part and added to its position. Values from JLC's preview, 2026-10-18 (JLC drew the SOT-89 body 0.75 mm too far
+# left at KiCad rotation 180; the PDFN FETs 0.5 mm along their lead axis).
+OFFSET_BY_LCSC = {
+    "C16106": (-0.75, 0.0),     # HT7550-1 SOT-89: JLC origin sits toward the leads
+    "C49384056": (-0.5, 0.0),   # PGQ04N070 PDFN-8: direction inferred from the preview of both rotations
 }
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -122,10 +131,17 @@ for f in sorted(b.GetFootprints(), key=lambda f: (f.GetReference().rstrip("01234
         rows_bom[lcsc]["values"].append(value)
     rows_bom[lcsc]["refs"].append(ref)
     p = f.GetPosition()
+    x, y = MM(p.x), MM(p.y)
+    ox, oy = OFFSET_BY_LCSC.get(lcsc, (0.0, 0.0))
+    if ox or oy:                                   # KiCad angle is counter-clockwise on a y-down screen
+        th = math.radians(f.GetOrientationDegrees())
+        x += ox * math.cos(th) + oy * math.sin(th)
+        y += -ox * math.sin(th) + oy * math.cos(th)
+        offsets.setdefault((fpname, f"xy{ox:+.2f},{oy:+.2f}"), []).append(ref)
     rot, off = jlc_rotation(f, lcsc)
     if off:
         offsets.setdefault((fpname, off), []).append(ref)
-    rows_cpl.append([ref, f"{MM(p.x):.4f}", f"{-MM(p.y):.4f}", "Bottom" if f.IsFlipped() else "Top", f"{rot:.1f}"])
+    rows_cpl.append([ref, f"{x:.4f}", f"{-y:.4f}", "Bottom" if f.IsFlipped() else "Top", f"{rot:.1f}"])
 
 with open(os.path.join(FAB, "MonolithDev-bom.csv"), "w", newline="") as fh:
     w = csv.writer(fh)
@@ -144,5 +160,5 @@ print(f"BOM lines {len(rows_bom)}, placed parts {len(rows_cpl)}, left out {len(l
 for r in left_out:
     print("  ", *r)
 print("rotation offsets applied (footprint, offset): refs")
-for (fpname, off), refs in sorted(offsets.items()):
-    print(f"   {fpname:50s} {off:+5.0f}  {', '.join(refs)}")
+for (fpname, off), refs in sorted(offsets.items(), key=str):
+    print(f"   {fpname:50s} {str(off):>12s}  {', '.join(refs)}")
