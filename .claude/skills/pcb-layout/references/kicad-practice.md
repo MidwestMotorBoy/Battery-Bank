@@ -243,6 +243,12 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
   read the magenta pin-1 dot / cathode bar, and record the offset keyed by LCSC number in the exporter; a second
   upload confirms. Parts too small to read at ~10 px/mm (SOD-323/523 diodes, 0603 LEDs) stay flagged for the
   user. JLC's red designator text renders upside-down regardless of rotation: ignore it, read the dot.
+- **Position offsets are per part too**: JLC places at its own footprint origin, which for some parts is not the
+  body centre (a SOT-89 LDO sat 0.75 mm toward its leads, a PDFN-8 FET 0.5 mm along its lead axis). Keep an
+  offset in the KiCad footprint frame, rotate it with the part (KiCad angle is CCW on a y-down screen:
+  `x += ox·cosθ + oy·sinθ; y += −ox·sinθ + oy·cosθ`) and add it before negating Y. Derive the direction from a
+  *zoomed* JLC preview (body edge vs pad row) on two different rotations; a whole-board screenshot is too coarse
+  (0.13 mm/px) and misled the first attempt.
 - Leave out and list separately: DNP (`FP_DNP`), hand-fit (`FP_EXCLUDE_FROM_POS_FILES`), `FP_EXCLUDE_FROM_BOM`
   and anything without an LCSC number (a module bought direct from TI, a connector to be chosen later). Check
   that list against the README: a part the docs say JLC places but which is `exclude_from_bom` on the board (the
