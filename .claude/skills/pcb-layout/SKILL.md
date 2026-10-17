@@ -85,7 +85,15 @@ Run DRC and `check_routing_rules.py` after each stage, not only at the end, and 
 ### 4. Review and fix
 
 Walk `review-checklist.md`. Fix in the order: electrical correctness (shorts, opens, parity) → hot loops and
-returns → current capacity → sensitive signals → DFM → cosmetics/silkscreen.
+returns → current capacity → sensitive signals → DFM → cosmetics/silkscreen. After a round of the user's own
+hand routing, check and report only (`kicad-practice.md` §10); they decide what moves.
+
+### 5. Fab outputs
+
+Refill zones, plot gerbers and drills with the fab's settings, write the assembly BOM (one line per part
+number) and position file, list the hand-fit/DNP parts, stock-check every part number, and do one last
+"critical only" pass (what stops it working, what the fab rejects). Recipes: `kicad-practice.md` §11,
+`dfm-jlcpcb.md` §9.
 
 ## Core rules (the ones that matter most)
 
