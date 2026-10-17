@@ -15,6 +15,7 @@ final class BLEClient: NSObject {
     private var seen: [UUID: CBPeripheral] = [:]
     private var characteristics: [CBUUID: CBCharacteristic] = [:]
     private var wantScan = false
+    private var rediscoverTask: Task<Void, Never>?
 
     private var settingsWrite: CheckedContinuation<Void, Error>?
     private var pendingCommand: (opcode: UInt8, continuation: CheckedContinuation<CommandResponse, Error>)?
@@ -100,6 +101,37 @@ final class BLEClient: NSObject {
         settingsWrite?.resume(throwing: error); settingsWrite = nil
         pendingCommand?.continuation.resume(throwing: error); pendingCommand = nil
     }
+
+    private func log(_ line: String) { store?.appendDebug("BLE: " + line) }
+
+    private var packName: String { peripheral?.name ?? MonolithUUID.localName }
+
+    private func discover(_ p: CBPeripheral) {
+        p.discoverServices([MonolithUUID.monolithService, MonolithUUID.batteryService])
+    }
+
+    /// The link is up but the Monolith service is gone (FakePack quit while the Mac kept its Continuity
+    /// link, or firmware rebooting its GATT). Keep asking until it comes back.
+    private func scheduleRediscovery(_ p: CBPeripheral) {
+        rediscoverTask?.cancel()
+        rediscoverTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(3))
+            guard !Task.isCancelled, let self, p == self.peripheral, p.state == .connected else { return }
+            self.discover(p)
+        }
+    }
+
+    /// Called by the store's heartbeat watchdog: connected but no Status. Drop our connection and
+    /// let the pending reconnect in didDisconnect bring it back with a fresh discovery.
+    func recover() {
+        guard let p = peripheral else { return }
+        log("no Status for 15 s, reconnecting (state \(p.state.rawValue))")
+        if p.state == .connected || p.state == .connecting {
+            central.cancelPeripheralConnection(p)
+        } else {
+            central.connect(p)
+        }
+    }
 }
 
 // MARK: PackBackend
@@ -169,14 +201,16 @@ extension BLEClient: CBCentralManagerDelegate {
 
     nonisolated func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         MainActor.assumeIsolated {
+            log("connected")
             characteristics = [:]
-            peripheral.discoverServices([MonolithUUID.monolithService, MonolithUUID.batteryService])
+            discover(peripheral)
         }
     }
 
     nonisolated func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         MainActor.assumeIsolated {
             guard peripheral == self.peripheral else { return }
+            log("connect failed: \(error?.localizedDescription ?? "unknown"), retrying")
             central.connect(peripheral)
         }
     }
@@ -189,7 +223,9 @@ extension BLEClient: CBCentralManagerDelegate {
             }
             failPending(PackError.notConnected)
             characteristics = [:]
+            rediscoverTask?.cancel()
             guard peripheral == self.peripheral else { return }
+            log("disconnected" + (error.map { ": \($0.localizedDescription)" } ?? "") + ", waiting to reconnect")
             // Keep the last values on screen (greyed) and wait for the pack to come back.
             store?.setLink(.connecting(peripheral.name ?? MonolithUUID.localName))
             central.connect(peripheral)
@@ -202,7 +238,26 @@ extension BLEClient: CBCentralManagerDelegate {
 extension BLEClient: CBPeripheralDelegate {
     nonisolated func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         MainActor.assumeIsolated {
-            for s in peripheral.services ?? [] { peripheral.discoverCharacteristics(nil, for: s) }
+            let services = peripheral.services ?? []
+            guard services.contains(where: { $0.uuid == MonolithUUID.monolithService }) else {
+                log("Monolith service not present yet, retrying")
+                scheduleRediscovery(peripheral)
+                return
+            }
+            for s in services { peripheral.discoverCharacteristics(nil, for: s) }
+        }
+    }
+
+    nonisolated func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        MainActor.assumeIsolated {
+            guard peripheral == self.peripheral else { return }
+            log("services changed: " + invalidatedServices.map(\.uuid.uuidString).joined(separator: ", "))
+            for s in invalidatedServices { for c in s.characteristics ?? [] { characteristics[c.uuid] = nil } }
+            if invalidatedServices.contains(where: { $0.uuid == MonolithUUID.monolithService }) {
+                failPending(PackError.notConnected)
+                store?.setLink(.connecting(packName))
+            }
+            discover(peripheral)
         }
     }
 

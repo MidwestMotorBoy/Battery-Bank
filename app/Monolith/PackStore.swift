@@ -73,6 +73,7 @@ final class PackStore: ObservableObject {
 
     private static let heartbeatTimeout: TimeInterval = 15
     private var lastStatusAt: Date?
+    private var lastRecoveryAt: Date?
     private var watchdog: Timer?
 
     let ble = BLEClient()
@@ -153,6 +154,11 @@ final class PackStore: ObservableObject {
         let late = lastStatusAt.map { Date().timeIntervalSince($0) > Self.heartbeatTimeout } ?? false
         let now = link == .connected && late
         if now != silent { silent = now }
+        // While silent, ask the radio to reconnect, at most once per timeout.
+        if silent, lastRecoveryAt.map({ Date().timeIntervalSince($0) > Self.heartbeatTimeout }) ?? true {
+            lastRecoveryAt = Date()
+            ble.recover()
+        }
     }
     func setPackName(_ name: String) { packName = name }
 
