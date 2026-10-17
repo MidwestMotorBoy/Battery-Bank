@@ -3,6 +3,7 @@
 #
 #   make                  build for the LaunchPad (BOARD=launchpad)
 #   make flash            flash over the XDS110 with DSLite
+#   make gui              open the pin/peripheral config in the SysConfig GUI
 #   make clean
 #
 # Layout follows TI's SDK example makefiles: SysConfig generates the driver
@@ -49,7 +50,7 @@ LFLAGS := -Wl,-i"$(SDK)/source" -Wl,-i"$(SDK)/kernel/nortos" -Wl,-i$(GEN) \
           -Wl,-m,$(BUILD)/$(NAME).map -Wl,--rom_model -Wl,--warn_sections \
           -Wl,--reread_libs -L"$(TICLANG_ARMCOMPILER)/lib" -llibc.a
 
-.PHONY: all flash clean
+.PHONY: all flash gui clean
 
 all: $(BUILD)/$(NAME).out $(BUILD)/$(NAME).hex
 
@@ -77,6 +78,13 @@ $(BUILD):
 
 flash: $(BUILD)/$(NAME).out
 	"$(DSLITE)" load -c $(CCXML) -f $< -e
+
+# Open the board's .syscfg in the SysConfig GUI (pins, peripherals, CCFG).
+# Save there, then run make: the build regenerates from the saved file.
+gui:
+	cmd //c start "" "$(subst /,\,$(dir $(SYSCONFIG_TOOL)))sysconfig_gui.bat" \
+	    --product "$(subst /,\,$(SDK))\.metadata\product.json" \
+	    --compiler ticlang "$(subst /,\,$(abspath $(SYSCFG)))"
 
 clean:
 	rm -rf build
