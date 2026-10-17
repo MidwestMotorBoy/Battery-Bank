@@ -56,7 +56,8 @@ ROTATION_BY_LCSC = {
 # left at KiCad rotation 180; the PDFN FETs 0.5 mm along their lead axis).
 OFFSET_BY_LCSC = {
     "C16106": (-0.75, 0.0),     # HT7550-1 SOT-89: JLC origin sits toward the leads
-    "C49384056": (-0.5, 0.0),   # PGQ04N070 PDFN-8: direction inferred from the preview of both rotations
+    "C49384056": (0.0, 0.5),    # PGQ04N070 PDFN-8: toward the gate/source leads (pads 1-4 at local +y); JLC's zoomed
+                                # preview showed its body 0.6 mm short of those pads on both rotations
 }
 
 HERE = os.path.dirname(os.path.abspath(__file__))
