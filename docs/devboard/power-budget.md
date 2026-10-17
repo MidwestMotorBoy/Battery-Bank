@@ -14,7 +14,6 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | HT7550-1 | 2.5 µA typ, 4 µA max (only with JP202 fitted) |
 | ina190 | 48 µA |
 | m24512 | ≤ 2 µA standby |
-| tmp1075 | 10 µA typ / 20 µA max continuous at the default rate; about 2.7 µA at the 220 ms rate; low µA in shutdown/one-shot |
 | CC2340R5MODA (SWRS349A §7.9–7.10) | Standby 0.71 µA (RTC on, RAM kept); idle 1.2 mA; TX +8 dBm 10.7 mA; advertising average *est.* ≈ 15 µA at a slow interval |
 
 ## Where current is drawn
@@ -23,7 +22,7 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 |---|---|---|
 | Gauge (BQ40Z50-R2) | Cells, via D101 → R105 → BAT | Drop across R105 (100 Ω): 50–340 µA = 5–34 mV |
 | U102 (BQ294700) | Cells | Not separately (datasheet value) |
-| 3.3 V rail: MCU, both TPS25751 + TPD4S201, TMP1075s, pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (TP201/TP202) |
+| 3.3 V rail: MCU, both TPS25751 + TPD4S201, pull-ups | PACK_P → R201 (10 Ω) → TPS62177 | R201, through the INA190 outputs (TP201/TP202) |
 | Chargers (2 × BQ25756), 5 V bucks (2 × TPS62933), hybrid bulk C432/C532 | PACK_P directly | Not separately (datasheet values) |
 | Measurement section (HT7550-1 + 2 × INA190) | PACK_P via JP202 | Off unless the JP202 shunt is fitted |
 
@@ -32,11 +31,10 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | State | Gauge + U102 | Chargers ×2 | 5 V bucks ×2 | 3.3 V branch (R201) | **Total from the pack** |
 |---|---|---|---|---|---|
 | **Ship mode (S5)**: gauge SHUTDOWN, FETs off | 1.6 µA + 1–2 µA | 0 (PACK_P cut off) | 0 | 0 | **≈ 3–4 µA**; cell self-discharge dominates |
-| **Idle, no cable (S2)**: MCU Standby, BLE advertising, TPS62177 in sleep mode, gauge SLEEP, TMP1075s in shutdown | 75 µA + 1–2 µA | 34 µA | 4 µA | ≈ 118 µA | **≈ 230 µA**: about 2.0 Ah/yr, about 3 %/month |
-| Idle, TMP1075s left at their power-up default | | | | ≈ 128 µA | **≈ 240 µA** |
+| **Idle, no cable (S2)**: MCU Standby, BLE advertising, TPS62177 in sleep mode, gauge SLEEP | 75 µA + 1–2 µA | 34 µA | 4 µA | ≈ 117 µA | **≈ 229 µA**: about 2.0 Ah/yr, about 3 %/month |
 | Idle, everything at datasheet maximum | | | | | **≈ 290 µA** |
 | Idle, bulk-cap leakage (C432/C532 hybrid polymer, FETs on) | | | | | **+ ≤ 50 µA** at the datasheet limit (25 µA each at the rated 25 V, after 2 min); less at 16.8 V. Was up to 1 mA with the solid polymer (0.2CV), replaced 2026-10-15 |
-| Idle, gauge not sleeping (`[IN_SYSTEM_SLEEP]` = 0) | 338 µA | 34 µA | 4 µA | ≈ 128 µA | **≈ 500 µA**: about 6 %/month |
+| Idle, gauge not sleeping (`[IN_SYSTEM_SLEEP]` = 0) | 338 µA | 34 µA | 4 µA | ≈ 117 µA | **≈ 490 µA**: about 6 %/month |
 | Idle, measurement section on (JP202 and JP201 fitted) | | | | | **+ ≈ 100 µA** |
 | **Charging**, one port at 5.5 A | 336 µA | 17 µA idle port; the active one runs from USB | 4 µA | ≈ 3 mA *est.* | Pack **gains about 5.5 A**, minus about 3 mA |
 | **Sourcing 100 W** at 20 V (BQ25756 reverse mode) | 336 µA | 0.75 mA | 4 µA | ≈ 3–4 mA *est.* | **6.3 A** at 16.8 V, **7.3 A** at 14.4 V, **8.8 A** at 12.0 V, **9.4 A** at the 2.8 V/cell cut-off |
@@ -54,15 +52,14 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 | 2 × TPD4S201 (CC/SBU protection, on each LDO_3V3) | **224 µA** (320 µA max). Always on: unpowered, it presents its dead-battery Rd, so the port could only sink | 224 µA |
 | 2 × TPS25751 | 112 µA (56 each) | 3–6 mA each active (1 mA idle-attached) |
 | 2 × M24512 EEPROM (on each LDO_3V3) | ≤ 4 µA | ≤ 4 µA |
-| 3 × TMP1075 (U302–U304; U305/U306 DNP) | ≈ 3 µA in shutdown; 30 µA (60 max) at the power-up default | ≈ 8 µA at the 220 ms rate |
 | CC2340R5MODA | ≈ 15 µA *est.* (Standby 0.71 µA plus advertising) | 1.2 mA idle; 10.7 mA TX at +8 dBm |
 | Gauge SMBus pull-downs via the 3.3k pull-ups | 6.6 µA | 6.6 µA |
 | R313 (220k) while DIO21 holds SLEEP low | 15 µA | 0 (DIO21 high) |
 | CHG_INH (DIO24) | 0 (high) | 138 µA while charging (low) |
 | Status LED (DIO12, high drive) | 0 (off) | ≈ 3.6 mA if on |
 | IRQ_N pull-up (R314 47k) | 0 | 70 µA while any source asserts it |
-| **Total at 3.3 V** | **≈ 380 µA** (≈ 410 µA with the TMP1075 default) | **≈ 10–20 mA** |
-| **At PACK_LP, through R201** | **≈ 118 µA** (≈ 128 µA) | **≈ 3–6 mA** (R201 drops 30–60 mV) |
+| **Total at 3.3 V** | **≈ 377 µA** | **≈ 10–20 mA** |
+| **At PACK_LP, through R201** | **≈ 117 µA** | **≈ 3–6 mA** (R201 drops 30–60 mV) |
 
 ## Notes
 
@@ -71,4 +68,4 @@ Values are datasheet typicals unless marked *est.* Conversions to pack current a
 - **BQ25756 IQ_BAT is specified at 28 V.** At 14.4 V it is likely a little lower.
 - **The BLE advertising rate is still the biggest unknown on the MCU side.** At a 100 ms interval the CC2340 average is nearer 100 µA, which adds about 30 µA at the pack.
 - **No single point measures total pack drain** (F102 is a fused part, not a jumper). Use R201 (3.3 V branch) plus R105 (gauge), plus about 38 µA for the chargers and bucks from the datasheets. The gauge's own current reading cannot resolve µA (±10 mA offset).
-- **Sourcing at the 2.8 V/cell cut-off (9.4 A)** sets the 15 A rating of F102's fuse element and about 1 W per protection FET; the gauge's internal sensor watches them, with U306 as the DNP fallback.
+- **Sourcing at the 2.8 V/cell cut-off (9.4 A)** sets the 15 A rating of F102's fuse element and about 1 W per protection FET; the gauge's internal sensor watches them (rev A8: no other sensor there).

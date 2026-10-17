@@ -29,28 +29,27 @@ Loads come from the netlist and are given at 3.3 V. The firmware steps that go w
 | DIO3 / DIO4 | EN_5V1 / EN_5V2 | 100k pull-down (R432/R532) → TPS62933 EN | Low unless that port needs VCONN | High for a port that is sourcing (any voltage: vSafe5V, Rp and VCONN come from PP5V) | **Low** | Low → PP5V off. Restore from retained state first thing after reset (review 4 C-6) | 33 µA + Iq per port |
 | DIO21 | 3V3_SLEEP | TPS62177 SLEEP (1.4 µA typ internal pull-down); R313 220k pull-up to 3V3 | High | High | **Low** (sleep mode; 15 µA through R313) | High (R313) → normal mode | — |
 | DIO12 | LED_DRV | R306 330 Ω + red LED (R307 removes it) | Optional, high drive (about 3.6 mA) | Optional | **Off** | Hi-Z → off | about 3.6 mA, and it eats the 15 mA sleep-mode limit (D-4) |
-| DIO11 | IRQ_N | R314 47k pull-up; open-drain sources: 2 × TPS25751 I2Ct_IRQ, gauge BTP via Q103, 5 × TMP1075 ALERT | Input, falling-edge wake, internal pull **off** | Same | Same (Standby wake source) | — | 70 µA while any source holds it low: clear every source (rule 3) |
+| DIO11 | IRQ_N | R314 47k pull-up; open-drain sources: 2 × TPS25751 I2Ct_IRQ, gauge BTP via Q103 | Input, falling-edge wake, internal pull **off** | Same | Same (Standby wake source) | — | 70 µA while any source holds it low: clear every source (rule 3) |
 | DIO6 / DIO8 | SCL / SDA | 3.3k pull-ups to 3V3 via R312; gauge internal 1 MΩ pull-downs | I2C0, 100 kHz | Same | Bus idle high; never enter Standby mid-transfer | Hi-Z, pulled high | 6.6 µA (gauge pull-downs, unavoidable) |
 | DIO18 / DIO20 | UART TX / RX (J302, via R322/R323 1k) | Header only | UART | UART | UART idle (TX high); RX internal pull-up on | Hi-Z | A powered USB-UART adapter on an unpowered board back-feeds through RX (R323 limits it); connect only with 3V3 up |
 | DIO16 / DIO17 | SWDIO / SWCLK | J301 | SWD | SWD | SWD (an attached debugger raises sleep current; unplug it to measure) | SWD | — |
 
-**MCU pin loads in S2 with this plan: about 22 µA** at 3.3 V: the gauge's SMBus pull-downs (6.6 µA) and R313 while SLEEP is held low (15 µA). The rest of the 3V3 idle load (about 400 µA in total) is the TPD4S201s, the TPS25751s and the TMP1075s (`power-budget.md`).
+**MCU pin loads in S2 with this plan: about 22 µA** at 3.3 V: the gauge's SMBus pull-downs (6.6 µA) and R313 while SLEEP is held low (15 µA). The rest of the 3V3 idle load (about 400 µA in total) is the TPD4S201s and the TPS25751s (`power-budget.md`).
 
 ## Rules that reconcile the I/O plan with the sleep plan
 
 1. **CHG_INH is low only in S0.** Holding DIO24 low costs 138 µA. In S1 and S2, drive it high: that costs 0 µA, and charging is blocked anyway. Because Standby keeps the pin low, the supervision checks keep running in S0 Standby on an RTC wake.
 2. **On every wake from S2 that may need current, DIO21 goes high first.** In sleep mode the TPS62177 supplies 15 mA at most. After a cable attaches, the two TPS25751s draw 3–6 mA each, and the radio at +8 dBm draws about 11 mA. In sleep mode keep the LED off and TX at ≤ +4 dBm, and leave sleep mode on any IRQ_N edge (review 4 D-4).
-3. **IRQ_N is one wire-OR of seven latched sources** (review 4 A-3):
-   - at boot, configure every TMP1075 to interrupt mode (TM = 1) and clear INT_EVENT1 on both TPS25751s;
+3. **IRQ_N is one wire-OR of three latched sources** (review 4 A-3; TMP1075s removed in rev A8):
+   - at boot, clear INT_EVENT1 on both TPS25751s and the gauge BTP;
    - the handler reads and clears every source and loops until DIO11 reads high;
    - never enter Standby with DIO11 low; if a source is stuck, fall back to RTC polling and log it.
-4. **TMP1075s per state (review 4 A-4):** S2: shutdown (no hardware alert; the stages are cool with no cable). S0/S1: continuous at the 220 ms rate in interrupt mode with the derating THIGH, so ALERT still protects if firmware stalls.
+4. **Temperatures (rev A8):** S0/S1: poll the gauge `DAStatus2` and each charger's `TS_ADC` (through the TPS25751 `I2Cr`) about once a second. If firmware stalls, the chargers' own TS limits and the gauge's OTD/OTC still act. S2: nothing to poll.
 5. **Enter S2 only when:**
    - no port has a contract;
    - EN_5Vx are low;
    - CHG_INH is high;
-   - IRQ_N is high (no TPS25751, gauge or TMP1075 event pending);
-   - the TMP1075s are in shutdown;
+   - IRQ_N is high (no TPS25751 or gauge event pending);
    - the I2C bus is idle.
 6. **The WDT runs in Active, Idle and Standby and can't be stopped once enabled** (SWRS349A §8.6). A firmware fault that leaves no wake source armed is therefore still caught. About 2 s in S0/S1, serviced by the ≤ 1 s supervision loop; longer in S2, serviced from an RTC wake that also runs the slow gauge check.
 7. **After any reset (S3), outputs come up safe:**

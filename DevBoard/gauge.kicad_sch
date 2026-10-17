@@ -698,251 +698,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector_Generic:Conn_01x05"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "J"
-				(at 0 7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Conn_01x05"
-				(at 0 -7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "connector"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Connector*:*_1x??_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "Conn_01x05_1_1"
-				(rectangle
-					(start -1.27 6.35)
-					(end 1.27 -6.35)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(rectangle
-					(start -1.27 5.207)
-					(end 0 4.953)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 2.667)
-					(end 0 2.413)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 0.127)
-					(end 0 -0.127)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 -2.413)
-					(end 0 -2.667)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 -4.953)
-					(end 0 -5.207)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 5.08 0)
-					(length 3.81)
-					(name "Pin_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 2.54 0)
-					(length 3.81)
-					(name "Pin_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "Pin_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -2.54 0)
-					(length 3.81)
-					(name "Pin_4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -5.08 0)
-					(length 3.81)
-					(name "Pin_5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:Battery_Cell"
 			(pin_numbers
 				(hide yes)
@@ -4660,6 +4415,12 @@
 		(uuid "fd60053a-d78e-40b1-a16e-4534406ad586")
 	)
 	(junction
+		(at 297.18 58.42)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0625d860-4644-465e-b143-edb5d0a90296")
+	)
+	(junction
 		(at 215.9 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5421,6 +5182,16 @@
 	)
 	(wire
 		(pts
+			(xy 307.34 60.96) (xy 302.26 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a7a3dc9-8cc5-418b-a9bf-84171e64eac4")
+	)
+	(wire
+		(pts
 			(xy 332.74 96.52) (xy 335.28 96.52)
 		)
 		(stroke
@@ -5671,16 +5442,6 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 93.98) (xy 68.58 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d8984138-83cb-45e4-ba96-db8533fe161e")
-	)
-	(wire
-		(pts
 			(xy 321.31 96.52) (xy 325.12 96.52)
 		)
 		(stroke
@@ -5718,6 +5479,16 @@
 			(type default)
 		)
 		(uuid "e0c546a7-1e9c-4e14-8d8a-2155d29a8ac6")
+	)
+	(wire
+		(pts
+			(xy 293.37 58.42) (xy 307.34 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2367edf-2a93-4f32-8389-493e0f367d59")
 	)
 	(wire
 		(pts
@@ -5899,16 +5670,6 @@
 		)
 		(uuid "3d759e2e-e5b1-41e4-bf61-1c960d3171e1")
 	)
-	(label "CELL2"
-		(at 81.28 99.06 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "405b0753-631d-4fbe-99bc-a724d2d819bb")
-	)
 	(label "CELL_P_RAW"
 		(at 270.51 96.52 180)
 		(effects
@@ -6039,16 +5800,6 @@
 		)
 		(uuid "6794e68e-86aa-4e1c-92a4-0ae1f2a7bd0c")
 	)
-	(label "CELL1"
-		(at 81.28 96.52 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6e6cc64a-34dc-4203-90ef-62f9a3dd8fba")
-	)
 	(label "CELL3"
 		(at 38.1 83.82 90)
 		(effects
@@ -6148,16 +5899,6 @@
 			(justify right bottom)
 		)
 		(uuid "a5e3bcd8-3e7c-41ff-ab20-ff5465cff34c")
-	)
-	(label "CELL3"
-		(at 81.28 101.6 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a5eeb0fe-193f-4fe7-a582-0c20080c9fe1")
 	)
 	(label "DSG"
 		(at 228.6 138.43 0)
@@ -6298,16 +6039,6 @@
 			(justify right bottom)
 		)
 		(uuid "df61fe2c-8003-4130-9477-dc870aca69db")
-	)
-	(label "CELL_P_RAW"
-		(at 81.28 104.14 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "dfdc2786-bd17-4e13-892f-d916de8395f4")
 	)
 	(label "CELL_P"
 		(at 384.81 99.06 0)
@@ -6574,7 +6305,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 171.145 154.94 0)
 			(hide yes)
 			(show_name no)
@@ -6607,7 +6338,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 170.18 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -6618,7 +6349,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 170.18 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -6821,7 +6552,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 320.04 92.20 0)
+			(at 320.04 92.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6906,7 +6637,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 332.74 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -6939,7 +6670,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 332.74 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -6950,7 +6681,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 332.74 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -7084,7 +6815,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 284.48 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -7117,7 +6848,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 284.48 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -7128,7 +6859,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 284.48 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -7262,7 +6993,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -7295,7 +7026,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 276.86 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -7306,7 +7037,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 276.86 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -7363,7 +7094,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 328.93 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -7396,7 +7127,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 328.93 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -7407,7 +7138,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 328.93 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -7564,7 +7295,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+		(property "Description" ""
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7575,7 +7306,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -7635,7 +7366,7 @@
 		(dnp no)
 		(uuid "19f7ddf9-6375-4c75-a1cb-5c2a6c5f243d")
 		(property "Reference" "C106"
-			(at 124.50 219.85 0)
+			(at 124.5 219.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7645,7 +7376,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 124.50 221.81 0)
+			(at 124.5 221.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7654,7 +7385,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 117.805 217.17 0)
 			(hide yes)
 			(show_name no)
@@ -7687,7 +7418,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 116.84 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -7698,7 +7429,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 116.84 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -7719,6 +7450,83 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "C106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 297.18 66.04 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1b14db1e-3498-44f1-b34b-595ccfa967d1")
+		(property "Reference" "#PWR609"
+			(at 297.18 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 297.18 70.36 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 297.18 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f551c024-c556-4d27-b4f4-f21a5f7fa383")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR609")
 					(unit 1)
 				)
 			)
@@ -7746,7 +7554,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 182.73 29.20 90)
+			(at 182.73 29.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7755,7 +7563,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 182.88 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -7788,7 +7596,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 182.88 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -7799,7 +7607,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 182.88 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -7867,7 +7675,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 181.305 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -7900,7 +7708,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C50254"
+		(property "LCSC" "C377773"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7911,7 +7719,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL31B225KBHNNNE"
+		(property "MPN" "CL21A225KBQNNNE"
 			(at 180.34 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7960,7 +7768,7 @@
 		(dnp no)
 		(uuid "2001919c-80c5-4578-9e7b-5043338f9f44")
 		(property "Reference" "U101"
-			(at 215.90 129.60 0)
+			(at 215.9 129.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7970,7 +7778,7 @@
 			)
 		)
 		(property "Value" "BQ40Z50RSMR-R2"
-			(at 215.90 131.57 0)
+			(at 215.9 131.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8231,7 +8039,7 @@
 		(dnp no)
 		(uuid "2072e02a-185e-47e3-9b00-7a94e21fb21c")
 		(property "Reference" "R124"
-			(at 323.70 114.61 90)
+			(at 323.7 114.61 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8241,7 +8049,7 @@
 			)
 		)
 		(property "Value" "5.1k"
-			(at 323.70 116.58 90)
+			(at 323.7 116.58 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8250,7 +8058,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 323.85 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8283,7 +8091,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23186"
+		(property "LCSC" "C25905"
 			(at 323.85 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8294,7 +8102,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5101T5E"
+		(property "MPN" "0402WGF5101TCE"
 			(at 323.85 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8529,105 +8337,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x05")
-		(at 86.36 99.06 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "27823b86-f10a-464c-ac66-8602d3f40f8f")
-		(property "Reference" "J101"
-			(at 86.36 88.96 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Pack (welded 4S) - use instead of holders"
-			(at 86.36 90.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-5-5.08_1x05_P5.08mm_Horizontal"
-			(at 86.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 86.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 86.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Fit only when the welded pack is used, and never with cells in the holders"
-			(at 86.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "04263ca0-82de-497a-89e9-abe39926d638")
-		)
-		(pin "2"
-			(uuid "bec5c636-6b01-454d-87f8-ee020eb86b3b")
-		)
-		(pin "3"
-			(uuid "929237ca-a52f-4f50-af8d-bc25483d9be0")
-		)
-		(pin "4"
-			(uuid "c88e69f2-7f07-44fe-a450-a68d9613400c")
-		)
-		(pin "5"
-			(uuid "b6d8c183-66fb-40bc-b219-6ce450df5d70")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:VCC")
 		(at 189.23 33.02 270)
 		(unit 1)
@@ -8650,7 +8359,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 190.50 35.57 90)
+			(at 190.5 35.57 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8716,7 +8425,7 @@
 		(dnp no)
 		(uuid "29f4bea2-f9c4-4433-9e73-05a851a888ca")
 		(property "Reference" "C107"
-			(at 243.80 82.69 0)
+			(at 243.8 82.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8726,7 +8435,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 84.65 0)
+			(at 243.8 84.65 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8735,7 +8444,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 252.425 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -8768,7 +8477,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 251.46 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -8779,7 +8488,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 251.46 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -8827,7 +8536,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 292.14 116.40 0)
+			(at 292.14 116.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8836,7 +8545,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 284.48 115.57 0)
 			(hide yes)
 			(show_name no)
@@ -8869,7 +8578,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 284.48 115.57 0)
 			(hide yes)
 			(show_name no)
@@ -8880,7 +8589,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 284.48 115.57 0)
 			(hide yes)
 			(show_name no)
@@ -8937,7 +8646,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 292.862 177.8 90)
 			(hide yes)
 			(show_name no)
@@ -8970,7 +8679,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25741"
 			(at 294.64 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -8981,7 +8690,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0402WGF1003TCE"
 			(at 294.64 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -9019,7 +8728,7 @@
 		(dnp no)
 		(uuid "2da0b1dc-35d1-4ebd-b816-b1e60953e9b0")
 		(property "Reference" "D103"
-			(at 248.20 53.48 90)
+			(at 248.2 53.48 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9029,7 +8738,7 @@
 			)
 		)
 		(property "Value" "BZT52C15"
-			(at 248.20 55.44 90)
+			(at 248.2 55.44 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9296,7 +9005,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 74.32 139.70 90)
+			(at 74.32 139.7 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9381,7 +9090,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -9414,7 +9123,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 276.86 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -9425,7 +9134,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 276.86 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -9504,7 +9213,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C2691448 PZ254V-11-04P)"
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 332.74 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -9515,7 +9224,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C2691448 PZ254V-11-04P)"
 			(at 332.74 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -9658,7 +9367,7 @@
 		(dnp no)
 		(uuid "3b26ddea-bc53-4ad0-8154-b9dd298c4c8f")
 		(property "Reference" "TP106"
-			(at 152.40 258.31 0)
+			(at 152.4 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9754,7 +9463,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 257.81 152.908 90)
 			(hide yes)
 			(show_name no)
@@ -9787,7 +9496,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 257.81 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -9798,7 +9507,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 257.81 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -9855,7 +9564,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 171.145 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -9888,7 +9597,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 170.18 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -9899,7 +9608,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 170.18 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -10060,7 +9769,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 91.44 238.00 0)
+			(at 91.44 238 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10403,7 +10112,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 342.90 196.09 0)
+			(at 342.9 196.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10452,6 +10161,129 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR124")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 297.18 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "51d3ee3d-fe12-4827-b9fc-df318b5cc9cd")
+		(property "Reference" "D105"
+			(at 290.89 61.1 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SMAJ18A"
+			(at 290.89 63.06 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMA"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-smaj-datasheet"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "18 V standoff unidirectional TVS, SMA"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SMAJ18A (Littelfuse)"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "J104 overvoltage clamp (review 4 D-5): 18 V standoff, 20-22.1 V breakdown, so a bench supply left above about 22 V is clamped before it reaches the 25 V parts on PACK_P. On the header side of D104, so it draws nothing from the pack. Sacrificial: keep the bench current limit low. Cathode (pin 1) to the J104 line"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only bench-input clamp; saves a JLC extended-part fee; LCSC C148219 SMAJ18A (Littelfuse))"
+			(at 297.18 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6bc2ba8d-e847-4538-ba06-54e3f0b0c1b0")
+		)
+		(pin "2"
+			(uuid "ef0f1367-2362-4690-9f83-250a6826a92c")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "D105")
 					(unit 1)
 				)
 			)
@@ -10557,7 +10389,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 152.40 268.48 0)
+			(at 152.4 268.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10642,7 +10474,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -10675,7 +10507,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 276.86 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -10686,7 +10518,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 276.86 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -10897,7 +10729,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -10930,7 +10762,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 276.86 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -10941,7 +10773,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 276.86 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11179,7 +11011,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 215.90 69.09 0)
+			(at 215.9 69.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11256,7 +11088,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 241.30 62.74 0)
+			(at 241.3 62.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11500,7 +11332,7 @@
 		(dnp no)
 		(uuid "640f0fb6-8fed-40e9-8d8b-677cb0c1282c")
 		(property "Reference" "R115"
-			(at 239.88 155.20 90)
+			(at 239.88 155.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11519,7 +11351,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 240.03 150.368 90)
 			(hide yes)
 			(show_name no)
@@ -11552,7 +11384,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 240.03 148.59 0)
 			(hide yes)
 			(show_name no)
@@ -11563,7 +11395,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 240.03 148.59 0)
 			(hide yes)
 			(show_name no)
@@ -11601,7 +11433,7 @@
 		(dnp no)
 		(uuid "64a08ec5-b76e-49b4-a8a0-a320aadce41b")
 		(property "Reference" "C116"
-			(at 328.97 99.20 0)
+			(at 328.97 99.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11620,7 +11452,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 321.31 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -11653,7 +11485,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 321.31 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -11664,7 +11496,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 321.31 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -11814,7 +11646,7 @@
 		(dnp no)
 		(uuid "65fd7dc7-9300-4219-a586-a413f065e6fb")
 		(property "Reference" "C108"
-			(at 243.80 97.93 0)
+			(at 243.8 97.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11824,7 +11656,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 99.89 0)
+			(at 243.8 99.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11833,7 +11665,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 252.425 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11866,7 +11698,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 251.46 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -11877,7 +11709,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 251.46 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -12166,7 +11998,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 353.06 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -12199,7 +12031,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23186"
+		(property "LCSC" "C25905"
 			(at 353.06 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -12210,7 +12042,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5101T5E"
+		(property "MPN" "0402WGF5101TCE"
 			(at 353.06 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -12325,7 +12157,7 @@
 		(dnp no)
 		(uuid "71c8ea85-e687-424d-affc-3c497c2068e2")
 		(property "Reference" "TP104"
-			(at 76.20 258.31 0)
+			(at 76.2 258.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12398,11 +12230,11 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "74e562ff-a0ea-4b47-9529-8a8a82cd5be5")
 		(property "Reference" "BT101"
-			(at 38.10 146.41 0)
+			(at 38.1 146.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12412,7 +12244,7 @@
 			)
 		)
 		(property "Value" "BH-21700-B1BJ001"
-			(at 38.10 148.38 0)
+			(at 38.1 148.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12454,7 +12286,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -12466,6 +12298,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -12576,11 +12419,11 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "789b7cc7-738b-43e1-9ef4-77e8666b0e51")
 		(property "Reference" "BT102"
-			(at 50.84 111.90 0)
+			(at 50.84 111.9 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12632,7 +12475,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -12644,6 +12487,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -12681,7 +12535,7 @@
 		(dnp no)
 		(uuid "79bb631e-cf59-42ac-b6ca-de05d4610fdc")
 		(property "Reference" "Q102"
-			(at 228.60 38.16 0)
+			(at 228.6 38.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12691,7 +12545,7 @@
 			)
 		)
 		(property "Value" "AGM404AP1"
-			(at 228.60 40.13 0)
+			(at 228.6 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12811,7 +12665,7 @@
 		(dnp no)
 		(uuid "7b0801c1-1206-4ae9-9dfc-f702484f5ab3")
 		(property "Reference" "R118"
-			(at 311.00 39.68 90)
+			(at 311 39.68 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12821,7 +12675,7 @@
 			)
 		)
 		(property "Value" "4.7k"
-			(at 311.00 41.65 90)
+			(at 311 41.65 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12830,7 +12684,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 311.15 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -12863,7 +12717,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23162"
+		(property "LCSC" "C25900"
 			(at 311.15 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -12874,7 +12728,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4701T5E"
+		(property "MPN" "0402WGF4701TCE"
 			(at 311.15 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -12942,7 +12796,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 152.4 140.208 90)
 			(hide yes)
 			(show_name no)
@@ -12975,7 +12829,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 152.4 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -12986,7 +12840,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 152.4 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -13203,83 +13057,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
-		(at 68.58 93.98 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "88006fa8-afb9-4a1b-ad82-799f6355795f")
-		(property "Reference" "#PWR109"
-			(at 68.58 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 67.31 97.03 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 68.58 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 68.58 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 68.58 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7bc0734a-13f3-4a68-b2db-b5b49bdd2e69")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR109")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MonolithDev:BQ294700")
 		(at 307.34 107.95 0)
 		(unit 1)
@@ -13301,7 +13078,7 @@
 			)
 		)
 		(property "Value" "BQ294700DSGR"
-			(at 307.34 92.20 0)
+			(at 307.34 92.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13443,7 +13220,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 342.9 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -13476,7 +13253,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23196"
+		(property "LCSC" "C25794"
 			(at 342.9 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -13487,7 +13264,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5102T5E"
+		(property "MPN" "0402WGF5102TCE"
 			(at 342.9 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -13714,7 +13491,7 @@
 		(dnp no)
 		(uuid "a3386614-4fea-4082-8161-f10b0044fd7f")
 		(property "Reference" "R103"
-			(at 152.85 156.50 90)
+			(at 152.85 156.5 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13837,7 +13614,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 318.77 47.00 90)
+			(at 318.77 47 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14034,7 +13811,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 205.74 46.228 90)
 			(hide yes)
 			(show_name no)
@@ -14067,7 +13844,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23186"
+		(property "LCSC" "C25905"
 			(at 205.74 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -14078,7 +13855,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5101T5E"
+		(property "MPN" "0402WGF5101TCE"
 			(at 205.74 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -14112,11 +13889,11 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "a6289f2f-eac6-4aae-9c28-2920249c0e42")
 		(property "Reference" "BT104"
-			(at 50.84 61.10 0)
+			(at 50.84 61.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14168,7 +13945,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -14180,6 +13957,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -14236,7 +14024,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 328.93 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -14269,7 +14057,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 328.93 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -14280,7 +14068,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 328.93 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -14339,7 +14127,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 172.57 29.20 90)
+			(at 172.57 29.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14348,7 +14136,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 172.72 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -14381,7 +14169,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 172.72 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -14392,7 +14180,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 172.72 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -14564,7 +14352,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 228.60 193.55 0)
+			(at 228.6 193.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14748,7 +14536,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -14759,7 +14547,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -14838,7 +14626,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 152.4 46.228 90)
 			(hide yes)
 			(show_name no)
@@ -14871,7 +14659,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23186"
+		(property "LCSC" "C25905"
 			(at 152.4 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -14882,7 +14670,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5101T5E"
+		(property "MPN" "0402WGF5101TCE"
 			(at 152.4 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -14939,7 +14727,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 99.06 215.138 90)
 			(hide yes)
 			(show_name no)
@@ -14972,7 +14760,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 99.06 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -14983,7 +14771,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 99.06 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -15487,7 +15275,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 193.04 137.668 90)
 			(hide yes)
 			(show_name no)
@@ -15520,7 +15308,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -15531,7 +15319,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -15642,11 +15430,11 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "c54bf014-d957-47ce-ac53-78030697bc05")
 		(property "Reference" "BT103"
-			(at 50.84 86.50 0)
+			(at 50.84 86.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15698,7 +15486,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C20606791"
+		(property "LCSC" ""
 			(at 38.1 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -15710,6 +15498,17 @@
 			)
 		)
 		(property "MPN" "BH-21700-B1BJ001 (MYOUNG)"
+			(at 38.1 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (dev-only 21700 holder; saves a JLC extended-part fee; LCSC C20606791 BH-21700-B1BJ001 (MYOUNG))"
 			(at 38.1 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -15912,7 +15711,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 342.90 131.32 0)
+			(at 342.9 131.32 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16052,7 +15851,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "cf8bb59c-5452-4a15-bd86-d5a18d78751b")
 		(property "Reference" "TP109"
@@ -16075,7 +15874,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:TestPoint_Harwin_S2761_0603"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 137.16 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -16108,7 +15907,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55121754"
+		(property "LCSC" ""
 			(at 137.16 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -16120,6 +15919,17 @@
 			)
 		)
 		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 137.16 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
 			(at 137.16 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -16154,7 +15964,7 @@
 		(dnp no)
 		(uuid "d0d5a3a5-ce1e-4040-b4ad-2332f135008d")
 		(property "Reference" "J104"
-			(at 312.42 53.40 0)
+			(at 312.42 53.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16195,7 +16005,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+		(property "Description" ""
 			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16206,7 +16016,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 312.42 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -16266,7 +16076,7 @@
 		(dnp no)
 		(uuid "d4f68899-6ce6-4561-824b-b6ef6471c581")
 		(property "Reference" "C112"
-			(at 292.14 99.20 0)
+			(at 292.14 99.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16285,7 +16095,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 284.48 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -16318,7 +16128,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 284.48 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -16329,7 +16139,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 284.48 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -16553,7 +16363,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 284.48 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -16586,7 +16396,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 284.48 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -16597,7 +16407,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 284.48 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -16645,7 +16455,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 177.84 167.20 0)
+			(at 177.84 167.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16654,7 +16464,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 171.145 162.56 0)
 			(hide yes)
 			(show_name no)
@@ -16687,7 +16497,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 170.18 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -16698,7 +16508,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 170.18 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -16736,7 +16546,7 @@
 		(dnp no)
 		(uuid "e32a5599-a8f3-4f8f-a8f9-fcba963800a9")
 		(property "Reference" "D104"
-			(at 289.41 53.40 0)
+			(at 289.41 53.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16889,7 +16699,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+		(property "Description" ""
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -16900,7 +16710,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -17156,7 +16966,7 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
+		(property "Description" ""
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17167,7 +16977,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
 			(at 86.36 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -17515,7 +17325,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 195.58 170.688 90)
 			(hide yes)
 			(show_name no)
@@ -17548,7 +17358,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C25744"
 			(at 195.58 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -17559,7 +17369,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0402WGF1002TCE"
 			(at 195.58 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -17751,7 +17561,7 @@
 		(dnp no)
 		(uuid "f9661e1c-cb1f-4994-a87e-d2f394174aff")
 		(property "Reference" "Q104"
-			(at 382.85 118.40 0)
+			(at 382.85 118.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18065,7 +17875,7 @@
 		(dnp no)
 		(uuid "fccf03bd-22cf-4444-b6d3-300983b3a0df")
 		(property "Reference" "C101"
-			(at 162.52 150.00 0)
+			(at 162.52 150 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18084,7 +17894,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 171.145 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -18117,7 +17927,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C307331"
 			(at 170.18 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -18128,7 +17938,7 @@
 				)
 			)
 		)
-		(property "MPN" "CC0603KRX7R9BB104"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 170.18 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -18176,7 +17986,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 98.91 225.80 90)
+			(at 98.91 225.8 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18185,7 +17995,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 99.06 230.378 90)
 			(hide yes)
 			(show_name no)
@@ -18218,7 +18028,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22775"
+		(property "LCSC" "C25076"
 			(at 99.06 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -18229,7 +18039,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1000T5E"
+		(property "MPN" "0402WGF1000TCE"
 			(at 99.06 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -18250,221 +18060,6 @@
 			(project "MonolithDev"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "R108")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 293.37 58.42) (xy 307.34 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e2367edf-2a93-4f32-8389-493e0f367d59")
-	)
-	(wire
-		(pts
-			(xy 307.34 60.96) (xy 302.26 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a7a3dc9-8cc5-418b-a9bf-84171e64eac4")
-	)
-	(junction
-		(at 297.18 58.42)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0625d860-4644-465e-b143-edb5d0a90296")
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 297.18 66.04 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "1b14db1e-3498-44f1-b34b-595ccfa967d1")
-		(property "Reference" "#PWR609"
-			(at 297.18 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 297.18 70.36 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 297.18 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 297.18 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 297.18 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f551c024-c556-4d27-b4f4-f21a5f7fa383")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR609")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Zener")
-		(at 297.18 62.23 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "51d3ee3d-fe12-4827-b9fc-df318b5cc9cd")
-		(property "Reference" "D105"
-			(at 290.89 61.10 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SMAJ18A"
-			(at 290.89 63.06 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMA"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-smaj-datasheet"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "18 V standoff unidirectional TVS, SMA"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C148219"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SMAJ18A (Littelfuse)"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "J104 overvoltage clamp (review 4 D-5): 18 V standoff, 20-22.1 V breakdown, so a bench supply left above about 22 V is clamped before it reaches the 25 V parts on PACK_P. On the header side of D104, so it draws nothing from the pack. Sacrificial: keep the bench current limit low. Cathode (pin 1) to the J104 line"
-			(at 297.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6bc2ba8d-e847-4538-ba06-54e3f0b0c1b0")
-		)
-		(pin "2"
-			(uuid "ef0f1367-2362-4690-9f83-250a6826a92c")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "D105")
 					(unit 1)
 				)
 			)

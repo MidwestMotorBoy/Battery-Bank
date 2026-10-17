@@ -136,16 +136,12 @@ MCU_LAYOUT = [
     ("at", "R324", 170.54, 10.6, 90),                                       # J303 pin 2 (IRQ_N), row of R317-R319
 ]
 
-# TMP1075 board sensors (MCU sheet, placed after the ports), exposed pad (GND) on the copper being measured with
+# Rev A8 (2026-10-17): the TMP1075 sensors U302-U306 were removed; only C110/C111 below still apply.
+# Was: TMP1075 board sensors (MCU sheet, placed after the ports), exposed pad (GND) on the copper being measured with
 # its thermal vias into the GND planes, the 0.1u at the V+ pin: U302/U303 under each output bank's PGND strip
 # beside the output bridge, U304 between the connectors, U305 (DNP) under port 1's inductor, U306 (DNP) between
 # the protection FETs with C110/C111 (the cap across the FETs) moved into the gap beside it, CELL_P cap up at Q101.
 SENSOR_LAYOUT = [
-    ("fix", "U302", 140.4, 36.4, 0), ("at", "C308", 142.6, 36.4, 90),
-    ("fix", "U303", 140.4, 36.4 + PORT_DY, 0), ("at", "C309", 142.6, 36.4 + PORT_DY, 90),
-    ("fix", "U304", 193.15, 42.62, 0), ("at", "C310", 195.25, 42.62, 90),
-    ("fix", "U305", 158.85, 38.85, 0), ("at", "C311", 158.85, 40.7, 0),
-    ("fix", "U306", 130.0, 28.0, 90), ("at", "C312", 127.9, 28.0, 90),
     ("at", "C110", 132.95, 27.2, 0), ("at", "C111", 132.95, 28.8, 0),
 ]
 

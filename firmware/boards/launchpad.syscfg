@@ -1,0 +1,40 @@
+/**
+ * LP-EM-CC2340R53 LaunchPad, bring-up build (NoRTOS).
+ * Pins come from TI's board file; the dev-board map goes in devboard.syscfg.
+ *
+ * @cliArgs --board "/ti/boards/LP_EM_CC2340R53" --rtos "nortos"
+ */
+
+const CCFG   = scripting.addModule("/ti/devices/CCFG");
+const GPIO   = scripting.addModule("/ti/drivers/GPIO");
+const UART2  = scripting.addModule("/ti/drivers/UART2");
+
+const board  = system.deviceData.board.components;
+
+/* Red LED: heartbeat */
+const ledHeartbeat = GPIO.addInstance();
+ledHeartbeat.$name     = "CONFIG_GPIO_LED_HEARTBEAT";
+ledHeartbeat.$hardware = board.LED_RED;
+
+/* BTN-1: stands in for IRQ_N (falling edge, active low) */
+const btnIrq = GPIO.addInstance();
+btnIrq.$name            = "CONFIG_GPIO_BTN_IRQ";
+btnIrq.$hardware        = board["BTN-1"];
+btnIrq.interruptTrigger = "Falling Edge";
+
+/* XDS110 back-channel UART: logs at 115200 8N1 */
+const uartLog = UART2.addInstance();
+uartLog.$name     = "CONFIG_UART_LOG";
+uartLog.$hardware = board.XDS110UART;
+
+/*
+ * CCFG, as the dev board needs it:
+ * - LF clock from LF RCOSC: the dev board has no 32 kHz crystal (review 4 A-8).
+ * - The default FCFG bootloader is triggered by DIO21 low, and DIO21 is
+ *   3V3_SLEEP on the dev board, low in S2 (review 4 A-1). Keep the serial
+ *   bootloader for recovery but turn the pin trigger off.
+ */
+CCFG.srcClkLF          = "LF RCOSC";
+CCFG.bldrSetting       = "Default FCFG bootloader, with CCFG settings";
+CCFG.bldrEnabled       = true;
+CCFG.pinTriggerEnabled = false;

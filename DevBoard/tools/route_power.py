@@ -99,7 +99,7 @@ class Port:
         added.append(z.m_Uuid.AsString())
         return z
 
-    def via(self, x, y, netname, d=0.6, drill=0.3):
+    def via(self, x, y, netname, d=0.45, drill=0.3):
         v = pcbnew.PCB_VIA(board)
         v.SetPosition(k(x, y + self.dy))
         v.SetViaType(pcbnew.VIATYPE_THROUGH)

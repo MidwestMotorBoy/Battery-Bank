@@ -19,7 +19,8 @@ Where a later review corrected an earlier one, the corrected value is used here,
 ## 0. Hand-fit and consigned parts (not in the JLC BOM)
 
 - [ ] **U301 CC2340R5MODA:** buy from TI.com (CC2340R5MODAN0MHAR) and consign it to JLC for placement. TI.com has it in stock (checked by Logan, logged in, 2026-10-15; TI.com shows "not available" to a logged-out visitor). JLC (C55046847) had no stock on 2026-10-14.
-- [ ] U201 INA190A5 (DigiKey/Mouser). U202 INA190A1 is JLC-assembled.
+- [ ] U201 INA190A5 (DigiKey/Mouser) and U202 INA190A1 (LCSC C1852068): hand-solder.
+- [ ] **Hand-fit since 2026-10-15 to save JLC extended-part fees** (buy loose from LCSC; numbers in each part's `Sourcing`): BT101–BT104 holders (C20606791), the 13 Harwin test loops TP109, TP201–TP203, TP208, TP209, TP309, TP405/TP406/TP412 and TP505/TP506/TP512 (C55121754), D105 SMAJ18A (C148219).
 - [ ] J301, the 2 × 5 1.27 mm SWD header: hand-fit. The Samtec FTSH-105 is to be replaced by an unkeyed header JLC stocks; the silkscreen then shows pin 1 and the cable-key side.
 - [ ] Two 2.54 mm shunts (JP201, JP202).
 - [ ] Pin headers, hand-soldered since the 2026-10-14 cost-down: J102–J107, J302, J303, J402, J502, JP201, JP202 (PZ254V-11, part numbers in each part's `Sourcing` property).
@@ -53,7 +54,7 @@ Rules:
 | **Latch Limits** (COV, OCD, AOLD, ASCC, ASCD) | **explicit, non-zero** (for example 2–3) | the defaults are 0, and the TRM doesn't say whether 0 means "disabled" or "latch on the first trip" (review 4 D-1) |
 | Chemistry | EVE INR21700-58E | review 1 item 4 |
 | TS1–TS4 | all enabled; protections use the maximum | rev A4 per-cell NTCs |
-| Internal temperature sensor | enabled, with OTD/OTC protection | FET over-temperature (U306 is the DNP fallback) |
+| Internal temperature sensor | enabled, with OTD/OTC protection | FET over-temperature (no other sensor watches Q101/Q102 since rev A8) |
 | COV / CUV | COV ≤ 4.25 V; CUV and terminate voltage set so 100 W never runs below **2.8 V/cell under load** | F102's 15 A element is the only fuse (review 2, D3; F101 deleted) |
 | **COV Delay** | **1 s** (default 2 s) | U102 trips after 1–2 s; on a step overvoltage the gauge must open CHG first (review 3, C2) |
 | OCC1 | about 6 A, short delay | review 1 item 14 |
@@ -120,13 +121,13 @@ Pin states per power state are in `mcu-io-power-states.md`. Pins: DIO6 SCL, DIO8
   1. Restore EN_5V1/EN_5V2 from retained state as the very first action after any reset, before the BLE stack starts. The PP5V bulk holds the attached Rp for only about 16 ms at 5 mA, so a 20 V contract can then ride through a watchdog reset (review 4 C-6, A-8).
   2. Drive DIO21 (3V3_SLEEP) high.
   3. I2C0 on DIO6 (mux 2) / DIO8 (mux 4), **100 kHz**, internal pulls off. Clock 9 SCL pulses first (bus clear: the TPS25751s saw SCL/SDA low while 3V3 was down). Allow gauge clock stretching (SMBus, up to 25 ms).
-  4. Configure every TMP1075 (0x48–0x4C): TM = 1 (interrupt mode), the wanted THIGH/TLOW, unused limits at the rails (TLOW −128 °C, THIGH +127.9375 °C). Their power-up default is comparator mode at 80 °C, which would hold IRQ_N low while a stage is hot (review 4 A-3).
+  4. (Rev A8: no TMP1075s.) Through each TPS25751 (`I2Cw` on I2Cc), set the BQ25756 ADC to one-shot so `TS_ADC` can be read.
   5. Read and clear INT_EVENT1 on 0x20 and 0x21 (write INT_CLEAR1); clear the gauge BTP if it is used (review 4 C-10).
   6. Check CHG_INH conditions (supervision below) before ever driving DIO24 low.
 - [ ] **IRQ_N (DIO11) rules (review 4 A-3):** input, internal pull **off** (the internal pull-up would draw about 200 µA while IRQ_N is asserted); falling-edge wake.
-  - [ ] The interrupt handler reads and clears all seven sources (2 × TPS25751, gauge BTP, TMP1075s; the TMP1075s answer the SMBus Alert Response Address 0x0C) and loops until DIO11 reads high, then re-checks the level.
+  - [ ] The interrupt handler reads and clears all three sources (2 × TPS25751, gauge BTP) and loops until DIO11 reads high, then re-checks the level.
   - [ ] Never enter Standby with DIO11 low. If a source can't be cleared, fall back to RTC polling and log which source is stuck.
-- [ ] **TMP1075 modes per state (review 4 A-4):** S2 idle: shutdown (SD = 1), no hardware alert, as the stages are cool with no cable. S0/S1: continuous at R = 11 (220 ms) with TM = 1 and the derating THIGH, so ALERT still protects if firmware stalls.
+- [ ] **Board temperatures (rev A8):** every second in S0/S1, read `DAStatus2` from the gauge and each charger's `TS_ADC` (REG0x37/0x38) through the TPS25751 `I2Cr` task (one-shot ADC first). Throttle to 20 W from these; the chargers' own warm/hot limits (74 / 94.5 °C) act without firmware. Nothing to read in S2.
 - [ ] **CHG_INH (DIO24):** drive it low only while a port is charging and all checks pass; drive it high otherwise. Low costs 138 µA. CC2340 Standby **keeps** GPIO states, so a low CHG_INH keeps charging in Standby: only enter Standby while charging if the supervision keeps running (RTC wake). Reset, WDT reset, the ROM bootloader and an unprogrammed MCU all inhibit (pins float, R417/R517 pull CE up).
 - [ ] **Supervision (review 1 item 12).** Inhibit charging when any of these happens:
   - [ ] the gauge stops answering for about 2 s;
@@ -142,7 +143,7 @@ Pin states per power state are in `mcu-io-power-states.md`. Pins: DIO6 SCL, DIO8
   - [ ] Enter TPS62177 sleep mode (DIO21 low) only with no cable attached. In sleep mode keep the LED off and TX power at ≤ +4 dBm, and leave sleep mode on any IRQ_N edge: the sleep-mode limit is 15 mA (review 4 D-4).
   - [ ] Drive DIO21 high before Shutdown or a deliberate reset (it latches).
 - [ ] **Pins:** DIO12 LED with high drive (about 3.6 mA); DIO20 UART RX with the internal pull-up; DIO3/DIO4 stay GPIO, never enable LFXT; LFCLK from LFOSC with the Power driver's compensation on (review 4 A-8).
-- [ ] **FET temperature:** include the gauge internal sensor's reading in the firmware over-temperature limits. At 100 W (about 1 W per protection FET), compare it with a thermocouple on Q101/Q102. If it lags badly, fit U306 (DNP TMP1075 between them).
+- [ ] **FET temperature:** include the gauge internal sensor's reading in the firmware over-temperature limits. At 100 W (about 1 W per protection FET), compare it with a thermocouple on Q101/Q102. If it lags badly, a sensor between them has to be added back (U306 was removed in rev A8).
 - [ ] **Port-to-itself cable loop:** detect it and stop (review 2, B-12).
 - [ ] **Ship mode (storage, review 4 follow-up S-1, decided 2026-10-14).** Ship mode opens the gauge FETs and puts the gauge in SHUTDOWN, so the pack drains about 3–4 µA instead of about 240 µA in idle.
   - [ ] **Entry triggers:**
