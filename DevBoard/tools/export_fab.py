@@ -70,15 +70,19 @@ for f in sorted(b.GetFootprints(), key=lambda f: (f.GetReference().rstrip("01234
     if why:
         left_out.append([ref, value, fpname, lcsc, why])
         continue
-    rows_bom.setdefault((value, fpname, lcsc), []).append(ref)
+    # one BOM line per LCSC number: JLC's BOM tool marks every line "Unconfirmed" when two lines share a part
+    rows_bom.setdefault(lcsc, {"values": [], "fp": fpname, "refs": []})
+    if value not in rows_bom[lcsc]["values"]:
+        rows_bom[lcsc]["values"].append(value)
+    rows_bom[lcsc]["refs"].append(ref)
     p = f.GetPosition()
     rows_cpl.append([ref, f"{MM(p.x):.4f}", f"{-MM(p.y):.4f}", "Bottom" if f.IsFlipped() else "Top", f"{f.GetOrientationDegrees():.1f}"])
 
 with open(os.path.join(FAB, "MonolithDev-bom.csv"), "w", newline="") as fh:
     w = csv.writer(fh)
     w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])
-    for (value, fpname, lcsc), refs in rows_bom.items():
-        w.writerow([value, ",".join(refs), fpname, lcsc])
+    for lcsc, line in rows_bom.items():
+        w.writerow([" / ".join(line["values"]), ",".join(line["refs"]), line["fp"], lcsc])
 with open(os.path.join(FAB, "MonolithDev-cpl.csv"), "w", newline="") as fh:
     w = csv.writer(fh)
     w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
