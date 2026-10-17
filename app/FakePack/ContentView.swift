@@ -95,7 +95,7 @@ struct ContentView: View {
     private func flagToggle(_ title: String, _ flag: StatusFlags) -> some View {
         Toggle(title, isOn: Binding(
             get: { model.flags.contains(flag) },
-            set: { $0 ? model.flags.insert(flag) : model.flags.remove(flag) }
+            set: { if $0 { model.flags.insert(flag) } else { model.flags.remove(flag) } }
         ))
     }
 
@@ -128,7 +128,7 @@ struct ContentView: View {
 
     private func setBinding(_ set: Binding<Set<TemperatureSlot>>, _ slot: TemperatureSlot) -> Binding<Bool> {
         Binding(get: { set.wrappedValue.contains(slot) },
-                set: { $0 ? set.wrappedValue.insert(slot) : set.wrappedValue.remove(slot) })
+                set: { if $0 { set.wrappedValue.insert(slot) } else { set.wrappedValue.remove(slot) } })
     }
 
     private var settingsSection: some View {
@@ -170,7 +170,7 @@ struct ContentView: View {
 /// One port's editable record.
 struct PortEditor: View {
     let title: String
-    @Binding var port: Port
+    @Binding var port: MonolithKit.Port
 
     var body: some View {
         GroupBox(title) {
@@ -226,7 +226,7 @@ struct PortEditor: View {
     }
 
     private func flag(_ title: String, _ f: PortFlags) -> some View {
-        Toggle(title, isOn: Binding(get: { port.flags.contains(f) }, set: { $0 ? port.flags.insert(f) : port.flags.remove(f) }))
+        Toggle(title, isOn: Binding(get: { port.flags.contains(f) }, set: { if $0 { port.flags.insert(f) } else { port.flags.remove(f) } }))
     }
 }
 

@@ -74,6 +74,8 @@ public enum Decoded<E: RawRepresentable & Sendable>: Sendable where E.RawValue =
     }
 }
 
+extension Decoded: Equatable where E: Equatable {}
+
 public struct StatusFlags: OptionSet, Sendable {
     public let rawValue: UInt16
     public init(rawValue: UInt16) { self.rawValue = rawValue }

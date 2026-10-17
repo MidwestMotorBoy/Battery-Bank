@@ -22,8 +22,8 @@ final class PackModel: ObservableObject {
     @Published var pairingWindowOpen: Bool = false
 
     // MARK: Ports
-    @Published var usb1 = Port()
-    @Published var usb2 = Port()
+    @Published var usb1 = MonolithKit.Port()
+    @Published var usb2 = MonolithKit.Port()
 
     // MARK: Temperatures (°C). nil = broken. notFitted hides the slot.
     @Published var tempC: [Double?] = [23.5, 23.4, 23.8, 23.6, 24.0, 31.0, 28.0, 25.5, nil, nil]

@@ -25,6 +25,7 @@ app/**/.build/
 app/**/.swiftpm/
 app/**/xcuserdata/
 app/**/DerivedData/
+app/build/
 app/**/*.xcuserstate
 app/*.xcodeproj
 app/**/Info.plist
