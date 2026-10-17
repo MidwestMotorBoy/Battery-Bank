@@ -3950,7 +3950,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -3983,7 +3983,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25819"
+		(property "LCSC" "C25792"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -3994,7 +3994,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4702T5E"
+		(property "MPN" "0402WGF4702TCE"
 			(at 264.16 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -4719,7 +4719,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 55.88 245.618 90)
 			(hide yes)
 			(show_name no)
@@ -4752,7 +4752,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23138"
+		(property "LCSC" "C25104"
 			(at 55.88 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -4763,7 +4763,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF3300T5E"
+		(property "MPN" "0402WGF3300TCE"
 			(at 55.88 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -5062,7 +5062,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5095,7 +5095,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25741"
 			(at 276.86 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5106,7 +5106,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0402WGF1003TCE"
 			(at 276.86 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5241,7 +5241,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u 16V"
+		(property "Value" "4.7u 10V"
 			(at 132.04 106.24 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5251,7 +5251,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 140.665 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -5284,7 +5284,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C19666"
+		(property "LCSC" "C23733"
 			(at 139.7 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -5295,7 +5295,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10A475KO8NNNC"
+		(property "MPN" "CL05A475MP5NRNC"
 			(at 139.7 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -5352,7 +5352,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 86.36 245.618 90)
 			(hide yes)
 			(show_name no)
@@ -5396,7 +5396,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
+		(property "LCSC" "C17168"
 			(at 86.36 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -5407,7 +5407,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
+		(property "MPN" "0402WGF0000TCE"
 			(at 86.36 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -5541,7 +5541,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 231.902 190.5 90)
 			(hide yes)
 			(show_name no)
@@ -5574,7 +5574,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22978"
+		(property "LCSC" "C25890"
 			(at 233.68 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5585,7 +5585,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF3301T5E"
+		(property "MPN" "0402WGF3301TCE"
 			(at 233.68 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -5642,7 +5642,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 124.46 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -5675,7 +5675,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 124.46 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -5686,7 +5686,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 124.46 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -5908,7 +5908,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 218.44 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -5941,7 +5941,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
+		(property "LCSC" "C17168"
 			(at 218.44 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -5952,7 +5952,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
+		(property "MPN" "0402WGF0000TCE"
 			(at 218.44 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6020,7 +6020,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 247.142 190.5 90)
 			(hide yes)
 			(show_name no)
@@ -6053,7 +6053,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22978"
+		(property "LCSC" "C25890"
 			(at 248.92 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -6064,7 +6064,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF3301T5E"
+		(property "MPN" "0402WGF3301TCE"
 			(at 248.92 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -6851,7 +6851,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 124.46 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -6884,7 +6884,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 124.46 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -6895,7 +6895,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 124.46 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -7117,7 +7117,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 124.46 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -7150,7 +7150,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 124.46 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -7161,7 +7161,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 124.46 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -8084,7 +8084,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 152.4 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -8117,7 +8117,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25741"
 			(at 152.4 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -8128,7 +8128,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0402WGF1003TCE"
 			(at 152.4 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -12892,7 +12892,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 295.91 134.62 0)
 			(hide yes)
 			(show_name no)
@@ -12925,7 +12925,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 295.91 134.62 0)
 			(hide yes)
 			(show_name no)
@@ -12936,7 +12936,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 295.91 134.62 0)
 			(hide yes)
 			(show_name no)
@@ -13004,7 +13004,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 295.91 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -13037,7 +13037,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 295.91 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -13048,7 +13048,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 295.91 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -13116,7 +13116,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 295.91 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -13149,7 +13149,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C11702"
 			(at 295.91 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -13160,7 +13160,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0402WGF1001TCE"
 			(at 295.91 160.02 0)
 			(hide yes)
 			(show_name no)

@@ -607,6 +607,35 @@ Found while checking against datasheets:
     - **Kept as extended (no basic part fits):** the ICs, FETs, inductors, USB-C connectors, sense resistors, polymer/hybrid bulk, TVS2200, LRB520S bootstrap diodes (the basic Schottkys leak 100–500× more), the 0.1 % charger FB divider (sets charge voltage) and R409 137k (ACOV).
     - Board fields refreshed by `netlist_to_board.py` only (no placement changes); DRC parity 0. ERC unchanged.
 
+45. **Smaller passives (2026-10-16).** Each resistor and capacitor moves to the smallest package that keeps its rating, with two rules: nothing smaller than 0402, and no JLC basic part becomes extended. 160 parts change footprint (113 symbols; the port sheet counts twice). Applied by `tools/downsize_passives.py` (one-shot). The netlist connectivity is unchanged, ERC is unchanged (8), extended parts stay at 27, and the cost is **$108.49 → $107.93 per board** at 2 boards. Part classes and MPNs were checked against JLC's parts API the same day.
+    - **0603 → 0402, all basic:**
+
+      | Group | Part | Notes |
+      |---|---|---|
+      | 42 × 0.1 µF 50 V | C307331 | Same rating. C430/C438 (hot-loop HF) get lower ESL at 0402. |
+      | C450/C550 10 nF | C15195 | |
+      | C452/C552 1 µF | C52923, 25 V | LDO_3V3 rail |
+      | C405/C505 10 µF | C15525, 6.3 V | LDO_1V5 rail |
+      | C301 4.7 µF | C23733, 10 V | 3V3_MCU; about half the capacitance remains at 3.3 V |
+
+      Every basic resistor value with a basic 0402 part (UNI-ROYAL 0402WGF) moves too: 0R, 10R, 49.9, 100, 330, 1k, 3.3k, 4.7k, 5.1k, 10k, 22k, 47k, 51k, 100k and 1M. That includes R411/R511 10k and R434/R534 22k (both from 0805). The 0R parts that move are R1–R4, R202, R203, R307, R312 and R440/R540. The 10R parts that move are R425/R426/R428/R429 (the sense filters) and their port 2 copies.
+    - **One size down, basic:**
+      - C205, C403/C404 and their port 2 copies, 10 µF 25 V: 0805 → 0603 (C96446).
+      - C409/C509 1 µF 50 V on PPHV: 0805 → 0603 (C15849, X5R).
+      - C410/C411 and their port 2 copies on REGN/DRV_SUP: 0805 → 0603 4.7 µF 16 V (C19666).
+      - C105 (PBI) and C206 (PACK_LP), 2.2 µF 50 V: 1206 → 0805 (C377773, X5R).
+      - C204 (LDO_IN), 10 µF 50 V: 1206 → 0805 (GRM21BR61H106KE43L, C440198).
+      - R433/R533 120k: 0805 preferred → 0603 basic (C25808).
+    - **Extended parts kept extended:**
+      - R418/R419 and their port 2 copies, the 0.1 % FB divider: 0805 → 0402 Panasonic ERA2AEB104X/103X (C445619/C191915). Both now come from one series, 0.1 % and 25 ppm/°C, so the ratio tracks.
+      - R409/R509 137k: → 0402 (C32298).
+    - **Kept as they were, and why:**
+      - 0402 would turn these basic parts extended: 1.8k, 3.6k, 5.6k, 9.1k, 220k, 470k, 10M, R410/R412 40.2k (preferred), C414/C417 0.47 µF and C439/C539 33 nF.
+      - 0402 derates too far: C407/C507 (10 µF on PP5V) and C207 22 µF (TPS62177 output; the only basic 0603 is 6.3 V).
+      - No basic part in a smaller case: C406/C506 (4.7 µF 50 V on VBUS). C444/C445 and their port 2 copies (5 V buck input at about 17 V) stay 1206 to keep effective capacitance and ripple rating.
+      - Kept large for function or rework: R101–R104 and R201 (they carry current), R420/R520 (gate-drive supply), the gate/BTST 0R tuning links R444–R449 and their port 2 copies, the 0805 rail links R207/R301/R401/R501, the shunts, the 1206/1210 bulk caps and the electrolytics.
+    - **Board:** not updated yet. Run Tools → Update PCB from Schematic. That replaces the footprints in place, but the pads of parts already routed will no longer meet their traces.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).
