@@ -75,6 +75,17 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
 - Thermal vias inside exposed pads got thermal-relief rings and pinched planes: set `(zone_connect 2)` (solid) on
   those pads in the footprint.
 - Refill zones before DRC (`kicad-cli` DRC refills; scripts must call the filler).
+- Stitching-via arrays: after the fill, remove any via that doesn't land in its net's fill (or a same-net pad) on
+  both F and B. Holder pegs, mounting holes and pad clearances leave dead spots that a grid can't see.
+- Power-pour vias: set `via.SetRemoveUnconnected(True)` so In1/In4 clear the hole (0.15 + 0.2 mm), not the pad. A
+  0.6/0.3 mm via grid then needs only ~1.0 mm pitch for a 0.3 mm plane web; with rings kept it needs 1.3 mm.
+  `check_routing_rules.py` measures antipads the same way. Also call `via.SetKeepStartEnd(True)`: a scripted fill
+  runs before connectivity is built, so without it the filler treats the via's F/B rings as unused, clears only
+  the hole, and DRC then reports zone-to-via clearance errors.
+- Items from `board.GetConnectivity().GetConnectedItems(item)` (the whole connected cluster) come back as base
+  wrappers: call `.Cast()` before using type-specific methods (a via otherwise reports `GetClass() == "PCB_VIA"`
+  but has no `GetWidth(layer)`). Ratsnest edges themselves aren't exposed to python, so build the missing
+  connections from these clusters: per net, group pads into islands and join them nearest-first.
 
 ## 5. Net ties and rule areas
 
@@ -99,6 +110,8 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
 - **kicad-cli and pcbnew saves rewrite `<project>.kicad_pro`** (key order, defaults, sometimes lost custom rules):
   back it up before and restore after, or the next DRC runs with default rules. If DRC suddenly shows copper-edge,
   clearance or drill errors everywhere, compare the `.kicad_pro` against git first.
+- **kicad-cli lists at most 499 unconnected items** however many there are. Read the true count from pcbnew:
+  `board.BuildConnectivity(); board.GetConnectivity().GetUnconnectedCount(False)`.
 - Render PNGs (`scripts/render_board.py`) and look at them; the browser pane can't open local SVGs, PNGs work with
   the image viewer.
 - If KiCad has the board open (`~board.kicad_pcb.lck`), tell the user to revert/reload before saving after a

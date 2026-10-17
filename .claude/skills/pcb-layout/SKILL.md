@@ -32,7 +32,7 @@ decisions about where the return current will flow — so ask that question firs
 | RF and antenna modules | `references/rf-and-antennas.md` | BLE/Wi-Fi modules, chip antennas, matching networks, 50 Ω feeds |
 | ESD, TVS and connectors | `references/esd-and-connectors.md` | Placing TVS/ESD parts, USB-C/headers, cable entry |
 | Manufacturing (DFM/DFA) | `references/dfm-jlcpcb.md` | Rules, vias, mask, paste, fiducials, panel, before ordering |
-| Routing discipline (house rules) | `references/routing-discipline.md` | **Before any routing**: inner Manhattan layer pair, outer layers local only, fan-out first with 3 mm clear, planes untouchable, GND via at every layer change |
+| Routing discipline (house rules) | `references/routing-discipline.md` | **Before any routing**: inner Manhattan layer pair, outer layers local only, fan-out first with 1.5 mm clear, planes untouchable, GND via at every layer change |
 | KiCad practice and scripting | `references/kicad-practice.md` | Zones, net classes, custom rules, net ties, python/pcbnew automation, DRC |
 | Review checklist | `references/review-checklist.md` | Before routing, after routing, before ordering, when asked to review a board |
 
@@ -69,7 +69,7 @@ Placement decides 80 % of layout quality: a hot loop or a Kelvin connection cann
 Read `routing-discipline.md` first; its rules hold at every step below.
 
 0. **Fan out every dense IC** (more than 20 pins, or pitch under 0.8 mm): an escape and a via per signal pin,
-   inside the 3 mm area kept clear at placement. Do this before any other net, so the vias of other nets can't
+   inside the 1.5 mm area kept clear at placement. Do this before any other net, so the vias of other nets can't
    crowd it.
 1. **Hot loops and switch nodes** (power-stage copper, as compact pours).
 2. **High-current paths** (pours on outer layers, mirrored, stitched).
@@ -97,7 +97,7 @@ These are summaries; the reference files give the reasoning, numbers and sources
   AGND), pour it locally on the outer and signal layers, never on a plane, and join it at exactly one point.
 - **Inner signal layers are a Manhattan pair**: L3 vertical, L4 horizontal, direction changes only by a via to
   the partner. Outer layers are free-angle but only for escapes, short local links, decoupling and power.
-- **Dense ICs get 3 mm clear all round** (decoupling caps excepted), and they are fanned out before any other
+- **Dense ICs get 1–1.5 mm clear all round** (only decoupling caps inside; bootstrap/filter/FB parts just outside), and they are fanned out before any other
   net is routed.
 - **Every signal layer gets an adjacent reference plane, close.** A trace's return runs in the nearest plane;
   when a trace changes layers and the reference plane changes, put a ground (stitching) via within 1 mm of the
@@ -138,7 +138,7 @@ All scripts run with KiCad's bundled python (it has `pcbnew`, `PIL`, `numpy`):
 |---|---|
 | `scripts/render_board.py board.kicad_pcb out.png [x0 y0 x1 y1] [px_per_mm] [--layers F.Cu,In1.Cu,...]` | PNG of courtyards, pads coloured by net, refs, zones (rule areas red), tracks and vias of the chosen layers. Coordinates relative to the board outline's top-left. Look at it with the image viewer. |
 | `scripts/drc_summary.py board.kicad_pcb [--baseline report.rpt]` | Runs `kicad-cli pcb drc --schematic-parity`, restores the `.kicad_pro` (kicad-cli rewrites it), prints violation counts by type, and the difference from a baseline report. |
-| `scripts/check_routing_rules.py board.kicad_pcb [--vertical In2.Cu --horizontal In3.Cu --planes In1.Cu,In4.Cu]` | Checks `routing-discipline.md`: inner-layer direction, tracks/other-net zones/via-row slots on the planes, long outer-layer signal runs, signal vias without a GND via within 1 mm, and parts inside the 3 mm fan-out area of dense ICs. Run it on the placement (fan-out room) and after every routing stage. |
+| `scripts/check_routing_rules.py board.kicad_pcb [--vertical In2.Cu --horizontal In3.Cu --planes In1.Cu,In4.Cu]` | Checks `routing-discipline.md`: inner-layer direction, tracks/other-net zones/via-row slots on the planes, long outer-layer signal runs, signal vias without a GND via within 1 mm, and parts inside the fan-out ring of dense ICs (1.5 mm; 1 mm for small fine-pitch parts). Run it on the placement (fan-out room) and after every routing stage. |
 | `scripts/net_extents.py board.kicad_pcb [regex]` | Pad count, bounding box and refs per net: the starting point for a pour plan and for sizing high-current paths. |
 
 Read `kicad-practice.md` before scripting board edits: KiCad's python has sharp edges (saves rewrite the project

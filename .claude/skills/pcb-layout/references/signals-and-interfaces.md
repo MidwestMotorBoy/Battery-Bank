@@ -94,7 +94,7 @@ Contents: 1. Routing order and layer choice · 2. Kelvin sense and analog · 3. 
 
 ## 10. Fine-pitch escape and fan-out
 
-- Plan escapes at placement: 3 mm clear round dense ICs (`routing-discipline.md` §3), vias in staggered columns
+- Plan escapes at placement: 1.5 mm clear round dense ICs (`routing-discipline.md` §3), vias in staggered columns
   (~1 mm pitch), 0.15 mm tracks passing between. Fan out these parts before routing anything else.
 - At 0.4–0.5 mm pitch the fab's 2 oz minimum track/space often won't fit a track between pads on outer layers:
   escape outward, or drop to an inner (thinner copper) layer through a via.

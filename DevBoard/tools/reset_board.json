@@ -1,0 +1,21 @@
+{
+ "swaps": [
+  {
+   "ref": "C432",
+   "fp": "Capacitor_SMD:CP_Elec_6.3x7.7",
+   "x": 193.05,
+   "y": 74.7,
+   "rot": 0.0,
+   "back": false
+  },
+  {
+   "ref": "C532",
+   "fp": "Capacitor_SMD:CP_Elec_6.3x7.7",
+   "x": 193.05,
+   "y": 110.7,
+   "rot": 0.0,
+   "back": false
+  }
+ ],
+ "new": []
+}

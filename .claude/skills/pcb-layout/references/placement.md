@@ -84,9 +84,15 @@ different offsets, the "identical" blocks won't be.
 
 ## 7. Placement-for-routing checks (do these before routing)
 
+- Orient each IC so each side faces where its nets go. For every side, list its pins' destinations; if a side's
+  pins all leave the opposite way, rotate. On this board, turning a USB-PD controller 90° pointed its CC/SBU side
+  at the CC protector (same pin order: four straight links), its VBUS/PPHV side at the power path, and its I2C
+  side at the charger and MCU. No router setting came close to that.
+- Put a protection or interface IC between the two things it joins (controller ↔ connector), with its two sides
+  facing them, and check that its pin order matches both, so the links don't have to cross.
 - Every IC pin row and connector pin row still has an escape path: no power copper, TVS or bulk cap parked across
   a pin row. Leave the area in front of connector signal pins free.
-- ICs with more than 20 pins or pitch under 0.8 mm keep **3 mm clear all round** their courtyard (decoupling caps
+- ICs with more than 20 pins or pitch under 0.8 mm keep **1.5 mm clear all round** their courtyard (decoupling caps
   excepted, at the pins). Plan one via per signal pin in staggered columns, and fan them out before any other
   routing. `check_routing_rules.py` lists parts inside that area (`routing-discipline.md` §3).
 - Gate-driver pin order vs FET gate positions: count crossings; plan which signals take an inner layer.

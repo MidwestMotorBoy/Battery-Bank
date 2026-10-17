@@ -41,20 +41,25 @@ fine-pitch parts first · 4. The ground planes are untouchable · 5. Reference c
   near the part and travels in Manhattan style.
 - Why: the 2 oz outer layers need wider minimum gaps, so traces there waste area. They also carry the power
   pours, sit nearest to probes, fingers and ESD, and radiate more than buried layers.
-- `check_routing_rules.py` flags outer-layer signal runs longer than `--outer-max` (default 15 mm) for review.
+- Trace length is a goal, never a hard rule (the user's words). `check_routing_rules.py` lists outer-layer signal
+  runs longer than `--outer-max` (default 15 mm) as advisory notes to review, not as violations.
   Power, gate-drive and Kelvin nets that must stay at their parts are exceptions, and you can whitelist them.
 
 ## 3. Fan out fine-pitch parts first
 
-- **Keep at least 3 mm clear around any IC with more than 20 pins, or with a pin pitch under 0.8 mm.** The clear
+- **Keep 1–1.5 mm clear around any IC with more than 20 pins (1.5 mm), and ~1 mm round smaller ICs with a pin
+  pitch under 0.8 mm.** (The user first set 3 mm, then cut it to 1–1.5 mm: 3 mm cost too much board space and
+  placement time for little routing gain.) The clear
   area is measured from the IC's courtyard. No other part's courtyard enters it, so every pin has room to
   escape and drop a via.
-- **Exception: decoupling caps** go as close to their pins as DRC allows, inside the 3 mm area. The checker
+- **Exception: decoupling caps** go as close to their pins as DRC allows, inside the ring. Nothing else is exempt: bootstrap, sense-filter and FB parts sit just
+  outside the ring (still within a few mm of their pins), because a part parked against a pin row blocks every
+  escape behind it and the router then fails there. The checker
   treats a cap that shares a supply/ground net with the IC as decoupling.
 - **Fan out these ICs before routing any other nets.** Give each signal pin a short escape and a via, staggered,
   so each pin can reach L3/L4. Then route the rest of the board. If fan-out comes later, the vias of other nets
   fill the space, and the dense part becomes unroutable.
-- This extends `placement.md` §7 (escape channels): the rule sets the channel at 3 mm all round.
+- This extends `placement.md` §7 (escape channels): the rule sets the channel at 1–1.5 mm all round.
 
 ## 4. The ground planes are untouchable
 
@@ -87,16 +92,33 @@ fine-pitch parts first · 4. The ground planes are untouchable · 5. Reference c
 - On the outer layers, keep the router to short escapes. Cap the outer-layer path length for signal nets, and
   give each one a via down to the Manhattan pair near its pad.
 - Put the plane layers out of bounds for the router. Never pass them as routing layers.
-- At every L3 ↔ L4 via and every outer ↔ inner via, place or reuse a GND via within 1 mm. Reserve the spot when
-  the via is placed, before neighbouring tracks take the space.
-- Order: fan out the fine-pitch ICs (section 3) → power and critical nets (SKILL.md order) → Manhattan routing
-  of the rest → fills and stitching.
+- Only a via whose net leaves on both sides of the stack needs a GND via within 1 mm: F and L3 both reference L2;
+  L4 and B both reference L5. An F ↔ L3 via needs none. Choose the GND via site with the route's own copper in
+  mind, before drawing it, then place it right after. Otherwise the route's own tracks take the room.
+- Order (each step claims space the next would otherwise take):
+  1. fan-out of the dense ICs (section 3);
+  2. hand-planned links where pins face each other (e.g. a PD controller to its CC protector);
+  3. Kelvin pairs, routed pad to pad from the sense resistor's own pads (never from its pour, which could start
+     anywhere), the second leg drawn toward the first;
+  4. gate-drive pairs on F and L3 only (one reference plane, so no GND reference vias), drive beside return,
+     kept clear of the inductor and switch node;
+  5. dense corners on a fine grid in a small region;
+  6. the rest of the board;
+  7. fills and stitching.
+- Grid routers lose 0.4-0.5 mm-pitch pins: the clearance halos of the neighbouring pins cover every grid cell
+  of the pin. Use exact escape stubs instead, checked against real shapes: straight out of the package, inward
+  onto a same-net exposed pad, or a 45-degree dogleg past a neighbouring part. Offer them as extra route ends
+  and lay one only when the route uses it. For a whole dense corner, run the router on that region alone at
+  0.025 mm.
+- When a connection fails on its own (nothing else routed), the cause is placement or a fixed obstacle, not
+  congestion. Map failures to parts: when one part dominates, re-place or re-orient it so each side faces where
+  its nets go. That beat every router tweak here.
 
 ## 7. Checklist
 
 - [ ] No segment on L3 that isn't vertical; none on L4 that isn't horizontal.
 - [ ] No tracks and no non-GND zones on L2/L5; no via rows that slot them.
-- [ ] No long signal runs on L1/L6 (all flagged ones reviewed).
+- [ ] Long signal runs on L1/L6 reviewed (advisory: length is a goal, not a rule).
 - [ ] Every signal layer change has a GND via within 1 mm.
-- [ ] Every IC with more than 20 pins or a pitch under 0.8 mm has 3 mm clear around it (decoupling excepted),
+- [ ] Every IC with more than 20 pins or a pitch under 0.8 mm has 1–1.5 mm clear around it (decoupling excepted),
       and was fanned out first.

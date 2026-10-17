@@ -19,7 +19,7 @@ what's wrong and why (the physics), and the fix.
 - [ ] Temperature sensors on the copper they measure.
 - [ ] Test points for rails, switch nodes (stub off inductor far side), key signals; ground points beside probes.
 - [ ] Repeated blocks identical by translation.
-- [ ] Dense ICs (>20 pins or <0.8 mm pitch) have 3 mm clear round them, decoupling excepted
+- [ ] Dense ICs (>20 pins or <0.8 mm pitch) have 1.5 mm clear round them (1 mm for small fine-pitch parts), decoupling excepted
       (`check_routing_rules.py`, fan-out section empty).
 - [ ] Courtyards clean; DRC + schematic parity clean; placement render reviewed.
 

@@ -34,7 +34,7 @@ S = float(args[6]) if len(args) >= 7 else 8.0
 copper = [l for l in board.GetEnabledLayers().CuStack()]
 if "layers" in opts:
     want = set(opts["layers"].split(","))
-    copper = [l for l in copper if board.GetLayerName(l) in want]
+    copper = [l for l in copper if board.GetStandardLayerName(l) in want or board.GetLayerName(l) in want]
 
 img = Image.new("RGB", (max(1, int((x1 - x0) * S)), max(1, int((y1 - y0) * S))), (18, 18, 24))
 d = ImageDraw.Draw(img, "RGBA")

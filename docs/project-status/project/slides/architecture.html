@@ -1,0 +1,30 @@
+<section id="architecture" data-transition="fade" style="background:#F5F3EC;color:#1C2420;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#9A5A0C;letter-spacing:3px;text-transform:uppercase;font-weight:600">The dev board</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">One pack bus, two identical ports</h2>
+</div>
+<div style="display:flex;align-items:center;gap:0px">
+<div style="width:300px;display:flex;flex-direction:column;gap:8px;background:#15201B;padding:32px;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:32px;font-weight:700;color:#F5F3EC">Cells</h3>
+<p style="font-size:24px;color:#C9D1CB;line-height:1.4">4 × 21700 holders, 4S, one NTC per cell</p>
+</div>
+<x-connector style="width:72px;color:#9A5A0C;border-width:4px" head="end"></x-connector>
+<div style="width:380px;display:flex;flex-direction:column;gap:8px;background:#FFFDF8;padding:32px;border:2px solid #15201B;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:32px;font-weight:700">Gauge and protection</h3>
+<p style="font-size:24px;color:#4B5650;line-height:1.4">BQ40Z50-R2, CHG/DSG FETs, 1 mΩ shunt, BQ294700 with chemical fuse</p>
+</div>
+<x-connector style="width:72px;color:#9A5A0C;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDF8;padding:28px 32px;border:2px solid #15201B;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:32px;font-weight:700">USB-C port 1 and port 2</h3>
+<p style="font-size:24px;color:#4B5650;line-height:1.4">TPS25751D PD controller, BQ25756 buck-boost charger, TPS62933 5 V, TPD4S201 protection with liquid detection</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#E9E5DA;padding:28px 32px;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:32px;font-weight:700">MCU and supply</h3>
+<p style="font-size:24px;color:#4B5650;line-height:1.4">CC2340R5MODA (BLE) on I2C to the gauge and PD controllers; TPS62177 3.3 V; INA190 sleep-current meter</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6B756F">6</p>
+<aside>Each TPS25751 is the I2C master for its own BQ25756; the MCU reaches the chargers through the PD controller’s passthrough commands. Every one of the CC2340’s 10 usable GPIOs is assigned. The board is 196 by 115 mm: holders on the left, gauge column, MCU band along the top, one 36 mm band per port on the right.</aside>
+</section>
