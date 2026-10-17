@@ -67,19 +67,29 @@ final class PackStore: ObservableObject {
     @Published private(set) var lastUpdate: Date?
     @Published private(set) var raw: [CBUUID: Data] = [:]
     @Published private(set) var debugLines: [String] = []
+    /// Connected, but no Status for longer than the spec's 10 s heartbeat allows (§4.2): the pack
+    /// or its radio has hung without the link dropping. Treated like being out of range.
+    @Published private(set) var silent = false
+
+    private static let heartbeatTimeout: TimeInterval = 15
+    private var lastStatusAt: Date?
+    private var watchdog: Timer?
 
     let ble = BLEClient()
     private var demo: DemoPack?
 
     init() {
         ble.store = self
+        watchdog = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated { self?.checkHeartbeat() }
+        }
         #if targetEnvironment(simulator)
         startDemo()   // no Bluetooth in the Simulator
         #endif
     }
 
     /// Live values are flowing; otherwise the UI greys the last known values.
-    var isLive: Bool { link == .connected || link == .demo }
+    var isLive: Bool { (link == .connected && !silent) || link == .demo }
     var hasPack: Bool { version != nil }
     var isDemo: Bool { demo != nil }
     private var backend: PackBackend? { demo ?? (link == .connected ? ble : nil) }
@@ -133,7 +143,17 @@ final class PackStore: ObservableObject {
 
     // MARK: Fed by backends
 
-    func setLink(_ state: LinkState) { link = state }
+    func setLink(_ state: LinkState) {
+        if state == .connected && link != .connected { lastStatusAt = Date() }   // start the heartbeat clock
+        link = state
+        checkHeartbeat()
+    }
+
+    private func checkHeartbeat() {
+        let late = lastStatusAt.map { Date().timeIntervalSince($0) > Self.heartbeatTimeout } ?? false
+        let now = link == .connected && late
+        if now != silent { silent = now }
+    }
     func setPackName(_ name: String) { packName = name }
 
     func found(_ pack: DiscoveredPack) {
@@ -146,7 +166,8 @@ final class PackStore: ObservableObject {
         raw[uuid] = data
         switch uuid {
         case MonolithUUID.protocolVersion: version = ProtocolVersion(data: data) ?? version
-        case MonolithUUID.status: if let v = Status(data: data) { status = v; lastUpdate = Date() }
+        case MonolithUUID.status:
+            if let v = Status(data: data) { status = v; lastUpdate = Date(); lastStatusAt = lastUpdate; checkHeartbeat() }
         case MonolithUUID.ports: if let v = Ports(data: data) { ports = v; lastUpdate = Date() }
         case MonolithUUID.temperatures: if let v = Temperatures(data: data) { temperatures = v; lastUpdate = Date() }
         case MonolithUUID.settings: settings = Settings(data: data)
@@ -165,6 +186,6 @@ final class PackStore: ObservableObject {
 
     private func clear() {
         version = nil; status = nil; ports = nil; temperatures = nil
-        settings = nil; gauge = nil; life = nil; lastUpdate = nil; raw = [:]; debugLines = []
+        settings = nil; gauge = nil; life = nil; lastUpdate = nil; lastStatusAt = nil; silent = false; raw = [:]; debugLines = []
     }
 }

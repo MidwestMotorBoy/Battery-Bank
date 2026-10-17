@@ -37,7 +37,7 @@ struct LinkBadge: View {
 
     var body: some View {
         let (text, color): (String, Color) = switch store.link {
-        case .connected: ("Connected", .green)
+        case .connected: store.silent ? ("No data", .orange) : ("Connected", .green)
         case .demo: ("Demo", .blue)
         case .connecting: ("Reconnecting…", .orange)
         default: ("Offline", .gray)

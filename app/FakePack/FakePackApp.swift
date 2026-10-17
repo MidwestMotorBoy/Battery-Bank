@@ -5,6 +5,7 @@ import SwiftUI
 @main
 @MainActor
 struct FakePackApp: App {
+    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @StateObject private var model: PackModel
     @StateObject private var server: PeripheralServer
 
@@ -21,4 +22,9 @@ struct FakePackApp: App {
                 .environmentObject(server)
         }
     }
+}
+
+/// Closing the window quits, so the fake pack never keeps advertising unseen.
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
 }
