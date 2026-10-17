@@ -68,9 +68,10 @@ final class PeripheralServer: NSObject, ObservableObject {
         let command = ch(MonolithUUID.command, [.write], .writeEncryptionRequired)
         commandResult = ch(MonolithUUID.commandResult, [.notify], .readable)
         let gaugeHealth = ch(MonolithUUID.gaugeHealth, .read, .readable)
+        let packLife = ch(MonolithUUID.packLife, .read, .readable)
         debugLog = ch(MonolithUUID.debugLog, [.notify], .readable)
         let monolith = CBMutableService(type: MonolithUUID.monolithService, primary: true)
-        monolith.characteristics = [protoVersion, status, ports, temperatures, settings, command, commandResult, gaugeHealth, debugLog]
+        monolith.characteristics = [protoVersion, status, ports, temperatures, settings, command, commandResult, gaugeHealth, packLife, debugLog]
 
         manager.add(battery)
         manager.add(dis)
@@ -169,6 +170,7 @@ extension PeripheralServer: CBPeripheralManagerDelegate {
             case MonolithUUID.temperatures: data = model.temperaturesRecord().encode()
             case MonolithUUID.settings: data = model.settings.encode()
             case MonolithUUID.gaugeHealth: data = model.gaugeHealthRecord().encode()
+            case MonolithUUID.packLife: data = model.packLifeRecord().encode()
             default: data = nil
             }
             guard let data else { peripheral.respond(to: request, withResult: .readNotPermitted); return }

@@ -81,4 +81,32 @@ final class RoundTripTests: XCTestCase {
     func testUUIDs() {
         XCTAssertEqual(MonolithUUID.status.uuidString, "DDE70102-422D-4970-B281-8D5F2C2119C3")
     }
+
+    func testPackLifeRoundTripAndLength() {
+        var l = PackLife()
+        l.manufactureDate = PackLife.packDate(year: 2026, month: 11, day: 3)
+        l.runtime2h = 1_234; l.bandTime2h = [3, 40, 200, 500, 300, 180, 1]
+        l.thresholdsC = [0, 10, 20, 25, 45, 55]
+        l.cellMaxMV = 4_201; l.cellMinMV = 3_012; l.maxDeltaCellMV = 41
+        l.maxChargeMA = 5_640; l.maxDischargeMA = -7_900
+        l.maxTempCellC = 47; l.minTempCellC = -4; l.maxTempFETC = 61
+        l.shutdowns = 2; l.fullCharges = 37; l.safetyEvents = 1; l.lastSafetyCycle = 18
+        l.qmaxUpdates = 6; l.maxBalanceTime2h = 9; l.collecting = true
+        let d = l.encode()
+        XCTAssertEqual(d.count, 48)
+        XCTAssertEqual(PackLife(data: d), l)
+        XCTAssertEqual(PackLife(data: d)?.manufactured, DateComponents(year: 2026, month: 11, day: 3))
+        XCTAssertEqual(l.range(of: .ut).0, nil); XCTAssertEqual(l.range(of: .ut).1, 0)
+        XCTAssertEqual(l.range(of: .ot).0, 55); XCTAssertEqual(l.range(of: .ot).1, nil)
+        XCTAssertEqual(d[34], UInt8(bitPattern: 47)); XCTAssertEqual(d[35], UInt8(bitPattern: -4))
+    }
+
+    func testPackLifeDefaultsMeanNotMeasured() {
+        let l = PackLife(data: PackLife().encode())!
+        XCTAssertFalse(l.hasCellVoltageExtremes)
+        XCTAssertFalse(l.hasCellTempExtremes)
+        XCTAssertNil(l.lastSafetyCycle)
+        XCTAssertNil(l.manufactured)
+        XCTAssertNotNil(PackLife(data: Data([0, 0])))   // short payload still parses
+    }
 }

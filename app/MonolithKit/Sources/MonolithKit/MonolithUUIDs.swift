@@ -29,6 +29,7 @@ public enum MonolithUUID {
     public static let commandResult = custom(0x0107)
     public static let gaugeHealth = custom(0x0108)
     public static let debugLog = custom(0x0109)
+    public static let packLife = custom(0x010A)   // 1.1
 
     public static let localName = "Monolith"
     public static let manufacturerNameValue = "Monolith"
@@ -36,7 +37,7 @@ public enum MonolithUUID {
 
 public enum MonolithProtocol {
     public static let major: UInt8 = 1
-    public static let minor: UInt8 = 0
+    public static let minor: UInt8 = 1
     /// Firmware requests this ATT MTU; no characteristic exceeds 48 bytes.
     public static let requestedMTU = 128
 }

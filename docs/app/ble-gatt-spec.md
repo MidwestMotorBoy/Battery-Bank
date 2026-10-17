@@ -8,7 +8,7 @@ This is the contract between the pack firmware (CC2340R5MODA, TI LPF3 SDK) and t
 
 - **Byte order:** little-endian, always.
 - **Fixed layouts, append-only.** Within a major version, fields are never moved, resized or re-typed. New fields are appended at the end. A reader must accept a value *longer* than it expects (ignore the tail) and must treat a value *shorter* than the fields it needs as "field not available", not as an error.
-- **Versioning:** `protocol_version` is `major.minor`. Minor bumps only append fields or add enum values. A major bump may change anything; the app refuses to show live data from a major it doesn't know.
+- **Versioning:** `protocol_version` is `major.minor`. Minor bumps only append fields, add characteristics or add enum values. A major bump may change anything; the app refuses to show live data from a major it doesn't know.
 - **Unknown enum values** are shown as "Unknown (n)", never crash, never hide the rest of the record.
 - **Invalid sentinel:** `0x7FFF` for a signed 16-bit field means "no reading / sensor broken". `0xFFFF` for an unsigned 16-bit field means "not available / not applicable".
 - **ATT MTU:** firmware requests a 128-byte MTU on connect (iOS normally grants 185). No characteristic is longer than 48 bytes, so everything still fits with the default 23-byte MTU if the exchange fails, except Temperatures (22 bytes) is at the limit by design.
@@ -54,6 +54,7 @@ Base UUID: `DDE7xxxx-422D-4970-B281-8D5F2C2119C3`. The `xxxx` slot is the short 
 | `DDE70107` | Command Result | N | 4 | §4.6 |
 | `DDE70108` | Gauge Health | R | 16 | §4.7 |
 | `DDE70109` | Debug Log | N | ≤ 48 | §4.8, dev builds only |
+| `DDE7010A` | Pack Life | R | 48 | §4.9, added in 1.1 |
 
 Type abbreviations: `u8/u16/u32` unsigned, `s16/s32` signed two's complement.
 
@@ -64,7 +65,7 @@ Type abbreviations: `u8/u16/u32` unsigned, `s16/s32` signed two's complement.
 | Off | Type | Field | Notes |
 |---|---|---|---|
 | 0 | u8 | `proto_major` | 1 |
-| 1 | u8 | `proto_minor` | 0 |
+| 1 | u8 | `proto_minor` | 1 (1.1) |
 | 2 | u8 | `fw_major` | firmware semver |
 | 3 | u8 | `fw_minor` | |
 | 4 | u8 | `fw_patch` | |
@@ -184,6 +185,42 @@ Slow-changing numbers from the BQ40Z50-R2 plus firmware's throttle constants. Re
 ### 4.8 Debug Log — `DDE70109`, notify, up to 48 bytes
 
 UTF-8 text, one line per notification, no terminator. Only compiled into dev firmware. The app shows it in a hidden developer screen.
+
+### 4.9 Pack Life — `DDE7010A`, read, 48 bytes (added in 1.1)
+
+The BQ40Z50-R2's Lifetime Data (TRM SLUUBK0 ch. 10; `ManufacturerAccess()` 0x0060–0x0064) condensed into one record, plus the pack's manufacture date. Firmware reads the five blocks on connect and when the app reads this characteristic, at most once a minute. Read on demand; no notify.
+
+The gauge only collects lifetime data while `ManufacturingStatus()[LF_EN]` = 1 and writes RAM to flash every 10 h, so a value can be up to 10 h behind and is lost on a full reset before a flush. Bit 0 of `life_flags` says whether collection is on. If it's off, the app says "not recorded" rather than showing zeros.
+
+| Off | Type | Field | Source / notes |
+|---|---|---|---|
+| 0 | u16 | `manufacture_date` | SBS `ManufacturerDate()` 0x1B: day + month·32 + (year − 1980)·512. 0 = not set |
+| 2 | u16 | `runtime_2h` | Block 3 Total FW Runtime, 2 h units |
+| 4 | u16 | `time_ut_2h` | Block 3 time below T1, 2 h units |
+| 6 | u16 | `time_lt_2h` | T1–T2 |
+| 8 | u16 | `time_stl_2h` | T2–T5 |
+| 10 | u16 | `time_rt_2h` | T5–T6 |
+| 12 | u16 | `time_sth_2h` | T6–T3 |
+| 14 | u16 | `time_ht_2h` | T3–T4 |
+| 16 | u16 | `time_ot_2h` | above T4 |
+| 18 | s8 × 6 | `temp_t1_c` … | the gauge's T1, T2, T5, T6, T3, T4 in that (ascending) order, °C, from data flash *Advanced Charge Algorithm › Temperature Ranges*, so the app labels the buckets without hard-coding them |
+| 24 | u16 | `cell_max_mv` | highest of Block 1 Cell 1–4 Max Voltage |
+| 26 | u16 | `cell_min_mv` | lowest of Block 1 Cell 1–4 Min Voltage; 0x7FFF (gauge default) = never measured |
+| 28 | u16 | `max_delta_cell_mv` | Block 1 Max Delta Cell Voltage (worst imbalance ever seen) |
+| 30 | s16 | `max_charge_ma` | Block 1 Max Charge Current |
+| 32 | s16 | `max_discharge_ma` | Block 1 Max Discharge Current, ≤ 0 |
+| 34 | s8 | `max_temp_cell_c` | Block 1 Max Temp Cell, °C. −128 = never measured |
+| 35 | s8 | `min_temp_cell_c` | Block 1 Min Temp Cell, °C. 127 = never measured |
+| 36 | s8 | `max_temp_fet_c` | Block 1 Max Temp FET, °C |
+| 37 | u8 | `shutdowns` | Block 2 No. of Shutdowns |
+| 38 | u16 | `full_charges` | Block 5 No. Valid Charge Term (charge terminations, i.e. reached full) |
+| 40 | u16 | `safety_events` | sum of the 12 safety event counters in Blocks 4–5 (COV, CUV, OCD1/2, OCC1/2, AOLD, ASCD, ASCC, OTC, OTD, OTF), saturating at 0xFFFF |
+| 42 | u16 | `last_safety_cycle` | cycle count at the most recent of those events. 0xFFFF = none |
+| 44 | u16 | `qmax_updates` | Block 5 No. of Qmax Updates (capacity re-learned) |
+| 46 | u8 | `max_balance_time_2h` | highest of Block 2 CB Time Cell 1–4, 2 h units (saturates at 255 = 510 h) |
+| 47 | u8 | `life_flags` | bit 0 `COLLECTING` (LF_EN); bits 1–7 reserved |
+
+The per-event-type counters stay on the gauge; read them with BQStudio when a pack comes back with a non-zero `safety_events`.
 
 ## 5. Enums and bitfields
 
@@ -310,3 +347,4 @@ The pack is potted; a bad or hostile update is the one fault that can't be fixed
 ## 9. Change log
 
 - 1.0 (2026-10-16): first draft; §8 OTA security added the same day.
+- 1.1 (2026-10-16): Pack Life characteristic `DDE7010A` (§4.9) from the gauge's Lifetime Data.

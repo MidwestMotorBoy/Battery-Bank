@@ -140,6 +140,24 @@ final class PackModel: ObservableObject {
         return t
     }
 
+    /// A pack about eight months into use: lots of room-temperature time, one cold trip, one hot car.
+    func packLifeRecord() -> PackLife {
+        var l = PackLife()
+        l.manufactureDate = PackLife.packDate(year: 2026, month: 2, day: 9)
+        l.thresholdsC = [0, 10, 20, 25, 45, 55]
+        l.bandTime2h = [6, 41, 310, 902, 655, 37, 0]
+        l.runtime2h = l.bandTime2h.reduce(0, +) + UInt16(uptimeS / 7200)
+        l.cellMaxMV = 4_196; l.cellMinMV = 3_088; l.maxDeltaCellMV = 34
+        l.maxChargeMA = 5_610; l.maxDischargeMA = -6_870
+        l.maxTempCellC = 46; l.minTempCellC = -6; l.maxTempFETC = 58
+        l.shutdowns = 1
+        l.fullCharges = cycleCount / 3 + (fullOncePending ? 0 : 1)
+        l.safetyEvents = 1; l.lastSafetyCycle = 7       // one OCD1 from a shorted cable
+        l.qmaxUpdates = 4; l.maxBalanceTime2h = 3
+        l.collecting = true
+        return l
+    }
+
     func gaugeHealthRecord() -> GaugeHealth {
         var g = throttle
         g.fullChargeMAh = fullChargeMAh; g.cycleCount = cycleCount; g.sohPct = sohPct

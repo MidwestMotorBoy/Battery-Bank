@@ -302,6 +302,95 @@ public struct GaugeHealth: Equatable, Sendable {
     }
 }
 
+/// Pack Life (spec §4.9, added in 1.1): the BQ40Z50-R2 Lifetime Data blocks condensed into 48 bytes.
+public struct PackLife: Equatable, Sendable {
+    /// Temperature bands of the gauge's lifetime timers, coldest first (TRM SLUUBK0 ch. 10).
+    public enum Band: Int, CaseIterable, Sendable { case ut = 0, lt, stl, rt, sth, ht, ot }
+
+    public var manufactureDate: UInt16 = 0      // SBS ManufacturerDate() packing; 0 = not set
+    public var runtime2h: UInt16 = 0
+    public var bandTime2h: [UInt16] = Array(repeating: 0, count: Band.allCases.count)
+    /// The gauge's T1, T2, T5, T6, T3, T4 in °C (ascending): band i spans thresholds[i-1]..thresholds[i].
+    public var thresholdsC: [Int8] = [0, 12, 20, 25, 30, 55]
+    public var cellMaxMV: UInt16 = 0
+    public var cellMinMV: UInt16 = 0x7FFF
+    public var maxDeltaCellMV: UInt16 = 0
+    public var maxChargeMA: Int16 = 0
+    public var maxDischargeMA: Int16 = 0        // ≤ 0
+    public var maxTempCellC: Int8 = -128
+    public var minTempCellC: Int8 = 127
+    public var maxTempFETC: Int8 = -128
+    public var shutdowns: UInt8 = 0
+    public var fullCharges: UInt16 = 0
+    public var safetyEvents: UInt16 = 0
+    public var lastSafetyCycle: UInt16? = nil
+    public var qmaxUpdates: UInt16 = 0
+    public var maxBalanceTime2h: UInt8 = 0
+    public var collecting: Bool = false
+
+    public init() {}
+
+    public init?(data: Data) {
+        var r = ByteReader(data)
+        guard let date = r.u16() else { return nil }
+        manufactureDate = date
+        runtime2h = r.u16() ?? 0
+        bandTime2h = Band.allCases.map { _ in r.u16() ?? 0 }
+        let defaults = thresholdsC
+        thresholdsC = defaults.map { d in r.u8().map { Int8(bitPattern: $0) } ?? d }
+        cellMaxMV = r.u16() ?? 0
+        cellMinMV = r.u16() ?? 0x7FFF
+        maxDeltaCellMV = r.u16() ?? 0
+        maxChargeMA = r.s16() ?? 0
+        maxDischargeMA = r.s16() ?? 0
+        maxTempCellC = r.u8().map { Int8(bitPattern: $0) } ?? -128
+        minTempCellC = r.u8().map { Int8(bitPattern: $0) } ?? 127
+        maxTempFETC = r.u8().map { Int8(bitPattern: $0) } ?? -128
+        shutdowns = r.u8() ?? 0
+        fullCharges = r.u16() ?? 0
+        safetyEvents = r.u16() ?? 0
+        lastSafetyCycle = (r.u16() ?? Sentinel.u16NotAvailable).nonSentinel
+        qmaxUpdates = r.u16() ?? 0
+        maxBalanceTime2h = r.u8() ?? 0
+        collecting = ((r.u8() ?? 0) & 1) != 0
+    }
+
+    public func encode() -> Data {
+        var w = ByteWriter()
+        w.u16(manufactureDate); w.u16(runtime2h)
+        for i in 0..<Band.allCases.count { w.u16(i < bandTime2h.count ? bandTime2h[i] : 0) }
+        for i in 0..<6 { w.u8(UInt8(bitPattern: i < thresholdsC.count ? thresholdsC[i] : 0)) }
+        w.u16(cellMaxMV); w.u16(cellMinMV); w.u16(maxDeltaCellMV)
+        w.s16(maxChargeMA); w.s16(maxDischargeMA)
+        w.u8(UInt8(bitPattern: maxTempCellC)); w.u8(UInt8(bitPattern: minTempCellC)); w.u8(UInt8(bitPattern: maxTempFETC))
+        w.u8(shutdowns); w.u16(fullCharges); w.u16(safetyEvents)
+        w.u16(lastSafetyCycle ?? Sentinel.u16NotAvailable); w.u16(qmaxUpdates)
+        w.u8(maxBalanceTime2h); w.u8(collecting ? 1 : 0)
+        return w.data
+    }
+
+    // Convenience.
+    public var runtimeHours: Int { Int(runtime2h) * 2 }
+    public func hours(in band: Band) -> Int { Int(bandTime2h[band.rawValue]) * 2 }
+    /// Lower and upper °C bound of a band (nil = open-ended).
+    public func range(of band: Band) -> (Int?, Int?) {
+        let i = band.rawValue
+        return (i == 0 ? nil : Int(thresholdsC[i - 1]), i == thresholdsC.count ? nil : Int(thresholdsC[i]))
+    }
+    /// Gregorian date from ManufacturerDate(): day + month·32 + (year − 1980)·512.
+    public var manufactured: DateComponents? {
+        guard manufactureDate != 0 else { return nil }
+        let day = Int(manufactureDate & 0x1F), month = Int((manufactureDate >> 5) & 0x0F), year = 1980 + Int(manufactureDate >> 9)
+        guard (1...31).contains(day), (1...12).contains(month) else { return nil }
+        return DateComponents(year: year, month: month, day: day)
+    }
+    public static func packDate(year: Int, month: Int, day: Int) -> UInt16 {
+        UInt16(day + month * 32 + (year - 1980) * 512)
+    }
+    public var hasCellVoltageExtremes: Bool { cellMaxMV != 0 && cellMinMV != 0x7FFF }
+    public var hasCellTempExtremes: Bool { maxTempCellC != -128 && minTempCellC != 127 }
+}
+
 private extension UInt16 {
     var nonSentinel: UInt16? { self == Sentinel.u16NotAvailable ? nil : self }
 }
