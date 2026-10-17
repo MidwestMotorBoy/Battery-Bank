@@ -234,7 +234,15 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
   marks every line "Unconfirmed — multiple lines in the BOM have been matched to the same part" when two lines
   share a number (10k vs "10k 1%", RAC vs RBAT shunts, WAKE vs RESET switches). Join the values in the Comment.
 - **CPL** (`Designator, Mid X, Mid Y, Layer, Rotation`): footprint position in mm with **Y negated** (KiCad's
-  own position export does the same), `Top`/`Bottom`, KiCad rotation; check rotations in JLC's preview.
+  own position export does the same), `Top`/`Bottom`, KiCad rotation plus JLC's offset for that part.
+- **Rotation offsets are per LCSC part, and only JLC's placement preview is the truth.** The community table
+  (matthewlai/JLCKicadTools `cpl_rotations_db.csv`) was wrong for 4 of the 5 families it matched here (6.3 mm
+  electrolytics 0 not 180, SOT-23 180 not −90, a TI VQFN-32 and WQFN-38 0 while a TI VQFN-36 and VQFN-20 need
+  270). Method that worked: upload once with plain KiCad angles, screenshot the preview, crop every keyed part
+  (PIL, board-mm → pixels from the outline box) beside KiCad's pad-1 side (`pad.GetPosition() - fp.GetPosition()`),
+  read the magenta pin-1 dot / cathode bar, and record the offset keyed by LCSC number in the exporter; a second
+  upload confirms. Parts too small to read at ~10 px/mm (SOD-323/523 diodes, 0603 LEDs) stay flagged for the
+  user. JLC's red designator text renders upside-down regardless of rotation: ignore it, read the dot.
 - Leave out and list separately: DNP (`FP_DNP`), hand-fit (`FP_EXCLUDE_FROM_POS_FILES`), `FP_EXCLUDE_FROM_BOM`
   and anything without an LCSC number (a module bought direct from TI, a connector to be chosen later). Check
   that list against the README: a part the docs say JLC places but which is `exclude_from_bom` on the board (the
