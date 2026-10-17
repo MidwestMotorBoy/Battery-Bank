@@ -9,7 +9,7 @@ zip them, then write:
   fab/MonolithDev-hand-fit.csv  parts left out of the JLC files: DNP, hand-fit (exclude from position files) or no LCSC number
 Run from anywhere with KiCad's python: "C:/Program Files/KiCad/10.0/bin/python.exe" -I tools/export_fab.py
   [--assembly-only]   rewrite only the BOM/CPL/hand-fit CSVs (no refill, no plots)
-CPL rotations get JLC's per-package offset (ROTATION_DB below, or a footprint field "JLC Rotation"); check keyed
+CPL rotations get JLC's per-part offset (ROTATION_BY_LCSC below, or a footprint field "JLC Rotation"); check keyed
 parts in JLC's placement preview and put the corrected offset in the field or the table when one is wrong.
 """
 import csv
@@ -22,22 +22,33 @@ import zipfile
 
 import pcbnew
 
-# JLC's parts library has its own zero orientation per package, so a KiCad angle needs an offset before JLC
-# places the part the way the board shows it. Offsets are added to KiCad's angle (counter-clockwise, like JLC's
-# CPL). Sources: the community table in matthewlai/JLCKicadTools (cpl_rotations_db.csv, marked "db") and, for
-# packages it lacks, the same family's convention (marked "family": check these in JLC's placement preview before
-# ordering). A footprint field "JLC Rotation" on the board overrides the table for that part.
-ROTATION_DB = [
-    (r"^SOT-23", -90),                                   # db
-    (r"^SOT-89", 180),                                   # db
-    (r"^TSOT-23", 180),                                  # db
-    (r"^CP_Elec_6\.3x7\.7", 180),                        # db
-    (r"^SOT-583", 270),                                  # family (SOP-like dual row: db says SOP 270)
-    (r"QFN-", 270),                                      # db for QFN-16..40; family for TI_*_VQFN/WQFN
-    (r"WSON-|DSON-|VSON-|DFN-|DFPN-", 270),              # db for DFN-/VSON-; family for WSON, UFDFPN
-    (r"^AGM_PDFN-8", 270),                               # family (DFN)
-    (r"^USB_C_Receptacle_HRO_TYPE-C-31-M-12", 180),      # db (the ShouHan part is unlisted: check the preview)
-]
+# JLC's parts library has its own zero orientation per *part*, so a KiCad angle needs an offset before JLC places
+# the part the way the board shows it. Offsets are added to KiCad's angle (counter-clockwise, like JLC's CPL).
+# ROTATION_BY_LCSC was read off JLC's placement preview on 2026-10-18 (pin-1 dot vs KiCad's pad 1, two uploads
+# compared); the community table (matthewlai/JLCKicadTools) was wrong for the electrolytics, the SOT-23s, the
+# VQFN-32 and the WQFN-38, so it is not used. Parts not listed get 0; a footprint field "JLC Rotation" overrides.
+ROTATION_BY_LCSC = {
+    "C19272232": 270,   # BQ25756RRVR, VQFN-36 (TI RRV)           verified
+    "C49305973": 270,   # TPD4S201, VQFN-20 (TI RGR)              verified
+    "C222237": 270,     # M24512-DFMC6TG, UFDFPN-8                verified
+    "C523793": 270,     # TVS2200DRVR, WSON-6                     verified
+    "C91241": 270,      # TPS62177DQCR, WSON-10                   verified (after-upload only)
+    "C3200405": 180,    # TPS62933DRLR, SOT-583                   verified
+    "C16106": 180,      # HT7550-1, SOT-89                        verified
+    "C20917": 180,      # AO3400A, SOT-23                         verified
+    "C15127": 180,      # AO3401A, SOT-23                         verified
+    "C2845123": 0,      # BQ40Z50RSMR-R2, VQFN-32                 verified (KiCad angle is right)
+    "C414622": 0,       # BQ294700DSGR, WSON-8                    verified
+    "C30169739": 0,     # TPS25751DREFR, WQFN-38                  verified
+    "C41349455": 0,     # AGM404AP1, PDFN-8                       verified
+    "C49384056": 0,     # PGQ04N070, PDFN-8                       verified
+    "C5246554": 0,      # HV1V107M0607PZ 100u electrolytic        verified (the db's +180 flipped them)
+    "C264047": 0,       # EEHZA1E101XP 100u hybrid                verified
+    "C8678": 0,         # SS34, SMA                               verified (cathode bar matches)
+    # not readable in the preview at this scale, assumed 0 - check in JLC's preview before ordering:
+    # C7502694 BAT54WS SOD-323, C19077412 BZT52C15 SOD-123, C132124 LRB520S SOD-523, C2286 LED 0603,
+    # C42463217 WSFB1514 fuse, C55629729 USB-C (ShouHan)
+}
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
@@ -76,13 +87,13 @@ if not ASSEMBLY_ONLY:
     print("gerbers:", sorted(os.listdir(GERB)))
 
 
-def jlc_rotation(f, fpname):
-    """KiCad angle + JLC offset (field "JLC Rotation" wins, then ROTATION_DB), normalised to 0-360."""
+def jlc_rotation(f, lcsc):
+    """KiCad angle + JLC offset (field "JLC Rotation" wins, then ROTATION_BY_LCSC), normalised to 0-360."""
     rot = f.GetOrientationDegrees()
     if f.HasField("JLC Rotation") and str(f.GetFieldText("JLC Rotation")).strip():
         off = float(str(f.GetFieldText("JLC Rotation")))
     else:
-        off = next((o for pat, o in ROTATION_DB if re.search(pat, fpname)), 0)
+        off = ROTATION_BY_LCSC.get(lcsc, 0)
     return (rot + off) % 360, off
 
 # 3. BOM / CPL
@@ -111,7 +122,7 @@ for f in sorted(b.GetFootprints(), key=lambda f: (f.GetReference().rstrip("01234
         rows_bom[lcsc]["values"].append(value)
     rows_bom[lcsc]["refs"].append(ref)
     p = f.GetPosition()
-    rot, off = jlc_rotation(f, fpname)
+    rot, off = jlc_rotation(f, lcsc)
     if off:
         offsets.setdefault((fpname, off), []).append(ref)
     rows_cpl.append([ref, f"{MM(p.x):.4f}", f"{-MM(p.y):.4f}", "Bottom" if f.IsFlipped() else "Top", f"{rot:.1f}"])
