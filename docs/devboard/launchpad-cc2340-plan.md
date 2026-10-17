@@ -46,7 +46,7 @@ Results go in a new section at the end of this file, with dates.
 
 ## 3. After that: firmware before the dev board
 
-- [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), TMP1075 (modes per state).
+- [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), BQ25756 `TS_ADC` through the TPS25751 `I2Cr`/`I2Cw` tasks (no TMP1075s since rev A8).
 - [ ] IRQ_N dispatcher that reads and clears all seven sources and loops until the line is high.
 - [ ] Supervision state machine: CHG_INH rules, charge and source sharing, ship mode, WDT servicing only from the supervision loop. Runs on the LaunchPad against fake devices.
 - [ ] BLE GATT service: status (cells, SOC, ports, temperatures) and the ship-mode command.

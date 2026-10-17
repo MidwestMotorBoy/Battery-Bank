@@ -51,8 +51,6 @@ DEV_ONLY = {
 MAYBE = {
     "SW101": "wake button (production wake method not decided)", "R118": "wake button resistor",
     **{r: "BTP_INT level shift (production may tie BTP_INT to VSS)" for r in ("Q103", "R114", "R117")},
-    **{r: "board temperature sensors (production thermal sensing not decided)" for r in
-       ("U302", "U303", "U304", "U305", "U306", "C308", "C309", "C310", "C311", "C312")},
     "D301": "status LED (production has its own LED set)", "R306": "status LED resistor",
     **{r: "0R gate/BTST tuning placeholder (keep if EMI needs it)" for r in
        _ports("R444", "R445", "R446", "R447", "R448", "R449")},

@@ -7422,6 +7422,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 283.21) (xy 306.07 287.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1df6e33b-6d2f-47f1-a666-74e19123a55c")
+	)
+	(wire
+		(pts
 			(xy 485.14 118.11) (xy 495.3 118.11)
 		)
 		(stroke
@@ -7489,6 +7499,16 @@
 			(type default)
 		)
 		(uuid "2a9c0cff-4ead-4dfe-9658-7fdf21ea8d35")
+	)
+	(wire
+		(pts
+			(xy 313.69 306.07) (xy 313.69 309.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ae93b0e-b24d-43e6-a027-393cc7eb7fe7")
 	)
 	(wire
 		(pts
@@ -7912,6 +7932,16 @@
 	)
 	(wire
 		(pts
+			(xy 313.69 271.78) (xy 313.69 275.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f63d150-0e54-4830-a334-3689cb3209b0")
+	)
+	(wire
+		(pts
 			(xy 238.76 149.86) (xy 238.76 152.4)
 		)
 		(stroke
@@ -7919,6 +7949,16 @@
 			(type default)
 		)
 		(uuid "5f990a38-8c0f-4b19-a374-5a27f5cc89f0")
+	)
+	(wire
+		(pts
+			(xy 306.07 306.07) (xy 306.07 309.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fce05c3-bbaf-45db-bc6e-4c6c1dee3bdb")
 	)
 	(wire
 		(pts
@@ -8069,6 +8109,16 @@
 			(type default)
 		)
 		(uuid "717b35e8-1a70-4129-8168-5e7c2392855a")
+	)
+	(wire
+		(pts
+			(xy 313.69 294.64) (xy 313.69 298.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "71d3b0c3-ef32-4a1d-b869-e06710532f47")
 	)
 	(wire
 		(pts
@@ -8259,6 +8309,16 @@
 			(type default)
 		)
 		(uuid "8c5a6fff-65b6-40a9-b084-00e3f8691f11")
+	)
+	(wire
+		(pts
+			(xy 306.07 271.78) (xy 306.07 275.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cad1550-8e90-4307-a997-a0da13aab891")
 	)
 	(wire
 		(pts
@@ -8619,6 +8679,16 @@
 			(type default)
 		)
 		(uuid "b6e69cc0-7080-41ad-91bd-bf05256ff6ba")
+	)
+	(wire
+		(pts
+			(xy 313.69 283.21) (xy 313.69 287.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b8606b76-40bb-46b8-bb08-06037a74390c")
 	)
 	(wire
 		(pts
@@ -9062,6 +9132,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 294.64) (xy 306.07 298.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f34ae33c-a9b3-494a-999f-a99631ea39a1")
+	)
+	(wire
+		(pts
 			(xy 185.42 78.74) (xy 187.96 78.74)
 		)
 		(stroke
@@ -9301,7 +9381,7 @@
 		(uuid "1da2f0ae-247a-4f61-8858-8b1146a2f360")
 	)
 	(label "HIDRV2"
-		(at 306.07 287.02 180)
+		(at 306.07 294.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9511,7 +9591,7 @@
 		(uuid "39254103-ed12-48d9-9fcb-850569ef2849")
 	)
 	(label "LG2"
-		(at 313.69 294.64 0)
+		(at 313.69 306.07 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9881,7 +9961,7 @@
 		(uuid "7548d1e1-186e-4d2d-bb8e-9caed7912718")
 	)
 	(label "LG1"
-		(at 313.69 279.4 0)
+		(at 313.69 283.21 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10121,7 +10201,7 @@
 		(uuid "acc81783-cbeb-43d7-abb7-33d9fbd4102e")
 	)
 	(label "LODRV1"
-		(at 306.07 279.4 180)
+		(at 306.07 283.21 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10181,7 +10261,7 @@
 		(uuid "bcc2311b-1959-4466-8271-e05760e99f47")
 	)
 	(label "HG2"
-		(at 313.69 287.02 0)
+		(at 313.69 294.64 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10571,7 +10651,7 @@
 		(uuid "f833b0f5-f466-4284-a126-8e80b8a9bf16")
 	)
 	(label "LODRV2"
-		(at 306.07 294.64 180)
+		(at 306.07 306.07 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11951,6 +12031,122 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "R434")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 309.88 298.45 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0df2c3a4-3784-4523-a0d3-8aefce55d0ca")
+		(property "Reference" "D408"
+			(at 319.4 297.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BAT54WS"
+			(at 319.4 299.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7502694"
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAT54WS (R+O)"
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Turn-off diode across R446: cathode HIDRV2, anode HG2 (Q402 / Q502 high side (SW2 leg))"
+			(at 309.88 298.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bb66fd3a-ad24-4a6e-a967-b7624a73fefc")
+		)
+		(pin "2"
+			(uuid "50e7a18d-610f-40ac-bb6b-2d56152fb357")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D508")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D408")
 					(unit 1)
 				)
 			)
@@ -16451,7 +16647,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 309.88 287.02 90)
+		(at 309.88 294.64 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16461,7 +16657,7 @@
 		(dnp no)
 		(uuid "41354907-611f-47fd-b267-76708363fc64")
 		(property "Reference" "R446"
-			(at 309.73 282.25 90)
+			(at 309.73 289.87 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16470,8 +16666,8 @@
 				)
 			)
 		)
-		(property "Value" "0R"
-			(at 309.73 284.22 90)
+		(property "Value" "10R"
+			(at 309.73 291.84 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16481,7 +16677,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 309.88 287.02 0)
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16492,7 +16688,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 309.88 287.02 0)
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16503,7 +16699,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 309.88 287.02 0)
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16513,8 +16709,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
-			(at 309.88 287.02 0)
+		(property "LCSC" "C22859"
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16524,8 +16720,8 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
-			(at 309.88 287.02 0)
+		(property "MPN" "0603WAF100JT5E"
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16535,8 +16731,8 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV2 -> Q402/Q502 high-side gate (EVM R3). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
-			(at 309.88 287.02 0)
+		(property "Notes" "Gate resistor HIDRV2 -> HG2, Q402 / Q502 high side (SW2 leg). 10 Ohm slows turn-on; D408/D508 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17151,87 +17347,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "R401")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 448.31 60.96 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "4ad28376-3f7a-404e-aaa7-35d987b8e6c7")
-		(property "Reference" "#PWR610"
-			(at 448.31 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK_P"
-			(at 439.42 60.96 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 448.31 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 448.31 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 448.31 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8dc59692-0125-455e-8488-cfdc0fb2710b")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR612")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR610")
 					(unit 1)
 				)
 			)
@@ -18995,7 +19110,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 309.88 294.64 90)
+		(at 309.88 306.07 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -19005,7 +19120,7 @@
 		(dnp no)
 		(uuid "6489a0f7-5da7-4eb4-af57-fea63c74a12e")
 		(property "Reference" "R447"
-			(at 309.73 289.87 90)
+			(at 309.73 301.3 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19014,8 +19129,8 @@
 				)
 			)
 		)
-		(property "Value" "0R"
-			(at 309.73 291.84 90)
+		(property "Value" "10R"
+			(at 309.73 303.27 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19025,7 +19140,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 309.88 294.64 0)
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19036,7 +19151,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 309.88 294.64 0)
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19047,7 +19162,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 309.88 294.64 0)
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19057,8 +19172,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
-			(at 309.88 294.64 0)
+		(property "LCSC" "C22859"
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19068,8 +19183,8 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
-			(at 309.88 294.64 0)
+		(property "MPN" "0603WAF100JT5E"
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19079,8 +19194,8 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV2 -> Q408/Q508 low-side gate (EVM R17). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
-			(at 309.88 294.64 0)
+		(property "Notes" "Gate resistor LODRV2 -> LG2, Q408 / Q508 low side (SW2 leg). 10 Ohm slows turn-on; D409/D509 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20309,6 +20424,122 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C410")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 309.88 287.02 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "730226f9-1698-4ecd-8bd0-79f4d3de1354")
+		(property "Reference" "D407"
+			(at 319.4 286.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BAT54WS"
+			(at 319.4 288.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7502694"
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAT54WS (R+O)"
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Turn-off diode across R445: cathode LODRV1, anode LG1 (Q407 / Q507 low side (SW1 leg))"
+			(at 309.88 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5e30fad8-3aa8-468e-a114-1f52f43435cb")
+		)
+		(pin "2"
+			(uuid "85ea4d97-e30d-4240-b9dd-d87709a171f4")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D507")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D407")
 					(unit 1)
 				)
 			)
@@ -22661,7 +22892,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 309.88 279.4 90)
+		(at 309.88 283.21 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -22671,7 +22902,7 @@
 		(dnp no)
 		(uuid "95664d1d-180d-406d-9512-7c0593429915")
 		(property "Reference" "R445"
-			(at 309.73 274.63 90)
+			(at 309.73 278.44 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22680,8 +22911,8 @@
 				)
 			)
 		)
-		(property "Value" "0R"
-			(at 309.73 276.6 90)
+		(property "Value" "10R"
+			(at 309.73 280.41 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22691,7 +22922,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 309.88 279.4 0)
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22702,7 +22933,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 309.88 279.4 0)
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22713,7 +22944,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 309.88 279.4 0)
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22723,8 +22954,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
-			(at 309.88 279.4 0)
+		(property "LCSC" "C22859"
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22734,8 +22965,8 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
-			(at 309.88 279.4 0)
+		(property "MPN" "0603WAF100JT5E"
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22745,8 +22976,8 @@
 				)
 			)
 		)
-		(property "Notes" "LODRV1 -> Q407/Q507 low-side gate (EVM R20). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
-			(at 309.88 279.4 0)
+		(property "Notes" "Gate resistor LODRV1 -> LG1, Q407 / Q507 low side (SW1 leg). 10 Ohm slows turn-on; D407/D507 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22877,7 +23108,7 @@
 				)
 			)
 		)
-		(property "Value" "0R"
+		(property "Value" "10R"
 			(at 309.73 268.98 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22920,7 +23151,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21189"
+		(property "LCSC" "C22859"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -22931,7 +23162,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF0000T5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -22942,7 +23173,7 @@
 				)
 			)
 		)
-		(property "Notes" "HIDRV1 -> Q401/Q501 high-side gate (EVM R8). 0R; raise to a few ohms (<= 4.7 Ohm; above that add a turn-off diode, or turn-off eats the 45 ns dead time) to slow the edges"
+		(property "Notes" "Gate resistor HIDRV1 -> HG1, Q401 / Q501 high side (SW1 leg). 10 Ohm slows turn-on; D406/D506 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -24035,6 +24266,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 309.88 275.59 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "adcc7731-da77-4b13-ad1e-e6278bef63c7")
+		(property "Reference" "D406"
+			(at 319.4 274.95 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BAT54WS"
+			(at 319.4 276.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7502694"
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAT54WS (R+O)"
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Turn-off diode across R444: cathode HIDRV1, anode HG1 (Q401 / Q501 high side (SW1 leg))"
+			(at 309.88 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "824e7773-dbdd-4cdc-a290-4719a97a92bf")
+		)
+		(pin "2"
+			(uuid "011bcf94-3d31-4312-a176-ef1880a4adf3")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D506")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D406")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 436.88 93.98 0)
 		(unit 1)
@@ -25040,6 +25387,122 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR409")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 309.88 309.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b577e23e-8dd5-41b1-93ac-9daef39f7a65")
+		(property "Reference" "D409"
+			(at 319.4 309.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BAT54WS"
+			(at 319.4 311.15 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7502694"
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAT54WS (R+O)"
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Turn-off diode across R447: cathode LODRV2, anode LG2 (Q408 / Q508 low side (SW2 leg))"
+			(at 309.88 309.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6fd70d00-6ef2-4b38-bcd5-472270b5b2cf")
+		)
+		(pin "2"
+			(uuid "03c1d7f4-5e66-4672-ac92-c0f008699abc")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "D509")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "D409")
 					(unit 1)
 				)
 			)

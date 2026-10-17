@@ -32,7 +32,7 @@ A roomy prototype of the complete Monolith production circuit, used for:
 | VBUS1 / VBUS2 | USB-C port 1 / port 2 VBUS |
 | PPHV1 / PPHV2 | Each TPS25751's high-voltage power path node to its charger |
 | PP5V1 / PP5V2 | Each port's 5 V supply into its TPS25751 PP5V pin |
-| SDA / SCL | MCU I2C bus (gauge, both PD controllers, TMP1075 sensors) |
+| SDA / SCL | MCU I2C bus (gauge, both PD controllers) |
 | I2CC1_SDA/SCL, I2CC2_SDA/SCL | Each TPS25751's private controller bus (its BQ25756 + its EEPROM) |
 
 ## 1. Cell inputs
@@ -84,7 +84,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - Inductor: Changjiang FNR4030S100MT, 10 µH, 130 mΩ (LCSC C167879; was Bourns SRN4018TA-100M until the cost-down 2026-10-14, `cost-down-2026-10-14.md`). Output 22 µF, input 2.2 µF 50 V, per the TI datasheet.
 - SLEEP pin to CC2340 DIO21 (3V3_SLEEP), with R313 470 kΩ to 3V3 to hold normal mode while the MCU is in reset.
 - 0 Ω link in the 3V3 output (to break the rail for debugging) and a test point.
-- Loads: CC2340R5MODA, both TPS25751 VIN_3V3, I2C pull-ups, TMP1075 sensors.
+- Loads: CC2340R5MODA, both TPS25751 VIN_3V3, I2C pull-ups.
 
 ## 5. MCU and Bluetooth (CC2340R5MODA, rev A7)
 
@@ -105,7 +105,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 | DIO24 (11) | CHG_INH: drive low to allow charging; high or hi-Z stops both chargers (1 k to each CE, 47 k pull-up to 3V3 at each CE) |
 | DIO3 (12) / DIO4 (13) | EN_5V1 / EN_5V2: TPS62933 enables, 100 kΩ pull-downs |
 | DIO21 (15) | 3V3_SLEEP: TPS62177 SLEEP. R313 470 kΩ holds the rail in normal mode while the MCU is in reset |
-| DIO11 (21) | IRQ_N: TPS25751 I2Ct_IRQ ×2, gauge BTP (via Q103) and the TMP1075 ALERTs, all open-drain, wire-ORed; one 100 kΩ pull-up (R314). Active low; wakes the MCU from standby |
+| DIO11 (21) | IRQ_N: TPS25751 I2Ct_IRQ ×2, and gauge BTP (via Q103), all open-drain, wire-ORed; one 100 kΩ pull-up (R314). Active low; wakes the MCU from standby |
 | DIO16 (20) / DIO17 (19) / RSTN (14) | SWD |
 | Spares | 2.54 mm header J303: 3V3, IRQ_N probe, EN_5V1, EN_5V2, CHG_INH (the last three through 1 k for probing/override) |
 
@@ -115,21 +115,19 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 - **Bootloader:** the ROM serial bootloader runs on a blank part; later, a CCFG backdoor pin set in firmware.
 - **Watchdog:** the WDT runs in active, idle and standby, and can't be stopped once enabled. GPIOs are latched in standby.
 
-## 6. Board temperature sensors (TMP1075, rev A7)
+## 6. Board temperature (no dedicated sensors since rev A8, 2026-10-17)
 
-- **TMP1075DSGR (WSON-8 2 × 2 mm) on the shared I2C bus.** Each exposed pad sits on the copper it measures, tied to GND with thermal vias. 0.1 µF bypass at each (C308–C312).
+The TMP1075s (U302–U306) were removed. Every temperature the firmware uses comes from parts already on the board:
 
-| Ref | Address | Where | Fitted |
-|---|---|---|---|
-| U302 | 0x48 | Port 1 power stage (FETs/inductor PGND copper; was TH301) | Yes |
-| U303 | 0x49 | Port 2 power stage (was TH302) | Yes |
-| U304 | 0x4A | Between the USB-C connectors, on GND copper (TH303 sat on VBUS) | Yes |
-| U305 | 0x4B | Heatsink-plate spot (was TH304) | DNP |
-| U306 | 0x4C | Protection FETs Q101/Q102 (was TH305) | DNP: FET over-temperature comes from the gauge's internal sensor (OTD/OTC); fit this if the gauge die lags the FETs |
+| Where | Sensor | How the MCU reads it |
+|---|---|---|
+| Cells | Gauge TS1–TS4, one NTC per cell | `ManufacturerAccess 0x0072 DAStatus2` (TS1–TS4, cell temperature); `Temperature()` 0x08. Both readable sealed |
+| Protection FETs Q101/Q102 | Gauge internal sensor, configured as FET temperature | `DAStatus2` FET temperature; the gauge's own OTD/OTC protection acts on it |
+| Each charger power stage | BQ25756 TS NTC (TH401/TH501, on the FET copper) | REG0x37/0x38 `TS_ADC` (% of REGN; convert with RT1 1.8k / RT2 5.6k), read with the TPS25751 `I2Cr` 4CC task on its I2Cc bus. Enable the ADC first (`ADC_EN`, one-shot) with `I2Cw` |
+| Charger hardware limit | Same NTC | Warm 74 °C, hot 94.5 °C, in charge and reverse (source) mode, with no firmware involved |
 
-- **Address straps:** A0/A1/A2 tied to GND or 3V3 (SBOS854F table 7-2).
-- **ALERT:** open-drain, comparator mode, active low; power-up default trip is 80 °C. All ALERTs share IRQ_N, so an over-temperature wakes the MCU.
-- **What other parts already sense:** cells on gauge TS1–TS4; each charger stage on its BQ25756 TS NTC (hardware stop at about 95 °C). The MCU sensors drive the 20 W throttle before that hard stop.
+- **Not covered:** the USB-C receptacles themselves (a worn or dirty plug heats the contact, not the charger stage). Accepted on 2026-10-17.
+- The BQ25756 has no die-temperature reading (only the 150 °C `TSHUT_STAT` flag); the TPS25751 has only its own thermal shutdown.
 
 ## 7. USB-C ports (×2, identical; port 2 mirrors port 1)
 
@@ -146,7 +144,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ### 7.2 PD controller (TPS25751D)
 - **U_PDx:** TPS25751DREFR (LCSC C30169739). VIN_3V3 from 3V3; LDO_3V3, LDO_1V5, VBUS, PP5V capacitors per datasheet.
 - **I2C address / dead-battery straps (SafeMode):** port 1: ADCIN1 → LDO_3V3, ADCIN2 → GND (address 0x20). Port 2: ADCIN1 → GND, ADCIN2 → GND (0x21). The straps are single 0 Ω parts (R1–R4) on the root sheet. To try another option, change which rail each 0 Ω goes to; moving port 1's R1 to GND gives decoded 0, and SafeMode #2 then collides with port 2's 0x21.
-- I2Ct (target) SDA/SCL → shared SDA/SCL. I2Ct_IRQ → IRQ_N (shared with the other port, the gauge BTP and the TMP1075 ALERTs, rev A7).
+- I2Ct (target) SDA/SCL → shared SDA/SCL. I2Ct_IRQ → IRQ_N (shared with the other port and the gauge BTP).
 - I2Cc (controller) → this port's private bus I2CCx_SDA/SCL with pull-ups to this TPS25751's **LDO_3V3** (TI guidance); I2Cc_IRQ ← its BQ25756 INT.
 - PPHV → PPHVx (to the charger's input side). PP5V ← PP5Vx.
 - **EEPROM:** ST M24512-DFMC6TG, 512 Kbit, DFN8 2 × 3 mm (LCSC C222237) on I2CCx at address 0x50, powered from this TPS25751's LDO_3V3. WC (write control) to GND. Add a 3-pin header on each I2CCx bus (SDA, SCL, GND) for a logic analyzer.

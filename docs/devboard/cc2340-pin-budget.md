@@ -1,5 +1,7 @@
 # CC2340R5MODA pin budget (2026-10-14; in the schematic as rev A7)
 
+> **Update 2026-10-17 (rev A8):** the TMP1075 sensors below were removed again. The gauge reports cell and FET temperatures, and the MCU reads each charger's NTC through the TPS25751 `I2Cr` pass-through (`circuit-description.md` §6). The pin map is unchanged.
+
 This document checks whether the CC2340R5MODA module can replace the STM32WB1MMC (U301) as a cost-down. The plan below is in the schematic as rev A7 (`DevBoard/README.md` item 40). Its source is the module datasheet (`datasheets/cc2340r5moda.pdf`, SWRS349A, July 2026). The signal list comes from `mcu-io-power-states.md`.
 
 ## The problem: 12 GPIOs for 20 signals

@@ -292,7 +292,7 @@
 		)
 		(uuid "8d7cdb54-3de0-4b59-85a8-4bcb85a6f6da")
 	)
-	(text "TPS25751 ADDRESS / DEAD-BATTERY STRAPS (SafeMode)\nPort 1: R1 ADCIN1 = LDO_3V3, R2 ADCIN2 = GND  -> I2C 0x20\nPort 2: R3 ADCIN1 = GND,     R4 ADCIN2 = GND  -> I2C 0x21\nSame SDA/SCL bus (CC2340 I2C0, 100 kHz): gauge BQ40Z50-R2 0x0B, TMP1075 U302-U306 0x48-0x4C"
+	(text "TPS25751 ADDRESS / DEAD-BATTERY STRAPS (SafeMode)\nPort 1: R1 ADCIN1 = LDO_3V3, R2 ADCIN2 = GND  -> I2C 0x20\nPort 2: R3 ADCIN1 = GND,     R4 ADCIN2 = GND  -> I2C 0x21\nSame SDA/SCL bus (CC2340 I2C0, 100 kHz): gauge BQ40Z50-R2 0x0B (TMP1075s removed in rev A8)"
 		(exclude_from_sim no)
 		(at 106.68 184.15 0)
 		(effects
