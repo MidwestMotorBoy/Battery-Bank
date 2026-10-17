@@ -144,16 +144,17 @@ EXTRA = []                     # (text, x, y, angle, size)
 
 
 def text_box(txt, x, y, ang=0, h=TXT_H):
-    L = 0.72 * h * max(len(txt), 1) + 0.2
+    L = 0.85 * h * max(len(txt), 1) + 0.2          # KiCad's stroke font is wider than 0.72 h (labels overlapped)
     w, hh = (L, h + 0.2) if ang == 0 else (h + 0.2, L)
     return (x - w / 2, y - hh / 2, x + w / 2, y + hh / 2)
 
 
-def free_spot(txt, x, y, owner=None, ang=0, h=TXT_H):
+def free_spot(txt, x, y, owner=None, ang=0, h=TXT_H, over_holders=False):
     r = text_box(txt, x, y, ang, h)
     if not (r[0] > edge[0] and r[1] > edge[1] and r[2] < edge[2] and r[3] < edge[3]):
         return None
-    if hit(r, obst) or hit(r, [c for o, c in crts.items() if o != owner]):
+    courts = [c for o, c in crts.items() if o != owner and not (over_holders and o.startswith("BT"))]
+    if hit(r, obst) or hit(r, courts):
         return None
     return r
 
@@ -302,11 +303,13 @@ print("labels hidden (no free spot):", hidden)
 
 # ---- 6. titles, board name, warnings
 for txt, h, cands in TITLES:
+    # the board name and the cell warning may sit over a holder's (empty) courtyard, between its pads
+    holders_ok = txt.startswith("MONOLITH") or txt.startswith("FIT CELLS")
     for x, y, ang in cands:
         done = False
         for d in (0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0):
             xx, yy = (x + d, y) if ang == 0 else (x, y + d)
-            bx = free_spot(txt, xx, yy, None, ang, h)
+            bx = free_spot(txt, xx, yy, None, ang, h, holders_ok)
             if bx:
                 EXTRA.append((txt, xx, yy, ang, h))
                 obst.append(bx)
