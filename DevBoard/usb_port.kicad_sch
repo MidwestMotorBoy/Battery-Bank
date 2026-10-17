@@ -6217,7 +6217,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. R430 = 10 A copper link to PACK_P (net-tie footprint, not a part); widen with zones.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly (net tie R430 removed 2026-10-16); take SRN/FB from R427's pad.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -8594,16 +8594,6 @@
 		)
 		(uuid "5d3f2ead-f8f3-438d-aca0-46c484a8a6b2")
 	)
-	(label "VBAT_SYS"
-		(at 411.48 203.2 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "5f4b54ca-03e3-44d4-be08-d51b90b21368")
-	)
 	(label "VBUS"
 		(at 45.72 289.56 270)
 		(effects
@@ -8823,16 +8813,6 @@
 			(justify left bottom)
 		)
 		(uuid "9b39befa-3258-4df1-8cd6-912d7ba3f862")
-	)
-	(label "VBAT_SYS"
-		(at 448.31 60.96 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9d2f29e9-4522-4e4c-9875-690441c5afb5")
 	)
 	(label "SW1"
 		(at 106.68 289.56 270)
@@ -18678,100 +18658,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR437")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 474.98 60.96 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "98ad6291-83a6-4809-8fb5-9d82c3cee6bd")
-		(property "Reference" "R430"
-			(at 474.83 56.19 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Link 10A"
-			(at 474.83 58.16 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:NetTie-2_SMD_3x3mm_Bridge3mm"
-			(at 474.98 62.738 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 474.98 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 474.98 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "copper link (net tie footprint), not a part; keeps VBAT_SYS and PACK_P as separate net names"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "416b29a9-590d-46c1-8f84-ec19dbb788df")
-		)
-		(pin "2"
-			(uuid "058188f9-1f09-4a29-9895-f25ed844ebb7")
-		)
-		(instances
-			(project "MonolithDev"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "R530")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "R430")
 					(unit 1)
 				)
 			)
@@ -31423,6 +31309,189 @@
 			(justify right bottom)
 		)
 		(uuid "cd9df4f0-5fb7-43a1-aa8b-1b4f26b98bd9")
+	)
+	(wire
+		(pts
+			(xy 471.17 60.96) (xy 478.79 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bfdc8216-89f9-4938-bb58-64cda7f302c9")
+	)
+	(text "Charger battery side joins PACK_P here (net tie R430 removed).\nRoute SRN (R429) and the FB divider top (R418) from R427's PACK_P pad,\nnot from the pour: DRC can't catch a tap on the bus."
+		(exclude_from_sim no)
+		(at 448.31 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9681fd31-48f8-471b-a594-a186dcb4cec8")
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 448.31 60.96 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4ad28376-3f7a-404e-aaa7-35d987b8e6c7")
+		(property "Reference" "#PWR610"
+			(at 448.31 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 439.42 60.96 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 448.31 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 448.31 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 448.31 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8dc59692-0125-455e-8488-cfdc0fb2710b")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR612")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR610")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 411.48 203.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "30be670b-e3ed-4059-879c-ce326919dc8e")
+		(property "Reference" "#PWR611"
+			(at 411.48 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 411.48 199.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 411.48 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 411.48 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 411.48 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "35bc87b7-cd83-4449-988b-fc2df6f7bc7f")
+		)
+		(instances
+			(project "MonolithDev"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR613")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR611")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet_instances
 		(path "/"

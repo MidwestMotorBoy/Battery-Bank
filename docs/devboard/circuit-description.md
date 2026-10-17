@@ -187,7 +187,7 @@ Pin-level connections for the TPS25751 and BQ25756 follow `docs/monolith_port1_n
 ## 8. Test points and links
 
 - Test points on: CELL_P, CELL_N, CELL1–3, PACK_P, PACK_LP, 3V3, each VBUSx, PPHVx, PP5Vx, REGNx, SW1x/SW2x (scope-probe friendly, with nearby GND), SDA, SCL, each I2CCx, IRQ_N.
-- Links to isolate blocks: 0 Ω (0805) from 3V3 to each TPS25751 VIN_3V3 and to the MCU (R301); solder jumper R431/R531 from PACK_P to each TPS62933; a 10 A net-tie copper link (R430/R530) from PACK_P to each charger's battery side.
+- Links to isolate blocks: 0 Ω (0805) from 3V3 to each TPS25751 VIN_3V3 and to the MCU (R301); solder jumper R431/R531 from PACK_P to each TPS62933; each charger's battery side is PACK_P directly (the R430/R530 net tie was removed 2026-10-16).
 - Mounting holes ×6 (M3) and rubber feet or standoffs.
 
 ## Open items before ProtoFlow

@@ -636,6 +636,10 @@ Found while checking against datasheets:
       - Kept large for function or rework: R101–R104 and R201 (they carry current), R420/R520 (gate-drive supply), the gate/BTST 0R tuning links R444–R449 and their port 2 copies, the 0805 rail links R207/R301/R401/R501, the shunts, the 1206/1210 bulk caps and the electrolytics.
     - **Board:** not updated yet. Run Tools → Update PCB from Schematic. That replaces the footprints in place, but the pads of parts already routed will no longer meet their traces.
 
+46. **Net tie R430/R530 removed (2026-10-16).** It only kept VBAT_SYS and PACK_P as separate net names, which made routing the battery-side power path harder. Each charger's battery side is now PACK_P directly. In `usb_port.kicad_sch`, R430 became a wire, and the two VBAT_SYS labels became PACK_P power symbols (#PWR610/#PWR611, port 2 #PWR612/#PWR613). The `*/VBAT_SYS` HighCurrent pattern was dropped from the project, since PACK_P is already HighCurrent. Netlist: R427/R527, R418/R518 and R429/R529 move to PACK_P, with no other change; ERC unchanged (8). The tie was out of the BOM, so cost is unchanged.
+    - **Routing rule now held by hand, not by DRC:** take the SRN filter (R429) and the top of the FB divider (R418) from R427's PACK_P pad, not from the pour. A tap elsewhere on the 9.5 A bus adds the bus drop to the current reading and the charge voltage. Noted on the sheet beside the old R430 position.
+    - **Board:** not updated. Update PCB from Schematic removes the two bridges and renames VBAT_SYS copper to PACK_P.
+
 ## Open items (defaults I picked; confirm or change)
 
 Changes planned for the next board revision are listed in [`../docs/devboard/rev2-changes.md`](../docs/devboard/rev2-changes.md).
@@ -661,7 +665,7 @@ Changes planned for the next board revision are listed in [`../docs/devboard/rev
 | `AGM_PDFN-8_3.3x3.3mm_P0.65mm` | Q101, Q102; charger FETs Q401/Q402/Q407/Q408 (and 5xx) | AGM404AP1 package drawing (no land pattern given): 0.4 × 0.75 mm source/gate lands, one 2.45 mm drain land, 4-window paste. Replaces `TDSON-8-1`, which is the 5 × 6 mm Infineon package and could not have fitted this 3.3 × 3.3 mm part (caught by the board parity check). |
 | `TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm` | U405, U505 | TPD4S201 datasheet land pattern: 0.6 × 0.24 mm pads at ±1.65 mm, 2.05 mm exposed pad with four 0.3 mm vias. |
 | `L_Coilank_APS0530` | L402, L502 | Coilank APS0530 drawing: 1.9 × 2.5 mm pads at ±2.05 mm. |
-| `NetTie-2_SMD_3x3mm_Bridge3mm` | R430, R530 | 10 A copper link from VBAT_SYS to PACK_P (net tie, so the two net names stay separate). Kept on the R symbol so the wiring is unchanged; excluded from the BOM and position file. |
+| `NetTie-2_SMD_3x3mm_Bridge3mm` | (none since 2026-10-16) | Was R430/R530, the 10 A net tie from VBAT_SYS to PACK_P; removed in item 46. Footprint left in the library. |
 
 ## Regenerating symbols
 

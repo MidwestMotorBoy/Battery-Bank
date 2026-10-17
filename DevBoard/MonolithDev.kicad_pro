@@ -701,10 +701,6 @@
       },
       {
         "netclass": "HighCurrent",
-        "pattern": "*/VBAT_SYS"
-      },
-      {
-        "netclass": "HighCurrent",
         "pattern": "*/PPHV"
       },
       {
