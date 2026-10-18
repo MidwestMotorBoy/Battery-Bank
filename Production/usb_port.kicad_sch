@@ -6749,7 +6749,7 @@
 		)
 		(uuid "15fa0695-ad63-437c-b987-6b2514558503")
 	)
-	(text "BATTERY-SIDE BULK: 3 x 22u MLCC + 100u polymer (>= 80 uF effective)"
+	(text "BATTERY-SIDE BULK: 2 x 22u MLCC + 100u hybrid polymer (87 uF effective, >= 80 uF)"
 		(exclude_from_sim no)
 		(at 431.8 104.14 0)
 		(effects
@@ -6856,7 +6856,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,\n   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case)\n   and C443 -> 22u 1206 (until the TPS25751 120 uF cSrcBulkShared note is confirmed not to apply here).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -7029,12 +7029,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7a2f132c-f5ea-4453-a480-b673c0a9bf15")
-	)
-	(junction
-		(at 495.3 118.11)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "80bfeede-9ed8-491e-a18d-b6425a516573")
 	)
 	(junction
 		(at 93.98 81.28)
@@ -7401,16 +7395,6 @@
 			(type default)
 		)
 		(uuid "1df6e33b-6d2f-47f1-a666-74e19123a55c")
-	)
-	(wire
-		(pts
-			(xy 485.14 118.11) (xy 495.3 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "22f8b82d-0b67-4819-a454-006d624bf398")
 	)
 	(wire
 		(pts
@@ -8731,16 +8715,6 @@
 			(type default)
 		)
 		(uuid "da17b6c4-ee1e-431d-bda7-cec763e47ce5")
-	)
-	(wire
-		(pts
-			(xy 495.3 118.11) (xy 505.46 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db5fae27-361d-4418-bbc3-142ecf86c363")
 	)
 	(wire
 		(pts
@@ -13854,122 +13828,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 495.3 121.92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "27e70dcc-566a-4865-be9e-b95fcb14d3ba")
-		(property "Reference" "C435"
-			(at 495.3 114.21 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "22u 25V"
-			(at 495.3 116.18 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
-			(at 496.265 118.11 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 495.3 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 495.3 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Battery-side ripple MLCC (C431/C434/C435 and C531/C534/C535; cost-down 2026-10-14, was 47 uF 1210): the 100 uF polymer C432/C532 carries the bulk, bank about 114 uF effective (>= 80). The worst battery-side ripple is about 1.5 A rms (reverse buck to 9 V 3 A); check their temperature at bring-up"
-			(at 495.3 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C12891"
-			(at 495.3 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CL31A226KAHNNNE"
-			(at 495.3 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f2c33126-e6ed-42da-a704-8057d6c7e272")
-		)
-		(pin "2"
-			(uuid "ffc72248-38f5-41af-9d65-83382dfb176e")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C535")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C435")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Regulator_Switching:TPS62933")
 		(at 101.6 203.2 0)
 		(unit 1)
@@ -17396,87 +17254,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "R447")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 495.3 125.73 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "64c024b4-f4cf-4684-8c7a-5aeecce0477f")
-		(property "Reference" "#PWR448"
-			(at 495.3 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 495.3 130.05 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 495.3 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 495.3 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 495.3 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "930693a5-ac3a-432e-83e4-f83be6b7cadc")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR548")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR448")
 					(unit 1)
 				)
 			)
@@ -28482,7 +28259,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b75a0f25-0f57-4ee3-b013-c2c4c1b04333")
+		(uuid "d0f0742c-1952-468b-891e-21188db42870")
 	)
 	(wire
 		(pts
@@ -28492,7 +28269,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "37c8f917-7585-42ed-bf37-a017ea51c818")
+		(uuid "d5457fed-e385-4e73-9601-3d11a6db5b15")
 	)
 	(wire
 		(pts
@@ -28502,7 +28279,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b255b110-80fb-4586-ba77-6a10aedc93f2")
+		(uuid "bc93d3d1-5ae2-4ccb-b221-4720273d0a2a")
 	)
 	(wire
 		(pts
@@ -28512,7 +28289,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8a83bae4-d745-440f-8138-c6f53be61622")
+		(uuid "33a451ca-4148-4ac1-8489-8eac3be2b190")
 	)
 	(wire
 		(pts
@@ -28522,7 +28299,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5b591cf1-12c1-4d4c-8730-f06af2d80589")
+		(uuid "3df1dd7e-a2b1-4c38-854e-86a03078169d")
 	)
 	(wire
 		(pts
@@ -28532,7 +28309,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b7fcb0bc-d53b-40ab-902c-81f001c67358")
+		(uuid "730d996b-cb25-413e-b22b-be5beea3fbff")
 	)
 	(wire
 		(pts
@@ -28542,7 +28319,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2415b215-806a-49f7-9ab6-972f38cb1a9c")
+		(uuid "6dbd43ea-8bbe-4dd6-81dc-4103e6f06a01")
 	)
 	(wire
 		(pts
@@ -28552,7 +28329,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a952f428-6a2a-44a9-8831-5f47027ab9a6")
+		(uuid "6a47247e-60f0-4935-945f-e3360cb1058a")
 	)
 	(wire
 		(pts
@@ -28562,7 +28339,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bbbb2130-9b08-4b99-991a-72b4d795aba8")
+		(uuid "5ca4e9e7-b10e-44b9-846c-ce671859608a")
 	)
 	(wire
 		(pts
@@ -28572,7 +28349,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0b23c41f-bb33-4a30-81d8-0ce0594e071d")
+		(uuid "de734164-774a-42b1-a68b-a7149360ff44")
 	)
 	(wire
 		(pts
@@ -28582,7 +28359,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "509be4cd-03e1-4848-bb26-613602d65cbb")
+		(uuid "71831f94-94ad-4566-a9ea-422fb4b2e05e")
 	)
 	(wire
 		(pts
@@ -28592,7 +28369,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "59288b12-b5a3-4527-9686-bd2f06477d8a")
+		(uuid "84085259-9f23-40f9-85b5-e28160884745")
 	)
 	(wire
 		(pts
@@ -28602,7 +28379,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b79feb34-04cf-4283-b926-3ae913ecadc5")
+		(uuid "88913048-3743-42c5-8c1c-4bd4953de23b")
 	)
 	(wire
 		(pts
@@ -28612,7 +28389,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4894a75b-b993-42ad-85e9-f721f834b606")
+		(uuid "2d050995-041d-48ab-a9ad-ddada36f8957")
 	)
 	(wire
 		(pts
@@ -28622,7 +28399,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eb48fd2c-3d17-47b6-992c-1a8f33c3cee7")
+		(uuid "5e945c8f-ba43-41b2-beb5-b3280efd7c41")
 	)
 	(wire
 		(pts
@@ -28632,7 +28409,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "47cca451-b223-43bc-9407-0807ced14402")
+		(uuid "f8c98581-b9a8-48db-9420-b7d3010ff9da")
 	)
 	(wire
 		(pts
@@ -28642,7 +28419,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "157b95d1-a4d2-4007-89d2-8b36911d4776")
+		(uuid "3cf0a3d2-58cc-493b-8bfa-0aec8e141c29")
 	)
 	(wire
 		(pts
@@ -28652,7 +28429,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6caf2ee3-7949-464c-a168-b21584c62dfa")
+		(uuid "f453fdec-7b1f-4ecc-8438-3a47bda0770a")
 	)
 	(wire
 		(pts
@@ -28662,7 +28439,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "05f7428d-8754-4140-9a90-7537d8239048")
+		(uuid "a91fa838-d6de-42ae-beb0-e0b60887f9a2")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -28684,7 +28461,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "54018e1a-ac3b-4961-b134-b8d5d6251a56")
+		(uuid "95c4d185-79b5-40fc-8713-9046d2826f30")
 		(property "Reference" "#PWR9029"
 			(at 154.94 78.74 0)
 			(hide yes)
@@ -28740,7 +28517,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "5f6bc91c-286f-44cb-8606-7d2fef0f4324")
+			(uuid "428e941a-9683-45ad-a5f9-811e094416be")
 		)
 		(instances
 			(project "Monolith"
@@ -28765,7 +28542,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "cdf4f1b1-39dd-426e-ac09-39df639df1c7")
+		(uuid "565d150c-c190-4828-ae76-c0ee2bbe3ccc")
 		(property "Reference" "#PWR9032"
 			(at 50.8 195.58 0)
 			(hide yes)
@@ -28821,7 +28598,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "298fbb97-5ccd-49e3-9498-1cd4fb3b05af")
+			(uuid "b8209bb7-dae3-4506-b5c7-1e563d14e3db")
 		)
 		(instances
 			(project "Monolith"
@@ -28868,13 +28645,23 @@
 	)
 	(wire
 		(pts
+			(xy 485.14 118.11) (xy 505.46 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "107e77eb-e62c-4817-8e7a-0023550f1836")
+	)
+	(wire
+		(pts
 			(xy 76.2 195.58) (xy 93.98 195.58)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9a3eee85-167d-4598-9cb1-49dcbf482d58")
+		(uuid "28e5a59b-3aac-4a03-a949-547f02f726c8")
 	)
 	(wire
 		(pts
@@ -28884,7 +28671,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f7d7f855-ef79-4712-88f9-182e4416d985")
+		(uuid "0e5459ff-443e-48fb-b1ed-3f95aa2ffcd8")
 	)
 	(sheet_instances
 		(path "/"

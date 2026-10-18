@@ -129,6 +129,7 @@ TEXTS = {
     "usb_port.kicad_sch": {
         "TEST POINTS / POWER FLAGS": "FACTORY TEST PAD",
         "GATE / BOOTSTRAP TUNING": "GATE RESISTORS + TURN-OFF DIODES",
+        "BATTERY-SIDE BULK": "BATTERY-SIDE BULK: 2 x 22u MLCC + 100u hybrid polymer (87 uF effective, >= 80 uF)",
         "PP5V SUPPLY  TPS62933": "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.16 V)  - 5 V source + VCONN",
         "NOTES  (this sheet is used twice": T(
             "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)",
@@ -146,6 +147,9 @@ TEXTS = {
             "4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.",
             "5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs",
             "   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.",
+            "   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,",
+            "   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case)",
+            "   and C443 -> 22u 1206 (until the TPS25751 120 uF cSrcBulkShared note is confirmed not to apply here).",
             "6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).",
             "7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.",
             "8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.",

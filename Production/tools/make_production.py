@@ -63,6 +63,7 @@ REMOVE = {
         "J402",                                      # I2Cc logic-analyser header
         "R450", "C454", "R451", "C455",              # DNP snubbers
         "C447",                                      # DNP feed-forward cap
+        "C435",                                      # battery-side bank 3 -> 2 x 22u (cap sims 2026-10-17, B2)
         "#FLG404", "#FLG406",                        # 3V3_PD / 5V_IN flags (nets are 3V3 / PACK_P now)
     ] + ["TP4%02d" % n for n in range(2, 22)],
 }

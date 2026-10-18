@@ -18,7 +18,7 @@ KiCad 10 project `Monolith`. **Status (2026-10-17): schematic P0 only.** It is t
 - rewrites every sheet's notes, the root index and the revision log;
 - renames the sheets *3V3 Rail* and *MCU*.
 
-`tools/check_netlist.py` then compares the result with the dev board netlist. Every surviving pin must keep its dev net, with only the intended link merges, and every new pad must take the net of the pin it replaces. Result: 960 pins checked, no differences, and 424 parts down to 297. ERC shows the dev board's 8 pin-to-pin warnings plus 3 off-grid notes on the root sheet pins.
+`tools/check_netlist.py` then compares the result with the dev board netlist. Every surviving pin must keep its dev net, with only the intended link merges, and every new pad must take the net of the pin it replaces. Result: 956 pins checked, no differences, and 424 parts down to 295. ERC shows the dev board's 8 pin-to-pin warnings plus 3 off-grid notes on the root sheet pins.
 
 Run all three in order with KiCad's Python:
 
@@ -60,6 +60,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 | | TP402–TP421 | test points |
 | | R450/C454, R451/C455 | DNP snubbers; removed before bring-up, by choice |
 | | C447 | DNP feed-forward cap |
+| | C435 | battery-side bank down to 2 × 22 µF + hybrid: 87 µF effective, hybrid at 63 % of its ripple rating (cap sims 2026-10-17, B2) |
 | | R401, R431 → wires | links |
 | | R440 → wire | D+/D− become one net, `DPDN_DCP` (rev 2 item 1c) |
 | | R448, R449 → wires | BTST links |
@@ -78,5 +79,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
-2. **Cap cuts from the 2026-10-17 simulations** (`docs/devboard/cap-reduction-sims-2026-10-17.md`): C435/C535 out.
+2. **Cap cuts still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
+    - C427/C527 (USB-side MLCC): only if dev board bring-up shows the polymer stays cool at 20 V 5 A reverse from a low pack (it reaches 85 % of its rating), or if firmware derates that case.
+    - C443/C543 → one 22 µF 1206 (saves about 43 mm² per port): blocked until the TPS25751's 120 µF cSrcBulkShared note is confirmed not to apply to a dedicated supply per port.
 3. **Decide the production board's thickness and stack-up**, then start the layout from `mechanical/monolith_bottom_pcb.dxf`.
