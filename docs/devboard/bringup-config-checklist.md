@@ -24,7 +24,7 @@ Where a later review corrected an earlier one, the corrected value is used here,
 - [ ] J301, the 2 × 5 1.27 mm SWD header: hand-fit. The Samtec FTSH-105 is to be replaced by an unkeyed header JLC stocks; the silkscreen then shows pin 1 and the cable-key side.
 - [ ] Two 2.54 mm shunts (JP201, JP202).
 - [ ] Pin headers, hand-soldered since the 2026-10-14 cost-down: J102–J107, J302, J303, J402, J502, JP201, JP202 (PZ254V-11, part numbers in each part's `Sourcing` property).
-- [ ] Wired NTCs on J102, J105–J107, insulated, taped to BT101–BT104.
+- [ ] Wired NTCs on J102, J105–J107, insulated, taped to BT101–BT104. Dev boards use **STE MT52B103F3950F01000** (LCSC C3000141; 10 kΩ ±1 %, B25/50 3950 K, B25/85 4000 K, enamelled leads) instead of the Semitec 103AT (B25/85 3435 K, none at LCSC). All four must be the same type, since TS1–TS4 share one coefficient set. The leads are enamel-insulated only: Kapton under the bead, heat-shrink over the joints, and a 2-pin 2.54 mm female housing (or solder) onto the header.
 
 ## 1. First power, no cells
 
@@ -54,6 +54,7 @@ Rules:
 | **Latch Limits** (COV, OCD, AOLD, ASCC, ASCD) | **explicit, non-zero** (for example 2–3) | the defaults are 0, and the TRM doesn't say whether 0 means "disabled" or "latch on the first trip" (review 4 D-1) |
 | Chemistry | EVE INR21700-58E | review 1 item 4 |
 | TS1–TS4 | all enabled; protections use the maximum | rev A4 per-cell NTCs |
+| **External thermistor coefficients** (`Coeff a1–a5`, `b1–b4`) | **recalculated for the MT52 3950 curve** with TI's thermistor coefficient calculator (MT52 R–T table) | the defaults fit the 103AT: an MT52 reads 3.6 °C high at 45 °C, 6.6 °C high at 60 °C and 3.8 °C low at 0 °C, so OTC/UTC would trip early. Check against a thermometer at room temperature and in warm water before cells go in |
 | Internal temperature sensor | enabled, with OTD/OTC protection | FET over-temperature (no other sensor watches Q101/Q102 since rev A8) |
 | COV / CUV | COV ≤ 4.25 V; CUV and terminate voltage set so 100 W never runs below **2.8 V/cell under load** | F102's 15 A element is the only fuse (review 2, D3; F101 deleted) |
 | **COV Delay** | **1 s** (default 2 s) | U102 trips after 1–2 s; on a step overvoltage the gauge must open CHG first (review 3, C2) |

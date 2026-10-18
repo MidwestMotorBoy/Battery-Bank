@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ccs-debug",
+      "mcp__ccs-project",
+      "mcp__ccs-sysconfig",
+      "mcp__ccs-serial",
+      "Read(//C/ti/ccs2101/ccs/theia/resources/ai/**)",
+      "Read(//C/ti/simplelink_lowpower_f3_sdk_9_23_00_27/**)",
+      "Read(//C/ti/ccs2101/ccs/utils/sysconfig_1.28.1/**)",
+      "Read(//C/ti/sysconfig_1.26.4/**)"
+    ],
+    "ask": [
+      "mcp__ccs-project__changeSysConfigVersion"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"
+  }
+}

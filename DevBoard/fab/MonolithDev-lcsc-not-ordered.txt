@@ -1,0 +1,2 @@
+Estimated parts total for 3 boards: $41.02 (LCSC's own quote may be lower)
+Not on the LCSC order: U301 - CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement (not on LCSC)

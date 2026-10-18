@@ -116,6 +116,18 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
   the image viewer.
 - If KiCad has the board open (`~board.kicad_pcb.lck`), tell the user to revert/reload before saving after a
   scripted change, or their save overwrites it.
+- **Trial DRC with other constraints** (what would the fab's numbers flag? does this re-layering add anything?):
+  copy the board into a scratch folder *as `<project>.kicad_pcb` with the real `.kicad_pro`, `.kicad_dru` and
+  `fp-lib-table` beside it* (without the lib table every footprint reports `lib_footprint_issues`), edit the
+  constraint in the copied `.kicad_pro` (`"min_clearance"`, `"min_track_width"`, `"min_hole_to_hole"` …), run DRC
+  there and diff the item lists against a baseline run. Compare whole items (type line plus the `@(…)` lines), not
+  counts.
+- **Check `.kicad_dru` against git before trusting a DRC run.** It turned up empty (0 bytes) after a GUI session
+  once, and DRC then silently ran without the annular-ring, edge and high-current rules.
+- `pcbnew.LoadBoard()` returns `None` for a file whose name doesn't end in `.kicad_pcb` (a backup copy named
+  `pcb.before_x` renders nothing): copy it to a `.kicad_pcb` name first.
+- `hole_to_hole` errors between same-net vias are real for the fab too: a 0.508 mm via pitch with 0.3 mm drills
+  leaves 0.208 mm of material; use 0.635 mm or more.
 
 ## 8. Scripting with pcbnew (pitfalls)
 
@@ -139,6 +151,25 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
   backslashes and corrupt regexes or KiCad text).
 - Footprints: changing a symbol's footprint field then reloading the footprint on the board at its old position is
   the clean way to swap packages; check parity afterwards.
+- **Removal order**: `board.Remove()` of *any* item before later reads (even one Edge.Cuts shape) can make
+  `board.GetTracks()` raise `TypeError: 'SwigPyObject' object is not iterable`. Read everything into lists first,
+  remove last, save. Removing ~30 board-level `gr_text` items through the API poisons `footprint.Reference()`
+  (no `SetVisible`): strip `gr_text` blocks as text before `LoadBoard`.
+- **Footprint fields in KiCad 10**: `f.HasField("LCSC")`, `f.GetFieldText("LCSC")`, `f.GetFields()`; there is no
+  `GetFieldByName`/`HasFieldByName`. `str()` every wxString before `format()` (`UTF8.__format__` fails).
+- **Teardrops have no CLI or python path** (no `TEARDROP_MANAGER` in pcbnew, nothing in kicad-cli): they are
+  generated in the editor, Edit → Edit Teardrops (scope PTH pads / SMD pads / vias / track-to-track, "Add with
+  default values") then save. With the user's KiCad open this can be driven through the desktop (computer-use:
+  the PCB Editor window must be frontmost; `open_application` brings it forward); the save rewrites `.kicad_pro`
+  with last-used via/zone defaults, harmless. 4000+ teardrop zones on a 430-part board; DRC unchanged.
+- **Refill before plotting**: `pcbnew.ZONE_FILLER(board).Fill(board.Zones())` then `Save()` (restore the
+  `.kicad_pro`), so the gerbers carry current fills; the GUI save does not refill by itself.
+- `shutil.rmtree` on a folder the shell's cwd is inside fails silently on Windows; delete files individually.
+- Saved zone fills are stored fractured (one outline, no holes), so web/neck analysis on `GetFilledPolysList`
+  finds nothing; rasterise or bisect by removing items on copies (`connection_width` DRC items carry only the zone
+  origin, also in JSON).
+- Legend text below the board's `min_text_height` 0.8 / thickness 0.15 (JLC floor) is a DRC error: abbreviate
+  and rotate labels instead of shrinking them; 0.8 mm text does not fit between loops on a 2.54 mm grid.
 
 ## 9. Script-based routing lessons
 
@@ -163,8 +194,68 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
   - cap the path length on F.Cu/B.Cu for signal nets (escapes only);
   - when a via is placed, reserve a GND via site within 1 mm.
   Run `check_routing_rules.py` on the result.
+- **Verify every scripted copper change with a real DRC, not a home-made clearance test.** A segment-vs-segment
+  check that moved three paths from the plane to In3 missed two crossings and a 30 mm track that ended on two
+  GND vias; the next DRC found them. Pattern that works: apply the change to a copy (section 7, trial DRC),
+  accept only when no item is new and nothing becomes unconnected, else revert that change.
+- **Never "tidy" track ends board-wide** (snap to via centres etc.): hand routes have hundreds of ends a few
+  hundredths off centre, and moving them all broke clearances elsewhere. Snap only the ends DRC names.
+- **GND reference vias**: never drop them inside another net's pour (they cut power paths; the user reverted a
+  353-via pass for exactly that). Place only in GND copper or empty board, and ask before a board-wide pass.
+- When one connection has no clean layer on its current path (In2 is a pour, B.Cu is a pour, In3 crosses
+  another net), the answer is a different path (over the top, from the net's other end), not forcing the plane
+  layer; the A* router also fails there because the zone fills are obstacles, so map the corridor by hand.
+- A router that can't finish a net reports the two *groups* it couldn't join; list the whole net's tracks,
+  vias and pads first (`GetTracks()` filtered by net) so you know which ends are free.
 
 ## 10. Hand-off etiquette
 
 - Work on a copy (branch/worktree) when the user is editing the same board in KiCad.
 - Commit scripts that generate copper; record decisions (pour plan, stack-up) in project docs.
+- **After a user's hand-routing round, check; don't reroute.** Back up their save, run DRC (with parity, zones
+  refilled), `check_routing_rules.py` and the measurements below, and report findings with coordinates and the
+  fix each needs. Leave the copper to them unless they ask. Silkscreen, docs, fab outputs are fine to do. If a
+  script already touched the board, restore their save byte-for-byte and say so.
+- Worth measuring in such a review (all cheap in pcbnew): straight-line driver-pin-to-gate distance and gate track
+  width per gate net; narrow tracks leaving shunt pads (Kelvin taps start *inside* the pad polygon); HF caps on
+  the switch nets within a few mm of the FETs; GND vias at low-side source pads; via count per high-current net;
+  tracks on plane layers; via rows under 0.3 mm plane webs; holder/connector polarity marks vs pad nets (marks
+  owned by the footprint rotate with it, so they are right by construction); fill polygons intersecting antenna
+  keep-out rule areas (test fills, not only tracks).
+
+## 11. Fab outputs (JLCPCB)
+
+- `kicad-cli pcb export gerbers --layers F.Cu,In1.Cu,…,B.Cu,F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts
+  --subtract-soldermask --no-x2 --no-netlist --precision 6` (Protel extensions are the default) and
+  `kicad-cli pcb export drill --format excellon --excellon-units mm --excellon-zeros-format decimal
+  --excellon-separate-th --drill-origin absolute --generate-map --map-format gerberx2`; zip the folder. Both
+  rewrite `.kicad_pro`. Refill zones and save first (section 8).
+- **Assembly BOM** (`Comment, Designator, Footprint, LCSC Part #`): **one line per LCSC number.** JLC's BOM tool
+  marks every line "Unconfirmed — multiple lines in the BOM have been matched to the same part" when two lines
+  share a number (10k vs "10k 1%", RAC vs RBAT shunts, WAKE vs RESET switches). Join the values in the Comment.
+- **CPL** (`Designator, Mid X, Mid Y, Layer, Rotation`): footprint position in mm with **Y negated** (KiCad's
+  own position export does the same), `Top`/`Bottom`, KiCad rotation plus JLC's offset for that part.
+- **Rotation offsets are per LCSC part, and only JLC's placement preview is the truth.** The community table
+  (matthewlai/JLCKicadTools `cpl_rotations_db.csv`) was wrong for 4 of the 5 families it matched here (6.3 mm
+  electrolytics 0 not 180, SOT-23 180 not −90, a TI VQFN-32 and WQFN-38 0 while a TI VQFN-36 and VQFN-20 need
+  270). Method that worked: upload once with plain KiCad angles, screenshot the preview, crop every keyed part
+  (PIL, board-mm → pixels from the outline box) beside KiCad's pad-1 side (`pad.GetPosition() - fp.GetPosition()`),
+  read the magenta pin-1 dot / cathode bar, and record the offset keyed by LCSC number in the exporter; a second
+  upload confirms. Parts too small to read at ~10 px/mm (SOD-323/523 diodes, 0603 LEDs) stay flagged for the
+  user. JLC's red designator text renders upside-down regardless of rotation: ignore it, read the dot.
+- **Position offsets are per part too**: JLC places at its own footprint origin, which for some parts is not the
+  body centre (a SOT-89 LDO sat 0.75 mm toward its leads, a PDFN-8 FET 0.5 mm along its lead axis). Keep an
+  offset in the KiCad footprint frame, rotate it with the part (KiCad angle is CCW on a y-down screen:
+  `x += ox·cosθ + oy·sinθ; y += −ox·sinθ + oy·cosθ`) and add it before negating Y. Derive the direction from a
+  *zoomed* JLC preview (body edge vs pad row) on two different rotations; a whole-board screenshot is too coarse
+  (0.13 mm/px) and misled the first attempt.
+- Leave out and list separately: DNP (`FP_DNP`), hand-fit (`FP_EXCLUDE_FROM_POS_FILES`), `FP_EXCLUDE_FROM_BOM`
+  and anything without an LCSC number (a module bought direct from TI, a connector to be chosen later). Check
+  that list against the README: a part the docs say JLC places but which is `exclude_from_bom` on the board (the
+  test-point loops here were actually plain pads) is a doc/board mismatch to report.
+- **Stock check**: POST `{"keyword": "<Cxxxx>", "currentPage": 1, "pageSize": 5}` to
+  `https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList`; match
+  `componentCode`, read `stockCount`, `componentLibraryType` (`base` = basic), `preferredComponentFlag`,
+  `componentPrices[0].productPrice`. Run it over the whole BOM before an order (`tools/jlc_stock.py`).
+- JLC's "BOM Matching" export (`…-JLCPCB Assembly Order.xls`) is really xlsx: unzip, read `xl/sharedStrings.xml`
+  and `xl/worksheets/sheet1.xml`; column K "Warning" says why a line is unconfirmed.

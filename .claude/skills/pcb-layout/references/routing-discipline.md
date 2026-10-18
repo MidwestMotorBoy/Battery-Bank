@@ -113,6 +113,10 @@ fine-pitch parts first · 4. The ground planes are untouchable · 5. Reference c
 - When a connection fails on its own (nothing else routed), the cause is placement or a fixed obstacle, not
   congestion. Map failures to parts: when one part dominates, re-place or re-orient it so each side faces where
   its nets go. That beat every router tweak here.
+- Hand routing by the user breaks these rules freely (563 direction deviations, a few segments on L5 at the
+  end here). Report them with coordinates after their round; move nothing unless asked. When a segment on a
+  plane has to come off, test each candidate layer with a real DRC on a copy (`kicad-practice.md` §7); two of
+  three such paths moved cleanly to L3, the third needed a new path from the net's other end.
 
 ## 7. Checklist
 

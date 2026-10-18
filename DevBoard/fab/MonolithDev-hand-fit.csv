@@ -1,0 +1,52 @@
+Designator,Value,Footprint,LCSC,Why not in the JLC files
+BT101,BH-21700-B1BJ001,BatteryHolder_MYOUNG_BH-21700-B1BJ001,,hand-fit (excluded from position files)
+BT102,BH-21700-B1BJ001,BatteryHolder_MYOUNG_BH-21700-B1BJ001,,hand-fit (excluded from position files)
+BT103,BH-21700-B1BJ001,BatteryHolder_MYOUNG_BH-21700-B1BJ001,,hand-fit (excluded from position files)
+BT104,BH-21700-B1BJ001,BatteryHolder_MYOUNG_BH-21700-B1BJ001,,hand-fit (excluded from position files)
+C109,4.7n 50V,C_0603_1608Metric,C53987,DNP
+C201,22n 50V,C_0603_1608Metric,C21122,DNP
+C314,1p C0G,C_0402_1005Metric,C1550,DNP
+C447,10p,C_0603_1608Metric,C1634,DNP
+C454,33p 50V,C_0603_1608Metric,C91368,DNP
+C455,33p 50V,C_0603_1608Metric,C91368,DNP
+C547,10p,C_0603_1608Metric,C1634,DNP
+C554,33p 50V,C_0603_1608Metric,C91368,DNP
+C555,33p 50V,C_0603_1608Metric,C91368,DNP
+D102,1N4148WS,D_SOD-323,C2128,DNP
+D105,SMAJ18A,D_SMA,,hand-fit (excluded from position files)
+J102,Cell 1 NTC 10k 103AT,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+J103,EV2400 SMBus,PinHeader_1x04_P2.54mm_Vertical,C2691448,hand-fit (excluded from position files)
+J104,Bench PACK_P,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+J105,Cell 2 NTC 10k 103AT,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+J106,Cell 3 NTC 10k 103AT,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+J107,Cell 4 NTC 10k 103AT,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+J301,SWD,Samtec_FTSH-105-01-xx-DV-K_2x05_P1.27mm,,hand-fit (excluded from position files)
+J302,UART debug,PinHeader_1x03_P2.54mm_Vertical,C2937625,hand-fit (excluded from position files)
+J303,Spare GPIO,PinHeader_1x07_P2.54mm_Vertical,C492406,hand-fit (excluded from position files)
+J402,I2CC logic analyzer,PinHeader_1x03_P2.54mm_Vertical,C2937625,hand-fit (excluded from position files)
+J502,I2CC logic analyzer,PinHeader_1x03_P2.54mm_Vertical,C2937625,hand-fit (excluded from position files)
+JP201,AMP_EN,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+JP202,Meas. section power,PinHeader_1x02_P2.54mm_Vertical,C492401,hand-fit (excluded from position files)
+R114,100k,R_0402_1005Metric,C25741,DNP
+R127,0R,R_2512_6332Metric,,DNP
+R315,100k,R_0402_1005Metric,C25741,DNP
+R450,3.3R,R_1206_3216Metric,C3998398,DNP
+R451,3.3R,R_1206_3216Metric,C3998398,DNP
+R550,3.3R,R_1206_3216Metric,C3998398,DNP
+R551,3.3R,R_1206_3216Metric,C3998398,DNP
+TP109,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP201,OUT_LO,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP202,OUT_HI,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP203,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP208,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP209,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP309,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP405,SW1,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP406,SW2,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP412,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP505,SW1,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP506,SW2,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+TP512,GND,TestPoint_Pad_D1.5mm,,hand-fit (excluded from position files)
+U201,INA190A5IDDFR,TSOT-23-8,,hand-fit (excluded from position files)
+U202,INA190A1IDDFR,TSOT-23-8,,hand-fit (excluded from position files)
+U301,CC2340R5MODA,TI_MHA0024A_CC2340R5MODA_7x10mm,,no LCSC number

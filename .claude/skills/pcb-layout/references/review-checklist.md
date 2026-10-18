@@ -33,7 +33,15 @@ Electrical:
       L2/L5, no via-row slots, no long outer-layer signal runs, every signal via has a GND via within 1 mm.
 - [ ] No reference changes on clocks/sense.
 - [ ] Hot-loop return in the plane directly under the loop; no traces on the plane layer under power stages.
-- [ ] Gate drive paired with its return; no gate trace beside a sense trace.
+- [ ] Gate drive paired with its return; no gate trace beside a sense trace. Measure it: driver pin to gate pad
+      straight-line distance (aim ≤10 mm; a controller 15–34 mm from its FETs with 0.2 mm gate tracks is a
+      placement finding for the next revision) and gate track width ≥0.5 mm (TI).
+- [ ] Polarity marks match pad nets: trace the series chain through holder/connector pads (marks owned by the
+      footprint rotate with the pads; board-level "+"/"−" text does not).
+- [ ] Antenna keep-outs: no zone *fill* polygon intersects the rule areas on any layer (DRC checks tracks and vias
+      there; test the fills with `SHAPE_POLY_SET.BooleanIntersection`).
+- [ ] Silkscreen labels for test points actually placed (0.8 mm text does not fit a 2.54 mm loop grid; spread the
+      grid or accept unlabeled loops).
 - [ ] Kelvin pairs from pad ends, tight, no vias/test points, away from SW nodes.
 - [ ] Second grounds (gauge VSS, AGND) joined at exactly one point; nothing crosses the gap.
 - [ ] High-current paths: width with margin for etch tolerance, no necks, enough vias at each layer change, mirrored
@@ -52,5 +60,9 @@ Manufacturing:
 ## C. Before ordering
 
 - [ ] Gerbers and drill viewed; layer order and stack-up match the order form.
-- [ ] Position file rotations verified in the fab's viewer; BOM complete; DNP/hand-fit excluded.
+- [ ] Position file rotations verified in the fab's viewer; BOM complete; DNP/hand-fit excluded; one BOM line
+      per LCSC number; stock checked.
+- [ ] A "critical only" pass against the fab's live capability page: what stops the board working (opens, shorts,
+      parity, polarity, keep-outs) and what the fab would reject (hole-to-hole, ring, track/space at the copper
+      weight, slots, edge). Say which is which; everything else is advisory.
 - [ ] A last render of every layer and a comparison with the vendor EVM layouts for each power stage.
