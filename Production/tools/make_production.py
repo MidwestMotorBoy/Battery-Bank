@@ -83,6 +83,7 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
     "usb_port.kicad_sch": {"DP": "DPDN_DCP", "DN": "DPDN_DCP", "BTST1_C": "BTST1", "BTST2_C": "BTST2",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
+TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
 PAD = "TestPoint:TestPoint_Pad_D1.5mm"
 FOOTPRINT = {  # kept parts whose footprint changes
@@ -111,6 +112,8 @@ GAUGE_PADS = [
     ("TP111", "SMBD", PAD, ("J103", "3")),
     ("TP112", "GND", PAD, ("J103", "1")),
 ]
+# the pogo pads get their own spaced row (J103's pins were 2.54 mm apart), tied by a global label or GND symbol
+POGO_AT = {"TP110": ((355.6, 152.4), "SCL"), "TP111": ((370.84, 152.4), "SDA"), "TP112": ((386.08, 152.4), "GND")}
 
 
 def uid():
@@ -235,7 +238,7 @@ def prune(s):
             if deg < 3:
                 spans.append((x["a"], x["b"]))
         for x in anchors(s, "no_connect"):
-            if x["p"] not in pins:
+            if x["p"] not in pins and x["p"] not in sheet_pts:
                 spans.append((x["a"], x["b"]))
         if not spans:
             return s, total
@@ -325,8 +328,7 @@ def add_tc2030(s, old):
 
     syms = {y["ref"]: y for y in symbols(s)}
     tmpl = s[syms["TP301"]["a"]:syms["TP301"]["b"]]          # any symbol on this sheet for the instance path
-    x, y = old["J301"]["at"][:2]
-    blk = clone(tmpl, "J301", "TC2030-NL", "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical", (x, y), "TP301")
+    blk = clone(tmpl, "J301", "TC2030-NL", "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical", TC2030_AT, "TP301")
     blk = blk.replace('(lib_id "Connector:TestPoint")', '(lib_id "Connector:Conn_ARM_SWD_TagConnect_TC2030")')
     blk = set_prop(blk, "Description", "Tag-Connect TC2030-NL footprint (no part fitted); XDS110 via TC2030-CTX cable")
     blk = re.sub(r'\n\t\t\(pin "1"\n\t\t\t\(uuid "[^"]+"\)\n\t\t\)',
@@ -348,8 +350,26 @@ def add_gauge_pads(s, old):
     syms = {y["ref"]: y for y in symbols(s)}
     tmpl = s[syms["TP106"]["a"]:syms["TP106"]["b"]]
     add = ""
+    glabel = {}
+    for a, b in top_blocks(s, "global_label"):
+        m = re.match(r'\(global_label "([^"]+)"[\s\S]*?\(at [-\d.]+ [-\d.]+ 180\)', s[a:b])
+        if m:
+            glabel.setdefault(m.group(1), s[a:b])
+    gnd = next(s[y["a"]:y["b"]] for y in symbols(s) if y["lib"] == "power:GND")
     for ref, value, fp, (oref, opin) in GAUGE_PADS:
-        add += "\n\t" + clone(tmpl, ref, value, fp, old[oref]["pins"][opin], "TP106")
+        if ref not in POGO_AT:
+            add += "\n\t" + clone(tmpl, ref, value, fp, old[oref]["pins"][opin], "TP106")
+            continue
+        at, net = POGO_AT[ref]
+        add += "\n\t" + clone(tmpl, ref, value, fp, at, "TP106")
+        if net == "GND":
+            add += clone_power(gnd, at)
+        else:
+            b = new_uuids(glabel[net])
+            x0, y0 = map(float, re.search(r"\(at ([-\d.]+) ([-\d.]+)", b).groups())
+            b = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+                round(float(m.group(1)) - x0 + at[0], 2), round(float(m.group(2)) - y0 + at[1], 2)), b)
+            add += "\n\t" + b
     return insert_top(s, add)
 
 

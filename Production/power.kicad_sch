@@ -9,8 +9,8 @@
 		(date "2026-10-17")
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
-		(comment 1 "R_MEAS + INA190 x2, HT7550-1, TPS62177")
-		(comment 2 "Spec + open items: DevBoard/README.md")
+		(comment 1 "TPS62177 3V3 always-on rail")
+		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
@@ -1961,30 +1961,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "AMPLIFIER SUPPLY  (5 V LDO, fed from PACK_P so amp current bypasses R_MEAS)"
-		(exclude_from_sim no)
-		(at 40.64 213.36 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "818ef269-268b-41d0-a0d6-ed8040230c2e")
-	)
-	(text "SLEEP-CURRENT MEASUREMENT  (both amps across R201 = R_MEAS)"
-		(exclude_from_sim no)
-		(at 40.64 116.84 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "963add77-1762-432b-8911-f4f602926e3d")
-	)
 	(text "3.3 V ALWAYS-ON RAIL  (TPS62177, 1 MHz, sleep mode under MCU control)"
 		(exclude_from_sim no)
 		(at 40.64 35.56 0)
@@ -1997,7 +1973,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. Low-current branch: PACK_P -> R201 10R -> PACK_LP -> TPS62177 -> 3V3 (MCU + both TPS25751).\n   Gauge BAT is NOT on this branch (TI: gauge must stay powered with FETs off).\n2. Kelvin-connect R202/R203 to the R201 pads.\n3. U201 gain 500: 5 mV per uA, ~0.99 mA full scale.  U202 gain 25: 0.25 V per mA, ~20 mA full scale.\n4. R202/R203/C201 fitted 0R/0R/DNP to start; 100R/100R/22nF gives a 36 kHz input filter.\n5. Probe OUT_LO/OUT_HI at TP201/TP202, ground lead on TP208/TP209 beside them (1 MOhm scope input).\n   R204/R205 49.9R isolate the INA190 outputs from probe/cable capacitance (1 nF max).\n6. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n7. R207 breaks the 3V3 rail for debugging.\n8. U201 (DigiKey/Mouser) and U202 (LCSC) are hand-soldered: not in the JLC BOM/CPL.\n9. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n10. U203 (HT7550-1) has no EN pin: it runs whenever JP202 feeds it (30 V operating, 33 V abs max).\n11. U204 pin 4 (NC) goes to GND, as TI recommends."
+	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on the dev board."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -2040,16 +2016,6 @@
 	)
 	(wire
 		(pts
-			(xy 92.71 55.88) (xy 99.06 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "064576bd-e096-496a-9869-1975d906bbc5")
-	)
-	(wire
-		(pts
 			(xy 185.42 55.88) (xy 190.5 55.88)
 		)
 		(stroke
@@ -2057,36 +2023,6 @@
 			(type default)
 		)
 		(uuid "1e6f7191-5505-4b07-96d6-c12417d5f7b4")
-	)
-	(wire
-		(pts
-			(xy 190.5 55.88) (xy 199.39 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "51f13fde-0e5c-4a03-8563-123ceed631df")
-	)
-	(wire
-		(pts
-			(xy 106.68 55.88) (xy 121.92 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5a0dca0e-8d71-4228-b5d4-2778c7c06c74")
-	)
-	(wire
-		(pts
-			(xy 99.06 55.88) (xy 106.68 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5e5debbc-f6fd-4290-a6f8-24ea03f10c98")
 	)
 	(wire
 		(pts
@@ -3348,7 +3284,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f80cabf3-3566-4fed-924b-d2376ead436c")
+		(uuid "5a6d9641-bd1d-4cd5-b030-956f866542c1")
 	)
 	(wire
 		(pts
@@ -3358,27 +3294,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b0c3b6ef-1b3b-4ec9-8f50-9b35b1b8970a")
-	)
-	(wire
-		(pts
-			(xy 85.09 55.88) (xy 92.71 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ce9cf55a-ee6b-4f70-8bb2-f7403f34f346")
-	)
-	(wire
-		(pts
-			(xy 199.39 55.88) (xy 207.01 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b26ce9e2-d44e-4d22-ab5f-e738b030526b")
+		(uuid "fbc9ce87-89c7-4a40-a92c-e3bf27e76d8f")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -3390,8 +3306,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "7cf3bb25-1602-4450-a541-1159bcf21a1d")
-		(property "Reference" "#PWR9007"
+		(uuid "d0f7ec15-0bff-447f-aa24-bd85215cca0b")
+		(property "Reference" "#PWR9009"
 			(at 190.5 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3446,12 +3362,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "1af67745-7bea-4ebf-92eb-7f629f3a5510")
+			(uuid "3652bc4a-e5f5-4ef9-80fc-bdfea5f61964")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9008")
+					(reference "#PWR9010")
 					(unit 1)
 				)
 			)
@@ -3467,8 +3383,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "00c857d1-50b5-4031-9812-c23f1cb4e276")
-		(property "Reference" "#PWR9009"
+		(uuid "54884a76-cdb6-4965-bbf9-efab6207b29f")
+		(property "Reference" "#PWR9011"
 			(at 121.92 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3523,12 +3439,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "b0443823-468d-4819-afb0-7bc958f0c25d")
+			(uuid "3ac4cbe3-6f6a-4421-b25d-5bfd1a6454f6")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9010")
+					(reference "#PWR9012")
 					(unit 1)
 				)
 			)
@@ -3536,7 +3452,27 @@
 	)
 	(no_connect
 		(at 142.24 68.58)
-		(uuid "2e847453-a775-4979-b2b1-5f0ec1ae3187")
+		(uuid "21f7129d-5bae-4298-b4d3-ae331c617bbc")
+	)
+	(wire
+		(pts
+			(xy 190.5 55.88) (xy 207.01 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a16a65df-0c30-4c00-8c51-f5663fd9bb7f")
+	)
+	(wire
+		(pts
+			(xy 85.09 55.88) (xy 121.92 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "844d91ab-3934-4a6c-9317-b73bc97c9338")
 	)
 	(sheet_instances
 		(path "/"

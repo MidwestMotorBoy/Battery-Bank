@@ -10,7 +10,7 @@
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
 		(comment 1 "TPS25751D + BQ25756 + TPS62933; port 1 = 4xx, port 2 = 5xx")
-		(comment 2 "Spec + open items: DevBoard/README.md")
+		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
@@ -6724,7 +6724,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.08 V)  - 5 V source + VCONN"
+	(text "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.16 V)  - 5 V source + VCONN"
 		(exclude_from_sim no)
 		(at 40.64 186.69 0)
 		(effects
@@ -6736,7 +6736,7 @@
 		)
 		(uuid "0cc904da-16ed-4828-bc8a-862f61bc0b01")
 	)
-	(text "GATE / BOOTSTRAP TUNING  (BQ25756EVM fig. 3-1: R8, R20, R3, R17, R13, R23, snubbers)"
+	(text "GATE RESISTORS + TURN-OFF DIODES"
 		(exclude_from_sim no)
 		(at 299.72 264.16 0)
 		(effects
@@ -6785,7 +6785,7 @@
 		)
 		(uuid "3077a106-4384-4a58-8da7-9da51f721322")
 	)
-	(text "TEST POINTS / POWER FLAGS"
+	(text "FACTORY TEST PAD"
 		(exclude_from_sim no)
 		(at 40.64 276.86 0)
 		(effects
@@ -6811,7 +6811,7 @@
 	)
 	(text "Charger battery side joins PACK_P here (net tie R430 removed).\nRoute SRN (R429) and the FB divider top (R418) from R427's PACK_P pad,\nnot from the pour: DRC can't catch a tap on the bus."
 		(exclude_from_sim no)
-		(at 448.31 50.8 0)
+		(at 459.74 35.56 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6856,7 +6856,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side. D+/D- are shorted by R440 (passive BC1.2 DCP); the TPS25751\n   no longer does BC1.2. Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z. TP415-TP421: CC, SBU and liquid-detect probes.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly (net tie R430 removed 2026-10-16); take SRN/FB from R427's pad.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH (rev A5): R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Tuning block (review 3): R444-R449 0R in the gate and BTST lines, R450/C454 and R451/C455 DNP snubbers (R 1206 0.66 W).\n    Place the 0R right at the FET gates / BTST pins; they are where a few ohms go if the edges ring."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -7914,16 +7914,6 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 195.58) (xy 86.36 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63a360aa-4400-406f-8a37-d670c6bc607c")
-	)
-	(wire
-		(pts
 			(xy 220.98 67.31) (xy 209.55 67.31)
 		)
 		(stroke
@@ -8554,16 +8544,6 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 71.12) (xy 137.16 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b895ed73-d118-4a70-afb1-411ba9c91f94")
-	)
-	(wire
-		(pts
 			(xy 149.86 99.06) (xy 144.78 99.06)
 		)
 		(stroke
@@ -8671,16 +8651,6 @@
 			(type default)
 		)
 		(uuid "cc1c25fb-3a9c-4b71-af1a-513059e51f4e")
-	)
-	(wire
-		(pts
-			(xy 86.36 195.58) (xy 93.98 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cc311fc6-1cb7-4009-b7a5-7d76317c043d")
 	)
 	(wire
 		(pts
@@ -9612,16 +9582,6 @@
 		)
 		(uuid "7132b7c8-2db0-4b35-b33b-c30fdd0eaf17")
 	)
-	(label "BTST2"
-		(at 341.63 279.4 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "71f7ba34-6a73-4893-a85c-251caf9d7f30")
-	)
 	(label "I2CC_SCL"
 		(at 185.42 109.22 0)
 		(effects
@@ -10011,16 +9971,6 @@
 			(justify right bottom)
 		)
 		(uuid "d2f0de9e-5b08-4b65-ad68-c9d1a0d206af")
-	)
-	(label "BTST1"
-		(at 341.63 271.78 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d98fc226-27c2-44b6-a06a-71e02e46bedf")
 	)
 	(label "STAT2"
 		(at 365.76 205.74 180)
@@ -28532,7 +28482,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b7565c31-386f-4672-a8c6-c861d51af953")
+		(uuid "b75a0f25-0f57-4ee3-b013-c2c4c1b04333")
 	)
 	(wire
 		(pts
@@ -28542,7 +28492,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3f767afc-0cea-41d6-9e93-d4786f36cca8")
+		(uuid "37c8f917-7585-42ed-bf37-a017ea51c818")
 	)
 	(wire
 		(pts
@@ -28552,7 +28502,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5da4dea2-6d4d-49a5-a54e-af64a2af34c9")
+		(uuid "b255b110-80fb-4586-ba77-6a10aedc93f2")
 	)
 	(wire
 		(pts
@@ -28562,7 +28512,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "52a61089-9c8f-4efc-bf89-427db38961a3")
+		(uuid "8a83bae4-d745-440f-8138-c6f53be61622")
 	)
 	(wire
 		(pts
@@ -28572,7 +28522,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "32eb8b38-e1d8-41f3-9e9e-a063f7bd735a")
+		(uuid "5b591cf1-12c1-4d4c-8730-f06af2d80589")
 	)
 	(wire
 		(pts
@@ -28582,7 +28532,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "69343d51-2174-4765-b4cd-792ce1213128")
+		(uuid "b7fcb0bc-d53b-40ab-902c-81f001c67358")
 	)
 	(wire
 		(pts
@@ -28592,7 +28542,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8235df1a-af22-4c08-95bc-971fa109f4c5")
+		(uuid "2415b215-806a-49f7-9ab6-972f38cb1a9c")
 	)
 	(wire
 		(pts
@@ -28602,7 +28552,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f9b91d51-c53a-4da2-86a6-81c91105b322")
+		(uuid "a952f428-6a2a-44a9-8831-5f47027ab9a6")
 	)
 	(wire
 		(pts
@@ -28612,7 +28562,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "dfde6036-acf8-4860-8564-27d310b6921f")
+		(uuid "bbbb2130-9b08-4b99-991a-72b4d795aba8")
 	)
 	(wire
 		(pts
@@ -28622,7 +28572,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1b5ec287-d0cd-459d-a825-5514ca52273c")
+		(uuid "0b23c41f-bb33-4a30-81d8-0ce0594e071d")
 	)
 	(wire
 		(pts
@@ -28632,7 +28582,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2dbd0486-310a-4722-ad5c-813de7abc547")
+		(uuid "509be4cd-03e1-4848-bb26-613602d65cbb")
 	)
 	(wire
 		(pts
@@ -28642,7 +28592,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "81ca8382-584e-4ec9-8b2f-d94d21fbb473")
+		(uuid "59288b12-b5a3-4527-9686-bd2f06477d8a")
 	)
 	(wire
 		(pts
@@ -28652,7 +28602,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "82b7db8b-6feb-41cb-8565-efc1eb76105b")
+		(uuid "b79feb34-04cf-4283-b926-3ae913ecadc5")
 	)
 	(wire
 		(pts
@@ -28662,7 +28612,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fef86489-4109-4ca8-8c37-cf8005922e1d")
+		(uuid "4894a75b-b993-42ad-85e9-f721f834b606")
 	)
 	(wire
 		(pts
@@ -28672,7 +28622,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9fc38af9-0e25-4b8a-bc25-77e8d21627bc")
+		(uuid "eb48fd2c-3d17-47b6-992c-1a8f33c3cee7")
 	)
 	(wire
 		(pts
@@ -28682,7 +28632,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6c6c72c4-d1d4-4c10-8ae9-1f046d31b0f6")
+		(uuid "47cca451-b223-43bc-9407-0807ced14402")
 	)
 	(wire
 		(pts
@@ -28692,7 +28642,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bcb29a78-c3de-4359-9722-8d120b052d1d")
+		(uuid "157b95d1-a4d2-4007-89d2-8b36911d4776")
 	)
 	(wire
 		(pts
@@ -28702,17 +28652,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3c72f527-c9ca-4bc6-aa68-72d25acc0299")
-	)
-	(wire
-		(pts
-			(xy 123.19 71.12) (xy 130.81 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2aec9889-0933-4f3f-af99-ae2054d3e9c4")
+		(uuid "6caf2ee3-7949-464c-a168-b21584c62dfa")
 	)
 	(wire
 		(pts
@@ -28722,37 +28662,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0188f5e3-bcbb-4e0d-bc94-ea97c4eb6ba3")
-	)
-	(wire
-		(pts
-			(xy 87.63 106.68) (xy 95.25 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "750c8106-8e9f-441a-8557-65c031d38d22")
-	)
-	(wire
-		(pts
-			(xy 341.63 271.78) (xy 349.25 271.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "79e5906b-3ce4-488e-9eba-4f92d09e42b9")
-	)
-	(wire
-		(pts
-			(xy 341.63 279.4) (xy 349.25 279.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "018761f1-cab9-45a4-b15d-1672a9026a70")
+		(uuid "05f7428d-8754-4140-9a90-7537d8239048")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -28774,8 +28684,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "389426cf-e81a-4f25-b5ba-385a3702eadb")
-		(property "Reference" "#PWR9027"
+		(uuid "54018e1a-ac3b-4961-b134-b8d5d6251a56")
+		(property "Reference" "#PWR9029"
 			(at 154.94 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -28830,16 +28740,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "b96b3f01-d4dd-4e89-841a-70fb7ddad196")
+			(uuid "5f6bc91c-286f-44cb-8606-7d2fef0f4324")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9028")
+					(reference "#PWR9030")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9029")
+					(reference "#PWR9031")
 					(unit 1)
 				)
 			)
@@ -28855,8 +28765,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "1de86ee8-501e-4b1a-8743-56dae2e83afe")
-		(property "Reference" "#PWR9030"
+		(uuid "cdf4f1b1-39dd-426e-ac09-39df639df1c7")
+		(property "Reference" "#PWR9032"
 			(at 50.8 195.58 0)
 			(hide yes)
 			(show_name no)
@@ -28911,30 +28821,20 @@
 			)
 		)
 		(pin "1"
-			(uuid "076173c7-8810-42b3-9e42-47a3f8749264")
+			(uuid "298fbb97-5ccd-49e3-9498-1cd4fb3b05af")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9031")
+					(reference "#PWR9033")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9032")
+					(reference "#PWR9034")
 					(unit 1)
 				)
 			)
 		)
-	)
-	(label "BTST2"
-		(at 349.25 279.4 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "4196f2e1-8d8d-40a2-a0f5-f934fa98b914")
 	)
 	(label "BTST1"
 		(at 401.32 177.8 180)
@@ -28957,16 +28857,6 @@
 		(uuid "aaace4b0-af7d-4699-9c10-a06d9d6bded3")
 	)
 	(label "DPDN_DCP"
-		(at 95.25 106.68 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b56cb527-ae11-4704-88c4-1d130ddd8ef7")
-	)
-	(label "DPDN_DCP"
 		(at 60.96 99.06 0)
 		(effects
 			(font
@@ -28976,25 +28866,25 @@
 		)
 		(uuid "cb977311-0261-4a2c-8760-b9afba12ca19")
 	)
-	(label "DPDN_DCP"
-		(at 87.63 106.68 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
+	(wire
+		(pts
+			(xy 76.2 195.58) (xy 93.98 195.58)
 		)
-		(uuid "dd3f3db0-428d-4369-a361-2cf63dd9fae5")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a3eee85-167d-4598-9cb1-49dcbf482d58")
 	)
-	(label "BTST1"
-		(at 349.25 271.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
+	(wire
+		(pts
+			(xy 137.16 71.12) (xy 123.19 71.12)
 		)
-		(uuid "fb6f6f3e-8b58-4434-bff1-86ee10cc6d9a")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f7d7f855-ef79-4712-88f9-182e4416d985")
 	)
 	(sheet_instances
 		(path "/"

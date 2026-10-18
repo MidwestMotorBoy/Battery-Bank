@@ -1,6 +1,6 @@
 # Monolith production board
 
-KiCad 10 project `Monolith`. **Status (2026-10-17): schematic P0 only.** It is the dev board schematic (rev A8) with the dev-only parts removed. It has not been reviewed, there is no board yet, and the drawings still need a tidy pass.
+KiCad 10 project `Monolith`. **Status (2026-10-17): schematic P0 only.** It is the dev board schematic (rev A8) with the dev-only parts removed. It has not been reviewed and there is no board yet.
 
 ## How P0 was made
 
@@ -10,9 +10,31 @@ KiCad 10 project `Monolith`. **Status (2026-10-17): schematic P0 only.** It is t
 - replaces 0 Ω links with wires;
 - adds the production pads.
 
+`tools/tidy_production.py` then tidies the drawings, with no electrical change:
+
+- merges split wires and deletes the wires the link merges left between same-name labels;
+- spreads the pogo pads into their own row;
+- deletes the headings of removed blocks and renames the rest;
+- rewrites every sheet's notes, the root index and the revision log;
+- renames the sheets *3V3 Rail* and *MCU*.
+
 `tools/check_netlist.py` then compares the result with the dev board netlist. Every surviving pin must keep its dev net, with only the intended link merges, and every new pad must take the net of the pin it replaces. Result: 960 pins checked, no differences, and 424 parts down to 297. ERC shows the dev board's 8 pin-to-pin warnings plus 3 off-grid notes on the root sheet pins.
 
-Don't hand-edit the sheets until the tidy pass has been done and you've decided to stop re-running the script. Re-running overwrites them.
+Run all three in order with KiCad's Python:
+
+```bash
+"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/make_production.py
+```
+
+```bash
+"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/tidy_production.py
+```
+
+```bash
+"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/check_netlist.py
+```
+
+Re-running overwrites the sheets. Once you start editing them by hand in KiCad, stop using the scripts.
 
 ## Removed (decided 2026-10-17)
 
@@ -49,16 +71,12 @@ Don't hand-edit the sheets until the tidy pass has been done and you've decided 
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 16 AWG pads (`SolderWire-1.5sqmm`, Ø1.7 mm hole);
     - J109–J111: CELL1–CELL3 tap pads (`SolderWire-0.15sqmm`);
     - J102, J105–J107: cell NTC wire pads.
-- **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads (replace the EV2400 header J103).
+- **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
 
 ## Next
 
-1. **Tidy the drawings:**
-    - spread the new pads;
-    - move the TC2030 off R302/C304;
-    - delete empty headings (Wake + bench supply, Debug headers, Status LED);
-    - rewrite the sheet notes and the root sheet index.
+1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **Cap cuts from the 2026-10-17 simulations** (`docs/devboard/cap-reduction-sims-2026-10-17.md`): C435/C535 out.
 3. **Decide the production board's thickness and stack-up**, then start the layout from `mechanical/monolith_bottom_pcb.dxf`.

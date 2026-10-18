@@ -9,8 +9,8 @@
 		(date "2026-10-17")
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
-		(comment 1 "4S input, BQ40Z50-R2 gauge/protector, protection FETs")
-		(comment 2 "Spec + open items: DevBoard/README.md")
+		(comment 1 "Welded 4S pack pads, BQ40Z50-R2 gauge/protector, protection FETs")
+		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
@@ -4305,7 +4305,7 @@
 		)
 		(uuid "729559fd-c1ea-4344-98ba-cad9ebc5c3ca")
 	)
-	(text "CELL STACK (4S)"
+	(text "PACK WIRES  (welded 4S EVE INR21700-58E)"
 		(exclude_from_sim no)
 		(at 22.86 33.02 0)
 		(effects
@@ -4317,7 +4317,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1N tab). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the cell end of each holder contact;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired cell NTC each (J102, J105-J107, one per cell); insulated sensors only (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. C109 + D102 (DNP): fit if the DSG turn-on inrush into PACK_P trips SCD. D103 (fitted) clamps Q102 VGS at 15 V in a hard short.\n10. Tape the J102 NTC to BT101: a 21700 can is its cell's negative terminal and TS1 is rated 2.1 V.\n11. SW101 wakes the gauge from SHUTDOWN without USB; J104 feeds PACK_P from a current-limited bench supply\n    (12-16 V, limit <= 0.5 A). D105 clamps a mis-set supply before D104; it is a crowbar, not a regulator.\n12. J103 matches the EV2400 SMBus port: 1 VSS, 2 SCL, 3 SDA, 4 VOUT (not used). Fit cells before plugging in USB.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse (no F101).\n    R127 (DNP) is a bench bypass for a blown F102 only: never fitted on a pack in use.\n15. Never insert or remove a cell with USB or J104 power on: an empty holder slot sees PACK_P minus the other cells\n    (> 4.35 V), U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
+	(text "NOTES\n1. CELL_N = gauge VSS (cell 1 negative). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.\n3. VC taps are separate thin traces from the tap pads J109-J111 and from the J108/J112 pads;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up, i.e. when USB is plugged in (TPS25751 dead-battery\n    sink + BQ25756 charging with 3V3 down, USB sheet note 11). Confirm on the dev board.\n11. TP110-TP112 = SMBus pogo pads (SMBC, SMBD, GND) for an EV2400 / BQStudio: golden image and calibration.\n    Only with 3V3 up and U301 held in reset (MCU sheet note 10).\n12. TP106 PACK_P and TP109 GND are factory test pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Connect the pack with USB unplugged, PACK- first, then the taps bottom-up, then PACK+: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -4340,19 +4340,6 @@
 		)
 		(uuid "8a3a566c-f33f-4c14-a5f4-a07a27bac5f6")
 	)
-	(text "WAKE + BENCH SUPPLY"
-		(exclude_from_sim no)
-		(at 284.48 33.02 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(thickness 0.508)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "a61fb588-c9d6-4caf-af90-2ed4d5b188a2")
-	)
 	(text "SECOND-LEVEL PROTECTION  BQ294700 + SCP  (TI fig. 9-11)"
 		(exclude_from_sim no)
 		(at 264.16 85.09 0)
@@ -4366,7 +4353,7 @@
 		)
 		(uuid "b9b49452-8949-490e-a301-091056988741")
 	)
-	(text "Holders BT101-BT104 OR welded pack on J101 - never both.\nJ101 is DNP. Check each cell at TP102-TP105 and the stack at TP108 before waking the gauge\n(Q101/Q102 stay off until FET_EN is set, so nothing loads the cells until then)."
+	(text "J108 PACK- and J112 PACK+: 16 AWG leads in 1.7 mm plated holes. J109-J111: cell tap wires.\nConnect with USB unplugged, in order: PACK-, CELL1, CELL2, CELL3, PACK+ (note 15)."
 		(exclude_from_sim no)
 		(at 22.86 40.64 0)
 		(effects
@@ -4390,7 +4377,7 @@
 		)
 		(uuid "de590afb-188e-400e-9dba-1fd9dcc1cac7")
 	)
-	(text "TEST POINTS / POWER FLAGS"
+	(text "FACTORY TEST PADS"
 		(exclude_from_sim no)
 		(at 40.64 251.46 0)
 		(effects
@@ -4402,7 +4389,7 @@
 		)
 		(uuid "f052ed49-c341-4407-8cb8-42e938f959fb")
 	)
-	(text "HOST SMBus (gauge 0x0B) / EV2400"
+	(text "GAUGE SMBus (0x0B) + POGO PADS"
 		(exclude_from_sim no)
 		(at 266.7 139.7 0)
 		(effects
@@ -4668,16 +4655,6 @@
 	)
 	(wire
 		(pts
-			(xy 219.71 50.8) (xy 241.3 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ce8937e-c071-46a4-a534-15ca0023500a")
-	)
-	(wire
-		(pts
 			(xy 95.25 228.6) (xy 91.44 228.6)
 		)
 		(stroke
@@ -4925,16 +4902,6 @@
 			(type default)
 		)
 		(uuid "652ffefd-d356-4855-ba51-d6f386211b2a")
-	)
-	(wire
-		(pts
-			(xy 215.9 50.8) (xy 219.71 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6e55aff2-f05c-4074-a3d3-1522ccf0393d")
 	)
 	(wire
 		(pts
@@ -5855,50 +5822,6 @@
 			(justify right bottom)
 		)
 		(uuid "fd88deb6-4bfb-49b0-95db-a97bd74a4191")
-	)
-	(global_label "SDA"
-		(shape bidirectional)
-		(at 327.66 160.02 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "3162c8ab-74c0-4881-a2bf-331da675f73a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 327.66 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SCL"
-		(shape bidirectional)
-		(at 327.66 157.48 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "8ed903ff-7f66-420d-82f1-1d35521d72a3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 327.66 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
 	(global_label "SDA"
 		(shape bidirectional)
@@ -8794,83 +8717,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "#PWR114")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 327.66 154.94 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "48b52db9-ebb9-4912-8046-ca6e03b3ef1f")
-		(property "Reference" "#PWR116"
-			(at 327.66 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 326.39 151.89 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 327.66 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 327.66 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 327.66 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3f808a9f-22e7-4a2f-b211-736bf1c7fb16")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR116")
 					(unit 1)
 				)
 			)
@@ -15125,7 +14971,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "079ecd88-89ab-44a5-8df8-ef9f916ddad1")
+		(uuid "aa70273d-4a5a-4cf3-a781-f7be5a52d0a4")
 	)
 	(wire
 		(pts
@@ -15135,7 +14981,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3a2b78a3-bc4f-424c-a69d-5e39d367107c")
+		(uuid "a97b2e59-fa1c-445d-b346-4c8b1d6812f7")
 	)
 	(wire
 		(pts
@@ -15145,7 +14991,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "352d817c-b1f6-4317-b286-83f2179afcee")
+		(uuid "024d11bb-b5a7-4239-ab15-f9724454da1c")
 	)
 	(wire
 		(pts
@@ -15155,7 +15001,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "730c51e1-e2a6-4ba3-a79a-cd16f2346d49")
+		(uuid "2b73b64f-876d-4352-85ca-add7703d193b")
 	)
 	(wire
 		(pts
@@ -15165,7 +15011,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "067b4033-f343-47fd-84ec-4fd0673d841c")
+		(uuid "d82508cb-29aa-4147-83e5-1133fa247f1c")
 	)
 	(wire
 		(pts
@@ -15175,7 +15021,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "649bb36d-6108-4b69-af22-19f3d7b6cd0b")
+		(uuid "d83357b1-61e1-49c0-be8d-03daec8ef761")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -15187,26 +15033,27 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "651f8752-2e61-4cdf-9167-c3cc734de17a")
+		(uuid "6e39cffc-ea90-46a3-8e66-eb9ce7a65ae1")
 		(property "Reference" "J108"
-			(at 38.1 136.39 0)
+			(at 40.64 137.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "PACK- (CELL_N)"
-			(at 43.28 139.92 0)
-			(hide yes)
+			(at 40.64 139.7 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
@@ -15243,7 +15090,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "d100e5d2-66c1-44a4-8c3c-28be4bb5b852")
+			(uuid "05b728dd-8ccd-4238-b40e-7360efb59142")
 		)
 		(instances
 			(project "Monolith"
@@ -15264,26 +15111,27 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "2c493b90-3674-434f-9959-6164d292b29c")
+		(uuid "6bb5b603-8318-410d-969f-53c003e6bd18")
 		(property "Reference" "J109"
-			(at 38.1 128.77 0)
+			(at 40.64 129.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "CELL1 tap"
-			(at 43.28 132.3 0)
-			(hide yes)
+			(at 40.64 132.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
@@ -15320,7 +15168,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "a402cc07-2f38-4993-9ec5-493f714704ae")
+			(uuid "ad1b00e2-aae3-4129-9e15-82ee68d6d40f")
 		)
 		(instances
 			(project "Monolith"
@@ -15341,26 +15189,27 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "cbf55fbe-95ae-4909-bb09-933df2008188")
+		(uuid "3ecd5a4e-07a0-4280-886f-629ad93be11e")
 		(property "Reference" "J110"
-			(at 38.1 103.37 0)
+			(at 40.64 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "CELL2 tap"
-			(at 43.28 106.9 0)
-			(hide yes)
+			(at 40.64 106.68 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
@@ -15397,7 +15246,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "05cf93e6-b8f1-447c-beb3-b9f27324ea9b")
+			(uuid "35ea00bf-42b8-479c-ad75-1edc8a15d06c")
 		)
 		(instances
 			(project "Monolith"
@@ -15418,26 +15267,27 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "bc4d6337-ba41-4a94-8d4d-ebb5637b59b9")
+		(uuid "0c582c3e-6814-4328-b34d-b383eeb729d3")
 		(property "Reference" "J111"
-			(at 38.1 77.97 0)
+			(at 40.64 78.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "CELL3 tap"
-			(at 43.28 81.5 0)
-			(hide yes)
+			(at 40.64 81.28 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
@@ -15474,7 +15324,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "c357a2dc-c7a1-43c5-8614-d8f2b5e927b1")
+			(uuid "fc2692e6-daa4-4825-bcf9-791a77a94d29")
 		)
 		(instances
 			(project "Monolith"
@@ -15495,26 +15345,27 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "aa77a384-d159-4594-a892-f604da22c768")
+		(uuid "1c9ee833-7a8f-483a-9745-9776093678c1")
 		(property "Reference" "J112"
-			(at 38.1 52.57 0)
+			(at 40.64 53.34 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "PACK+ (CELL_P_RAW)"
-			(at 43.28 56.1 0)
-			(hide yes)
+			(at 40.64 55.88 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
@@ -15551,7 +15402,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "ba9013f7-2c08-473b-a22a-e70180e4b410")
+			(uuid "b1cffce2-e55e-47b8-bb1a-ce4bd637d7f1")
 		)
 		(instances
 			(project "Monolith"
@@ -15564,7 +15415,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 327.66 157.48 0)
+		(at 355.6 152.4 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15572,30 +15423,31 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "249d9e06-3010-4d5d-8979-9c72e5ddb323")
+		(uuid "2846e188-c142-496b-baa4-e742cb7a2687")
 		(property "Reference" "TP110"
-			(at 327.66 151.63 0)
+			(at 358.14 147.32 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "SMBC"
-			(at 332.84 155.16 0)
-			(hide yes)
+			(at 358.14 149.86 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 332.74 157.48 0)
+			(at 360.68 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15606,7 +15458,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 332.74 157.48 0)
+			(at 360.68 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15617,7 +15469,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 327.66 157.48 0)
+			(at 355.6 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15628,7 +15480,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "78281ac5-e214-492d-9d69-4aa225eedf19")
+			(uuid "06177802-9ad5-428f-bce3-c868c4da4195")
 		)
 		(instances
 			(project "Monolith"
@@ -15639,29 +15491,18 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 327.66 160.02 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "bb3fc4b7-cf1d-46f7-a2fb-b712525acbad")
-		(property "Reference" "TP111"
-			(at 327.66 154.17 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(global_label "SCL"
+		(shape bidirectional)
+		(at 355.6 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify right)
 		)
-		(property "Value" "SMBD"
-			(at 332.84 157.7 0)
+		(uuid "552a2b30-a8dd-409e-ba91-5c4bfb8728ae")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 355.6 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15671,8 +15512,42 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 370.84 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "feb9b3c6-e941-4145-a2cc-be831af297ba")
+		(property "Reference" "TP111"
+			(at 373.38 147.32 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SMBD"
+			(at 373.38 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 332.74 160.02 0)
+			(at 375.92 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15683,7 +15558,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 332.74 160.02 0)
+			(at 375.92 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15694,7 +15569,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 327.66 160.02 0)
+			(at 370.84 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15705,7 +15580,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "0abeff06-3826-4f81-9755-d898dad5a6fe")
+			(uuid "39d9dafe-4226-475a-aa34-4800c3a7de3f")
 		)
 		(instances
 			(project "Monolith"
@@ -15716,29 +15591,18 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 327.66 154.94 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e1bae08f-173f-407c-8964-5187fd4bb7d8")
-		(property "Reference" "TP112"
-			(at 327.66 149.09 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(global_label "SDA"
+		(shape bidirectional)
+		(at 370.84 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify right)
 		)
-		(property "Value" "GND"
-			(at 332.84 152.62 0)
+		(uuid "cb7f827b-2306-4add-b12a-2d117b373fea")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 370.84 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15748,8 +15612,42 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 386.08 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d5658059-5bb2-4dde-b0e1-7e0c0518f8b8")
+		(property "Reference" "TP112"
+			(at 388.62 147.32 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 388.62 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 332.74 154.94 0)
+			(at 391.16 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15760,7 +15658,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 332.74 154.94 0)
+			(at 391.16 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15771,7 +15669,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 327.66 154.94 0)
+			(at 386.08 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15782,7 +15680,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "0d4ac7d2-21e9-470d-956d-65a2ab82d33d")
+			(uuid "f1bd4e6d-f655-4761-8257-8d0d78bf81c8")
 		)
 		(instances
 			(project "Monolith"
@@ -15792,6 +15690,93 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 386.08 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "d9523913-9048-40e6-816c-286a6ccc4d56")
+		(property "Reference" "#PWR9007"
+			(at 386.08 149.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 386.08 156.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 386.08 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 386.08 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 386.08 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8d533c1a-9f24-4d44-a6a9-98392b06d2a7")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR9008")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 241.3 50.8) (xy 215.9 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "91f14a22-a58b-400a-b061-520a8161a14e")
 	)
 	(sheet_instances
 		(path "/"

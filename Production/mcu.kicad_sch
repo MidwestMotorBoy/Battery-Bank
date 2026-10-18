@@ -9,8 +9,8 @@
 		(date "2026-10-17")
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
-		(comment 1 "CC2340R5MODA, debug headers, status LED")
-		(comment 2 "Spec + open items: DevBoard/README.md")
+		(comment 1 "CC2340R5MODA, TC2030-NL SWD pads")
+		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
@@ -2774,7 +2774,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92).\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO18 TX, DIO20 RX, DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2,\n   DIO21 3V3_SLEEP, DIO11 IRQ_N; no spares (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain.\n   One pull-up: R314 47k (R315, R114 DNP). Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. SW301 resets the MCU. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. TP307 probes it. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R312 feeds the SMBus pull-ups. EV2400 work only with 3V3 up (J104 powered) and U301 held in reset:\n    an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V max). Never feed TP308 with 3V3 down (review 4 A-2).\n11. R317-R319: J303 overrides EN_5V1/EN_5V2/CHG_INH without shorting the MCU; pin 2 = IRQ_N via R324.\n    R322/R323: 1k in the UART lines; connect a USB-UART adapter only with 3V3 up.\n12. DIO24 = CHG_INH (rev A5): LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n13. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n14. Temps (rev A8): gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37)."
+	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92); no reset button.\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N.\n   Spare (no-connect): DIO12, DIO18, DIO20, the dev board's LED and UART pins (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain. One pull-up: R314 47k.\n   Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. J301 = Tag-Connect TC2030-NL pads (no part fitted): XDS110 through a TC2030-CTX cable (10-pin Cortex to TC2030).\n   SWO (pin 6) not used. The debugger drives NRST. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R304/R305 SMBus pull-ups go to 3V3. Gauge pogo-pad work (TP110-TP112) only with 3V3 up and U301 held in reset\n    (NRST low through J301): an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V max).\n11. DIO24 = CHG_INH: LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n12. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n13. Temps: gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37).\n14. TP301 3V3 is a factory test pad."
 		(exclude_from_sim no)
 		(at 287.02 224.79 0)
 		(effects
@@ -2797,7 +2797,7 @@
 		)
 		(uuid "16badc33-d386-417e-9bf7-fe7bb1f0dd29")
 	)
-	(text "BRING-UP AIDS"
+	(text "3V3_SLEEP PULL-UP"
 		(exclude_from_sim no)
 		(at 30.48 30.48 0)
 		(effects
@@ -2822,19 +2822,7 @@
 		)
 		(uuid "4149126a-f994-4ff9-873c-14575273ec5a")
 	)
-	(text "STATUS LED"
-		(exclude_from_sim no)
-		(at 40.64 233.68 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "90da2860-b62e-4a8a-9db5-c7890b167383")
-	)
-	(text "TEST POINTS"
+	(text "FACTORY TEST PAD"
 		(exclude_from_sim no)
 		(at 205.74 233.68 0)
 		(effects
@@ -2846,7 +2834,7 @@
 		)
 		(uuid "a1d3ae72-c2f6-481d-bd34-00ec3bf9852f")
 	)
-	(text "DEBUG HEADERS"
+	(text "SWD  (Tag-Connect TC2030-NL)"
 		(exclude_from_sim no)
 		(at 287.02 86.36 0)
 		(effects
@@ -2882,16 +2870,6 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 101.6) (xy 144.78 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1fd8da1a-1471-45a1-90c9-3b9b91d1f6d2")
-	)
-	(wire
-		(pts
 			(xy 171.45 149.86) (xy 171.45 152.4)
 		)
 		(stroke
@@ -2899,16 +2877,6 @@
 			(type default)
 		)
 		(uuid "2c1e8fa4-a1db-405f-ab8d-f21979e2150d")
-	)
-	(wire
-		(pts
-			(xy 218.44 190.5) (xy 218.44 193.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "396908eb-17b0-49fe-ba7a-3bacda0d17af")
 	)
 	(wire
 		(pts
@@ -2979,16 +2947,6 @@
 			(type default)
 		)
 		(uuid "73cc148b-74a7-4930-b821-377795c98066")
-	)
-	(wire
-		(pts
-			(xy 144.78 101.6) (xy 149.86 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "849e39d7-bade-4ac5-a054-4f2bba4a1a59")
 	)
 	(wire
 		(pts
@@ -4445,83 +4403,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3V3")
-		(at 218.44 182.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "72527166-2c07-4750-a778-34a12ca730ac")
-		(property "Reference" "#PWR320"
-			(at 218.44 180.34 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "3V3"
-			(at 218.44 178.56 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 218.44 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 218.44 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 218.44 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1328e121-26fd-4abf-b2e2-f398048f755e")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR320")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 191.77 110.49 0)
 		(unit 1)
@@ -5887,7 +5768,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4700fd6a-cc5f-4429-a8d5-71dd081f267e")
+		(uuid "1f40abc4-be07-4265-8662-03dce7afe7a9")
 	)
 	(wire
 		(pts
@@ -5897,21 +5778,11 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a4ac0547-926f-49e7-a71b-c8b1eae16239")
-	)
-	(wire
-		(pts
-			(xy 218.44 182.88) (xy 218.44 190.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8ac4b35b-ea54-407c-8708-ccbce122415a")
+		(uuid "c1c6289a-8b0d-4e87-bc2d-d66ae6b86bad")
 	)
 	(symbol
 		(lib_id "Connector:Conn_ARM_SWD_TagConnect_TC2030")
-		(at 156.21 144.78 0)
+		(at 297.18 106.68 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5919,9 +5790,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "08b5f311-97f7-466d-9407-73fc8a688a48")
+		(uuid "cc333578-72a4-4808-9f12-d4ead0c56c45")
 		(property "Reference" "J301"
-			(at 156.21 138.93 0)
+			(at 297.18 100.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5931,7 +5802,7 @@
 			)
 		)
 		(property "Value" "TC2030-NL"
-			(at 160.79 142.46 0)
+			(at 301.76 104.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5942,7 +5813,7 @@
 			)
 		)
 		(property "Footprint" "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
-			(at 161.29 144.78 0)
+			(at 302.26 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5953,7 +5824,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 161.29 144.78 0)
+			(at 302.26 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5964,7 +5835,7 @@
 			)
 		)
 		(property "Description" "Tag-Connect TC2030-NL footprint (no part fitted); XDS110 via TC2030-CTX cable"
-			(at 156.21 144.78 0)
+			(at 297.18 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5975,22 +5846,22 @@
 			)
 		)
 		(pin "1"
-			(uuid "a6b8c6db-1f2a-4629-99be-2b3c1602a920")
+			(uuid "844ecd75-ad0a-4398-b05d-18e097bca586")
 		)
 		(pin "2"
-			(uuid "ba9352b0-4ffb-4685-a043-dd2c5906ba52")
+			(uuid "ae5f1eef-7b92-408d-873a-614db82317c4")
 		)
 		(pin "3"
-			(uuid "9bf7b770-d0a9-4656-bfca-a6ea355269b6")
+			(uuid "6b6ca81d-15fc-4caf-943d-e4acc91554f0")
 		)
 		(pin "4"
-			(uuid "c71f8247-5577-4818-936b-478ad0568d71")
+			(uuid "4a6318a8-a759-459c-95fd-74ea04f868a6")
 		)
 		(pin "5"
-			(uuid "bc7604cc-af8c-49b5-b8d4-b951a22d3715")
+			(uuid "e00cda04-9e83-467e-a1cf-68ae0cbfbdf6")
 		)
 		(pin "6"
-			(uuid "bb45e23c-86ee-4f7b-ab2f-d33b70a8b80a")
+			(uuid "580f221d-26e7-4d09-9cb7-d5c37612535a")
 		)
 		(instances
 			(project "Monolith"
@@ -6003,7 +5874,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 153.67 134.62 0)
+		(at 294.64 96.52 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6011,9 +5882,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "f14fc975-d041-4cc5-a7ee-8362cc225321")
-		(property "Reference" "#PWR9011"
-			(at 153.67 134.62 0)
+		(uuid "caeb95e2-b872-4de4-ab63-1d7ded664dfd")
+		(property "Reference" "#PWR9013"
+			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6024,7 +5895,7 @@
 			)
 		)
 		(property "Value" "3V3"
-			(at 153.67 138.94 0)
+			(at 294.64 100.84 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6034,7 +5905,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 153.67 134.62 0)
+			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6045,7 +5916,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 153.67 134.62 0)
+			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6056,7 +5927,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 153.67 134.62 0)
+			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6067,84 +5938,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "fd1ed660-087a-4429-a4d2-37f0a67dde65")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9012")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 153.67 154.94 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d9226e42-984d-486c-9896-162762f7b456")
-		(property "Reference" "#PWR9013"
-			(at 153.67 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 157.55 156.21 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 153.67 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 153.67 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 153.67 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ce9646c4-a205-4b8a-99d3-69aa2baf06f1")
+			(uuid "127eec2d-3083-4ffc-8e8d-70245f92e4bd")
 		)
 		(instances
 			(project "Monolith"
@@ -6155,39 +5949,116 @@
 			)
 		)
 	)
+	(symbol
+		(lib_id "power:GND")
+		(at 294.64 116.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7fd718ac-dcd3-4a35-9d86-93bc95b3dd67")
+		(property "Reference" "#PWR9015"
+			(at 294.64 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 298.52 118.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 294.64 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 294.64 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 294.64 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "44e91ccb-b142-4a92-84e2-3dd4c6c44301")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "#PWR9016")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(label "SWDIO"
-		(at 163.83 147.32 0)
+		(at 304.8 109.22 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "0187bedb-26c6-4ee8-9c9b-029b284b2073")
+		(uuid "bc310d2f-95ba-47e2-87c3-5488404345fb")
 	)
 	(label "NRST"
-		(at 163.83 139.7 0)
+		(at 304.8 101.6 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "9cf5af8e-66c3-4c45-8979-7ba908347c19")
+		(uuid "60d446a3-3302-40d2-8adf-5a2baa7bca4b")
 	)
 	(label "SWCLK"
-		(at 163.83 144.78 0)
+		(at 304.8 106.68 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "63bb5908-912e-4e0a-9df8-28d81e77d426")
+		(uuid "f8d7ddb3-7392-4a27-b523-7bbb606e51f4")
 	)
 	(no_connect
-		(at 163.83 149.86)
-		(uuid "4e834c8a-875c-4118-a64e-0459329dce5f")
+		(at 304.8 111.76)
+		(uuid "f1231376-da07-45ca-8e64-de6fa67590b0")
 	)
 	(label "SWDIO"
 		(at 173.99 142.24 180)
@@ -6197,7 +6068,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "6bb63318-4dfb-4b36-984b-1b8a2bcbd251")
+		(uuid "dda4f9ec-4706-41f0-bcbd-2b5c29ab967e")
 	)
 	(label "SWCLK"
 		(at 173.99 144.78 180)
@@ -6207,7 +6078,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "ab4a3246-11df-4937-8152-673dd7e8d0b7")
+		(uuid "77b3ef50-0295-491c-8abe-f6bc70cb4de7")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -6219,8 +6090,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "4707565d-8b50-4fbb-aedb-1aed988545aa")
-		(property "Reference" "#PWR9015"
+		(uuid "f3eb936b-93aa-4302-8765-abbcd5308b76")
+		(property "Reference" "#PWR9017"
 			(at 248.92 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6275,12 +6146,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "34a16198-a8e4-4abc-aba9-d87354a35f0a")
+			(uuid "d4a7fcee-7716-4482-a089-74c4ba828673")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9016")
+					(reference "#PWR9018")
 					(unit 1)
 				)
 			)
@@ -6296,8 +6167,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "21b21501-0337-4478-ae3b-a149bbcb8a57")
-		(property "Reference" "#PWR9017"
+		(uuid "8bd238c7-bf72-4b30-808f-824068c7ce00")
+		(property "Reference" "#PWR9019"
 			(at 130.81 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -6352,12 +6223,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "fe8dc279-18fd-4071-bf22-25a42c6d9fce")
+			(uuid "73889554-e46f-443a-9a3e-cb1dfe9291fe")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9018")
+					(reference "#PWR9020")
 					(unit 1)
 				)
 			)
@@ -6373,8 +6244,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "891d5769-1fa5-4e24-9084-070fe54b6f0d")
-		(property "Reference" "#PWR9019"
+		(uuid "c95778cd-2816-4d30-b092-404f9d6b20d9")
+		(property "Reference" "#PWR9021"
 			(at 233.68 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6429,12 +6300,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "7dc74670-71d6-44e2-b55a-d7671357d361")
+			(uuid "cd8ed133-c6e5-49e4-8fc0-078980ba9f8e")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9020")
+					(reference "#PWR9022")
 					(unit 1)
 				)
 			)
@@ -6450,8 +6321,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "c88fcae7-4432-45cd-89a8-ac91b3b54548")
-		(property "Reference" "#PWR9021"
+		(uuid "80ab6203-2ed1-471a-8d25-a4375ce182f5")
+		(property "Reference" "#PWR9023"
 			(at 173.99 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -6506,12 +6377,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "dd3840a2-0198-486a-90e4-95cb5c3e1f36")
+			(uuid "a041442a-8946-4075-b13e-09d413cb88e2")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9022")
+					(reference "#PWR9024")
 					(unit 1)
 				)
 			)
@@ -6527,8 +6398,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "43d3b6b9-c5a6-4453-b335-abf724813609")
-		(property "Reference" "#PWR9023"
+		(uuid "b48de2cb-863f-43e5-9159-fe10723307d8")
+		(property "Reference" "#PWR9025"
 			(at 152.4 116.84 0)
 			(hide yes)
 			(show_name no)
@@ -6583,84 +6454,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "d1bcd65c-0331-4ec8-abac-c2d048f8d5c6")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9024")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 218.44 193.04 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "2f04200c-413e-41ec-9155-85bb35eae524")
-		(property "Reference" "#PWR9025"
-			(at 218.44 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "3V3"
-			(at 218.44 197.36 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 218.44 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 218.44 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 218.44 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3c559ae3-bf1d-41bf-bd18-b4235e1e86f6")
+			(uuid "7fa8a720-dfbf-4fa5-b32d-ba29eeca9acc")
 		)
 		(instances
 			(project "Monolith"
@@ -6673,15 +6467,25 @@
 	)
 	(no_connect
 		(at 207.01 132.08)
-		(uuid "c4f6aa54-4b24-4b46-b66e-a8c917986738")
+		(uuid "83c86bc2-a77a-4055-beda-8b07f7d3ae61")
 	)
 	(no_connect
 		(at 207.01 134.62)
-		(uuid "487085ef-4611-462b-998b-ea3e53763f97")
+		(uuid "a95a4866-ab5a-4305-809f-e5c595b6627a")
 	)
 	(no_connect
 		(at 207.01 137.16)
-		(uuid "465ee8fd-870b-410b-babc-53aefcb2b9c5")
+		(uuid "1c02e254-f3ef-4475-9a61-8857d6f1308a")
+	)
+	(wire
+		(pts
+			(xy 139.7 101.6) (xy 149.86 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bc86afbd-5c63-43e7-b115-896526209668")
 	)
 	(sheet_instances
 		(path "/"

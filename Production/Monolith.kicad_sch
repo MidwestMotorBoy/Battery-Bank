@@ -10,7 +10,7 @@
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
 		(comment 1 "Sheet index, PD address straps")
-		(comment 2 "Spec + open items: DevBoard/README.md")
+		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
@@ -270,7 +270,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "MONOLITH DEV BOARD - SHEET INDEX\n2.  Cells and Gauge:  4S holders / pack input, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, SMBus\n3.  Sleep Current and 3V3:  R_MEAS + 2x INA190 to test loops, HT7550-1 amp supply, TPS62177 3V3 rail\n4.  MCU and Sensors:  CC2340R5MODA, debug headers, TMP1075 board temperature sensors, status LED\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD4S201 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec: docs/devboard/circuit-description.md.  Changes and open items: DevBoard/README.md"
+	(text "MONOLITH PRODUCTION BOARD - SHEET INDEX\n2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, SMBus pogo pads\n3.  3V3 Rail:  TPS62177 always-on 3V3\n4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL SWD pads\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD4S201 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."
 		(exclude_from_sim no)
 		(at 30.48 205.74 0)
 		(effects
@@ -281,7 +281,7 @@
 		)
 		(uuid "17ac7dae-221c-4f1f-bf54-587de0440efb")
 	)
-	(text "REVISION LOG\nA0  2026-10-11  First draft from circuit description draft 5.  Author: Claude Code.  Reviewer: none yet.\nA1  2026-10-11  Layout cleanup: blocks, power symbols, notes, title blocks.  Author: Claude Code.  Reviewer: none yet.\nA2  2026-10-11  Readability pass: no overlapping text, sheet-pin names inside boxes.  Author: Claude Code.  Reviewer: none yet.\nA3  2026-10-11  Wiring pass: wires instead of labels inside each block.  Author: Claude Code.  Reviewer: none yet.\nA4  2026-10-12  Polymer bulk caps, PWR_FLAGs at rail sources, design-review fixes\n                (docs/devboard/schematic-review-2026-10-12.md).  Author: Claude Code.  Reviewer: 3-agent review.\nA5  2026-10-13  Review 2 decisions: CHG_INH fails safe (R417/R517 47k pull-up to 3V3, MCU drives low to charge),\n                MCU IWDG in hardware mode; BAT fed before F101 (TI fig. 9-12); C421/C521 100 uF; LRB520S, BSS138,\n                C109 4.7n, PPHV/VBUS caps, GND/probe test points, JLC numbers on all R/C (review 2);\n                J201/J202 SMAs replaced by OUT_LO/OUT_HI loops TP201/TP202 + GND loops TP208/TP209.  Author: Claude Code.\nA6  2026-10-14  Branch hand-review: second-level protection U102 BQ294700 + F102 WSFB1514 (TI fig. 9-11), F101 deleted;\n                D103 fitted; U202 INA190A1 JLC-placed; R405-R408 removed; USB-C liquid detection (U405/U505 TPD2S300,\n                Q403-Q406, R440/R540 DCP short, D403/D503 removed). Review 3: TPD2S300 FLT -> GPIO3 (R441), liquid-detect\n                gate pulls R442/R443, BQ25756 gate/BTST 0R R444-R449 + DNP snubbers, U401 symbol GPIO11 bidirectional.\n                Cost-down (docs/devboard/cost-down-2026-10-14.md): L401/L501 SMMS1040, L402/L502 APS0530, L201 FNR4030S,\n                U203 HT7550-1, 22u 1206 battery bank, basic/preferred passives, Q103 AO3400A, D301 red, R431 solder\n                jumper, 34 test loops -> pads, headers hand-soldered, U301 consigned.\n                Charger half-bridges IAUC45N04 -> 4 discrete PGQ04N070 per port (Q401/Q402 + new Q407/Q408).\n                6-layer 1.6 mm board (0.3 mm vias): U405/U505 TPD2S300 -> TPD4S201 (CC + SBU), D402/D502 removed,\n                J401/J501 -> TYPE-C 16PCB1.6 IP68.\n                Board: block placement (tools/place_blocks.py). Schematic tidy: title blocks, headings, MCU notes and test points.\n                Author: Logan (hand review) + Claude Code.\nA7  2026-10-14  U301 STM32WB1MMC -> CC2340R5MODA with RF match C313-C315/R321; TMP1075 U302-U306 (U305/U306 DNP)\n                replace TH301-TH305, NTC_EN and their dividers; IRQ1/IRQ2/GAUGE_BTP -> one open-drain IRQ_N\n                (R314 pull-up, R315/R114 DNP); R313 fitted; TMP1075 footprint with 0.3 mm vias.  Author: Claude Code.\nA8  2026-10-14  Review 4 (docs/devboard/schematic-review-4-2026-10-14.md): R313 220k, R314 47k, R304/R305 3.3k,\n                R322-R324 series resistors at J302/J303, C401/C402 220p, D401/D501 TVS2200, snubber R 1206,\n                TP415-TP421 probe pads, D105 J104 clamp; Notes, sheet text and MPNs updated; sheet 4 renamed\n                MCU and Sensors.  Author: Claude Code.  Reviewer: 4-agent review + Logan."
+	(text "REVISION LOG\nP0  2026-10-17  Dev board rev A8 with the dev-only parts removed (Production/tools/make_production.py, tidy_production.py):\n                sleep-current section, bench supply, cell holders, headers, buttons, status LED, test points, DNP options\n                and 0R links. Added pack wire pads, gauge pogo pads, TC2030-NL SWD pads, factory test pads.\n                Author: Claude Code.  Reviewer: none yet.\nDev board history (A0-A8): DevBoard/README.md and the DevBoard root sheet."
 		(exclude_from_sim no)
 		(at 30.48 265.43 0)
 		(effects
@@ -292,7 +292,7 @@
 		)
 		(uuid "8d7cdb54-3de0-4b59-85a8-4bcb85a6f6da")
 	)
-	(text "TPS25751 ADDRESS / DEAD-BATTERY STRAPS (SafeMode)\nPort 1: R1 ADCIN1 = LDO_3V3, R2 ADCIN2 = GND  -> I2C 0x20\nPort 2: R3 ADCIN1 = GND,     R4 ADCIN2 = GND  -> I2C 0x21\nSame SDA/SCL bus (CC2340 I2C0, 100 kHz): gauge BQ40Z50-R2 0x0B (TMP1075s removed in rev A8)"
+	(text "TPS25751 ADDRESS / DEAD-BATTERY STRAPS (SafeMode)\nPort 1: ADCIN1 tied to its LDO_3V3, ADCIN2 to GND  -> I2C 0x20\nPort 2: ADCIN1 and ADCIN2 to GND                   -> I2C 0x21\nSame SDA/SCL bus (CC2340 I2C0, 100 kHz): gauge BQ40Z50-R2 0x0B"
 		(exclude_from_sim no)
 		(at 106.68 184.15 0)
 		(effects
@@ -302,6 +302,10 @@
 			(justify left bottom)
 		)
 		(uuid "da402bb6-e437-4487-8ec6-ba20afc508c5")
+	)
+	(no_connect
+		(at 220 124.46)
+		(uuid "a598767a-9436-474b-bec5-025d652816e5")
 	)
 	(label "P1_LDO_3V3"
 		(at 90 124.46 0)
@@ -559,7 +563,7 @@
 			(color 0 0 0 0)
 		)
 		(uuid "6a5b5100-a69b-4069-8141-b35cace08af3")
-		(property "Sheetname" "MCU and Sensors"
+		(property "Sheetname" "MCU"
 			(at 172.54 38.73 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -701,7 +705,7 @@
 			(color 0 0 0 0)
 		)
 		(uuid "d9806540-c841-409c-9faa-82254b30b220")
-		(property "Sheetname" "Sleep Current and 3V3"
+		(property "Sheetname" "3V3 Rail"
 			(at 102.54 38.73 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -739,7 +743,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8dc39f06-9801-45f4-b725-f7a2c20f4806")
+		(uuid "c7a67ea2-ccb1-4eb6-98e2-70991e19147b")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -751,7 +755,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "2e5fda48-8f3a-417a-ab01-0bb8b3eac225")
+		(uuid "b886ea8b-9e97-43fc-a213-1439e08a5b1d")
 		(property "Reference" "#PWR9001"
 			(at 222.25 119.38 0)
 			(hide yes)
@@ -807,7 +811,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "b7809612-029e-4aa4-8cda-199b3030fd72")
+			(uuid "3d699ab9-a327-4a2e-bb63-9af354ddee57")
 		)
 		(instances
 			(project "Monolith"
@@ -826,7 +830,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "13af72cf-d2bb-4547-a1e3-f3b4e2a5b7bf")
+		(uuid "9b54b6e7-f2c9-4ff0-91d0-e937146956b5")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -838,7 +842,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "645ccfa1-6a0d-4dda-822c-55ea08993ae6")
+		(uuid "34ef5ddb-f0fe-4959-a3fa-1b8587a4b7d9")
 		(property "Reference" "#PWR9003"
 			(at 222.25 114.3 0)
 			(hide yes)
@@ -894,7 +898,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "4c7019de-18f7-4415-91bc-1e676651b858")
+			(uuid "d87c44dc-827e-4f62-b5ef-fab11539c87a")
 		)
 		(instances
 			(project "Monolith"
@@ -923,7 +927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bfb8ca6d-817b-4564-8edf-978181ec7423")
+		(uuid "45cc7a20-e2d1-4a3c-867b-35f4d1a65706")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -935,7 +939,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "49f14006-3705-41f1-815d-671ccf17e1c5")
+		(uuid "27cd4d8f-35f6-45c0-8a01-5808e5103f3e")
 		(property "Reference" "#PWR9005"
 			(at 92.71 119.38 0)
 			(hide yes)
@@ -991,7 +995,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "6d7a92fa-fb54-4f2f-8d3d-85fd5a36805e")
+			(uuid "e4dffa59-6f1f-44bf-89c8-dffd7b5cadbe")
 		)
 		(instances
 			(project "Monolith"
@@ -1004,7 +1008,7 @@
 	)
 	(no_connect
 		(at 220 124.46)
-		(uuid "2d54ba1b-1d07-4632-9444-19a6f615a2c5")
+		(uuid "3daec62d-a84a-4841-8aa3-9763ccc97f1b")
 	)
 	(sheet_instances
 		(path "/"
