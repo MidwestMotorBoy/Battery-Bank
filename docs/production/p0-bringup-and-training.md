@@ -81,10 +81,10 @@ Steps:
 | Switch-node ringing, both legs, both directions | Scope on TP405/TP406 with the ground spring on TP412, gate links at 0 Ω | Keep 0 Ω, fit 2.2–10 Ω, or fit the DNP snubbers |
 | SiZ240DT and APS0730 temperatures at the worst case | Reverse 20 V / 5 A from a ~10 V pack, then forward 20 V / 3 A | Thermal throttle limits; XAL7070 fallback for the inductor |
 | PP5V load step 0.5 → 3 A | Scope on TP403 | C443 size (P3: estimated ~190 mV) |
-| PD voltage transitions 5 → 20 V with several chargers | Watch VBUS and source resets, with and without firmware SRYR/SRDY sequencing | C421 kept; firmware sequence required or not |
+| PD voltage transitions 5 → 20 V with several chargers | Watch VBUS and source resets, with and without firmware SRYR/SRDY sequencing | Firmware sequence required or not |
 | Gauge wakes on USB plug-in | Gauge in SHUTDOWN, plug in a charger | Whether the WAKE pad can go in the next spin |
 | Sleep current | DMM in series with one pack lead | Firmware power states (target ~150 µA) |
-| USB-side bank stress | Polymer C421 temperature at reverse 20 V 5 A | Remove C427 or not |
+| USB-side bank stress | CA55 C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
 
 ## 5. Production boards
 

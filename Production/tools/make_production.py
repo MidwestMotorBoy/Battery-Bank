@@ -70,7 +70,7 @@ REMOVE = {
         "R442", "R443",                              # ... FET gate holds
         "R421", "R422", "R423",                      # STAT1/STAT2/PG pull-ups: nothing reads them (status via I2C)
         "U405",                                      # TPD4S201 -> TPD6S300 (CC used, SBU open), added by add_tpd6s300
-        "C432",                                      # per-port hybrid -> one shared PACK_P hybrid C208 (pack_bus_sims A2)
+        "C432",                                      # per-port hybrid -> shared PACK_P MLCCs C208-C213 (low_profile_sims N1)
         "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
         "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
         "#FLG404", "#FLG406",                        # 3V3_PD / 5V_IN flags (nets are 3V3 / PACK_P now)
@@ -94,7 +94,9 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                            "STAT1": "", "STAT2": "", "PG": "", "SBU1": "", "SBU2": "",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
-NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")},
+NEW_PARTS = {**{c: {"1": ("TP106", "1"), "2": ("TP109", "1")} for c in ("C208", "C209", "C210", "C211", "C212", "C213")},
+             # low-profile USB-side bulk (2026-10-18): new per-port caps on AC_SNS_N
+             **{c % p: {"1": ("C%s20" % p, "1"), "2": ("TP109", "1")} for c in ("C%s56",) for p in "45"},
              # P0 training parts (2026-10-18); a string value names a net that is new on production
              "J113": {"1": ("TP106", "1")}, "J114": {"1": ("TP109", "1")},
              "R118": {"1": ("F102", "2"), "2": "new WAKE"}, "TP113": {"1": "new WAKE"},
@@ -132,6 +134,8 @@ VALUE = {
     "gauge.kicad_sch": {"J102": "Cell 1 NTC wires", "J105": "Cell 2 NTC wires",
                         "J106": "Cell 3 NTC wires", "J107": "Cell 4 NTC wires"},
 }
+GMK_PROPS = {"Value": "22u 35V", "Footprint": "Capacitor_SMD:C_1210_3225Metric", "LCSC": "C778721",
+             "MPN": "GMK325BJ226MM-P"}
 SWAP = {  # parts changed in place: new lib_id and properties (pins land on the same points)
     "usb_port.kicad_sch": {
         "C443": ("Device:C", {
@@ -140,6 +144,18 @@ SWAP = {  # parts changed in place: new lib_id and properties (pins land on the 
             "Notes": "PP5V bulk, third 22 uF 1206 with C441/C442 (about 33 uF effective at 5.16 V; was a 100 uF polymer "
                      "on the dev board). Each port's PP5V is a dedicated supply, so USB PD cSrcBulk (10 uF min) applies, "
                      "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
+        # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py C2 / N1
+        "C421": (None, {
+            "Value": "47u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "C2761440",
+            "MPN": "CCTC CA55-D035M476T (polymer tantalum)",
+            "Notes": "USB-side bulk with C456 (two 47 uF 35 V polymer tantalum, 150 mOhm, 1.2 A rms, 7343-28, 2.8 mm max) and "
+                     "four 22u 35V 1210: 100 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
+                     "Polymer, not MnO2: no ignition on failure, 20 % derating (20 V on 35 V). AC_SNS_N is dead in sleep, "
+                     "so the 0.1 CV leakage rating does not matter here: Production/tools/low_profile_sims.py option C2"}),
+        **{c: (None, {**GMK_PROPS, "Notes": "Battery-side MLCC at the charger FETs, 22u 35V 1210 (about 10 uF at 16.8 V): "
+                      "shared PACK_P bulk is C208-C213, Production/tools/low_profile_sims.py option N1"})
+           for c in ("C431", "C434")},
+        "C444": (None, dict(GMK_PROPS)),  # TPS62933 input: 22u 35V 1210 keeps ~10 uF at 16.8 V (the 10u 50V ~4 uF)
     },
 }
 
@@ -720,45 +736,59 @@ def add_gauge_pads(s, old):
 
 
 SHARED_BULK_AT = (63.5, 133.35)  # power sheet, under the 3V3 rail
+SHARED_BULK = ["C208", "C209", "C210", "C211", "C212", "C213"]
+GMK = GMK_PROPS
 
 
 def add_shared_bulk(s):
-    """One 100 uF hybrid on PACK_P for both chargers' battery sides and both TPS62933 inputs (pack_bus_sims.py A2).
-    Cloned from the dev board's per-port C432 (usb_port sheet), which P0 removes."""
-    from schlib import block_end
-    dev = open(os.path.join(DEV, "usb_port.kicad_sch"), encoding="utf-8").read()
-    if '(symbol "Device:C_Polarized"' not in s:
-        a = dev.index('\n\t\t(symbol "Device:C_Polarized"') + 1
-        lib = dev[a:block_end(dev, a + 2)]
-        i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
-        s = s[:i] + "\n" + lib + s[i:]
-    c432 = next(y for y in symbols(dev) if y["ref"] == "C432")
-    blk = new_uuids(dev[c432["a"]:c432["b"]])
-    x0, y0 = c432["at"][:2]
-    at = SHARED_BULK_AT
-    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
-        round(float(m.group(1)) - x0 + at[0], 2), round(float(m.group(2)) - y0 + at[1], 2)), blk)
-    blk = set_prop(blk, "Reference", "C208")
-    for prop, dy in (("Reference", -1.27), ("Value", 1.27)):  # text right of the body, clear of the PACK_P symbol
-        blk = re.sub(r'(\(property "%s" "[^"]*"\s*\(at )[-\d.]+ [-\d.]+ [-\d.]+\)' % prop,
-                     lambda m: m.group(1) + "%g %g 0)" % (at[0] + 6.35, round(at[1] + dy, 2)), blk, count=1)
-    blk = set_prop(blk, "Notes", "Shared PACK_P bulk for both chargers' battery sides and both TPS62933 inputs "
-                   "(replaces the per-port C432/C532). Place it between the two power stages, on PACK_P beside the "
-                   "RBAT pads: Production/tools/pack_bus_sims.py option A2")
+    """Shared PACK_P bulk for both chargers' battery sides and both TPS62933 inputs: six 22 uF 35 V 1210 MLCCs
+    (2.7 mm max), low_profile_sims.py option N1. Was one 100 uF hybrid can (7.7 mm tall); polymer chips that fit
+    under the inductors' 3.1 mm are rated for hundreds of uA leakage, too much for this always-live bus.
+    Cloned from C206 (Device:C on this sheet)."""
     host = next(y for y in symbols(s) if y["ref"] == "C206")
-    hb = s[host["a"]:host["b"]]
-    ha = hb.index("\n\t\t(instances") + 3
-    inst = hb[ha:block_end(hb, ha)].replace('(reference "C206")', '(reference "C208")')
-    ba = blk.index("\n\t\t(instances") + 3
-    blk = blk[:ba] + inst + blk[block_end(blk, ba):]
-    s = insert_top(s, "\n\t" + blk)
-    pins = {y["ref"]: y for y in symbols(s)}["C208"]["pins"]
-    add = clone_power(power_template(s, "PACK_P"), pins["1"]) + clone_power(power_template(s, "GND"), pins["2"])
+    tmpl = s[host["a"]:host["b"]]
+    add = ""
+    for i, ref in enumerate(SHARED_BULK):
+        at = (SHARED_BULK_AT[0] + 10.16 * i, SHARED_BULK_AT[1])
+        blk = clone(tmpl, ref, GMK["Value"], GMK["Footprint"], at, "C206")
+        blk = set_prop(set_prop(blk, "LCSC", GMK["LCSC"]), "MPN", GMK["MPN"])
+        add += "\n\t" + blk
+    s = insert_top(s, add)
+    pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in SHARED_BULK}
+    first = pins[SHARED_BULK[0]]
+    add = clone_power(power_template(s, "PACK_P"), first["1"]) + clone_power(power_template(s, "GND"), first["2"])
+    for r, q in zip(SHARED_BULK, SHARED_BULK[1:]):  # top and bottom rails across the row
+        add += wire_text(pins[r]["1"], pins[q]["1"]) + wire_text(pins[r]["2"], pins[q]["2"])
     head = next((a, b) for a, b in top_blocks(s, "text") if "3.3 V ALWAYS-ON RAIL" in s[a:b])
     t = new_uuids(s[head[0]:head[1]])
-    t = re.sub(r'\(text "[^"]*"', '(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs)"', t, count=1)
+    t = re.sub(r'\(text "[^"]*"', '(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs): 6x 22u 35V 1210, '
+               'between the two power stages beside the RBAT pads"', t, count=1)
     t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 40.64 116.84", t, count=1)
     add += "\n\t" + t
+    return insert_top(s, add)
+
+
+LOW_PROFILE_AT = {"C456": (378.46, 121.92)}  # usb sheet, right of C430 on AC_SNS_N
+
+
+def add_usb_bulk(s, templates):
+    """Per port: a second CA55 47u 35V polymer tantalum (C456) on AC_SNS_N, with C421 -> CA55:
+    low_profile_sims.py option C2. Clone of C421 (both ports' instance paths)."""
+    syms = {y["ref"]: y for y in symbols(s)}
+    add = ""
+    for ref, src in (("C456", "C421"),):
+        tmpl = s[syms[src]["a"]:syms[src]["b"]]
+        val = re.search(r'\(property "Value" "([^"]*)"', tmpl).group(1)
+        fp = re.search(r'\(property "Footprint" "([^"]*)"', tmpl).group(1)
+        blk = clone(tmpl, ref, val, fp, LOW_PROFILE_AT[ref], src)
+        blk = blk.replace('(reference "%s")' % (src[0] + "5" + src[2:]), '(reference "%s")' % (ref[0] + "5" + ref[2:]))
+        if '(property "Notes" ' in blk:
+            blk = set_prop(blk, "Notes", "Second CA55 47u on AC_SNS_N, see C421")
+        add += "\n\t" + blk
+    s = insert_top(s, add)
+    pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in LOW_PROFILE_AT}
+    add = wire_text((368.3, 118.11), pins["C456"]["1"])
+    add += "".join(clone_power(templates["GND"], pins[r]["2"]) for r in LOW_PROFILE_AT)
     return insert_top(s, add)
 
 
@@ -826,6 +856,7 @@ def process(sheet, src):
     if sheet == "usb_port.kicad_sch":
         s = swap_fets(s)
         s = add_tpd6s300(s, old, templates)
+        s = add_usb_bulk(s, templates)
     s = title_block(s, sheet)
     # pins that were connected before and are now open get a no-connect flag
     now = attached(s)

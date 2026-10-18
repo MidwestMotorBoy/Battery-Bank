@@ -132,7 +132,8 @@ def write_dxf(path):
 #   two M2 screws into heat-set inserts in the bottom corner pillars (hidden under the bumper).
 # The cover is recessed SB_LIP into a frame in the walls and doubles as the heat spreader.
 # No airflow vents; one adhesive ePTFE pressure vent over a hole in the cover (altitude).
-SB_INSUL     = 0.3    # Kapton / fish paper between the cell cans and the board
+SB_INSUL     = 0.3    # 0.2 mm fish paper on the cells' board-side face, plus 0.1
+SB_BCU_H     = 2.3    # extra room behind the board for B.Cu parts (the BLE module is 2.3 mm max), 2026-10-18
 SB_PCB_T     = 1.6    # production board thickness (1.6 mm for cost, 2026-10-18; was 0.8)
 SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1; the USB-C body is 1.97 above a 1.6 mm board)
 SB_GAP       = 0.5    # compressed gap pad between those parts and the cover
@@ -141,8 +142,8 @@ SB_LIP       = 0.8    # frame lip outside the cover (cover sits this far below t
 SB_REB       = 0.5    # rebate into the +-y walls that the cover edges rest in (wall left 0.7)
 SB_SLOT      = 1.0    # cover top edge tucks this far under the top-wall lip
 SB_END_T     = 1.6    # bottom and top walls
-SB_PAD_T     = 4.8    # floor zone under the cells: foam pad, and the two screw pillars beside it
-SB_TOP_PAD   = 1.0    # foam between the cell tops and the top wall
+SB_PAD_T     = 4.8    # floor zone under the cells: printed TPU spacer + 1 mm EVA, and the two screw pillars beside it
+SB_TOP_PAD   = 1.0    # 1 mm EVA between the cell tops and the top wall
 SB_SLIDE     = 2.5    # board slide that engages the ports (needs > SB_END_T - (USB_FACE_OUT - SB_END_T))
 SB_PCB_CLEAR = 0.2    # board edge to wall, and board to the end zones
 SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production board)
@@ -155,27 +156,62 @@ SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the 
 USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
 USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
 USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
-# drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md):
+# drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md).
+# Hobby build, sheet stock limited to 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper; everything else is printed.
 # nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.
-SB_SIDE_PAD  = 1.0    # pad wrapped round the -x and +-y faces of the cells: PORON (compliance); a silicone gap pad if the 100 W test runs hot
+SB_SIDE_PAD  = 0.2    # fish paper liner round the -x and +-y faces of the cells (wrap abrasion); thin, so the cans stay close to the walls
+SB_EVA_T     = 1.0    # EVA foam sheet: the cell-end pads (top, and over the TPU floor spacer) and, doubled, the USB-C hold-downs
 SB_SEP_T     = 0.2    # mica sheets in the cross-shaped gap between the cells (propagation barrier)
 SB_VENT_CUT_D = 14.0  # end-pad cut-out over each positive cap: button and vent holes stay open, the pad bears on the crimp rim
-SB_RUPT_D, SB_RUPT_T = 10.0, 0.6     # rupture windows: bottom wall thinned to SB_RUPT_T under the two bottom positive caps
+SB_RUPT_D, SB_RUPT_T = 0.0, 0.0      # rupture windows (bottom wall thinned under the bottom + caps): off, 2026-10-18 -
+                                     # consumer power banks don't have them; set e.g. 10.0, 0.6 to bring them back
 SB_STOP_Y0   = 14.0   # board top stops on the top-wall inside face, |y| from here to the wall (clear of the port holes)
-SB_HOLD_T    = 2.0    # silicone hold-down pad between each USB-C body and the cover (compresses to the gap)
+SB_HOLD_T    = 2.0    # 2 x 1 mm EVA hold-down between each USB-C body and the cover (compresses to the gap)
 SB_CAP_T     = 8.0    # TPU lattice crush zone beyond each end wall
 SB_CAP_SOFT  = 4.0    # outer part of it printed softer (graded: soft at the face, firmer behind)
 SB_CAP_BAND  = 9.0    # how far each cap's band wraps over the sides (bottom band stays clear of the cover vent)
 SB_CAP_PROUD = 2.0    # band wall: stands this proud of the shell faces, so flat side drops land on the bands
 SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the cap, in x and y
 SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
+# vibration and trail durability (2026-10-18)
+SB_AXIAL_PRELOAD = 0.4   # floor spacer printed this much taller than its gap: squeezes the cell stack ends (covers MJF +-0.3)
+SB_CRUSH_W, SB_CRUSH_H = 1.0, 0.4   # crush ribs on the cell-zone walls (at each cell's tangent): 0.25 mm into the liner
+SB_COVER_GAP = 0.3       # cover edge to tray, all round: nylon grows ~0.35 mm more than aluminium over 78 mm and 60 K;
+                         # the joint is sealed with a bead of neutral-cure silicone (formed-in-place gasket)
+SB_GROOVE_Z, SB_GROOVE_W, SB_GROOVE_D = 4.5, 1.2, 0.3   # cap retention: groove round the tray (-x, +-y faces) at each end
+SB_BEAD_W = 0.9          # matching bead inside each cap band
+SB_DRAIN_W, SB_DRAIN_H = 2.0, 1.5    # drain channel from the port well out through the top cap's +x wall
+SB_STANDOFFS = [(-15.0, 28.0), (15.0, 28.0), (-15.0, 56.0), (15.0, 56.0)]   # (y, z) SMD standoffs on F.Cu for the cover
+SB_STANDOFF_D = 3.0      # footprint size of each standoff (render only)
 SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
-SB_ANT_WIN   = (12.5, 21.0, 10.0)    # OPTION, not cut: cover window over the BLE antenna (y0, y1, height down from the board top)
+# BLE module (CC2340R5MODA, 7 x 10 x 2.3 mm max) on B.Cu at the right (+y, C4 / PACK+) board edge, antenna end at the
+# edge: the board's ground plane sits between it and the aluminium cover, and it radiates out through the printed
+# side wall. >= 10 mm of ground along the edge above it (TI SWRS349A fig. 9-2). The cover is whole (no notch).
+SB_ANT_SIDE  = 1                     # +1 = right edge seen from the cover (+y), -1 = left
+SB_ANT_BELOW = 19.1                  # module centre below the board's top edge (10 mm of ground above, 10 mm from the USB-C bodies)
+SB_ANT_MOD   = (7.0, 10.0)           # module: along the edge, into the board
+SB_ANT_H     = 2.3                   # module height on B.Cu
+# EVA lanes (3 x 1 mm EVA, compressed) between the insulated cells and B.Cu along the two cell tangent lines: they hold
+# the cells off the board now that there is a gap for B.Cu parts. The +y lane stops either side of the BLE module.
+SB_LANE_W, SB_LANE_LAYERS = 6.0, 3
+SB_LANE_GAP = 2.0                    # lane end to the module (z)
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
 SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
+# Pack connections. The tabs are soldered from the open side after the board is in, so everything lands on F.Cu.
+# - PACK- (C1 bottom) and PACK+ (C4 bottom): nickel strips that wrap under the board's bottom edge onto F.Cu pads.
+#   The shim under the board is one centre block between them; the floor spacer and EVA get reliefs beside the board.
+# - CELL1 (C1+/C2- strip, top), CELL3 (C3+/C4- strip, top), CELL2 (C2+/C3- strip, bottom): sense taps only, so thin
+#   wires through plated holes. They run in the deep groove behind the board between C1 and C4 (5 mm free at |y| = 2),
+#   in slots in the top EVA, and for CELL2 in a channel in the floor spacer.
+SB_TAB_W, SB_TAB_T = 7.0, 0.15       # nickel strip (all strips)
+SB_TAB_PAD_H = 5.0                   # PACK+/- F.Cu pads: from the bottom edge up
+SB_SHIM_HALF = 6.0                   # centre shim block |y| (the PACK strips pass either side)
+SB_WIRE_D = 0.8                      # sense wire, e.g. 28 AWG silicone
+SB_TAP_HOLES = {'CELL1': (-2.0, 70.0), 'CELL3': (2.0, 70.0), 'CELL2': (2.0, 8.0)}   # (y, z) plated holes, ~1.0 mm drill
+SB_TAP_PAD_D = 2.0                   # tap hole pad diameter
 # derived (x across the board, y along the board width, z along the cells)
-sb_xb0 = a_in + SB_INSUL                      # board inner face
+sb_xb0 = a_in + SB_INSUL + SB_BCU_H           # board inner face (B.Cu)
 sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
 sb_x_cv0 = sb_xb1 + SB_OUT_H + SB_GAP         # cover inner face (rests on the rebates and pillars)
 sb_x_cv1 = sb_x_cv0 + SB_COVER_T
@@ -198,8 +234,8 @@ a_cav, c_cav = a_in + SB_SIDE_PAD, c_in + SB_SIDE_PAD   # cell-zone cavity (x < 
 a_sb, c_sb = a_cav + WALL, c_cav + WALL                 # tray outside half-width and -x corner radius
 sb_pillar_y = a_in - SB_PILLAR_W / 2          # insert axis at y = +-sb_pillar_y, z = sb_screw_z (pillars sit in the board zone)
 sb_screw_z = SB_END_T + SB_PAD_T / 2
-sb_cover_w = 2 * (a_in + SB_REB) - 0.2
-sb_cover_z0, sb_cover_z1 = SB_END_T + 0.1, sb_z_top_in + SB_SLOT - 0.1
+sb_cover_w = 2 * (a_in + SB_REB) - 2 * SB_COVER_GAP
+sb_cover_z0, sb_cover_z1 = SB_END_T + SB_COVER_GAP, sb_z_top_in + SB_SLOT - SB_COVER_GAP
 sb_cell_xy = {k: (k[0] * pocket_r, k[1] * pocket_r) for k in SB_CELLS}
 sb_pos_caps = {end: [sb_cell_xy[k] for k, (_, e) in SB_CELLS.items() if e == end] for end in ('top', 'bottom')}
 # profiles: rounded rect x0..x1, |y| <= h, corner radius rl (-x side), rr (+x side)
@@ -207,6 +243,23 @@ SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
 SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
+SB_GROOVE = (SB_OUT[0] + SB_GROOVE_D, SB_OUT[1], SB_OUT[2] - SB_GROOVE_D, SB_OUT[3] - SB_GROOVE_D, 0.0)   # tray profile in the groove
+sb_standoff_h = SB_OUT_H + SB_GAP - 0.1       # standoff height: 0.1 mm under the cover, so it only bears once the cover flexes
+sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z)
+sb_ant_y = (sb_board_w/2 - SB_ANT_MOD[1], sb_board_w/2)   # module |y| span (antenna end at the edge)
+def sb_lanes():
+    """EVA lanes as (y0, y1, z0, z1)"""
+    z0, z1 = sb_z_cell0 + 2.0, sb_z_cell1 - 2.0; out = []
+    for s in (-1, 1):
+        y0, y1 = s*pocket_r - SB_LANE_W/2, s*pocket_r + SB_LANE_W/2
+        if s == SB_ANT_SIDE:
+            g0, g1 = sb_ant_zc - SB_ANT_MOD[0]/2 - SB_LANE_GAP, sb_ant_zc + SB_ANT_MOD[0]/2 + SB_LANE_GAP
+            out += [(y0, y1, z0, g0), (y0, y1, g1, z1)]
+        else: out.append((y0, y1, z0, z1))
+    return out
+sb_tab_y = {'PACK-': sb_cell_xy[(1, -1)][1], 'PACK+': sb_cell_xy[(1, 1)][1]}   # PACK strip centrelines (C1, C4)
+sb_z_mid = (sb_zb0 + sb_zb1) / 2
+def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
 
 def _dxf(path, ents):
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")
@@ -227,6 +280,13 @@ def write_side_dxf(path):
     for y in (-pocket_r, 0, pocket_r): _line(e, y, z0, y, z1, 'CELLS_REF')
     for z in (sb_z_cell0, sb_z_cell1): _line(e, -w, z, w, z, 'CELLS_REF')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2 + 2, 'VENT_KEEPOUT')
+    s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module on B.Cu at the edge, and the EVA lanes (no B.Cu parts there)
+    _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE_BCU')
+    for y0, y1, z0, z1 in sb_lanes(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_EVA_LANES')
+    for yc in sb_tab_y.values():              # PACK strip pads on F.Cu, and the sense-wire holes
+        _rect(e, yc, sb_zb0 + SB_TAB_PAD_H/2, SB_TAB_W + 1.0, SB_TAB_PAD_H, 'TAB_PADS')
+    for y, z in SB_TAP_HOLES.values(): _circ(e, y, z, SB_TAP_PAD_D/2, 'TAB_PADS')
+    for y, z in SB_STANDOFFS: _rect(e, y, z, SB_STANDOFF_D, SB_STANDOFF_D, 'COVER_STANDOFFS')
     _dxf(path, e)
 
 def write_cover_dxf(path):
@@ -236,8 +296,6 @@ def write_cover_dxf(path):
     _rect(e, 0, (sb_cover_z0 + sb_cover_z1)/2, sb_cover_w, sb_cover_z1 - sb_cover_z0, 'OUTLINE')
     for sy in (-1, 1): _circ(e, sy*sb_pillar_y, sb_screw_z, 1.1, 'HOLES')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2, 'VENT')
-    y0, y1, h = SB_ANT_WIN   # option only: a window here needs a bonded non-metal patch
-    _rect(e, (y0 + y1)/2, sb_zb1 - h/2, y1 - y0, h, 'ANT_WINDOW_OPTION')
     _dxf(path, e)
 
 def drop_g(h_m, stroke_mm, shape=1.3):
@@ -275,6 +333,8 @@ if __name__ == '__main__':
           + f"; bottom-down drops add {0.65*SB_PAD_T:.1f} mm of floor pad between the cells and the tray")
     print(f"side board {sb_board_w:.2f} x {sb_board_l:.2f} mm, corner notches -> {sb_board_area:.0f} mm2 per side, "
           f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
+    print("pack connections (KiCad x, y): " + ", ".join(f"{n} {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[0]:.1f}, {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[1]:.1f} pad"
+          for n, y in sb_tab_y.items()) + "; " + ", ".join(f"{n} {kicad(y, z)[0]:.1f}, {kicad(y, z)[1]:.1f} hole" for n, (y, z) in SB_TAP_HOLES.items()))
     ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
     print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
     # assembly checks (positive = clearance)
@@ -293,7 +353,31 @@ if __name__ == '__main__':
         'port well clear of the seal holes (y)': SB_WELL_W/2 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
-        'rupture windows clear of the pillars (x)': (sb_x_cv0 - SB_INSERT_L - 1.5) - (pocket_r + SB_RUPT_D/2),
         'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
+        'crush ribs squeeze the liner (rib - air gap)': SB_CRUSH_H - (a_cav - SB_SIDE_PAD - (pocket_r + CELL_D/2)),
+        'cover thermal clearance, length (gaps - growth)': 2*SB_COVER_GAP - (sb_cover_z1 - sb_cover_z0) * (100e-6 - 23e-6) * 60,
+        'cover thermal clearance, width (gaps - growth)': 2*SB_COVER_GAP - sb_cover_w * (100e-6 - 23e-6) * 60,
+        'cover still under the top-wall lip (z)': sb_cover_z1 - sb_z_top_in - 0.5,
+        'cap groove leaves wall (>= 0.8)': WALL - SB_GROOVE_D - 0.8,
+        'cap groove clear of the insert pilots (y)': (a_sb - SB_GROOVE_D) - (sb_pillar_y + SB_INSERT_D/2) - 1.0,
+        'drain channel: cap wall beside it (x)': SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 1.0,
+        'standoffs: 0.1 below the cover': (sb_x_cv0 - sb_xb1) - sb_standoff_h - 0.1 + 0.1,
+        'standoffs clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_STANDOFFS) - (SB_VENT_D/2 + 2 + SB_STANDOFF_D/2),
+        'standoffs clear of the PACK pads (z)': min(z for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - (sb_zb0 + SB_TAB_PAD_H) - 1.0,
+        'PACK strip between the floor spacer and the board (x)': (sb_xb0 - a_in) - SB_TAB_T,
+        'PACK strips clear of the centre shim (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2) - SB_SHIM_HALF,
+        'PACK strips clear of the board corner notches (y)': sb_notch_y - (max(abs(v) for v in sb_tab_y.values()) + SB_TAB_W/2),
+        'room under the board edge for the strip wrap (z)': (sb_zb0 - SB_TAB_T) - SB_END_T - 1.0,
+        'PACK pads clear of the vent keep-out (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (SB_VENT_D/2 + 2),
+        'top tap holes below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (max(SB_TAP_HOLES['CELL1'][1], SB_TAP_HOLES['CELL3'][1]) + SB_TAP_PAD_D/2) - 1.0,
+        'tap wires in the groove behind the board (free height - wire)': float(side_groove_depth(abs(SB_TAP_HOLES['CELL1'][0]))) - SB_WIRE_D,
+        'tap wires beside the mica (y)': abs(SB_TAP_HOLES['CELL1'][0]) - SB_WIRE_D/2 - SB_SEP_T/2 - 0.5,
+        'CELL2 hole clear of the PACK pads (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (abs(SB_TAP_HOLES['CELL2'][0]) + SB_TAP_PAD_D/2),
+        'BLE module on B.Cu: room behind it to the fish paper (min over its span)':
+            float(np.min(side_groove_depth(np.linspace(*sb_ant_y, 41)))) - SB_INSUL - SB_ANT_H,
+        'EVA lanes: 3 x 1 mm squeezed into the gap (compression)': SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2)),
+        'EVA lanes not over-squeezed (< 40 %)': 0.4*SB_LANE_LAYERS - (SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2))),
+        'BLE module: ground along the edge above it (>= 10)': sb_zb1 - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
+        'BLE module 10 mm below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
     }
     for k, v in chk.items(): print(f"  {'ok ' if v >= 0 else 'BAD'} {v:6.2f}  {k}")

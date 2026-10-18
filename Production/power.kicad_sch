@@ -14,183 +14,6 @@
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
-		(symbol "Device:C_Polarized"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0.254)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "C"
-				(at 0.635 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "C_Polarized"
-				(at 0.635 -2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" ""
-				(at 0.9652 -3.81 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Polarized capacitor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "cap capacitor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "CP_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "C_Polarized_0_1"
-				(rectangle
-					(start -2.286 0.508)
-					(end 2.286 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.778 2.286) (xy -0.762 2.286)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 2.794) (xy -1.27 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start 2.286 -0.508)
-					(end -2.286 -1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-			)
-			(symbol "C_Polarized_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 2.794)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 2.794)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Connector:TestPoint"
 			(pin_numbers
 				(hide yes)
@@ -2150,7 +1973,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on P0 with a meter in series with one pack lead (J108 or J112).\n7. C208 = the one battery-side bulk cap for both chargers and both 5 V buck inputs (was C432/C532, one per port).\n   Place it between the two power stages on PACK_P, next to both RBAT pads (USB sheet note 5)."
+	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on P0 with a meter in series with one pack lead (J108 or J112).\n7. C208-C213 (6 x 22u 35V 1210) = the shared battery-side bulk for both chargers and both 5 V buck inputs\n   (was one hybrid can per port). Place them between the two power stages on PACK_P, beside both RBAT pads\n   (USB sheet note 5). Nothing on the board is taller than the 3.1 mm inductors."
 		(exclude_from_sim no)
 		(at 220.98 83.82 0)
 		(effects
@@ -3461,7 +3284,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3e652c79-7ecb-4657-9cda-e23c858ebfa7")
+		(uuid "7d346cab-468f-46b8-a5fc-59a7b54335fa")
 	)
 	(wire
 		(pts
@@ -3471,10 +3294,10 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9bb017bb-4b9c-4417-bd32-38dbe79b902b")
+		(uuid "ada600d6-58f2-44a7-9d92-96df67ddcbfb")
 	)
 	(symbol
-		(lib_id "Device:C_Polarized")
+		(lib_id "Device:C")
 		(at 63.5 105.41 0)
 		(unit 1)
 		(body_style 1)
@@ -3483,9 +3306,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "5b31a6bd-5756-465b-a65a-97b9b1dac377")
+		(uuid "2735854c-8c60-4147-b730-1919276a6f8c")
 		(property "Reference" "C208"
-			(at 71.41 104.28 0)
+			(at 56.45 104.28 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3494,8 +3317,8 @@
 				)
 			)
 		)
-		(property "Value" "100u 25V"
-			(at 71.41 106.24 0)
+		(property "Value" "22u 35V"
+			(at 56.45 106.24 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3504,8 +3327,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
-			(at 64.46 101.6 0)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 64.47 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3526,7 +3349,7 @@
 				)
 			)
 		)
-		(property "Description" "Polarized capacitor"
+		(property "Description" "Unpolarized capacitor"
 			(at 63.5 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -3537,7 +3360,7 @@
 				)
 			)
 		)
-		(property "Notes" "Shared PACK_P bulk for both chargers' battery sides and both TPS62933 inputs (replaces the per-port C432/C532). Place it between the two power stages, on PACK_P beside the RBAT pads: Production/tools/pack_bus_sims.py option A2"
+		(property "LCSC" "C778721"
 			(at 63.5 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -3548,18 +3371,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C264047"
-			(at 63.5 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "Panasonic EEH-ZA1E101XP (hybrid polymer)"
+		(property "MPN" "GMK325BJ226MM-P"
 			(at 63.5 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -3571,15 +3383,520 @@
 			)
 		)
 		(pin "1"
-			(uuid "b4012856-51ed-4f8e-8503-cc47853e9bb5")
+			(uuid "430b8967-d07b-439a-b1c6-a3bc47781f0f")
 		)
 		(pin "2"
-			(uuid "4815699c-69df-4d0d-a152-cf63f79ada69")
+			(uuid "b52e51b2-8095-4136-92d6-13ec10188db5")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
 					(reference "C208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 73.66 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "fae37394-97e5-412a-b97e-f6c0ab1c2b43")
+		(property "Reference" "C209"
+			(at 73.66 97.70 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22u 35V"
+			(at 73.66 99.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 74.62 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 73.66 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 73.66 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C778721"
+			(at 73.66 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GMK325BJ226MM-P"
+			(at 73.66 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1f8f1f85-ba16-4a84-af6f-2d938b2883cd")
+		)
+		(pin "2"
+			(uuid "33f52f86-4bb8-4cec-b465-42b43bd710a2")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C209")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 83.82 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9fde5ff5-d77b-49a4-bb8a-6825ea851be7")
+		(property "Reference" "C210"
+			(at 83.82 97.70 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22u 35V"
+			(at 83.82 99.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 84.78 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 83.82 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 83.82 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C778721"
+			(at 83.82 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GMK325BJ226MM-P"
+			(at 83.82 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8ec082fc-412d-4050-922d-3367c5fe13bf")
+		)
+		(pin "2"
+			(uuid "426365c4-1e16-43b8-acd9-d5eff7e3fe92")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C210")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 93.98 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3bf139b6-9c41-417f-8648-d0818b595322")
+		(property "Reference" "C211"
+			(at 93.98 97.70 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22u 35V"
+			(at 93.98 99.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 94.95 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 93.98 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 93.98 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C778721"
+			(at 93.98 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GMK325BJ226MM-P"
+			(at 93.98 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5420513e-408b-42dc-847c-b73891361405")
+		)
+		(pin "2"
+			(uuid "540e7d77-906a-44ed-96da-97ea332f5174")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C211")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 104.14 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "006f1881-6573-4068-b255-559082db0f6a")
+		(property "Reference" "C212"
+			(at 104.14 97.70 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22u 35V"
+			(at 104.14 99.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 105.11 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 104.14 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C778721"
+			(at 104.14 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GMK325BJ226MM-P"
+			(at 104.14 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "43a374be-34b5-4a91-b7d0-fb60e1e0836e")
+		)
+		(pin "2"
+			(uuid "aa31b258-50d1-4bf5-86a5-aca92402003a")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C212")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 114.3 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e79f9341-c73b-46b2-b28f-1a5541b1dd76")
+		(property "Reference" "C213"
+			(at 114.30 97.70 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22u 35V"
+			(at 114.30 99.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 115.27 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 114.3 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 114.3 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C778721"
+			(at 114.3 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GMK325BJ226MM-P"
+			(at 114.3 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "07d5acea-8331-4bf6-961c-b3de28d35192")
+		)
+		(pin "2"
+			(uuid "1e7b6d09-f37e-4d9a-ba51-cb5409d4ea2a")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C213")
 					(unit 1)
 				)
 			)
@@ -3595,7 +3912,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "a927df4f-f7d6-433f-900d-696960aebe7d")
+		(uuid "07b49eae-8a0e-4e99-9b98-75e72448c13d")
 		(property "Reference" "#PWR9011"
 			(at 63.5 101.6 0)
 			(hide yes)
@@ -3651,7 +3968,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "34773952-ca73-4d21-a788-bc94968d5f85")
+			(uuid "1e37a555-a27a-489a-8a06-81096c0bca69")
 		)
 		(instances
 			(project "Monolith"
@@ -3672,7 +3989,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "7e895118-d1d5-4403-9adb-8771536509e2")
+		(uuid "b98ae1c9-e563-41a5-8c41-81c35ce5a3d8")
 		(property "Reference" "#PWR9013"
 			(at 63.5 109.22 0)
 			(hide yes)
@@ -3728,7 +4045,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "93edf89f-4eac-463a-9ae0-b97fd81b455e")
+			(uuid "46bf38af-f6d3-46e5-ba84-56c9ccbe590e")
 		)
 		(instances
 			(project "Monolith"
@@ -3739,7 +4056,107 @@
 			)
 		)
 	)
-	(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs)"
+	(wire
+		(pts
+			(xy 63.5 101.6) (xy 73.66 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1cfdbba-ae46-497f-b253-fc1fd98b15f0")
+	)
+	(wire
+		(pts
+			(xy 63.5 109.22) (xy 73.66 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "977c4dea-d1f9-47e8-8f78-b14b670c09b4")
+	)
+	(wire
+		(pts
+			(xy 73.66 101.6) (xy 83.82 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "69a5e55e-1a68-4621-be43-9a913f4861d5")
+	)
+	(wire
+		(pts
+			(xy 73.66 109.22) (xy 83.82 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "307dfcbd-53aa-40cf-ab93-83115f7543e9")
+	)
+	(wire
+		(pts
+			(xy 83.82 101.6) (xy 93.98 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c7dd6e07-dfc4-4764-bf7f-b7707e393410")
+	)
+	(wire
+		(pts
+			(xy 83.82 109.22) (xy 93.98 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "86eb793d-62af-4264-a8f0-e793e62a53c0")
+	)
+	(wire
+		(pts
+			(xy 93.98 101.6) (xy 104.14 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c90d0f1-5c3c-4386-8889-2ce66efa0b94")
+	)
+	(wire
+		(pts
+			(xy 93.98 109.22) (xy 104.14 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "64725768-141c-47d1-9dde-15b425dff78b")
+	)
+	(wire
+		(pts
+			(xy 104.14 101.6) (xy 114.3 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da48aaea-4068-4bce-8537-b625cce67a54")
+	)
+	(wire
+		(pts
+			(xy 104.14 109.22) (xy 114.3 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb1cc23e-b502-4d1d-bbbf-8a8eba4660c4")
+	)
+	(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs): 6x 22u 35V 1210, between the two power stages beside the RBAT pads"
 		(exclude_from_sim no)
 		(at 40.64 88.9 0)
 		(effects
@@ -3749,7 +4166,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "130095fb-9658-4ca0-9a50-aa935e273d81")
+		(uuid "21a41eb7-1fe8-4a2b-afd7-4845f2dd1400")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -3761,7 +4178,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "640b2099-868b-4ef6-b4ba-209be19bafe1")
+		(uuid "2193dd76-8393-4efa-b7f9-90542d689d07")
 		(property "Reference" "#PWR9015"
 			(at 190.5 59.69 0)
 			(hide yes)
@@ -3817,7 +4234,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "e68b2465-e80e-47c7-a477-ead0c4c8400f")
+			(uuid "a86ba425-e871-4288-8f7b-800d70af4887")
 		)
 		(instances
 			(project "Monolith"
@@ -3838,7 +4255,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "c8db7bfa-0854-4f77-8926-d58c98963d32")
+		(uuid "6d17327f-cc99-4bc8-8cb3-b266bd9e6225")
 		(property "Reference" "#PWR9017"
 			(at 121.92 59.69 0)
 			(hide yes)
@@ -3894,7 +4311,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "d3a5dd18-5a55-439e-855b-52be9d7f0193")
+			(uuid "1764c9f1-d531-43e1-bf91-a2fb928a2602")
 		)
 		(instances
 			(project "Monolith"
@@ -3907,7 +4324,7 @@
 	)
 	(no_connect
 		(at 142.24 68.58)
-		(uuid "92d9857a-14c8-4418-a97f-dca1e7a865db")
+		(uuid "785ddffd-b9ed-4ccb-a177-5d581411a9a5")
 	)
 	(wire
 		(pts
@@ -3917,7 +4334,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d1dcdad1-e3f3-45e4-9e71-f89b4bb8fb69")
+		(uuid "896dac30-4d85-4203-a881-b50177fd976b")
 	)
 	(wire
 		(pts
@@ -3927,7 +4344,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fab9225c-6b00-43e1-901b-405382d05baf")
+		(uuid "6f6af222-8d58-4393-bbeb-df5750f0d947")
 	)
 	(sheet_instances
 		(path "/"
