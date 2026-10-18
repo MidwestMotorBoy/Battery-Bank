@@ -82,7 +82,8 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
         - `monolith_side_exploded.png`: assembled and exploded views;
         - `monolith_side_sections.png`: sections A-A and B-B;
         - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables;
-        - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions.
+        - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions;
+        - `monolith_side_hero.png`: the assembled pack with its laser-marked label, in two colourways JLC3DP sells (MJF PA12 black or grey, TPU black or blue).
     - **Cover heatsink and label (prototype):** `monolith_cover_label.py` builds the aluminium cover for JLCCNC sheet metal: 1.0 mm 5052, black anodized, laser-marked.
         - It needs shapely and matplotlib as well, and KiCad 10's `kicad-cli` for the STEP.
         - **Outputs:**

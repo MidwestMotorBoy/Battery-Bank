@@ -4,6 +4,7 @@ Run: python monolith_side_renders.py [v1_dir]
    monolith_side_sections.png  (A-A across the cells, B-B along C1/C2, with dimensions)
    monolith_side_parts.png     (cap zones, tray floor, pads; mass, drop and print-setting tables)
    monolith_side_tabs.png      (nickel strips and sense wires, and the board face with pad / hole positions)
+   monolith_side_hero.png      (the assembled pack with its laser-marked label, in two JLC colourways)
 v1_dir (optional) holds the previous monolith_side_shell.stl and monolith_side_bumper.stl for the mass comparison.
 Design basis: reports/Battery pack potting and drop protection.md (no potting; crush caps outside a stiff core).
 Everything is drawn at SS x size and downsampled, so edges and text are antialiased."""
@@ -26,7 +27,7 @@ def mv(V, dx=0, dy=0, dz=0): return V + [dx, dy, dz]
 
 # ---------------- the assembly: (key, part number, mesh, colour) ----------------
 # part numbers follow the assembly order; the caps are four print-zone meshes each
-PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish paper', 'wrap'),
+PARTS = [(1, 'Printed tray', 'MJF PA12 nylon', 'shell'), (2, 'Side liner 0.2 mm', 'fish paper', 'wrap'),
          (3, 'Floor spacer 3.8 mm', 'TPU 95A, ~20 % gyroid', 'pad_floor'), (4, 'Floor pad 1.0 mm', 'EVA foam', 'eva_floor'),
          (5, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (6, 'Insulator rings on + ends (4)', 'fish paper 0.2', 'rings'),
          (17, 'Nickel strips 0.15 x 7, 5', 'nickel', 'nickel'), (18, 'Sense wires CELL1-3', '28 AWG silicone', 'wire'),
@@ -60,7 +61,7 @@ def group(key): return key.split('_')[0] if key.startswith('cap') else key
 
 # ---------------- z-buffer renderer with outlines ----------------
 LIGHT = np.array([0.35, -0.55, 0.75]); LIGHT = LIGHT / np.linalg.norm(LIGHT)
-def zrender(img, parts, R, origin, px, edge_px=2):
+def zrender(img, parts, R, origin, px, edge_px=2, tex=None):
     """parts: [(V, colour)]; R = camera rows (right, up, toward viewer); returns the part-index buffer"""
     W, H = img.size; ox, oy = origin
     zb = np.full((H, W), -np.inf); col = np.zeros((H, W, 3)); pid = np.full((H, W), -1)
@@ -87,6 +88,7 @@ def zrender(img, parts, R, origin, px, edge_px=2):
             pid[y0:y1 + 1, x0:x1 + 1][w] = ip
     hit = pid >= 0
     base = np.asarray(img).astype(float); base[hit] = col[hit]
+    if tex is not None: tex(base, pid, zb, ox, oy, px, R)     # e.g. the laser-marked label on the cover
     e = np.zeros_like(hit)          # outline where the part changes or the depth jumps
     for dy, dx in ((0, 1), (1, 0)):
         p2 = np.roll(np.roll(pid, -dy, 0), -dx, 1); z2 = np.roll(np.roll(zb, -dy, 0), -dx, 1)
@@ -132,8 +134,8 @@ class Sheet:
     def panel_title(self, x, y, s, w=None):
         self.text(x, y, s, 19, True)
         if w: self.line([(x, y + 32), (x + w, y + 32)], RULE, 1)
-    def render(self, parts, R, origin, px):
-        pid = zrender(self.img, parts, R, (origin[0]*SS, origin[1]*SS), px*SS)
+    def render(self, parts, R, origin, px, tex=None):
+        pid = zrender(self.img, parts, R, (origin[0]*SS, origin[1]*SS), px*SS, tex=tex)
         self.g = ImageDraw.Draw(self.img); return pid
     def section(self, A, axis, c, hu, hv, origin, px):
         ox, oy = origin; g = self.g
@@ -228,7 +230,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(nickel=8.9, wire=3.0, lanes=0.20, stand=3.0, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(nickel=8.9, wire=3.0, lanes=0.20, stand=3.0, shell=1.01, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -386,7 +388,7 @@ if __name__ == '__main__':
     # mass table
     y0 = 680; x = 40
     sh.panel_title(x, y0, 'Mass', 820)
-    rows = [['Tray (PETG)', f"{m['shell']:.1f}"], ['Aluminium cover', f"{m['cover']:.1f}"],
+    rows = [['Tray (MJF PA12)', f"{m['shell']:.1f}"], ['Aluminium cover', f"{m['cover']:.1f}"],
             ['TPU crush caps, 2, at print fill', f"{m['capb'] + m['capt']:.1f}"],
             ['TPU floor spacer, EVA pads', f"{m['pad_floor'] + m['eva_floor'] + m['pad_top']:.1f}"],
             ['Fish paper: liner, insulator, rings', f"{m['wrap'] + m['insul'] + m['rings']:.1f}"],
@@ -475,6 +477,61 @@ if __name__ == '__main__':
     sh.legend([('cells', C['cell']), ('mica', C['mica']), ('nickel strip', C['nickel']), ('sense wire', C['wire']), ('board', C['board']),
                ('TPU shim', C['shim']), ('pad / hole', (214, 170, 60)), ('BLE module', (170, 190, 225))], 40, 970, 14)
     sh.save('monolith_side_tabs.png')
+    # ================= 5. hero: the assembled pack with its label, in colours JLC sells =================
+    import monolith_cover_label as CL
+    art = CL.artwork(); kpm = 20.0
+    mw, mh = int(2*CL.W2*kpm) + 1, int((CL.Y1 - CL.Y0)*kpm) + 1
+    mimg = Image.new('L', (mw, mh), 0); md = ImageDraw.Draw(mimg)
+    toM = lambda x, y: ((x + CL.W2)*kpm, (CL.Y1 - y)*kpm)
+    for p_ in CL.polys(art):
+        md.polygon([toM(x, y) for x, y in p_.exterior.coords], fill=255)
+        for h_ in p_.interiors: md.polygon([toM(x, y) for x, y in h_.coords], fill=0)
+    mask = np.asarray(mimg) > 127
+    ANOD = np.array([34, 35, 39]); MARK = np.array([204, 206, 210])
+    def label_tex(cover_ids):
+        def f(base, pid, zb, ox, oy, px, R):
+            rr, cc = np.nonzero(np.isin(pid, list(cover_ids)))
+            Wp = np.c_[(cc + 0.5 - ox)/px, (oy - (rr + 0.5))/px, zb[rr, cc]] @ R     # pixel -> world
+            face = np.abs(Wp[:, 0] - S.sb_x_cv1) < 0.08
+            mx = ((Wp[:, 1] + CL.W2)*kpm).astype(int); my = ((CL.Y1 - Wp[:, 2])*kpm).astype(int)
+            ok = face & (mx >= 0) & (mx < mw) & (my >= 0) & (my < mh)
+            on = np.zeros(len(rr), bool); on[ok] = mask[my[ok], mx[ok]]
+            shade = base[rr, cc].mean(1, keepdims=True) / ANOD.mean()
+            base[rr[on], cc[on]] = np.clip(MARK * np.minimum(shade[on], 1.15), 0, 255)
+            vent = face & (Wp[:, 1]**2 + (Wp[:, 2] - S.SB_VENT_Z)**2 < (S.SB_VENT_D/2)**2)
+            base[rr[vent], cc[vent]] = (10, 10, 12)
+        return f
+    WAYS = [('Stealth', 'MJF PA12 dyed black  ·  TPU 95A black', (70, 70, 75), (36, 36, 40)),
+            ('Trail', 'MJF PA12 natural grey  ·  TPU 95A blue', (150, 152, 156), (45, 112, 190))]
+    def hero_parts(tray_c, cap_c):
+        out, ids = [], set()
+        for k, V, c in A:
+            if k == 'shell': out.append((V, tray_c))
+            elif k.startswith('cap'): out.append((V, cap_c))
+            elif k == 'cover': ids.add(len(out)); out.append((V, tuple(ANOD)))
+            elif k == 'board': out.append((V, (30, 70, 45)))
+        return out, ids
+    sh = Sheet(2700, 1240)
+    w_, d_, L_ = SIZE()
+    sh.header('Monolith', f'Side-board 4S1P 21700 power bank, 82 Wh, 2 x USB-C PD 100 W.  {w_:.1f} x {d_:.1f} x {L_:.1f} mm, '
+              f'about {total + 15:.0f} g with the board populated (estimate).')
+    Rh = camera((1.0, -0.9, 0.55))
+    for i, (name, mat, tray_c, cap_c) in enumerate(WAYS):
+        parts_, ids = hero_parts(tray_c, cap_c)
+        x = 40 + i*880
+        sh.panel_title(x, 128, name, 820)
+        sh.render(parts_, Rh, (x + 400, 975), 6.5, tex=label_tex(ids))
+        sh.text(x, 1130, mat, 16, fill=MUTED)
+    parts_, ids = hero_parts(*WAYS[0][2:])
+    x = 40 + 2*880
+    sh.panel_title(x, 128, 'Port end: one well for both plugs', 820)
+    sh.render(parts_, camera((0.45, -0.4, 1.35)), (x + 390, 850), 6.0, tex=label_tex(ids))
+    sh.text(x, 1130, 'TPU crush caps at both ends; the bands sit 2 mm proud for side drops', 16, fill=MUTED)
+    sh.line([(40, 1170), (2660, 1170)], RULE, 1.5)
+    sh.text(40, 1188, 'Cover: 1.0 mm 5052, black anodized, laser-marked label (monolith_cover_label.py). Colours are the ones JLC3DP lists for '
+            'MJF nylon and TPU. Not shown: internal parts.', 14, fill=MUTED)
+    sh.save('monolith_side_hero.png')
+
     print(f"pack {total:.1f} g; " + ", ".join(f"{k} {v:.1f}" for k, v in m.items()))
     if v1: print(f"v1 {sum(v1.values()):.1f} g")
-    print("wrote monolith_side_exploded.png, monolith_side_sections.png, monolith_side_parts.png, monolith_side_tabs.png")
+    print("wrote monolith_side_exploded.png, monolith_side_sections.png, monolith_side_parts.png, monolith_side_tabs.png, monolith_side_hero.png")
