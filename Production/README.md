@@ -104,7 +104,7 @@ Courtyard area went from **2,653 to 2,221 mm²** for all placed parts (−16 %).
 
 **Checked and kept:**
 
-- **Bulk polymers C421/C432.** No smaller 100 µF 35 V polymer is stocked. The only smaller 25 V option is a polymer tantalum, rated for up to 250 µA leakage, which would wreck the sleep budget on PACK_P.
+- **Bulk polymers C421/C432.** No smaller 100 µF 35 V polymer is stocked. The only smaller 25 V option is a polymer tantalum, rated for up to 250 µA leakage, which would wreck the sleep budget on PACK_P. (Superseded on 2026-10-18 by *Low-profile bulk*.)
 - **TPS25751 VIN_3V3, LDO_3V3 and PP5V caps.** Their datasheet minimums after derating don't fit a 0402.
 - **50 V 1206s on 5V_IN and VBUS.** DC bias at 16.8–20 V would take them under the TPS62933 and TPS25751 needs.
 - **C207**, the TPS62177 output cap.
@@ -129,7 +129,7 @@ The BQ25756 needs C_OUT ≥ 80 µF after derating (datasheet sec. 5.3). Each cha
 
 - **Removed:** C432/C532, the per-port hybrids, and C445/C545, the second TPS62933 input caps.
 - **Added:** C208, a 100 µF 25 V hybrid (EEH-ZA1E101XP) on the 3V3 Rail sheet. Place it between the two power stages on PACK_P, next to both RBAT pads.
-- **USB sides:** these can't share bulk, because each port has its own VBUS/PPHV, so C421/C521 stay. C427 is still on hold for bring-up.
+- **USB sides:** these can't share bulk, because each port has its own VBUS/PPHV, so C421/C521 stay. C427 is still on hold for bring-up. (Both superseded on 2026-10-18 by *Low-profile bulk*: C208 became six MLCCs, C421 became two polymer tantalums, and C427 is now required.)
 
 **Totals:** 276 parts (262 placed), and courtyard area is now **2,104 mm²**, down from 2,653 mm² before any downsizing (−21 %).
 
@@ -335,9 +335,49 @@ The dev board won't be built, to save cost. P0 trains the gauge and carries the 
 - TI's BQ41Z50 reference design still pairs it with an external protector (BQ296103).
 - So U102 (BQ294700) stays as the independent hardware second level that blows F102 through Q104, as decided on 2026-10-13.
 
+## Low-profile bulk (2026-10-18)
+
+The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every bulk cap is now no taller than the inductors (APS0730M2R2F, 3.1 mm max). Checked with `tools/low_profile_sims.py`, which runs the same ripple, part-stress and damping models as `cap_sims.py` and `pack_bus_sims.py`.
+
+**Why two different fixes.** Low-profile polymer chips (Panasonic SP-Cap, CDE MPD, KEMET T521) are rated for 0.1–0.3 CV of leakage: 115 µA for a T521D 33 µF 35 V and about 250 µA for a 33 µF 25 V SP-Cap. That doesn't matter on AC_SNS_N, which is dead in sleep. It rules them out on PACK_P, which is always live and has a ~150 µA sleep budget. So the USB side uses polymer tantalum and PACK_P uses MLCCs only.
+
+**USB side, per port** (BQ25756 C_IN ≥ 80 µF after derating, at 20 V):
+
+| Option | Effective C (worst, 20 V) | Typ. | Worst part | Ripple | Damping | Area | Height |
+|---|---|---|---|---|---|---|---|
+| Before: 4 × 22 µF 1210 + 100 µF can | 104.5 µF | 134 µF | 65 % (can) | 162 mV | 19.7 dB | 125 mm² | 7.7 mm |
+| 4 × 22 µF + 2 × T521D | 77.3 µF (low) | 100 µF | 40 % | 150 mV | 17.1 dB | 143 mm² | 3.1 mm |
+| **Applied: 5 × 22 µF + 2 × T521D** | **83.4 µF** | **109 µF** | **33 %** | **123 mV** | **17.8 dB** | **158 mm²** | **3.1 mm** |
+| 6 × 22 µF + 2 × T521D | 89.6 µF | 117 µF | 28 % | 104 mV | 18.5 dB | 172 mm² | 3.1 mm |
+
+- **C421/C521:** KEMET T521D336M035ATE065 (LCSC C696815, 518 in stock): 33 µF 35 V polymer tantalum, 65 mΩ, 2.2 A rms at 85 °C, 7343-31 case, 3.1 mm max. Running it at 57 % of its rating is inside KEMET's 80 % polymer derating.
+- **Added per port:** C457/C557, a second T521D, and C456/C556, a fifth GMK325BJ226MM-P 22 µF 35 V 1210. Both sit on AC_SNS_N next to C430.
+- **C427/C527** leaves the cut list: the bank needs it.
+- **PPHV inrush** (sheet note 9) drops from about 125 µF to about 110 µF typical, so it is further under the soft-start limit.
+- **Fallback:** if the T521D runs short, CDE MPD330M1VD28040R (33 µF 35 V polymer aluminium, 2.8 mm, 7.3 × 4.3 mm) fits the same pads. Stock was low (38) on 2026-10-18.
+
+**PACK_P bus** (≥ 80 µF at 16.8 V; each charger sees the whole bus through its RBAT):
+
+| Option | Effective C (worst, 16.8 V) | Worst part | Ripple | Damping | Area | Height |
+|---|---|---|---|---|---|---|
+| Before: 2 × 22 µF 1206 + 10 µF 50 V per port, hybrid can shared | 99.2 µF | 44 % | 232 mV | 20.2 dB | 130 mm² | 7.7 mm |
+| 47 µF 25 V 1210s (2 + 10 µF per port, 6 shared) | 66.5 µF (low) | 32 % | 121 mV | 19.8 dB | 167 mm² | 2.7 mm |
+| 3 × 22 µF 35 V 1210 per port, 5 shared | 79.2 µF (low) | 26 % | 76 mV | 19.6 dB | 161 mm² | 2.7 mm |
+| **Applied: 3 × 22 µF 35 V 1210 per port, 6 shared** | **86.4 µF** | **26 %** | **78 mV** | **19.9 dB** | **175 mm²** | **2.7 mm** |
+| 4 × 22 µF 35 V 1210 per port, 4 shared | 86.4 µF | 17 % | 52 mV | 19.9 dB | 175 mm² | 2.7 mm |
+
+- **Why 22 µF 35 V over 47 µF 25 V.** At 16.8 V a 22 µF 35 V 1210 keeps about 10 µF; a 47 µF 25 V 1210 keeps about 8 µF.
+- **Per port:** C431/C434 (22 µF 25 V 1206) and C444 (TPS62933 input, 10 µF 50 V 1206) become GMK325BJ226MM-P 22 µF 35 V 1210s. That is the same part as the USB-side MLCCs. C444 now keeps about 10 µF at 16.8 V instead of about 4 µF.
+- **Shared:** C208 (EEH-ZA1E101XP hybrid) becomes C208–C213, six GMK325BJ226MM-P on the 3V3 Rail sheet. Place them between the two power stages, beside both RBAT pads, as before.
+- **Leakage:** effectively zero.
+- **Damping:** still about 20 dB; the pack's own resistance damps the bus.
+
+**Cost of the change:** about +110 mm² of courtyard (+33 mm² per USB side, +45 mm² on PACK_P) and 9 more parts (276 → 285 in the schematic). It also adds about +$16 per board at JLC small-quantity prices, mostly the four T521Ds at $3.20 each; the MPD fallback is $1.34. In return, no part rises above 3.1 mm.
+
+**PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343-31), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus nine new parts: C209–C213, C456/C556 and C457/C557.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
-2. **Cap cut still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
-    - C427/C527 (USB-side MLCC): only if dev board bring-up shows the polymer stays cool at 20 V 5 A reverse from a low pack (it reaches 85 % of its rating), or if firmware derates that case.
+2. **No cap cuts on hold.** C427/C527 is part of the 83 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
 3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
