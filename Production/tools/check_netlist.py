@@ -60,6 +60,9 @@ for (r, p), n in old.items():
         expect[(r, p)] = find(n)
 for ref, _, _, (oref, opin) in mp.GAUGE_PADS:
     expect[(ref, "1")] = find(old[(oref, opin)])
+for (ref, pin), to in mp.NET_MOVES.items():
+    for r in (ref, ref[:-3] + "5" + ref[-2:]):  # port 1 and port 2
+        expect[(r, pin)] = find(old[("TP109", "1")]) if to == "GND" else "unconnected %s.%s" % (r, pin)
 for ref, pins in mp.NEW_PARTS.items():
     for p, (oref, opin) in pins.items():
         expect[(ref, p)] = find(old[(oref, opin)])

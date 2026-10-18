@@ -127,6 +127,26 @@ The BQ25756 needs C_OUT ≥ 80 µF after derating (datasheet sec. 5.3). Each cha
 
 **Totals:** 276 parts (262 placed), and courtyard area is now **2,104 mm²**, down from 2,653 mm² before any downsizing (−21 %).
 
+## Liquid detection removed (2026-10-17)
+
+The production ports have IP68 connectors and a potted board, so liquid detection is dropped. Port 1 is listed; port 2's 5xx parts are the same.
+
+- **Removed:** Q403–Q406 (SBU pull FETs), R436–R439 and R442/R443.
+- **TPS25751 GPIO4–GPIO7:** tied to GND, as its datasheet says for unused GPIOs. Configure them as unused in the TPS25751 configuration, never as outputs.
+- **TPD4S201 system-side SBU pins:** left as no-connects. Grounding them would short a cable's SBU lines whenever the SBU switch is on.
+- **Kept:** the TPD4S201 itself, for CC and SBU overvoltage and ESD protection, and its fault output R441 → GPIO3.
+- **ERC:** shows 8 more of the expected "GPIO tied to GND" pin-to-pin warnings, 16 in total.
+
+Parts: 256.
+
+**Checked and not applied: dual FETs for the chargers (packaging option 4).**
+
+- **40 V half-bridges at JLC** come only in 5×6 mm (Infineon IAUC60N04S6N050), the same area as two 3.3×3.3 singles.
+- **3.3×3.3 half-bridges** are 30 V only (SiZ340). That's too little with 20 V VBUS, the 22.5 V OVP and the 28 V TVS clamp, now that there are no gate resistors.
+- **3×3 duals with independent FETs** could pair only the two low sides, Q407 + Q408: their sources share GND, and the two never carry heavy current at the same time. The high sides can't share: about 2 W in one package at the worst case.
+- **The dual parts on offer don't qualify:** the genuine Vishay SiSB46DN is out of stock and has 15.8 mΩ at 4.5 V (today's part: 10 mΩ). The stocked "SiSB46DN-HXY" clone lists specs the original doesn't have. Other duals are 13–22 mΩ.
+- **Not worth it:** the gain would be only about 31 mm² for both ports, so the four singles per port stay.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

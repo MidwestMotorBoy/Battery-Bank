@@ -64,6 +64,9 @@ REMOVE = {
         "R450", "C454", "R451", "C455",              # DNP snubbers
         "C447",                                      # DNP feed-forward cap
         "C435",                                      # battery-side bank 3 -> 2 x 22u (cap sims 2026-10-17, B2)
+        "Q403", "Q404", "Q405", "Q406",              # liquid detection removed (2026-10-17): SBU pull FETs
+        "R436", "R437", "R438", "R439",              # ... SBU sense resistors
+        "R442", "R443",                              # ... FET gate holds
         "C432",                                      # per-port hybrid -> one shared PACK_P hybrid C208 (pack_bus_sims A2)
         "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
         "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
@@ -89,6 +92,15 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
 NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}  # check_netlist: pin -> a dev pin on the same net
+# labels left on single pins after liquid detection went: per label name, what happens at each pin's owner.
+# TPS25751 GPIO4-7 unused -> GND (datasheet pin table); TPD4S201 system-side SBU pins -> no-connect (grounding them
+# would short a cable's SBU lines whenever the SBU switch is on).
+PIN_ACTIONS = {"usb_port.kicad_sch": {
+    "SBU1_SNS": {"U401": "GND", "U405": "NC"}, "SBU2_SNS": {"U401": "GND", "U405": "NC"},
+    "LIQ_PU": {"U401": "GND"}, "LIQ_PD": {"U401": "GND"}}}
+# check_netlist: pins that deliberately change net (port 1 refs; port 2 follows). "GND" or None (left unconnected)
+NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND", ("U401", "37"): "GND",
+             ("U405", "15"): None, ("U405", "14"): None}
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
 PAD = "TestPoint:TestPoint_Pad_D1.5mm"
@@ -385,6 +397,40 @@ def power_template(s, value):
     raise KeyError(value)
 
 
+def pin_actions(s, sheet, templates):
+    """Apply PIN_ACTIONS to labels sitting directly on a pin: GND symbol in their place, or a no-connect flag."""
+    acts = PIN_ACTIONS.get(sheet, {})
+    if not acts:
+        return s
+    owner = {}
+    for y in symbols(s):
+        for p in y["pins"].values():
+            owner.setdefault(p, y["ref"])
+    spans, add, to_gnd = [], "", []
+    for x in anchors(s, "label"):
+        if x["name"] not in acts:
+            continue
+        what = acts[x["name"]].get(owner.get(x["p"]))
+        assert what, (x["name"], x["p"], owner.get(x["p"]))
+        spans.append((x["a"], x["b"]))
+        if what == "GND":
+            to_gnd.append(x["p"])
+        else:
+            add += nc_text(x["p"])
+    if to_gnd:  # U401 GPIO4-7 sit in the rows above GPIO11, whose wire already runs left to GND: join that wire
+        g11 = {y["ref"]: y for y in symbols(s)}["U401"]["pins"]["13"]
+        corner = next(q for w in wires(s) if g11 in w["p"] for q in w["p"] if q != g11)
+        assert corner[1] == g11[1] and all(p[0] == g11[0] for p in to_gnd), (corner, g11, to_gnd)
+        for p in to_gnd:
+            add += wire_text(p, (corner[0], p[1]))
+        rail = sorted({(corner[0], p[1]) for p in to_gnd} | {corner}, key=lambda q: q[1])
+        for a, b in zip(rail, rail[1:]):  # end-to-end segments, so every stub meets a wire end (no mid-wire T)
+            add += wire_text(a, b)
+        add += "".join('\n\t(junction\n\t\t(at %g %g)\n\t\t(diameter 0)\n\t\t(color 0 0 0 0)\n\t\t(uuid "%s")\n\t)'
+                       % (q[0], q[1], uid()) for q in rail[1:])
+    return insert_top(cut(s, spans), add)
+
+
 def rename_labels(s, sheet, templates):
     spans, adds = [], ""
     for x in anchors(s, "label"):
@@ -557,6 +603,7 @@ def process(sheet, src):
         s, n2 = prune(s)
         n += n2
     s = rename_labels(s, sheet, templates)
+    s = pin_actions(s, sheet, templates)
     s, n2 = prune(s)
     n += n2
     s = insert_top(s, "".join(nc_text(p) for p in EXTRA_NC.get(sheet, [])))
