@@ -1,0 +1,16 @@
+LCSC Part Number,Order Qty,Needed (3 boards),Per Board,MPN,Manufacturer,Description,Designators,Unit Price (USD),Ext. Price (USD),LCSC Stock,Flag,Notes
+C20606791,12,12,4,BH-21700-B1BJ001,MYOUNG,Battery Holder Cylindrical SMD,"BT101,BT102,BT103,BT104",0.9137,10.96,1858,,
+C148219,5,3,1,SMAJ18A,Littelfuse,29.2VC Clamp 13.7A@10/1000us Ipp TVS DIODE DO-214AC(SMA),D105,0.1146,0.57,10970,,
+C492401,50,21,7,PZ254V-11-02P,XFCN,"Through Hole 250V 1 2.54mm Square pin 3A 2.5mm 6.1mm 2P -40℃~+105℃ 3mm Gold Black 1x2P Through Hole,P=2.54mm Headers, Male Pins ","J102,J104,J105,J106,J107,JP201,JP202",0.0188,0.94,1057150,,
+C2691448,20,3,1,PZ254V-11-04P,XFCN,Pin Header 4 Position 2.54mm Pitch Single Row Through Hole -40℃~+105℃,J103,0.0276,0.55,782840,,
+C41376037,5,3,1,HX PZ1.27-2x5P TP,hanxia,Pin Header 10 Position 1.27mm Pitch Dual Row Surface Mount -40℃~+105℃,J301,0.0983,0.49,41425,,"unkeyed 2x5 1.27 mm SMD header (HANXIA PZ1.27-2x5P TP) replacing the Samtec: land pattern 0.74 x 2.50 mm pads, rows 4.0 mm apart, fits the FTSH-105 footprint (0.74 x 2.79 mm, 4.07 mm); unkeyed, so seat the cable by the silk"
+C2937625,50,9,3,PZ254V-11-03P,XFCN,Pin Header 3 Position 2.54mm Pitch Single Row Through Hole -40℃~+105℃,"J302,J402,J502",0.0199,1.0,792150,,
+C492406,10,3,1,PZ254V-11-07P,XFCN,Pin Header 7 Position 2.54mm Pitch Single Row Through Hole -40℃~+105℃,J303,0.0464,0.46,52660,,
+C100114,50,6,2,2.54,BOOMELE(Boom Precision Elec),"Capped 2.54mm P=2.54mm Shunts, Jumpers ","JP201,JP202",0.0094,0.47,473400,,2.54 mm jumper shunts (closed top) for AMP_EN and the meas. section power
+C55121754,40,39,13,RH-S2761-46R,ronghe,SMD Test Points ,"TP109,TP201,TP202,TP203,TP208,TP209,TP309,TP405,TP406,TP412,TP505,TP506,TP512",0.1976,7.9,10050,,SMT test loop on the 1.5 mm test pads (hand-solder)
+C1852078,3,3,1,INA190A5IDDFR,TI,"1 -200mV~40V 15uV 0.3V/us 150dB 500pA 48uA 500V/V TSOT-23-8 Instrumentation, Op Amps, Buffer Amps RoHS",U201,3.6379,10.91,25,,"INA190A5IDDFR; Sourcing field says DigiKey/Mouser, LCSC stocks it too"
+C1852068,3,3,1,INA190A1IDDFR,TI,"1 -200mV~40V 2uV 0.3V/us 150dB 500pA 48uA 25V/V TSOT-23-8 Instrumentation, Op Amps, Buffer Amps RoHS",U202,1.7695,5.31,151,,
+
+,,,,,,,Total (parts only),,39.56
+not ordered here: U301,,,,,,,,,,,,"CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement (not on LCSC)"
+not ordered here: NTCs for J102/J105-J107,,,,,,,,,,,,4 per board wired Semitec 103AT-2 10k NTCs: none in stock at LCSC (DigiKey/Mouser)
