@@ -602,8 +602,8 @@ def add_gauge_tc2030(s):
     Pinout chosen so the SWD cable plugged here by mistake drives nothing harmful (see GAUGE_TC and the README)."""
     import siz240dt as _s
     if '(symbol "MonolithDev:TC2030_GAUGE"' not in s:
-        pins = "\n".join(_s._pin("passive", -5.08, 6.35 - 2.54 * i, 0, n or "NC", str(i + 1)) for i, n in enumerate(GAUGE_TC))
-        body = ('\t\t\t(symbol "TC2030_GAUGE_0_1"\n\t\t\t\t(rectangle\n\t\t\t\t\t(start -2.54 7.62)\n\t\t\t\t\t(end 5.08 -7.62)\n'
+        pins = "\n".join(_s._pin("passive", -5.08, 12.7 - 5.08 * i, 0, n or "NC", str(i + 1)) for i, n in enumerate(GAUGE_TC))
+        body = ('\t\t\t(symbol "TC2030_GAUGE_0_1"\n\t\t\t\t(rectangle\n\t\t\t\t\t(start -2.54 15.24)\n\t\t\t\t\t(end 5.08 -15.24)\n'
                 '\t\t\t\t\t(stroke\n\t\t\t\t\t\t(width 0.254)\n\t\t\t\t\t\t(type default)\n\t\t\t\t\t)\n\t\t\t\t\t(fill\n'
                 '\t\t\t\t\t\t(type background)\n\t\t\t\t\t)\n\t\t\t\t)\n\t\t\t)')
         lib = "\n".join(["\t\t(symbol \"MonolithDev:TC2030_GAUGE\"", "\t\t\t(pin_names\n\t\t\t\t(offset 0.508)\n\t\t\t)",
@@ -622,7 +622,7 @@ def add_gauge_tc2030(s):
     blk = blk.replace('(lib_id "Connector:TestPoint")', '(lib_id "MonolithDev:TC2030_GAUGE")')
     blk = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s 0)" % m.groups(), blk, count=1)
     blk = set_prop(blk, "Description", "Gauge training / golden image: TC2030-IDC-NL cable, 2x3 end to EV2400 + clips")
-    blk = _fields(blk, GAUGE_TC_AT, (1.27, -10.16), (1.27, 10.16))
+    blk = _fields(blk, GAUGE_TC_AT, (1.27, -17.78), (1.27, 17.78))
     blk = re.sub(r'\n\t\t\(pin "1"\n\t\t\t\(uuid "[^"]+"\)\n\t\t\)',
                  "".join('\n\t\t(pin "%d"\n\t\t\t(uuid "%s")\n\t\t)' % (n, uid()) for n in range(1, 7)), blk)
     s = insert_top(s, "\n\t" + blk)
@@ -641,7 +641,7 @@ def add_gauge_tc2030(s):
         else:
             add += _glabel(s, net, p, 180)
     add += _text("GAUGE: 1 SDA, 2 CHG_INH (GND = charge with MCU in reset), 3 NRST (GND = hold MCU), 4 nc, 5 GND, 6 SCL",
-                 (GAUGE_TC_AT[0] - 10.16, GAUGE_TC_AT[1] + 12.7))
+                 (GAUGE_TC_AT[0] - 10.16, GAUGE_TC_AT[1] + 20.32))
     return insert_top(s, add)
 
 
@@ -679,7 +679,7 @@ def add_training_gauge(s):
     rp = cur["R118"]["pins"]
     top, bot = sorted((rp["1"], rp["2"]), key=lambda q: q[1])
     a += label_text("CELL_P", top) + label_text("WAKE", bot) + label_text("WAKE", cur["TP113"]["pins"]["1"])
-    a += _text("Training: J113/J114 = learning-cycle load wires (20 AWG). WAKE: bridge TP113 to TP106 (PACK_P).",
+    a += _text("Training: J113/J114 = learning-cycle load wires (20 AWG).\\nWAKE: bridge TP113 to TP106 (PACK_P).",
                (165.1, 275.59))
     return insert_top(s, a)
 

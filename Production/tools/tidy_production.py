@@ -29,9 +29,9 @@ TEXTS = {
     ROOT: {
         "MONOLITH DEV BOARD - SHEET INDEX": T(
             "MONOLITH PRODUCTION BOARD - SHEET INDEX",
-            "2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, SMBus pogo pads",
+            "2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
             "3.  3V3 Rail:  TPS62177 always-on 3V3",
-            "4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL SWD pads",
+            "4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)",
             "5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD2S300 + BQ25756 + TPS62933 per port",
             "Rails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)",
             "Spec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."),
@@ -39,7 +39,7 @@ TEXTS = {
             "REVISION LOG",
             "P0  2026-10-17  Dev board rev A8 with the dev-only parts removed (Production/tools/make_production.py, tidy_production.py):",
             "                sleep-current section, bench supply, cell holders, headers, buttons, status LED, test points, DNP options",
-            "                and 0R links. Added pack wire pads, gauge pogo pads, TC2030-NL SWD pads, factory test pads.",
+            "                and 0R links. Added pack wire pads, TC2030-NL SWD + GAUGE pads, training and probe pads (P0 is the first build).",
             "                Author: Claude Code.  Reviewer: none yet.",
             "Dev board history (A0-A8): DevBoard/README.md and the DevBoard root sheet."),
         "TPS25751 ADDRESS / DEAD-BATTERY STRAPS": T(
@@ -50,8 +50,8 @@ TEXTS = {
     },
     "gauge.kicad_sch": {
         "WAKE + BENCH SUPPLY": None,
-        "HOST SMBus (gauge 0x0B) / EV2400": "GAUGE SMBus (0x0B) + POGO PADS",
-        "TEST POINTS / POWER FLAGS": "FACTORY TEST PADS",
+        "HOST SMBus (gauge 0x0B) / EV2400": "GAUGE SMBus (0x0B): access via J302 on the MCU sheet",
+        "TEST POINTS / POWER FLAGS": "TEST + TRAINING PADS",
         "CELL STACK (4S)": "PACK WIRES  (welded 4S EVE INR21700-58E)",
         "Holders BT101-BT104 OR welded pack": T(
             "J108 PACK- and J112 PACK+: 16 AWG leads in 1.7 mm plated holes. J109-J111: cell tap wires.",
@@ -102,7 +102,7 @@ TEXTS = {
         "BRING-UP AIDS": "3V3_SLEEP PULL-UP",
         "STATUS LED": None,
         "DEBUG HEADERS": "SWD  (Tag-Connect TC2030-NL)",
-        "TEST POINTS": "FACTORY TEST PAD",
+        "TEST POINTS": "3V3 PROBE PAD",
         "NOTES": T(
             "NOTES",
             "1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).",
@@ -185,7 +185,8 @@ TEXTS = {
     },
 }
 MOVE_TEXT = {"usb_port.kicad_sch": {"Charger battery side joins PACK_P here": (459.74, 35.56),
-                                   "NOTES  (this sheet is used twice": (299.72, 406.4)}}
+                                   "NOTES  (this sheet is used twice": (299.72, 406.4)},
+             "gauge.kicad_sch": {"PROTECTION FETs": (106.68, 19.05)}}
 SHEET_NAMES = {"Sleep Current and 3V3": "3V3 Rail", "MCU and Sensors": "MCU"}
 COMMENT1 = {"gauge.kicad_sch": "Welded 4S pack pads, BQ40Z50-R2 gauge/protector, protection FETs",
             "power.kicad_sch": "TPS62177 3V3 always-on rail",

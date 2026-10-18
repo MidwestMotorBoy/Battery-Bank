@@ -20,7 +20,9 @@ KiCad 10 project `Monolith`. **Status (2026-10-18): the dev board is skipped, so
 
 `tools/check_netlist.py` then compares the result with the dev board netlist. Every surviving pin must keep its dev net, with only the intended link merges, and every new pad must take the net of the pin it replaces. Result: 956 pins checked, no differences, and 424 parts down to 295. ERC shows the dev board's 8 pin-to-pin warnings plus 3 off-grid notes on the root sheet pins.
 
-Run all three in order with KiCad's Python:
+`tools/layout_production.py` lays the sheets out: block moves through `DevBoard/tools/move_region.py`, then `place_fields.py` and `check_overlaps.py` (it should report 0 overlaps).
+
+Run all four in order with KiCad's Python (make, tidy, layout, check):
 
 ```bash
 "/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/make_production.py
@@ -28,6 +30,10 @@ Run all three in order with KiCad's Python:
 
 ```bash
 "/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/tidy_production.py
+```
+
+```bash
+"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/layout_production.py
 ```
 
 ```bash

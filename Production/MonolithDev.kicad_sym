@@ -1809,8 +1809,8 @@
 		)
 		(symbol "TC2030_GAUGE_0_1"
 			(rectangle
-				(start -2.54 7.62)
-				(end 5.08 -7.62)
+				(start -2.54 15.24)
+				(end 5.08 -15.24)
 				(stroke
 					(width 0.254)
 					(type default)
@@ -1822,7 +1822,7 @@
 		)
 		(symbol "TC2030_GAUGE_1_1"
 			(pin passive line
-				(at -5.08 6.35 0)
+				(at -5.08 12.7 0)
 				(length 2.54)
 				(name "SDA"
 					(effects
@@ -1840,7 +1840,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 3.81 0)
+				(at -5.08 7.62 0)
 				(length 2.54)
 				(name "CHG_INH"
 					(effects
@@ -1858,7 +1858,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 1.27 0)
+				(at -5.08 2.54 0)
 				(length 2.54)
 				(name "NRST"
 					(effects
@@ -1876,7 +1876,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 -1.27 0)
+				(at -5.08 -2.54 0)
 				(length 2.54)
 				(name "NC"
 					(effects
@@ -1894,7 +1894,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 -3.81 0)
+				(at -5.08 -7.62 0)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -1912,7 +1912,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 -6.35 0)
+				(at -5.08 -12.7 0)
 				(length 2.54)
 				(name "SCL"
 					(effects
