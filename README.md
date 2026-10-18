@@ -71,7 +71,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
             - `monolith_side_cover.step`: the plate (JLCCNC requires a STEP);
             - `monolith_side_cover_marking.dxf` / `.svg`: the marking as outlined shapes, every line at least 0.2 mm (JLCCNC asks for outlined, double-line text);
             - `monolith_side_cover_preview.png`.
-        - **Label:** Li-ion 4S1P, 14.4 V, 5.7 Ah, 82 Wh (from `docs/project/eve-58e-datasheet-notes.md`), the USB-C PD ratings, warnings and the recycling and WEEE symbols. It carries no certification marks.
+        - **Label:** Li-ion 4S1P, 14.4 V, 5.7 Ah, 82 Wh (from `docs/project/eve-58e-datasheet-notes.md`), the USB-C PD ratings, warnings, the recycling and WEEE symbols, and our own carry-on badge (an airliner in a ring with a check disc, "CARRY-ON OK · < 100 Wh"). It carries no certification marks.
         - **Graphic:** a topo map with a dashed trail from the trailhead to a summit flag at "EL. 82 Wh".
         - The script checks the art stays between the cap bands, clear of the vent, and has no line under 0.2 mm. Ratings are prototype values, to confirm before the final.
     - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.

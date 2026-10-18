@@ -141,8 +141,28 @@ def specs():
     g.append(fit(unary_union([big, wh])))
     g.append(fit(text(PORTS, F_BOLD, 1.6, 0, 24.8, 'c')))
     g.append(fit(text('Do not crush, puncture or burn  ·  max 60 °C', F_BOLD, 1.5, 0, 21.9, 'c')))
-    g.append(fit(text('PROTOTYPE  ·  not certified', F_BOLD, 1.5, 0, 19.2, 'c')))
+    g.append(flight_badge(19.0))
     return unary_union(g)
+
+def flight_badge(yc):
+    """our own carry-on mark: an airliner in a ring with a check disc, then CARRY-ON OK / < 100 Wh.
+    Spare lithium batteries go in the cabin, and under 100 Wh needs no airline approval (FAA / IATA)."""
+    fus = LineString([(-1.05, 0), (1.05, 0)]).buffer(0.2, cap_style='round')
+    wing = Polygon([(0.25, 0.1), (-0.35, 1.05), (-0.62, 1.05), (-0.2, 0.1), (-0.2, -0.1), (-0.62, -1.05), (-0.35, -1.05), (0.25, -0.1)])
+    tail = Polygon([(-0.75, 0.05), (-1.05, 0.48), (-1.25, 0.48), (-1.0, 0.05), (-1.0, -0.05), (-1.25, -0.48), (-1.05, -0.48), (-0.75, -0.05)])
+    plane = affinity.rotate(unary_union([fus, wing, tail]).buffer(0.08), 40, origin=(0, 0))
+    r0 = 1.75; cx = 0.0
+    ring = Point(0, 0).buffer(r0).difference(Point(0, 0).buffer(r0 - 0.32))
+    disc_c = (r0 * 0.72, -r0 * 0.72)
+    disc = Point(disc_c).buffer(0.82)
+    tick = LineString([(disc_c[0] - 0.42, disc_c[1] + 0.02), (disc_c[0] - 0.1, disc_c[1] - 0.3), (disc_c[0] + 0.42, disc_c[1] + 0.32)]).buffer(0.16, cap_style='round', join_style='round')
+    icon = unary_union([ring.difference(disc.buffer(0.3)), plane.difference(disc.buffer(0.3)), disc.difference(tick)])
+    icon = icon.buffer(-0.11).buffer(0.11)     # no sliver under 0.2 mm where the plane meets the disc gap
+    label = text('CARRY-ON OK  ·  < 100 Wh', F_BOLD, 1.75, 0, -0.85, 'l')
+    label = affinity.translate(label, r0 + 1.0 - label.bounds[0], 0)
+    g = unary_union([icon, label])
+    x0, y0, x1, y1 = g.bounds
+    return affinity.translate(g, cx - (x0 + x1) / 2, yc - (y0 + y1) / 2)
 
 def symbols():
     """recycling arrows with 'Li-ion' (left of the vent) and the crossed-out wheelie bin (right)"""
@@ -245,7 +265,7 @@ def preview(path, g):
                 img.paste(Image.alpha_composite(img.convert('RGBA'), over).convert('RGB'))
                 tx, ty = T(W2 + 1.0, (ya + yb) / 2)
                 ImageDraw.Draw(img).text((tx, ty), lab, font=fnt(14), fill=(110, 110, 110), anchor='lm')
-    d.text((30 * SS, 22 * SS), 'Monolith cover: 1.0 mm 5052 aluminium, black anodized, laser-marked (PROTOTYPE artwork)', font=fnt(26, True), fill=(30, 30, 34))
+    d.text((30 * SS, 22 * SS), 'Monolith cover: 1.0 mm 5052 aluminium, black anodized, laser-marked (prototype)', font=fnt(26, True), fill=(30, 30, 34))
     d.text((30 * SS, 62 * SS), 'JLCCNC sheet metal: STEP for the plate, DXF for the marking (outlined text and lines, all at least 0.2 mm). '
            'Orange: hidden by the TPU cap bands.', font=fnt(15), fill=(110, 110, 110))
     plate(260, 860, px)
@@ -266,8 +286,8 @@ def preview(path, g):
     notes = ['Plate', f'  {2*W2:.1f} x {Y1-Y0:.1f} x {S.SB_COVER_T:.1f} mm, 5052-H32',
              '  2 x Ø2.2 screw holes, Ø3.0 vent hole', '  (holes ≥ 1 mm and ≥ ½ t: OK)', '',
              'Finish', '  black anodize, laser marking', '  (mask the vent patch area inside', '   if JLC can; optional)', '',
-             'Label (prototype data)', f'  {PACK["chem"]} {PACK["config"]}, {PACK["v_nom"]:.1f} V, {PACK["ah"]:.1f} Ah, {PACK["wh"]} Wh',
-             '  82 Wh: under the 100 Wh carry-on', '  limit; no certification marks', '', 'Art', '  topo map of a peak, a trail from',
+             'Label', f'  {PACK["chem"]} {PACK["config"]}, {PACK["v_nom"]:.1f} V, {PACK["ah"]:.1f} Ah, {PACK["wh"]} Wh',
+             '  carry-on badge: our own plane +', '  check mark; under 100 Wh, so no', '  airline approval needed', '  no certification marks', '', 'Art', '  topo map of a peak, a trail from',
              '  the trailhead, the summit flag at', '  "EL. 82 Wh"']
     for i, s in enumerate(notes):
         d.text((nx * SS, (ny + 24 * i) * SS), s, font=fnt(15, not s.startswith(' ') and s != ''), fill=(30, 30, 34))
