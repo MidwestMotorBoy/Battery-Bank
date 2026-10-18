@@ -22,6 +22,7 @@ import uuid
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from schlib import anchors, new_uuids, on_segment, sheet_pins, symbols, top_blocks, wires  # noqa: E402
 import siz240dt  # noqa: E402
+import tpd2s300  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
@@ -69,6 +70,7 @@ REMOVE = {
         "R436", "R437", "R438", "R439",              # ... SBU sense resistors
         "R442", "R443",                              # ... FET gate holds
         "R421", "R422", "R423",                      # STAT1/STAT2/PG pull-ups: nothing reads them (status via I2C)
+        "U405",                                      # TPD4S201 -> TPD2S300 (CC only), added by add_tpd2s300
         "C432",                                      # per-port hybrid -> one shared PACK_P hybrid C208 (pack_bus_sims A2)
         "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
         "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
@@ -91,10 +93,14 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                       "UART_TX": "", "UART_RX": "", "LED_DRV": ""},
     "usb_port.kicad_sch": {"DP": "DPDN_DCP", "DN": "DPDN_DCP", "BTST1_C": "BTST1", "BTST2_C": "BTST2",
                            "HG1": "HIDRV1", "LG1": "LODRV1", "HG2": "HIDRV2", "LG2": "LODRV2",
-                           "STAT1": "", "STAT2": "", "PG": "",
+                           "STAT1": "", "STAT2": "", "PG": "", "SBU1": "", "SBU2": "",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
-NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}  # check_netlist: pin -> a dev pin on the same net
+NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}
+for _p in ("4", "5"):  # TPD2S300 U405/U505 (tpd2s300.py): pin -> a dev pin on the net it joins
+    NEW_PARTS["U%s05" % _p] = {"A1": ("J%s01" % _p, "A5"), "A3": ("J%s01" % _p, "B5"), "A2": ("C%s51" % _p, "1"),
+                              "B1": ("U%s01" % _p, "28"), "B3": ("U%s01" % _p, "29"), "C1": ("U%s01" % _p, "19"),
+                              "C2": ("U%s01" % _p, "1"), "C3": ("U%s01" % _p, "1"), "B2": ("TP109", "1")}  # check_netlist: pin -> a dev pin on the same net
 # labels left on single pins after liquid detection went: per label name, what happens at each pin's owner.
 # TPS25751 GPIO4-7 unused -> GND (datasheet pin table); TPD4S201 system-side SBU pins -> no-connect (grounding them
 # would short a cable's SBU lines whenever the SBU switch is on).
@@ -103,7 +109,7 @@ PIN_ACTIONS = {"usb_port.kicad_sch": {
     "LIQ_PU": {"U401": "GND"}, "LIQ_PD": {"U401": "GND"}}}
 # check_netlist: pins that deliberately change net (port 1 refs; port 2 follows). "GND" or None (left unconnected)
 NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND", ("U401", "37"): "GND",
-             ("U405", "15"): None, ("U405", "14"): None}
+             ("J401", "A8"): None, ("J401", "B8"): None}
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
 PAD = "TestPoint:TestPoint_Pad_D1.5mm"
@@ -402,6 +408,53 @@ def power_template(s, value):
     raise KeyError(value)
 
 
+def add_tpd2s300(s, old, templates):
+    """Place the TPD2S300 where U405 (TPD4S201) was and tie each pin to its net with a label or GND symbol."""
+    if '(symbol "%s"' % tpd2s300.LIB_ID not in s:
+        i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+        s = s[:i] + "\n" + tpd2s300.lib_symbol() + s[i:]
+    c451 = next(y for y in symbols(s) if y["ref"] == "C451")  # a 4xx part: both ports' instance paths
+    tmpl = s[c451["a"]:c451["b"]]
+    blk = new_uuids(tmpl)
+    x0, y0 = map(float, re.search(r"\n\t\t\(at ([-\d.]+) ([-\d.]+)", blk).groups())
+    at = old["U405"]["at"][:2]
+    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + at[0], 2), round(float(m.group(2)) - y0 + at[1], 2)), blk)
+    blk = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s 0)" % m.groups(), blk, count=1)
+    blk = re.sub(r"\n\t\t\(mirror \w\)", "", blk)
+    blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "%s")' % tpd2s300.LIB_ID, blk, count=1)
+    blk = re.sub(r"\n\t\t\(unit \d+\)", "\n\t\t(unit 1)", blk, count=1)
+    for k, v in (("Reference", "U405"), ("Value", tpd2s300.VALUE), ("Footprint", tpd2s300.FOOTPRINT)):
+        blk = set_prop(blk, k, v)
+    for k, dx, dy in (("Reference", -11.43, 10.16), ("Value", -11.43, 12.7)):  # below-left of the body (free area)
+        blk = re.sub(r'(\(property "%s" "[^"]*"\s*\(at )[-\d.]+ [-\d.]+ [-\d.]+\)' % k,
+                     lambda m: m.group(1) + "%g %g 0)" % (round(at[0] + dx, 2), round(at[1] + dy, 2)), blk, count=1)
+    for k, v in (("LCSC", tpd2s300.LCSC), ("MPN", tpd2s300.MPN)):
+        if '(property "%s" ' % k in blk:
+            blk = set_prop(blk, k, v)
+    for k in ("Notes", "Sourcing"):
+        if '(property "%s" ' % k in blk:
+            blk = set_prop(blk, k, "")
+    a = blk.index('\n\t\t(pin "')
+    b = blk.index("\n\t\t(instances")
+    blk = blk[:a] + "".join('\n\t\t(pin "%s"\n\t\t\t(uuid "%s")\n\t\t)' % (p, uid()) for p in tpd2s300.PIN_NETS) + blk[b:]
+
+    def inst(m):
+        port2 = m.group(1)[-3] == "5" if len(m.group(1)) >= 3 and m.group(1)[-3].isdigit() else False
+        return '(reference "%s")\n%s(unit 1)' % ("U505" if port2 else "U405", m.group(2))
+    blk = re.sub(r'\(reference "([^"]+)"\)\n(\t+)\(unit \d+\)', inst, blk)
+    s = insert_top(s, "\n\t" + blk)
+    pins = {y["ref"]: y for y in symbols(s)}["U405"]["pins"]
+    add = ""
+    for num, net in tpd2s300.PIN_NETS.items():
+        p = pins[num]
+        if net == "GND":
+            add += clone_power(templates["GND"], p)
+        else:
+            add += label_text(net, p, 180 if p[0] < at[0] else 0)
+    return insert_top(s, add)
+
+
 def swap_fets(s):
     """Each BQ25756 leg's two PGQ04N070 -> one SiZ240DT: high side becomes unit A, low side unit B (siz240dt.py)."""
     if '(symbol "%s"' % siz240dt.LIB_ID not in s:
@@ -612,6 +665,8 @@ def process(sheet, src):
             p = old[ref]["pins"]
             assert len(p) == 2, ref
             add += wire_text(p["1"], p["2"])
+    if sheet == "usb_port.kicad_sch":  # name U405's VBIAS cap net before U405 goes (tpd2s300.py)
+        add += label_text("VBIAS", old["C451"]["pins"]["1"])
     s = cut(s, spans)
     s = insert_top(s, add)
     if sheet == "gauge.kicad_sch":
@@ -631,6 +686,7 @@ def process(sheet, src):
     s = edit_symbols(s, sheet)
     if sheet == "usb_port.kicad_sch":
         s = swap_fets(s)
+        s = add_tpd2s300(s, old, templates)
     s = title_block(s, sheet)
     # pins that were connected before and are now open get a no-connect flag
     now = attached(s)
@@ -678,7 +734,12 @@ def main():
     t = open(lib, encoding="utf-8").read()
     if '(symbol "SiZ240DT"' not in t:
         t = t.rstrip()[:-1].rstrip() + "\n" + siz240dt.library_entry() + "\n)\n"
-        open(lib, "w", encoding="utf-8", newline="\n").write(t)
+    i = t.find('\n  (symbol "TPD2S300"')  # the dev library's compact rev A6 entry -> the production one
+    if i >= 0:
+        from schlib import block_end
+        t = t[:i] + t[block_end(t, i + 3):]
+        t = t.rstrip()[:-1].rstrip() + "\n" + tpd2s300.library_entry() + "\n)\n"
+    open(lib, "w", encoding="utf-8", newline="\n").write(t)
     pro = open(os.path.join(DEV, "MonolithDev.kicad_pro"), encoding="utf-8").read()
     pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"').replace('"MonolithDev.kicad_sch"', '"Monolith.kicad_sch"')
     pro = pro.replace('"name": "MonolithDev"', '"name": "Monolith"')

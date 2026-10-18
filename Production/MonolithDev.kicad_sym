@@ -604,33 +604,6 @@
         (name "2" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
       (pin passive line (at 0.00 -5.08 90) (length 2.54)
         (name "HTR" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))))
-  (symbol "TPD2S300" (pin_names (offset 1.016)) (exclude_from_sim no) (in_bom yes) (on_board yes)
-    (property "Reference" "U" (at -12.70 7.62 0) (effects (font (size 1.27 1.27))))
-    (property "Value" "TPD2S300" (at -12.70 -7.62 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd2s300.pdf" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (property "Description" "USB Type-C CC/SBU short-to-VBUS OVP + ESD, 2 channels" (at 0.00 0.00 0) (effects (font (size 1.27 1.27)) (hide yes)))
-    (symbol "TPD2S300_0_1"
-      (rectangle (start -12.70 6.35) (end 12.70 -6.35) (stroke (width 0.254) (type default)) (fill (type background))))
-    (symbol "TPD2S300_1_1"
-      (pin bidirectional line (at -15.24 3.81 0) (length 2.54)
-        (name "C_CC1" (effects (font (size 1.27 1.27)))) (number "A1" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at -15.24 1.27 0) (length 2.54)
-        (name "C_CC2" (effects (font (size 1.27 1.27)))) (number "A3" (effects (font (size 1.27 1.27)))))
-      (pin passive line (at -15.24 -3.81 0) (length 2.54)
-        (name "VBIAS" (effects (font (size 1.27 1.27)))) (number "A2" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at 15.24 3.81 180) (length 2.54)
-        (name "CC1" (effects (font (size 1.27 1.27)))) (number "B1" (effects (font (size 1.27 1.27)))))
-      (pin bidirectional line (at 15.24 1.27 180) (length 2.54)
-        (name "CC2" (effects (font (size 1.27 1.27)))) (number "B3" (effects (font (size 1.27 1.27)))))
-      (pin open_collector line (at 15.24 -3.81 180) (length 2.54)
-        (name "~{FLT}" (effects (font (size 1.27 1.27)))) (number "C1" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at -2.54 8.89 270) (length 2.54)
-        (name "VPWR" (effects (font (size 1.27 1.27)))) (number "C2" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at 2.54 8.89 270) (length 2.54)
-        (name "VM" (effects (font (size 1.27 1.27)))) (number "C3" (effects (font (size 1.27 1.27)))))
-      (pin power_in line (at 0.00 -8.89 90) (length 2.54)
-        (name "GND" (effects (font (size 1.27 1.27)))) (number "B2" (effects (font (size 1.27 1.27)))))))
 (symbol "TPS25751D"
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1521,6 +1494,247 @@
 					)
 				)
 				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	(symbol "TPD2S300"
+		(pin_names
+			(offset 1.016)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "U"
+			(at -12.7 7.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TPD2S300"
+			(at -12.7 -7.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd2s300.pdf"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "USB Type-C CC short-to-VBUS OVP + IEC ESD, 2 channels, WCSP-9"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "TPD2S300_0_1"
+			(rectangle
+				(start -12.7 6.35)
+				(end 12.7 -6.35)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+		)
+		(symbol "TPD2S300_1_1"
+			(pin bidirectional line
+				(at -15.24 3.81 0)
+				(length 2.54)
+				(name "C_CC1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "A1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -15.24 1.27 0)
+				(length 2.54)
+				(name "C_CC2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "A3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -15.24 -3.81 0)
+				(length 2.54)
+				(name "VBIAS"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "A2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 15.24 3.81 180)
+				(length 2.54)
+				(name "CC1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "B1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 15.24 1.27 180)
+				(length 2.54)
+				(name "CC2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "B3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin open_collector line
+				(at 15.24 -3.81 180)
+				(length 2.54)
+				(name "~{FLT}"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "C1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -2.54 8.89 270)
+				(length 2.54)
+				(name "VPWR"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "C2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 2.54 8.89 270)
+				(length 2.54)
+				(name "VM"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "C3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 -8.89 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "B2"
 					(effects
 						(font
 							(size 1.27 1.27)

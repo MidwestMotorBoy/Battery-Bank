@@ -208,6 +208,22 @@ R421–R423 (R521–R523 on port 2), the 10 kΩ pull-ups on STAT1, STAT2 and PG,
 - Set DIS_STAT_PINS = 1 in the BQ25756 configuration so they stay off.
 - This also removes up to 0.33 mA per pin while the charger pulls it low.
 
+## CC protection: TPD4S201 → TPD2S300 (2026-10-17)
+
+U405/U505 changed from the TPD4S201 (CC + SBU, 3.5×3.5 mm QFN-20) to the **TPD2S300YFFR** (CC only, 1.4×1.4 mm WCSP-9, LCSC C2650411).
+
+- **Why the CC lines still need a protector:** the TPS25751's CC pins survive a steady short to VBUS (26 V absolute maximum), but their ESD rating is only ±1 kV HBM / ±500 V CDM, with no IEC rating. TI's TPS25751 EVM protects them externally.
+- **What the TPD2S300 provides:** CC short-to-VBUS overvoltage protection (24 V DC tolerant) and IEC 61000-4-2 ESD.
+- **Why the SBU half can go:** with liquid detection gone, nothing uses SBU. The connector SBU pins are now no-connects.
+- **Wiring:**
+    - VPWR and VM go to LDO_3V3 (normal CC/PD mode). C452 stays on LDO_3V3.
+    - VBIAS goes to C451 (0.1 µF 50 V; TI asks for ≥ 35 V).
+    - FLT goes to GPIO3 through R441, as before.
+- **CC capacitance:** 30–120 pF, the same as the TPD4S201, so C401/C402 (220 pF) still keep the total under the TPS25751's 480 pF.
+- **Footprint:** the dev library's `TI_YFF0009_DSBGA-9_P0.4mm`. The 0.4 mm-pitch centre ball (GND) needs a via-in-pad (filled vias are free on 6 layers).
+- **Code:** `tools/tpd2s300.py` holds the symbol; `make_production.py` places the part and labels its pins.
+- **Totals:** 246 parts, courtyard area **1,884 mm²**.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

@@ -14,6 +14,247 @@
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
+		(symbol "MonolithDev:TPD2S300"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at -12.7 7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TPD2S300"
+				(at -12.7 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm"
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd2s300.pdf"
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "USB Type-C CC short-to-VBUS OVP + IEC ESD, 2 channels, WCSP-9"
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TPD2S300_0_1"
+				(rectangle
+					(start -12.7 6.35)
+					(end 12.7 -6.35)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TPD2S300_1_1"
+				(pin bidirectional line
+					(at -15.24 3.81 0)
+					(length 2.54)
+					(name "C_CC1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "A1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -15.24 1.27 0)
+					(length 2.54)
+					(name "C_CC2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "A3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -15.24 -3.81 0)
+					(length 2.54)
+					(name "VBIAS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "A2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 15.24 3.81 180)
+					(length 2.54)
+					(name "CC1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "B1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 15.24 1.27 180)
+					(length 2.54)
+					(name "CC2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "B3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin open_collector line
+					(at 15.24 -3.81 180)
+					(length 2.54)
+					(name "~{FLT}"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 8.89 270)
+					(length 2.54)
+					(name "VPWR"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 2.54 8.89 270)
+					(length 2.54)
+					(name "VM"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -8.89 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "B2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "MonolithDev:SiZ240DT"
 			(pin_names
 				(offset 1.016)
@@ -7108,7 +7349,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 4-7, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   No liquid detection on production (removed 2026-10-17: IP68 connectors, potted board). GPIO4-7 are tied to GND\n   (unused, note 2: configure them unused, never as outputs); U405's system-side SBU1/SBU2 are no-connects and the\n   connector SBU pins stay behind U405's C_SBU OVP. U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):\n   a CC or SBU short to VBUS forces error recovery.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the USB-side polymer C421 and the remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side: 2 x 22u per port at the FETs; both ports, both TPS62933 inputs (1 x 10u 50V each) and the one shared\n   PACK_P hybrid C208 form one bus: about 99 uF effective worst case, >= the BQ25756 80 uF C_OUT minimum each charger\n   sees through its RBAT (Production/tools/pack_bus_sims.py A2). Still on hold: C427 (USB side; the USB sides are\n   separate per port, so they can't share bulk).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: HIDRV/LODRV go straight to the FET gates (no gate resistors, turn-off diodes or snubbers; BTST straight\n    to its cap). The dev board fits 10R gate resistors, so measure SW1/SW2 ringing there with them bridged before\n    trusting this; keep the gate traces short and wide (TI: >= 0.5 mm) with the FETs right at the BQ25756.\n    Each leg is one Vishay SiZ240DT half-bridge (Q401/Q402; unit A = high side, unit B = low side, pin 9 = SW),\n    40 V, 12.25/13.30 mOhm max at 4.5 V, Qg 6.9/6.5 nC. Worst case (20 V 5 A out from a 10 V pack) its fully-on\n    high side dissipates ~1.8 W in one 3.3 x 3.3 package: needs the paddles' via arrays and the gap pad; the\n    thermal throttle covers it. Buy from DigiKey/Mouser (JLC stock is near zero).\n13. TP401 VBUS is a factory test pad. STAT1/STAT2/PG (U403 pins 4-6) are open-drain and unused (no pull-ups):\n    status comes over I2C (TPS25751 I2Cr); set DIS_STAT_PINS = 1 in the BQ25756 configuration.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. R420 is 0402; 0201 is used only where both nets stay <= 5.5 V."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 4-7, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC is protected by U405 (TPD2S300: CC short-to-VBUS OVP, 24 V DC, + IEC 61000-4-2 ESD; the TPS25751 CC pins are\n   26 V abs max but only +-1 kV HBM). VPWR/VM on LDO_3V3 (normal mode), VBIAS C451 0.1u 50V (>= 35 V needed).\n   C401/C402 (220 pF) on the controller side: with the TPD2S300's 30-120 pF the total stays under 480 pF.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   No liquid detection and no SBU use on production (IP68 connectors, potted board): the connector SBU pins are\n   no-connects; GPIO4-7 are tied to GND (note 2). U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):\n   a CC short to VBUS forces error recovery.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the USB-side polymer C421 and the remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side: 2 x 22u per port at the FETs; both ports, both TPS62933 inputs (1 x 10u 50V each) and the one shared\n   PACK_P hybrid C208 form one bus: about 99 uF effective worst case, >= the BQ25756 80 uF C_OUT minimum each charger\n   sees through its RBAT (Production/tools/pack_bus_sims.py A2). Still on hold: C427 (USB side; the USB sides are\n   separate per port, so they can't share bulk).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: HIDRV/LODRV go straight to the FET gates (no gate resistors, turn-off diodes or snubbers; BTST straight\n    to its cap). The dev board fits 10R gate resistors, so measure SW1/SW2 ringing there with them bridged before\n    trusting this; keep the gate traces short and wide (TI: >= 0.5 mm) with the FETs right at the BQ25756.\n    Each leg is one Vishay SiZ240DT half-bridge (Q401/Q402; unit A = high side, unit B = low side, pin 9 = SW),\n    40 V, 12.25/13.30 mOhm max at 4.5 V, Qg 6.9/6.5 nC. Worst case (20 V 5 A out from a 10 V pack) its fully-on\n    high side dissipates ~1.8 W in one 3.3 x 3.3 package: needs the paddles' via arrays and the gap pad; the\n    thermal throttle covers it. Buy from DigiKey/Mouser (JLC stock is near zero).\n13. TP401 VBUS is a factory test pad. STAT1/STAT2/PG (U403 pins 4-6) are open-drain and unused (no pull-ups):\n    status comes over I2C (TPS25751 I2Cr); set DIS_STAT_PINS = 1 in the BQ25756 configuration.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. R420 is 0402; 0201 is used only where both nets stay <= 5.5 V."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -7119,7 +7360,7 @@
 		)
 		(uuid "ceb64665-2f2a-4393-93d0-477f223ba49f")
 	)
-	(text "CC/SBU PROTECTION (TPD4S201)"
+	(text "CC PROTECTION (TPD2S300)"
 		(exclude_from_sim no)
 		(at 30.48 133.35 0)
 		(effects
@@ -7167,12 +7408,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "27ca1b4d-5a35-41f3-a6af-c338a51e0772")
-	)
-	(junction
-		(at 93.98 139.7)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2d0e045b-b25a-4328-973a-4a6fcba6e548")
 	)
 	(junction
 		(at 350.52 180.34)
@@ -7776,16 +8011,6 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 143.51) (xy 119.38 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3e8b19fe-8632-4c91-9712-45a39f245246")
-	)
-	(wire
-		(pts
 			(xy 400.05 241.3) (xy 403.86 241.3)
 		)
 		(stroke
@@ -8143,16 +8368,6 @@
 			(type default)
 		)
 		(uuid "6fca4e4b-307a-47ee-9027-e19272b6fccd")
-	)
-	(wire
-		(pts
-			(xy 93.98 139.7) (xy 119.38 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7159d851-8161-4baa-8206-7a2b5ef20133")
 	)
 	(wire
 		(pts
@@ -8596,16 +8811,6 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 140.97) (xy 144.78 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b64fa5f1-c4ac-4fc8-a7af-ce16ab4bc332")
-	)
-	(wire
-		(pts
 			(xy 243.84 152.4) (xy 238.76 152.4)
 		)
 		(stroke
@@ -8703,16 +8908,6 @@
 			(type default)
 		)
 		(uuid "cb1593e9-b764-4505-ac15-c098d001fdd9")
-	)
-	(wire
-		(pts
-			(xy 124.46 143.51) (xy 124.46 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cc1c25fb-3a9c-4b71-af1a-513059e51f4e")
 	)
 	(wire
 		(pts
@@ -9094,26 +9289,6 @@
 		)
 		(uuid "124c2b19-fae4-4b74-a5c4-9cdc27fa490c")
 	)
-	(label "C_CC1"
-		(at 105.41 156.21 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "131757b7-3bb7-4fe3-8c19-d05f21b5e1b6")
-	)
-	(label "C_CC1"
-		(at 105.41 148.59 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "16d7914c-e0f8-4b9f-9663-8466ec7ad7b8")
-	)
 	(label "SW2"
 		(at 393.7 198.12 0)
 		(effects
@@ -9314,16 +9489,6 @@
 		)
 		(uuid "4eb60162-6337-4884-9035-21a7f3a01374")
 	)
-	(label "C_CC2"
-		(at 105.41 158.75 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4f580455-bd16-42b4-b2c1-ea063d1024fd")
-	)
 	(label "ACP_F"
 		(at 318.77 86.36 90)
 		(effects
@@ -9364,16 +9529,6 @@
 		)
 		(uuid "606e4c61-ad4e-49c5-a95b-9ec043e707ed")
 	)
-	(label "CC2"
-		(at 138.43 151.13 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "64d1bbb6-cee8-41c7-a6b2-a4c93def70e9")
-	)
 	(label "LDO_3V3"
 		(at 152.4 153.67 0)
 		(effects
@@ -9413,16 +9568,6 @@
 			(justify right bottom)
 		)
 		(uuid "6dd1bca3-e0a4-405c-81d5-4d25611f395a")
-	)
-	(label "CC1"
-		(at 138.43 148.59 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6e344345-4093-4a64-ab80-4582c9eaf8c5")
 	)
 	(label "I2CC_SDA"
 		(at 185.42 111.76 0)
@@ -9514,16 +9659,6 @@
 		)
 		(uuid "801d5a8d-1c1a-4cee-a3c4-4b44b4ea6425")
 	)
-	(label "SBU1"
-		(at 105.41 163.83 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "845e80f5-f14a-43f1-81e1-83f9a8b019fd")
-	)
 	(label "BTST1"
 		(at 393.7 182.88 0)
 		(effects
@@ -9574,16 +9709,6 @@
 		)
 		(uuid "925ce5f1-cd30-434c-a19b-fb89a6518fd6")
 	)
-	(label "C_CC2"
-		(at 105.41 151.13 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "98fcf556-4a52-4e84-ad87-9152f5b52693")
-	)
 	(label "CHG_INT"
 		(at 185.42 114.3 0)
 		(effects
@@ -9603,16 +9728,6 @@
 			(justify left bottom)
 		)
 		(uuid "9b39befa-3258-4df1-8cd6-912d7ba3f862")
-	)
-	(label "SBU2"
-		(at 60.96 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a641c204-c8db-4e13-b2a0-096d8fb08608")
 	)
 	(label "I2CC_SCL"
 		(at 365.76 195.58 180)
@@ -9643,16 +9758,6 @@
 			(justify left bottom)
 		)
 		(uuid "b6352c5e-3bc6-402c-a3e4-5a40fb700ac5")
-	)
-	(label "SBU2"
-		(at 105.41 166.37 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "baf3d8d6-36a6-414f-b948-ff2e0df25589")
 	)
 	(label "SRP_F"
 		(at 396.24 205.74 0)
@@ -9783,16 +9888,6 @@
 			(justify left bottom)
 		)
 		(uuid "ef2fb48e-d4fd-4410-9613-cfcec3f099f0")
-	)
-	(label "SBU1"
-		(at 60.96 109.22 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f1d3b486-ee0f-43de-b7f1-4576eaaf0836")
 	)
 	(label "SW2"
 		(at 388.62 73.66 0)
@@ -14030,19 +14125,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "362d33c6-58ec-40dc-8eb2-680a4c591e74")
+			(uuid "6a05f13a-b489-46f1-9efa-560eeae54712")
 		)
 		(pin "2"
-			(uuid "d9a0e9cd-2159-4b40-b484-3b3f895247bf")
+			(uuid "09add1c5-e9aa-4b44-9fb1-4e20758ebfd9")
 		)
 		(pin "3"
-			(uuid "bb4c2588-a80d-4506-8153-40a6abc5ad13")
+			(uuid "db9e2017-480a-4a59-bfb2-40594697f107")
 		)
 		(pin "4"
-			(uuid "caafad43-3824-4c04-9b7a-c5dc5cbb3294")
+			(uuid "9baed452-f306-40cd-b2ba-63a3e570812f")
 		)
 		(pin "9"
-			(uuid "1a29f3f3-5689-4901-83a1-91e43223e073")
+			(uuid "a771fd20-f8b8-417d-a6d5-7c84892ef617")
 		)
 		(instances
 			(project "Monolith"
@@ -15248,179 +15343,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C417")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MonolithDev:TPD4S201")
-		(at 121.92 160.02 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "589aa16b-72d8-434e-a4b5-9de2925e90da")
-		(property "Reference" "U405"
-			(at 98.1 175.77 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "TPD4S201TRGRRQ1"
-			(at 98.1 177.74 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MonolithDev:TI_RGR0020C_VQFN-20-1EP_3.5x3.5mm_P0.5mm_EP2.05mm"
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "USB Type-C CC + SBU short-to-VBUS OVP and IEC ESD, 4 channels"
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C49305973"
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TPD4S201TRGRRQ1 (TPD4S201-Q1)"
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Replaces the TPD2S300 DSBGA (2026-10-14, 6-layer board with 0.3 mm vias). Wiring as TI TPS25751EVM fig. 5-5: CC and SBU both pass through it; RPD_G1/2 to C_CC1/2 (dead-battery Rd, DRP); VPWR 1 uF, VBIAS 0.1 uF 50 V; FLT -> GPIO3. Place close to the connector"
-			(at 121.92 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "beaf490a-eb3a-41b2-b769-9a07954894c1")
-		)
-		(pin "2"
-			(uuid "efbe3031-d897-4390-9802-994ce2999894")
-		)
-		(pin "3"
-			(uuid "019087e8-b537-481a-924c-ef2698741832")
-		)
-		(pin "4"
-			(uuid "50f34ddd-5dcd-44e3-a2f2-13813086a81e")
-		)
-		(pin "5"
-			(uuid "e2dd0dee-57f1-4bed-957f-b79599f30150")
-		)
-		(pin "6"
-			(uuid "0bfbb95f-3827-4de5-9da1-d192de54ae7a")
-		)
-		(pin "7"
-			(uuid "b12b3940-d715-44f8-a9d3-1c1874c59123")
-		)
-		(pin "8"
-			(uuid "733bb4ee-48d7-4d31-8ea0-3e22e7c76224")
-		)
-		(pin "9"
-			(uuid "4e59b713-96c6-481b-ae52-adb38cbf7307")
-		)
-		(pin "10"
-			(uuid "07410c33-1bf3-4f45-9df7-5d3fd0525493")
-		)
-		(pin "11"
-			(uuid "8316a714-34de-4a7e-9017-4c0a485d453e")
-		)
-		(pin "12"
-			(uuid "5b2b2a15-8cfe-42d9-b58c-5ea09cb31d7e")
-		)
-		(pin "13"
-			(uuid "fd1a21b7-5340-46b8-8621-73e18886b45a")
-		)
-		(pin "14"
-			(uuid "d5bf30f2-3600-4083-ad8d-ee48e8e706b4")
-		)
-		(pin "15"
-			(uuid "054a2f30-42bd-4c06-a2fc-7dc568a88730")
-		)
-		(pin "16"
-			(uuid "470dae5e-0b1c-4a39-8e89-7d2aa7ace6c9")
-		)
-		(pin "17"
-			(uuid "993a44ef-a3df-4e76-a5be-7d881b979b68")
-		)
-		(pin "18"
-			(uuid "eeeb089c-0f32-43fa-8b74-42c95a5acc14")
-		)
-		(pin "19"
-			(uuid "9e3ec187-1224-44ca-a57b-18d10cb52c2a")
-		)
-		(pin "20"
-			(uuid "c8262598-39cf-4b13-8cfe-a31aa7ca0f1a")
-		)
-		(pin "21"
-			(uuid "740f97e5-f7c7-475f-87d4-aeddf67798e4")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "U505")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "U405")
 					(unit 1)
 				)
 			)
@@ -18166,87 +18088,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 119.38 176.53 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "8ed19a68-2902-499c-b731-aa0f31a944ce")
-		(property "Reference" "#PWR607"
-			(at 119.38 176.53 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 123.26 177.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 119.38 176.53 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 119.38 176.53 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 119.38 176.53 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "36e44eb4-248a-4db6-94db-9328974a6eff")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR608")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR607")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 322.58 60.96 90)
 		(unit 1)
@@ -20168,19 +20009,19 @@
 			)
 		)
 		(pin "8"
-			(uuid "62d9d779-76eb-4ffa-8f83-4a1369d374de")
+			(uuid "7410bbd4-dd35-452a-b82a-1037791ec3ab")
 		)
 		(pin "9"
-			(uuid "893bb446-747e-4316-addf-ab4492c6473b")
+			(uuid "db165369-968c-4e3d-8f82-b687bdfae89d")
 		)
 		(pin "5"
-			(uuid "d344a9d3-8e30-4f42-b470-c5450b9d8299")
+			(uuid "094aa38d-b1f9-485a-b558-a24d96b9e96a")
 		)
 		(pin "6"
-			(uuid "8c43efd8-541c-4030-ba3b-5e793003d7ce")
+			(uuid "b94aafc2-ba52-4eb8-a19f-254ac23c75f7")
 		)
 		(pin "7"
-			(uuid "b228efab-59ad-4edf-9361-3353883f554e")
+			(uuid "e8c3bc60-d60c-4007-a20a-c3c2658cd5dd")
 		)
 		(instances
 			(project "Monolith"
@@ -20514,19 +20355,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "f6807d5a-dcc5-42ab-b218-3e1dcf47d02d")
+			(uuid "d5dcbc13-2dbd-484d-b120-8447aef9e524")
 		)
 		(pin "2"
-			(uuid "aefb3050-d5a7-4ef2-af08-56ff03870d85")
+			(uuid "4a823f25-e77d-4162-85db-98a2f0468047")
 		)
 		(pin "3"
-			(uuid "efdedc84-9371-44c6-8e71-d178d3397e72")
+			(uuid "cf8ea2e7-470b-4d08-8849-77f478db5478")
 		)
 		(pin "4"
-			(uuid "1ada75ea-a948-4698-9635-ec4cf852fa19")
+			(uuid "ff7038a7-0896-432a-9900-aeae72a7b7b9")
 		)
 		(pin "9"
-			(uuid "a12048a0-8c28-474b-aa65-3c5a433945d4")
+			(uuid "ad337acc-c921-4355-9142-034e9a0f5793")
 		)
 		(instances
 			(project "Monolith"
@@ -22449,19 +22290,19 @@
 			)
 		)
 		(pin "8"
-			(uuid "a966a32a-2ea0-48e4-83e6-64acdaafc0d9")
+			(uuid "73110537-42d5-4cf2-8ab5-1a8cb9e3f1a9")
 		)
 		(pin "9"
-			(uuid "596d67dc-028b-41f7-ab93-393217841e2b")
+			(uuid "8bdd81f5-712c-454b-bff9-321cbb66f1a8")
 		)
 		(pin "5"
-			(uuid "257da193-8ed5-41a6-af1d-a8da9969662e")
+			(uuid "8cf73553-305c-411b-a49a-ebc63210917e")
 		)
 		(pin "6"
-			(uuid "b2d10f52-fd45-4ea6-9b2e-b6cb95ea7c0d")
+			(uuid "f7051466-196d-47d5-9acc-9281b5f1607a")
 		)
 		(pin "7"
-			(uuid "e06a8ee5-8d84-4058-8748-5e66a118bad4")
+			(uuid "9f2a354e-22b5-4928-b6cf-e6a0716bec28")
 		)
 		(instances
 			(project "Monolith"
@@ -24659,7 +24500,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8715d7b6-b050-44be-9a69-b7c1bf43e07c")
+		(uuid "90229fb0-8167-442c-b10f-2f04c4e19826")
 	)
 	(wire
 		(pts
@@ -24669,7 +24510,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "781f3cb6-0c92-4087-a58b-7d9e7794f088")
+		(uuid "3ec27e99-1d07-41d4-9515-1555228295dc")
 	)
 	(wire
 		(pts
@@ -24679,7 +24520,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cd5a8ba1-6714-4952-a86f-e38fa36a3994")
+		(uuid "279b6a70-269c-4bf9-8cb1-f920a6a27f7c")
 	)
 	(wire
 		(pts
@@ -24689,7 +24530,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c643a3cb-a291-498a-a651-6bc0326e6ab1")
+		(uuid "e6df10e4-5545-4893-928c-501742140fe8")
 	)
 	(wire
 		(pts
@@ -24699,7 +24540,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "432f3306-dd66-4a6b-be96-80d1646a0df9")
+		(uuid "71061ac4-82e2-4db4-bbc8-7651d461e8fd")
 	)
 	(wire
 		(pts
@@ -24709,7 +24550,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ef778dbc-e404-4624-bcc9-7deb5f3ef5ab")
+		(uuid "aeb80fff-20b5-41f2-87b1-3bda66a1cf9a")
 	)
 	(wire
 		(pts
@@ -24719,7 +24560,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "62325124-b017-4af9-b065-b985d9f75739")
+		(uuid "679e0c36-b952-4692-b4cf-eddbe246de66")
 	)
 	(wire
 		(pts
@@ -24729,7 +24570,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cee1c00b-d863-4e21-bc5e-f01b5d6b016d")
+		(uuid "72f01963-bc0c-4037-b3fd-37c5289aa9d7")
 	)
 	(wire
 		(pts
@@ -24739,7 +24580,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "11718c58-fcde-4bd1-b970-a7cd38f38e67")
+		(uuid "36c20b8b-be4f-4627-9ec0-eb9cd3ef35f8")
 	)
 	(wire
 		(pts
@@ -24749,7 +24590,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0f7eb8c8-7070-4f60-aeec-317aaf02c8f9")
+		(uuid "40b7c4a9-65c7-4b5c-b0f9-9bb1ea604e8a")
 	)
 	(wire
 		(pts
@@ -24759,7 +24600,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "36f3400b-915c-459c-91da-10e7fc6136a3")
+		(uuid "5d77ece8-b508-417a-a0b8-7584aca96a0b")
 	)
 	(wire
 		(pts
@@ -24769,7 +24610,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "79fcf264-8e7e-4d21-a179-1b00d58f3799")
+		(uuid "9af2eb33-04c8-4cd0-8f7d-0a0b66f9f9c0")
 	)
 	(wire
 		(pts
@@ -24779,7 +24620,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "14f07345-2e83-444d-b259-8a9504222cc7")
+		(uuid "a907dfc9-615a-4900-825c-d2685fb7b133")
 	)
 	(wire
 		(pts
@@ -24789,7 +24630,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b83f25d9-7d22-4e26-b89a-4e38fbcfcb65")
+		(uuid "2a6b2144-c12f-412a-aeca-c15bbd927230")
 	)
 	(wire
 		(pts
@@ -24799,7 +24640,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "43fdfe31-191f-44e5-b007-1036f7ce6368")
+		(uuid "7430f844-35d1-4942-947a-f4b388e9438f")
 	)
 	(wire
 		(pts
@@ -24809,7 +24650,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2a6ae61e-d2ac-4835-b578-fabb2e5e3968")
+		(uuid "986889f8-a686-4c67-9aab-0d166c0ff279")
 	)
 	(wire
 		(pts
@@ -24819,7 +24660,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d41ac20c-454e-46e4-84e7-b1406a4c93a7")
+		(uuid "86dbe21a-d3eb-4dfc-ad46-20b4c5ce0baa")
 	)
 	(wire
 		(pts
@@ -24829,7 +24670,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eb0e977f-a771-4043-80f3-0c7fa80bd030")
+		(uuid "fa2b09a4-8dd1-413d-a7a7-ea6be6e70813")
+	)
+	(label "VBIAS"
+		(at 144.78 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a47fa320-f66c-4f7e-968b-14900c72be8f")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -24861,7 +24712,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "e81908c8-a545-492e-a2d8-2863eca7d8fe")
+		(uuid "02513f63-ecf7-4bac-9f5f-5a4faec6b802")
 		(property "Reference" "#PWR9033"
 			(at 154.94 78.74 0)
 			(hide yes)
@@ -24917,7 +24768,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "5c5c9f18-e94f-431b-90bb-a3dbd7247c8b")
+			(uuid "085f4392-a2f7-4e81-b3ec-aa1174708853")
 		)
 		(instances
 			(project "Monolith"
@@ -24942,7 +24793,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "06eb137d-b263-4a3b-b374-e01b8d24b01a")
+		(uuid "e7a1ff64-f362-456a-b630-e4b5b079a7e5")
 		(property "Reference" "#PWR9036"
 			(at 50.8 195.58 0)
 			(hide yes)
@@ -24998,7 +24849,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "485bccf8-1b53-43e1-b915-09f49253b07f")
+			(uuid "36b00a41-5fb5-49a2-9434-abe1941cf8dd")
 		)
 		(instances
 			(project "Monolith"
@@ -25073,14 +24924,6 @@
 		)
 		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
 	)
-	(no_connect
-		(at 138.43 166.37)
-		(uuid "e2d6f97e-ba2c-4b2a-8ea9-dc1f0f5080a8")
-	)
-	(no_connect
-		(at 138.43 163.83)
-		(uuid "1206f9b1-c69b-476f-8175-5c232cf372f3")
-	)
 	(wire
 		(pts
 			(xy 154.94 109.22) (xy 149.86 109.22)
@@ -25089,7 +24932,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c769bd11-89c7-42e4-af64-45edc6f9e8ff")
+		(uuid "6e289053-a2d7-45a7-b9da-76c86ea68282")
 	)
 	(wire
 		(pts
@@ -25099,7 +24942,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f38d8f61-2959-45fe-a1f7-f5580b71d275")
+		(uuid "75878edd-e2ca-43d2-a348-a6228bb87b21")
 	)
 	(wire
 		(pts
@@ -25109,7 +24952,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6b592ece-d48a-4f79-8731-4129117ed1b9")
+		(uuid "ff52d2db-a9a4-40d9-a6e7-d17a54dcc0de")
 	)
 	(wire
 		(pts
@@ -25119,7 +24962,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "06b319c3-6aa2-4c66-8402-ea2128db9d71")
+		(uuid "b10b813d-3d71-4afd-933d-1058bca1103f")
 	)
 	(wire
 		(pts
@@ -25129,7 +24972,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9a9be0b1-e3a0-4694-9ee2-eb658a2ef89c")
+		(uuid "240f0736-a5f8-4848-b702-4241a9cb08f0")
 	)
 	(wire
 		(pts
@@ -25139,7 +24982,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "77027aae-08ec-455a-8e71-aa04951bb862")
+		(uuid "f35001ab-4ded-4d7b-ac65-80c5446a13aa")
 	)
 	(wire
 		(pts
@@ -25149,7 +24992,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4b7983e5-7877-45c2-896b-83ee996e800e")
+		(uuid "12150e15-14d0-4eb3-9aef-938b3cadc648")
 	)
 	(wire
 		(pts
@@ -25159,43 +25002,349 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a2f0c61c-d95d-4563-ab4a-81e59c255b6b")
+		(uuid "a05bdae0-8485-4f28-b04e-dcd6ce1c1df6")
 	)
 	(junction
 		(at 149.86 111.76)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0a73f507-9e2b-4f21-b9a9-1f65920196f2")
+		(uuid "ff1c1f3c-54cf-45be-a6dd-d75bcb5ad2e9")
 	)
 	(junction
 		(at 149.86 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5685c8ec-8f98-4f4c-ad5c-44c4f7c17270")
+		(uuid "400e9c69-2d23-4caf-a0c6-5511c2ce2ae2")
 	)
 	(junction
 		(at 149.86 116.84)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d20dfbef-848c-4a3d-957b-92e2324041a6")
+		(uuid "b27ba959-476e-4958-98ef-c1fa36b65ea1")
 	)
 	(junction
 		(at 149.86 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "6bed719d-045a-4b16-b534-c6cb21de426d")
+		(uuid "3ddcc181-8fec-4b05-a5b7-d1a55fcf4c35")
+	)
+	(symbol
+		(lib_id "MonolithDev:TPD2S300")
+		(at 121.92 160.02 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6d207f88-a020-4196-986a-4eb0ac52a6ec")
+		(property "Reference" "U405"
+			(at 110.49 170.18 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TPD2S300YFFR"
+			(at 110.49 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:TI_YFF0009_DSBGA-9_P0.4mm"
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2650411"
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPD2S300YFFR (TI)"
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" ""
+			(at 121.92 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "A1"
+			(uuid "f6d376c4-b02a-4c63-985d-8b0051458a29")
+		)
+		(pin "A3"
+			(uuid "4e8db74f-78ee-4edf-84d8-1c6600727573")
+		)
+		(pin "A2"
+			(uuid "90cfa897-24f5-43ff-89a0-2293041e66d4")
+		)
+		(pin "B1"
+			(uuid "d2094d30-f8b8-4425-9e98-18937949e710")
+		)
+		(pin "B3"
+			(uuid "5d33c7a2-e645-4c23-a77e-cd85ba5a316a")
+		)
+		(pin "C1"
+			(uuid "6739ca94-a04d-4542-bd54-238827aadf7f")
+		)
+		(pin "C2"
+			(uuid "dfe4f651-e449-4cc9-944b-dec3f17a6e20")
+		)
+		(pin "C3"
+			(uuid "2c2b2d26-2c78-47bc-bbf9-a05efccf75aa")
+		)
+		(pin "B2"
+			(uuid "301c22fa-72e1-4942-a2d0-48c4c58e36e9")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "U505")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "U405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "C_CC1"
+		(at 106.68 156.21 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d70d3097-6cb7-474d-8938-15ca27d1bf7f")
+	)
+	(label "C_CC2"
+		(at 106.68 158.75 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "858938d5-ece3-4bb1-be3b-c243acbacbdb")
+	)
+	(label "VBIAS"
+		(at 106.68 163.83 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "97499515-9713-434e-972b-5552346e1f7e")
+	)
+	(label "CC1"
+		(at 137.16 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "15a1ff4c-5db5-44ef-b278-a48819a37423")
+	)
+	(label "CC2"
+		(at 137.16 158.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "952f1889-db52-4f55-9e39-340577e5edef")
+	)
+	(label "SBU_FLT"
+		(at 137.16 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6df3f22b-d9ca-4408-a6fd-cb7cf0849dfe")
+	)
+	(label "LDO_3V3"
+		(at 119.38 151.13 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f0ee6952-a73f-4ce2-83bb-a5d6e0342de6")
+	)
+	(label "LDO_3V3"
+		(at 124.46 151.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0d9dcb51-0175-440a-b6e0-8d750a774c7f")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 121.92 168.91 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ff642822-ffd6-4589-8515-40427b365b66")
+		(property "Reference" "#PWR9039"
+			(at 121.92 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 121.92 173.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 121.92 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 121.92 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b278b368-c2d1-4a32-9a81-bf8dc2b925ef")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR9040")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR9041")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 60.96 109.22)
+		(uuid "8f0a070f-284b-46dc-93a9-8ae7c2a394a6")
+	)
+	(no_connect
+		(at 60.96 111.76)
+		(uuid "6431d01d-480f-40ed-99de-3633dac6a84b")
 	)
 	(no_connect
 		(at 368.3 203.2)
-		(uuid "1fedb8aa-89a2-41a6-9bf3-2c9c78000e33")
+		(uuid "7aa96ac9-9f23-45c9-883f-3561e8cb86e7")
 	)
 	(no_connect
 		(at 368.3 205.74)
-		(uuid "892897a2-60fe-4799-8685-81dc78345c94")
+		(uuid "6f6efeaf-d9bd-41fa-8230-b1906356aa6a")
 	)
 	(no_connect
 		(at 368.3 208.28)
-		(uuid "ed8dd5a7-3a38-4860-8a8c-93d98ba1838d")
+		(uuid "8c7b4497-02d4-4acd-a399-a7d0d5d6d840")
 	)
 	(wire
 		(pts
@@ -25205,7 +25354,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1680aae8-b560-4639-b7e3-42bb978d6e8c")
+		(uuid "142ed704-271d-4784-8308-3cfe6e860dcc")
 	)
 	(wire
 		(pts
@@ -25215,7 +25364,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "920727fd-9eaa-440e-9408-45078a8b2ebb")
+		(uuid "eae7359b-1013-4823-bea2-93c7f0c758c2")
 	)
 	(wire
 		(pts
@@ -25225,7 +25374,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7b2604b7-f671-483f-a787-daecd543a4f2")
+		(uuid "18afdcce-1fb1-4c46-a4f0-772dd9030cf1")
 	)
 	(wire
 		(pts
@@ -25235,7 +25384,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "44e2bffd-7ceb-40f8-a61d-814abf5c76a7")
+		(uuid "17888eaf-9e32-49cc-8900-7070d2fb8593")
 	)
 	(wire
 		(pts
@@ -25245,7 +25394,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "805de1ea-0a5e-418a-b53c-0086e56e5b12")
+		(uuid "9fea34e0-0912-444c-86bc-764253981fbd")
 	)
 	(sheet_instances
 		(path "/"
