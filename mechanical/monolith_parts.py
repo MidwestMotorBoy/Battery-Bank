@@ -205,11 +205,117 @@ def bumper():
         return rsq_in(x, y, *bo) & ~rsq_in(x, y, *(lip if k == 0 else bi))
     return build([rsq_pts(*p) for p in (bi, bo, lip)], [0, BUMP_LIP_T, BUMP_LIP_T + BUMP_BAND], solid)
 
+# ---------------- side-board layout (parameters in monolith_shell.py, SB_*) ----------------
+def rr_in(x, y, x0, x1, h, rl, rr):
+    """rounded rect x0..x1, |y| <= h, corner radius rl on the -x side and rr on the +x side"""
+    s = (x >= x0) & (x <= x1) & (np.abs(y) <= h); ay = np.abs(y)
+    if rl > 0: s &= ~((x < x0 + rl) & (ay > h - rl) & ((x - x0 - rl)**2 + (ay - h + rl)**2 > rl*rl))
+    if rr > 0: s &= ~((x > x1 - rr) & (ay > h - rr) & ((x - x1 + rr)**2 + (ay - h + rr)**2 > rr*rr))
+    return s
+def rr_pts(x0, x1, h, rl, rr, step=0.25):
+    def seg(a, b):
+        a, b = np.array(a, float), np.array(b, float); n = max(2, int(np.ceil(np.linalg.norm(b-a)/step)))
+        return a + np.linspace(0, 1, n, endpoint=False)[:,None]*(b-a)
+    def arc(cx, cy, r, u0):
+        if r <= 0: return np.array([[cx, cy]])
+        m = max(4, int(np.ceil(r*np.pi/2/step))); u = u0 + np.linspace(0, np.pi/2, m, endpoint=False)
+        return np.c_[cx + r*np.cos(u), cy + r*np.sin(u)]
+    return np.vstack([seg((x0+rl, -h), (x1-rr, -h)), arc(x1-rr, -h+rr, rr, -np.pi/2),
+                      seg((x1, -h+rr), (x1, h-rr)), arc(x1-rr, h-rr, rr, 0),
+                      seg((x1-rr, h), (x0+rl, h)), arc(x0+rl, h-rl, rl, np.pi/2),
+                      seg((x0, h-rl), (x0, -h+rl)), arc(x0+rl, -h+rl, rl, np.pi)])
+def rr_off(p, d):
+    """profile grown by d on every side (d < 0 shrinks)"""
+    x0, x1, h, rl, rr = p
+    return (x0 - d, x1 + d, h + d, max(rl + d, 0), max(rr + d, 0))
+def xrect_pts(xa, xb, ya, yb): return rect_pts((xa+xb)/2, (ya+yb)/2, xb-xa, yb-ya)
+def xrect_in(x, y, xa, xb, ya, yb): return (x >= xa) & (x <= xb) & (y >= ya) & (y <= yb)
+
+SB_RIB_T = aI - S.RIB_DEPTH
+def rib3_in(x, y):
+    """the side shell keeps the ribs on the -x and +-y faces; the +x groove is for board parts"""
+    h = S.RIB_W/2
+    return ((np.abs(y) <= h) & (x <= -SB_RIB_T)) | ((np.abs(x) <= h) & (np.abs(y) >= SB_RIB_T))
+def rib3_pts():
+    L = S.RIB_DEPTH; t = SB_RIB_T
+    return [rect_pts(-(t + L/2), 0, L, S.RIB_W)] + [rect_pts(0, sy*(t + L/2), S.RIB_W, L) for sy in (-1, 1)]
+
+# heat plate: pocket from outside in the board-side wall, window with a lip behind it
+SB_PZ = (S.sb_zb0 + S.sb_zb1) / 2
+SB_POCKET = (S.sb_x_out - S.SB_PLATE_T, S.sb_x_out, -S.SB_PLATE_W/2 - 0.2, S.SB_PLATE_W/2 + 0.2)
+SB_WINDOW = (S.sb_x_in, S.sb_x_out - S.SB_PLATE_T, -S.SB_PLATE_W/2 + S.SB_PLATE_LIP, S.SB_PLATE_W/2 - S.SB_PLATE_LIP)
+SB_PZ0, SB_PZ1 = SB_PZ - S.SB_PLATE_L/2 - 0.2, SB_PZ + S.SB_PLATE_L/2 + 0.2
+SB_WZ0, SB_WZ1 = SB_PZ - S.SB_PLATE_L/2 + S.SB_PLATE_LIP, SB_PZ + S.SB_PLATE_L/2 - S.SB_PLATE_LIP
+
+def side_shell():
+    """one-piece shell with a closed bottom end; cells + board slide in from the top"""
+    zs = sorted({0.0, S.SB_END_T, S.sb_z_rib1, S.SB_H, SB_PZ0, SB_PZ1, SB_WZ0, SB_WZ1})
+    cur = [rr_pts(*S.SB_OUT), rr_pts(*S.SB_IN), xrect_pts(*SB_POCKET), xrect_pts(*SB_WINDOW)] + rib3_pts()
+    def solid(k, x, y):
+        zm = (zs[k] + zs[k+1]) / 2
+        out = rr_in(x, y, *S.SB_OUT)
+        if zm < S.SB_END_T: return out
+        s = out & ~rr_in(x, y, *S.SB_IN)
+        if zm < S.sb_z_rib1: s |= rib3_in(x, y) & rr_in(x, y, *S.SB_IN)
+        if SB_PZ0 < zm < SB_PZ1: s &= ~xrect_in(x, y, *SB_POCKET)
+        if SB_WZ0 < zm < SB_WZ1: s &= ~xrect_in(x, y, *SB_WINDOW)
+        return s
+    return build(cur, zs, solid)
+
+def stady_in(x, y, cx, cy, L, W): return stad_in(y, x, cy, cx, L, W)     # long axis along y
+def stady_pts(cx, cy, L, W): return stad_pts(cy, cx, L, W)[:, ::-1]
+SB_PORTS = [(S.sb_port_x, -S.SB_PORT_Y), (S.sb_port_x, S.SB_PORT_Y)]
+SB_SK_X = aI - 0.5                                   # skirt stops short of the board
+SB_SK_O = (-aI + CAP_CLEAR, SB_SK_X, aI - CAP_CLEAR, cI - CAP_CLEAR, 0)
+SB_SK_I = (-aI + CAP_CLEAR + SKIRT_WALL, SB_SK_X, aI - CAP_CLEAR - SKIRT_WALL, cI - CAP_CLEAR - SKIRT_WALL, 0)
+def side_lid():
+    """flat lid with the two seal-ring openings and a U-shaped skirt over the cells"""
+    zs = [S.SB_H - S.SB_SKIRT, S.SB_H, S.SB_H + S.SB_LID_T]
+    cur = [rr_pts(*S.SB_OUT), rr_pts(*SB_SK_O), rr_pts(*SB_SK_I)]
+    cur += [stady_pts(x, y, S.USB_SEAL_W + 0.2, S.USB_SEAL_H + 0.2) for x, y in SB_PORTS]
+    def solid(k, x, y):
+        if k == 0: return rr_in(x, y, *SB_SK_O) & ~rr_in(x, y, *SB_SK_I)
+        port = sum(stady_in(x, y, px, py, S.USB_SEAL_W + 0.2, S.USB_SEAL_H + 0.2) for px, py in SB_PORTS) > 0
+        return rr_in(x, y, *S.SB_OUT) & ~port
+    return build(cur, zs, solid)
+
+def side_board_dummy():
+    """board slab plus the two USB-C envelopes (shell 9.64 wide, bottom flush with the board bottom)"""
+    xb0, xb1, h = S.sb_xb0, S.sb_xb1, S.sb_board_w/2
+    cx0, cx1 = xb0, S.sb_port_x + S.USB_UP           # connector body across x
+    zc0, zc1 = S.sb_zb1 + S.USB_FACE_OUT - S.USB_DEPTH, S.sb_zb1 + S.USB_FACE_OUT
+    cur = [xrect_pts(xb0, xb1, -h, h)]
+    for _, py in SB_PORTS:
+        ya, yb = py - S.USB_SHELL_W/2, py + S.USB_SHELL_W/2
+        cur += [xrect_pts(xb0, xb1, ya, yb), xrect_pts(xb1, cx1, ya, yb)]
+    zs = [S.sb_zb0, zc0, S.sb_zb1, zc1]
+    def solid(k, x, y):
+        conn = sum(xrect_in(x, y, cx0, cx1, py - S.USB_SHELL_W/2, py + S.USB_SHELL_W/2) for _, py in SB_PORTS) > 0
+        board = xrect_in(x, y, xb0, xb1, -h, h)
+        return [board, board | conn, conn][k]
+    return build(cur, zs, solid)
+
+def side_bumper():
+    bi = rr_off(S.SB_OUT, -BUMP_SQUEEZE); bo = rr_off(bi, BUMP_WALL); lip = rr_off(S.SB_OUT, -BUMP_LIP_IN)
+    def solid(k, x, y):
+        return rr_in(x, y, *bo) & ~rr_in(x, y, *(lip if k == 0 else bi))
+    return build([rr_pts(*p) for p in (bi, bo, lip)], [0, BUMP_LIP_T, BUMP_LIP_T + BUMP_BAND], solid)
+
+def side_plate():
+    return build([xrect_pts(0, S.SB_PLATE_T, -S.SB_PLATE_W/2, S.SB_PLATE_W/2)], [0, S.SB_PLATE_L],
+                 lambda k, x, y: xrect_in(x, y, 0, S.SB_PLATE_T, -S.SB_PLATE_W/2, S.SB_PLATE_W/2))
+
 PARTS = [('monolith_top_cap', top_cap, 1.20, 1), ('monolith_top_board_dummy', board_dummy, 1.2, 1),
          ('monolith_bottom_pcb_dummy', pcb_dummy, 1.2, 1), ('monolith_cell_dummy', cell_dummy, 1.2, 4),
          ('monolith_fit_ring', fit_ring, 1.2, 1), ('monolith_end_bumper', bumper, 1.21, 2)]
+SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_lid', side_lid, 1.20, 1),
+              ('monolith_side_board_dummy', side_board_dummy, 1.2, 1), ('monolith_side_bumper', side_bumper, 1.21, 2),
+              ('monolith_side_plate', side_plate, 2.70, 1)]
 if __name__ == '__main__':
-    for name, fn, rho, qty in PARTS:
+    import sys
+    which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all
+    todo = (PARTS if which in ('top', 'all') else []) + (SIDE_PARTS if which in ('side', 'all') else [])
+    for name, fn, rho, qty in todo:
         V = fn(); bad, vol = check(V); write_stl(name + '.stl', V)
         lo, hi = V.reshape(-1, 3).min(0), V.reshape(-1, 3).max(0)
         print(f"{name:28s} x{qty} tris {len(V):6d} open-edges {bad} size {np.round(hi-lo,2)} vol {vol/1000:5.2f} cm3 ~{vol/1000*rho:4.1f} g")

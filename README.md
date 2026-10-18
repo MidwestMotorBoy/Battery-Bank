@@ -27,6 +27,8 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 - `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
 - `datasheets/` holds the datasheets and app notes the designs were checked against, indexed in `datasheets/sources.csv`.
 - `mechanical/` holds STL models for the shell, cap and test-print parts, the bottom board outline (DXF), and the Python scripts that generate them.
+    - Since 2026-10-18 the scripts also model a **side-board layout**, still under evaluation: the board runs along one face of the cells and the ports exit the top lid. Its parts are `monolith_side_*.stl`, and its board outline is `monolith_side_pcb.dxf`. Parameters are `SB_*` in `monolith_shell.py`; `python monolith_parts.py side` builds only these parts.
+    - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 
 ## Dev board main parts

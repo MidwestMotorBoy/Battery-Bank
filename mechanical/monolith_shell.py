@@ -123,8 +123,72 @@ def write_dxf(path):
             for i in range(4): line(*p[i], *p[(i+1) % 4], l='RIB_STOPS_REF')
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(e) + "0\nENDSEC\n0\nEOF\n")
 
+# ---------------- side-board layout (board along the +x face of the cells) ----------------
+# End view: the cell pocket profile above, plus a bay on +x for the board. The board's inner
+# face sits on an insulator against two cells; its outer face carries the hot parts, a gap pad
+# and an aluminium plate set into the wall. Both USB-C ports exit the top lid at the board edge.
+SB_INSUL     = 0.3    # Kapton / fish paper between the cell cans and the board
+SB_PCB_T     = 0.8    # production board thickness
+SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1, USB-C body 2.77 above the board)
+SB_GAP       = 0.5    # compressed gap pad between those parts and the heat plate
+SB_FACE_T    = 1.6    # board-side wall; the heat plate sits in a pocket in it
+SB_BAY_R     = 3.0    # inner corner radius on the board side
+SB_END_T     = 1.6    # closed bottom end (cells and board slide in from the top)
+SB_LID_T     = 1.6    # top lid face, carries the ports
+SB_SKIRT     = 4.0    # lid skirt, on the three cell sides only (open over the board)
+SB_PCB_CLEAR = 0.2    # board edge to wall, and board bottom edge to the end wall
+SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production board)
+SB_PLATE_W, SB_PLATE_L, SB_PLATE_T, SB_PLATE_LIP = 26.0, 50.0, 1.0, 1.2   # aluminium plate (y, z)
+# ShouHan TYPE-C 16PCB0.8 IP68 (DevBoard/tools/make_3d_usbc.py): mid-mount, body bottom flush
+# with the board bottom, centreline 0.827 above the board top, mating face 1.949 past the board edge
+USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 0.827, 7.45
+USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
+USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the lid opening
+# derived (x across the board, y along the board width, z along the cells)
+sb_xb0 = a_in + SB_INSUL                      # board inner face
+sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
+sb_x_in = sb_xb1 + SB_OUT_H + SB_GAP          # wall inside face on the board side
+sb_x_out = sb_x_in + SB_FACE_T
+sb_z_cell0 = SB_END_T + TAB_T                 # cell bottoms
+sb_z_cell1 = sb_z_cell0 + CELL_L              # cell tops
+sb_z_rib1 = sb_z_cell1 + TAB_T
+SB_H = sb_z_rib1 + FOAM_T + SB_SKIRT          # shell top rim = lid underside
+sb_zb0 = SB_END_T + SB_PCB_CLEAR              # board bottom edge
+sb_zb1 = SB_H + SB_LID_T - USB_FACE_OUT       # board top edge: mating faces flush with the lid
+sb_port_x = sb_xb1 + USB_ZC
+sb_board_w = 2 * (a_in - SB_PCB_CLEAR)
+sb_board_l = sb_zb1 - sb_zb0
+# inner / outer profiles: rounded rect x0..x1, |y| <= h, corner radius rl (-x side), rr (+x side)
+SB_IN  = (-a_in, sb_x_in, a_in, c_in, SB_BAY_R)
+SB_OUT = (-a_out, sb_x_out, a_out, c_out, SB_BAY_R + WALL)
+
+def write_side_dxf(path):
+    """Side board outline, drawn in the board plane: DXF x = shell y, DXF y = shell z (bottom end at 0).
+    Layers: OUTLINE, USB_NOTCH (10.20 x 5.65 footprint notches), CELLS_REF (cell tangent lines,
+    groove centreline, cell ends), PLATE_REF (heat plate window)."""
+    e = []
+    def line(x1,y1,x2,y2,l='OUTLINE'): e.append(f"0\nLINE\n8\n{l}\n10\n{x1:.4f}\n20\n{y1:.4f}\n11\n{x2:.4f}\n21\n{y2:.4f}\n")
+    def rect(cx, cy, w, h, l):
+        p = [(cx-w/2, cy-h/2), (cx+w/2, cy-h/2), (cx+w/2, cy+h/2), (cx-w/2, cy+h/2)]
+        for i in range(4): line(*p[i], *p[(i+1) % 4], l=l)
+    w, z0, z1 = sb_board_w / 2, sb_zb0, sb_zb1
+    rect(0, (z0+z1)/2, 2*w, z1-z0, 'OUTLINE')
+    for py in (-SB_PORT_Y, SB_PORT_Y): rect(py, z1 - 5.65/2, 10.20, 5.65, 'USB_NOTCH')
+    for y in (-pocket_r, 0, pocket_r): line(y, z0, y, z1, 'CELLS_REF')
+    for z in (sb_z_cell0, sb_z_cell1): line(-w, z, w, z, 'CELLS_REF')
+    zc = (z0 + z1) / 2
+    rect(0, zc, SB_PLATE_W - 2*SB_PLATE_LIP, SB_PLATE_L - 2*SB_PLATE_LIP, 'PLATE_REF')
+    open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(e) + "0\nENDSEC\n0\nEOF\n")
+
+def side_groove_depth(y):
+    """Free height between the board's inner face and the cells at board position y (mm)."""
+    dy = np.abs(np.abs(y) - pocket_r)
+    r = CELL_D / 2
+    return np.where(dy < r, sb_xb0 - (pocket_r + np.sqrt(np.maximum(r*r - dy*dy, 0))), sb_xb0 - pocket_r)
+
 if __name__ == '__main__':
     write_stl('monolith_shell.stl'); write_dxf('monolith_bottom_pcb.dxf')
+    write_side_dxf('monolith_side_pcb.dxf')
     # checks
     from collections import Counter
     key = lambda p: tuple(p)
@@ -138,3 +202,9 @@ if __name__ == '__main__':
     print(f"rib zone z {z_rib0:.2f}..{z_rib1:.2f}; volume {vol/1000:.2f} cm3; mass @1.18 g/cc {vol/1000*1.18:.1f} g")
     print(f"min wall {np.min(r_out - r_wall):.3f}")
     print(f"PCB outline {2*(a_in-PCB_CLEAR):.2f} sq, corner R {c_in-PCB_CLEAR:.2f}")
+    print(f"side layout: outside {sb_x_out + a_out:.2f} x {2*a_out:.2f}, shell length {SB_H:.2f}, "
+          f"lid face at {SB_H + SB_LID_T:.2f}")
+    print(f"side board {sb_board_w:.2f} x {sb_board_l:.2f} mm = {sb_board_w*sb_board_l:.0f} mm2 per side, "
+          f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
+    ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
+    print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
