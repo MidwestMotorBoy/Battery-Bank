@@ -130,7 +130,7 @@ TEXTS = {
         "TEST POINTS / POWER FLAGS": "FACTORY TEST PAD",
         "GATE / BOOTSTRAP TUNING": "GATE RESISTORS + TURN-OFF DIODES",
         "BATTERY-SIDE BULK": "BATTERY-SIDE BULK: 2 x 22u MLCC + 100u hybrid polymer (87 uF effective, >= 80 uF)",
-        "PP5V SUPPLY  TPS62933": "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.16 V)  - 5 V source + VCONN",
+        "PP5V SUPPLY  TPS62933": "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.16 V, 3 x 22u out)  - 5 V source + VCONN",
         "NOTES  (this sheet is used twice": T(
             "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)",
             "1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);",
@@ -148,8 +148,7 @@ TEXTS = {
             "5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs",
             "   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.",
             "   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,",
-            "   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case)",
-            "   and C443 -> 22u 1206 (until the TPS25751 120 uF cSrcBulkShared note is confirmed not to apply here).",
+            "   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case).",
             "6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).",
             "7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.",
             "8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.",
@@ -162,7 +161,10 @@ TEXTS = {
             "    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.",
             "12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap",
             "    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).",
-            "13. TP401 VBUS is a factory test pad."),
+            "13. TP401 VBUS is a factory test pad.",
+            "14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is",
+            "    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the",
+            "    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board."),
     },
 }
 MOVE_TEXT = {"usb_port.kicad_sch": {"Charger battery side joins PACK_P here": (459.74, 35.56)}}

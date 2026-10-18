@@ -68,6 +68,9 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 
 ## Added or changed
 
+- **PP5V bulk:** C443/C543, the 100 µF polymer, is now a 22 µF 25 V 1206 (CL31A226KAHNNNE, LCSC C12891, the same part as C441). This leaves three 22 µF parts, about 33 µF effective, and saves about 43 mm² per port.
+    - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
+    - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 16 AWG pads (`SolderWire-1.5sqmm`, Ø1.7 mm hole);
     - J109–J111: CELL1–CELL3 tap pads (`SolderWire-0.15sqmm`);
@@ -79,7 +82,6 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
-2. **Cap cuts still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
+2. **Cap cut still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
     - C427/C527 (USB-side MLCC): only if dev board bring-up shows the polymer stays cool at 20 V 5 A reverse from a low pack (it reaches 85 % of its rating), or if firmware derates that case.
-    - C443/C543 → one 22 µF 1206 (saves about 43 mm² per port): blocked until the TPS25751's 120 µF cSrcBulkShared note is confirmed not to apply to a dedicated supply per port.
 3. **Decide the production board's thickness and stack-up**, then start the layout from `mechanical/monolith_bottom_pcb.dxf`.

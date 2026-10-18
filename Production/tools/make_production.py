@@ -100,6 +100,16 @@ VALUE = {
     "gauge.kicad_sch": {"J102": "Cell 1 NTC wires", "J105": "Cell 2 NTC wires",
                         "J106": "Cell 3 NTC wires", "J107": "Cell 4 NTC wires"},
 }
+SWAP = {  # parts changed in place: new lib_id and properties (pins land on the same points)
+    "usb_port.kicad_sch": {
+        "C443": ("Device:C", {
+            "Value": "22u 25V", "Footprint": "Capacitor_SMD:C_1206_3216Metric", "LCSC": "C12891",
+            "MPN": "CL31A226KAHNNNE",
+            "Notes": "PP5V bulk, third 22 uF 1206 with C441/C442 (about 33 uF effective at 5.16 V; was a 100 uF polymer "
+                     "on the dev board). Each port's PP5V is a dedicated supply, so USB PD cSrcBulk (10 uF min) applies, "
+                     "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
+    },
+}
 WIRE16 = "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"   # 16 AWG pack leads
 WIRE26 = "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"  # cell tap leads
 # new one-pin pads on the gauge sheet: (ref, value, footprint, (old ref, old pin) whose position it takes)
@@ -267,6 +277,12 @@ def edit_symbols(s, sheet):
             blk = set_prop(blk, "Footprint", FOOTPRINT[sheet][y["ref"]])
         if y["ref"] in VALUE.get(sheet, {}):
             blk = set_prop(blk, "Value", VALUE[sheet][y["ref"]])
+        if y["ref"] in SWAP.get(sheet, {}):
+            lib, props = SWAP[sheet][y["ref"]]
+            blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "%s")' % lib, blk, count=1)
+            for k, v in props.items():
+                assert '(property "%s" ' % k in blk, (y["ref"], k)
+                blk = set_prop(blk, k, v)
         out += [s[last:y["a"]], blk]
         last = y["b"]
     out.append(s[last:])
