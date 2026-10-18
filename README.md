@@ -65,6 +65,15 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
         - `monolith_side_sections.png`: sections A-A and B-B;
         - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables;
         - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions.
+    - **Cover heatsink and label (prototype):** `monolith_cover_label.py` builds the aluminium cover for JLCCNC sheet metal: 1.0 mm 5052, black anodized, laser-marked.
+        - It needs shapely and matplotlib as well, and KiCad 10's `kicad-cli` for the STEP.
+        - **Outputs:**
+            - `monolith_side_cover.step`: the plate (JLCCNC requires a STEP);
+            - `monolith_side_cover_marking.dxf` / `.svg`: the marking as outlined shapes, every line at least 0.2 mm (JLCCNC asks for outlined, double-line text);
+            - `monolith_side_cover_preview.png`.
+        - **Label:** Li-ion 4S1P, 14.4 V, 5.7 Ah, 82 Wh (from `docs/project/eve-58e-datasheet-notes.md`), the USB-C PD ratings, warnings and the recycling and WEEE symbols. It carries no certification marks.
+        - **Graphic:** a topo map with a dashed trail from the trailhead to a summit flag at "EL. 82 Wh".
+        - The script checks the art stays between the cap bands, clear of the vent, and has no line under 0.2 mm. Ratings are prototype values, to confirm before the final.
     - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 
