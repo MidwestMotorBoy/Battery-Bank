@@ -14,6 +14,183 @@
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
+		(symbol "Device:C_Polarized"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector:TestPoint"
 			(pin_numbers
 				(hide yes)
@@ -1973,7 +2150,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on the dev board."
+	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on the dev board.\n7. C208 = the one battery-side bulk cap for both chargers and both 5 V buck inputs (was C432/C532, one per port).\n   Place it between the two power stages on PACK_P, next to both RBAT pads (USB sheet note 5)."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -3284,7 +3461,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d99fd4e3-955f-45e2-bc02-7525880acf94")
+		(uuid "8b492d34-70b6-4a7c-9992-c95ac4e36883")
 	)
 	(wire
 		(pts
@@ -3294,7 +3471,285 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c01d7968-e3b4-49e0-871e-cd17e138118f")
+		(uuid "669a81dd-72c3-4d55-8b7a-b01341aa268e")
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 63.5 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "46cde397-4459-4c3a-817c-757847ff5d0c")
+		(property "Reference" "C208"
+			(at 69.85 132.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100u 25V"
+			(at 69.85 134.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
+			(at 64.46 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 63.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Shared PACK_P bulk for both chargers' battery sides and both TPS62933 inputs (replaces the per-port C432/C532). Place it between the two power stages, on PACK_P beside the RBAT pads: Production/tools/pack_bus_sims.py option A2"
+			(at 63.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C264047"
+			(at 63.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "Panasonic EEH-ZA1E101XP (hybrid polymer)"
+			(at 63.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "394d4274-e885-4a32-9ea4-d0006ec7235d")
+		)
+		(pin "2"
+			(uuid "b27962cc-e01f-48c1-995f-3883d0927f86")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "C208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 63.5 129.54 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "5f936820-eda8-4aee-bd9e-49a40224cb9e")
+		(property "Reference" "#PWR9009"
+			(at 63.5 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 63.5 125.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 63.5 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 63.5 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "334dbcea-867a-4c7f-ad08-7638818c7851")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "#PWR9010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 63.5 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "17935745-f449-44c9-951d-88869a58e5fe")
+		(property "Reference" "#PWR9011"
+			(at 63.5 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 63.5 141.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 63.5 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 63.5 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "88e83228-bcf5-4d2f-943b-4736b3a52b33")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
+					(reference "#PWR9012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs)"
+		(exclude_from_sim no)
+		(at 40.64 116.84 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a765390-82ff-44ac-8d5c-a54f72b73800")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -3306,8 +3761,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "fcf39866-0d83-41a8-a601-25b0dae85138")
-		(property "Reference" "#PWR9009"
+		(uuid "40702bf6-7f13-4120-afea-d2fc696d40af")
+		(property "Reference" "#PWR9013"
 			(at 190.5 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3362,12 +3817,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "4e0b744c-fe85-4d5a-8699-e43ccc2e29bc")
+			(uuid "021f6e14-ab15-49f0-92eb-07b9576b3ddb")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9010")
+					(reference "#PWR9014")
 					(unit 1)
 				)
 			)
@@ -3383,8 +3838,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "df476805-ea8a-4f83-a9f0-e72aa380d5db")
-		(property "Reference" "#PWR9011"
+		(uuid "6dc8c9de-8603-4afc-928c-9ae383ec60ef")
+		(property "Reference" "#PWR9015"
 			(at 121.92 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3439,12 +3894,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "ce197e68-ee5f-4889-885d-9a78abbc0ad8")
+			(uuid "eb11ab0b-776e-44b7-b45b-3001519ecf01")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9012")
+					(reference "#PWR9016")
 					(unit 1)
 				)
 			)
@@ -3452,7 +3907,7 @@
 	)
 	(no_connect
 		(at 142.24 68.58)
-		(uuid "c655f93b-bd90-4890-af12-ea2d752e2f1d")
+		(uuid "e161b5bf-0130-4ab7-9202-eeed69352d9e")
 	)
 	(wire
 		(pts
@@ -3462,7 +3917,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "57a68e10-8f91-41fa-9900-5f699d18b805")
+		(uuid "eb9325aa-2235-4bf5-8364-d0a1a67e5193")
 	)
 	(wire
 		(pts
@@ -3472,7 +3927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3889818f-aecd-4e9f-a7c5-4a96ed61ae19")
+		(uuid "698f1326-59ac-46ad-a33c-274f6687adec")
 	)
 	(sheet_instances
 		(path "/"

@@ -106,6 +106,27 @@ Courtyard area went from **2,653 to 2,221 mm²** for all placed parts (−16 %).
 
 **Inductor trade-off:** the APS0730 costs $0.56 against about $8.50 for the Coilcraft XAL7070-222. In return it runs hotter: about 1.6 W DCR loss at the worst case (reverse 20 V 5 A from a 10 V pack), against about 1.0 W for the old part. It also drops to about 1.7 µH at the 12 A peak. Measure its temperature on the dev board before committing to it. The XAL7070-222 fits the same space if it runs too hot.
 
+## Gate drive and shared battery-side bulk (2026-10-17)
+
+- **Gate resistors and diodes removed.** R444–R447 are now copper, and D406–D409 are gone (both ports): HIDRV/LODRV drive the FET gates directly. The dev board fits 10 Ω gate resistors, so measure SW1/SW2 ringing there with them bridged before relying on this.
+- **One shared battery-side hybrid.** Both chargers' battery sides, both TPS62933 inputs and the pack all sit on one PACK_P bus, so `tools/pack_bus_sims.py` models them as one network. Each port's MLCCs sit behind its 5 mΩ RBAT, and the shared bulk sits between the two power stages. The model runs both chargers and both bucks together: single-port worst cases, both ports sourcing, pass-through, and a buck plus a charger.
+
+| Option | Battery-side effective C (worst, 16.8 V) | Worst part | Ripple | Damping | Area |
+|---|---|---|---|---|---|
+| Before: 2 × 22 µF + hybrid + 2 × 10 µF 50 V, per port | 185 µF | 47 % | 80 mV | 20.3 dB | 217 mm² |
+| One shared hybrid, rest unchanged | 105 µF | 28 % | 148 mV | 20.2 dB | 151 mm² |
+| **Applied: one shared hybrid, 2 × 22 µF + 1 × 10 µF 50 V per port** | **99 µF** | **44 %** | **232 mV** | **20.2 dB** | **130 mm²** |
+| As applied, but 1 × 22 µF per port | 92.5 µF | 55 % | 267 mV | 20.0 dB | 109 mm² |
+| No hybrid at all | 25 µF (below the 80 µF minimum) | 27 % | 143 mV | 14.5 dB | 84 mm² |
+
+The BQ25756 needs C_OUT ≥ 80 µF after derating (datasheet sec. 5.3). Each charger sees the whole bus through its RBAT, so one hybrid has to stay.
+
+- **Removed:** C432/C532, the per-port hybrids, and C445/C545, the second TPS62933 input caps.
+- **Added:** C208, a 100 µF 25 V hybrid (EEH-ZA1E101XP) on the 3V3 Rail sheet. Place it between the two power stages on PACK_P, next to both RBAT pads.
+- **USB sides:** these can't share bulk, because each port has its own VBUS/PPHV, so C421/C521 stay. C427 is still on hold for bring-up.
+
+**Totals:** 276 parts (262 placed), and courtyard area is now **2,104 mm²**, down from 2,653 mm² before any downsizing (−21 %).
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

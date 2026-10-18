@@ -5768,7 +5768,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7cd6f527-2a7a-48df-aee2-8c6c34865d78")
+		(uuid "e8f0d831-ed73-471f-9c69-c364fd074375")
 	)
 	(wire
 		(pts
@@ -5778,7 +5778,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "82221010-3e6f-455e-b9c7-70044e4cb3ca")
+		(uuid "da0d34da-8525-41de-8425-5af3d26827e8")
 	)
 	(symbol
 		(lib_id "Connector:Conn_ARM_SWD_TagConnect_TC2030")
@@ -5790,7 +5790,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "9590cffa-8b48-45a7-88af-b915f901afda")
+		(uuid "fdc6e280-08e2-4e29-b745-caf300d3b6a3")
 		(property "Reference" "J301"
 			(at 297.18 100.83 0)
 			(show_name no)
@@ -5846,22 +5846,22 @@
 			)
 		)
 		(pin "1"
-			(uuid "ffbe979d-a879-41dc-86d7-b6d9f935cd49")
+			(uuid "819e1e72-49e2-4b2e-b002-7ceba60d6bff")
 		)
 		(pin "2"
-			(uuid "e593cf27-dece-4814-a901-5da4960daa45")
+			(uuid "84dfcad2-2b31-4d13-a893-9c9c7c9fbb79")
 		)
 		(pin "3"
-			(uuid "498b2fa4-64b9-422c-8964-299cc309bbfd")
+			(uuid "2dae0e4b-729a-4eac-baac-33d5cbdeb823")
 		)
 		(pin "4"
-			(uuid "dcab9c49-353c-41f7-ac41-f83d3da75713")
+			(uuid "d087b247-13ea-4930-b6cc-c7e2bff49f04")
 		)
 		(pin "5"
-			(uuid "eeb0affc-c1e3-42f6-807e-8a343d3a4250")
+			(uuid "f717b8a2-29eb-44d6-b017-49c3a337d5e0")
 		)
 		(pin "6"
-			(uuid "91375922-04c7-4553-b8cd-b949e71d3c09")
+			(uuid "85d7facd-892f-44e8-8684-64b284c4151f")
 		)
 		(instances
 			(project "Monolith"
@@ -5882,8 +5882,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "9f5a9d7b-6a1d-4401-984c-2ebaf48fd990")
-		(property "Reference" "#PWR9013"
+		(uuid "2cc38951-5aea-4491-b838-d7d120c36ae7")
+		(property "Reference" "#PWR9017"
 			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -5938,12 +5938,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "db44d84b-c7b1-4d76-9989-634656c597dd")
+			(uuid "b9544ae5-c100-40c6-8de6-53336ffa767f")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9014")
+					(reference "#PWR9018")
 					(unit 1)
 				)
 			)
@@ -5959,8 +5959,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "d3917250-a27e-42eb-a32f-28620db5fb1f")
-		(property "Reference" "#PWR9015"
+		(uuid "26bf7f80-c079-45a6-9453-d9ee761a6018")
+		(property "Reference" "#PWR9019"
 			(at 294.64 116.84 0)
 			(hide yes)
 			(show_name no)
@@ -6015,12 +6015,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "4774a6fd-592c-4d92-b3d5-bd7345a636b2")
+			(uuid "ba834592-b4ac-4895-a33c-46c6cf57d963")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9016")
+					(reference "#PWR9020")
 					(unit 1)
 				)
 			)
@@ -6034,7 +6034,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "e788ddf3-dd98-4dd7-838b-c1038e4c4350")
+		(uuid "c1c4f39e-1394-426c-9e3b-e39f0064c804")
 	)
 	(label "NRST"
 		(at 304.8 101.6 0)
@@ -6044,7 +6044,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "a376bcd6-32e0-4d22-95a4-15378995c1ce")
+		(uuid "53171d4b-2107-4b61-8694-16c02030d5ce")
 	)
 	(label "SWCLK"
 		(at 304.8 106.68 0)
@@ -6054,11 +6054,11 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "b087acb9-f3d6-41c8-9f9a-78dc79b5d946")
+		(uuid "c50bbf11-3226-42c4-9345-94f3140ea306")
 	)
 	(no_connect
 		(at 304.8 111.76)
-		(uuid "944f0d65-dc55-4af8-91f1-e7eb450a6744")
+		(uuid "90d60efa-72e8-42d9-9dff-29ab618d83f9")
 	)
 	(label "SWDIO"
 		(at 173.99 142.24 180)
@@ -6068,7 +6068,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "526e77a7-6214-4ebc-b1f3-9c2b68a1aee8")
+		(uuid "88bf0a66-18d9-47ea-95cd-52125cd99f73")
 	)
 	(label "SWCLK"
 		(at 173.99 144.78 180)
@@ -6078,7 +6078,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "d6bad606-7887-46c8-a5b2-3b769a8a05ae")
+		(uuid "fa3eb529-85da-49ad-b405-51db16316054")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -6090,8 +6090,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "bd4fb03a-424d-4b44-9e76-f1e9d957adf6")
-		(property "Reference" "#PWR9017"
+		(uuid "7caca6c8-8d6d-40b5-9e75-52052e68dc28")
+		(property "Reference" "#PWR9021"
 			(at 248.92 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6146,12 +6146,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "a81fa096-5658-49b2-8701-e70ec144a98b")
+			(uuid "4701b18f-1eec-425e-b5e6-0e8b3ff29136")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9018")
+					(reference "#PWR9022")
 					(unit 1)
 				)
 			)
@@ -6167,8 +6167,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "0fb9f147-e985-4ba5-a1fc-ebb444fd0602")
-		(property "Reference" "#PWR9019"
+		(uuid "099a4fbe-3799-4e2b-998f-a740ffc3f0e5")
+		(property "Reference" "#PWR9023"
 			(at 130.81 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -6223,12 +6223,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "1aba246b-3041-42d0-8673-3694deec21f7")
+			(uuid "c7568cd1-e748-4c6d-94a2-6c5bab744bab")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9020")
+					(reference "#PWR9024")
 					(unit 1)
 				)
 			)
@@ -6244,8 +6244,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "f05dc540-5c5a-4567-b6db-ce5432a534a4")
-		(property "Reference" "#PWR9021"
+		(uuid "689a1c05-b5f8-4b2e-aa24-fe1fa3281f47")
+		(property "Reference" "#PWR9025"
 			(at 233.68 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6300,12 +6300,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "3b17518e-e13f-4acc-9d6e-374256cdd716")
+			(uuid "db9917e4-1d64-439d-a25e-05d7feb0f3ef")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9022")
+					(reference "#PWR9026")
 					(unit 1)
 				)
 			)
@@ -6321,8 +6321,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "6efbea32-4069-4691-af53-2e00629bda7a")
-		(property "Reference" "#PWR9023"
+		(uuid "26a0d850-4d97-4181-8b79-d1902b652d2a")
+		(property "Reference" "#PWR9027"
 			(at 173.99 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -6377,12 +6377,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "deda2e19-dcbf-447d-a15b-e7f288e40ffa")
+			(uuid "710a1f3f-fc0c-4af8-959c-d20801b22530")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9024")
+					(reference "#PWR9028")
 					(unit 1)
 				)
 			)
@@ -6398,8 +6398,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "81e999db-d13a-4344-bfe8-033a1464de66")
-		(property "Reference" "#PWR9025"
+		(uuid "d76a4822-c6ea-42a6-9044-f7497f9aacbb")
+		(property "Reference" "#PWR9029"
 			(at 152.4 116.84 0)
 			(hide yes)
 			(show_name no)
@@ -6454,12 +6454,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "64e93463-bd48-4f65-acb9-3c078506ef8e")
+			(uuid "afc3d8d8-55a3-48b9-95f2-791795fb90cf")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9026")
+					(reference "#PWR9030")
 					(unit 1)
 				)
 			)
@@ -6467,15 +6467,15 @@
 	)
 	(no_connect
 		(at 207.01 132.08)
-		(uuid "430a1bb9-6a89-4274-a218-6f36ebea7c0a")
+		(uuid "0a610936-1e2d-40a6-8b64-746bf0f6b1f7")
 	)
 	(no_connect
 		(at 207.01 134.62)
-		(uuid "906c88c6-278b-43d3-a35c-a217f723f5fa")
+		(uuid "4f106919-a673-4dfb-88c9-10b76163e0e0")
 	)
 	(no_connect
 		(at 207.01 137.16)
-		(uuid "4d0c7043-1290-4e49-a5ed-81b0e76e3a13")
+		(uuid "0a5ea49b-6a86-434b-8720-1575a9a8a23d")
 	)
 	(wire
 		(pts
@@ -6485,7 +6485,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a563093f-351a-4243-84d9-0f7eee2db1d4")
+		(uuid "3c9c4d77-a109-43ca-9ca0-6738e7e5eb2e")
 	)
 	(sheet_instances
 		(path "/"

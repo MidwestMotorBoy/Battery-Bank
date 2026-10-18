@@ -64,6 +64,9 @@ REMOVE = {
         "R450", "C454", "R451", "C455",              # DNP snubbers
         "C447",                                      # DNP feed-forward cap
         "C435",                                      # battery-side bank 3 -> 2 x 22u (cap sims 2026-10-17, B2)
+        "C432",                                      # per-port hybrid -> one shared PACK_P hybrid C208 (pack_bus_sims A2)
+        "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
+        "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
         "#FLG404", "#FLG406",                        # 3V3_PD / 5V_IN flags (nets are 3V3 / PACK_P now)
     ] + ["TP4%02d" % n for n in range(2, 22)],
 }
@@ -71,7 +74,7 @@ LINKS = {  # two-pin parts replaced by a wire
     ROOT: ["R1", "R2", "R3", "R4"],
     "power.kicad_sch": ["R201", "R207"],
     "mcu.kicad_sch": ["R301", "R312"],
-    "usb_port.kicad_sch": ["R401", "R431", "R440", "R448", "R449"],
+    "usb_port.kicad_sch": ["R401", "R431", "R440", "R448", "R449", "R444", "R445", "R446", "R447"],
 }
 # labels renamed after a link joins two named nets (old -> new), per sheet
 RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put that power symbol there instead,
@@ -82,8 +85,10 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
     "mcu.kicad_sch": {"3V3_MCU": ("pwr", "3V3"), "SMB_PU": ("pwr", "3V3"),
                       "UART_TX": "", "UART_RX": "", "LED_DRV": ""},
     "usb_port.kicad_sch": {"DP": "DPDN_DCP", "DN": "DPDN_DCP", "BTST1_C": "BTST1", "BTST2_C": "BTST2",
+                           "HG1": "HIDRV1", "LG1": "LODRV1", "HG2": "HIDRV2", "LG2": "LODRV2",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
+NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}  # check_netlist: pin -> a dev pin on the same net
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
 PAD = "TestPoint:TestPoint_Pad_D1.5mm"
@@ -153,7 +158,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R415": P(R0402, "C25871", "0402WGF1801TCE"),
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),
         "R417": P(R0201, "C270345", "0201WMF4702TEE"),
-        **{r: P(R0402, "C25077", "0402WGF100JTCE") for r in ("R420", "R444", "R445", "R446", "R447")},
+        "R420": P(R0402, "C25077", "0402WGF100JTCE"),
         **{r: P(R0201, "C473048", "0201WMF1002TEE") for r in ("R421", "R422", "R423")},
         "R424": P("Resistor_SMD:R_0805_2012Metric", "C728267", "PA0805FRE470R005L", "5m 0.5W (RAC)"),
         "R427": P("Resistor_SMD:R_1206_3216Metric", "C252653", "MA120610FR005MZ (50 ppm)", "5m 1W (RBAT)"),
@@ -167,7 +172,6 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "C414": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C417": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C439": P(C0402, "C7419416", "FCC0402B333K500AT"),
-        **{d: SOD882 for d in ("D406", "D407", "D408", "D409")},
         "TH401": P(R0402, "C77131", "NCP15XH103F03RC"),
         # 10x10 -> 7.8x7.6x3.1 mm: 13.7 mOhm max, Irms 13 A (40 C rise), Isat 17 A at a 40 % drop. Worst case (20 V 5 A
         # reverse from a 10 V pack) ~10.7 A rms, ~12.4 A peak: ~1.6 W DCR loss, L near 1.7 uH at the peak (L/RSNS
@@ -458,6 +462,49 @@ def add_gauge_pads(s, old):
     return insert_top(s, add)
 
 
+SHARED_BULK_AT = (63.5, 133.35)  # power sheet, under the 3V3 rail
+
+
+def add_shared_bulk(s):
+    """One 100 uF hybrid on PACK_P for both chargers' battery sides and both TPS62933 inputs (pack_bus_sims.py A2).
+    Cloned from the dev board's per-port C432 (usb_port sheet), which P0 removes."""
+    from schlib import block_end
+    dev = open(os.path.join(DEV, "usb_port.kicad_sch"), encoding="utf-8").read()
+    if '(symbol "Device:C_Polarized"' not in s:
+        a = dev.index('\n\t\t(symbol "Device:C_Polarized"') + 1
+        lib = dev[a:block_end(dev, a + 2)]
+        i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+        s = s[:i] + "\n" + lib + s[i:]
+    c432 = next(y for y in symbols(dev) if y["ref"] == "C432")
+    blk = new_uuids(dev[c432["a"]:c432["b"]])
+    x0, y0 = c432["at"][:2]
+    at = SHARED_BULK_AT
+    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + at[0], 2), round(float(m.group(2)) - y0 + at[1], 2)), blk)
+    blk = set_prop(blk, "Reference", "C208")
+    for prop, dy in (("Reference", -1.27), ("Value", 1.27)):  # text right of the body, clear of the PACK_P symbol
+        blk = re.sub(r'(\(property "%s" "[^"]*"\s*\(at )[-\d.]+ [-\d.]+ [-\d.]+\)' % prop,
+                     lambda m: m.group(1) + "%g %g 0)" % (at[0] + 6.35, round(at[1] + dy, 2)), blk, count=1)
+    blk = set_prop(blk, "Notes", "Shared PACK_P bulk for both chargers' battery sides and both TPS62933 inputs "
+                   "(replaces the per-port C432/C532). Place it between the two power stages, on PACK_P beside the "
+                   "RBAT pads: Production/tools/pack_bus_sims.py option A2")
+    host = next(y for y in symbols(s) if y["ref"] == "C206")
+    hb = s[host["a"]:host["b"]]
+    ha = hb.index("\n\t\t(instances") + 3
+    inst = hb[ha:block_end(hb, ha)].replace('(reference "C206")', '(reference "C208")')
+    ba = blk.index("\n\t\t(instances") + 3
+    blk = blk[:ba] + inst + blk[block_end(blk, ba):]
+    s = insert_top(s, "\n\t" + blk)
+    pins = {y["ref"]: y for y in symbols(s)}["C208"]["pins"]
+    add = clone_power(power_template(s, "PACK_P"), pins["1"]) + clone_power(power_template(s, "GND"), pins["2"])
+    head = next((a, b) for a, b in top_blocks(s, "text") if "3.3 V ALWAYS-ON RAIL" in s[a:b])
+    t = new_uuids(s[head[0]:head[1]])
+    t = re.sub(r'\(text "[^"]*"', '(text "PACK_P SHARED BULK  (both chargers + both 5 V buck inputs)"', t, count=1)
+    t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 40.64 116.84", t, count=1)
+    add += "\n\t" + t
+    return insert_top(s, add)
+
+
 TITLE = {
     ROOT: "Monolith production board - top level",
     "gauge.kicad_sch": "Monolith production board - cells and gauge",
@@ -503,6 +550,8 @@ def process(sheet, src):
     if sheet == "gauge.kicad_sch":
         s = add_gauge_pads(s, old)
     s, n = prune(s)
+    if sheet == "power.kicad_sch":
+        s = add_shared_bulk(s)
     if sheet == "mcu.kicad_sch":  # after pruning, so its pins can't catch J301's old wires
         s = add_tc2030(s, old)
         s, n2 = prune(s)

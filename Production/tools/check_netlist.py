@@ -60,6 +60,9 @@ for (r, p), n in old.items():
         expect[(r, p)] = find(n)
 for ref, _, _, (oref, opin) in mp.GAUGE_PADS:
     expect[(ref, "1")] = find(old[(oref, opin)])
+for ref, pins in mp.NEW_PARTS.items():
+    for p, (oref, opin) in pins.items():
+        expect[(ref, p)] = find(old[(oref, opin)])
 for p, (oref, opin) in {"1": ("J301", "1"), "2": ("J301", "2"), "3": ("J301", "10"), "4": ("J301", "4"), "5": ("J301", "3")}.items():
     expect[("J301", p)] = find(old[(oref, opin)])
 

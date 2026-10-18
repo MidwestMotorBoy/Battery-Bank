@@ -6736,20 +6736,7 @@
 		)
 		(uuid "0cc904da-16ed-4828-bc8a-862f61bc0b01")
 	)
-	(text "GATE RESISTORS + TURN-OFF DIODES"
-		(exclude_from_sim no)
-		(at 299.72 264.16 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(thickness 0.508)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "15fa0695-ad63-437c-b987-6b2514558503")
-	)
-	(text "BATTERY-SIDE BULK: 2 x 22u MLCC + 100u hybrid polymer (87 uF effective, >= 80 uF)"
+	(text "BATTERY-SIDE LOCAL: 2 x 22u MLCC; bulk is the shared PACK_P hybrid C208 (3V3 Rail sheet)"
 		(exclude_from_sim no)
 		(at 431.8 104.14 0)
 		(effects
@@ -6856,7 +6843,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,\n   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. Gate resistors R444-R447 and R420 are 0402; 0201 is used only where both nets stay <= 5.5 V."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the USB-side polymer C421 and the remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side: 2 x 22u per port at the FETs; both ports, both TPS62933 inputs (1 x 10u 50V each) and the one shared\n   PACK_P hybrid C208 form one bus: about 99 uF effective worst case, >= the BQ25756 80 uF C_OUT minimum each charger\n   sees through its RBAT (Production/tools/pack_bus_sims.py A2). Still on hold: C427 (USB side; the USB sides are\n   separate per port, so they can't share bulk).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: HIDRV/LODRV go straight to the FET gates (no gate resistors, turn-off diodes or snubbers; BTST straight\n    to its cap). The dev board fits 10R gate resistors, so measure SW1/SW2 ringing there with them bridged before\n    trusting this; keep the gate traces short and wide (TI: >= 0.5 mm) with the FETs right at the BQ25756.\n13. TP401 VBUS is a factory test pad.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. R420 is 0402; 0201 is used only where both nets stay <= 5.5 V."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -6885,12 +6872,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "04c3886e-9cad-4481-9d4e-283b2d21ff7d")
-	)
-	(junction
-		(at 66.04 195.58)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "06684a8c-fc87-4714-8d5f-920e67f719b5")
 	)
 	(junction
 		(at 330.2 60.96)
@@ -7169,12 +7150,6 @@
 		(uuid "d51c63ac-79d8-4da2-85c4-b75bac8913d6")
 	)
 	(junction
-		(at 474.98 118.11)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d7e03744-c039-4622-9e7f-d84da564c8df")
-	)
-	(junction
 		(at 157.48 203.2)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7388,16 +7363,6 @@
 	)
 	(wire
 		(pts
-			(xy 306.07 283.21) (xy 306.07 287.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1df6e33b-6d2f-47f1-a666-74e19123a55c")
-	)
-	(wire
-		(pts
 			(xy 367.03 185.42) (xy 368.3 185.42)
 		)
 		(stroke
@@ -7445,16 +7410,6 @@
 			(type default)
 		)
 		(uuid "2a9c0cff-4ead-4dfe-9658-7fdf21ea8d35")
-	)
-	(wire
-		(pts
-			(xy 313.69 306.07) (xy 313.69 309.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2ae93b0e-b24d-43e6-a027-393cc7eb7fe7")
 	)
 	(wire
 		(pts
@@ -7535,16 +7490,6 @@
 			(type default)
 		)
 		(uuid "37deb917-6c40-4bfb-bab8-ae297065faaa")
-	)
-	(wire
-		(pts
-			(xy 66.04 195.58) (xy 76.2 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "382d4b5d-8e0c-4a84-b820-10209635d243")
 	)
 	(wire
 		(pts
@@ -7838,16 +7783,6 @@
 	)
 	(wire
 		(pts
-			(xy 313.69 271.78) (xy 313.69 275.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5f63d150-0e54-4830-a334-3689cb3209b0")
-	)
-	(wire
-		(pts
 			(xy 238.76 149.86) (xy 238.76 152.4)
 		)
 		(stroke
@@ -7855,16 +7790,6 @@
 			(type default)
 		)
 		(uuid "5f990a38-8c0f-4b19-a374-5a27f5cc89f0")
-	)
-	(wire
-		(pts
-			(xy 306.07 306.07) (xy 306.07 309.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5fce05c3-bbaf-45db-bc6e-4c6c1dee3bdb")
 	)
 	(wire
 		(pts
@@ -7998,16 +7923,6 @@
 	)
 	(wire
 		(pts
-			(xy 313.69 294.64) (xy 313.69 298.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "71d3b0c3-ef32-4a1d-b869-e06710532f47")
-	)
-	(wire
-		(pts
 			(xy 363.22 60.96) (xy 363.22 69.85)
 		)
 		(stroke
@@ -8025,16 +7940,6 @@
 			(type default)
 		)
 		(uuid "759a0ecb-a831-4d2f-8dcf-0912344ad682")
-	)
-	(wire
-		(pts
-			(xy 464.82 118.11) (xy 474.98 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "774f2117-7b66-4cc7-8034-6cad2c4ae55d")
 	)
 	(wire
 		(pts
@@ -8188,16 +8093,6 @@
 	)
 	(wire
 		(pts
-			(xy 306.07 271.78) (xy 306.07 275.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8cad1550-8e90-4307-a997-a0da13aab891")
-	)
-	(wire
-		(pts
 			(xy 452.12 60.96) (xy 478.79 60.96)
 		)
 		(stroke
@@ -8215,16 +8110,6 @@
 			(type default)
 		)
 		(uuid "8f182861-9918-48ae-af70-f6b662bd56a4")
-	)
-	(wire
-		(pts
-			(xy 474.98 118.11) (xy 485.14 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8f5c183e-42a6-4698-b8eb-410366b4d79d")
 	)
 	(wire
 		(pts
@@ -8515,16 +8400,6 @@
 			(type default)
 		)
 		(uuid "b6e69cc0-7080-41ad-91bd-bf05256ff6ba")
-	)
-	(wire
-		(pts
-			(xy 313.69 283.21) (xy 313.69 287.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b8606b76-40bb-46b8-bb08-06037a74390c")
 	)
 	(wire
 		(pts
@@ -8898,16 +8773,6 @@
 	)
 	(wire
 		(pts
-			(xy 306.07 294.64) (xy 306.07 298.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f34ae33c-a9b3-494a-999f-a99631ea39a1")
-	)
-	(wire
-		(pts
 			(xy 185.42 78.74) (xy 187.96 78.74)
 		)
 		(stroke
@@ -8945,16 +8810,6 @@
 			(type default)
 		)
 		(uuid "f576df8f-6e0c-423c-8c8f-d70f71862010")
-	)
-	(wire
-		(pts
-			(xy 55.88 195.58) (xy 66.04 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f79906dd-0442-4b51-99f8-9b845b07725b")
 	)
 	(wire
 		(pts
@@ -9116,16 +8971,6 @@
 		)
 		(uuid "1da2f0ae-247a-4f61-8858-8b1146a2f360")
 	)
-	(label "HIDRV2"
-		(at 306.07 294.64 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "21bd8beb-ee63-4894-bf07-6c775a13b26b")
-	)
 	(label "HIDRV1"
 		(at 396.24 180.34 0)
 		(effects
@@ -9135,16 +8980,6 @@
 			(justify left bottom)
 		)
 		(uuid "21f62c1e-0e65-4e68-8709-bbf524f0750d")
-	)
-	(label "HG2"
-		(at 425.45 69.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2218fc1a-9b57-4962-95ed-a6588a4194a7")
 	)
 	(label "SBU2_SNS"
 		(at 138.43 166.37 0)
@@ -9286,16 +9121,6 @@
 		)
 		(uuid "390d2752-489c-4416-9e3c-e8c6e70dd52b")
 	)
-	(label "LG2"
-		(at 313.69 306.07 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3b89b21f-38c3-43fd-8e7b-7dd96b44e738")
-	)
 	(label "LDO_1V5"
 		(at 220.98 67.31 90)
 		(effects
@@ -9395,16 +9220,6 @@
 			(justify left bottom)
 		)
 		(uuid "52e33954-f2e9-4a8b-bad4-1b8737808620")
-	)
-	(label "HIDRV1"
-		(at 306.07 271.78 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "58f46b8a-8d50-410c-9bfa-be8ad17ca46d")
 	)
 	(label "SBU1_SNS"
 		(at 55.88 157.48 0)
@@ -9586,16 +9401,6 @@
 		)
 		(uuid "7548d1e1-186e-4d2d-bb8e-9caed7912718")
 	)
-	(label "LG1"
-		(at 313.69 283.21 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "788e7cf1-6f95-4d53-9189-61c22dd51e54")
-	)
 	(label "PP5V"
 		(at 185.42 81.28 0)
 		(effects
@@ -9776,16 +9581,6 @@
 		)
 		(uuid "acc81783-cbeb-43d7-abb7-33d9fbd4102e")
 	)
-	(label "LODRV1"
-		(at 306.07 283.21 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "ad221a32-2b88-48e4-8fd8-e43d9fd9af00")
-	)
 	(label "C_CC1"
 		(at 60.96 86.36 0)
 		(effects
@@ -9825,16 +9620,6 @@
 			(justify left bottom)
 		)
 		(uuid "bcc2311b-1959-4466-8271-e05760e99f47")
-	)
-	(label "HG2"
-		(at 313.69 294.64 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "bd17877c-42bf-4626-b8f2-f987066084da")
 	)
 	(label "SW1"
 		(at 393.7 185.42 0)
@@ -9876,26 +9661,6 @@
 		)
 		(uuid "c1d17440-0380-4a49-a2de-a94b87c665ab")
 	)
-	(label "HG1"
-		(at 344.17 69.85 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c34826ec-6643-4f42-9c84-c5efde621e45")
-	)
-	(label "LG2"
-		(at 425.45 82.55 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
-	)
 	(label "CC2"
 		(at 154.94 93.98 180)
 		(effects
@@ -9925,16 +9690,6 @@
 			(justify right bottom)
 		)
 		(uuid "c99056d0-a19f-4004-87d7-fd74b80c3b7c")
-	)
-	(label "LG1"
-		(at 344.17 82.55 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
 	)
 	(label "STAT2"
 		(at 298.45 207.01 270)
@@ -10107,16 +9862,6 @@
 		(uuid "f833b0f5-f466-4284-a126-8e80b8a9bf16")
 	)
 	(label "LODRV2"
-		(at 306.07 306.07 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "f9f04058-b347-4526-8122-ec7047f3977b")
-	)
-	(label "LODRV2"
 		(at 396.24 200.66 0)
 		(effects
 			(font
@@ -10125,16 +9870,6 @@
 			(justify left bottom)
 		)
 		(uuid "fac414a2-969e-475b-9261-6b59018cff1b")
-	)
-	(label "HG1"
-		(at 313.69 271.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ff5523d9-6d40-4659-b34a-c75c9ce528e4")
 	)
 	(global_label "SDA"
 		(shape bidirectional)
@@ -10462,111 +10197,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C416")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 66.04 199.39 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "02612630-89a7-4c9d-be77-1e5ca5f840e3")
-		(property "Reference" "C445"
-			(at 66.04 191.68 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10u 50V"
-			(at 66.04 193.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
-			(at 67.005 195.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 66.04 199.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 66.04 199.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C13585"
-			(at 66.04 199.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CL31A106KBHNNNE"
-			(at 66.04 199.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "614e13dd-f702-4373-832d-86dd39fb2652")
-		)
-		(pin "2"
-			(uuid "d6a0c7d9-09d7-47e3-ab23-ca0a164ec292")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C545")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C445")
 					(unit 1)
 				)
 			)
@@ -11305,122 +10935,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "R434")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 309.88 298.45 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "0df2c3a4-3784-4523-a0d3-8aefce55d0ca")
-		(property "Reference" "D408"
-			(at 319.4 297.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54WS"
-			(at 319.4 299.72 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C549279"
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54L,315 (Nexperia)"
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Turn-off diode across R446: cathode HIDRV2, anode HG2 (Q402 / Q502 high side (SW2 leg))"
-			(at 309.88 298.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bb66fd3a-ad24-4a6e-a967-b7624a73fefc")
-		)
-		(pin "2"
-			(uuid "50e7a18d-610f-40ac-bb6b-2d56152fb357")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D508")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D408")
 					(unit 1)
 				)
 			)
@@ -15261,122 +14775,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 309.88 294.64 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "41354907-611f-47fd-b267-76708363fc64")
-		(property "Reference" "R446"
-			(at 309.73 289.87 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10R"
-			(at 309.73 291.84 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C25077"
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF100JTCE"
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Gate resistor HIDRV2 -> HG2, Q402 / Q502 high side (SW2 leg). 10 Ohm slows turn-on; D408/D508 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
-			(at 309.88 294.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "82857709-0b54-475b-90e6-0ae9aa761497")
-		)
-		(pin "2"
-			(uuid "4593ef12-6e09-4339-99ea-17a9e2b32c18")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "R546")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "R446")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 144.78 99.06 270)
 		(unit 1)
@@ -15533,122 +14931,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR599")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Polarized")
-		(at 474.98 121.92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "464f614b-7bb2-414c-a033-083b87727a94")
-		(property "Reference" "C432"
-			(at 474.98 114.21 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100u 25V"
-			(at 474.98 116.18 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
-			(at 475.945 118.11 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 474.98 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Polarized capacitor"
-			(at 474.98 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Battery-side bulk (C432/C532): Panasonic ZA hybrid polymer (conductive polymer + liquid electrolyte). 100 uF with no DC-bias loss, 30 mOhm and 2 A at 100 kHz like the solid polymer it replaced, but leakage <= 0.01CV = 25 uA max (the JIERR solid polymer was 0.2CV = 500 uA). It is the only bulk cap biased in idle (from PACK_P whenever the gauge FETs are on), so its leakage is idle drain. 10,000 h at 105 C. MLCCs C431/C434/C435 carry the HF ripple"
-			(at 474.98 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C264047"
-			(at 474.98 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "Panasonic EEH-ZA1E101XP (hybrid polymer)"
-			(at 474.98 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "56499057-7194-4f29-974d-9510b584ab16")
-		)
-		(pin "2"
-			(uuid "507acf5b-c995-43aa-b80e-15cb3cc5395d")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "C532")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "C432")
 					(unit 1)
 				)
 			)
@@ -17145,122 +16427,6 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 309.88 306.07 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "6489a0f7-5da7-4eb4-af57-fea63c74a12e")
-		(property "Reference" "R447"
-			(at 309.73 301.3 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10R"
-			(at 309.73 303.27 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C25077"
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF100JTCE"
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Gate resistor LODRV2 -> LG2, Q408 / Q508 low side (SW2 leg). 10 Ohm slows turn-on; D409/D509 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
-			(at 309.88 306.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a4dda514-ffce-4fbb-877b-f01ca32c3360")
-		)
-		(pin "2"
-			(uuid "66d57030-26a4-418c-94d3-fed8f4073734")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "R547")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "R447")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
 		(at 290.83 200.66 0)
 		(unit 1)
 		(body_style 1)
@@ -18298,122 +17464,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C410")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 309.88 287.02 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "730226f9-1698-4ecd-8bd0-79f4d3de1354")
-		(property "Reference" "D407"
-			(at 319.4 286.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54WS"
-			(at 319.4 288.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C549279"
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54L,315 (Nexperia)"
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Turn-off diode across R445: cathode LODRV1, anode LG1 (Q407 / Q507 low side (SW1 leg))"
-			(at 309.88 287.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5e30fad8-3aa8-468e-a114-1f52f43435cb")
-		)
-		(pin "2"
-			(uuid "85ea4d97-e30d-4240-b9dd-d87709a171f4")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D507")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D407")
 					(unit 1)
 				)
 			)
@@ -20405,122 +19455,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 309.88 283.21 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "95664d1d-180d-406d-9512-7c0593429915")
-		(property "Reference" "R445"
-			(at 309.73 278.44 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10R"
-			(at 309.73 280.41 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C25077"
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF100JTCE"
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Gate resistor LODRV1 -> LG1, Q407 / Q507 low side (SW1 leg). 10 Ohm slows turn-on; D407/D507 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
-			(at 309.88 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a4926065-8c84-4285-bf69-db7e41bf9c42")
-		)
-		(pin "2"
-			(uuid "d9f52ed2-6744-4dc0-93e2-feb6a67da158")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "R545")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "R445")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 332.74 200.66 0)
 		(unit 1)
@@ -20596,122 +19530,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR437")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 309.88 271.78 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "98d78811-cb32-4676-82e0-20126392b553")
-		(property "Reference" "R444"
-			(at 309.73 267.01 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10R"
-			(at 309.73 268.98 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C25077"
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF100JTCE"
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Gate resistor HIDRV1 -> HG1, Q401 / Q501 high side (SW1 leg). 10 Ohm slows turn-on; D406/D506 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
-			(at 309.88 271.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e6fb1d22-f9ac-4f24-81dd-04a33283659b")
-		)
-		(pin "2"
-			(uuid "d35c3965-faff-4b17-befc-c7778413ff77")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "R544")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "R444")
 					(unit 1)
 				)
 			)
@@ -21619,122 +20437,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 309.88 275.59 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "adcc7731-da77-4b13-ad1e-e6278bef63c7")
-		(property "Reference" "D406"
-			(at 319.4 274.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54WS"
-			(at 319.4 276.86 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C549279"
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54L,315 (Nexperia)"
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Turn-off diode across R444: cathode HIDRV1, anode HG1 (Q401 / Q501 high side (SW1 leg))"
-			(at 309.88 275.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "824e7773-dbdd-4cdc-a290-4719a97a92bf")
-		)
-		(pin "2"
-			(uuid "011bcf94-3d31-4312-a176-ef1880a4adf3")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D506")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D406")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 436.88 93.98 0)
 		(unit 1)
@@ -22508,122 +21210,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR409")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 309.88 309.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "b577e23e-8dd5-41b1-93ac-9daef39f7a65")
-		(property "Reference" "D409"
-			(at 319.4 309.25 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54WS"
-			(at 319.4 311.15 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C549279"
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54L,315 (Nexperia)"
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "Turn-off diode across R447: cathode LODRV2, anode LG2 (Q408 / Q508 low side (SW2 leg))"
-			(at 309.88 309.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6fd70d00-6ef2-4b38-bcd5-472270b5b2cf")
-		)
-		(pin "2"
-			(uuid "03c1d7f4-5e66-4672-ac92-c0f008699abc")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "D509")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "D409")
 					(unit 1)
 				)
 			)
@@ -26657,87 +25243,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 474.98 125.73 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f0bdb339-8d37-4af0-a79c-78533ad6734c")
-		(property "Reference" "#PWR446"
-			(at 474.98 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 474.98 130.05 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 474.98 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 474.98 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 474.98 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fcd50867-44a8-49dd-8194-da925edc706d")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR546")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR446")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 165.1 147.32 0)
 		(unit 1)
@@ -27371,87 +25876,6 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "R409")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 66.04 203.2 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f7b15347-5ac1-4cb7-9277-ecf33d32ae57")
-		(property "Reference" "#PWR466"
-			(at 66.04 203.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 66.04 207.52 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 66.04 203.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 66.04 203.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 66.04 203.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c260db30-48e4-4c16-8d9d-366746aea59c")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR566")
-					(unit 1)
-				)
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR466")
 					(unit 1)
 				)
 			)
@@ -28259,7 +26683,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "22d383c9-dd36-4c68-9664-0ffed149e969")
+		(uuid "e4dc8186-fe71-427d-af57-c2e4806af960")
 	)
 	(wire
 		(pts
@@ -28269,7 +26693,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7890bdf2-d8cb-448a-9c38-ce27d729ba20")
+		(uuid "79c8d85f-2c32-4d45-87fe-64c773715c7b")
 	)
 	(wire
 		(pts
@@ -28279,7 +26703,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f140ba71-2f5e-4747-b176-c4f1323d0cbc")
+		(uuid "612b379e-97be-4379-b569-546d7c53c4f5")
 	)
 	(wire
 		(pts
@@ -28289,7 +26713,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b406e1bb-c9d0-4a0d-8bd2-55b7b44b4e2f")
+		(uuid "5109380a-2916-4e3c-8703-7c9a161798ec")
 	)
 	(wire
 		(pts
@@ -28299,7 +26723,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8a23aa8a-698e-4679-92da-b62079747f73")
+		(uuid "c2f82bf5-1319-4a8f-a114-bc58df212df5")
 	)
 	(wire
 		(pts
@@ -28309,7 +26733,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "38181718-c8e9-4fd0-af5a-b79da648156f")
+		(uuid "2d7ef840-f8c5-42be-817a-7cf513ff7a90")
 	)
 	(wire
 		(pts
@@ -28319,7 +26743,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0faa952c-4fbd-4db9-8df5-6a4f8f326a6d")
+		(uuid "d74c1fc1-3671-4045-b76c-d762dd73dd2c")
 	)
 	(wire
 		(pts
@@ -28329,7 +26753,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3a42b5f6-8d99-486b-a0a2-ab3e0e7218d4")
+		(uuid "e2ff3d8a-e358-4443-8efc-4433f77b95c0")
 	)
 	(wire
 		(pts
@@ -28339,7 +26763,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ab32c0fd-e98d-4c44-8cf7-eaff21838c47")
+		(uuid "26e973e3-c5f4-4f89-91d2-7be82875346b")
 	)
 	(wire
 		(pts
@@ -28349,7 +26773,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bb34d691-74e2-4b84-8737-cc10f27d5078")
+		(uuid "1ea1db49-6565-4386-aab6-957be47236ef")
 	)
 	(wire
 		(pts
@@ -28359,7 +26783,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6e6e5c30-f6cb-453e-a648-6e661c209df0")
+		(uuid "05a5efce-c43c-417d-8773-189f2ef9f5ac")
 	)
 	(wire
 		(pts
@@ -28369,7 +26793,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fa57c04f-62b9-4b90-ae5e-8e7c4b73fb86")
+		(uuid "83ec2269-3024-4464-a5fa-f873a78a19a6")
 	)
 	(wire
 		(pts
@@ -28379,7 +26803,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "dd56e3ae-79b4-44fc-a928-13c8169d317f")
+		(uuid "7b3c7432-f65d-4ed4-a1d8-30e36834172e")
 	)
 	(wire
 		(pts
@@ -28389,7 +26813,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e77aa447-6422-44af-a0c0-8c49f58ddfdf")
+		(uuid "cb1d253b-174e-4752-b7bb-f54b7553fd14")
 	)
 	(wire
 		(pts
@@ -28399,7 +26823,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c5d6d1eb-f9ec-42ca-8423-e0d9a6f39bf1")
+		(uuid "0115badc-70bc-4063-a31f-993325c035cc")
 	)
 	(wire
 		(pts
@@ -28409,7 +26833,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7bd9d454-ac62-400c-a139-40eb8aa640f7")
+		(uuid "a26998cf-6f78-4dd5-b18e-c9f4dfb10f79")
 	)
 	(wire
 		(pts
@@ -28419,7 +26843,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ce631979-6b09-4709-95f0-b8b11ef7bd44")
+		(uuid "e25d2588-e5dc-419f-93a1-e4ffa0fa0734")
 	)
 	(wire
 		(pts
@@ -28429,7 +26853,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "25e466ba-b14c-44d8-9103-1ca872045c8b")
+		(uuid "ee1e4977-0118-4c63-aaec-43f544138578")
 	)
 	(wire
 		(pts
@@ -28439,7 +26863,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3c920458-84a0-4a36-80fc-2f874a74a4a4")
+		(uuid "d1996e30-2db8-41f1-b305-ce5e4162f87f")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -28451,6 +26875,16 @@
 		)
 		(uuid "02aa51f6-5f6e-4e6b-bdf0-0ed6e4cd237e")
 	)
+	(label "HIDRV2"
+		(at 425.45 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2218fc1a-9b57-4962-95ed-a6588a4194a7")
+	)
 	(symbol
 		(lib_id "power:+3V3")
 		(at 154.94 78.74 0)
@@ -28461,8 +26895,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "6f1b624b-1793-4344-82d2-422c31e76641")
-		(property "Reference" "#PWR9029"
+		(uuid "ac895c62-8523-4ed8-a808-5d80606847fe")
+		(property "Reference" "#PWR9033"
 			(at 154.94 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -28517,16 +26951,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "68104f2d-1832-4f55-903e-571d3df02f08")
+			(uuid "092e2a18-e959-4356-b30e-88204d22546d")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9030")
+					(reference "#PWR9034")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9031")
+					(reference "#PWR9035")
 					(unit 1)
 				)
 			)
@@ -28542,8 +26976,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "37787195-7526-4845-8473-f4334fc0764d")
-		(property "Reference" "#PWR9032"
+		(uuid "3391051b-c6f7-408a-8a68-b536807cf64f")
+		(property "Reference" "#PWR9036"
 			(at 50.8 195.58 0)
 			(hide yes)
 			(show_name no)
@@ -28598,16 +27032,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "6ce81772-e24b-47ca-bee2-73a98f65afff")
+			(uuid "6f6cefde-9f77-4f06-a991-e0e21267b5be")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9033")
+					(reference "#PWR9037")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9034")
+					(reference "#PWR9038")
 					(unit 1)
 				)
 			)
@@ -28633,6 +27067,26 @@
 		)
 		(uuid "aaace4b0-af7d-4699-9c10-a06d9d6bded3")
 	)
+	(label "HIDRV1"
+		(at 344.17 69.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c34826ec-6643-4f42-9c84-c5efde621e45")
+	)
+	(label "LODRV2"
+		(at 425.45 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
+	)
 	(label "DPDN_DCP"
 		(at 60.96 99.06 0)
 		(effects
@@ -28643,6 +27097,16 @@
 		)
 		(uuid "cb977311-0261-4a2c-8760-b9afba12ca19")
 	)
+	(label "LODRV1"
+		(at 344.17 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
+	)
 	(wire
 		(pts
 			(xy 485.14 118.11) (xy 505.46 118.11)
@@ -28651,7 +27115,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e083a5e6-d535-401a-b0a6-fc5123265e01")
+		(uuid "d49fca5d-1db6-4dce-b67d-c369e9ed821d")
+	)
+	(wire
+		(pts
+			(xy 76.2 195.58) (xy 55.88 195.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c85ae0e7-0d1f-4316-bee9-fc3026631c4f")
 	)
 	(wire
 		(pts
@@ -28661,7 +27135,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "40a92f1b-cdbd-4da6-8d63-1e34d12df67d")
+		(uuid "38ed3fc9-16cc-4ff2-a8b3-950ba1ba7e17")
+	)
+	(wire
+		(pts
+			(xy 464.82 118.11) (xy 485.14 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15c4d6a2-82e3-4135-8627-c11b7530b098")
 	)
 	(wire
 		(pts
@@ -28671,7 +27155,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0deaa3ae-de3b-471b-8beb-34959a45aba1")
+		(uuid "516fcd90-a0f2-43a8-b908-3901e28d5915")
 	)
 	(sheet_instances
 		(path "/"
