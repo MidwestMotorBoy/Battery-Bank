@@ -32,10 +32,12 @@ OVERRIDE = {
 NOT_LCSC = {"U301": "CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement"}
 EXTRAS = [  # (LCSC, per board, designators, what for)
     ("C100114", 2, ["JP201", "JP202"], "2.54 mm jumper shunts (closed top) for AMP_EN and the meas. section power"),
+    ("C3000141", 4, ["J102", "J105", "J106", "J107"],
+     "cell NTCs: STE MT52B103F3950F01000, 10k 1%, B25/50 3950 (not 103AT's 3380): gauge thermistor coefficients "
+     "must be recalculated for this curve; enamelled leads, so tape the bead and sleeve the joints"),
 ]
 ELSEWHERE = [  # needed for bring-up, not from LCSC
     ("U301", "CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement (not on LCSC)"),
-    ("NTCs for J102/J105-J107", "4 per board wired Semitec 103AT-2 10k NTCs: none in stock at LCSC (DigiKey/Mouser)"),
 ]
 NOTES = {
     "C55121754": "SMT test loop on the 1.5 mm test pads (hand-solder)",
