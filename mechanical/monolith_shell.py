@@ -173,6 +173,16 @@ SB_CAP_BAND  = 9.0    # how far each cap's band wraps over the sides (bottom ban
 SB_CAP_PROUD = 2.0    # band wall: stands this proud of the shell faces, so flat side drops land on the bands
 SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the cap, in x and y
 SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
+# vibration and trail durability (2026-10-18)
+SB_AXIAL_PRELOAD = 0.4   # floor spacer printed this much taller than its gap: squeezes the cell stack ends (covers MJF +-0.3)
+SB_CRUSH_W, SB_CRUSH_H = 1.0, 0.4   # crush ribs on the cell-zone walls (at each cell's tangent): 0.25 mm into the liner
+SB_COVER_GAP = 0.3       # cover edge to tray, all round: nylon grows ~0.35 mm more than aluminium over 78 mm and 60 K;
+                         # the joint is sealed with a bead of neutral-cure silicone (formed-in-place gasket)
+SB_GROOVE_Z, SB_GROOVE_W, SB_GROOVE_D = 4.5, 1.2, 0.3   # cap retention: groove round the tray (-x, +-y faces) at each end
+SB_BEAD_W = 0.9          # matching bead inside each cap band
+SB_DRAIN_W, SB_DRAIN_H = 2.0, 1.5    # drain channel from the port well out through the top cap's +x wall
+SB_STANDOFFS = [(-15.0, 28.0), (15.0, 28.0), (-15.0, 56.0), (15.0, 56.0)]   # (y, z) SMD standoffs on F.Cu for the cover
+SB_STANDOFF_D = 3.0      # footprint size of each standoff (render only)
 SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
 # BLE module (CC2340R5MODA, 7 x 10 x 2.3 mm max) on B.Cu at the right (+y, C4 / PACK+) board edge, antenna end at the
 # edge: the board's ground plane sits between it and the aluminium cover, and it radiates out through the printed
@@ -224,8 +234,8 @@ a_cav, c_cav = a_in + SB_SIDE_PAD, c_in + SB_SIDE_PAD   # cell-zone cavity (x < 
 a_sb, c_sb = a_cav + WALL, c_cav + WALL                 # tray outside half-width and -x corner radius
 sb_pillar_y = a_in - SB_PILLAR_W / 2          # insert axis at y = +-sb_pillar_y, z = sb_screw_z (pillars sit in the board zone)
 sb_screw_z = SB_END_T + SB_PAD_T / 2
-sb_cover_w = 2 * (a_in + SB_REB) - 0.2
-sb_cover_z0, sb_cover_z1 = SB_END_T + 0.1, sb_z_top_in + SB_SLOT - 0.1
+sb_cover_w = 2 * (a_in + SB_REB) - 2 * SB_COVER_GAP
+sb_cover_z0, sb_cover_z1 = SB_END_T + SB_COVER_GAP, sb_z_top_in + SB_SLOT - SB_COVER_GAP
 sb_cell_xy = {k: (k[0] * pocket_r, k[1] * pocket_r) for k in SB_CELLS}
 sb_pos_caps = {end: [sb_cell_xy[k] for k, (_, e) in SB_CELLS.items() if e == end] for end in ('top', 'bottom')}
 # profiles: rounded rect x0..x1, |y| <= h, corner radius rl (-x side), rr (+x side)
@@ -233,6 +243,8 @@ SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
 SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
+SB_GROOVE = (SB_OUT[0] + SB_GROOVE_D, SB_OUT[1], SB_OUT[2] - SB_GROOVE_D, SB_OUT[3] - SB_GROOVE_D, 0.0)   # tray profile in the groove
+sb_standoff_h = SB_OUT_H + SB_GAP - 0.1       # standoff height: 0.1 mm under the cover, so it only bears once the cover flexes
 sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z)
 sb_ant_y = (sb_board_w/2 - SB_ANT_MOD[1], sb_board_w/2)   # module |y| span (antenna end at the edge)
 def sb_lanes():
@@ -274,6 +286,7 @@ def write_side_dxf(path):
     for yc in sb_tab_y.values():              # PACK strip pads on F.Cu, and the sense-wire holes
         _rect(e, yc, sb_zb0 + SB_TAB_PAD_H/2, SB_TAB_W + 1.0, SB_TAB_PAD_H, 'TAB_PADS')
     for y, z in SB_TAP_HOLES.values(): _circ(e, y, z, SB_TAP_PAD_D/2, 'TAB_PADS')
+    for y, z in SB_STANDOFFS: _rect(e, y, z, SB_STANDOFF_D, SB_STANDOFF_D, 'COVER_STANDOFFS')
     _dxf(path, e)
 
 def write_cover_dxf(path):
@@ -341,6 +354,16 @@ if __name__ == '__main__':
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
         'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
+        'crush ribs squeeze the liner (rib - air gap)': SB_CRUSH_H - (a_cav - SB_SIDE_PAD - (pocket_r + CELL_D/2)),
+        'cover thermal clearance, length (gaps - growth)': 2*SB_COVER_GAP - (sb_cover_z1 - sb_cover_z0) * (100e-6 - 23e-6) * 60,
+        'cover thermal clearance, width (gaps - growth)': 2*SB_COVER_GAP - sb_cover_w * (100e-6 - 23e-6) * 60,
+        'cover still under the top-wall lip (z)': sb_cover_z1 - sb_z_top_in - 0.5,
+        'cap groove leaves wall (>= 0.8)': WALL - SB_GROOVE_D - 0.8,
+        'cap groove clear of the insert pilots (y)': (a_sb - SB_GROOVE_D) - (sb_pillar_y + SB_INSERT_D/2) - 1.0,
+        'drain channel: cap wall beside it (x)': SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 1.0,
+        'standoffs: 0.1 below the cover': (sb_x_cv0 - sb_xb1) - sb_standoff_h - 0.1 + 0.1,
+        'standoffs clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_STANDOFFS) - (SB_VENT_D/2 + 2 + SB_STANDOFF_D/2),
+        'standoffs clear of the PACK pads (z)': min(z for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - (sb_zb0 + SB_TAB_PAD_H) - 1.0,
         'PACK strip between the floor spacer and the board (x)': (sb_xb0 - a_in) - SB_TAB_T,
         'PACK strips clear of the centre shim (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2) - SB_SHIM_HALF,
         'PACK strips clear of the board corner notches (y)': sb_notch_y - (max(abs(v) for v in sb_tab_y.values()) + SB_TAB_W/2),

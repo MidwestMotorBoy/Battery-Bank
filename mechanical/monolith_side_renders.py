@@ -35,6 +35,7 @@ PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish pa
          (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
          (13, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
          (14, 'EVA lanes, 3 x 1 mm, behind the board', 'EVA foam', 'lanes'),
+         (19, 'Cover standoffs (4), SMD 3.6 mm', 'brass / steel', 'stand'),
          (15, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (16, 'Top crush cap', 'TPU 95A lattice', 'capt')]
 PARTS.sort(key=lambda r: r[0])
 NUM = {k: n for n, _, _, k in PARTS}
@@ -49,7 +50,8 @@ def assembly():
           ('pad_top', P.end_pad('top'), C['eva']),
           ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
           ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover']),
-          ('lanes', P.eva_lanes(), C['eva']), ('ble', P.ble_module(), C['ble'])]
+          ('lanes', P.eva_lanes(), C['eva']), ('ble', P.ble_module(), C['ble']),
+          ('stand', P.cover_standoffs(), C['nickel'])]
     for z in ('soft', 'firm', 'corner', 'band'):
         A.append(('capb_' + z, P.side_cap(z), C[z]))
         A.append(('capt_' + z, flipz(P.side_cap(z, True), S.SB_H), C[z]))
@@ -226,7 +228,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(nickel=8.9, wire=3.0, lanes=0.20, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(nickel=8.9, wire=3.0, lanes=0.20, stand=3.0, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -269,7 +271,7 @@ if __name__ == '__main__':
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), nickel=(58, 0, 0), wire=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
-              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), lanes=(74, 0, 0), ble=(108, 0, 0))
+              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), lanes=(74, 0, 0), ble=(108, 0, 0), stand=(108, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
         dd = EX.get(k, (0, 0, -40) if k.startswith('capb') else (0, 0, 40))
@@ -282,7 +284,7 @@ if __name__ == '__main__':
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
     BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
-               hold=60, cover=0, lanes=110, ble=20, nickel=340, wire=30, capb=180, capt=180)
+               hold=60, cover=0, lanes=110, ble=20, stand=300, nickel=340, wire=30, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
                 for g_, (ax, ay) in anchors.items()}
@@ -316,6 +318,7 @@ if __name__ == '__main__':
         sh.text(q[0], q[1] - 12, name, 22, True, fill='white', anchor='mm'); sh.text(q[0], q[1] + 16, f'+ cap {end}', 14, fill='white', anchor='mm')
     sh.callouts([(tp(-aC + 0.5, 14), '0.2 mm fish paper liner: the\ncans stay close to the walls\nfor heat'),
                  (tp(-aC - 0.6, 0), 'Rib locates the cell block'),
+                 (tp(-S.pocket_r, aC - 0.2), 'Crush ribs flatten on assembly:' + chr(10) + 'the cells sit preloaded, no rattle'),
                  (tp(-aC - 0.6, -15), '1.2 mm printed wall')], 330, 'l', 250)
     sh.callouts([(tp(aI + 0.6, aI - 1), 'Board side guide: the tray\nsteps in to the board width'),
                  (tp(S.sb_xb0 + 0.8, 12), '1.6 mm board, coated and staked'),
@@ -336,6 +339,7 @@ if __name__ == '__main__':
     sh.text(*tb(cx2, 40), 'C2', 22, True, fill='white', anchor='mm'); sh.text(*tb(cx1, 40), 'C1', 22, True, fill='white', anchor='mm')
     sh.callouts([(tb(-12, S.SB_H + S.SB_CAP_T - 2), 'Top crush cap: 4 mm soft\n+ 4 mm firm lattice'),
                  (tb(-S.SB_CAP_OUT[2] + 1, S.SB_H - 4), 'Solid band over the tray end'),
+                 (tb(-S.a_sb + 0.1, S.SB_H - S.SB_GROOVE_Z), 'Bead in the band snaps into a' + chr(10) + 'groove round the tray'),
                  (tb(cx1 - 6, S.sb_z_top_in - 0.5), 'Top pad cut-out over the C1 + cap'),
                  (tb(-2, 55), 'Mica between C1 and C2'),
                  (tb(cx2 + 9, S.SB_END_T + 2.4), '3.8 mm TPU spacer + 1 mm EVA:\n~3 mm more stroke for the cells\nin bottom-down drops'),

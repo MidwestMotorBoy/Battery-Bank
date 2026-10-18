@@ -51,6 +51,24 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
                     - The top EVA has slots for the wires.
                 - Holes and pads are on the board DXF's `TAB_PADS` layer.
                 - Take the gauge's PACK-/PACK+ Kelvin sense from the pads.
+            - **Vibration and trail durability (2026-10-18):**
+                - **Cells are preloaded everywhere:**
+                    - crush ribs on the cell-zone walls flatten 0.25 mm into the liner;
+                    - the floor spacer prints 0.4 mm taller than its gap, which takes up MJF's ±0.3 mm;
+                    - the EVA lanes are squeezed about 20 %.
+                - **Cover:**
+                    - It has a 0.3 mm joint all round, because nylon grows about 0.35 mm more than aluminium over 60 K.
+                    - The joint is sealed with a bead of neutral-cure silicone, which acts as the gasket.
+                    - Four SMD standoffs (about 3.6 mm, `COVER_STANDOFFS` on the board DXF) carry crush loads instead of the parts.
+                    - Use M2 thread-forming screws with a nylon patch or a plastic-safe threadlocker.
+                - **Caps:**
+                    - A bead inside each cap band snaps into a 0.3 mm groove round the tray.
+                    - The top cap has a drain channel from the port well.
+                - **Assembly:**
+                    - Give the PACK strips a small S-bend, and keep their solder joints away from the bend.
+                    - Weld at the cells.
+                    - Tack the sense wires in their slots with neutral-cure silicone.
+                - **Open item for the board:** C421/C521 (100 µF 35 V polymer, about 7.7 mm tall) and C208 (hybrid, about 5.8 mm tall) don't fit the 3.2 mm F.Cu height or the B.Cu room. Pick lower-profile parts, or raise the cover.
             - **BLE antenna:** the CC2340R5MODA goes on B.Cu at the right board edge (+y, the C4 / PACK+ side), antenna end at the edge, centre 19.1 mm below the top edge (KiCad about 116.6, 81.9).
                 - That leaves 10 mm of ground above it and 10 mm to the USB-C bodies.
                 - The board's ground plane sits between it and the aluminium cover, and it radiates out through the printed side wall. The cover stays whole.

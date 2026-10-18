@@ -304,26 +304,36 @@ SB_PORT_L, SB_PORT_W = S.USB_SEAL_W + 0.2, S.USB_SEAL_H + 0.2
 # board top stops: the board's top edge bears on these, so drop loads reach the tray through the board edge, not the USB-C
 SB_STOPS = [(aI, SB_XC, S.SB_STOP_Y0, aI), (aI, SB_XC, -aI, -S.SB_STOP_Y0)]   # x to SB_XC: shares edges with the pillars
 SB_RUPT = S.sb_pos_caps['bottom'] if S.SB_RUPT_D > 0 else []
+# crush ribs: on the +-y walls at each cell column, and on the -x wall at each cell row (they flatten on assembly)
+_cw, _ch, _ac = S.SB_CRUSH_W/2, S.SB_CRUSH_H, S.a_cav
+CRUSH = ([(xc - _cw, xc + _cw, _ac - _ch - 0.3, _ac + 0.01) for xc in (-S.pocket_r, S.pocket_r)]
+         + [(xc - _cw, xc + _cw, -_ac - 0.01, -_ac + _ch + 0.3) for xc in (-S.pocket_r, S.pocket_r)]
+         + [(-_ac - 0.3, -_ac + _ch, yc - _cw, yc + _cw) for yc in (-S.pocket_r, S.pocket_r)])
+# (the extra 0.3 sinks each rib into the curved wall so it is attached along its whole length)
 
 def side_shell():
     """one-piece tray, open on +x only"""
     hz, hw = hole_slabs()
     zr = S.SB_END_T - S.SB_RUPT_T if SB_RUPT else 0.0
-    zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H,
-                 *[round(z, 6) for z in hz]})
-    cur = [rr_pts(*S.SB_OUT), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL + SB_STOPS]
+    g0, g1 = S.SB_GROOVE_Z - S.SB_GROOVE_W/2, S.SB_GROOVE_Z + S.SB_GROOVE_W/2
+    grooves = [(g0, g1), (S.SB_H - g1, S.SB_H - g0)]
+    zc0, zc1 = S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0
+    zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H, zc0, zc1,
+                 *[round(z, 6) for z in hz], *[v for gz in grooves for v in gz]})
+    cur = [rr_pts(*S.SB_OUT), rr_pts(*S.SB_GROOVE), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL + SB_STOPS + CRUSH]
     cur += [stady_pts(x, y, SB_PORT_L, SB_PORT_W) for x, y in SB_PORTS] + [circ_pts(x, y, S.SB_RUPT_D/2) for x, y in SB_RUPT]
     for w in set(np.round(hw, 6)):
         for sy in (-1, 1): cur.append(xrect_pts(SB_XC - S.SB_INSERT_L, SB_XC, sy*S.sb_pillar_y - w, sy*S.sb_pillar_y + w))
     def solid(k, x, y):
         zm = (zs[k] + zs[k+1]) / 2
-        out = rr_in(x, y, *S.SB_OUT)
+        out = rr_in(x, y, *(S.SB_GROOVE if any(a < zm < b for a, b in grooves) else S.SB_OUT))
         if zm < zr: return out & ~(sum(circ_in(x, y, cx, cy, S.SB_RUPT_D/2) for cx, cy in SB_RUPT) > 0)
         if zm < S.SB_END_T: return out
         if zm > S.sb_z_top_in:
             s = out & ~(sum(stady_in(x, y, px, py, SB_PORT_L, SB_PORT_W) for px, py in SB_PORTS) > 0)
             return s & ~xrect_in(x, y, *SB_SLOT) if zm < S.sb_z_top_in + S.SB_SLOT else s
         s = (out & ~cav_in(x, y)) | (rib1_in(x, y) & cav_in(x, y))
+        if zc0 < zm < zc1: s |= sum(xrect_in(x, y, *p) for p in CRUSH) > 0
         if zm > S.sb_zb1: s |= sum(xrect_in(x, y, *p) for p in SB_STOPS) > 0
         if zm < S.sb_z_pad1:
             s |= sum(xrect_in(x, y, *p) for p in SB_PIL) > 0
@@ -363,23 +373,29 @@ def cap_corner_in(x, y):
     x0, x1, h = S.SB_CAP_OUT[0], S.SB_CAP_OUT[1], S.SB_CAP_OUT[2]; c = S.SB_CAP_CORNER
     return ((x < x0 + c) | (x > x1 - c)) & (np.abs(y) > h - c)
 SB_WELL = (S.sb_port_x - S.SB_WELL_H/2, S.sb_port_x + S.SB_WELL_H/2, -S.SB_WELL_W/2, S.SB_WELL_W/2)
+DRAIN = (SB_WELL[1] - 0.01, S.SB_CAP_OUT[1] + 0.5, -S.SB_DRAIN_W/2, S.SB_DRAIN_W/2)   # well floor out through the +x wall
+_g = S.SB_GROOVE   # bead: the band's inner profile stepped in to the groove (less the same squeeze) on the -x and +-y sides
+CAP_BEAD_IN = (_g[0] + S.SB_CAP_SQUEEZE, CAP_BAND_IN[1], _g[2] - S.SB_CAP_SQUEEZE, max(_g[3] - S.SB_CAP_SQUEEZE, 0), 0.0)
 def side_cap(zone='body', well=False):
     """bottom cap in place (z < 0 is the crush slab); the top cap is the same part mirrored, with the port well"""
     T, So, B = S.SB_CAP_T, S.SB_CAP_SOFT, S.SB_CAP_BAND
     x0, x1, h = S.SB_CAP_OUT[0], S.SB_CAP_OUT[1], S.SB_CAP_OUT[2]; c = S.SB_CAP_CORNER
-    cur = [rr_pts(*S.SB_CAP_OUT), rr_pts(*CAP_BAND_IN)]
+    cur = [rr_pts(*S.SB_CAP_OUT), rr_pts(*CAP_BAND_IN), rr_pts(*CAP_BEAD_IN)]
     for xa, xb in ((x0, x0 + c), (x1 - c, x1)):
         for ya, yb in ((-h, -h + c), (h - c, h)): cur.append(xrect_pts(xa, xb, ya, yb))
-    if well: cur.append(xrect_pts(*SB_WELL))
+    if well: cur += [xrect_pts(*SB_WELL), xrect_pts(*DRAIN)]
+    bz0, bz1 = S.SB_GROOVE_Z - S.SB_BEAD_W/2, S.SB_GROOVE_Z + S.SB_BEAD_W/2
+    zs = [-T, -T + So, -S.SB_DRAIN_H, 0.0, bz0, bz1, B]
     def solid(k, x, y):
         s = rr_in(x, y, *S.SB_CAP_OUT)
         if well: s &= ~xrect_in(x, y, *SB_WELL)
-        if k == 2: s &= ~rr_in(x, y, *CAP_BAND_IN)
+        if well and k == 2: s &= ~xrect_in(x, y, *DRAIN)
+        if k >= 3: s &= ~rr_in(x, y, *(CAP_BEAD_IN if k == 4 else CAP_BAND_IN))
         cn = cap_corner_in(x, y)
         if zone == 'body': return s
         if zone == 'corner': return s & cn
-        return s & ~cn & ({'soft': k == 0, 'firm': k == 1, 'band': k == 2}[zone])
-    return build(cur, [-T, -T + So, 0.0, B], solid)
+        return s & ~cn & ({'soft': k == 0, 'firm': k in (1, 2), 'band': k >= 3}[zone])
+    return build(cur, zs, solid)
 
 def cap_mass(well):
     return sum(abs(check(side_cap(z, well))[1])/1000 * 1.21 * f for z, f in CAP_FILL.items())
@@ -387,14 +403,16 @@ def cap_mass(well):
 # ---- inside parts (no potting) ----
 def _cellzone_in(x, y): return rr_in(x, y, *S.SB_CAV) & ~rib1_in(x, y)
 def _cellzone_pts(): return [rr_pts(*S.SB_CAV), rib1_pts()]
-def end_pad(end, layer='eva'):
+def end_pad(end, layer='eva', free=False):
     """pads between the cell ends and an end wall: 'eva' (1 mm EVA, top or bottom) or the bottom 'spacer' (printed TPU,
     fills the rest of the floor zone under the EVA); cut-outs over the positive caps leave the button and vent holes
     open into a plenum"""
     caps = S.sb_pos_caps[end]; r = S.SB_VENT_CUT_D/2
     if end == 'top': zs = [S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
     elif layer == 'eva': zs = [S.sb_z_pad1 - S.SB_EVA_T, S.sb_z_pad1]
-    else: zs = [S.SB_END_T, S.sb_z_pad1 - S.SB_EVA_T - 1.0, S.sb_z_pad1 - S.SB_EVA_T]
+    else:
+        top = S.sb_z_pad1 - S.SB_EVA_T + (S.SB_AXIAL_PRELOAD if free else 0.0)   # printed free height squeezes the stack
+        zs = [S.SB_END_T, top - 1.0, top]
     cuts = TOP_SLOTS if end == 'top' else BOTTOM_RELIEFS + (CELL2_SLOT if layer == 'eva' else [])
     deep = BOTTOM_RELIEFS   # through the whole spacer; the CELL2 channel is only in its top 1 mm
     cur = _cellzone_pts() + [circ_pts(x, y, r) for x, y in caps] + [xrect_pts(*c) for c in cuts + CELL2_SLOT]
@@ -465,6 +483,10 @@ def eva_lanes():
     """3 x 1 mm EVA strips between the fish paper and B.Cu along the cell tangent lines (shown compressed)"""
     x0, x1 = aI + 0.2, S.sb_xb0
     return np.vstack([_box(x0, x1, y0, y1, z0, z1) for y0, y1, z0, z1 in S.sb_lanes()])
+def cover_standoffs():
+    """SMD standoffs on F.Cu that carry crush loads from the cover into the board (render only)"""
+    h = S.SB_STANDOFF_D/2
+    return np.vstack([_box(S.sb_xb1, S.sb_xb1 + S.sb_standoff_h, y - h, y + h, z - h, z + h) for y, z in S.SB_STANDOFFS])
 def ble_module():
     """BLE module envelope on B.Cu at the right edge (render only)"""
     y0, y1 = sorted((S.SB_ANT_SIDE*S.sb_ant_y[0], S.SB_ANT_SIDE*S.sb_ant_y[1]))
@@ -493,7 +515,7 @@ SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cove
               ('monolith_side_cap_bottom_mod_corner', lambda: side_cap('corner'), 0, 1),
               ('monolith_side_cap_top_mod_soft', lambda: side_cap('soft', True), 0, 1),
               ('monolith_side_cap_top_mod_corner', lambda: side_cap('corner', True), 0, 1),
-              ('monolith_side_floor_spacer', lambda: end_pad('bottom', 'spacer'), 0.30, 1),
+              ('monolith_side_floor_spacer', lambda: end_pad('bottom', 'spacer', free=True), 0.30, 1),
               ('monolith_side_eva_floor', lambda: end_pad('bottom'), 0.20, 1),
               ('monolith_side_eva_top', lambda: end_pad('top'), 0.20, 1),
               ('monolith_side_liner', side_pad, 1.2, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
