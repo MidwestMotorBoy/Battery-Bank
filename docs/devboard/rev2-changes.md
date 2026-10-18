@@ -55,6 +55,12 @@ Changes to make in the next revision of the dev board. Add items as rev 1 is rou
   - VBUS behaviour on attach and on a PD contract change.
 
   Electrolytics come off first, then MLCCs from the back row. Keep the smallest set that passes with margin, then design rev 2 for that set (also try fewer larger-value MLCCs, or one size up instead of a polymer).
+- **Simulation results (2026-10-17, [cap-reduction-sims-2026-10-17.md](cap-reduction-sims-2026-10-17.md)):**
+  - **Charger polymers C421/C432:** stay. They are the smallest way to meet the 80 µF rule.
+  - **First try:**
+    - C443/C543 → one 22 µF 1206. Blocked by the TPS25751's 120 µF cSrcBulkShared note until that is confirmed not to apply to a dedicated supply.
+    - C435/C535 removed.
+  - **Then, only if the polymer stays cool:** C427/C527 removed.
 - **Then:** use the area saved to tighten the layout in rev 2, alongside the other cuts (dev-only test loops, measurement links, tuning links per the bring-up item below).
 
 ## Candidates found during rev 1 layout (confirm before adding)
