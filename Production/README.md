@@ -147,9 +147,40 @@ Parts: 256.
 - **The dual parts on offer don't qualify:** the genuine Vishay SiSB46DN is out of stock and has 15.8 mΩ at 4.5 V (today's part: 10 mΩ). The stocked "SiSB46DN-HXY" clone lists specs the original doesn't have. Other duals are 13–22 mΩ.
 - **Not worth it:** the gain would be only about 31 mm² for both ports, so the four singles per port stay.
 
+## Board: stack-up, outline and pour plan (2026-10-17)
+
+`tools/make_board.py` writes the stack-up, layer table, thickness and outline into `Monolith.kicad_pcb`. It patches an existing board without touching footprints, and refuses once the board has copper. It also copies the dev board's custom DRC rules to `Monolith.kicad_dru`.
+
+**Outline:** the board in the top cap, from `mechanical/monolith_parts.py`: **40.5 × 40.5 mm, R9.35 corners, about 1,565 mm² per side**, centred at (100, 100).
+
+- `mechanical/monolith_bottom_pcb.dxf` is the 43.3 mm bottom end board with the 8 mm vent, not this board.
+- The USB-C notches join the outline when J401/J501 are placed at the edge. Until then DRC reports 4 open-outline errors from their footprints.
+- Courtyard area is 1,981 mm², so double-sided placement is required, and even then the board is tight.
+- `monolith_parts.py` is out of date: it still models vertical Amphenol ports on the cap face, LEDs and a heat plate.
+
+**Stack-up:** 6 layers, 0.8 mm, 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. JLC publishes no 0.8 mm 6-layer stack and no net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
+
+| Layer | Copper | Dielectric below | Role | Never |
+|---|---|---|---|---|
+| F.Cu | 70 µm | prepreg 0.10 | parts that make heat (power stages, inductors, BQ25756s), facing the gap pad and heatsink; one pour per power net in its block; GND fill elsewhere, stitched to In1 every 3–5 mm | sense pairs through power pours |
+| In1.Cu | 17.5 µm | core 0.12 | **solid GND**: return for F.Cu and both hot loops | any trace, split or other-net island |
+| In2.Cu | 17.5 µm | prepreg 0.15 | signals, vertical only: Kelvin pairs, cell taps, FB/ILIM, I2C; 3V3 as a local pour | high current, switch nodes |
+| In3.Cu | 17.5 µm | core 0.12 | signals, horizontal only: cross-board nets, gate-drive pairs that must leave F.Cu; PP5V local pours | high current |
+| In4.Cu | 17.5 µm | prepreg 0.10 | **solid GND**: return for B.Cu | any trace, split or other-net island |
+| B.Cu | 70 µm | | cell side: small passives and logic (double-sided assembly); mirror of F.Cu high-current pours where no parts sit, stitched; GND fill | switch-node copper |
+
+- **Second ground:** the gauge's VSS (CELL_N) is local fill on F.Cu/B.Cu around U101, joined to GND only through RS101. It never goes on In1/In4.
+- **Antenna:** keep-out on every layer under the CC2340 antenna end, with solid ground either side at a board edge.
+- **Board thickness:** 0.8 mm allows JLC's small vias (≤ 1 mm boards with ENIG), useful under the 0.4 mm-pitch TPS25751.
+- **Via rules (`Monolith.kicad_pro`):**
+    - default 0.45/0.3 mm, HighCurrent 0.8/0.4 mm;
+    - minimum lowered to **0.35/0.2 mm** for fan-out (holes under 0.3 mm may carry a JLC surcharge: check the quote);
+    - tracks 0.15/0.15 mm (JLC 2 oz multilayer); copper to edge 0.2 mm.
+- **USB-C:** J401/J501 are now the **TYPE-C 16PCB0.8 IP68** (C55629727). Its land pattern is identical to the dev board's 1.6 mm version.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **Cap cut still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
     - C427/C527 (USB-side MLCC): only if dev board bring-up shows the polymer stays cool at 20 V 5 A reverse from a low pack (it reaches 85 % of its rating), or if firmware derates that case.
-3. **Decide the production board's thickness and stack-up**, then start the layout from `mechanical/monolith_bottom_pcb.dxf`.
+3. **Place the board**, double-sided, inside the 40.5 mm outline. Then update `mechanical/monolith_parts.py` to the real connector, port and board geometry.

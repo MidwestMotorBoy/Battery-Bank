@@ -185,6 +185,9 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "C417": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C439": P(C0402, "C7419416", "FCC0402B333K500AT"),
         "TH401": P(R0402, "C77131", "NCP15XH103F03RC"),
+        # 0.8 mm board (stack-up 2026-10-17): the 0.8 mm version of the same IP68 connector, identical land pattern
+        "J401": P("MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68", "C55629727",
+                  "TYPE-C 16PCB0.8 IP68 (Shou Han)", "TYPE-C 16PCB0.8 IP68"),
         # 10x10 -> 7.8x7.6x3.1 mm: 13.7 mOhm max, Irms 13 A (40 C rise), Isat 17 A at a 40 % drop. Worst case (20 V 5 A
         # reverse from a 10 V pack) ~10.7 A rms, ~12.4 A peak: ~1.6 W DCR loss, L near 1.7 uH at the peak (L/RSNS
         # 0.34 uH/mOhm, inside TI's 0.05-1.26 stability range). Measure inductor temperature on the dev board.
@@ -649,8 +652,10 @@ def main():
               newline="\n") as f:
         f.write(APS0730)
     pro = open(os.path.join(DEV, "MonolithDev.kicad_pro"), encoding="utf-8").read()
-    pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"')
-    open(os.path.join(PROD, "Monolith.kicad_pro"), "w", encoding="utf-8", newline="\n").write(pro)
+    pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"').replace('"MonolithDev.kicad_sch"', '"Monolith.kicad_sch"')
+    pro = pro.replace('"name": "MonolithDev"', '"name": "Monolith"')
+    if not os.path.exists(os.path.join(PROD, "Monolith.kicad_pro")):  # it holds the board's rules from here on
+        open(os.path.join(PROD, "Monolith.kicad_pro"), "w", encoding="utf-8", newline="\n").write(pro)
 
     process(ROOT, os.path.join(DEV, ROOT_DEV))
     for sh in SHEETS:

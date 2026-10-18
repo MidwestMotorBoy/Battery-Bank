@@ -21733,7 +21733,7 @@
 				)
 			)
 		)
-		(property "Value" "TYPE-C 16PCB1.6 IP68"
+		(property "Value" "TYPE-C 16PCB0.8 IP68"
 			(at 45.72 76.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21743,7 +21743,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68"
+		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
 			(at 49.53 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21776,7 +21776,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55629729"
+		(property "LCSC" "C55629727"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21787,7 +21787,7 @@
 				)
 			)
 		)
-		(property "MPN" "TYPE-C 16PCB1.6 IP68 (Shou Han)"
+		(property "MPN" "TYPE-C 16PCB0.8 IP68 (Shou Han)"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -25108,7 +25108,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "716c5a47-0138-4e5f-a7f3-cdac87c9ae9a")
+		(uuid "12c3cc9d-54b2-48c2-afbe-b087bde4011b")
 	)
 	(wire
 		(pts
@@ -25118,7 +25118,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3f7185d5-1a9f-4b0a-9d14-c75a9c3ea9ed")
+		(uuid "a4825668-d710-4220-96c7-43f012bac5ef")
 	)
 	(wire
 		(pts
@@ -25128,7 +25128,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c3ae8b95-81d2-42dd-9054-b257bd1f2837")
+		(uuid "5b968022-ae4d-418c-bfb9-96c625adb77c")
 	)
 	(wire
 		(pts
@@ -25138,7 +25138,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2615b531-b1a6-4322-9959-59397c714bf1")
+		(uuid "041e91ae-7dab-4a25-8be9-76d5d1786000")
 	)
 	(wire
 		(pts
@@ -25148,7 +25148,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cc75fc8e-11f9-4594-b059-5d8b05e88ac8")
+		(uuid "6b9abce2-f0ca-4b06-a3e8-5bc490f84e3a")
 	)
 	(wire
 		(pts
@@ -25158,7 +25158,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9292d1da-a1e1-4569-87fb-767ac3ab9508")
+		(uuid "ae6eadc0-48c9-4882-a3e2-1c59f5e7794f")
 	)
 	(wire
 		(pts
@@ -25168,7 +25168,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "280ab8a0-b4ff-45e1-97ce-9abf3d78006a")
+		(uuid "84c7e994-28a6-4e35-86d0-576870596ade")
 	)
 	(wire
 		(pts
@@ -25178,7 +25178,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0ba7898d-eb3b-4038-8b57-262d0ea8b338")
+		(uuid "879e8992-e470-4af2-a21d-f6a84e7302ea")
 	)
 	(wire
 		(pts
@@ -25188,7 +25188,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "edd43744-f163-42fa-889d-7a1d578b1c91")
+		(uuid "d7ba176d-7b1b-4941-9c80-3c3eefa9a73d")
 	)
 	(wire
 		(pts
@@ -25198,7 +25198,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e5b8f4a4-32a2-4ed8-a178-0fa37d580f65")
+		(uuid "79658b6b-8161-4d33-b26e-0ddb078a5970")
 	)
 	(wire
 		(pts
@@ -25208,7 +25208,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "31b1b7ef-6786-4a9d-b451-642f963c061b")
+		(uuid "32fd79db-b54f-4a0c-93be-7de24e5d34b3")
 	)
 	(wire
 		(pts
@@ -25218,7 +25218,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e8019fed-0628-4470-a3ca-18a5426cad07")
+		(uuid "0cb004ba-984c-4622-9c1b-3899948eae8a")
 	)
 	(wire
 		(pts
@@ -25228,7 +25228,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b906911d-7168-4a55-8a53-71b8d1f6236b")
+		(uuid "93dedcfb-0416-40a0-8d16-79fe02ad28f2")
 	)
 	(wire
 		(pts
@@ -25238,7 +25238,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7d80c0bc-96b5-493c-9275-0d9f5ee2b7d2")
+		(uuid "eeec16d8-a4ef-4909-85ca-5787ce60671c")
 	)
 	(wire
 		(pts
@@ -25248,7 +25248,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ece9cd4b-0943-4c91-b9fb-f9d86100aca3")
+		(uuid "f1890610-a48c-4b8c-829d-e0474e7f17b3")
 	)
 	(wire
 		(pts
@@ -25258,7 +25258,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "edf9ea2c-73e9-406d-9210-36cd1f874743")
+		(uuid "88e42eb5-bdf5-4426-afb6-54a1f39f02c4")
 	)
 	(wire
 		(pts
@@ -25268,7 +25268,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7d741d03-9e28-4cf4-8ef2-1f56283e2c79")
+		(uuid "1eca242f-a9aa-43dd-8cfa-5e572551fb28")
 	)
 	(wire
 		(pts
@@ -25278,7 +25278,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "afbc7554-de8f-487f-acb3-217a299a940b")
+		(uuid "bef6606f-d902-46e2-a01c-032ccdc048b4")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -25310,7 +25310,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "7fe2b2e6-a3e6-4f31-a587-a746f0a313d4")
+		(uuid "abb13666-93be-443e-8362-cea1bb35f177")
 		(property "Reference" "#PWR9033"
 			(at 154.94 78.74 0)
 			(hide yes)
@@ -25366,7 +25366,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "cf745e43-1f05-48cb-99ea-901a0700e428")
+			(uuid "ede2ec73-c9a0-481a-af9e-c99f24a75471")
 		)
 		(instances
 			(project "Monolith"
@@ -25391,7 +25391,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "38eb068f-2371-48f6-8807-df40a5d2551c")
+		(uuid "033d5d4c-ad0e-4315-a3fb-131ad6795e4d")
 		(property "Reference" "#PWR9036"
 			(at 50.8 195.58 0)
 			(hide yes)
@@ -25447,7 +25447,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "3dc691b2-3c52-4b63-93c5-edd1c803d13a")
+			(uuid "aeaa73a9-4513-437c-bcc0-78c966450219")
 		)
 		(instances
 			(project "Monolith"
@@ -25524,11 +25524,11 @@
 	)
 	(no_connect
 		(at 138.43 166.37)
-		(uuid "116ff5d6-a79e-4360-8593-b559e96fa807")
+		(uuid "862c5cbf-39e9-4e47-bc63-b85a7a7a180d")
 	)
 	(no_connect
 		(at 138.43 163.83)
-		(uuid "85821111-0b0f-45f6-a9a7-2237957c3889")
+		(uuid "2964d9d0-500a-46d4-b481-dbbf3c24df45")
 	)
 	(wire
 		(pts
@@ -25538,7 +25538,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1baa7579-349c-487a-9353-6654140f3fb8")
+		(uuid "e6896ef6-cc44-40c5-bb64-64cf4d71cad3")
 	)
 	(wire
 		(pts
@@ -25548,7 +25548,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "94bf023d-9f21-4b2f-af52-70344a173727")
+		(uuid "a47ae732-4ef1-407f-8aca-d45685f1c1dd")
 	)
 	(wire
 		(pts
@@ -25558,7 +25558,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "49787395-7ef6-4147-b4ce-c2f3f4fdf943")
+		(uuid "9ea3ffef-57a9-4799-b563-903e7f0616e5")
 	)
 	(wire
 		(pts
@@ -25568,7 +25568,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "441f5b54-ee95-4099-bc63-400341d9b596")
+		(uuid "de0328d0-d95f-42aa-90a6-dbef1313caff")
 	)
 	(wire
 		(pts
@@ -25578,7 +25578,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fc52eaad-218e-49e7-9d9e-8240bbeb47cd")
+		(uuid "eef290f6-0912-4e70-a3fe-1dcb5bd2a8a3")
 	)
 	(wire
 		(pts
@@ -25588,7 +25588,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8cf05175-72c5-4254-aa97-a6730db28406")
+		(uuid "e49e1e97-13a3-4749-b0c0-fe64b1b545f0")
 	)
 	(wire
 		(pts
@@ -25598,7 +25598,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7b611888-fd0e-486f-9b7d-6b0ef274473d")
+		(uuid "18d6a4f5-a36a-4201-ad7d-873efd3977b7")
 	)
 	(wire
 		(pts
@@ -25608,31 +25608,31 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "87c7a8ba-8842-4d5f-9097-cd9fadab6ca1")
+		(uuid "30fdb300-d684-4239-b1f0-e583642225a8")
 	)
 	(junction
 		(at 149.86 111.76)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "162d219b-3171-4548-bcf2-3c8fc8b71a7c")
+		(uuid "0bb31d37-1b34-4fa8-a4dc-618f635800d4")
 	)
 	(junction
 		(at 149.86 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "4a5f3c76-832b-4339-b857-a8f42f8ef248")
+		(uuid "12a4cb9d-2530-4133-90c9-6a0ec6ad2342")
 	)
 	(junction
 		(at 149.86 116.84)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "88cbc9d5-b432-4e67-ba55-4cfb6314f412")
+		(uuid "edfe738f-aafb-4d51-8208-34fad2a72b7e")
 	)
 	(junction
 		(at 149.86 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "50a3a1c8-4882-4ef1-b06b-bcbdb4627d1a")
+		(uuid "63b94ec4-4768-49d8-9995-c1bd48572fb3")
 	)
 	(wire
 		(pts
@@ -25642,7 +25642,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5e0680e6-a4d5-4c7d-8282-d8b24227f6b1")
+		(uuid "d103cf87-6345-41bc-8bde-0cdcdff30fab")
 	)
 	(wire
 		(pts
@@ -25652,7 +25652,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c1cee925-b35d-4b3f-a767-bb56ad18ef85")
+		(uuid "0bdbe526-3878-4bb9-a96d-e2312ef04b6f")
 	)
 	(wire
 		(pts
@@ -25662,7 +25662,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "36f84d7d-7915-41fb-a318-cb456b9bea62")
+		(uuid "f8050696-19bc-470d-b3f7-a7ccdaad2d38")
 	)
 	(wire
 		(pts
@@ -25672,7 +25672,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f7f7ffbd-e899-4d4a-93d0-079cb15f34d8")
+		(uuid "9339e260-fdb1-4ce9-9b8d-45199c7ad104")
 	)
 	(wire
 		(pts
@@ -25682,7 +25682,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e90919b8-c4ce-40c8-a323-51ace98427a2")
+		(uuid "c8756b6d-860f-49aa-9697-c84f584371bc")
 	)
 	(sheet_instances
 		(path "/"
