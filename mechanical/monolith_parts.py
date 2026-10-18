@@ -333,10 +333,18 @@ def side_shell():
         return s
     return build(cur, zs, solid)
 
+ANT_NOTCH = (S.sb_x_cv0, S.sb_x_cv1, *sorted((S.SB_ANT_SIDE*S.sb_ant_y0, S.SB_ANT_SIDE*S.sb_ant_y1)))
 def side_cover():
-    """1.0 mm aluminium; screw and vent holes are in monolith_side_cover.dxf, not in this model"""
+    """1.0 mm aluminium with the antenna notch; screw and vent holes are in monolith_side_cover.dxf, not in this model"""
     p = (S.sb_x_cv0, S.sb_x_cv1, -S.sb_cover_w/2, S.sb_cover_w/2)
-    return build([xrect_pts(*p)], [S.sb_cover_z0, S.sb_cover_z1], lambda k, x, y: xrect_in(x, y, *p))
+    return build([xrect_pts(*p), xrect_pts(*ANT_NOTCH)], [S.sb_cover_z0, S.sb_ant_z0, S.sb_ant_z1, S.sb_cover_z1],
+                 lambda k, x, y: xrect_in(x, y, *p) & ~(xrect_in(x, y, *ANT_NOTCH) & (k == 1)))
+def ant_plate():
+    """printed window plate in the cover notch (cover thickness), set in neutral-cure silicone"""
+    c = S.SB_ANT_CLEAR; s = S.SB_ANT_SIDE
+    ya, yb = sorted((s*(S.sb_ant_y0 + c), s*S.sb_ant_y1))
+    p = (S.sb_x_cv0, S.sb_x_cv1, ya, yb)
+    return build([xrect_pts(*p)], [S.sb_ant_z0 + c, S.sb_ant_z1 - c], lambda k, x, y: xrect_in(x, y, *p))
 
 def side_board_dummy():
     """board slab (bottom corners notched) plus the two USB-C envelopes (bottom flush with the board bottom)"""
@@ -437,7 +445,7 @@ SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cove
               ('monolith_side_eva_top', lambda: end_pad('top'), 0.20, 1),
               ('monolith_side_liner', side_pad, 1.2, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
               ('monolith_side_insulator', insulator, 1.2, 1), ('monolith_side_usb_hold', hold_pads, 0.20, 1),
-              ('monolith_side_shim', board_shim, 1.21, 1)]
+              ('monolith_side_shim', board_shim, 1.21, 1), ('monolith_side_ant_plate', ant_plate, 1.27, 1)]
 if __name__ == '__main__':
     import sys
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all

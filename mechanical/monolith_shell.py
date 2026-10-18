@@ -173,7 +173,14 @@ SB_CAP_PROUD = 2.0    # band wall: stands this proud of the shell faces, so flat
 SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the cap, in x and y
 SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
 SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
-SB_ANT_WIN   = (12.5, 21.0, 10.0)    # OPTION, not cut: cover window over the BLE antenna (y0, y1, height down from the board top)
+# BLE module (CC2340R5MODA, 7 x 10 mm) on the right (+y, C4 / PACK+) board edge, antenna end at the edge: >= 10 mm of
+# ground along the edge above it (TI SWRS349A fig. 9-2) and the cans 7-10 mm behind. The cover gets a notch over it,
+# closed by a printed plate set in neutral-cure silicone.
+SB_ANT_SIDE  = 1                     # +1 = right edge seen from the cover (+y), -1 = left
+SB_ANT_BELOW = 19.1                  # module centre below the board's top edge (10 mm of ground above, 10 mm from the USB-C bodies)
+SB_ANT_MOD   = (7.0, 10.0)           # module: along the edge, into the board
+SB_ANT_NOTCH = (12.0, 6.0)           # cover notch: along the edge, in from the cover edge
+SB_ANT_CLEAR = 0.15                  # plate to notch, each side
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
 SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
@@ -210,6 +217,9 @@ SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
 SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
+sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z), the notch is centred on it
+sb_ant_z0, sb_ant_z1 = sb_ant_zc - SB_ANT_NOTCH[0]/2, sb_ant_zc + SB_ANT_NOTCH[0]/2
+sb_ant_y0, sb_ant_y1 = sb_cover_w/2 - SB_ANT_NOTCH[1], sb_cover_w/2   # |y| span of the notch
 
 def _dxf(path, ents):
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")
@@ -230,17 +240,23 @@ def write_side_dxf(path):
     for y in (-pocket_r, 0, pocket_r): _line(e, y, z0, y, z1, 'CELLS_REF')
     for z in (sb_z_cell0, sb_z_cell1): _line(e, -w, z, w, z, 'CELLS_REF')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2 + 2, 'VENT_KEEPOUT')
+    s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module at the edge; no gap pad over the notch area
+    _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE')
+    _rect(e, s*(sb_ant_y0 + sb_ant_y1)/2, sb_ant_zc, sb_ant_y1 - sb_ant_y0, sb_ant_z1 - sb_ant_z0, 'GAPPAD_KEEPOUT')
     _dxf(path, e)
 
 def write_cover_dxf(path):
     """Aluminium cover flat pattern: DXF x = shell y, DXF y = shell z. OUTLINE, HOLES (M2 clearance,
     use low-head screws: the bottom bumper covers them), VENT (ePTFE patch on the inside)."""
-    e = []
-    _rect(e, 0, (sb_cover_z0 + sb_cover_z1)/2, sb_cover_w, sb_cover_z1 - sb_cover_z0, 'OUTLINE')
+    e = []; s, w = SB_ANT_SIDE, sb_cover_w/2
+    p = [(-w, sb_cover_z0), (w, sb_cover_z0), (w, sb_cover_z1), (-w, sb_cover_z1)]   # corners, counter-clockwise
+    notch = [(s*w, sb_ant_z0), (s*sb_ant_y0, sb_ant_z0), (s*sb_ant_y0, sb_ant_z1), (s*w, sb_ant_z1)]
+    p = p[:2] + notch + p[2:] if s > 0 else p + notch[::-1]
+    for i in range(len(p)): _line(e, *p[i], *p[(i+1) % len(p)], 'OUTLINE')
     for sy in (-1, 1): _circ(e, sy*sb_pillar_y, sb_screw_z, 1.1, 'HOLES')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2, 'VENT')
-    y0, y1, h = SB_ANT_WIN   # option only: a window here needs a bonded non-metal patch
-    _rect(e, (y0 + y1)/2, sb_zb1 - h/2, y1 - y0, h, 'ANT_WINDOW_OPTION')
+    c = SB_ANT_CLEAR    # the printed antenna window plate: notch less the clearance, outer edge on the cover edge
+    _rect(e, s*(sb_ant_y0 + c + w)/2, sb_ant_zc, w - sb_ant_y0 - c, sb_ant_z1 - sb_ant_z0 - 2*c, 'ANT_PLATE')
     _dxf(path, e)
 
 def drop_g(h_m, stroke_mm, shape=1.3):
@@ -297,5 +313,9 @@ if __name__ == '__main__':
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
         'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
+        'antenna notch below the top cap band (z)': (SB_H - SB_CAP_BAND) - sb_ant_z1,
+        'antenna notch below the cover lip slot (z)': sb_z_top_in - sb_ant_z1,
+        'BLE module: ground along the edge above it (>= 10)': sb_zb1 - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
+        'BLE module 10 mm below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
     }
     for k, v in chk.items(): print(f"  {'ok ' if v >= 0 else 'BAD'} {v:6.2f}  {k}")

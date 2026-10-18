@@ -15,7 +15,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SS = 2
 C = dict(shell=(214, 214, 208), cover=(196, 204, 222), board=(52, 140, 84), cell=(84, 132, 196), soft=(250, 210, 160),
          firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200),
-         mica=(212, 180, 56), shim=(54, 166, 166))
+         mica=(212, 180, 56), shim=(54, 166, 166), antp=(120, 120, 128))
 INK, MUTED, RULE, PANEL, ACCENT = (34, 34, 38), (110, 112, 118), (222, 222, 226), (247, 247, 249), (31, 78, 121)
 LEADER = (150, 152, 158)
 
@@ -31,8 +31,9 @@ PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish pa
          (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Top pad 1.0 mm', 'EVA foam', 'pad_top'),
          (9, 'Board insulator 0.2 mm', 'fish paper', 'insul'), (10, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'),
          (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
-         (13, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
-         (14, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (15, 'Top crush cap', 'TPU 95A lattice', 'capt')]
+         (13, 'Cover 1.0 mm, 2 x M2, antenna notch', 'aluminium', 'cover'),
+         (14, 'Antenna window plate', 'PETG, silicone-sealed', 'antp'),
+         (15, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (16, 'Top crush cap', 'TPU 95A lattice', 'capt')]
 NUM = {k: n for n, _, _, k in PARTS}
 def assembly():
     A = [('shell', P.side_shell(), C['shell'])]
@@ -43,7 +44,8 @@ def assembly():
           ('pad_floor', P.end_pad('bottom', 'spacer'), C['spacer']), ('eva_floor', P.end_pad('bottom'), C['eva']),
           ('pad_top', P.end_pad('top'), C['eva']),
           ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
-          ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover'])]
+          ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover']),
+          ('antp', P.ant_plate(), C['antp'])]
     for z in ('soft', 'firm', 'corner', 'band'):
         A.append(('capb_' + z, P.side_cap(z), C[z]))
         A.append(('capt_' + z, flipz(P.side_cap(z, True), S.SB_H), C[z]))
@@ -220,7 +222,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(antp=1.27, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -242,7 +244,7 @@ if __name__ == '__main__':
     cx1, cy1 = S.sb_cell_xy[(1, -1)]; cx2 = S.sb_cell_xy[(-1, -1)][0]
     LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA foam', C['eva']),
            ('mica', C['mica']), ('fish paper', C['paper']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
-           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim'])]
+           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('antenna plate', C['antp'])]
     w, d, L = SIZE()
 
     # ================= 1. assembled + exploded + parts list =================
@@ -257,13 +259,14 @@ if __name__ == '__main__':
                  (pj((S.SB_CAP_OUT[1] - 2, -S.SB_CAP_OUT[2] + 2, S.SB_H + S.SB_CAP_T - 3)), 'Dense corner noses for corner drops'),
                  (pj((S.sb_x_cv1, -8, 45)), 'Aluminium cover, also the heat spreader'),
                  (pj((S.sb_x_cv1, 0, S.SB_VENT_Z)), 'ePTFE pressure vent'),
+                 (pj((S.sb_x_cv1, S.SB_ANT_SIDE*(S.sb_ant_y0 + S.sb_ant_y1)/2, S.sb_ant_zc)), 'Antenna window: printed plate in a\ncover notch over the BLE module'),
                  (pj((S.SB_CAP_OUT[1], -14, S.SB_CAP_BAND - 2)), 'Solid band 2 mm proud of the tray:\nflat side drops land here'),
                  (pj((S.SB_CAP_OUT[1] - 12, -10, -S.SB_CAP_T + 1)), '8 mm graded TPU lattice at each end')],
                 475, 'r', 150)
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
-              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0))
+              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), antp=(146, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
         dd = EX.get(k, (0, 0, -40) if k.startswith('capb') else (0, 0, 40))
@@ -276,7 +279,7 @@ if __name__ == '__main__':
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
     BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
-               hold=60, cover=0, capb=180, capt=180)
+               hold=60, cover=0, antp=20, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
                 for g_, (ax, ay) in anchors.items()}
