@@ -105,11 +105,10 @@ with open(os.path.join(FAB, "MonolithDev-lcsc-order.csv"), "w", newline="", enco
     w = csv.writer(fh)
     w.writerow(["LCSC Part Number", "Order Qty", f"Needed ({BOARDS} boards)", "Per Board", "MPN", "Manufacturer",
                 "Description", "Designators", "Unit Price (USD)", "Ext. Price (USD)", "LCSC Stock", "Flag", "Notes"])
-    w.writerows(rows)
-    w.writerow([])
-    w.writerow(["", "", "", "", "", "", "", "Total (parts only)", "", round(total, 2)])
-    for ref, why in skipped + ELSEWHERE:
-        w.writerow([f"not ordered here: {ref}", "", "", "", "", "", "", "", "", "", "", "", why])
+    w.writerows(rows)                              # order lines only: LCSC's BOM tool reads every row as a part
+with open(os.path.join(FAB, "MonolithDev-lcsc-not-ordered.txt"), "w", newline="\n") as fh:
+    fh.write(f"Estimated parts total for {BOARDS} boards: ${total:.2f} (LCSC's own quote may be lower)\n")
+    fh.write("".join(f"Not on the LCSC order: {ref} - {why}\n" for ref, why in skipped + ELSEWHERE))
 with open(os.path.join(FAB, "MonolithDev-lcsc-quick-order.txt"), "w", newline="\n") as fh:
     fh.write("".join(f"{r[0]},{r[1]}\n" for r in rows))
 with open(os.path.join(FAB, "MonolithDev-lcsc-optional-dnp.csv"), "w", newline="", encoding="utf-8") as fh:

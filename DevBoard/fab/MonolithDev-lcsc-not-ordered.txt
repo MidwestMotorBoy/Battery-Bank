@@ -1,0 +1,3 @@
+Estimated parts total for 3 boards: $39.56 (LCSC's own quote may be lower)
+Not on the LCSC order: U301 - CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement (not on LCSC)
+Not on the LCSC order: NTCs for J102/J105-J107 - 4 per board wired Semitec 103AT-2 10k NTCs: none in stock at LCSC (DigiKey/Mouser)

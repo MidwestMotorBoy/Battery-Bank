@@ -10,7 +10,3 @@ C100114,50,6,2,2.54,BOOMELE(Boom Precision Elec),"Capped 2.54mm P=2.54mm Shunts,
 C55121754,40,39,13,RH-S2761-46R,ronghe,SMD Test Points ,"TP109,TP201,TP202,TP203,TP208,TP209,TP309,TP405,TP406,TP412,TP505,TP506,TP512",0.1976,7.9,10050,,SMT test loop on the 1.5 mm test pads (hand-solder)
 C1852078,3,3,1,INA190A5IDDFR,TI,"1 -200mV~40V 15uV 0.3V/us 150dB 500pA 48uA 500V/V TSOT-23-8 Instrumentation, Op Amps, Buffer Amps RoHS",U201,3.6379,10.91,25,,"INA190A5IDDFR; Sourcing field says DigiKey/Mouser, LCSC stocks it too"
 C1852068,3,3,1,INA190A1IDDFR,TI,"1 -200mV~40V 2uV 0.3V/us 150dB 500pA 48uA 25V/V TSOT-23-8 Instrumentation, Op Amps, Buffer Amps RoHS",U202,1.7695,5.31,151,,
-
-,,,,,,,Total (parts only),,39.56
-not ordered here: U301,,,,,,,,,,,,"CC2340R5MODAN0MHAR from TI.com, consigned to JLC for placement (not on LCSC)"
-not ordered here: NTCs for J102/J105-J107,,,,,,,,,,,,4 per board wired Semitec 103AT-2 10k NTCs: none in stock at LCSC (DigiKey/Mouser)
