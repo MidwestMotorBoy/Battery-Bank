@@ -132,7 +132,7 @@ def write_dxf(path):
 #   two M2 screws into heat-set inserts in the bottom corner pillars (hidden under the bumper).
 # The cover is recessed SB_LIP into a frame in the walls and doubles as the heat spreader.
 # No airflow vents; one adhesive ePTFE pressure vent over a hole in the cover (altitude).
-SB_INSUL     = 0.3    # Kapton / fish paper between the cell cans and the board
+SB_INSUL     = 0.3    # 0.2 mm fish paper between the cell cans and the board, plus 0.1 clearance
 SB_PCB_T     = 1.6    # production board thickness (1.6 mm for cost, 2026-10-18; was 0.8)
 SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1; the USB-C body is 1.97 above a 1.6 mm board)
 SB_GAP       = 0.5    # compressed gap pad between those parts and the cover
@@ -141,8 +141,8 @@ SB_LIP       = 0.8    # frame lip outside the cover (cover sits this far below t
 SB_REB       = 0.5    # rebate into the +-y walls that the cover edges rest in (wall left 0.7)
 SB_SLOT      = 1.0    # cover top edge tucks this far under the top-wall lip
 SB_END_T     = 1.6    # bottom and top walls
-SB_PAD_T     = 4.8    # floor zone under the cells: foam pad, and the two screw pillars beside it
-SB_TOP_PAD   = 1.0    # foam between the cell tops and the top wall
+SB_PAD_T     = 4.8    # floor zone under the cells: printed TPU spacer + 1 mm EVA, and the two screw pillars beside it
+SB_TOP_PAD   = 1.0    # 1 mm EVA between the cell tops and the top wall
 SB_SLIDE     = 2.5    # board slide that engages the ports (needs > SB_END_T - (USB_FACE_OUT - SB_END_T))
 SB_PCB_CLEAR = 0.2    # board edge to wall, and board to the end zones
 SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production board)
@@ -155,14 +155,16 @@ SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the 
 USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
 USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
 USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
-# drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md):
+# drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md).
+# Hobby build, sheet stock limited to 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper; everything else is printed.
 # nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.
-SB_SIDE_PAD  = 1.0    # pad wrapped round the -x and +-y faces of the cells: PORON (compliance); a silicone gap pad if the 100 W test runs hot
+SB_SIDE_PAD  = 0.2    # fish paper liner round the -x and +-y faces of the cells (wrap abrasion); thin, so the cans stay close to the walls
+SB_EVA_T     = 1.0    # EVA foam sheet: the cell-end pads (top, and over the TPU floor spacer) and, doubled, the USB-C hold-downs
 SB_SEP_T     = 0.2    # mica sheets in the cross-shaped gap between the cells (propagation barrier)
 SB_VENT_CUT_D = 14.0  # end-pad cut-out over each positive cap: button and vent holes stay open, the pad bears on the crimp rim
 SB_RUPT_D, SB_RUPT_T = 10.0, 0.6     # rupture windows: bottom wall thinned to SB_RUPT_T under the two bottom positive caps
 SB_STOP_Y0   = 14.0   # board top stops on the top-wall inside face, |y| from here to the wall (clear of the port holes)
-SB_HOLD_T    = 2.0    # silicone hold-down pad between each USB-C body and the cover (compresses to the gap)
+SB_HOLD_T    = 2.0    # 2 x 1 mm EVA hold-down between each USB-C body and the cover (compresses to the gap)
 SB_CAP_T     = 8.0    # TPU lattice crush zone beyond each end wall
 SB_CAP_SOFT  = 4.0    # outer part of it printed softer (graded: soft at the face, firmer behind)
 SB_CAP_BAND  = 9.0    # how far each cap's band wraps over the sides (bottom band stays clear of the cover vent)

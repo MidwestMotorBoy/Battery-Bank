@@ -33,14 +33,14 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
         - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
         - **Drop protection (2026-10-18):** no potting. The basis is `reports/Battery pack potting and drop protection.md`. The tray, cells and board form one stiff core, and TPU end caps outside it are the crush zone.
             - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
-            - **Inside:**
-                - PORON pads at the cell ends: 4.8 mm floor, 1.0 mm top. Cut-outs over each positive cap leave the vent open.
-                - A 1.0 mm PORON side wrap. Swap it for a silicone gap pad only if the 100 W test runs hot.
+            - **Inside (hobby build: the only sheet stock is 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper):**
+                - Cell-end pads of 1 mm EVA, with cut-outs over each positive cap so the vent stays open. The floor pad sits on a printed 3.8 mm TPU spacer (about 20 % gyroid).
+                - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), the insulator on the board's back, and rings on the four + ends (21 mm OD, about 10 mm hole).
                 - A 0.2 mm mica cross between the cells.
                 - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
-                - A TPU shim under the board, and silicone hold-down pads over the USB-C bodies.
+                - A TPU shim under the board, and 2 x 1 mm EVA hold-downs over the USB-C bodies.
             - **Rupture windows:** the floor is thinned to 0.6 mm under the bottom positive caps (C2, C4). This is a concept, still to be tested.
-            - **Cost of the protection:** the pack is now 57.2 × 52.0 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+            - **Cost of the protection:** the pack is now 56.4 × 50.4 × 96.6 mm, and about 361 g including the pads and mica (+23 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
             - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
             - **Open item:** the aluminium cover sits over the BLE antenna. `monolith_side_cover.dxf` has an `ANT_WINDOW_OPTION` layer for a possible window.
         - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).

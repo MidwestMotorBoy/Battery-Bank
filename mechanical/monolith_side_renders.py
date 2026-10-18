@@ -14,8 +14,8 @@ from monolith_render import camera, board_g, vol, CELL_G
 HERE = os.path.dirname(os.path.abspath(__file__))
 SS = 2
 C = dict(shell=(214, 214, 208), cover=(196, 204, 222), board=(52, 140, 84), cell=(84, 132, 196), soft=(250, 210, 160),
-         firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), poron=(222, 118, 168), wrap=(238, 172, 206),
-         mica=(212, 180, 56), insul=(246, 226, 118), hold=(146, 108, 198), shim=(54, 166, 166))
+         firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200),
+         mica=(212, 180, 56), shim=(54, 166, 166))
 INK, MUTED, RULE, PANEL, ACCENT = (34, 34, 38), (110, 112, 118), (222, 222, 226), (247, 247, 249), (31, 78, 121)
 LEADER = (150, 152, 158)
 
@@ -25,22 +25,25 @@ def mv(V, dx=0, dy=0, dz=0): return V + [dx, dy, dz]
 
 # ---------------- the assembly: (key, part number, mesh, colour) ----------------
 # part numbers follow the assembly order; the caps are four print-zone meshes each
-PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side wrap 1.0 mm', 'PORON', 'wrap'), (3, 'Floor pad 4.8 mm', 'PORON', 'pad_floor'),
-         (4, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (5, 'Mica cross 0.2 mm', 'muscovite', 'mica'),
-         (6, 'Top pad 1.0 mm', 'PORON', 'pad_top'), (7, 'Insulator 0.3 mm', 'fish paper / PI', 'insul'),
-         (8, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'), (9, 'Board shim', 'TPU 95A', 'shim'),
-         (10, 'USB-C hold-down pads', 'silicone', 'hold'), (11, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
-         (12, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (13, 'Top crush cap', 'TPU 95A lattice', 'capt')]
+PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish paper', 'wrap'),
+         (3, 'Floor spacer 3.8 mm', 'TPU 95A, ~20 % gyroid', 'pad_floor'), (4, 'Floor pad 1.0 mm', 'EVA foam', 'eva_floor'),
+         (5, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (6, 'Insulator rings on + ends (4)', 'fish paper 0.2', 'rings'),
+         (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Top pad 1.0 mm', 'EVA foam', 'pad_top'),
+         (9, 'Board insulator 0.2 mm', 'fish paper', 'insul'), (10, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'),
+         (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
+         (13, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
+         (14, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (15, 'Top crush cap', 'TPU 95A lattice', 'capt')]
 NUM = {k: n for n, _, _, k in PARTS}
 def assembly():
     A = [('shell', P.side_shell(), C['shell'])]
     cell = P.cell_solid()
     for k in S.SB_CELLS:
         x, y = S.sb_cell_xy[k]; A.append(('cell', mv(cell, x, y, S.sb_z_cell0), C['cell']))
-    A += [('mica', P.mica_cross(), C['mica']), ('wrap', P.side_pad(), C['wrap']),
-          ('pad_floor', P.end_pad('bottom'), C['poron']), ('pad_top', P.end_pad('top'), C['poron']),
-          ('insul', P.insulator(), C['insul']), ('board', P.side_board_dummy(), C['board']),
-          ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['hold']), ('cover', P.side_cover(), C['cover'])]
+    A += [('mica', P.mica_cross(), C['mica']), ('wrap', P.side_pad(), C['paper']),
+          ('pad_floor', P.end_pad('bottom', 'spacer'), C['spacer']), ('eva_floor', P.end_pad('bottom'), C['eva']),
+          ('pad_top', P.end_pad('top'), C['eva']),
+          ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
+          ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover'])]
     for z in ('soft', 'firm', 'corner', 'band'):
         A.append(('capb_' + z, P.side_cap(z), C[z]))
         A.append(('capt_' + z, flipz(P.side_cap(z, True), S.SB_H), C[z]))
@@ -217,13 +220,14 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(shell=1.18, cover=2.70, pad_floor=0.24, pad_top=0.24, wrap=0.24, mica=2.8, insul=1.4, hold=1.1, shim=1.21)
+RHO = dict(shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
         if k in RHO: m[k] = m.get(k, 0) + vol(V) * RHO[k]
     m['capb'], m['capt'] = P.cap_mass(False), P.cap_mass(True)
     m['board'] = board_g(S.sb_board_area, S.SB_PCB_T); m['cell'] = 4 * CELL_G
+    m['rings'] = 4 * np.pi/4 * (21.0**2 - 10.0**2) * 0.2 / 1000 * 1.2   # 21 x 10 mm rings, not modelled
     v1 = None
     if v1_dir:
         v1 = dict(shell=vol(load_from(v1_dir, 'monolith_side_shell'))*1.18, bumpers=2*vol(load_from(v1_dir, 'monolith_side_bumper'))*1.21,
@@ -236,9 +240,9 @@ if __name__ == '__main__':
     v1_dir = sys.argv[1] if len(sys.argv) > 1 else None
     A = assembly(); m, v1 = masses(A, v1_dir); total = sum(m.values())
     cx1, cy1 = S.sb_cell_xy[(1, -1)]; cx2 = S.sb_cell_xy[(-1, -1)][0]
-    LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('PORON', C['poron']),
-           ('mica', C['mica']), ('insulator', C['insul']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
-           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('silicone hold-down', C['hold']), ('TPU shim', C['shim'])]
+    LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA foam', C['eva']),
+           ('mica', C['mica']), ('fish paper', C['paper']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
+           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim'])]
     w, d, L = SIZE()
 
     # ================= 1. assembled + exploded + parts list =================
@@ -258,7 +262,7 @@ if __name__ == '__main__':
                 475, 'r', 150)
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
-    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), pad_floor=(58, 0, -16), pad_top=(58, 0, 16),
+    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
               insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
@@ -271,7 +275,7 @@ if __name__ == '__main__':
         a = visible_anchor(pid, [i for i, x in enumerate(gid) if x == g_])
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
-    BAL = dict(shell=180, wrap=240, pad_floor=270, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
+    BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
                hold=60, cover=0, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
@@ -281,7 +285,7 @@ if __name__ == '__main__':
         sh.line([(ax, ay), (bx - v[0]*13, by - v[1]*13)], ACCENT, 1.2); sh.dot(ax, ay, 3, ACCENT); sh.balloon(bx, by, NUM[g_])
     # parts list
     x0 = 2010; sh.panel_title(x0, 128, 'Parts', 650)
-    rows = [[str(n), name, mat, f'{m[k]:.1f}'] for n, name, mat, k in PARTS]
+    rows = [[str(n), name, mat, f'{m[k]:.1f}' if m[k] >= 0.05 else '<0.1'] for n, name, mat, k in PARTS]
     rows.append(['', 'Pack total', '', f'{total:.1f}'])
     y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [40, 300, 210, 90], 14, bold_last=True)
     if v1:
@@ -304,13 +308,13 @@ if __name__ == '__main__':
     for k, (name, end) in S.SB_CELLS.items():
         x, y = S.sb_cell_xy[k]; q = tp(x, y)
         sh.text(q[0], q[1] - 12, name, 22, True, fill='white', anchor='mm'); sh.text(q[0], q[1] + 16, f'+ cap {end}', 14, fill='white', anchor='mm')
-    sh.callouts([(tp(-aC + 0.5, 14), '1.0 mm PORON side wrap\n(silicone gap pad if the\ncells run hot)'),
+    sh.callouts([(tp(-aC + 0.5, 14), '0.2 mm fish paper liner: the\ncans stay close to the walls\nfor heat'),
                  (tp(-aC - 0.6, 0), 'Rib locates the cell block'),
                  (tp(-aC - 0.6, -15), '1.2 mm printed wall')], 330, 'l', 250)
     sh.callouts([(tp(aI + 0.6, aI - 1), 'Board side guide: the tray\nsteps in to the board width'),
                  (tp(S.sb_xb0 + 0.8, 12), '1.6 mm board, coated and staked'),
                  (tp(S.sb_x_cv0 + 0.5, 3), 'Aluminium cover'),
-                 (tp(aI + 0.15, -6), '0.3 mm insulator'),
+                 (tp(aI + 0.15, -6), '0.2 mm fish paper insulator'),
                  (tp(0.6, -16), 'Mica cross 0.2 mm in the 0.3 mm\ngaps between the cells'),
                  (tp(S.sb_x_cv0 + 0.5, -aI - 0.25), 'Cover rests in the rebates')], 1070, 'r', 250)
     sh.dim(tp(-S.a_sb, -S.a_sb), tp(S.sb_x_out, -S.a_sb), 70, f'{S.sb_x_out + S.a_sb:.1f} tray')
@@ -326,13 +330,13 @@ if __name__ == '__main__':
                  (tb(-S.SB_CAP_OUT[2] + 1, S.SB_H - 4), 'Solid band over the tray end'),
                  (tb(cx1 - 6, S.sb_z_top_in - 0.5), 'Top pad cut-out over the C1 + cap'),
                  (tb(-2, 55), 'Mica between C1 and C2'),
-                 (tb(cx2 + 9, S.SB_END_T + 2.4), 'PORON floor pad 4.8 mm: ~3 mm more\nstroke for the cells in\nbottom-down drops'),
+                 (tb(cx2 + 9, S.SB_END_T + 2.4), '3.8 mm TPU spacer + 1 mm EVA:\n~3 mm more stroke for the cells\nin bottom-down drops'),
                  (tb(cx2 - 2, S.SB_END_T + 3.5), 'Cut-out over the C2 + cap:\nthe vent opens into a plenum'),
                  (tb(cx2 + 2, S.SB_END_T - S.SB_RUPT_T - 0.4), 'Rupture window: wall thinned\nto 0.6 mm, vents into the cap'),
                  (tb(-10, -S.SB_CAP_T + 2), 'Bottom crush cap, band wraps\n9 mm up the sides')], x0 + 300, 'l', 170)
     sh.callouts([(tb(S.sb_port_x, S.SB_H + S.SB_CAP_T - 3), 'Port well: the plug reaches the\nUSB-C through the cap'),
                  (tb(S.sb_xb0 + 0.8, S.sb_zb1 + 0.17), 'Board top stop: drop loads go\nboard edge -> tray, not via USB-C'),
-                 (tb(S.sb_port_x + S.USB_UP + 0.8, S.SB_H - 4), 'USB-C hold-down pad'),
+                 (tb(S.sb_port_x + S.USB_UP + 0.8, S.SB_H - 4), 'USB-C hold-down, 2 x 1 mm EVA'),
                  (tb(S.sb_xb0 + 0.8, 35), '1.6 mm board'),
                  (tb(S.sb_x_cv0 + 0.5, 30), 'Aluminium cover'),
                  (tb(S.sb_xb0 + 0.8, S.SB_END_T + 1.2), 'TPU shim under the board'),
@@ -358,7 +362,7 @@ if __name__ == '__main__':
               'One port well for both plugs,\non the cover side'),
              (pick(lambda k: k == 'shell'), camera((0.6, -0.8, -1.0)), 3.5, 'Tray, from below',
               'Rupture windows under the\nC2 and C4 + caps'),
-             (pick(lambda k: k in ('pad_floor', 'pad_top')), camera((0.6, -0.9, 0.9)), 4.6, 'Floor and top pads',
+             (pick(lambda k: k in ('pad_floor', 'eva_floor', 'pad_top')), camera((0.6, -0.9, 0.9)), 4.6, 'Floor spacer and EVA pads',
               'Cut-outs over the + caps,\nnotch for the rib')]
     cw = 640
     for i, (parts, Rv, pxv, t, s) in enumerate(cards):
@@ -373,14 +377,14 @@ if __name__ == '__main__':
     sh.panel_title(x, y0, 'Mass', 820)
     rows = [['Tray (PETG)', f"{m['shell']:.1f}"], ['Aluminium cover', f"{m['cover']:.1f}"],
             ['TPU crush caps, 2, at print fill', f"{m['capb'] + m['capt']:.1f}"],
-            ['PORON floor and top pads', f"{m['pad_floor'] + m['pad_top']:.1f}"], ['PORON side wrap', f"{m['wrap']:.1f}"],
-            ['Mica cross', f"{m['mica']:.1f}"], ['Insulator', f"{m['insul']:.1f}"], ['Hold-down pads and shim', f"{m['hold'] + m['shim']:.1f}"],
+            ['TPU floor spacer, EVA pads', f"{m['pad_floor'] + m['eva_floor'] + m['pad_top']:.1f}"],
+            ['Fish paper: liner, insulator, rings', f"{m['wrap'] + m['insul'] + m['rings']:.1f}"],
+            ['Mica cross', f"{m['mica']:.1f}"], ['EVA hold-downs and TPU shim', f"{m['hold'] + m['shim']:.1f}"],
             ['Board, 1.6 mm (estimate)', f"{m['board']:.1f}"], ['Cells, 4 x 71 g', f"{m['cell']:.1f}"], ['Pack total', f'{total:.1f}']]
     y = sh.table(x, y0 + 46, ['Part', '>g'], rows, [400, 110], 14, bold_last=True)
     notes = []
     if v1: notes.append(f'Previous tray with thin bumpers: {sum(v1.values()):.1f} g ({total - sum(v1.values()):+.1f} g now).')
-    notes += [f'Side wrap as a silicone gap pad: +{m["wrap"]/0.24*2.2 - m["wrap"]:.1f} g.',
-              f'Outside {w:.1f} x {d:.1f} x {L:.1f} mm (was 54.4 x 49.0 x 83.0).']
+    notes += [f'Outside {w:.1f} x {d:.1f} x {L:.1f} mm (was 54.4 x 49.0 x 83.0).']
     for i, s in enumerate(notes): sh.text(x + 540, y0 + 60 + 26*i, s, 14, fill=MUTED)
     # drop table
     x = 940; sh.panel_title(x, y0, 'Drop estimate (peak deceleration at the core)', 820)
@@ -397,9 +401,9 @@ if __name__ == '__main__':
     # materials table
     x = 1840; sh.panel_title(x, y0, 'Materials and print settings (starting point)', 820)
     rows = [['Caps', 'TPU 95A; modifier STLs: soft 15 %,'], ['', 'slab 30 %, corners 60 %, band solid'],
-            ['Floor / top pads', 'PORON 4701-30 or XRD, 4.8 / 1.0 mm'],
-            ['Side wrap', '1.0 mm PORON; silicone gap pad'], ['', '(1-1.5 W/m K) only if the cells run hot'],
-            ['Mica', '0.2 mm muscovite, two slotted pieces'],
+            ['Cell-end pads', '1 mm EVA, cut-outs over the + caps;'], ['', 'floor: on a 3.8 mm TPU spacer (20 % gyroid)'],
+            ['Fish paper', '0.2 mm: wall liner, board insulator,'], ['', '+ end rings (21 x ~10 mm, vents open)'],
+            ['Mica', '0.2 mm sheet, two slotted pieces'],
             ['Board', 'conformal coat; soft silicone staking'], ['', 'BLE antenna end left bare'],
             ['Rupture windows', 'concept: verify with a burst test']]
     sh.table(x, y0 + 46, ['Part', 'Material / setting'], rows, [170, 650], 14)

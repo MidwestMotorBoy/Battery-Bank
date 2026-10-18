@@ -387,16 +387,19 @@ def cap_mass(well):
 # ---- inside parts (no potting) ----
 def _cellzone_in(x, y): return rr_in(x, y, *S.SB_CAV) & ~rib1_in(x, y)
 def _cellzone_pts(): return [rr_pts(*S.SB_CAV), rib1_pts()]
-def end_pad(end):
-    """PORON pad between the cell ends and an end wall: floor pad (4.8, bottom) or top pad (1.0); cut-outs over the
-    positive caps leave the button and vent holes open into a plenum"""
+def end_pad(end, layer='eva'):
+    """pads between the cell ends and an end wall: 'eva' (1 mm EVA, top or bottom) or the bottom 'spacer' (printed TPU,
+    fills the rest of the floor zone under the EVA); cut-outs over the positive caps leave the button and vent holes
+    open into a plenum"""
     caps = S.sb_pos_caps[end]; r = S.SB_VENT_CUT_D/2
-    zs = [S.SB_END_T, S.sb_z_pad1] if end == 'bottom' else [S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
+    if end == 'top': zs = [S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
+    elif layer == 'eva': zs = [S.sb_z_pad1 - S.SB_EVA_T, S.sb_z_pad1]
+    else: zs = [S.SB_END_T, S.sb_z_pad1 - S.SB_EVA_T]
     cur = _cellzone_pts() + [circ_pts(x, y, r) for x, y in caps]
     return build(cur, zs, lambda k, x, y: _cellzone_in(x, y) & ~(sum(circ_in(x, y, cx, cy, r) for cx, cy in caps) > 0))
 CELL_ENV = (-aI, aI + 1.0, aI, cI, 0.0)      # cell block envelope (square on the board side)
 def side_pad():
-    """SB_SIDE_PAD wrap round the -x and +-y faces of the cells (PORON; gap pad if the cells run hot), slotted for the rib"""
+    """SB_SIDE_PAD fish paper liner round the -x and +-y faces of the cells, slotted for the rib"""
     cur = _cellzone_pts() + [rr_pts(*CELL_ENV)]
     return build(cur, [S.sb_z_cell0, S.sb_z_cell1], lambda k, x, y: _cellzone_in(x, y) & ~rr_in(x, y, *CELL_ENV))
 def mica_cross():
@@ -404,7 +407,7 @@ def mica_cross():
     return build([xrect_pts(*a), xrect_pts(*b)], [S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0],
                  lambda k, x, y: xrect_in(x, y, *a) | xrect_in(x, y, *b))
 def insulator():
-    p = (aI, S.sb_xb0, -(aI - 0.2), aI - 0.2)
+    p = (S.sb_xb0 - 0.2, S.sb_xb0, -(aI - 0.2), aI - 0.2)   # 0.2 mm fish paper on the board's back
     return build([xrect_pts(*p)], [S.sb_z_cell0 - S.TAB_T, S.sb_z_cell1 + S.TAB_T], lambda k, x, y: xrect_in(x, y, *p))
 def hold_pads():
     ps = [(S.sb_port_x + S.USB_UP, SB_XC, py - 4.5, py + 4.5) for _, py in SB_PORTS]
@@ -429,10 +432,11 @@ SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cove
               ('monolith_side_cap_bottom_mod_corner', lambda: side_cap('corner'), 0, 1),
               ('monolith_side_cap_top_mod_soft', lambda: side_cap('soft', True), 0, 1),
               ('monolith_side_cap_top_mod_corner', lambda: side_cap('corner', True), 0, 1),
-              ('monolith_side_pad_floor', lambda: end_pad('bottom'), 0.24, 1),
-              ('monolith_side_pad_top', lambda: end_pad('top'), 0.24, 1),
-              ('monolith_side_pad_wrap', side_pad, 0.24, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
-              ('monolith_side_insulator', insulator, 1.4, 1), ('monolith_side_usb_hold', hold_pads, 1.1, 1),
+              ('monolith_side_floor_spacer', lambda: end_pad('bottom', 'spacer'), 0.30, 1),
+              ('monolith_side_eva_floor', lambda: end_pad('bottom'), 0.20, 1),
+              ('monolith_side_eva_top', lambda: end_pad('top'), 0.20, 1),
+              ('monolith_side_liner', side_pad, 1.2, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
+              ('monolith_side_insulator', insulator, 1.2, 1), ('monolith_side_usb_hold', hold_pads, 0.20, 1),
               ('monolith_side_shim', board_shim, 1.21, 1)]
 if __name__ == '__main__':
     import sys
