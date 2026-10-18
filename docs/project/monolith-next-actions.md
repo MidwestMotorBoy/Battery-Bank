@@ -1,6 +1,9 @@
 # Monolith — Next Actions
 _From the 2026-10-09 session · updated 2026-10-11_
 
+## Changes on 2026-10-18
+- **Dev board skipped; separate training board dropped.** Production P0 (`Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
+
 ## Changes on 2026-10-11
 - **Total output raised to 100 W (from 80 W).** Electrically fine: each BQ25756 port can do 20 V × 5 A, and the connector is rated 5 A / 20 V. The limits are heat and current, so 100 W is treated as a thermally limited rating, not a guaranteed continuous one.
 - **Why it's thermally limited:** at 100 W out the pack supplies ~107 W after converter losses, ~9 A at the 12 V low end (~1.6C). Heat is ~7–8 W in the converters plus ~4–6 W inside the cells (4 × ≤18 mΩ at 7.5–9 A), so ~12–14 W in a small sealed, potted box (vs ~10 W at 80 W). A full pack only lasts ~45 min at 100 W, which limits how hot it can get, but firmware must still throttle.

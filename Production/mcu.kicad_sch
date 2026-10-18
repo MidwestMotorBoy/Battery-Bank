@@ -14,6 +14,193 @@
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
 	(lib_symbols
+		(symbol "MonolithDev:TC2030_GAUGE"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files no)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TC2030-NL GAUGE"
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Tag-Connect TC2030-NL pads for gauge SMBus + training signals"
+				(at 0 0 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TC2030_GAUGE_0_1"
+				(rectangle
+					(start -2.54 7.62)
+					(end 5.08 -7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TC2030_GAUGE_1_1"
+				(pin passive line
+					(at -5.08 6.35 0)
+					(length 2.54)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 3.81 0)
+					(length 2.54)
+					(name "CHG_INH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 1.27 0)
+					(length 2.54)
+					(name "NRST"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -1.27 0)
+					(length 2.54)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -3.81 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -6.35 0)
+					(length 2.54)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector:Conn_ARM_SWD_TagConnect_TC2030"
 			(exclude_from_sim no)
 			(in_bom no)
@@ -2774,7 +2961,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92); no reset button.\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N.\n   Spare (no-connect): DIO12, DIO18, DIO20, the dev board's LED and UART pins (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain. One pull-up: R314 47k.\n   Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. J301 = Tag-Connect TC2030-NL pads (no part fitted): XDS110 through a TC2030-CTX cable (10-pin Cortex to TC2030).\n   SWO (pin 6) not used. The debugger drives NRST. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R304/R305 SMBus pull-ups go to 3V3. Gauge pogo-pad work (TP110-TP112) only with 3V3 up and U301 held in reset\n    (NRST low through J301): an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V max).\n11. DIO24 = CHG_INH: LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n12. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n13. Temps: gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37).\n14. TP301 3V3 is a factory test pad."
+	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92); no reset button.\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N.\n   Spare (no-connect): DIO12, DIO18, DIO20, the dev board's LED and UART pins (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain. One pull-up: R314 47k.\n   Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. J301 = Tag-Connect TC2030-NL pads (no part fitted): XDS110 through a TC2030-IDC-NL cable. J302 (GAUGE) uses the same cable.\n   SWO (pin 6) not used. The debugger drives NRST. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R304/R305 SMBus pull-ups go to 3V3. Gauge work on J302 only with 3V3 up and U301 off the bus: hold NRST low (J302 pin 3)\n    and ground CHG_INH (J302 pin 2) to keep charging enabled; an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V).\n11. DIO24 = CHG_INH: LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n12. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n13. Temps: gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37).\n14. TP301 3V3 is a 1.0 mm probe pad."
 		(exclude_from_sim no)
 		(at 287.02 224.79 0)
 		(effects
@@ -4056,7 +4243,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 210.82 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -5768,7 +5955,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2deff9e9-b7a9-4bc5-b948-c9f758996091")
+		(uuid "fc1d3653-d6aa-4143-9265-58380b4b760a")
 	)
 	(wire
 		(pts
@@ -5778,7 +5965,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "aa0570bf-2a99-4504-9308-5b79b4dd5e1f")
+		(uuid "05949f97-5a5c-4303-9a2f-0591ad08b132")
 	)
 	(symbol
 		(lib_id "Connector:Conn_ARM_SWD_TagConnect_TC2030")
@@ -5790,7 +5977,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "50da2e31-2bb5-4d2f-90d9-2f4163863a1a")
+		(uuid "a438344f-3b60-4ab0-8f7f-bface55b46dc")
 		(property "Reference" "J301"
 			(at 297.18 100.83 0)
 			(show_name no)
@@ -5846,22 +6033,22 @@
 			)
 		)
 		(pin "1"
-			(uuid "d2421b70-cc07-40c4-9422-36ff6f99b68a")
+			(uuid "043c7ddf-8c0e-4327-b844-1cdd3c5bd1c7")
 		)
 		(pin "2"
-			(uuid "8082d9ed-268b-41cc-91bd-7143e84943d0")
+			(uuid "02d9954c-0c92-46ae-909e-88252775085c")
 		)
 		(pin "3"
-			(uuid "38f3b632-78ff-4e81-b0d4-6d58c6040bfa")
+			(uuid "d550c2d5-a7e8-459e-bf78-32ef040607d6")
 		)
 		(pin "4"
-			(uuid "0532d9f2-36b6-496a-acf4-27c5d421f3f8")
+			(uuid "f6f86107-ca40-4725-971b-987fe412bef8")
 		)
 		(pin "5"
-			(uuid "1734c223-4409-420a-8c69-c673d16378fe")
+			(uuid "8b7056b2-0f67-44ee-b295-9698a043b7a9")
 		)
 		(pin "6"
-			(uuid "8c64879b-b52d-4484-bec3-3633291be887")
+			(uuid "5009e07b-352c-40e1-8c5f-2d6c9b964c09")
 		)
 		(instances
 			(project "Monolith"
@@ -5882,8 +6069,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "c0155341-3de9-4fad-af5d-91878f039c6f")
-		(property "Reference" "#PWR9017"
+		(uuid "99bed3d1-9fee-4712-9ba0-f72a463b57cf")
+		(property "Reference" "#PWR9019"
 			(at 294.64 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -5938,12 +6125,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "4fd99870-ef96-49c6-9925-9619d9f51baf")
+			(uuid "4d50e459-a809-46ee-853c-1f8f7d8bae7c")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9018")
+					(reference "#PWR9020")
 					(unit 1)
 				)
 			)
@@ -5959,8 +6146,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "41709cd4-59a9-4270-8d8f-428c89746ff4")
-		(property "Reference" "#PWR9019"
+		(uuid "fc438fba-92a7-4407-8bba-b929920cd7e2")
+		(property "Reference" "#PWR9021"
 			(at 294.64 116.84 0)
 			(hide yes)
 			(show_name no)
@@ -6015,12 +6202,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "203f6e00-47df-4fda-b01a-2374d6e9b2eb")
+			(uuid "ea750711-c8bf-4282-afbf-ccda10268906")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9020")
+					(reference "#PWR9022")
 					(unit 1)
 				)
 			)
@@ -6034,7 +6221,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "f5080a4e-cb0e-4320-9a87-fa666147c496")
+		(uuid "6cfe0624-125e-43de-87b0-6c18b0787af2")
 	)
 	(label "NRST"
 		(at 304.8 101.6 0)
@@ -6044,7 +6231,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "356b030c-6217-4e8b-aa47-9d5525b233e5")
+		(uuid "7f539138-2b33-48ea-bf21-762a8595aeeb")
 	)
 	(label "SWCLK"
 		(at 304.8 106.68 0)
@@ -6054,11 +6241,11 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "1d70904d-506d-4813-8d46-9c48b26ce510")
+		(uuid "1493a7f1-7b7a-444d-bc8d-5a76228f5360")
 	)
 	(no_connect
 		(at 304.8 111.76)
-		(uuid "de4d2b26-b95b-4204-9c26-938ee559b212")
+		(uuid "12d1a388-f82b-4f9e-b81d-b5414ae14dcf")
 	)
 	(label "SWDIO"
 		(at 173.99 142.24 180)
@@ -6068,7 +6255,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "3f6ad13f-635b-46ea-83c7-bb88f26c2971")
+		(uuid "cc758a21-cc7c-4bf1-bbf5-f05deee91ee0")
 	)
 	(label "SWCLK"
 		(at 173.99 144.78 180)
@@ -6078,7 +6265,268 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "c2328ffc-0536-44dd-a5eb-bf6a4bf27599")
+		(uuid "e367ab6d-63cf-4d96-8289-05f6a86eec84")
+	)
+	(symbol
+		(lib_id "MonolithDev:TC2030_GAUGE")
+		(at 297.18 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "115ce4b3-e3e4-447c-b1ef-710e3c284a4d")
+		(property "Reference" "J302"
+			(at 298.45 127 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TC2030-NL GAUGE"
+			(at 298.45 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
+			(at 302.26 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 302.26 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Gauge training / golden image: TC2030-IDC-NL cable, 2x3 end to EV2400 + clips"
+			(at 297.18 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7659a201-af32-495b-9f59-070719508882")
+		)
+		(pin "2"
+			(uuid "bc8176d8-777f-419c-894b-f3779ce1c69a")
+		)
+		(pin "3"
+			(uuid "8490bc85-2c9c-4400-85e3-b1e3fa190d9b")
+		)
+		(pin "4"
+			(uuid "153bebde-b4d6-4c64-a48c-34ce9d00bcb0")
+		)
+		(pin "5"
+			(uuid "7f129f0c-58b9-44cc-b3d5-13993e835aa5")
+		)
+		(pin "6"
+			(uuid "e4d58cd3-9b02-4955-a12f-63267f2983c0")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "J302")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA"
+		(shape bidirectional)
+		(at 292.1 130.81 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ea6efa4e-e500-4e78-ab16-0a80b87cb7ac")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 292.1 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "CHG_INH"
+		(shape bidirectional)
+		(at 292.1 133.35 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0a063a90-bced-4bbf-afa2-27f2c488ad41")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 292.1 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(label "NRST"
+		(at 292.1 135.89 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5163b5be-7a45-42ab-aab8-eda931b8eeae")
+	)
+	(no_connect
+		(at 292.1 138.43)
+		(uuid "2a9d2a05-1e10-4169-aaf9-d1bdb15efc21")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 292.1 140.97 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "001e0cdd-d54b-4507-ac53-d3eec568998e")
+		(property "Reference" "#PWR9023"
+			(at 292.1 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 295.98 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 292.1 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 292.1 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 292.1 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8ac3f8cb-e72f-4af4-9937-0e48e2f7ab00")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
+					(reference "#PWR9024")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL"
+		(shape bidirectional)
+		(at 292.1 143.51 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9ba13462-ba69-4ece-8350-d56531c58526")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 292.1 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(text "GAUGE: 1 SDA, 2 CHG_INH (GND = charge with MCU in reset), 3 NRST (GND = hold MCU), 4 nc, 5 GND, 6 SCL"
+		(exclude_from_sim no)
+		(at 287.02 149.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7fa13390-1603-488c-b1d6-91675ad238ed")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -6090,8 +6538,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "868c7a2e-9584-4d9b-afe8-8e4581c61466")
-		(property "Reference" "#PWR9021"
+		(uuid "6d748e2e-f0b4-49a9-a85c-23580ad78d7b")
+		(property "Reference" "#PWR9025"
 			(at 248.92 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6146,12 +6594,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "816ab3e5-26a6-4cf7-bb0e-7fa423ac9228")
+			(uuid "ec691446-a7a7-485c-aa71-77f27956a6a8")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9022")
+					(reference "#PWR9026")
 					(unit 1)
 				)
 			)
@@ -6167,8 +6615,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "8cdd032b-77cf-4718-ae61-f4c54d96efe0")
-		(property "Reference" "#PWR9023"
+		(uuid "8675ad43-4347-4f29-9a3f-843a4f4bf4c3")
+		(property "Reference" "#PWR9027"
 			(at 130.81 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -6223,12 +6671,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "16b0f7bb-b99d-46da-bb32-3603764e82c5")
+			(uuid "41c98e62-6725-4667-816a-8fbf56af73ae")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9024")
+					(reference "#PWR9028")
 					(unit 1)
 				)
 			)
@@ -6244,8 +6692,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "703f9177-9505-4f02-8eec-fc03c94ad66c")
-		(property "Reference" "#PWR9025"
+		(uuid "a908e373-1fae-428d-9e12-d8884924f9bd")
+		(property "Reference" "#PWR9029"
 			(at 233.68 186.69 0)
 			(hide yes)
 			(show_name no)
@@ -6300,12 +6748,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "288105e2-3919-4077-99b4-fb0e38aa7499")
+			(uuid "08a5ef8e-5c73-4faa-8283-f7ee963a22f0")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9026")
+					(reference "#PWR9030")
 					(unit 1)
 				)
 			)
@@ -6321,8 +6769,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "7caca4a7-cef8-4042-97f9-18f57ee6f1e1")
-		(property "Reference" "#PWR9027"
+		(uuid "c060b541-2e2f-48e2-bc1b-da8f4bb4ccb7")
+		(property "Reference" "#PWR9031"
 			(at 173.99 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -6377,12 +6825,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "344e9082-041c-4e3e-bcff-a7e5c0667cf1")
+			(uuid "07e8949a-941c-4560-9608-efe01903f1ac")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9028")
+					(reference "#PWR9032")
 					(unit 1)
 				)
 			)
@@ -6398,8 +6846,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "e26bba13-9d63-4e50-9e10-71f0b1abee68")
-		(property "Reference" "#PWR9029"
+		(uuid "c2b57ed4-cc05-48e2-8eca-609143042855")
+		(property "Reference" "#PWR9033"
 			(at 152.4 116.84 0)
 			(hide yes)
 			(show_name no)
@@ -6454,12 +6902,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "fdf50b40-42c1-4cdd-a040-056a9dc4fe89")
+			(uuid "28f7c9c0-515a-4348-9772-a9daab5bdefd")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/6a5b5100-a69b-4069-8141-b35cace08af3"
-					(reference "#PWR9030")
+					(reference "#PWR9034")
 					(unit 1)
 				)
 			)
@@ -6467,15 +6915,15 @@
 	)
 	(no_connect
 		(at 207.01 132.08)
-		(uuid "8834621a-e385-4230-a3b8-1a9a4e1236c9")
+		(uuid "02a1c5f5-0bd8-4838-b9fe-760be040a540")
 	)
 	(no_connect
 		(at 207.01 134.62)
-		(uuid "3f87aec5-f2a9-43bd-819d-8bde2652b8f9")
+		(uuid "27c5f4b4-8244-42bf-8efe-3ebf4033db7f")
 	)
 	(no_connect
 		(at 207.01 137.16)
-		(uuid "210fe15e-c2bc-4f20-8d41-c6c1d09658d3")
+		(uuid "e255e24a-ed30-479d-87d4-0da49002bffb")
 	)
 	(wire
 		(pts
@@ -6485,7 +6933,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c2794d10-3c21-45f7-b1c1-27fd52374aee")
+		(uuid "4a1b0a77-8bc0-48f0-8363-bd13a3d67187")
 	)
 	(sheet_instances
 		(path "/"

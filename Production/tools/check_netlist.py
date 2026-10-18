@@ -70,8 +70,8 @@ for (ref, pin), to in mp.NET_MOVES.items():
     for r in (ref, ref[:-3] + "5" + ref[-2:]):  # port 1 and port 2
         expect[(r, pin)] = find(old[("TP109", "1")]) if to == "GND" else "unconnected %s.%s" % (r, pin)
 for ref, pins in mp.NEW_PARTS.items():
-    for p, (oref, opin) in pins.items():
-        expect[(ref, p)] = find(old[(oref, opin)])
+    for p, src in pins.items():
+        expect[(ref, p)] = src if isinstance(src, str) else find(old[src])
 for p, (oref, opin) in {"1": ("J301", "1"), "2": ("J301", "2"), "3": ("J301", "10"), "4": ("J301", "4"), "5": ("J301", "3")}.items():
     expect[("J301", p)] = find(old[(oref, opin)])
 

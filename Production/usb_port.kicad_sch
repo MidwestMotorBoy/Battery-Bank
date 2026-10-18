@@ -7242,6 +7242,19 @@
 		)
 		(uuid "0cc904da-16ed-4828-bc8a-862f61bc0b01")
 	)
+	(text "GATE LINKS (0R, fitted) + SNUBBERS (DNP): P0 tuning hedge"
+		(exclude_from_sim no)
+		(at 299.72 264.16 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.508)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "15fa0695-ad63-437c-b987-6b2514558503")
+	)
 	(text "BATTERY-SIDE LOCAL: 2 x 22u MLCC; bulk is the shared PACK_P hybrid C208 (3V3 Rail sheet)"
 		(exclude_from_sim no)
 		(at 431.8 104.14 0)
@@ -7278,7 +7291,7 @@
 		)
 		(uuid "3077a106-4384-4a58-8da7-9da51f721322")
 	)
-	(text "FACTORY TEST PAD"
+	(text "PROBE PADS (1.0 mm): VBUS PPHV PP5V REGN SW1 SW2 + GND"
 		(exclude_from_sim no)
 		(at 40.64 276.86 0)
 		(effects
@@ -7349,9 +7362,9 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 4-7, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC is protected by U405 (TPD2S300: CC short-to-VBUS OVP, 24 V DC, + IEC 61000-4-2 ESD; the TPS25751 CC pins are\n   26 V abs max but only +-1 kV HBM). VPWR/VM on LDO_3V3 (normal mode), VBIAS C451 0.1u 50V (>= 35 V needed).\n   C401/C402 (220 pF) on the controller side: with the TPD2S300's 30-120 pF the total stays under 480 pF.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   No liquid detection and no SBU use on production (IP68 connectors, potted board): the connector SBU pins are\n   no-connects; GPIO4-7 are tied to GND (note 2). U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):\n   a CC short to VBUS forces error recovery.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the USB-side polymer C421 and the remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side: 2 x 22u per port at the FETs; both ports, both TPS62933 inputs (1 x 10u 50V each) and the one shared\n   PACK_P hybrid C208 form one bus: about 99 uF effective worst case, >= the BQ25756 80 uF C_OUT minimum each charger\n   sees through its RBAT (Production/tools/pack_bus_sims.py A2). Still on hold: C427 (USB side; the USB sides are\n   separate per port, so they can't share bulk).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: HIDRV/LODRV go straight to the FET gates (no gate resistors, turn-off diodes or snubbers; BTST straight\n    to its cap). The dev board fits 10R gate resistors, so measure SW1/SW2 ringing there with them bridged before\n    trusting this; keep the gate traces short and wide (TI: >= 0.5 mm) with the FETs right at the BQ25756.\n    Each leg is one Vishay SiZ240DT half-bridge (Q401/Q402; unit A = high side, unit B = low side, pin 9 = SW),\n    40 V, 12.25/13.30 mOhm max at 4.5 V, Qg 6.9/6.5 nC. Worst case (20 V 5 A out from a 10 V pack) its fully-on\n    high side dissipates ~1.8 W in one 3.3 x 3.3 package: needs the paddles' via arrays and the gap pad; the\n    thermal throttle covers it. Buy from DigiKey/Mouser (JLC stock is near zero).\n13. TP401 VBUS is a factory test pad. STAT1/STAT2/PG (U403 pins 4-6) are open-drain and unused (no pull-ups):\n    status comes over I2C (TPS25751 I2Cr); set DIS_STAT_PINS = 1 in the BQ25756 configuration.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. R420 is 0402; 0201 is used only where both nets stay <= 5.5 V."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 4-7, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC is protected by U405 (TPD2S300: CC short-to-VBUS OVP, 24 V DC, + IEC 61000-4-2 ESD; the TPS25751 CC pins are\n   26 V abs max but only +-1 kV HBM). VPWR/VM on LDO_3V3 (normal mode), VBIAS C451 0.1u 50V (>= 35 V needed).\n   C401/C402 (220 pF) on the controller side: with the TPD2S300's 30-120 pF the total stays under 480 pF.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   No liquid detection and no SBU use on production (IP68 connectors, potted board): the connector SBU pins are\n   no-connects; GPIO4-7 are tied to GND (note 2). U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):\n   a CC short to VBUS forces error recovery.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the USB-side polymer C421 and the remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side: 2 x 22u per port at the FETs; both ports, both TPS62933 inputs (1 x 10u 50V each) and the one shared\n   PACK_P hybrid C208 form one bus: about 99 uF effective worst case, >= the BQ25756 80 uF C_OUT minimum each charger\n   sees through its RBAT (Production/tools/pack_bus_sims.py A2). Still on hold: C427 (USB side; the USB sides are\n   separate per port, so they can't share bulk).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 are 0R 0402 links at the gates (P0 hedge, no dev board): swap to 2.2-10R if SW1/SW2 ring;\n    R450/C454, R451/C455 are DNP 0402 RC snubbers (3R3 + 33p). No turn-off diodes; BTST straight to its cap. Keep the\n    gate traces short and wide (TI: >= 0.5 mm) with the FETs right at the BQ25756.\n    Each leg is one Vishay SiZ240DT half-bridge (Q401/Q402; unit A = high side, unit B = low side, pin 9 = SW),\n    40 V, 12.25/13.30 mOhm max at 4.5 V, Qg 6.9/6.5 nC. Worst case (20 V 5 A out from a 10 V pack) its fully-on\n    high side dissipates ~1.8 W in one 3.3 x 3.3 package: needs the paddles' via arrays and the gap pad; the\n    thermal throttle covers it. Buy from DigiKey/Mouser (JLC stock is near zero).\n13. TP401 VBUS is a 1.0 mm probe pad. STAT1/STAT2/PG (U403 pins 4-6) are open-drain and unused (no pull-ups):\n    status comes over I2C (TPS25751 I2Cr); set DIS_STAT_PINS = 1 in the BQ25756 configuration.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on P0.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on P0; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. R420 is 0402; 0201 is used only where both nets stay <= 5.5 V."
 		(exclude_from_sim no)
-		(at 299.72 368.3 0)
+		(at 299.72 406.4 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9309,6 +9322,16 @@
 		)
 		(uuid "1da2f0ae-247a-4f61-8858-8b1146a2f360")
 	)
+	(label "HIDRV2"
+		(at 306.07 294.64 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "21bd8beb-ee63-4894-bf07-6c775a13b26b")
+	)
 	(label "HIDRV1"
 		(at 396.24 180.34 0)
 		(effects
@@ -9318,6 +9341,16 @@
 			(justify left bottom)
 		)
 		(uuid "21f62c1e-0e65-4e68-8709-bbf524f0750d")
+	)
+	(label "HG2"
+		(at 425.45 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2218fc1a-9b57-4962-95ed-a6588a4194a7")
 	)
 	(label "PPHV"
 		(at 304.8 60.96 180)
@@ -9359,6 +9392,16 @@
 		)
 		(uuid "304ad41b-1172-4fb9-b601-ef086611ecd3")
 	)
+	(label "SW1"
+		(at 375.92 269.24 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "30e51b81-c94b-42b5-a0cd-659d1fd41d5a")
+	)
 	(label "AC_SNS_N"
 		(at 326.39 60.96 0)
 		(effects
@@ -9378,6 +9421,16 @@
 			(justify right bottom)
 		)
 		(uuid "34f44793-8375-45e3-ad7f-57f92785b0c4")
+	)
+	(label "SW2"
+		(at 121.92 289.56 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "364ce283-6d8b-4a87-a5da-b89cb1fc423c")
 	)
 	(label "CC1"
 		(at 111.76 90.17 90)
@@ -9419,6 +9472,16 @@
 		)
 		(uuid "3863e7b6-3b16-4619-927d-6bfcf6e00ede")
 	)
+	(label "LG2"
+		(at 313.69 306.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3b89b21f-38c3-43fd-8e7b-7dd96b44e738")
+	)
 	(label "LDO_1V5"
 		(at 220.98 67.31 90)
 		(effects
@@ -9448,6 +9511,16 @@
 			(justify left bottom)
 		)
 		(uuid "460d9243-9941-4b5e-9db6-103a23e36e8b")
+	)
+	(label "SW2"
+		(at 391.16 269.24 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "477f0c00-778b-4ce9-88f4-4968f79c595b")
 	)
 	(label "SW_5V"
 		(at 124.46 203.2 180)
@@ -9498,6 +9571,26 @@
 			(justify left bottom)
 		)
 		(uuid "52e33954-f2e9-4a8b-bad4-1b8737808620")
+	)
+	(label "PPHV"
+		(at 60.96 289.56 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "54a1ac83-b9c8-458e-beb8-154865d20e79")
+	)
+	(label "HIDRV1"
+		(at 306.07 271.78 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "58f46b8a-8d50-410c-9bfa-be8ad17ca46d")
 	)
 	(label "I2CC_SDA"
 		(at 365.76 198.12 180)
@@ -9608,6 +9701,16 @@
 			(justify left bottom)
 		)
 		(uuid "7548d1e1-186e-4d2d-bb8e-9caed7912718")
+	)
+	(label "LG1"
+		(at 313.69 283.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "788e7cf1-6f95-4d53-9189-61c22dd51e54")
 	)
 	(label "PP5V"
 		(at 185.42 81.28 0)
@@ -9729,6 +9832,16 @@
 		)
 		(uuid "9b39befa-3258-4df1-8cd6-912d7ba3f862")
 	)
+	(label "SW1"
+		(at 106.68 289.56 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a18000bd-fd09-42d9-91f3-93c3ec242b93")
+	)
 	(label "I2CC_SCL"
 		(at 365.76 195.58 180)
 		(effects
@@ -9738,6 +9851,16 @@
 			(justify right bottom)
 		)
 		(uuid "a9669347-9019-4f22-990b-44aeec7e65f0")
+	)
+	(label "LODRV1"
+		(at 306.07 283.21 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ad221a32-2b88-48e4-8fd8-e43d9fd9af00")
 	)
 	(label "C_CC1"
 		(at 60.96 86.36 0)
@@ -9769,6 +9892,16 @@
 		)
 		(uuid "bcc2311b-1959-4466-8271-e05760e99f47")
 	)
+	(label "HG2"
+		(at 313.69 294.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "bd17877c-42bf-4626-b8f2-f987066084da")
+	)
 	(label "SW1"
 		(at 393.7 185.42 0)
 		(effects
@@ -9799,6 +9932,26 @@
 		)
 		(uuid "c1d17440-0380-4a49-a2de-a94b87c665ab")
 	)
+	(label "HG1"
+		(at 344.17 69.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c34826ec-6643-4f42-9c84-c5efde621e45")
+	)
+	(label "LG2"
+		(at 425.45 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
+	)
 	(label "CC2"
 		(at 154.94 93.98 180)
 		(effects
@@ -9808,6 +9961,26 @@
 			(justify right bottom)
 		)
 		(uuid "c46c5358-b2d0-4e9a-8878-d7c73c4d70de")
+	)
+	(label "LG1"
+		(at 344.17 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
+	)
+	(label "REGN"
+		(at 91.44 289.56 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d144f3c8-d4d4-4fdb-bcf4-3c1aebf62163")
 	)
 	(label "AC_SNS_N"
 		(at 317.5 118.11 180)
@@ -9889,6 +10062,16 @@
 		)
 		(uuid "ef2fb48e-d4fd-4410-9613-cfcec3f099f0")
 	)
+	(label "PP5V"
+		(at 76.2 289.56 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f50cff9f-04d6-4a54-89cd-f588ef76087c")
+	)
 	(label "SW2"
 		(at 388.62 73.66 0)
 		(effects
@@ -9900,6 +10083,16 @@
 		(uuid "f833b0f5-f466-4284-a126-8e80b8a9bf16")
 	)
 	(label "LODRV2"
+		(at 306.07 306.07 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f9f04058-b347-4526-8122-ec7047f3977b")
+	)
+	(label "LODRV2"
 		(at 396.24 200.66 0)
 		(effects
 			(font
@@ -9908,6 +10101,16 @@
 			(justify left bottom)
 		)
 		(uuid "fac414a2-969e-475b-9261-6b59018cff1b")
+	)
+	(label "HG1"
+		(at 313.69 271.78 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ff5523d9-6d40-4659-b34a-c75c9ce528e4")
 	)
 	(global_label "SDA"
 		(shape bidirectional)
@@ -11894,6 +12097,120 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 106.68 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1db45305-8711-40c1-a650-adedacad42fd")
+		(property "Reference" "TP405"
+			(at 106.68 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW1"
+			(at 111.26 287.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 111.76 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
+			(at 106.68 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4d05a561-59fe-41b0-b9b0-3e9d4905def4")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP505")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 123.19 71.12 0)
 		(unit 1)
@@ -12796,7 +13113,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 50.8 289.56 0)
 			(hide yes)
 			(show_name no)
@@ -14027,6 +14344,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 375.92 280.67 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "3917529b-e7a2-468e-857b-aad1695b8995")
+		(property "Reference" "C454"
+			(at 382.97 279.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33p C0G"
+			(at 382.97 281.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1562"
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402CG330J500NT"
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "DNP RC snubber on SW1 (EVM C14/C15 placeholder, C0G)"
+			(at 375.92 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "cdfce63f-3026-427e-ba08-08e5a9178e37")
+		)
+		(pin "2"
+			(uuid "c550120c-36be-4808-b9ef-e862c3cccdbd")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "C554")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "C454")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "MonolithDev:SiZ240DT")
 		(at 419.1 71.12 0)
 		(mirror y)
@@ -14125,19 +14558,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "6a05f13a-b489-46f1-9efa-560eeae54712")
+			(uuid "01614cdb-6459-4214-a6cc-8b74b75b28dc")
 		)
 		(pin "2"
-			(uuid "09add1c5-e9aa-4b44-9fb1-4e20758ebfd9")
+			(uuid "f3b2896b-83f4-4bd4-8cb5-a3d54b097098")
 		)
 		(pin "3"
-			(uuid "db9e2017-480a-4a59-bfb2-40594697f107")
+			(uuid "d6e81ca6-fa71-40f1-b735-215aaf338280")
 		)
 		(pin "4"
-			(uuid "9baed452-f306-40cd-b2ba-63a3e570812f")
+			(uuid "9140367d-1e4a-48c2-a720-3f1971a70050")
 		)
 		(pin "9"
-			(uuid "a771fd20-f8b8-417d-a6d5-7c84892ef617")
+			(uuid "463c9595-b482-40ff-9582-70dbd30ee3bc")
 		)
 		(instances
 			(project "Monolith"
@@ -14375,6 +14808,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 309.88 294.64 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "41354907-611f-47fd-b267-76708363fc64")
+		(property "Reference" "R446"
+			(at 309.73 289.87 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 309.73 291.84 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17168"
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF0000TCE"
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Gate resistor HIDRV2 -> HG2, Q402 / Q502 high side (SW2 leg). 10 Ohm slows turn-on; D408/D508 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 294.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "82857709-0b54-475b-90e6-0ae9aa761497")
+		)
+		(pin "2"
+			(uuid "4593ef12-6e09-4339-99ea-17a9e2b32c18")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R546")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R446")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 144.78 99.06 270)
 		(unit 1)
@@ -14531,6 +15080,122 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR599")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 391.16 280.67 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "45df8c2d-cb9f-48e4-88e7-0293cf5e1e7e")
+		(property "Reference" "C455"
+			(at 398.21 279.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33p C0G"
+			(at 398.21 281.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1562"
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402CG330J500NT"
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "DNP RC snubber on SW2 (EVM C14/C15 placeholder, C0G)"
+			(at 391.16 280.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8e82c1e7-1f95-40a3-9761-5755b8b45909")
+		)
+		(pin "2"
+			(uuid "4f95fe86-ee6b-4a8f-bd23-11995b28b0ab")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "C555")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "C455")
 					(unit 1)
 				)
 			)
@@ -15727,6 +16392,122 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#FLG405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 309.88 306.07 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6489a0f7-5da7-4eb4-af57-fea63c74a12e")
+		(property "Reference" "R447"
+			(at 309.73 301.3 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 309.73 303.27 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17168"
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF0000TCE"
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Gate resistor LODRV2 -> LG2, Q408 / Q508 low side (SW2 leg). 10 Ohm slows turn-on; D409/D509 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 306.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a4dda514-ffce-4fbb-877b-f01ca32c3360")
+		)
+		(pin "2"
+			(uuid "66d57030-26a4-418c-94d3-fed8f4073734")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R547")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R447")
 					(unit 1)
 				)
 			)
@@ -17311,6 +18092,87 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 60.96 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "872dc2ca-0b48-44b5-b09e-a92b864cf1ab")
+		(property "Reference" "TP402"
+			(at 60.96 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PPHV"
+			(at 65.54 287.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 66.04 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 66.04 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 60.96 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "cde3238c-a8b1-4b56-a568-1f7945b2405c")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP502")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 350.52 207.01 0)
 		(unit 1)
@@ -18193,6 +19055,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 391.16 273.05 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "90fd48b7-c443-4e8f-990e-88f1576b0204")
+		(property "Reference" "R451"
+			(at 395.39 271.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3"
+			(at 395.39 273.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C270612"
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF330KTCE"
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "DNP RC snubber on SW2 (EVM R14/R15 placeholder). 1206 anti-surge 0.66 W: R loss is about C x V^2 x fsw, 0.3-0.55 W at the sizes the ring may need (review 4 B-3). Size R and C from the measured ring"
+			(at 391.16 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "24d19fc7-c154-4240-ab71-c5fba3caaada")
+		)
+		(pin "2"
+			(uuid "9b854617-0b64-4fe4-8651-a9b6d55f326d")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R551")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R451")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 137.16 74.93 0)
 		(unit 1)
@@ -18379,6 +19357,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 309.88 283.21 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "95664d1d-180d-406d-9512-7c0593429915")
+		(property "Reference" "R445"
+			(at 309.73 278.44 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 309.73 280.41 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17168"
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF0000TCE"
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Gate resistor LODRV1 -> LG1, Q407 / Q507 low side (SW1 leg). 10 Ohm slows turn-on; D407/D507 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a4926065-8c84-4285-bf69-db7e41bf9c42")
+		)
+		(pin "2"
+			(uuid "d9f52ed2-6744-4dc0-93e2-feb6a67da158")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R545")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R445")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 332.74 200.66 0)
 		(unit 1)
@@ -18454,6 +19548,203 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "#PWR437")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 309.88 271.78 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "98d78811-cb32-4676-82e0-20126392b553")
+		(property "Reference" "R444"
+			(at 309.73 267.01 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 309.73 268.98 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17168"
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF0000TCE"
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "Gate resistor HIDRV1 -> HG1, Q401 / Q501 high side (SW1 leg). 10 Ohm slows turn-on; D406/D506 (BAT54WS, anode at the gate) bypasses it at turn-off so the 45 ns dead time is kept"
+			(at 309.88 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e6fb1d22-f9ac-4f24-81dd-04a33283659b")
+		)
+		(pin "2"
+			(uuid "d35c3965-faff-4b17-befc-c7778413ff77")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R544")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R444")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 213.36 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "992b6d78-fb2b-465a-93a4-40de73532896")
+		(property "Reference" "#PWR441"
+			(at 213.36 287.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 213.36 293.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ff409785-4f39-4bbd-8a34-65b07dda31f6")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR541")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR441")
 					(unit 1)
 				)
 			)
@@ -19343,6 +20634,122 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 375.92 273.05 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "b19348fd-4027-4b07-86fb-8b14dfba9ba2")
+		(property "Reference" "R450"
+			(at 380.15 271.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3"
+			(at 380.15 273.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C270612"
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF330KTCE"
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "DNP RC snubber on SW1 (EVM R14/R15 placeholder). 1206 anti-surge 0.66 W: R loss is about C x V^2 x fsw, 0.3-0.55 W at the sizes the ring may need (review 4 B-3). Size R and C from the measured ring"
+			(at 375.92 273.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d7abe235-16f6-4d72-b3b9-ce325bb076de")
+		)
+		(pin "2"
+			(uuid "2a5334ee-09d8-42f5-a634-07b8344b9676")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "R550")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "R450")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 406.4 87.63 0)
 		(unit 1)
@@ -20009,19 +21416,19 @@
 			)
 		)
 		(pin "8"
-			(uuid "7410bbd4-dd35-452a-b82a-1037791ec3ab")
+			(uuid "bd1af988-be33-4671-bfec-4f9ee7ffb10b")
 		)
 		(pin "9"
-			(uuid "db165369-968c-4e3d-8f82-b687bdfae89d")
+			(uuid "e5a4c7ea-da8c-46f3-8b23-0736cd404ecd")
 		)
 		(pin "5"
-			(uuid "094aa38d-b1f9-485a-b558-a24d96b9e96a")
+			(uuid "42ca3cbe-c658-4bc3-978d-ae9359f58934")
 		)
 		(pin "6"
-			(uuid "b94aafc2-ba52-4eb8-a19f-254ac23c75f7")
+			(uuid "08926b16-8482-4fa2-a7ce-70cf325ab8d9")
 		)
 		(pin "7"
-			(uuid "e8c3bc60-d60c-4007-a20a-c3c2658cd5dd")
+			(uuid "179caf1d-8f5c-47cf-a301-24435b9fc96e")
 		)
 		(instances
 			(project "Monolith"
@@ -20355,19 +21762,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "d5dcbc13-2dbd-484d-b120-8447aef9e524")
+			(uuid "31138f5e-6724-457b-b08d-57ccfe284bcf")
 		)
 		(pin "2"
-			(uuid "4a823f25-e77d-4162-85db-98a2f0468047")
+			(uuid "8b3a96ef-046e-4009-bbba-2726a3a58e70")
 		)
 		(pin "3"
-			(uuid "cf8ea2e7-470b-4d08-8849-77f478db5478")
+			(uuid "f8d02be4-59d0-4aec-b181-b66e378de92c")
 		)
 		(pin "4"
-			(uuid "ff7038a7-0896-432a-9900-aeae72a7b7b9")
+			(uuid "3239a39e-0c2f-4e63-85f8-f36532a497f2")
 		)
 		(pin "9"
-			(uuid "ad337acc-c921-4355-9142-034e9a0f5793")
+			(uuid "e6113b2b-b398-4217-b3ff-3d72fffd1e47")
 		)
 		(instances
 			(project "Monolith"
@@ -21450,6 +22857,87 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 76.2 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cc462fc0-d3c6-4b12-a3a7-f141306b4cd4")
+		(property "Reference" "TP403"
+			(at 76.2 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PP5V"
+			(at 80.78 287.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 81.28 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 76.2 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "248cd0bd-dcfe-4275-a456-c1dacb86a24b")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP503")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP403")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 119.38 93.98 0)
 		(unit 1)
@@ -21560,6 +23048,87 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 375.92 284.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cf2490ed-500e-43fb-9321-b8f173545955")
+		(property "Reference" "#PWR595"
+			(at 375.92 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 375.92 288.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 375.92 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 375.92 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 375.92 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b18ee836-107a-47bd-aea5-edf24be4523e")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR596")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR595")
 					(unit 1)
 				)
 			)
@@ -21950,6 +23519,87 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 391.16 284.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d7a27286-f61d-4427-bdd5-0b220a86a4d6")
+		(property "Reference" "#PWR597"
+			(at 391.16 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 391.16 288.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 391.16 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 391.16 284.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7b993473-6885-4c38-b5de-05a4566d9d9c")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "#PWR598")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "#PWR597")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 350.52 240.03 0)
 		(unit 1)
 		(body_style 1)
@@ -22290,19 +23940,19 @@
 			)
 		)
 		(pin "8"
-			(uuid "73110537-42d5-4cf2-8ab5-1a8cb9e3f1a9")
+			(uuid "b6e6b5f2-adf0-41ad-9cdf-18762373e3a8")
 		)
 		(pin "9"
-			(uuid "8bdd81f5-712c-454b-bff9-321cbb66f1a8")
+			(uuid "a65ef653-6995-41ff-9166-0e67609944c7")
 		)
 		(pin "5"
-			(uuid "8cf73553-305c-411b-a49a-ebc63210917e")
+			(uuid "4f4a7937-119a-47ef-9f05-56a194c53076")
 		)
 		(pin "6"
-			(uuid "f7051466-196d-47d5-9acc-9281b5f1607a")
+			(uuid "dd4abf9e-004c-468a-88dd-5b7d9035da51")
 		)
 		(pin "7"
-			(uuid "9f2a354e-22b5-4928-b6cf-e6a0716bec28")
+			(uuid "0f85dac7-0d66-42e9-8def-8317c77eceeb")
 		)
 		(instances
 			(project "Monolith"
@@ -22620,6 +24270,120 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 121.92 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "e8b50285-b7c4-48e3-aef0-e9d83b48ec32")
+		(property "Reference" "TP406"
+			(at 121.92 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW2"
+			(at 126.5 287.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 127 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
+			(at 121.92 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5ab40019-766f-470f-8a5e-b13f026e8ae0")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP506")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP406")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 340.36 240.03 0)
 		(unit 1)
@@ -22811,6 +24575,87 @@
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
 					(reference "C452")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 91.44 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "eab18838-64b7-4d22-a3b3-fba3b8d28e13")
+		(property "Reference" "TP404"
+			(at 91.44 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "REGN"
+			(at 96.02 287.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 96.52 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 96.52 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 91.44 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e17df99b-e5d5-425e-bf67-58e4907327ba")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP504")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP404")
 					(unit 1)
 				)
 			)
@@ -24492,6 +26337,130 @@
 			)
 		)
 	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 213.36 289.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "fff7020d-dcec-4d4f-8e17-eed71c750eeb")
+		(property "Reference" "TP412"
+			(at 213.36 281.74 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 213.36 283.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Notes" "GND loop for the SW1/SW2 probe points: place beside TP405/TP406"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RH-S2761-46R (ronghe; Harwin S2761-46R equivalent)"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sourcing" "Hand-solder, not JLC assembled (test loop, dev only; saves a JLC extended-part fee; LCSC C55121754 RH-S2761-46R (ronghe; Harwin S2761-46R equivalent))"
+			(at 213.36 289.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9ea24188-7ded-4c8b-990b-fc4bb298e7b5")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
+					(reference "TP512")
+					(unit 1)
+				)
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
+					(reference "TP412")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(wire
 		(pts
 			(xy 360.68 220.98) (xy 365.76 220.98)
@@ -24500,7 +26469,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "90229fb0-8167-442c-b10f-2f04c4e19826")
+		(uuid "86a31084-62b5-4c6a-b789-3c3dec39148e")
 	)
 	(wire
 		(pts
@@ -24510,7 +26479,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3ec27e99-1d07-41d4-9515-1555228295dc")
+		(uuid "9181fe7e-3531-4714-a525-3c89741c7470")
 	)
 	(wire
 		(pts
@@ -24520,7 +26489,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "279b6a70-269c-4bf9-8cb1-f920a6a27f7c")
+		(uuid "35eb45b5-e0dc-473f-95e4-6c6ac12d666a")
 	)
 	(wire
 		(pts
@@ -24530,7 +26499,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e6df10e4-5545-4893-928c-501742140fe8")
+		(uuid "ecb18cfc-1ab2-486f-a2e8-497f88b773ff")
 	)
 	(wire
 		(pts
@@ -24540,7 +26509,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "71061ac4-82e2-4db4-bbc8-7651d461e8fd")
+		(uuid "e304443a-ab9d-4e77-bb0c-d84519d922fd")
 	)
 	(wire
 		(pts
@@ -24550,7 +26519,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "aeb80fff-20b5-41f2-87b1-3bda66a1cf9a")
+		(uuid "8e4ae1fd-720d-4583-81c6-c2f1561b5135")
 	)
 	(wire
 		(pts
@@ -24560,7 +26529,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "679e0c36-b952-4692-b4cf-eddbe246de66")
+		(uuid "771b4d5d-3dcd-4f31-943b-4e4383e85853")
 	)
 	(wire
 		(pts
@@ -24570,7 +26539,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "72f01963-bc0c-4037-b3fd-37c5289aa9d7")
+		(uuid "3abcedf7-7351-4837-81a6-d0ce8774cf0a")
 	)
 	(wire
 		(pts
@@ -24580,7 +26549,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "36c20b8b-be4f-4627-9ec0-eb9cd3ef35f8")
+		(uuid "87828513-a0b3-466c-b2d7-3c32e0500eaf")
 	)
 	(wire
 		(pts
@@ -24590,7 +26559,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "40b7c4a9-65c7-4b5c-b0f9-9bb1ea604e8a")
+		(uuid "304af036-fbae-48ce-ab5f-c29f530a732a")
 	)
 	(wire
 		(pts
@@ -24600,7 +26569,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5d77ece8-b508-417a-a0b8-7584aca96a0b")
+		(uuid "99c95082-7e7a-4020-98b8-88a885c891ce")
 	)
 	(wire
 		(pts
@@ -24610,7 +26579,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9af2eb33-04c8-4cd0-8f7d-0a0b66f9f9c0")
+		(uuid "2a6155d6-5485-4e6c-9a4e-d405d56ce140")
 	)
 	(wire
 		(pts
@@ -24620,7 +26589,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a907dfc9-615a-4900-825c-d2685fb7b133")
+		(uuid "a3ac102f-7cfd-4343-a26e-794f7db02520")
 	)
 	(wire
 		(pts
@@ -24630,7 +26599,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2a6b2144-c12f-412a-aeca-c15bbd927230")
+		(uuid "48c593a8-3a33-40f0-b223-4c6df63803e3")
 	)
 	(wire
 		(pts
@@ -24640,7 +26609,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7430f844-35d1-4942-947a-f4b388e9438f")
+		(uuid "c34f71fc-7074-4b24-9c92-9479a231c2ab")
 	)
 	(wire
 		(pts
@@ -24650,7 +26619,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "986889f8-a686-4c67-9aab-0d166c0ff279")
+		(uuid "2546e80c-9a69-4fba-aa4e-d767cfeb63ff")
 	)
 	(wire
 		(pts
@@ -24660,7 +26629,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "86dbe21a-d3eb-4dfc-ad46-20b4c5ce0baa")
+		(uuid "506faefc-3e51-45ef-b394-2d80c00ead9a")
 	)
 	(wire
 		(pts
@@ -24670,7 +26639,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fa2b09a4-8dd1-413d-a7a7-ea6be6e70813")
+		(uuid "897cbac8-2e59-488d-bed6-64bb8720e2e2")
 	)
 	(label "VBIAS"
 		(at 144.78 140.97 0)
@@ -24680,7 +26649,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "a47fa320-f66c-4f7e-968b-14900c72be8f")
+		(uuid "7f309dfa-f0ab-422c-b434-8c8b0b411e66")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -24692,16 +26661,6 @@
 		)
 		(uuid "02aa51f6-5f6e-4e6b-bdf0-0ed6e4cd237e")
 	)
-	(label "HIDRV2"
-		(at 425.45 69.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2218fc1a-9b57-4962-95ed-a6588a4194a7")
-	)
 	(symbol
 		(lib_id "power:+3V3")
 		(at 154.94 78.74 0)
@@ -24712,8 +26671,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "02513f63-ecf7-4bac-9f5f-5a4faec6b802")
-		(property "Reference" "#PWR9033"
+		(uuid "733275c1-a569-4d40-92c4-b0edb5722b56")
+		(property "Reference" "#PWR9037"
 			(at 154.94 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -24768,16 +26727,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "085f4392-a2f7-4e81-b3ec-aa1174708853")
+			(uuid "7845adc4-4249-4cd9-8e0b-89608c9167d4")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9034")
+					(reference "#PWR9038")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9035")
+					(reference "#PWR9039")
 					(unit 1)
 				)
 			)
@@ -24793,8 +26752,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "e7a1ff64-f362-456a-b630-e4b5b079a7e5")
-		(property "Reference" "#PWR9036"
+		(uuid "666c4b73-b029-4106-9a71-698d3a9bbd7f")
+		(property "Reference" "#PWR9040"
 			(at 50.8 195.58 0)
 			(hide yes)
 			(show_name no)
@@ -24849,16 +26808,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "36b00a41-5fb5-49a2-9434-abe1941cf8dd")
+			(uuid "5a5a1bde-4f30-4384-935b-fa34a802ccb4")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9037")
+					(reference "#PWR9041")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9038")
+					(reference "#PWR9042")
 					(unit 1)
 				)
 			)
@@ -24884,26 +26843,6 @@
 		)
 		(uuid "aaace4b0-af7d-4699-9c10-a06d9d6bded3")
 	)
-	(label "HIDRV1"
-		(at 344.17 69.85 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c34826ec-6643-4f42-9c84-c5efde621e45")
-	)
-	(label "LODRV2"
-		(at 425.45 82.55 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c43546b0-d2c2-4e12-a68e-54f495fb2491")
-	)
 	(label "DPDN_DCP"
 		(at 60.96 99.06 0)
 		(effects
@@ -24914,16 +26853,6 @@
 		)
 		(uuid "cb977311-0261-4a2c-8760-b9afba12ca19")
 	)
-	(label "LODRV1"
-		(at 344.17 82.55 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d0ce7c76-1316-418f-a084-06747a2a3dbc")
-	)
 	(wire
 		(pts
 			(xy 154.94 109.22) (xy 149.86 109.22)
@@ -24932,7 +26861,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6e289053-a2d7-45a7-b9da-76c86ea68282")
+		(uuid "6dc3aba8-927a-4595-a82b-e4e73f2f27e4")
 	)
 	(wire
 		(pts
@@ -24942,7 +26871,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "75878edd-e2ca-43d2-a348-a6228bb87b21")
+		(uuid "a283a775-a512-4ea5-94c7-b56c0e6e41ec")
 	)
 	(wire
 		(pts
@@ -24952,7 +26881,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ff52d2db-a9a4-40d9-a6e7-d17a54dcc0de")
+		(uuid "b6d6efdc-c285-4c73-a005-f68b597110a6")
 	)
 	(wire
 		(pts
@@ -24962,7 +26891,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b10b813d-3d71-4afd-933d-1058bca1103f")
+		(uuid "c1a542ca-4083-4e26-bc21-56f0f89db6e7")
 	)
 	(wire
 		(pts
@@ -24972,7 +26901,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "240f0736-a5f8-4848-b702-4241a9cb08f0")
+		(uuid "e9d5de3a-7859-4abf-b051-ec73a6dcc73c")
 	)
 	(wire
 		(pts
@@ -24982,7 +26911,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f35001ab-4ded-4d7b-ac65-80c5446a13aa")
+		(uuid "f73f2be3-79e5-4416-b8ed-c31af35b6a91")
 	)
 	(wire
 		(pts
@@ -24992,7 +26921,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "12150e15-14d0-4eb3-9aef-938b3cadc648")
+		(uuid "fdc3a369-13ed-40c3-a5ec-f56407833274")
 	)
 	(wire
 		(pts
@@ -25002,31 +26931,31 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a05bdae0-8485-4f28-b04e-dcd6ce1c1df6")
+		(uuid "17b7ac35-fb01-4c4b-9294-71abf9d3f109")
 	)
 	(junction
 		(at 149.86 111.76)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "ff1c1f3c-54cf-45be-a6dd-d75bcb5ad2e9")
+		(uuid "dfe12f59-092e-48de-823d-aaba4362cd74")
 	)
 	(junction
 		(at 149.86 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "400e9c69-2d23-4caf-a0c6-5511c2ce2ae2")
+		(uuid "0f258c6f-2e68-43b7-a728-a7d43c7d8bc3")
 	)
 	(junction
 		(at 149.86 116.84)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "b27ba959-476e-4958-98ef-c1fa36b65ea1")
+		(uuid "2af1dfcb-5476-47f7-9be9-4c66f02810a1")
 	)
 	(junction
 		(at 149.86 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "3ddcc181-8fec-4b05-a5b7-d1a55fcf4c35")
+		(uuid "2559411b-51d4-4399-9369-e0b9a6d42a84")
 	)
 	(symbol
 		(lib_id "MonolithDev:TPD2S300")
@@ -25038,7 +26967,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "6d207f88-a020-4196-986a-4eb0ac52a6ec")
+		(uuid "dbdfdf8a-5736-433a-af2f-5eece8d4d291")
 		(property "Reference" "U405"
 			(at 110.49 170.18 0)
 			(show_name no)
@@ -25126,31 +27055,31 @@
 			)
 		)
 		(pin "A1"
-			(uuid "f6d376c4-b02a-4c63-985d-8b0051458a29")
+			(uuid "91a5d630-93c8-4150-8cf0-16dd0240752e")
 		)
 		(pin "A3"
-			(uuid "4e8db74f-78ee-4edf-84d8-1c6600727573")
+			(uuid "62deed58-35ba-42ae-ae24-744fb6618849")
 		)
 		(pin "A2"
-			(uuid "90cfa897-24f5-43ff-89a0-2293041e66d4")
+			(uuid "71918231-9e5f-4828-b92d-a26509c8e81a")
 		)
 		(pin "B1"
-			(uuid "d2094d30-f8b8-4425-9e98-18937949e710")
+			(uuid "48b62b5b-d73f-4504-96c4-f16e612d9100")
 		)
 		(pin "B3"
-			(uuid "5d33c7a2-e645-4c23-a77e-cd85ba5a316a")
+			(uuid "b9a2c802-eeef-4f6a-bbc0-2be437ee57d2")
 		)
 		(pin "C1"
-			(uuid "6739ca94-a04d-4542-bd54-238827aadf7f")
+			(uuid "519145cf-bea6-422f-a44e-0caf1a5f51a0")
 		)
 		(pin "C2"
-			(uuid "dfe4f651-e449-4cc9-944b-dec3f17a6e20")
+			(uuid "fec917dd-d92b-42a3-995f-806dd311d092")
 		)
 		(pin "C3"
-			(uuid "2c2b2d26-2c78-47bc-bbf9-a05efccf75aa")
+			(uuid "7d76b0c5-b696-4feb-a1b3-3ce7fcce98ff")
 		)
 		(pin "B2"
-			(uuid "301c22fa-72e1-4942-a2d0-48c4c58e36e9")
+			(uuid "935e9b86-a9e7-4e85-b287-6a9f76ca4008")
 		)
 		(instances
 			(project "Monolith"
@@ -25173,7 +27102,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "d70d3097-6cb7-474d-8938-15ca27d1bf7f")
+		(uuid "00f4e6e0-509e-4814-8c06-58856aba37be")
 	)
 	(label "C_CC2"
 		(at 106.68 158.75 180)
@@ -25183,7 +27112,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "858938d5-ece3-4bb1-be3b-c243acbacbdb")
+		(uuid "4cb7305a-42c2-41d2-93c2-23ce4390ea48")
 	)
 	(label "VBIAS"
 		(at 106.68 163.83 180)
@@ -25193,7 +27122,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "97499515-9713-434e-972b-5552346e1f7e")
+		(uuid "ecbd4633-0e71-4b47-8b8c-89769d4b3490")
 	)
 	(label "CC1"
 		(at 137.16 156.21 0)
@@ -25203,7 +27132,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "15a1ff4c-5db5-44ef-b278-a48819a37423")
+		(uuid "296806e0-2430-42c0-a34d-ebd35b1f4fa4")
 	)
 	(label "CC2"
 		(at 137.16 158.75 0)
@@ -25213,7 +27142,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "952f1889-db52-4f55-9e39-340577e5edef")
+		(uuid "d5a8938c-901b-487c-b71b-d4aface057cd")
 	)
 	(label "SBU_FLT"
 		(at 137.16 163.83 0)
@@ -25223,7 +27152,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "6df3f22b-d9ca-4408-a6fd-cb7cf0849dfe")
+		(uuid "ca06a1b7-2a86-46ec-9b63-3d0ac9a7312f")
 	)
 	(label "LDO_3V3"
 		(at 119.38 151.13 180)
@@ -25233,7 +27162,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "f0ee6952-a73f-4ce2-83bb-a5d6e0342de6")
+		(uuid "cca207b5-1af4-48b9-a9f7-6a94c6c700b8")
 	)
 	(label "LDO_3V3"
 		(at 124.46 151.13 0)
@@ -25243,7 +27172,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "0d9dcb51-0175-440a-b6e0-8d750a774c7f")
+		(uuid "47685533-cff1-49bf-a1f8-5a1cf3430fe5")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -25255,8 +27184,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "ff642822-ffd6-4589-8515-40427b365b66")
-		(property "Reference" "#PWR9039"
+		(uuid "b58adce0-5f44-41fe-8bd3-2aff5110c20f")
+		(property "Reference" "#PWR9043"
 			(at 121.92 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -25311,16 +27240,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "b278b368-c2d1-4a32-9a81-bf8dc2b925ef")
+			(uuid "f6d30719-1004-456d-89d8-9cd6da0644a1")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5279a7a1-113d-4a80-b1cf-737ba19b6809"
-					(reference "#PWR9040")
+					(reference "#PWR9044")
 					(unit 1)
 				)
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/ac72c9a4-7723-4f18-89ba-289142807a08"
-					(reference "#PWR9041")
+					(reference "#PWR9045")
 					(unit 1)
 				)
 			)
@@ -25328,23 +27257,23 @@
 	)
 	(no_connect
 		(at 60.96 109.22)
-		(uuid "8f0a070f-284b-46dc-93a9-8ae7c2a394a6")
+		(uuid "c759f31f-04fb-43e4-8657-50ab409cded2")
 	)
 	(no_connect
 		(at 60.96 111.76)
-		(uuid "6431d01d-480f-40ed-99de-3633dac6a84b")
+		(uuid "9f1b5b9d-02de-45d8-a512-865f1d306f0d")
 	)
 	(no_connect
 		(at 368.3 203.2)
-		(uuid "7aa96ac9-9f23-45c9-883f-3561e8cb86e7")
+		(uuid "f7cf2c56-4f65-45bf-b7e8-1d82b68a1872")
 	)
 	(no_connect
 		(at 368.3 205.74)
-		(uuid "6f6efeaf-d9bd-41fa-8230-b1906356aa6a")
+		(uuid "d984d1f6-cb2a-4cd4-901d-1e3381a7ccb2")
 	)
 	(no_connect
 		(at 368.3 208.28)
-		(uuid "8c7b4497-02d4-4acd-a399-a7d0d5d6d840")
+		(uuid "9f68d3ba-f97d-435f-8702-1f15d568d892")
 	)
 	(wire
 		(pts
@@ -25354,7 +27283,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "142ed704-271d-4784-8308-3cfe6e860dcc")
+		(uuid "35c5b083-bf6b-4f12-b62e-849be6330d31")
 	)
 	(wire
 		(pts
@@ -25364,7 +27293,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eae7359b-1013-4823-bea2-93c7f0c758c2")
+		(uuid "051c9393-5366-4ba3-8c07-c0b6b63e1547")
 	)
 	(wire
 		(pts
@@ -25374,7 +27303,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "18afdcce-1fb1-4c46-a4f0-772dd9030cf1")
+		(uuid "09730eed-5239-4128-b907-e1da4eeae160")
 	)
 	(wire
 		(pts
@@ -25384,7 +27313,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "17888eaf-9e32-49cc-8900-7070d2fb8593")
+		(uuid "009c49c4-439a-410c-bdc3-716c02bc8372")
 	)
 	(wire
 		(pts
@@ -25394,7 +27323,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9fea34e0-0912-444c-86bc-764253981fbd")
+		(uuid "6f605680-010b-4b3f-b037-5e4e1f7caa5c")
 	)
 	(sheet_instances
 		(path "/"

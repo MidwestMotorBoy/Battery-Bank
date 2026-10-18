@@ -63,7 +63,6 @@ REMOVE = {
     ],
     "usb_port.kicad_sch": [
         "J402",                                      # I2Cc logic-analyser header
-        "R450", "C454", "R451", "C455",              # DNP snubbers
         "C447",                                      # DNP feed-forward cap
         "C435",                                      # battery-side bank 3 -> 2 x 22u (cap sims 2026-10-17, B2)
         "Q403", "Q404", "Q405", "Q406",              # liquid detection removed (2026-10-17): SBU pull FETs
@@ -75,13 +74,13 @@ REMOVE = {
         "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
         "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
         "#FLG404", "#FLG406",                        # 3V3_PD / 5V_IN flags (nets are 3V3 / PACK_P now)
-    ] + ["TP4%02d" % n for n in range(2, 22)],
+    ] + ["TP4%02d" % n for n in range(2, 22) if n not in (2, 3, 4, 5, 6, 12)],  # P0 keeps PPHV/PP5V/REGN/SW1/SW2/GND probes
 }
 LINKS = {  # two-pin parts replaced by a wire
     ROOT: ["R1", "R2", "R3", "R4"],
     "power.kicad_sch": ["R201", "R207"],
     "mcu.kicad_sch": ["R301", "R312"],
-    "usb_port.kicad_sch": ["R401", "R431", "R440", "R448", "R449", "R444", "R445", "R446", "R447"],
+    "usb_port.kicad_sch": ["R401", "R431", "R440", "R448", "R449"],  # R444-R447 back as 0R gate links on P0
 }
 # labels renamed after a link joins two named nets (old -> new), per sheet
 RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put that power symbol there instead,
@@ -92,11 +91,15 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
     "mcu.kicad_sch": {"3V3_MCU": ("pwr", "3V3"), "SMB_PU": ("pwr", "3V3"),
                       "UART_TX": "", "UART_RX": "", "LED_DRV": ""},
     "usb_port.kicad_sch": {"DP": "DPDN_DCP", "DN": "DPDN_DCP", "BTST1_C": "BTST1", "BTST2_C": "BTST2",
-                           "HG1": "HIDRV1", "LG1": "LODRV1", "HG2": "HIDRV2", "LG2": "LODRV2",
                            "STAT1": "", "STAT2": "", "PG": "", "SBU1": "", "SBU2": "",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
-NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}
+NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")},
+             # P0 training parts (2026-10-18); a string value names a net that is new on production
+             "J113": {"1": ("TP106", "1")}, "J114": {"1": ("TP109", "1")},
+             "R118": {"1": ("F102", "2"), "2": "new WAKE"}, "TP113": {"1": "new WAKE"},
+             "J302": {"1": ("J103", "3"), "2": ("R319", "1"), "3": ("J301", "10"), "4": "new J302.4",
+                      "5": ("J103", "1"), "6": ("J103", "2")}}
 for _p in ("4", "5"):  # TPD2S300 U405/U505 (tpd2s300.py): pin -> a dev pin on the net it joins
     NEW_PARTS["U%s05" % _p] = {"A1": ("J%s01" % _p, "A5"), "A3": ("J%s01" % _p, "B5"), "A2": ("C%s51" % _p, "1"),
                               "B1": ("U%s01" % _p, "28"), "B3": ("U%s01" % _p, "29"), "C1": ("U%s01" % _p, "19"),
@@ -112,7 +115,7 @@ NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND"
              ("J401", "A8"): None, ("J401", "B8"): None}
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
-PAD = "TestPoint:TestPoint_Pad_D1.5mm"
+PAD = "TestPoint:TestPoint_Pad_D1.0mm"  # P0: small probe pads (2026-10-18)
 FOOTPRINT = {  # kept parts whose footprint changes
     "gauge.kicad_sch": {"TP106": PAD, "TP109": PAD,
                         "J102": "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm",
@@ -120,7 +123,7 @@ FOOTPRINT = {  # kept parts whose footprint changes
                         "J106": "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm",
                         "J107": "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"},
     "mcu.kicad_sch": {"TP301": PAD},
-    "usb_port.kicad_sch": {"TP401": PAD},
+    "usb_port.kicad_sch": {t: PAD for t in ("TP401", "TP402", "TP403", "TP404", "TP405", "TP406", "TP412")},
 }
 VALUE = {
     "gauge.kicad_sch": {"J102": "Cell 1 NTC wires", "J105": "Cell 2 NTC wires",
@@ -180,6 +183,12 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),
         "R417": P(R0201, "C270345", "0201WMF4702TEE"),
         "R420": P(R0402, "C25077", "0402WGF100JTCE"),
+        # P0 hedges (no dev board, 2026-10-18): gate links fitted at 0R, snubbers DNP; tune on P0 without a respin
+        **{r: P(R0402, "C17168", "0402WGF0000TCE", "0R") for r in ("R444", "R445", "R446", "R447")},
+        "R450": P(R0402, "C270612", "0402WGF330KTCE", "3R3"),
+        "R451": P(R0402, "C270612", "0402WGF330KTCE", "3R3"),
+        "C454": P(C0402, "C1562", "0402CG330J500NT", "33p C0G"),
+        "C455": P(C0402, "C1562", "0402CG330J500NT", "33p C0G"),
         "R424": P("Resistor_SMD:R_0805_2012Metric", "C728267", "PA0805FRE470R005L", "5m 0.5W (RAC)"),
         "R427": P("Resistor_SMD:R_1206_3216Metric", "C252653", "MA120610FR005MZ (50 ppm)", "5m 1W (RBAT)"),
         "R432": P(R0201, "C270364", "0201WMF1003TEE"),
@@ -213,12 +222,9 @@ GAUGE_PADS = [
     ("J110", "CELL2 tap", WIRE26, ("BT102", "1")),
     ("J111", "CELL3 tap", WIRE26, ("BT103", "1")),
     ("J112", "PACK+ (CELL_P_RAW)", WIRE16, ("BT104", "1")),
-    ("TP110", "SMBC", PAD, ("J103", "2")),
-    ("TP111", "SMBD", PAD, ("J103", "3")),
-    ("TP112", "GND", PAD, ("J103", "1")),
 ]
 # the pogo pads get their own spaced row (J103's pins were 2.54 mm apart), tied by a global label or GND symbol
-POGO_AT = {"TP110": ((355.6, 152.4), "SCL"), "TP111": ((370.84, 152.4), "SDA"), "TP112": ((386.08, 152.4), "GND")}
+POGO_AT = {}  # P0: gauge SMBus moved to the GAUGE Tag-Connect J302 on the MCU sheet (2026-10-18)
 
 
 def uid():
@@ -555,6 +561,129 @@ def add_tc2030(s, old):
     return insert_top(s, add)
 
 
+LOAD_PAD = "Connector_Wire:SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm"  # 20 AWG: learning-cycle load / bench wires
+GAUGE_TC = ["SDA", "CHG_INH", "NRST", None, "GND", "SCL"]  # J302 pins 1-6 (None = no-connect)
+GAUGE_TC_AT = (297.18, 137.16)                             # under J301 on the MCU sheet
+
+
+def _rot(blk, angle):
+    """Set a placed symbol block's own rotation (its first (at x y r) line)."""
+    return re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)",
+                  lambda m: "\n\t\t(at %s %s %d)" % (m.group(1), m.group(2), angle), blk, count=1)
+
+
+def _fields(blk, at, ref_xy, val_xy):
+    """Put Reference/Value at offsets from the symbol position, unrotated."""
+    for k, (dx, dy) in (("Reference", ref_xy), ("Value", val_xy)):
+        blk = re.sub(r'(\(property "%s" "[^"]*"\s*\(at )[-\d.]+ [-\d.]+ [-\d.]+\)' % k,
+                     lambda m: m.group(1) + "%g %g 0)" % (round(at[0] + dx, 2), round(at[1] + dy, 2)), blk, count=1)
+    return blk
+
+
+def _text(txt, at, size=1.27):
+    return ('\n\t(text "%s"\n\t\t(exclude_from_sim no)\n\t\t(at %g %g 0)\n\t\t(effects\n\t\t\t(font\n\t\t\t\t(size %g %g)\n'
+            '\t\t\t)\n\t\t\t(justify left bottom)\n\t\t)\n\t\t(uuid "%s")\n\t)' % (txt, at[0], at[1], size, size, uid()))
+
+
+def _glabel(s, name, p, angle):
+    """Copy of an existing global label `name`, moved to p and pointing left (180) or right (0)."""
+    a, b = next((a, b) for a, b in top_blocks(s, "global_label") if s[a:b].startswith('(global_label "%s"' % name))
+    blk = new_uuids(s[a:b])
+    x0, y0 = map(float, re.search(r"\(at ([-\d.]+) ([-\d.]+)", blk).groups())
+    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + p[0], 2), round(float(m.group(2)) - y0 + p[1], 2)), blk)
+    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+) \d+\)", lambda m: "(at %s %s %d)" % (m.group(1), m.group(2), angle), blk, count=1)
+    blk = re.sub(r"\(justify (left|right)", "(justify %s" % ("right" if angle == 180 else "left"), blk, count=1)
+    return "\n\t" + blk
+
+
+def add_gauge_tc2030(s):
+    """J302 = second Tag-Connect TC2030-NL footprint for gauge training / golden-image loading (2026-10-18).
+    Pinout chosen so the SWD cable plugged here by mistake drives nothing harmful (see GAUGE_TC and the README)."""
+    import siz240dt as _s
+    if '(symbol "MonolithDev:TC2030_GAUGE"' not in s:
+        pins = "\n".join(_s._pin("passive", -5.08, 6.35 - 2.54 * i, 0, n or "NC", str(i + 1)) for i, n in enumerate(GAUGE_TC))
+        body = ('\t\t\t(symbol "TC2030_GAUGE_0_1"\n\t\t\t\t(rectangle\n\t\t\t\t\t(start -2.54 7.62)\n\t\t\t\t\t(end 5.08 -7.62)\n'
+                '\t\t\t\t\t(stroke\n\t\t\t\t\t\t(width 0.254)\n\t\t\t\t\t\t(type default)\n\t\t\t\t\t)\n\t\t\t\t\t(fill\n'
+                '\t\t\t\t\t\t(type background)\n\t\t\t\t\t)\n\t\t\t\t)\n\t\t\t)')
+        lib = "\n".join(["\t\t(symbol \"MonolithDev:TC2030_GAUGE\"", "\t\t\t(pin_names\n\t\t\t\t(offset 0.508)\n\t\t\t)",
+                         "\t\t\t(exclude_from_sim no)\n\t\t\t(in_bom no)\n\t\t\t(on_board yes)\n\t\t\t(in_pos_files no)",
+                         "\t\t\t(duplicate_pin_numbers_are_jumpers no)",
+                         _s._prop("Reference", "J", 0, 8.89, False), _s._prop("Value", "TC2030-NL GAUGE", 0, -8.89, False),
+                         _s._prop("Footprint", "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical", 0, 0, True),
+                         _s._prop("Datasheet", "", 0, 0, True),
+                         _s._prop("Description", "Tag-Connect TC2030-NL pads for gauge SMBus + training signals", 0, 0, True),
+                         body, '\t\t\t(symbol "TC2030_GAUGE_1_1"\n%s\n\t\t\t)' % pins, "\t\t\t(embedded_fonts no)", "\t\t)"])
+        i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+        s = s[:i] + "\n" + lib + s[i:]
+    syms = {y["ref"]: y for y in symbols(s)}
+    blk = clone(s[syms["TP301"]["a"]:syms["TP301"]["b"]], "J302", "TC2030-NL GAUGE",
+                "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical", GAUGE_TC_AT, "TP301")
+    blk = blk.replace('(lib_id "Connector:TestPoint")', '(lib_id "MonolithDev:TC2030_GAUGE")')
+    blk = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s 0)" % m.groups(), blk, count=1)
+    blk = set_prop(blk, "Description", "Gauge training / golden image: TC2030-IDC-NL cable, 2x3 end to EV2400 + clips")
+    blk = _fields(blk, GAUGE_TC_AT, (1.27, -10.16), (1.27, 10.16))
+    blk = re.sub(r'\n\t\t\(pin "1"\n\t\t\t\(uuid "[^"]+"\)\n\t\t\)',
+                 "".join('\n\t\t(pin "%d"\n\t\t\t(uuid "%s")\n\t\t)' % (n, uid()) for n in range(1, 7)), blk)
+    s = insert_top(s, "\n\t" + blk)
+    pins = {y["ref"]: y for y in symbols(s)}["J302"]["pins"]
+    add = ""
+    for i, net in enumerate(GAUGE_TC):
+        p = pins[str(i + 1)]
+        if net is None:
+            add += nc_text(p)
+        elif net == "GND":  # pointing left, clear of the SCL label below
+            g = _rot(clone_power(power_template(s, "GND"), p).lstrip(), 270)
+            g = re.sub(r'(\(property "Value" "GND"\s*\(at [^)]*\))', r"\1\n\t\t\t(hide yes)", g, count=1)
+            add += "\n\t" + g
+        elif net == "NRST":
+            add += label_text("NRST", p, 180)
+        else:
+            add += _glabel(s, net, p, 180)
+    add += _text("GAUGE: 1 SDA, 2 CHG_INH (GND = charge with MCU in reset), 3 NRST (GND = hold MCU), 4 nc, 5 GND, 6 SCL",
+                 (GAUGE_TC_AT[0] - 10.16, GAUGE_TC_AT[1] + 12.7))
+    return insert_top(s, add)
+
+
+def add_training_gauge(s):
+    """Gauge-sheet training parts (2026-10-18): learning-cycle load pads and the gauge WAKE resistor + pad."""
+    syms = {y["ref"]: y for y in symbols(s)}
+    tp = s[syms["TP106"]["a"]:syms["TP106"]["b"]]
+    add = "\n\t" + clone(tp, "J113", "LOAD PACK_P", LOAD_PAD, (170.18, 264.16), "TP106")
+    add += "\n\t" + clone(tp, "J114", "LOAD GND", LOAD_PAD, (185.42, 264.16), "TP106")
+    add += "\n\t" + clone(tp, "TP113", "WAKE", PAD, (210.82, 264.16), "TP106")
+    r = new_uuids(s[syms["R113"]["a"]:syms["R113"]["b"]])
+    x0, y0 = syms["R113"]["at"][:2]
+    r = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + 200.66, 2), round(float(m.group(2)) - y0 + 259.08, 2)), r)
+    r = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s 0)" % m.groups(), r, count=1)
+    r = re.sub(r"\n\t\t\(mirror \w\)", "", r)
+    for k, v in (("Reference", "R118"), ("Value", "4.7k"), ("Footprint", R0402), ("LCSC", "C25900"),
+                 ("MPN", "0402WGF4701TCE")):
+        if '(property "%s" ' % k in r:
+            r = set_prop(r, k, v)
+    r = r.replace('(reference "R113")', '(reference "R118")')
+    r = _fields(r, (200.66, 259.08), (3.81, -1.27), (3.81, 1.27))
+    if '(property "Notes" ' in r:
+        r = set_prop(r, "Notes", "Gauge wake: bridge TP113 (WAKE) to TP106 (PACK_P) with tweezers")
+    add += "\n\t" + r
+    s = insert_top(s, add)
+    cur = {y["ref"]: y for y in symbols(s)}
+    tp106_pin = cur["TP106"]["pins"]["1"]  # copy TP106's own (downward) PACK_P symbol, text placement included
+    down = next(s[y["a"]:y["b"]] for y in symbols(s)
+                if y["power"] and tp106_pin in y["pins"].values() and '"PACK_P"' in s[y["a"]:y["b"]])
+    a = clone_power(down, cur["J113"]["pins"]["1"])
+    a = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) 0\)", lambda m: "\n\t\t(at %s %s 180)" % m.groups(), a, count=1) \
+        if "\n\t\t(at " in a and re.search(r"\n\t\t\(at [-\d.]+ [-\d.]+ 180\)", down) else a
+    a += clone_power(power_template(s, "GND"), cur["J114"]["pins"]["1"])
+    rp = cur["R118"]["pins"]
+    top, bot = sorted((rp["1"], rp["2"]), key=lambda q: q[1])
+    a += label_text("CELL_P", top) + label_text("WAKE", bot) + label_text("WAKE", cur["TP113"]["pins"]["1"])
+    a += _text("Training: J113/J114 = learning-cycle load wires (20 AWG). WAKE: bridge TP113 to TP106 (PACK_P).",
+               (165.1, 275.59))
+    return insert_top(s, a)
+
+
 def add_gauge_pads(s, old):
     syms = {y["ref"]: y for y in symbols(s)}
     tmpl = s[syms["TP106"]["a"]:syms["TP106"]["b"]]
@@ -671,11 +800,13 @@ def process(sheet, src):
     s = insert_top(s, add)
     if sheet == "gauge.kicad_sch":
         s = add_gauge_pads(s, old)
+        s = add_training_gauge(s)
     s, n = prune(s)
     if sheet == "power.kicad_sch":
         s = add_shared_bulk(s)
     if sheet == "mcu.kicad_sch":  # after pruning, so its pins can't catch J301's old wires
         s = add_tc2030(s, old)
+        s = add_gauge_tc2030(s)
         s, n2 = prune(s)
         n += n2
     s = rename_labels(s, sheet, templates)
@@ -749,6 +880,16 @@ def main():
     process(ROOT, os.path.join(DEV, ROOT_DEV))
     for sh in SHEETS:
         process(sh, os.path.join(DEV, sh))
+    # the J302 symbol exists only embedded in the MCU sheet: copy it into the project library as well
+    from schlib import block_end
+    m = open(os.path.join(PROD, "mcu.kicad_sch"), encoding="utf-8").read()
+    a = m.index('\n\t\t(symbol "MonolithDev:TC2030_GAUGE"') + 1
+    sym = m[a:block_end(m, a + 2)].replace('"MonolithDev:TC2030_GAUGE"', '"TC2030_GAUGE"', 1)
+    sym = "\n".join(ln[1:] if ln.startswith("\t") else ln for ln in sym.split("\n"))
+    t = open(lib, encoding="utf-8").read()
+    if '(symbol "TC2030_GAUGE"' not in t:
+        t = t.rstrip()[:-1].rstrip() + "\n" + sym + "\n)\n"
+        open(lib, "w", encoding="utf-8", newline="\n").write(t)
 
 
 if __name__ == "__main__":

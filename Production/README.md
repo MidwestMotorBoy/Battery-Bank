@@ -1,6 +1,6 @@
 # Monolith production board
 
-KiCad 10 project `Monolith`. **Status (2026-10-17): schematic P0 only.** It is the dev board schematic (rev A8) with the dev-only parts removed. It has not been reviewed and there is no board yet.
+KiCad 10 project `Monolith`. **Status (2026-10-18): the dev board is skipped, so P0 is the first build** (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). It is the dev board schematic (rev A8) with the dev-only parts removed. It has not been reviewed and there is no board yet.
 
 ## How P0 was made
 
@@ -242,6 +242,33 @@ Both ports exit the same face, for mechanical assembly: the seal flanges stick o
 **Found while checking DRC (not changed):**
 - The via minimum in `Monolith.kicad_pro` is back at 0.45/0.3 mm. KiCad was open and rewrote the project file. Set 0.35/0.2 in Board Setup, or re-run the change with KiCad closed.
 - The dev library's TPD2S300 footprint (`TI_YFF0009_DSBGA-9_P0.4mm`) puts a 0.15 mm-drill via in the centre ball pad (0.05 mm annular ring). That's inside JLC's ≤ 1 mm-board limits but trips the project rules. Decide at fan-out whether to keep it.
+
+## P0 is the first build: training and test additions (2026-10-18)
+
+The dev board won't be built, to save cost. P0 trains the gauge and carries the checks planned for the dev board, and a second spin follows only if needed. The procedure and the check list are in `docs/production/p0-bringup-and-training.md`.
+
+**Gauge training access:**
+
+- **J302: a second Tag-Connect TC2030-NL ("GAUGE") on the MCU sheet**, with no part fitted. Pinout: 1 SDA, 2 CHG_INH, 3 NRST, 4 nc, 5 GND, 6 SCL.
+    - One TC2030-IDC-NL cable (+ clip) serves J301 and J302. Its 2×3 end takes the EV2400 and XDS110 jumper wires.
+    - The pinout makes a wrong plug harmless: the SWD probe would drive only CHG_INH and NRST.
+    - The gauge pogo pads TP110–TP112 are gone; J302 replaces them.
+- **J113/J114:** PACK_P/GND 20 AWG wire pads for the learning-cycle load (~C/5 ≈ 1.2 A). The current runs through the protection FETs and RS101, so the gauge measures it.
+- **WAKE:** R118 4.7 kΩ (0402, C25900) from CELL_P to TP113. Bridging TP113 to TP106 wakes the gauge, in case wake-on-USB fails.
+- **With the MCU held in reset:** ground J302 pin 2 (CHG_INH) to keep charging enabled while BQStudio owns the bus.
+
+**Hedges for the decisions that were waiting on the dev board:**
+
+- **R444–R447** (and 5xx) are back as fitted **0 Ω 0402 gate links** (C17168). If SW1/SW2 ring, swap in 2.2–10 Ω without a respin.
+- **R450/C454 and R451/C455** are back as **DNP 0402 RC snubbers** (3.3 Ω C270612, 33 pF C0G C1562).
+
+**Probe pads (1.0 mm, `TestPoint_Pad_D1.0mm`):**
+
+- Per port: TP401 VBUS, TP402 PPHV, TP403 PP5V, TP404 REGN, TP405 SW1, TP406 SW2, TP412 GND (5xx on port 2).
+- Shared: TP301 3V3, TP106 PACK_P, TP109 GND.
+- Every 1.5 mm pad is now 1.0 mm.
+
+**Totals:** 276 parts, courtyard area 1,899 mm². The netlist check passes, with the new WAKE net and J302 checked. ERC shows only the known warnings.
 
 ## Next
 

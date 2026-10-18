@@ -2150,7 +2150,7 @@
 		)
 		(uuid "a1c9286b-8f28-49a6-9d55-efbfac0d26a7")
 	)
-	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on the dev board.\n7. C208 = the one battery-side bulk cap for both chargers and both 5 V buck inputs (was C432/C532, one per port).\n   Place it between the two power stages on PACK_P, next to both RBAT pads (USB sheet note 5)."
+	(text "NOTES\n1. PACK_P -> TPS62177 -> 3V3 (MCU + both TPS25751). Gauge BAT is NOT on this rail (TI: gauge must stay powered\n   with the FETs off).\n2. SLEEP low = sleep mode (internal 1.4 uA pull-down); CC2340 DIO21 (3V3_SLEEP) drives it, and R313 220k\n   holds it high while U301 is in reset or unprogrammed.\n3. PG is not used.\n4. U204 pin 4 (NC) goes to GND, as TI recommends.\n5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.\n   Measure sleep current on P0 with a meter in series with one pack lead (J108 or J112).\n7. C208 = the one battery-side bulk cap for both chargers and both 5 V buck inputs (was C432/C532, one per port).\n   Place it between the two power stages on PACK_P, next to both RBAT pads (USB sheet note 5)."
 		(exclude_from_sim no)
 		(at 215.9 129.54 0)
 		(effects
@@ -3461,7 +3461,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1ed54e8f-8798-43f0-99eb-c47567dae873")
+		(uuid "9d929e87-bd4d-4c1d-b92a-1c863bacc1a8")
 	)
 	(wire
 		(pts
@@ -3471,7 +3471,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f3dcf1a9-5420-45ab-baf3-c735f7a99265")
+		(uuid "8f9941ba-9efd-4e29-b0e3-18b0968304e8")
 	)
 	(symbol
 		(lib_id "Device:C_Polarized")
@@ -3483,7 +3483,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3c369c20-0542-437b-a00e-680cc83df6bb")
+		(uuid "76b25f2a-4212-4073-9d55-5d49ee55d580")
 		(property "Reference" "C208"
 			(at 69.85 132.08 0)
 			(show_name no)
@@ -3571,10 +3571,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "51dec612-dba1-40fc-b96b-9fe56d39ca96")
+			(uuid "40b9b03d-545a-4e1c-aa91-ccb927b7952c")
 		)
 		(pin "2"
-			(uuid "e6163934-fe6c-4fd8-b4a3-f607648faf7e")
+			(uuid "f40569d5-eaed-49e2-8be4-d4cedc082b85")
 		)
 		(instances
 			(project "Monolith"
@@ -3595,8 +3595,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "04421c2c-5e80-4a19-862a-14af057d0a45")
-		(property "Reference" "#PWR9009"
+		(uuid "950b5ccb-d111-485a-a9d0-66da47d8ecaf")
+		(property "Reference" "#PWR9011"
 			(at 63.5 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -3651,12 +3651,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "d6e5a3ef-1e43-4278-b20f-141e28131de5")
+			(uuid "b7c26bfa-483d-428f-9645-5613606afa8a")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9010")
+					(reference "#PWR9012")
 					(unit 1)
 				)
 			)
@@ -3672,8 +3672,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "d93e8845-4b29-4be5-9739-8ebe980a830e")
-		(property "Reference" "#PWR9011"
+		(uuid "43af6f40-3c3e-404c-836a-7a70b33d1bcc")
+		(property "Reference" "#PWR9013"
 			(at 63.5 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -3728,12 +3728,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "42a22327-9a6c-46a9-9303-64a1a257729c")
+			(uuid "54dfcea0-ce56-4c32-8615-98b2fae32752")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9012")
+					(reference "#PWR9014")
 					(unit 1)
 				)
 			)
@@ -3749,7 +3749,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "3f76ff0d-9ac3-45a2-848c-f1ba5708d0c9")
+		(uuid "07be6c74-47d0-4828-96ab-0e27bc5991ae")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -3761,8 +3761,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "cf083406-06ca-4089-95b4-bb54deb970e5")
-		(property "Reference" "#PWR9013"
+		(uuid "84f28c28-a6cd-4795-b33e-58a95dfa839f")
+		(property "Reference" "#PWR9015"
 			(at 190.5 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3817,12 +3817,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "b9c91f5a-552c-4729-8a9a-0293091c0732")
+			(uuid "d090847c-8296-441e-b2b0-e1c37a8cdff0")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9014")
+					(reference "#PWR9016")
 					(unit 1)
 				)
 			)
@@ -3838,8 +3838,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3f405a28-ef58-4f33-9b2d-d3e9ef0736dc")
-		(property "Reference" "#PWR9015"
+		(uuid "287de8a7-ee28-4171-9b38-c7188c314e42")
+		(property "Reference" "#PWR9017"
 			(at 121.92 59.69 0)
 			(hide yes)
 			(show_name no)
@@ -3894,12 +3894,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "1cbe7c54-3252-4f1f-969e-be78c0abb5b6")
+			(uuid "38aad943-9fb0-44db-9a23-f6369eaf6d9e")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/d9806540-c841-409c-9faa-82254b30b220"
-					(reference "#PWR9016")
+					(reference "#PWR9018")
 					(unit 1)
 				)
 			)
@@ -3907,7 +3907,7 @@
 	)
 	(no_connect
 		(at 142.24 68.58)
-		(uuid "dd31c91c-d339-4ee9-9f91-aec43707bfb2")
+		(uuid "c22935de-8d7f-4db7-aff4-dc502fe4b649")
 	)
 	(wire
 		(pts
@@ -3917,7 +3917,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fafb4612-8b07-438a-b076-1df9299d7dda")
+		(uuid "989e1675-62b9-481f-947e-b9535611bca7")
 	)
 	(wire
 		(pts
@@ -3927,7 +3927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "75a236f4-669c-4ac3-9030-f0f400392c03")
+		(uuid "7745fc94-1131-452f-9dac-eb40c43e177b")
 	)
 	(sheet_instances
 		(path "/"

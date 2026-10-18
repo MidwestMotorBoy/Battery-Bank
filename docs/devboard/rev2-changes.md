@@ -2,6 +2,8 @@
 
 _Started 2026-10-12. Rev 1 (`DevBoard/`) is placed but not routed, ordered or built._
 
+**2026-10-18: the dev board will not be built.** These items now feed the production board (`Production/`); the bring-up checks below move to production P0 (`docs/production/p0-bringup-and-training.md`).
+
 Changes to make in the next revision of the dev board. Add items as rev 1 is routed, built and tested; mark each one done when it is in the rev 2 schematic and layout.
 
 ## Requested
