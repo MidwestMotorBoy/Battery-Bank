@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "MonolithDev")(type "KiCad")(uri "${KIPRJMOD}/MonolithDev.kicad_sym")(options "")(descr ""))
+)
