@@ -199,6 +199,15 @@ Each BQ25756 leg's two PGQ04N070s became one **SiZ240DT**, a 40 V dual-N half-br
 - **Sourcing:** DigiKey/Mouser. JLC/LCSC (C3289403) has only a couple in stock, so supply them to JLC yourself, or check stock before ordering.
 - **Area:** about 31 mm² less per port (one 16.6 mm² courtyard instead of two of 15.6 mm² each per leg).
 
+## BQ25756 status pins (2026-10-17)
+
+R421–R423 (R521–R523 on port 2), the 10 kΩ pull-ups on STAT1, STAT2 and PG, are removed.
+
+- Those pins are open-drain status outputs. Nothing reads them on production, because the MCU gets the charger's status and faults over I2C through the TPS25751.
+- U403/U503 pins 4–6 are now no-connects. An open-drain output may float.
+- Set DIS_STAT_PINS = 1 in the BQ25756 configuration so they stay off.
+- This also removes up to 0.33 mA per pin while the charger pulls it low.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

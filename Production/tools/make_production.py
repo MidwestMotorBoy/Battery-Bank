@@ -68,6 +68,7 @@ REMOVE = {
         "Q403", "Q404", "Q405", "Q406",              # liquid detection removed (2026-10-17): SBU pull FETs
         "R436", "R437", "R438", "R439",              # ... SBU sense resistors
         "R442", "R443",                              # ... FET gate holds
+        "R421", "R422", "R423",                      # STAT1/STAT2/PG pull-ups: nothing reads them (status via I2C)
         "C432",                                      # per-port hybrid -> one shared PACK_P hybrid C208 (pack_bus_sims A2)
         "C445",                                      # buck input 2 -> 1 x 10u 50V on the shared bus (pack_bus_sims A2)
         "D406", "D407", "D408", "D409",              # gate turn-off diodes: gates driven directly
@@ -90,6 +91,7 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                       "UART_TX": "", "UART_RX": "", "LED_DRV": ""},
     "usb_port.kicad_sch": {"DP": "DPDN_DCP", "DN": "DPDN_DCP", "BTST1_C": "BTST1", "BTST2_C": "BTST2",
                            "HG1": "HIDRV1", "LG1": "LODRV1", "HG2": "HIDRV2", "LG2": "LODRV2",
+                           "STAT1": "", "STAT2": "", "PG": "",
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
 NEW_PARTS = {"C208": {"1": ("TP106", "1"), "2": ("TP109", "1")}}  # check_netlist: pin -> a dev pin on the same net
@@ -172,7 +174,6 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),
         "R417": P(R0201, "C270345", "0201WMF4702TEE"),
         "R420": P(R0402, "C25077", "0402WGF100JTCE"),
-        **{r: P(R0201, "C473048", "0201WMF1002TEE") for r in ("R421", "R422", "R423")},
         "R424": P("Resistor_SMD:R_0805_2012Metric", "C728267", "PA0805FRE470R005L", "5m 0.5W (RAC)"),
         "R427": P("Resistor_SMD:R_1206_3216Metric", "C252653", "MA120610FR005MZ (50 ppm)", "5m 1W (RBAT)"),
         "R432": P(R0201, "C270364", "0201WMF1003TEE"),
