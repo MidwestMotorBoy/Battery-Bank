@@ -133,8 +133,8 @@ def write_dxf(path):
 # The cover is recessed SB_LIP into a frame in the walls and doubles as the heat spreader.
 # No airflow vents; one adhesive ePTFE pressure vent over a hole in the cover (altitude).
 SB_INSUL     = 0.3    # Kapton / fish paper between the cell cans and the board
-SB_PCB_T     = 0.8    # production board thickness
-SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1, USB-C body 2.77 above the board)
+SB_PCB_T     = 1.6    # production board thickness (1.6 mm for cost, 2026-10-18; was 0.8)
+SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1; the USB-C body is 1.97 above a 1.6 mm board)
 SB_GAP       = 0.5    # compressed gap pad between those parts and the cover
 SB_COVER_T   = 1.0    # aluminium cover
 SB_LIP       = 0.8    # frame lip outside the cover (cover sits this far below the rim)
@@ -149,9 +149,10 @@ SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production bo
 SB_INSERT_D, SB_INSERT_L = 3.2, 4.0   # M2 heat-set insert pilot (e.g. M2 x 3 x 3.2): diameter, depth
 SB_PILLAR_W  = 5.0    # pillar width in y, from the wall inward
 SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the bottom bumper band)
-# ShouHan TYPE-C 16PCB0.8 IP68 (DevBoard/tools/make_3d_usbc.py): mid-mount, body bottom flush
-# with the board bottom, centreline 0.827 above the board top, mating face 1.949 past the board edge
-USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 0.827, 7.45
+# ShouHan TYPE-C 16PCB<t> IP68 (DevBoard/tools/make_3d_usbc.py), the variant for the board thickness:
+# mid-mount, body bottom flush with the board bottom, centreline 1.627 above the board bottom
+# (0.027 above the top of a 1.6 mm board), mating face 1.949 past the board edge
+USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
 USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
 USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
 # derived (x across the board, y along the board width, z along the cells)

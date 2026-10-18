@@ -22657,7 +22657,7 @@
 				)
 			)
 		)
-		(property "Value" "TYPE-C 16PCB0.8 IP68"
+		(property "Value" "TYPE-C 16PCB1.6 IP68"
 			(at 45.72 76.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22667,7 +22667,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
+		(property "Footprint" "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68"
 			(at 49.53 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -22700,7 +22700,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C55629727"
+		(property "LCSC" "C55629729"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -22711,7 +22711,7 @@
 				)
 			)
 		)
-		(property "MPN" "TYPE-C 16PCB0.8 IP68 (Shou Han)"
+		(property "MPN" "TYPE-C 16PCB1.6 IP68 (Shou Han)"
 			(at 45.72 96.52 0)
 			(hide yes)
 			(show_name no)

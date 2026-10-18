@@ -202,9 +202,9 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "C417": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C439": P(C0402, "C7419416", "FCC0402B333K500AT"),
         "TH401": P(R0402, "C77131", "NCP15XH103F03RC"),
-        # 0.8 mm board (stack-up 2026-10-17): the 0.8 mm version of the same IP68 connector, identical land pattern
-        "J401": P("MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68", "C55629727",
-                  "TYPE-C 16PCB0.8 IP68 (Shou Han)", "TYPE-C 16PCB0.8 IP68"),
+        # 1.6 mm board (2026-10-18, for cost; 0.8 mm before): the 1.6 mm version of the IP68 connector, same land pattern
+        "J401": P("MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68", "C55629729",
+                  "TYPE-C 16PCB1.6 IP68 (Shou Han)", "TYPE-C 16PCB1.6 IP68"),
         # 10x10 -> 7.8x7.6x3.1 mm: 13.7 mOhm max, Irms 13 A (40 C rise), Isat 17 A at a 40 % drop. Worst case (20 V 5 A
         # reverse from a 10 V pack) ~10.7 A rms, ~12.4 A peak: ~1.6 W DCR loss, L near 1.7 uH at the peak (L/RSNS
         # 0.34 uH/mOhm, inside TI's 0.05-1.26 stability range). Measure inductor temperature on the dev board.

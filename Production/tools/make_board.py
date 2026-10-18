@@ -1,15 +1,20 @@
-"""Create the production board file with its stack-up and outline (2026-10-17). Run once; refuses to overwrite.
+"""Create the production board file with its stack-up and outline (2026-10-17; side outline and 1.6 mm 2026-10-18).
+Run once; later runs patch an existing board that has no copper yet.
 
-Stack-up: 6 layers, 0.8 mm, 2 oz outer / 0.5 oz inner, ENIG, vias filled and capped (JLC default on 6+ layers).
-The dielectric split is a symmetric approximation that sums to 0.8 mm; JLC publishes no 0.8 mm 6-layer stack and no
-net here is impedance-controlled, so set it to JLC's stack at order time.
+Stack-up: 6 layers, 1.6 mm (chosen 2026-10-18 for cost; was 0.8 mm), 2 oz outer / 0.5 oz inner, ENIG, vias filled
+and capped (JLC default on 6+ layers). The dielectric split is a symmetric approximation that sums to 1.6 mm; no net
+here is impedance-controlled, so set it to JLC's stack at order time. JLC multilayer vias at 1.6 mm: 0.15 mm hole /
+0.25 mm via minimum (surcharge below 0.2 mm or under a 0.45 mm via); the 0.1 mm hole option needs a board <= 1 mm.
 
-Outline: 45.5 x 45.5 mm rounded square, R9.35 corners, centred on (100, 100) (2026-10-17: the 40.5 mm top-cap board from
-mechanical/monolith_parts.py plus 5 mm in x and y, so both USB-C ports fit on the right edge). The outline leaves gaps
-for the connector notches (PORTS_Y), and place_ports() puts J401/J501 there.
-(mechanical/monolith_bottom_pcb.dxf is the 43.3 mm bottom end board with the vent, not this board.)
+Outline: the side board of the one-piece tray, from mechanical/monolith_shell.py (sb_* values, also written to
+mechanical/monolith_side_pcb.dxf): 43.2 mm wide, its bottom corners notched around the tray's screw pillars, centred on
+(100, 100). KiCad x = the tray's y (left = the C1 / PACK- side), KiCad y = down the pack (top edge = the port end).
+F.Cu faces the aluminium cover (outer face), B.Cu faces the cells. The outline leaves gaps for the connector notches
+(PORTS_X), and place_ports() puts J401/J501 there.
+(History: 40.5 mm then 45.5 mm top-cap boards, 2026-10-17. mechanical/monolith_bottom_pcb.dxf is the old bottom end
+board with the vent, not this board.)
 
-Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force]
+Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
 """
 import math
 import os
@@ -21,16 +26,25 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
 DEV = os.path.normpath(os.path.join(PROD, "..", "DevBoard"))
 OUT = os.path.join(PROD, "Monolith.kicad_pcb")
-CX, CY, HALF, R = 100.0, 100.0, 22.75, 9.35  # 45.5 mm (2026-10-17: +5 mm in x and y for both ports on one side)
-# USB-C notches on the right edge (x = CX + HALF): connector centres along y. The footprint's own Edge.Cuts draws the
-# 10.2 x 5.65 notch (origin = board edge), so the board outline leaves a 10.2 mm gap at each. 13 mm apart: each
-# connector needs ~12.5 mm (notch + shell tabs at +-5.8), all inside the 26.8 mm straight edge (R9.35 corners).
-PORTS_Y = {"J501": CY - 6.5, "J401": CY + 6.5}
+sys.path.insert(0, os.path.normpath(os.path.join(PROD, "..", "mechanical")))
+import monolith_shell as M  # noqa: E402  (side-board geometry: one source for the tray and the board)
+
+CX, CY = 100.0, 100.0
+HALF_W = M.sb_board_w / 2                     # 21.6
+Z_MID = (M.sb_zb0 + M.sb_zb1) / 2             # tray z of the board centre
+def Y(z):                                     # tray z -> KiCad y (port end at the top)
+    return CY - (z - Z_MID)
+Y_TOP, Y_BOT, Y_NOTCH = Y(M.sb_zb1), Y(M.sb_zb0), Y(M.sb_notch_z)
+NOTCH_X = M.sb_notch_y                        # bottom corners cut away for |x - CX| > NOTCH_X, below Y_NOTCH
+# USB-C notches on the top edge: connector centres along x, 13 mm apart. The footprint's own Edge.Cuts draws the
+# 10.2 x 5.65 notch (origin = board edge), so the board outline leaves a 10.2 mm gap at each.
+PORTS_X = {"J501": CX - M.SB_PORT_Y, "J401": CX + M.SB_PORT_Y}
 NOTCH_HALF = 5.1
 
 COPPER = [("F.Cu", 0.07), ("In1.Cu", 0.0175), ("In2.Cu", 0.0175), ("In3.Cu", 0.0175), ("In4.Cu", 0.0175), ("B.Cu", 0.07)]
-DIELECTRIC = [("prepreg", 0.10, 4.4), ("core", 0.12, 4.6), ("prepreg", 0.15, 4.4), ("core", 0.12, 4.6), ("prepreg", 0.10, 4.4)]
+DIELECTRIC = [("prepreg", 0.20, 4.4), ("core", 0.30, 4.6), ("prepreg", 0.39, 4.4), ("core", 0.30, 4.6), ("prepreg", 0.20, 4.4)]
 THICK = round(sum(t for _, t in COPPER) + sum(t for _, t, _ in DIELECTRIC), 4)
+assert abs(THICK - M.SB_PCB_T) < 1e-6, "stack-up %g mm != mechanical SB_PCB_T %g mm" % (THICK, M.SB_PCB_T)
 
 
 LAYERS = """\t(layers
@@ -88,22 +102,14 @@ def line(x0, y0, x1, y1):
             '\t\t)\n\t\t(layer "Edge.Cuts")\n\t\t(uuid "%s")\n\t)' % (x0, y0, x1, y1, u()))
 
 
-def arc(cx, cy, a0):
-    pts = [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in (a0, a0 + 45, a0 + 90)]
-    return ('\t(gr_arc\n\t\t(start %.4f %.4f)\n\t\t(mid %.4f %.4f)\n\t\t(end %.4f %.4f)\n\t\t(stroke\n\t\t\t(width 0.05)\n'
-            '\t\t\t(type default)\n\t\t)\n\t\t(layer "Edge.Cuts")\n\t\t(uuid "%s")\n\t)'
-            % (pts[0][0], pts[0][1], pts[1][0], pts[1][1], pts[2][0], pts[2][1], u()))
-
-
 def outline():
-    k = HALF - R
-    g = [line(CX - k, CY - HALF, CX + k, CY - HALF), line(CX + k, CY + HALF, CX - k, CY + HALF),
-         line(CX - HALF, CY + k, CX - HALF, CY - k)]
-    ys = [CY - k] + [y for c in sorted(PORTS_Y.values()) for y in (c - NOTCH_HALF, c + NOTCH_HALF)] + [CY + k]
-    for y0, y1 in zip(ys[0::2], ys[1::2]):  # right edge, with gaps where the connector notches are
-        g.append(line(CX + HALF, y0, CX + HALF, y1))
-    for (sx, sy), a0 in (((1, 1), 0), ((-1, 1), 90), ((-1, -1), 180), ((1, -1), 270)):
-        g.append(arc(CX + sx * k, CY + sy * k, a0))
+    """Top edge with the two connector gaps, straight sides, bottom corners notched around the screw pillars."""
+    xl, xr = CX - HALF_W, CX + HALF_W
+    xs = [xl] + [x for c in sorted(PORTS_X.values()) for x in (c - NOTCH_HALF, c + NOTCH_HALF)] + [xr]
+    g = [line(x0, Y_TOP, x1, Y_TOP) for x0, x1 in zip(xs[0::2], xs[1::2])]
+    pts = [(xr, Y_TOP), (xr, Y_NOTCH), (CX + NOTCH_X, Y_NOTCH), (CX + NOTCH_X, Y_BOT),
+           (CX - NOTCH_X, Y_BOT), (CX - NOTCH_X, Y_NOTCH), (xl, Y_NOTCH), (xl, Y_TOP)]
+    g += [line(*p, *q) for p, q in zip(pts[:-1], pts[1:])]
     return "\n".join(g)
 
 
@@ -127,7 +133,11 @@ def block_end(s, i):
 def patch(path, layers):
     """Put the stack-up, 6-layer table, thickness and outline into an existing board, leaving footprints alone."""
     s = open(path, encoding="utf-8").read()
-    assert not __import__("re").search(r"\n\t\((segment|via|arc|zone)\b", s), "board has copper; patch it in KiCad instead"
+    copper = __import__("re").findall(r"\n\t\((segment|via|arc|zone)\b", s)
+    assert not copper or "--keep-copper" in sys.argv, \
+        "board has %d copper items; patch it in KiCad, or pass --keep-copper to leave them where they are" % len(copper)
+    if copper:
+        print("kept %d copper items as they are (not moved with the outline or the ports)" % len(copper))
     s = __import__("re").sub(r"\(general\n\t\t\(thickness [\d.]+\)", "(general\n\t\t(thickness %g)" % THICK, s, count=1)
     a = s.index("\n\t(layers") + 1
     s = s[:a] + layers.lstrip("\n") + s[block_end(s, a + 1):]
@@ -149,24 +159,25 @@ def patch(path, layers):
         s = s[:a] + s[b:]
     s = s.rstrip()[:-1].rstrip() + "\n" + outline() + "\n)\n"
     open(path, "w", encoding="utf-8", newline="\n").write(s)
-    print("patched %s: %g mm, 6 layers, stack-up and outline; footprints untouched" % (path, THICK))
+    print("patched %s: %g mm, 6 layers, stack-up and side outline %.1f x %.2f mm; footprints untouched"
+          % (path, THICK, 2 * HALF_W, Y_BOT - Y_TOP))
 
 
 def place_ports(path):
-    """Put J401/J501 on the right edge: footprint origin on the edge, notch pointing into the board (90 deg), locked."""
+    """Put J401/J501 on the top edge: footprint origin on the edge, notch pointing into the board (180 deg), locked."""
     import pcbnew
     b = pcbnew.LoadBoard(path)
-    for ref, y in PORTS_Y.items():
+    for ref, x in PORTS_X.items():
         f = b.FindFootprintByReference(ref)
         if f is None:
             print("no %s on the board (run Update PCB from Schematic)" % ref)
             continue
         if f.IsFlipped():
             f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
-        f.SetOrientationDegrees(90)
-        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(CX + HALF), pcbnew.FromMM(y)))
+        f.SetOrientationDegrees(180)
+        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(Y_TOP)))
         f.SetLocked(True)
-        print("%s at (%.2f, %.2f) 90 deg, locked" % (ref, CX + HALF, y))
+        print("%s at (%.2f, %.2f) 180 deg, locked" % (ref, x, Y_TOP))
     pcbnew.SaveBoard(path, b)
 
 
@@ -191,7 +202,7 @@ def main():
         layers, "\t(setup", stackup(), rest_of_setup, "\t)", '\t(net 0 "")', outline(), ")", ""])
     open(OUT, "w", encoding="utf-8", newline="\n").write(text)
     shutil.copy2(os.path.join(DEV, "MonolithDev.kicad_dru"), os.path.join(PROD, "Monolith.kicad_dru"))
-    print("wrote %s: %g mm, 6 layers; outline %.1f mm square R%.2f" % (OUT, THICK, 2 * HALF, R))
+    print("wrote %s: %g mm, 6 layers; side outline %.1f x %.2f mm" % (OUT, THICK, 2 * HALF_W, Y_BOT - Y_TOP))
 
 
 if __name__ == "__main__":

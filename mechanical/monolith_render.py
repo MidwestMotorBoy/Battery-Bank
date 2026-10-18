@@ -2,7 +2,7 @@
 Run after monolith_shell.py and monolith_parts.py:  python3 monolith_render.py
 -> monolith_layout_compare.png, plus a size / mass table on stdout.
 Masses: printed parts from STL volume x density; cells 71 g each (EVE 58E datasheet);
-boards estimated as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
+boards estimated at the production thickness (SB_PCB_T) as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
 import numpy as np, struct, os
 from PIL import Image, ImageDraw, ImageFont
 import monolith_shell as S, monolith_parts as P
@@ -96,12 +96,12 @@ if __name__ == '__main__':
         'top cap (today)': dict(
             w=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), d=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), l=tz1 - tz0,
             shell=g(top, 'shell', rho['shell']), cap=g(top, 'top cap', rho['cap']), bump=g(top, 'bumper', rho['bump']),
-            board=board_g(top_board_a), extra=g(top, 'bottom pcb', FR4_RHO),
+            board=board_g(top_board_a, S.SB_PCB_T), extra=g(top, 'bottom pcb', FR4_RHO),
             plate=P.PLATE_L*P.PLATE_W*P.PLATE_T/1000*rho['plate'], area=top_board_a),
         'side board': dict(
             w=S.sb_x_out + S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), d=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), l=sz1 - sz0,
             shell=g(side, 'shell', rho['shell']), cap=0.0, bump=g(side, 'bumper', rho['bump']),
-            board=board_g(S.sb_board_area), extra=0.0,
+            board=board_g(S.sb_board_area, S.SB_PCB_T), extra=0.0,
             plate=g(side, 'cover', rho['plate']), area=S.sb_board_area)}
     lines = []
     hdr = f"{'':18s}{'outside (mm)':>22s}{'box cm3':>9s}{'board mm2/side':>16s}{'shell':>7s}{'cap/lid':>8s}{'bumpers':>8s}{'end pcb':>8s}{'Al':>9s}{'board':>7s}{'cells':>7s}{'total g':>9s}"

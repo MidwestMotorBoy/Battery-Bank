@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(general
-		(thickness 0.8)
+		(thickness 1.6)
 		(legacy_teardrops no)
 	)
 	(paper "A4")
@@ -51,7 +51,7 @@
 			)
 			(layer "dielectric 1"
 				(type "prepreg")
-				(thickness 0.1)
+				(thickness 0.2)
 				(material "FR4")
 				(epsilon_r 4.4)
 				(loss_tangent 0.02)
@@ -62,7 +62,7 @@
 			)
 			(layer "dielectric 2"
 				(type "core")
-				(thickness 0.12)
+				(thickness 0.3)
 				(material "FR4")
 				(epsilon_r 4.6)
 				(loss_tangent 0.02)
@@ -73,7 +73,7 @@
 			)
 			(layer "dielectric 3"
 				(type "prepreg")
-				(thickness 0.15)
+				(thickness 0.39)
 				(material "FR4")
 				(epsilon_r 4.4)
 				(loss_tangent 0.02)
@@ -84,7 +84,7 @@
 			)
 			(layer "dielectric 4"
 				(type "core")
-				(thickness 0.12)
+				(thickness 0.3)
 				(material "FR4")
 				(epsilon_r 4.6)
 				(loss_tangent 0.02)
@@ -95,7 +95,7 @@
 			)
 			(layer "dielectric 5"
 				(type "prepreg")
-				(thickness 0.1)
+				(thickness 0.2)
 				(material "FR4")
 				(epsilon_r 4.4)
 				(loss_tangent 0.02)
@@ -46176,15 +46176,15 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
+	(footprint "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "e38e8dba-e973-4387-9014-4aa016ad8446")
-		(at 122.75 106.5 90)
-		(descr "Shou Han TYPE-C 16PCB0.8 IP68 USB 2.0 receptacle for a 0.8 mm board, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge")
+		(at 106.5 62.8245 180)
+		(descr "Shou Han TYPE-C 16PCB1.6 IP68 USB 2.0 receptacle for a 1.6 mm board, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge")
 		(tags "USB C Type-C receptacle USB2.0 16P mid-mount")
 		(property "Reference" "J401"
-			(at 0 -8 90)
+			(at 0 -8 180)
 			(layer "F.SilkS")
 			(uuid "f4210648-13f9-4299-b88c-b2761270f26a")
 			(effects
@@ -46194,8 +46194,8 @@
 				)
 			)
 		)
-		(property "Value" "TYPE-C 16PCB0.8 IP68"
-			(at 0 3.6 90)
+		(property "Value" "TYPE-C 16PCB1.6 IP68"
+			(at 0 3.6 180)
 			(layer "F.Fab")
 			(uuid "c98c5df7-c5da-4e2d-940b-d59af0285214")
 			(effects
@@ -46206,7 +46206,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.usb.org/sites/default/files/documents/usb_type-c.zip"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "87e97a32-3465-472c-9f4b-f798a1f96224")
@@ -46217,7 +46217,7 @@
 			)
 		)
 		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "262ec7b5-847d-4ac9-9a71-672834e35180")
@@ -46227,8 +46227,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C55629727"
-			(at 0 0 90)
+		(property "LCSC" "C55629729"
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -46240,8 +46240,8 @@
 				)
 			)
 		)
-		(property "MPN" "TYPE-C 16PCB0.8 IP68 (Shou Han)"
-			(at 0 0 90)
+		(property "MPN" "TYPE-C 16PCB1.6 IP68 (Shou Han)"
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -46288,16 +46288,6 @@
 			(uuid "aa054fe2-e7e5-49dd-8033-54460aa6c483")
 		)
 		(fp_line
-			(start -5.1 -5.65)
-			(end 5.1 -5.65)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "Edge.Cuts")
-			(uuid "cd35d9ad-d986-4716-b664-d5f2f832b348")
-		)
-		(fp_line
 			(start -5.1 0)
 			(end -5.1 -5.65)
 			(stroke
@@ -46306,6 +46296,16 @@
 			)
 			(layer "Edge.Cuts")
 			(uuid "a4281748-64e3-4486-adfd-ab462028005c")
+		)
+		(fp_line
+			(start -5.1 -5.65)
+			(end 5.1 -5.65)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Edge.Cuts")
+			(uuid "cd35d9ad-d986-4716-b664-d5f2f832b348")
 		)
 		(fp_rect
 			(start -6.5 -7)
@@ -46330,7 +46330,7 @@
 			(uuid "ce069515-f519-40ec-b461-feaca2d2b19e")
 		)
 		(fp_text user "PCB edge"
-			(at 0 0.8 90)
+			(at 0 0.8 180)
 			(layer "Dwgs.User")
 			(uuid "c9488404-2623-4820-98db-1af92ab7af74")
 			(effects
@@ -46341,7 +46341,7 @@
 			)
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(uuid "dbef79a2-1cf5-4be5-93fa-57a0734bbbb4")
 			(effects
@@ -46352,7 +46352,7 @@
 			)
 		)
 		(pad "A1" smd rect
-			(at -3.2 -6.35 90)
+			(at -3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -46361,7 +46361,7 @@
 			(uuid "426948ac-e863-4e1e-8737-9878a4d384c2")
 		)
 		(pad "A4" smd rect
-			(at -2.4 -6.35 90)
+			(at -2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/VBUS")
@@ -46370,7 +46370,7 @@
 			(uuid "b3f0cecb-0e08-4f5e-97b9-fdf3834e9a09")
 		)
 		(pad "A5" smd rect
-			(at -1.25 -6.35 90)
+			(at -1.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/C_CC1")
@@ -46379,7 +46379,7 @@
 			(uuid "f0764502-8702-45e2-81c1-0eb4f0072004")
 		)
 		(pad "A6" smd rect
-			(at -0.25 -6.35 90)
+			(at -0.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/DPDN_DCP")
@@ -46388,7 +46388,7 @@
 			(uuid "f1faa36b-0bb5-47e1-acc3-d0a5f1972bcc")
 		)
 		(pad "A7" smd rect
-			(at 0.25 -6.35 90)
+			(at 0.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/DPDN_DCP")
@@ -46397,7 +46397,7 @@
 			(uuid "7762c608-4a6b-4e3f-91b1-5d164ae46d3b")
 		)
 		(pad "A8" smd rect
-			(at 1.25 -6.35 90)
+			(at 1.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "unconnected-(J401-SBU1-PadA8)")
@@ -46406,7 +46406,7 @@
 			(uuid "1a46dc68-449a-4a6a-88d3-4f2ce7d03f3d")
 		)
 		(pad "A9" smd rect
-			(at 2.4 -6.35 90)
+			(at 2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/VBUS")
@@ -46415,7 +46415,7 @@
 			(uuid "25cc0483-2509-47d2-9de7-5139586cf27b")
 		)
 		(pad "A12" smd rect
-			(at 3.2 -6.35 90)
+			(at 3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -46424,7 +46424,7 @@
 			(uuid "729b444d-7cd8-40b4-abd1-2c70bf50b912")
 		)
 		(pad "B1" smd rect
-			(at 3.2 -6.35 90)
+			(at 3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -46433,7 +46433,7 @@
 			(uuid "90ba298b-59cc-44a1-81f8-fd5f15d4e3b6")
 		)
 		(pad "B4" smd rect
-			(at 2.4 -6.35 90)
+			(at 2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/VBUS")
@@ -46442,7 +46442,7 @@
 			(uuid "985afcfe-4f76-425c-87e0-9cb45e93a184")
 		)
 		(pad "B5" smd rect
-			(at 1.75 -6.35 90)
+			(at 1.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/C_CC2")
@@ -46451,7 +46451,7 @@
 			(uuid "78059882-6235-4aeb-ae25-e06ed3e28c2a")
 		)
 		(pad "B6" smd rect
-			(at 0.75 -6.35 90)
+			(at 0.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/DPDN_DCP")
@@ -46460,7 +46460,7 @@
 			(uuid "b85afbac-404c-4484-a6be-14851f697205")
 		)
 		(pad "B7" smd rect
-			(at -0.75 -6.35 90)
+			(at -0.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/DPDN_DCP")
@@ -46469,7 +46469,7 @@
 			(uuid "033b0c51-3232-40c2-89df-104698b068c5")
 		)
 		(pad "B8" smd rect
-			(at -1.75 -6.35 90)
+			(at -1.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "unconnected-(J401-SBU2-PadB8)")
@@ -46478,7 +46478,7 @@
 			(uuid "95db032d-8cb1-463e-a7f4-01f63a289525")
 		)
 		(pad "B9" smd rect
-			(at -2.4 -6.35 90)
+			(at -2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 1/VBUS")
@@ -46487,7 +46487,7 @@
 			(uuid "6d0fcaee-bba0-443b-87c2-ca7ba8c90394")
 		)
 		(pad "B12" smd rect
-			(at -3.2 -6.35 90)
+			(at -3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -46496,7 +46496,7 @@
 			(uuid "3c53624f-49ad-4433-b49f-499c72907b7a")
 		)
 		(pad "SH" thru_hole oval
-			(at -5.8 -4.05 90)
+			(at -5.8 -4.05 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -46507,7 +46507,7 @@
 			(uuid "319aef8f-f99a-43a2-9a44-9c6333db0ac1")
 		)
 		(pad "SH" thru_hole oval
-			(at -5.8 -0.95 90)
+			(at -5.8 -0.95 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -46518,7 +46518,7 @@
 			(uuid "52de4de3-f30c-41d6-8a14-815c31975f89")
 		)
 		(pad "SH" thru_hole oval
-			(at 5.8 -4.05 90)
+			(at 5.8 -4.05 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -46529,7 +46529,7 @@
 			(uuid "9cff79e8-f1b5-4d60-aebe-ee4b7681b662")
 		)
 		(pad "SH" thru_hole oval
-			(at 5.8 -0.95 90)
+			(at 5.8 -0.95 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -46540,7 +46540,7 @@
 			(uuid "4375becc-cc1b-4bd4-90ea-f05f29b8fa04")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step"
+		(model "${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -49508,15 +49508,15 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68"
+	(footprint "MonolithDev:USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "eeb3966a-d9f6-4271-b7d5-116457b68c6e")
-		(at 122.75 93.5 90)
-		(descr "Shou Han TYPE-C 16PCB0.8 IP68 USB 2.0 receptacle for a 0.8 mm board, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge")
+		(at 93.5 62.8245 180)
+		(descr "Shou Han TYPE-C 16PCB1.6 IP68 USB 2.0 receptacle for a 1.6 mm board, mid-mount in a 10.2 x 5.65 board-edge cutout, origin = board edge")
 		(tags "USB C Type-C receptacle USB2.0 16P mid-mount")
 		(property "Reference" "J501"
-			(at 0 -8 90)
+			(at 0 -8 180)
 			(layer "F.SilkS")
 			(uuid "cd9e6cf5-a475-4236-af43-cd50fba38397")
 			(effects
@@ -49526,8 +49526,8 @@
 				)
 			)
 		)
-		(property "Value" "TYPE-C 16PCB0.8 IP68"
-			(at 0 3.6 90)
+		(property "Value" "TYPE-C 16PCB1.6 IP68"
+			(at 0 3.6 180)
 			(layer "F.Fab")
 			(uuid "0805cdc3-0a8e-4d4e-a756-677e115da5da")
 			(effects
@@ -49538,7 +49538,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.usb.org/sites/default/files/documents/usb_type-c.zip"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "29a4f8f6-0860-4cfc-943d-bab4b2ee1857")
@@ -49549,7 +49549,7 @@
 			)
 		)
 		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "d73a4344-c7aa-43b1-a15b-8fe200ac075d")
@@ -49559,8 +49559,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C55629727"
-			(at 0 0 90)
+		(property "LCSC" "C55629729"
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -49572,8 +49572,8 @@
 				)
 			)
 		)
-		(property "MPN" "TYPE-C 16PCB0.8 IP68 (Shou Han)"
-			(at 0 0 90)
+		(property "MPN" "TYPE-C 16PCB1.6 IP68 (Shou Han)"
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -49620,16 +49620,6 @@
 			(uuid "7865ffa7-26ff-4a73-a6eb-20fb696c6f00")
 		)
 		(fp_line
-			(start -5.1 -5.65)
-			(end 5.1 -5.65)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "Edge.Cuts")
-			(uuid "83adb7c6-e101-4e1d-b293-695b27c68f7f")
-		)
-		(fp_line
 			(start -5.1 0)
 			(end -5.1 -5.65)
 			(stroke
@@ -49638,6 +49628,16 @@
 			)
 			(layer "Edge.Cuts")
 			(uuid "ff6c1c65-460b-4042-a796-b0f9fff42543")
+		)
+		(fp_line
+			(start -5.1 -5.65)
+			(end 5.1 -5.65)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Edge.Cuts")
+			(uuid "83adb7c6-e101-4e1d-b293-695b27c68f7f")
 		)
 		(fp_rect
 			(start -6.5 -7)
@@ -49662,7 +49662,7 @@
 			(uuid "512e9fd4-eca0-43dc-9599-6a671c9e6379")
 		)
 		(fp_text user "PCB edge"
-			(at 0 0.8 90)
+			(at 0 0.8 180)
 			(layer "Dwgs.User")
 			(uuid "bc4fa447-8641-4a58-9954-3948e4927fe4")
 			(effects
@@ -49673,7 +49673,7 @@
 			)
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 0 180)
 			(layer "F.Fab")
 			(uuid "57091e3e-7215-48c9-a212-103101c1bbdb")
 			(effects
@@ -49684,7 +49684,7 @@
 			)
 		)
 		(pad "A1" smd rect
-			(at -3.2 -6.35 90)
+			(at -3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -49693,7 +49693,7 @@
 			(uuid "41ab7eb5-68cd-429a-8ed1-86b4f516b854")
 		)
 		(pad "A4" smd rect
-			(at -2.4 -6.35 90)
+			(at -2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/VBUS")
@@ -49702,7 +49702,7 @@
 			(uuid "410f59a9-5125-49a2-9c66-0693a65de013")
 		)
 		(pad "A5" smd rect
-			(at -1.25 -6.35 90)
+			(at -1.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/C_CC1")
@@ -49711,7 +49711,7 @@
 			(uuid "99252c7a-4d58-4541-8ecf-002ab90e026c")
 		)
 		(pad "A6" smd rect
-			(at -0.25 -6.35 90)
+			(at -0.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/DPDN_DCP")
@@ -49720,7 +49720,7 @@
 			(uuid "132008ff-bdab-45bf-a3c4-e75af1b815f6")
 		)
 		(pad "A7" smd rect
-			(at 0.25 -6.35 90)
+			(at 0.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/DPDN_DCP")
@@ -49729,7 +49729,7 @@
 			(uuid "80003724-50ab-48b3-8095-5763ca25c0e2")
 		)
 		(pad "A8" smd rect
-			(at 1.25 -6.35 90)
+			(at 1.25 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "unconnected-(J501-SBU1-PadA8)")
@@ -49738,7 +49738,7 @@
 			(uuid "7f894f82-30c3-4ebc-8ad5-a935765d6817")
 		)
 		(pad "A9" smd rect
-			(at 2.4 -6.35 90)
+			(at 2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/VBUS")
@@ -49747,7 +49747,7 @@
 			(uuid "eb9460b8-b828-4fb1-8d1a-4ce74974cca6")
 		)
 		(pad "A12" smd rect
-			(at 3.2 -6.35 90)
+			(at 3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -49756,7 +49756,7 @@
 			(uuid "f319935b-6e90-4d8c-8c64-a3201446ff5c")
 		)
 		(pad "B1" smd rect
-			(at 3.2 -6.35 90)
+			(at 3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -49765,7 +49765,7 @@
 			(uuid "7e9e0e89-af73-469e-b712-a38b638c1a1c")
 		)
 		(pad "B4" smd rect
-			(at 2.4 -6.35 90)
+			(at 2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/VBUS")
@@ -49774,7 +49774,7 @@
 			(uuid "fe46640c-5b26-47e9-b7ba-7004ccd1d627")
 		)
 		(pad "B5" smd rect
-			(at 1.75 -6.35 90)
+			(at 1.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/C_CC2")
@@ -49783,7 +49783,7 @@
 			(uuid "e2680196-019c-4836-b0b4-a7f9189f5bd9")
 		)
 		(pad "B6" smd rect
-			(at 0.75 -6.35 90)
+			(at 0.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/DPDN_DCP")
@@ -49792,7 +49792,7 @@
 			(uuid "eae0008a-72bb-4a95-ac63-02e71d5df724")
 		)
 		(pad "B7" smd rect
-			(at -0.75 -6.35 90)
+			(at -0.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/DPDN_DCP")
@@ -49801,7 +49801,7 @@
 			(uuid "15fb2fd7-2a05-4748-b0f0-7bbf42c8b313")
 		)
 		(pad "B8" smd rect
-			(at -1.75 -6.35 90)
+			(at -1.75 -6.35 180)
 			(size 0.3 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "unconnected-(J501-SBU2-PadB8)")
@@ -49810,7 +49810,7 @@
 			(uuid "20fcf543-fdaf-4997-8112-691384626c67")
 		)
 		(pad "B9" smd rect
-			(at -2.4 -6.35 90)
+			(at -2.4 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "/USB Port 2/VBUS")
@@ -49819,7 +49819,7 @@
 			(uuid "0489ba81-860f-456f-8042-e1cb227c2b3a")
 		)
 		(pad "B12" smd rect
-			(at -3.2 -6.35 90)
+			(at -3.2 -6.35 180)
 			(size 0.6 1)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(net "GND")
@@ -49828,7 +49828,7 @@
 			(uuid "ffbae065-f299-4fa6-a55c-f36a928dacbb")
 		)
 		(pad "SH" thru_hole oval
-			(at -5.8 -4.05 90)
+			(at -5.8 -4.05 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -49839,7 +49839,7 @@
 			(uuid "0a0c2b06-b231-4ff0-a734-e8058df0c569")
 		)
 		(pad "SH" thru_hole oval
-			(at -5.8 -0.95 90)
+			(at -5.8 -0.95 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -49850,7 +49850,7 @@
 			(uuid "ac85af9b-ea7a-45f4-b142-2a65d5109fa1")
 		)
 		(pad "SH" thru_hole oval
-			(at 5.8 -4.05 90)
+			(at 5.8 -4.05 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -49861,7 +49861,7 @@
 			(uuid "85f8383c-5606-49f6-a5c0-0c94ad20a66d")
 		)
 		(pad "SH" thru_hole oval
-			(at 5.8 -0.95 90)
+			(at 5.8 -0.95 180)
 			(size 0.9 1.4)
 			(drill oval 0.5 1)
 			(layers "*.Cu" "*.Mask")
@@ -49872,7 +49872,7 @@
 			(uuid "bee95a8b-7fff-44b7-a6d7-5c5fa6c32fd6")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB0.8_IP68.step"
+		(model "${KIPRJMOD}/3dmodels/USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -51951,109 +51951,105 @@
 			)
 		)
 	)
-	(gr_arc
-		(start 77.25 86.6)
-		(mid 79.9886 79.9886)
-		(end 86.6 77.25)
+	(gr_line
+		(start 78.4 62.8245)
+		(end 88.4 62.8245)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "23f5e311-db68-4018-968d-95825b54941d")
+		(uuid "2868f656-edb0-4e6e-a04a-9309ac7a8427")
 	)
 	(gr_line
-		(start 77.25 113.4)
-		(end 77.25 86.6)
+		(start 78.4 132.375)
+		(end 78.4 62.8245)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "f6f61e8a-dafa-4014-b731-0ae13feb2c13")
+		(uuid "228d9540-84b9-407b-b851-11df4674e967")
 	)
 	(gr_line
-		(start 86.6 77.25)
-		(end 113.4 77.25)
+		(start 83.4 132.375)
+		(end 78.4 132.375)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "a0b8b39f-1fec-4272-830b-51e7981b5f1e")
-	)
-	(gr_arc
-		(start 86.6 122.75)
-		(mid 79.9886 120.0114)
-		(end 77.25 113.4)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "a3ae0d62-97f8-418f-80eb-4fe4d4e73d43")
-	)
-	(gr_arc
-		(start 113.4 77.25)
-		(mid 120.0114 79.9886)
-		(end 122.75 86.6)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "1310371c-8abd-48f6-9097-73138051e334")
+		(uuid "0b64c88c-3285-4379-afac-a80cc1aa5f89")
 	)
 	(gr_line
-		(start 113.4 122.75)
-		(end 86.6 122.75)
+		(start 83.4 137.175)
+		(end 83.4 132.375)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "396266b4-54c0-435d-9a67-55a863141a1d")
+		(uuid "a57ddbe0-2002-4b66-91e2-8c80d084ed92")
 	)
 	(gr_line
-		(start 122.75 86.6)
-		(end 122.75 88.4)
+		(start 98.6 62.8245)
+		(end 101.4 62.8245)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "b52f1dc6-0c40-4659-ae3c-788550b823c3")
+		(uuid "1f65bd30-3ba1-4e0a-9a93-2d124bc35839")
 	)
 	(gr_line
-		(start 122.75 98.6)
-		(end 122.75 101.4)
+		(start 111.6 62.8245)
+		(end 121.6 62.8245)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "a467b74b-de9b-48c8-9ce0-fac8a97f61d7")
+		(uuid "017df0a2-c636-4ed2-9848-50f778d30ea2")
 	)
 	(gr_line
-		(start 122.75 111.6)
-		(end 122.75 113.4)
+		(start 116.6 132.375)
+		(end 116.6 137.175)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "a633f6fe-8a7c-41e1-9fd3-36797251c098")
+		(uuid "1efd9b7b-066e-4d4f-ae50-dbe73da62224")
 	)
-	(gr_arc
-		(start 122.75 113.4)
-		(mid 120.0114 120.0114)
-		(end 113.4 122.75)
+	(gr_line
+		(start 116.6 137.175)
+		(end 83.4 137.175)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "8c210cd6-123c-4a39-9182-dee94005bf8a")
+		(uuid "f3540756-1a12-4a5e-9df0-7ed3406fa6cf")
+	)
+	(gr_line
+		(start 121.6 62.8245)
+		(end 121.6 132.375)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "d7a2abd0-92f3-46e4-a4d8-1293cfc72a0e")
+	)
+	(gr_line
+		(start 121.6 132.375)
+		(end 116.6 132.375)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "5c50c070-2709-4d2e-b095-808d12f1731f")
 	)
 	(segment
 		(start 112.075 108.9)

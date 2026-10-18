@@ -2,6 +2,8 @@
 _From the 2026-10-09 session · updated 2026-10-11_
 
 ## Changes on 2026-10-18
+- **Side board in a one-piece tray.** The production board moved from the top cap to one face of the cells, in a printed tray whose only opening is the board side, closed by a 1 mm aluminium cover (also the heat spreader). The ports seat by sliding the board up into the top wall. There are no airflow vents, only one ePTFE pressure vent. Model and checks are in `mechanical/`; assembly steps are in the Claude doc "Monolith assembly (side-board tray)".
+- **Board thickness 1.6 mm, for cost** (was 0.8 mm). J401/J501 are now the TYPE-C 16PCB1.6 IP68 (C55629729), the same land pattern. The side outline (43.2 × 74.35 mm, notched bottom corners) is on `Production/Monolith.kicad_pcb`. This supersedes the 0.8 mm and top-cap entries below.
 - **Dev board skipped; separate training board dropped.** Production P0 (`Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
 
 ## Changes on 2026-10-11

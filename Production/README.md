@@ -155,34 +155,53 @@ Parts: 256.
 
 ## Board: stack-up, outline and pour plan (2026-10-17)
 
-`tools/make_board.py` writes the stack-up, layer table, thickness and outline into `Monolith.kicad_pcb`. It patches an existing board without touching footprints, and refuses once the board has copper. It also copies the dev board's custom DRC rules to `Monolith.kicad_dru`.
+`tools/make_board.py` writes the stack-up, layer table, thickness and outline into `Monolith.kicad_pcb`. It patches an existing board without touching footprints. Once the board has copper it refuses, unless `--keep-copper` is passed, which leaves every trace where it is. It also copies the dev board's custom DRC rules to `Monolith.kicad_dru`.
 
-**Outline:** the board in the top cap, from `mechanical/monolith_parts.py`: **40.5 × 40.5 mm, R9.35 corners, about 1,565 mm² per side**, centred at (100, 100).
+**Outline:** since 2026-10-18, the side board of the one-piece tray. The details are in *Side outline and 1.6 mm board* below. The 40.5 mm and then 45.5 mm top-cap outlines that came before it are kept below as history.
 
-- `mechanical/monolith_bottom_pcb.dxf` is the 43.3 mm bottom end board with the 8 mm vent, not this board.
-- The USB-C notches join the outline when J401/J501 are placed at the edge. Until then DRC reports 4 open-outline errors from their footprints.
-- Courtyard area is 1,981 mm², so double-sided placement is required, and even then the board is tight.
-- `monolith_parts.py` is out of date: it still models vertical Amphenol ports on the cap face, LEDs and a heat plate.
+- `mechanical/monolith_bottom_pcb.dxf` is the old 43.3 mm bottom end board with the 8 mm vent, not this board.
 
-**Stack-up:** 6 layers, 0.8 mm, 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. JLC publishes no 0.8 mm 6-layer stack and no net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
+**Stack-up:** 6 layers, **1.6 mm** (2026-10-18, for cost; it was 0.8 mm), 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. No net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
 
 | Layer | Copper | Dielectric below | Role | Never |
 |---|---|---|---|---|
-| F.Cu | 70 µm | prepreg 0.10 | parts that make heat (power stages, inductors, BQ25756s), facing the gap pad and heatsink; one pour per power net in its block; GND fill elsewhere, stitched to In1 every 3–5 mm | sense pairs through power pours |
-| In1.Cu | 17.5 µm | core 0.12 | **solid GND**: return for F.Cu and both hot loops | any trace, split or other-net island |
-| In2.Cu | 17.5 µm | prepreg 0.15 | signals, vertical only: Kelvin pairs, cell taps, FB/ILIM, I2C; 3V3 as a local pour | high current, switch nodes |
-| In3.Cu | 17.5 µm | core 0.12 | signals, horizontal only: cross-board nets, gate-drive pairs that must leave F.Cu; PP5V local pours | high current |
-| In4.Cu | 17.5 µm | prepreg 0.10 | **solid GND**: return for B.Cu | any trace, split or other-net island |
-| B.Cu | 70 µm | | cell side: small passives and logic (double-sided assembly); mirror of F.Cu high-current pours where no parts sit, stitched; GND fill | switch-node copper |
+| F.Cu | 70 µm | prepreg 0.20 | outer face: parts that make heat (power stages, inductors, BQ25756s), facing the gap pad and the aluminium cover; one pour per power net in its block; GND fill elsewhere, stitched to In1 every 3–5 mm | sense pairs through power pours |
+| In1.Cu | 17.5 µm | core 0.30 | **solid GND**: return for F.Cu and both hot loops | any trace, split or other-net island |
+| In2.Cu | 17.5 µm | prepreg 0.39 | signals, vertical only: Kelvin pairs, cell taps, FB/ILIM, I2C; 3V3 as a local pour | high current, switch nodes |
+| In3.Cu | 17.5 µm | core 0.30 | signals, horizontal only: cross-board nets, gate-drive pairs that must leave F.Cu; PP5V local pours | high current |
+| In4.Cu | 17.5 µm | prepreg 0.20 | **solid GND**: return for B.Cu | any trace, split or other-net island |
+| B.Cu | 70 µm | | cell side, against the insulator: only low parts in the free strips (see the side outline section), ideally none; mirror of F.Cu high-current pours where no parts sit, stitched; GND fill | switch-node copper |
 
 - **Second ground:** the gauge's VSS (CELL_N) is local fill on F.Cu/B.Cu around U101, joined to GND only through RS101. It never goes on In1/In4.
 - **Antenna:** keep-out on every layer under the CC2340 antenna end, with solid ground either side at a board edge.
-- **Board thickness:** 0.8 mm allows JLC's small vias (≤ 1 mm boards with ENIG), useful under the 0.4 mm-pitch TPS25751.
+- **Board thickness:** 1.6 mm, for cost. JLC's multilayer minimum at 1.6 mm is a 0.15 mm hole on a 0.25 mm via, with a surcharge below a 0.2 mm hole or under a 0.45 mm via. The 0.1 mm / 0.2 mm via option needs a board of 1 mm or less, so it's gone. The project minimum (0.35/0.2 mm) and the TPD2S300's 0.15 mm via-in-pad are still inside JLC's limits ([JLC capabilities](https://jlcpcb.com/capabilities/pcb-capabilities), checked 2026-10-18).
 - **Via rules (`Monolith.kicad_pro`):**
     - default 0.45/0.3 mm, HighCurrent 0.8/0.4 mm;
     - minimum lowered to **0.35/0.2 mm** for fan-out (holes under 0.3 mm may carry a JLC surcharge: check the quote);
     - tracks 0.15/0.15 mm (JLC 2 oz multilayer); copper to edge 0.2 mm.
-- **USB-C:** J401/J501 are now the **TYPE-C 16PCB0.8 IP68** (C55629727). Its land pattern is identical to the dev board's 1.6 mm version.
+- **USB-C:** J401/J501 are the **TYPE-C 16PCB1.6 IP68** (C55629729), the 1.6 mm board version, since 2026-10-18 (before that, the 16PCB0.8, C55629727). The land pattern is identical, so only the footprint name and part fields changed, in the schematic, on the board and in `tools/make_production.py`.
+
+## Side outline and 1.6 mm board (2026-10-18)
+
+The board moved from the top cap to one side of the cells, in a one-piece printed tray (`mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
+
+- **Outline:** 43.2 × 74.35 mm, about 3,164 mm² per side.
+    - The bottom corners are notched 5.0 × 4.8 mm around the tray's screw pillars.
+    - The outline comes from `mechanical/monolith_shell.py` (`sb_*`), which `tools/make_board.py` imports, so the tray and the board can't drift apart. The same outline is in `mechanical/monolith_side_pcb.dxf`.
+    - It is centred at (100, 100). KiCad x is across the pack (left = the C1 / PACK- side), and KiCad y runs down the pack, with the port end at the top.
+- **Ports:** J501 (USB2) at x = 93.5 and J401 (USB1) at x = 106.5, on the top edge (y = 62.82), rotated 180°, locked. The outline leaves the two 10.2 mm notch gaps.
+- **Faces:**
+    - F.Cu faces the aluminium cover through a gap pad: up to 3.2 mm of part height (the APS0730 inductor is 3.1 mm).
+    - B.Cu faces the cells through a 0.3 mm insulator. Along the two cell tangent lines (8–13 mm from centre) there is only 0.3–0.8 mm, which the insulator mostly fills. There are 3 mm or more within 4 mm of centre and beyond 18 mm from it.
+- **Pack connections** become nickel-tab pads instead of the 16 AWG holes:
+    - PACK- (C1 side) and PACK+ (C4 side) at the bottom edge, within 16 mm of centre, clear of the notches;
+    - CELL2 at the bottom; CELL1 and CELL3 at the top.
+    - The cell order and the assembly steps are in the assembly doc.
+- **Vent:** keep a Ø7 mm circle free of tall parts and gap pad, centred 12 mm above the tray bottom (shown on the DXF's `VENT_KEEPOUT` layer).
+- **Still to do:**
+    - Placement: every part except J401/J501 still sits where it was.
+    - Four hand-drawn VBUS traces near the old J401 position were kept as they were (`--keep-copper`). They now dangle (3 DRC warnings).
+    - DRC otherwise shows only the known items: the pending Update PCB from Schematic for the P0 additions, and the TPD2S300 via-in-pad. There are no outline errors.
 
 ## Charger FETs: one Vishay SiZ240DT per leg (2026-10-17)
 
@@ -231,6 +250,8 @@ U405/U505 changed from the TPD4S201 (CC + SBU, 3.5×3.5 mm QFN-20) to the **TPD2
 - **Totals:** 246 parts, courtyard area **1,884 mm²**.
 
 ## Board outline 45.5 mm, both USB-C ports on one side (2026-10-17)
+
+_Superseded on 2026-10-18 by the side outline below; kept as history._
 
 Both ports exit the same face, for mechanical assembly: the seal flanges stick out ~1.95 mm past the board edge, so a board with ports on opposite faces can't drop into the cap.
 
@@ -296,4 +317,4 @@ The dev board won't be built, to save cost. P0 trains the gauge and carries the 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **Cap cut still on hold** (`docs/devboard/cap-reduction-sims-2026-10-17.md`):
     - C427/C527 (USB-side MLCC): only if dev board bring-up shows the polymer stays cool at 20 V 5 A reverse from a low pack (it reaches 85 % of its rating), or if firmware derates that case.
-3. **Place the board**, double-sided, inside the 40.5 mm outline. Then update `mechanical/monolith_parts.py` to the real connector, port and board geometry.
+3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.

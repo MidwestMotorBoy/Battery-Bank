@@ -31,6 +31,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
         - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into heat-set inserts in the bottom corner pillars.
         - **Ports:** the board drops in, then slides 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall.
         - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
+        - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
         - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
         - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
     - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
@@ -57,7 +58,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 - antenna match tuning (C314/C315) and a BLE range check on the real board;
 - rewrite of the MCU pin-by-power-state plan for the CC2340;
 - the U403/U503 footprint library warning;
-- production board thickness.
+- ~~production board thickness~~: decided 2026-10-18, 1.6 mm for cost (`Production/README.md`).
 
 Details are in `DevBoard/README.md`, and rev 2 changes in `docs/devboard/rev2-changes.md`.
 
