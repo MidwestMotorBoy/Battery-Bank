@@ -110,6 +110,73 @@ SWAP = {  # parts changed in place: new lib_id and properties (pins land on the 
                      "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
     },
 }
+
+
+def P(fp, lcsc, mpn, value=None):
+    """Footprint/part swap that keeps the symbol (production passive downsizing, 2026-10-17)."""
+    props = {"Footprint": fp, "LCSC": lcsc, "MPN": mpn}
+    if value:
+        props["Value"] = value
+    return (None, props)
+
+
+R0201, R0402, C0201, C0402 = ("Resistor_SMD:R_0201_0603Metric", "Resistor_SMD:R_0402_1005Metric",
+                              "Capacitor_SMD:C_0201_0603Metric", "Capacitor_SMD:C_0402_1005Metric")
+SOD882 = P("Diode_SMD:D_SOD-882", "C549279", "BAT54L,315 (Nexperia)")
+DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where both nets stay <= 5.5 V
+    "gauge.kicad_sch": {
+        **{r: P(R0402, "C25076", "0402WGF1000TCE") for r in ("R101", "R102", "R103", "R104")},  # no open holders
+        "R110": P(R0402, "C26086", "0402WGJ0106TCE", "10M 5%"),
+        "R112": P(R0402, "C26086", "0402WGJ0106TCE", "10M 5%"),
+        "R117": P(R0402, "C25790", "0402WGF4703TCE"),
+        "R115": P(R0201, "C270366", "0201WMF1000TEE"),
+        "R116": P(R0201, "C270366", "0201WMF1000TEE"),
+        "RS101": P("Resistor_SMD:R_1206_3216Metric", "C154629", "LR1206-21R001F4 (Ralec, 75 ppm)", "1m 1% 1W"),
+        "D101": SOD882,
+    },
+    "mcu.kicad_sch": {
+        **{c: P(C0201, "C307380", "CL03A104KO3NNNC", "0.1u 16V") for c in ("C302", "C303", "C304")},
+        "R302": P(R0201, "C270364", "0201WMF1003TEE"),
+        "R304": P(R0201, "C270350", "0201WMF3301TEE"),
+        "R305": P(R0201, "C270350", "0201WMF3301TEE"),
+        "R313": P(R0201, "C473458", "0201WMF2203TEE"),
+        "R314": P(R0201, "C270345", "0201WMF4702TEE"),
+    },
+    "usb_port.kicad_sch": {
+        "R402": P(R0201, "C270350", "0201WMF3301TEE"),
+        "R403": P(R0201, "C270350", "0201WMF3301TEE"),
+        "R404": P(R0201, "C473048", "0201WMF1002TEE"),
+        "R410": P(R0402, "C25893", "0402WGF4022TCE"),
+        "R412": P(R0201, "C423536", "0201WMF4022TEE"),
+        "R413": P(R0402, "C25926", "0402WGF9101TCE"),
+        "R414": P(R0402, "C25891", "0402WGF3601TCE"),
+        "R415": P(R0402, "C25871", "0402WGF1801TCE"),
+        "R416": P(R0402, "C25908", "0402WGF5601TCE"),
+        "R417": P(R0201, "C270345", "0201WMF4702TEE"),
+        **{r: P(R0402, "C25077", "0402WGF100JTCE") for r in ("R420", "R444", "R445", "R446", "R447")},
+        **{r: P(R0201, "C473048", "0201WMF1002TEE") for r in ("R421", "R422", "R423")},
+        "R424": P("Resistor_SMD:R_0805_2012Metric", "C728267", "PA0805FRE470R005L", "5m 0.5W (RAC)"),
+        "R427": P("Resistor_SMD:R_1206_3216Metric", "C252653", "MA120610FR005MZ (50 ppm)", "5m 1W (RBAT)"),
+        "R432": P(R0201, "C270364", "0201WMF1003TEE"),
+        "R433": P(R0402, "C25750", "0402WGF1203TCE"),
+        "R435": P(R0201, "C270365", "0201WMF1001TEE"),
+        **{r: P(R0201, "C270364", "0201WMF1003TEE") for r in ("R441", "R442", "R443")},
+        "C408": P(C0201, "C307380", "CL03A104KO3NNNC", "0.1u 16V"),
+        "C410": P(C0402, "C23733", "CL05A475MP5NRNC", "4.7u 10V"),
+        "C411": P(C0402, "C23733", "CL05A475MP5NRNC", "4.7u 10V"),
+        "C414": P(C0402, "C92361", "CL05A474KA5NNNC"),
+        "C417": P(C0402, "C92361", "CL05A474KA5NNNC"),
+        "C439": P(C0402, "C7419416", "FCC0402B333K500AT"),
+        **{d: SOD882 for d in ("D406", "D407", "D408", "D409")},
+        "TH401": P(R0402, "C77131", "NCP15XH103F03RC"),
+        # 10x10 -> 7.8x7.6x3.1 mm: 13.7 mOhm max, Irms 13 A (40 C rise), Isat 17 A at a 40 % drop. Worst case (20 V 5 A
+        # reverse from a 10 V pack) ~10.7 A rms, ~12.4 A peak: ~1.6 W DCR loss, L near 1.7 uH at the peak (L/RSNS
+        # 0.34 uH/mOhm, inside TI's 0.05-1.26 stability range). Measure inductor temperature on the dev board.
+        "L401": P("MonolithDev:L_Coilank_APS0730", "C49261221", "APS0730M2R2F (Coilank)"),
+    },
+}
+for _sheet, _parts in DOWNSIZE.items():
+    SWAP.setdefault(_sheet, {}).update(_parts)
 WIRE16 = "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"   # 16 AWG pack leads
 WIRE26 = "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"  # cell tap leads
 # new one-pin pads on the gauge sheet: (ref, value, footprint, (old ref, old pin) whose position it takes)
@@ -279,7 +346,8 @@ def edit_symbols(s, sheet):
             blk = set_prop(blk, "Value", VALUE[sheet][y["ref"]])
         if y["ref"] in SWAP.get(sheet, {}):
             lib, props = SWAP[sheet][y["ref"]]
-            blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "%s")' % lib, blk, count=1)
+            if lib:
+                blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "%s")' % lib, blk, count=1)
             for k, v in props.items():
                 assert '(property "%s" ' % k in blk, (y["ref"], k)
                 blk = set_prop(blk, k, v)
@@ -455,12 +523,35 @@ def process(sheet, src):
           % (sheet, len(REMOVE.get(sheet, [])), len(LINKS.get(sheet, [])), n, ", ".join("%s.%s" % rp for rp in opened) or "-"))
 
 
+APS0730 = """(footprint "L_Coilank_APS0730"
+\t(version 20241229)
+\t(generator "make_production.py")
+\t(layer "F.Cu")
+\t(descr "Inductor, Coilank APS0730 (APS-F series), 7.8x7.6x3.1mm, datasheet land pattern a 2.8 / b 7.4 / c 7.2 (datasheets/aps0730.pdf)")
+\t(tags "inductor molded APS0730")
+\t(property "Reference" "REF**" (at 0 -5 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
+\t(property "Value" "L_Coilank_APS0730" (at 0 5 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))
+\t(attr smd)
+\t(pad "1" smd rect (at -2.55 0) (size 2.3 7.2) (layers "F.Cu" "F.Paste" "F.Mask"))
+\t(pad "2" smd rect (at 2.55 0) (size 2.3 7.2) (layers "F.Cu" "F.Paste" "F.Mask"))
+\t(fp_rect (start -3.8 -3.9) (end 3.8 3.9) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))
+\t(fp_line (start -1.2 -4.02) (end 1.2 -4.02) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+\t(fp_line (start -1.2 4.02) (end 1.2 4.02) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+\t(fp_rect (start -4.05 -4.15) (end 4.05 4.15) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
+\t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.8 0.8) (thickness 0.12))))
+)
+"""
+
+
 def main():
     for f in ("MonolithDev.kicad_sym", "sym-lib-table", "fp-lib-table"):
         shutil.copy2(os.path.join(DEV, f), os.path.join(PROD, f))
     if os.path.isdir(os.path.join(PROD, "MonolithDev.pretty")):
         shutil.rmtree(os.path.join(PROD, "MonolithDev.pretty"))
     shutil.copytree(os.path.join(DEV, "MonolithDev.pretty"), os.path.join(PROD, "MonolithDev.pretty"))
+    with open(os.path.join(PROD, "MonolithDev.pretty", "L_Coilank_APS0730.kicad_mod"), "w", encoding="utf-8",
+              newline="\n") as f:
+        f.write(APS0730)
     pro = open(os.path.join(DEV, "MonolithDev.kicad_pro"), encoding="utf-8").read()
     pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"')
     open(os.path.join(PROD, "Monolith.kicad_pro"), "w", encoding="utf-8", newline="\n").write(pro)

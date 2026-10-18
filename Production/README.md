@@ -79,6 +79,33 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
 
+## Passive downsizing (2026-10-17)
+
+Production may use JLC extended parts and 0201 parts. 0201 is used only where both of a part's nets stay at or below 5.5 V. The swaps are in `DOWNSIZE` in `tools/make_production.py`, and each part was checked for rating and JLC stock the same day.
+
+Courtyard area went from **2,653 to 2,221 mm²** for all placed parts (−16 %). Passives alone went from about 1,570 to 1,170 mm² (−25 %).
+
+| Change | Parts (port 1 shown, port 2 = 5xx) | Saved |
+|---|---|---|
+| Charger inductor 10×10 → Coilank APS0730M2R2F (7.8×7.6×3.1 mm) | L401/L501 | 162 mm² |
+| 0603 resistors → 0402 | R110, R112, R117, R410, R413–R416, R420, R433, R444–R447 | ~60 mm² |
+| Low-voltage R/C 0402 → 0201 | pull-ups and pull-downs, SMBus series R, FSW, MCU and LDO_3V3 decoupling | ~30 mm² |
+| Sense resistors: RAC 2010 → 0805 0.5 W, RBAT 2010 → 1206 1 W, gauge shunt 2512 → 1206 1 W 75 ppm | R424, R427, RS101 | ~58 mm² |
+| Cell filter resistors 1206 → 0402 (with a welded pack, no cell can be reversed in an open holder) | R101–R104 | 34 mm² |
+| BAT54WS SOD-323 → Nexperia BAT54L SOD-882 | D101, D406–D409 | ~37 mm² |
+| REGN/DRV_SUP, sense filter and soft-start caps 0603 → 0402 | C410, C411, C414, C417, C439 | ~13 mm² |
+| NTC 0603 → 0402 (NCP15XH103F03RC: same 3380/3435 K curve, so the TS thresholds don't move) | TH401 | 3 mm² |
+
+**Checked and kept:**
+
+- **Bulk polymers C421/C432.** No smaller 100 µF 35 V polymer is stocked. The only smaller 25 V option is a polymer tantalum, rated for up to 250 µA leakage, which would wreck the sleep budget on PACK_P.
+- **TPS25751 VIN_3V3, LDO_3V3 and PP5V caps.** Their datasheet minimums after derating don't fit a 0402.
+- **50 V 1206s on 5V_IN and VBUS.** DC bias at 16.8–20 V would take them under the TPS62933 and TPS25751 needs.
+- **C207**, the TPS62177 output cap.
+- **The RF match parts**, kept at 0402 so they can be retuned.
+
+**Inductor trade-off:** the APS0730 costs $0.56 against about $8.50 for the Coilcraft XAL7070-222. In return it runs hotter: about 1.6 W DCR loss at the worst case (reverse 20 V 5 A from a 10 V pack), against about 1.0 W for the old part. It also drops to about 1.7 µH at the 12 A peak. Measure its temperature on the dev board before committing to it. The XAL7070-222 fits the same space if it runs too hot.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

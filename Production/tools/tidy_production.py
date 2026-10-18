@@ -59,7 +59,7 @@ TEXTS = {
         "NOTES": T(
             "NOTES",
             "1. CELL_N = gauge VSS (cell 1 negative). GND = system ground, on the far side of RS101.",
-            "2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC.",
+            "2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).",
             "3. VC taps are separate thin traces from the tap pads J109-J111 and from the J108/J112 pads;",
             "    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.",
             "4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only",
@@ -164,7 +164,12 @@ TEXTS = {
             "13. TP401 VBUS is a factory test pad.",
             "14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is",
             "    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the",
-            "    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board."),
+            "    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.",
+            "15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.",
+            "    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak",
+            "    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.",
+            "16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM",
+            "    settings are unchanged. Gate resistors R444-R447 and R420 are 0402; 0201 is used only where both nets stay <= 5.5 V."),
     },
 }
 MOVE_TEXT = {"usb_port.kicad_sch": {"Charger battery side joins PACK_P here": (459.74, 35.56)}}

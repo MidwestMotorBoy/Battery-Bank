@@ -6856,7 +6856,7 @@
 		)
 		(uuid "c9cc1c61-f2aa-4d18-b9a9-9854c9c5ddeb")
 	)
-	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,\n   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board."
+	(text "NOTES  (this sheet is used twice: USB Port 1 = 4xx, USB Port 2 = 5xx)\n1. Address straps are on the root sheet: port 1 ADCIN1 = LDO_3V3, ADCIN2 = GND (0x20);\n   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).\n2. Unused TPS25751 GPIOs (0, 1, 2, 11) tied to GND per datasheet (KiCad ERC flags this; expected).\n   Never configure them as outputs.\n3. CC and SBU are protected by U405 (TPD4S201, below); C401/C402 (220 pF) on the controller side.\n   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.\n   Liquid detection (TI fig. 9-8): GPIO4/5 read SBU1/2 through U405 (TPD4S201: CC and SBU OVP + ESD);\n   GPIO6 = liquid_pmos_control (LIQ_PU), GPIO7 = liquid_nmos_control (LIQ_PD) in the TPS25751 configuration.\n   U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441): an SBU short to VBUS forces error recovery.\n   R442/R443 hold the liquid-detect FETs off while GPIO6/7 are Hi-Z.\n   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).\n4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.\n5. Two MLCCs of each bulk bank plus C430/C438 at the FETs; the bulk caps (C421 polymer, C432 hybrid polymer) and remaining MLCCs\n   one row back. Polymer carries the bulk (no DC-bias loss), MLCCs carry the switching-frequency ripple.\n   Battery side is 2 x 22u + hybrid (C435 removed: docs/devboard/cap-reduction-sims-2026-10-17.md, B2: 87 uF,\n   hybrid at 63 % of its ripple rating). Still on hold: C427 (USB side, polymer at 85 % in the worst reverse case).\n6. I2Cc pull-ups go to this TPS25751's own LDO_3V3 (TI guidance).\n7. The charger battery side is PACK_P directly; take SRN/FB from R427's pad, not from the pour.\n8. VAC is taken before R424 per TI typical application; DRV_SUP fed from REGN via R420.\n9. PPHV bulk (BQ25756 input bank) exceeds the 100 uF USB PD cSnkBulkPd: the TPS25751D sink switch soft-start limits\n   inrush (C x SS: about 125 uF effective x 0.47 V/ms max = 0.06 A at SS setting 0).\n   Set PPHV soft-start to setting 0 or 1 in the TPS25751 configuration.\n10. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n11. CHG_INH: R417 pulls CE up to 3V3, so charging needs the MCU (DIO24) to drive CHG_INH low through R435.\n    Reset, WDT reset, the ROM bootloader or an unprogrammed MCU stop charging; CC2340 Standby keeps the pin state.\n    A dead pack (3V3 down) still charges. Keep DIS_CE_PIN = 0.\n12. Gate drive: R444-R447 10R at the FET gates with D406-D409 for fast turn-off. BTST is wired straight to its cap\n    and there are no snubbers (removed in P0 before any bring-up data: add them back if the dev board shows ringing).\n13. TP401 VBUS is a factory test pad.\n14. PP5V output: C441-C443 3 x 22u 1206 (about 33 uF effective) plus C407 10u at the PP5V pin. Each port's PP5V is\n    its own TPS62933, a dedicated supply: USB PD cSrcBulk (10 uF min) applies, not the 120 uF cSrcBulkShared the\n    TPS25751 table cites. Estimated 0.5 -> 3 A step undershoot about 190 mV (cap sims P3); measure it on the dev board.\n15. L401 = Coilank APS0730M2R2F (7.8 x 7.6 x 3.1 mm; dev board: 10 x 10 mm). 13.7 mOhm, Isat 17 A at a 40 % drop.\n    Worst case (20 V 5 A reverse from a 10 V pack): ~10.7 A rms, ~1.6 W DCR loss, L near 1.7 uH at the 12 A peak\n    (L/RSNS 0.34 uH/mOhm, inside TI's 0.05-1.26). Check its temperature on the dev board; the thermal throttle covers it.\n16. RAC R424 is 0805 0.5 W (<= 0.16 W at 5.6 A), RBAT R427 1206 1 W (~0.5 W at 10 A). Both stay 5 mOhm, so ICHG/ILIM\n    settings are unchanged. Gate resistors R444-R447 and R420 are 0402; 0201 is used only where both nets stay <= 5.5 V."
 		(exclude_from_sim no)
 		(at 299.72 368.3 0)
 		(effects
@@ -11341,7 +11341,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-323"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 309.88 298.45 0)
 			(hide yes)
 			(show_name no)
@@ -11374,7 +11374,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7502694"
+		(property "LCSC" "C549279"
 			(at 309.88 298.45 0)
 			(hide yes)
 			(show_name no)
@@ -11385,7 +11385,7 @@
 				)
 			)
 		)
-		(property "MPN" "BAT54WS (R+O)"
+		(property "MPN" "BAT54L,315 (Nexperia)"
 			(at 309.88 298.45 0)
 			(hide yes)
 			(show_name no)
@@ -13289,7 +13289,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 87.325 209.55 0)
 			(hide yes)
 			(show_name no)
@@ -13322,7 +13322,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21117"
+		(property "LCSC" "C7419416"
 			(at 86.36 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -13333,7 +13333,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10B333KB8NNNC"
+		(property "MPN" "FCC0402B333K500AT"
 			(at 86.36 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -13743,7 +13743,7 @@
 				)
 			)
 		)
-		(property "Value" "0.1u 50V"
+		(property "Value" "0.1u 16V"
 			(at 274.36 137.77 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13753,7 +13753,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric"
 			(at 267.665 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -13786,7 +13786,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C307331"
+		(property "LCSC" "C307380"
 			(at 266.7 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -13797,7 +13797,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05B104KB54PNC"
+		(property "MPN" "CL03A104KO3NNNC"
 			(at 266.7 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -13981,7 +13981,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 318.77 85.395 0)
 			(hide yes)
 			(show_name no)
@@ -14014,7 +14014,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C1623"
+		(property "LCSC" "C92361"
 			(at 322.58 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -14025,7 +14025,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10B474KA8NNNC"
+		(property "MPN" "CL05A474KA5NNNC"
 			(at 322.58 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -14272,7 +14272,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 165.862 207.01 90)
 			(hide yes)
 			(show_name no)
@@ -14305,7 +14305,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25808"
+		(property "LCSC" "C25750"
 			(at 167.64 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -14316,7 +14316,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1203T5E"
+		(property "MPN" "0402WGF1203TCE"
 			(at 167.64 207.01 0)
 			(hide yes)
 			(show_name no)
@@ -14631,7 +14631,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 338.582 236.22 90)
 			(hide yes)
 			(show_name no)
@@ -14675,7 +14675,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C12447"
+		(property "LCSC" "C423536"
 			(at 340.36 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -14686,7 +14686,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4022T5E"
+		(property "MPN" "0201WMF4022TEE"
 			(at 340.36 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -15070,7 +15070,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 323.85 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -15103,7 +15103,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C11702"
+		(property "LCSC" "C270365"
 			(at 323.85 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -15114,7 +15114,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1001TCE"
+		(property "MPN" "0201WMF1001TEE"
 			(at 323.85 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -15291,7 +15291,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
@@ -15324,7 +15324,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
@@ -15335,7 +15335,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 309.88 294.64 0)
 			(hide yes)
 			(show_name no)
@@ -15847,7 +15847,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 402.082 245.11 90)
 			(hide yes)
 			(show_name no)
@@ -15891,7 +15891,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23189"
+		(property "LCSC" "C25908"
 			(at 403.86 245.11 0)
 			(hide yes)
 			(show_name no)
@@ -15902,7 +15902,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF5601T5E"
+		(property "MPN" "0402WGF5601TCE"
 			(at 403.86 245.11 0)
 			(hide yes)
 			(show_name no)
@@ -16392,7 +16392,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 440.69 85.395 0)
 			(hide yes)
 			(show_name no)
@@ -16425,7 +16425,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C1623"
+		(property "LCSC" "C92361"
 			(at 444.5 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -16436,7 +16436,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10B474KA8NNNC"
+		(property "MPN" "CL05A474KA5NNNC"
 			(at 444.5 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -16670,7 +16670,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -16703,7 +16703,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25741"
+		(property "LCSC" "C270364"
 			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -16714,7 +16714,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1003TCE"
+		(property "MPN" "0201WMF1003TEE"
 			(at 152.4 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -17174,7 +17174,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
@@ -17207,7 +17207,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
@@ -17218,7 +17218,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 309.88 306.07 0)
 			(hide yes)
 			(show_name no)
@@ -17290,7 +17290,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 289.052 200.66 90)
 			(hide yes)
 			(show_name no)
@@ -17323,7 +17323,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25744"
+		(property "LCSC" "C473048"
 			(at 290.83 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -17334,7 +17334,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1002TCE"
+		(property "MPN" "0201WMF1002TEE"
 			(at 290.83 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -17385,7 +17385,7 @@
 				)
 			)
 		)
-		(property "Value" "5m 2W (RBAT)"
+		(property "Value" "5m 1W (RBAT)"
 			(at 444.35 56.89 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17395,7 +17395,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 444.5 62.738 90)
 			(hide yes)
 			(show_name no)
@@ -17428,7 +17428,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7256567"
+		(property "LCSC" "C252653"
 			(at 444.5 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -17439,7 +17439,7 @@
 				)
 			)
 		)
-		(property "MPN" "PA2010FKE470R005Z"
+		(property "MPN" "MA120610FR005MZ (50 ppm)"
 			(at 444.5 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -17500,7 +17500,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 358.902 236.22 90)
 			(hide yes)
 			(show_name no)
@@ -17544,7 +17544,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22980"
+		(property "LCSC" "C25891"
 			(at 360.68 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -17555,7 +17555,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF3601T5E"
+		(property "MPN" "0402WGF3601TCE"
 			(at 360.68 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -17778,7 +17778,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 348.742 191.77 90)
 			(hide yes)
 			(show_name no)
@@ -17822,7 +17822,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C12447"
+		(property "LCSC" "C25893"
 			(at 350.52 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -17833,7 +17833,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4022T5E"
+		(property "MPN" "0402WGF4022TCE"
 			(at 350.52 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -18208,7 +18208,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u 16V"
+		(property "Value" "4.7u 10V"
 			(at 434.38 239.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18218,7 +18218,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 427.685 234.95 0)
 			(hide yes)
 			(show_name no)
@@ -18262,7 +18262,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C19666"
+		(property "LCSC" "C23733"
 			(at 426.72 238.76 0)
 			(hide yes)
 			(show_name no)
@@ -18273,7 +18273,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10A475KO8NNNC"
+		(property "MPN" "CL05A475MP5NRNC"
 			(at 426.72 238.76 0)
 			(hide yes)
 			(show_name no)
@@ -18334,7 +18334,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-323"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 309.88 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -18367,7 +18367,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7502694"
+		(property "LCSC" "C549279"
 			(at 309.88 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -18378,7 +18378,7 @@
 				)
 			)
 		)
-		(property "MPN" "BAT54WS (R+O)"
+		(property "MPN" "BAT54L,315 (Nexperia)"
 			(at 309.88 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -18868,7 +18868,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 219.202 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -18901,7 +18901,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25744"
+		(property "LCSC" "C473048"
 			(at 220.98 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -18912,7 +18912,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1002TCE"
+		(property "MPN" "0201WMF1002TEE"
 			(at 220.98 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -19054,7 +19054,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL1040"
+		(property "Footprint" "MonolithDev:L_Coilank_APS0730"
 			(at 384.81 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -19098,7 +19098,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C149591"
+		(property "LCSC" "C49261221"
 			(at 384.81 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -19109,7 +19109,7 @@
 				)
 			)
 		)
-		(property "MPN" "SMMS1040-2R2M (SXN)"
+		(property "MPN" "APS0730M2R2F (Coilank)"
 			(at 384.81 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -19170,7 +19170,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 177.8 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -19203,7 +19203,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25741"
+		(property "LCSC" "C270364"
 			(at 177.8 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -19214,7 +19214,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1003TCE"
+		(property "MPN" "0201WMF1003TEE"
 			(at 177.8 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -19367,7 +19367,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 74.422 220.98 90)
 			(hide yes)
 			(show_name no)
@@ -19411,7 +19411,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25741"
+		(property "LCSC" "C270364"
 			(at 76.2 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -19422,7 +19422,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1003TCE"
+		(property "MPN" "0201WMF1003TEE"
 			(at 76.2 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -20134,7 +20134,7 @@
 				)
 			)
 		)
-		(property "Value" "5m 2W (RAC)"
+		(property "Value" "5m 0.5W (RAC)"
 			(at 322.43 65.73 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20144,7 +20144,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 322.58 62.738 90)
 			(hide yes)
 			(show_name no)
@@ -20177,7 +20177,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7256567"
+		(property "LCSC" "C728267"
 			(at 322.58 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -20188,7 +20188,7 @@
 				)
 			)
 		)
-		(property "MPN" "PA2010FKE470R005Z"
+		(property "MPN" "PA0805FRE470R005L"
 			(at 322.58 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -20435,7 +20435,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -20468,7 +20468,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -20479,7 +20479,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 309.88 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -20632,7 +20632,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -20665,7 +20665,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -20676,7 +20676,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 309.88 271.78 0)
 			(hide yes)
 			(show_name no)
@@ -21255,7 +21255,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 348.742 236.22 90)
 			(hide yes)
 			(show_name no)
@@ -21299,7 +21299,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23260"
+		(property "LCSC" "C25926"
 			(at 350.52 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -21310,7 +21310,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF9101T5E"
+		(property "MPN" "0402WGF9101TCE"
 			(at 350.52 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -21649,7 +21649,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-323"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 309.88 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -21682,7 +21682,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7502694"
+		(property "LCSC" "C549279"
 			(at 309.88 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -21693,7 +21693,7 @@
 				)
 			)
 		)
-		(property "MPN" "BAT54WS (R+O)"
+		(property "MPN" "BAT54L,315 (Nexperia)"
 			(at 309.88 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -21951,7 +21951,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 411.48 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -21995,7 +21995,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13564"
+		(property "LCSC" "C77131"
 			(at 411.48 245.11 0)
 			(hide yes)
 			(show_name no)
@@ -22006,7 +22006,7 @@
 				)
 			)
 		)
-		(property "MPN" "NCP18XH103F03RB"
+		(property "MPN" "NCP15XH103F03RC"
 			(at 411.48 245.11 0)
 			(hide yes)
 			(show_name no)
@@ -22277,7 +22277,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 304.292 200.66 90)
 			(hide yes)
 			(show_name no)
@@ -22310,7 +22310,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25744"
+		(property "LCSC" "C473048"
 			(at 306.07 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -22321,7 +22321,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1002TCE"
+		(property "MPN" "0201WMF1002TEE"
 			(at 306.07 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -22544,7 +22544,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-323"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 309.88 309.88 0)
 			(hide yes)
 			(show_name no)
@@ -22577,7 +22577,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7502694"
+		(property "LCSC" "C549279"
 			(at 309.88 309.88 0)
 			(hide yes)
 			(show_name no)
@@ -22588,7 +22588,7 @@
 				)
 			)
 		)
-		(property "MPN" "BAT54WS (R+O)"
+		(property "MPN" "BAT54L,315 (Nexperia)"
 			(at 309.88 309.88 0)
 			(hide yes)
 			(show_name no)
@@ -22660,7 +22660,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 334.518 204.47 90)
 			(hide yes)
 			(show_name no)
@@ -22704,7 +22704,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25792"
+		(property "LCSC" "C270345"
 			(at 332.74 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -22715,7 +22715,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF4702TCE"
+		(property "MPN" "0201WMF4702TEE"
 			(at 332.74 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -23848,7 +23848,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u 16V"
+		(property "Value" "4.7u 10V"
 			(at 449.62 239.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23858,7 +23858,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 442.925 234.95 0)
 			(hide yes)
 			(show_name no)
@@ -23902,7 +23902,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C19666"
+		(property "LCSC" "C23733"
 			(at 441.96 238.76 0)
 			(hide yes)
 			(show_name no)
@@ -23913,7 +23913,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10A475KO8NNNC"
+		(property "MPN" "CL05A475MP5NRNC"
 			(at 441.96 238.76 0)
 			(hide yes)
 			(show_name no)
@@ -24820,7 +24820,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 394.462 241.3 90)
 			(hide yes)
 			(show_name no)
@@ -24864,7 +24864,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C4177"
+		(property "LCSC" "C25871"
 			(at 396.24 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -24875,7 +24875,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1801T5E"
+		(property "MPN" "0402WGF1801TCE"
 			(at 396.24 241.3 0)
 			(hide yes)
 			(show_name no)
@@ -25017,7 +25017,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 296.672 200.66 90)
 			(hide yes)
 			(show_name no)
@@ -25050,7 +25050,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25744"
+		(property "LCSC" "C473048"
 			(at 298.45 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -25061,7 +25061,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1002TCE"
+		(property "MPN" "0201WMF1002TEE"
 			(at 298.45 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -26466,7 +26466,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 209.042 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -26499,7 +26499,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25890"
+		(property "LCSC" "C270350"
 			(at 210.82 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -26510,7 +26510,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF3301TCE"
+		(property "MPN" "0201WMF3301TEE"
 			(at 210.82 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -26768,7 +26768,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 165.1 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -26801,7 +26801,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25741"
+		(property "LCSC" "C270364"
 			(at 165.1 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -26812,7 +26812,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF1003TCE"
+		(property "MPN" "0201WMF1003TEE"
 			(at 165.1 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -27755,7 +27755,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 434.34 232.918 90)
 			(hide yes)
 			(show_name no)
@@ -27788,7 +27788,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 434.34 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -27799,7 +27799,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 434.34 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -27941,7 +27941,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
 			(at 198.882 105.41 90)
 			(hide yes)
 			(show_name no)
@@ -27974,7 +27974,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25890"
+		(property "LCSC" "C270350"
 			(at 200.66 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -27985,7 +27985,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF3301TCE"
+		(property "MPN" "0201WMF3301TEE"
 			(at 200.66 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -28259,7 +28259,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "71ec5a5e-4ce3-4398-803f-3057dce90799")
+		(uuid "22d383c9-dd36-4c68-9664-0ffed149e969")
 	)
 	(wire
 		(pts
@@ -28269,7 +28269,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "808d221d-a580-412d-af67-44e831f8ad12")
+		(uuid "7890bdf2-d8cb-448a-9c38-ce27d729ba20")
 	)
 	(wire
 		(pts
@@ -28279,7 +28279,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3d4cf08f-256c-4d33-a231-4f58c507415e")
+		(uuid "f140ba71-2f5e-4747-b176-c4f1323d0cbc")
 	)
 	(wire
 		(pts
@@ -28289,7 +28289,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "908666ea-73aa-45f8-9113-7ad7b0d90dce")
+		(uuid "b406e1bb-c9d0-4a0d-8bd2-55b7b44b4e2f")
 	)
 	(wire
 		(pts
@@ -28299,7 +28299,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4c730847-9472-4299-94da-6328ed52c96f")
+		(uuid "8a23aa8a-698e-4679-92da-b62079747f73")
 	)
 	(wire
 		(pts
@@ -28309,7 +28309,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "479f375f-309c-458f-8c14-d0456289d4bc")
+		(uuid "38181718-c8e9-4fd0-af5a-b79da648156f")
 	)
 	(wire
 		(pts
@@ -28319,7 +28319,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9d9a4149-8a00-48dd-a441-38bc7cfbc15c")
+		(uuid "0faa952c-4fbd-4db9-8df5-6a4f8f326a6d")
 	)
 	(wire
 		(pts
@@ -28329,7 +28329,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "be5e3105-465c-442e-b32c-a2398df7a9ec")
+		(uuid "3a42b5f6-8d99-486b-a0a2-ab3e0e7218d4")
 	)
 	(wire
 		(pts
@@ -28339,7 +28339,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4c2886e5-cf99-485f-ab20-c15a61ab3606")
+		(uuid "ab32c0fd-e98d-4c44-8cf7-eaff21838c47")
 	)
 	(wire
 		(pts
@@ -28349,7 +28349,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "df65c89d-a5bf-4659-939d-b34c85f50a31")
+		(uuid "bb34d691-74e2-4b84-8737-cc10f27d5078")
 	)
 	(wire
 		(pts
@@ -28359,7 +28359,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eaa206bf-bea8-4162-a503-8f95d42df386")
+		(uuid "6e6e5c30-f6cb-453e-a648-6e661c209df0")
 	)
 	(wire
 		(pts
@@ -28369,7 +28369,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f1644456-e8f0-477d-a231-fead0d055964")
+		(uuid "fa57c04f-62b9-4b90-ae5e-8e7c4b73fb86")
 	)
 	(wire
 		(pts
@@ -28379,7 +28379,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "824691db-589e-47b1-9af7-6f76a9539897")
+		(uuid "dd56e3ae-79b4-44fc-a928-13c8169d317f")
 	)
 	(wire
 		(pts
@@ -28389,7 +28389,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d7f67046-a2ac-4c51-a14e-81d7ec3f8b86")
+		(uuid "e77aa447-6422-44af-a0c0-8c49f58ddfdf")
 	)
 	(wire
 		(pts
@@ -28399,7 +28399,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "42fac7bd-b28f-48fe-a676-fde47bced77f")
+		(uuid "c5d6d1eb-f9ec-42ca-8423-e0d9a6f39bf1")
 	)
 	(wire
 		(pts
@@ -28409,7 +28409,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2cb1adc0-e552-4a55-a94a-8f5b1d46a28e")
+		(uuid "7bd9d454-ac62-400c-a139-40eb8aa640f7")
 	)
 	(wire
 		(pts
@@ -28419,7 +28419,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2a583bb5-28ba-4593-bca2-6ff4a27b0aa2")
+		(uuid "ce631979-6b09-4709-95f0-b8b11ef7bd44")
 	)
 	(wire
 		(pts
@@ -28429,7 +28429,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5a554849-6f08-46a2-9ae1-2ed9ca26d3cd")
+		(uuid "25e466ba-b14c-44d8-9103-1ca872045c8b")
 	)
 	(wire
 		(pts
@@ -28439,7 +28439,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "53c19d88-745d-4184-b8f4-9a929f7f1ebc")
+		(uuid "3c920458-84a0-4a36-80fc-2f874a74a4a4")
 	)
 	(label "BTST2"
 		(at 401.32 190.5 180)
@@ -28461,7 +28461,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "da011806-38eb-48bf-9a77-88f3b34a6c0c")
+		(uuid "6f1b624b-1793-4344-82d2-422c31e76641")
 		(property "Reference" "#PWR9029"
 			(at 154.94 78.74 0)
 			(hide yes)
@@ -28517,7 +28517,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "e52b78ff-e79d-4e8c-9cb1-6f97569c6cc2")
+			(uuid "68104f2d-1832-4f55-903e-571d3df02f08")
 		)
 		(instances
 			(project "Monolith"
@@ -28542,7 +28542,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "c3f384dd-82d1-44b9-96a0-a36177fa5087")
+		(uuid "37787195-7526-4845-8473-f4334fc0764d")
 		(property "Reference" "#PWR9032"
 			(at 50.8 195.58 0)
 			(hide yes)
@@ -28598,7 +28598,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "cc1f0920-cf91-4d2f-9167-134e52d96d00")
+			(uuid "6ce81772-e24b-47ca-bee2-73a98f65afff")
 		)
 		(instances
 			(project "Monolith"
@@ -28651,7 +28651,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c82ac8d5-2ff6-4afe-919a-9f5340fa0bf3")
+		(uuid "e083a5e6-d535-401a-b0a6-fc5123265e01")
 	)
 	(wire
 		(pts
@@ -28661,7 +28661,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2ae3eebd-c838-4921-be19-234669c7583e")
+		(uuid "40a92f1b-cdbd-4da6-8d63-1e34d12df67d")
 	)
 	(wire
 		(pts
@@ -28671,7 +28671,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7581c15a-1e17-4b63-9976-54d17b10a23b")
+		(uuid "0deaa3ae-de3b-471b-8beb-34959a45aba1")
 	)
 	(sheet_instances
 		(path "/"
