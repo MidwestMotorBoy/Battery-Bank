@@ -21,6 +21,7 @@ import uuid
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from schlib import anchors, new_uuids, on_segment, sheet_pins, symbols, top_blocks, wires  # noqa: E402
+import siz240dt  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
@@ -400,6 +401,22 @@ def power_template(s, value):
     raise KeyError(value)
 
 
+def swap_fets(s):
+    """Each BQ25756 leg's two PGQ04N070 -> one SiZ240DT: high side becomes unit A, low side unit B (siz240dt.py)."""
+    if '(symbol "%s"' % siz240dt.LIB_ID not in s:
+        i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+        s = s[:i] + "\n" + siz240dt.lib_symbol() + s[i:]
+    syms = {y["ref"]: y for y in symbols(s)}
+    reps = []
+    for hs, ls in siz240dt.LEGS:
+        for ref, unit in ((hs, 1), (ls, 2)):
+            y = syms[ref]
+            reps.append((y["a"], y["b"], siz240dt.convert(s[y["a"]:y["b"]], unit, hs)))
+    for a, b, txt in sorted(reps, reverse=True):
+        s = s[:a] + txt + s[b:]
+    return s
+
+
 def pin_actions(s, sheet, templates):
     """Apply PIN_ACTIONS to labels sitting directly on a pin: GND symbol in their place, or a no-connect flag."""
     acts = PIN_ACTIONS.get(sheet, {})
@@ -611,6 +628,8 @@ def process(sheet, src):
     n += n2
     s = insert_top(s, "".join(nc_text(p) for p in EXTRA_NC.get(sheet, [])))
     s = edit_symbols(s, sheet)
+    if sheet == "usb_port.kicad_sch":
+        s = swap_fets(s)
     s = title_block(s, sheet)
     # pins that were connected before and are now open get a no-connect flag
     now = attached(s)
@@ -651,6 +670,14 @@ def main():
     with open(os.path.join(PROD, "MonolithDev.pretty", "L_Coilank_APS0730.kicad_mod"), "w", encoding="utf-8",
               newline="\n") as f:
         f.write(APS0730)
+    with open(os.path.join(PROD, "MonolithDev.pretty", "Vishay_PowerPAIR_3x3S.kicad_mod"), "w", encoding="utf-8",
+              newline="\n") as f:
+        f.write(siz240dt.footprint())
+    lib = os.path.join(PROD, "MonolithDev.kicad_sym")
+    t = open(lib, encoding="utf-8").read()
+    if '(symbol "SiZ240DT"' not in t:
+        t = t.rstrip()[:-1].rstrip() + "\n" + siz240dt.library_entry() + "\n)\n"
+        open(lib, "w", encoding="utf-8", newline="\n").write(t)
     pro = open(os.path.join(DEV, "MonolithDev.kicad_pro"), encoding="utf-8").read()
     pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"').replace('"MonolithDev.kicad_sch"', '"Monolith.kicad_sch"')
     pro = pro.replace('"name": "MonolithDev"', '"name": "Monolith"')

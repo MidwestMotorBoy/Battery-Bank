@@ -178,6 +178,27 @@ Parts: 256.
     - tracks 0.15/0.15 mm (JLC 2 oz multilayer); copper to edge 0.2 mm.
 - **USB-C:** J401/J501 are now the **TYPE-C 16PCB0.8 IP68** (C55629727). Its land pattern is identical to the dev board's 1.6 mm version.
 
+## Charger FETs: one Vishay SiZ240DT per leg (2026-10-17)
+
+Each BQ25756 leg's two PGQ04N070s became one **SiZ240DT**, a 40 V dual-N half-bridge in a PowerPAIR 3×3S package with the switch node joined inside. That's two parts per port instead of four.
+
+- **Schematic:** a new 2-unit symbol, `MonolithDev:SiZ240DT`. Unit A is Ch1 (high side: G1, D1, SW) and unit B is Ch2 (low side: G2, SW, S2). Pin 9 (SW, the S1/D2 paddle) appears in both units on one pad.
+    - Q401 = leg A (old Q401 + Q407) and Q402 = leg B (old Q402 + Q408). Port 2 is the same parts as 5xx.
+    - The units reuse the old symbol's pin geometry, so no wire moved.
+    - `tools/siz240dt.py` holds the symbol, the footprint and the swap. `check_netlist.py` maps every old FET pin to its new unit pin and confirms the nets.
+- **Footprint:** `MonolithDev:Vishay_PowerPAIR_3x3S`, from Vishay's recommended land pattern (doc 78115).
+    - Pin rows: 0.65 mm pitch, 0.44 mm tall pads.
+    - Paddles: D1 0.935 × 2.80 mm and SW 1.005 × 2.80 mm, 0.25 mm apart, with 2 × 3 paste windows each.
+    - Smallest copper gap 0.20 mm; courtyard 4.37 × 3.8 mm.
+    - Datasheet: `datasheets/siz240dt.pdf`.
+- **Trade-offs against the PGQ04N070 (40 V, 10 mΩ max at 4.5 V, 14.7 nC):**
+    - On-resistance is 12.25/13.30 mΩ max at 4.5 V, about 25–30 % more conduction loss.
+    - Gate charge is 6.9/6.5 nC, so less load on REGN.
+    - Both FETs of a leg now share one 3.3×3.3 package. Worst case (reverse 20 V 5 A from a 10 V pack), the fully-on high side dissipates ~1.8 W. That needs the paddle via arrays into the GND planes and the gap pad, and the thermal throttle limits it.
+    - Measure FET temperature at bring-up. The dev board still has the old FETs.
+- **Sourcing:** DigiKey/Mouser. JLC/LCSC (C3289403) has only a couple in stock, so supply them to JLC yourself, or check stock before ordering.
+- **Area:** about 31 mm² less per port (one 16.6 mm² courtyard instead of two of 15.6 mm² each per leg).
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

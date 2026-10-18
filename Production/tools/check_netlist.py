@@ -54,10 +54,16 @@ for r in links:
     a, b = find(old[(r, "1")]), find(old[(r, "2")])
     parent[a] = b
 
+fets = set()
+for hs, ls in mp.siz240dt.LEGS:
+    fets |= both_ports([hs, ls], "usb_port.kicad_sch")
 expect = {}
 for (r, p), n in old.items():
-    if r not in gone and r not in links:
+    if r not in gone and r not in links and r not in fets:
         expect[(r, p)] = find(n)
+for (r, p), (orf, op) in mp.siz240dt.PIN_REMAP.items():  # leg FETs merged into one SiZ240DT per leg
+    for a, b in ((r, orf), (r[:-3] + "5" + r[-2:], orf[:-3] + "5" + orf[-2:])):
+        expect[(a, p)] = find(old[(b, op)])
 for ref, _, _, (oref, opin) in mp.GAUGE_PADS:
     expect[(ref, "1")] = find(old[(oref, opin)])
 for (ref, pin), to in mp.NET_MOVES.items():
