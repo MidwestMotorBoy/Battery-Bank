@@ -331,8 +331,7 @@ if __name__ == '__main__':
                  (tb(cx1 - 6, S.sb_z_top_in - 0.5), 'Top pad cut-out over the C1 + cap'),
                  (tb(-2, 55), 'Mica between C1 and C2'),
                  (tb(cx2 + 9, S.SB_END_T + 2.4), '3.8 mm TPU spacer + 1 mm EVA:\n~3 mm more stroke for the cells\nin bottom-down drops'),
-                 (tb(cx2 - 2, S.SB_END_T + 3.5), 'Cut-out over the C2 + cap:\nthe vent opens into a plenum'),
-                 (tb(cx2 + 2, S.SB_END_T - S.SB_RUPT_T - 0.4), 'Rupture window: wall thinned\nto 0.6 mm, vents into the cap'),
+                 (tb(cx2 - 2, S.SB_END_T + 3.5), 'Cut-out over the C2 + cap:\nthe cell vent is not blocked'),
                  (tb(-10, -S.SB_CAP_T + 2), 'Bottom crush cap, band wraps\n9 mm up the sides')], x0 + 300, 'l', 170)
     sh.callouts([(tb(S.sb_port_x, S.SB_H + S.SB_CAP_T - 3), 'Port well: the plug reaches the\nUSB-C through the cap'),
                  (tb(S.sb_xb0 + 0.8, S.sb_zb1 + 0.17), 'Board top stop: drop loads go\nboard edge -> tray, not via USB-C'),
@@ -352,7 +351,7 @@ if __name__ == '__main__':
 
     # ================= 3. parts + numbers =================
     sh = Sheet(2700, 1080)
-    sh.header('Crush caps, tray floor and pads', 'The new parts, with the mass, drop and print numbers behind them. '
+    sh.header('Crush caps, tray and pads', 'The new parts, with the mass, drop and print numbers behind them. '
               'Drop figures are first-principles estimates, to be measured with a dummy-mass drop test.')
     pick = lambda pred: [(V, c) for k, V, c in A if pred(k)]
     centre = lambda parts: [(V - np.vstack([p[0].reshape(-1, 3) for p in parts]).mean(0), c) for V, c in parts]
@@ -360,8 +359,8 @@ if __name__ == '__main__':
               'Soft face, dense corner noses,\nsolid band that wraps the tray'),
              (pick(lambda k: k.startswith('capt')), camera((0.8, -1.0, 0.9)), 5.0, 'Top cap, from above',
               'One port well for both plugs,\non the cover side'),
-             (pick(lambda k: k == 'shell'), camera((0.6, -0.8, -1.0)), 3.5, 'Tray, from below',
-              'Rupture windows under the\nC2 and C4 + caps'),
+             (pick(lambda k: k == 'shell'), camera((1.0, -0.55, 0.45)), 3.5, 'Tray',
+              'Open on the board side only;\nM2 insert pillars in the corners'),
              (pick(lambda k: k in ('pad_floor', 'eva_floor', 'pad_top')), camera((0.6, -0.9, 0.9)), 4.6, 'Floor spacer and EVA pads',
               'Cut-outs over the + caps,\nnotch for the rib')]
     cw = 640
@@ -405,7 +404,7 @@ if __name__ == '__main__':
             ['Fish paper', '0.2 mm: wall liner, board insulator,'], ['', '+ end rings (21 x ~10 mm, vents open)'],
             ['Mica', '0.2 mm sheet, two slotted pieces'],
             ['Board', 'conformal coat; soft silicone staking'], ['', 'BLE antenna end left bare'],
-            ['Rupture windows', 'concept: verify with a burst test']]
+            ['Mica (buy)', '0.2 mm sheet: McMaster 85825K42, RS PRO']]
     sh.table(x, y0 + 46, ['Part', 'Material / setting'], rows, [170, 650], 14)
     sh.save('monolith_side_parts.png')
     print(f"pack {total:.1f} g; " + ", ".join(f"{k} {v:.1f}" for k, v in m.items()))

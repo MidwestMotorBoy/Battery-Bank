@@ -39,7 +39,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
                 - A 0.2 mm mica cross between the cells.
                 - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
                 - A TPU shim under the board, and 2 x 1 mm EVA hold-downs over the USB-C bodies.
-            - **Rupture windows:** the floor is thinned to 0.6 mm under the bottom positive caps (C2, C4). This is a concept, still to be tested.
+            - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
             - **Cost of the protection:** the pack is now 56.4 × 50.4 × 96.6 mm, and about 361 g including the pads and mica (+23 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
             - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
             - **Open item:** the aluminium cover sits over the BLE antenna. `monolith_side_cover.dxf` has an `ANT_WINDOW_OPTION` layer for a possible window.
@@ -50,7 +50,7 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - `monolith_side_renders.py` renders the side tray's drop design:
         - `monolith_side_exploded.png`: assembled and exploded views;
         - `monolith_side_sections.png`: sections A-A and B-B;
-        - `monolith_side_parts.png`: the cap zones, the floor pad and rupture windows, plus mass, drop and print-setting tables.
+        - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables.
     - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 

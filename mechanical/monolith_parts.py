@@ -303,12 +303,12 @@ SB_PORTS = [(S.sb_port_x, -S.SB_PORT_Y), (S.sb_port_x, S.SB_PORT_Y)]
 SB_PORT_L, SB_PORT_W = S.USB_SEAL_W + 0.2, S.USB_SEAL_H + 0.2
 # board top stops: the board's top edge bears on these, so drop loads reach the tray through the board edge, not the USB-C
 SB_STOPS = [(aI, SB_XC, S.SB_STOP_Y0, aI), (aI, SB_XC, -aI, -S.SB_STOP_Y0)]   # x to SB_XC: shares edges with the pillars
-SB_RUPT = S.sb_pos_caps['bottom']
+SB_RUPT = S.sb_pos_caps['bottom'] if S.SB_RUPT_D > 0 else []
 
 def side_shell():
     """one-piece tray, open on +x only"""
     hz, hw = hole_slabs()
-    zr = S.SB_END_T - S.SB_RUPT_T
+    zr = S.SB_END_T - S.SB_RUPT_T if SB_RUPT else 0.0
     zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H,
                  *[round(z, 6) for z in hz]})
     cur = [rr_pts(*S.SB_OUT), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL + SB_STOPS]

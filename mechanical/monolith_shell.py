@@ -162,7 +162,8 @@ SB_SIDE_PAD  = 0.2    # fish paper liner round the -x and +-y faces of the cells
 SB_EVA_T     = 1.0    # EVA foam sheet: the cell-end pads (top, and over the TPU floor spacer) and, doubled, the USB-C hold-downs
 SB_SEP_T     = 0.2    # mica sheets in the cross-shaped gap between the cells (propagation barrier)
 SB_VENT_CUT_D = 14.0  # end-pad cut-out over each positive cap: button and vent holes stay open, the pad bears on the crimp rim
-SB_RUPT_D, SB_RUPT_T = 10.0, 0.6     # rupture windows: bottom wall thinned to SB_RUPT_T under the two bottom positive caps
+SB_RUPT_D, SB_RUPT_T = 0.0, 0.0      # rupture windows (bottom wall thinned under the bottom + caps): off, 2026-10-18 -
+                                     # consumer power banks don't have them; set e.g. 10.0, 0.6 to bring them back
 SB_STOP_Y0   = 14.0   # board top stops on the top-wall inside face, |y| from here to the wall (clear of the port holes)
 SB_HOLD_T    = 2.0    # 2 x 1 mm EVA hold-down between each USB-C body and the cover (compresses to the gap)
 SB_CAP_T     = 8.0    # TPU lattice crush zone beyond each end wall
@@ -295,7 +296,6 @@ if __name__ == '__main__':
         'port well clear of the seal holes (y)': SB_WELL_W/2 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
-        'rupture windows clear of the pillars (x)': (sb_x_cv0 - SB_INSERT_L - 1.5) - (pocket_r + SB_RUPT_D/2),
         'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
     }
     for k, v in chk.items(): print(f"  {'ok ' if v >= 0 else 'BAD'} {v:6.2f}  {k}")
