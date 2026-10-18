@@ -84,7 +84,7 @@ Steps:
 | PD voltage transitions 5 → 20 V with several chargers | Watch VBUS and source resets, with and without firmware SRYR/SRDY sequencing | Firmware sequence required or not |
 | Gauge wakes on USB plug-in | Gauge in SHUTDOWN, plug in a charger | Whether the WAKE pad can go in the next spin |
 | Sleep current | DMM in series with one pack lead | Firmware power states (target ~150 µA) |
-| USB-side bank stress | T521D C421/C456/C457 temperature at reverse 20 V 5 A from a low pack (model: worst part 38 % of rating, an MLCC) | Bank OK, or swap a T521D back to a 22u 1210 |
+| USB-side bank stress | CA55 C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
 
 ## 5. Production boards
 

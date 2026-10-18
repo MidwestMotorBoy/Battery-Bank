@@ -96,7 +96,7 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
 }
 NEW_PARTS = {**{c: {"1": ("TP106", "1"), "2": ("TP109", "1")} for c in ("C208", "C209", "C210", "C211", "C212", "C213")},
              # low-profile USB-side bulk (2026-10-18): new per-port caps on AC_SNS_N
-             **{c % p: {"1": ("C%s20" % p, "1"), "2": ("TP109", "1")} for c in ("C%s56", "C%s57") for p in "45"},
+             **{c % p: {"1": ("C%s20" % p, "1"), "2": ("TP109", "1")} for c in ("C%s56",) for p in "45"},
              # P0 training parts (2026-10-18); a string value names a net that is new on production
              "J113": {"1": ("TP106", "1")}, "J114": {"1": ("TP109", "1")},
              "R118": {"1": ("F102", "2"), "2": "new WAKE"}, "TP113": {"1": "new WAKE"},
@@ -144,14 +144,14 @@ SWAP = {  # parts changed in place: new lib_id and properties (pins land on the 
             "Notes": "PP5V bulk, third 22 uF 1206 with C441/C442 (about 33 uF effective at 5.16 V; was a 100 uF polymer "
                      "on the dev board). Each port's PP5V is a dedicated supply, so USB PD cSrcBulk (10 uF min) applies, "
                      "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
-        # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py L3 / N1
+        # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py C2 / N1
         "C421": (None, {
-            "Value": "33u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "C696815",
-            "MPN": "KEMET T521D336M035ATE065 (polymer tantalum)",
-            "Notes": "USB-side bulk with C456/C457 (three 33 uF polymer tantalum, 65 mOhm, 2.2 A rms, 3.1 mm max) and four "
-                     "22u 35V 1210: 104 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
-                     "AC_SNS_N is dead in sleep, so the polymer leakage rating does not matter here: "
-                     "Production/tools/low_profile_sims.py option L3"}),
+            "Value": "47u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "C2761440",
+            "MPN": "CCTC CA55-D035M476T (polymer tantalum)",
+            "Notes": "USB-side bulk with C456 (two 47 uF 35 V polymer tantalum, 150 mOhm, 1.2 A rms, 7343-28, 2.8 mm max) and "
+                     "four 22u 35V 1210: 100 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
+                     "Polymer, not MnO2: no ignition on failure, 20 % derating (20 V on 35 V). AC_SNS_N is dead in sleep, "
+                     "so the 0.1 CV leakage rating does not matter here: Production/tools/low_profile_sims.py option C2"}),
         **{c: (None, {**GMK_PROPS, "Notes": "Battery-side MLCC at the charger FETs, 22u 35V 1210 (about 10 uF at 16.8 V): "
                       "shared PACK_P bulk is C208-C213, Production/tools/low_profile_sims.py option N1"})
            for c in ("C431", "C434")},
@@ -768,26 +768,26 @@ def add_shared_bulk(s):
     return insert_top(s, add)
 
 
-LOW_PROFILE_AT = {"C456": (378.46, 121.92), "C457": (388.62, 121.92)}  # usb sheet, right of C430 on AC_SNS_N
+LOW_PROFILE_AT = {"C456": (378.46, 121.92)}  # usb sheet, right of C430 on AC_SNS_N
 
 
 def add_usb_bulk(s, templates):
-    """Per port: a second and third T521D 33u 35V polymer tantalum (C456, C457) on AC_SNS_N, with C421 -> T521D:
-    low_profile_sims.py option L3. Clones of C421 (both ports' instance paths)."""
+    """Per port: a second CA55 47u 35V polymer tantalum (C456) on AC_SNS_N, with C421 -> CA55:
+    low_profile_sims.py option C2. Clone of C421 (both ports' instance paths)."""
     syms = {y["ref"]: y for y in symbols(s)}
     add = ""
-    for ref, src in (("C456", "C421"), ("C457", "C421")):
+    for ref, src in (("C456", "C421"),):
         tmpl = s[syms[src]["a"]:syms[src]["b"]]
         val = re.search(r'\(property "Value" "([^"]*)"', tmpl).group(1)
         fp = re.search(r'\(property "Footprint" "([^"]*)"', tmpl).group(1)
         blk = clone(tmpl, ref, val, fp, LOW_PROFILE_AT[ref], src)
         blk = blk.replace('(reference "%s")' % (src[0] + "5" + src[2:]), '(reference "%s")' % (ref[0] + "5" + ref[2:]))
         if '(property "Notes" ' in blk:
-            blk = set_prop(blk, "Notes", "T521D on AC_SNS_N with C421, see C421")
+            blk = set_prop(blk, "Notes", "Second CA55 47u on AC_SNS_N, see C421")
         add += "\n\t" + blk
     s = insert_top(s, add)
     pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in LOW_PROFILE_AT}
-    add = wire_text((368.3, 118.11), pins["C456"]["1"]) + wire_text(pins["C456"]["1"], pins["C457"]["1"])
+    add = wire_text((368.3, 118.11), pins["C456"]["1"])
     add += "".join(clone_power(templates["GND"], pins[r]["2"]) for r in LOW_PROFILE_AT)
     return insert_top(s, add)
 

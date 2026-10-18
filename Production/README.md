@@ -339,23 +339,26 @@ The dev board won't be built, to save cost. P0 trains the gauge and carries the 
 
 The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every bulk cap is now no taller than the inductors (APS0730M2R2F, 3.1 mm max). Checked with `tools/low_profile_sims.py`, which runs the same ripple, part-stress and damping models as `cap_sims.py` and `pack_bus_sims.py`.
 
-**Why two different fixes.** Low-profile polymer chips (Panasonic SP-Cap, CDE MPD, KEMET T521) are rated for 0.1–0.3 CV of leakage: 115 µA for a T521D 33 µF 35 V and about 250 µA for a 33 µF 25 V SP-Cap. That doesn't matter on AC_SNS_N, which is dead in sleep. It rules them out on PACK_P, which is always live and has a ~150 µA sleep budget. So the USB side uses polymer tantalum and PACK_P uses MLCCs only.
+**Why two different fixes.** Low-profile polymer chips (Panasonic SP-Cap, CDE MPD, KEMET T521, CCTC CA55) are rated for 0.1–0.3 CV of leakage: 165 µA for a CA55 47 µF 35 V and about 250 µA for a 33 µF 25 V SP-Cap. That doesn't matter on AC_SNS_N, which is dead in sleep. It rules them out on PACK_P, which is always live and has a ~150 µA sleep budget. So the USB side uses polymer tantalum and PACK_P uses MLCCs only.
 
 **USB side, per port** (BQ25756 C_IN ≥ 80 µF after derating, at 20 V):
 
-| Option | Effective C (worst, 20 V) | Typ. | Worst part | Ripple | Damping | Area | Height |
-|---|---|---|---|---|---|---|---|
-| Before: 4 × 22 µF 1210 + 100 µF can | 104.5 µF | 134 µF | 65 % (can) | 162 mV | 19.7 dB | 125 mm² | 7.7 mm |
-| 4 × 22 µF + 2 × T521D | 77.3 µF (low) | 100 µF | 40 % | 150 mV | 17.1 dB | 143 mm² | 3.1 mm |
-| **Applied: 4 × 22 µF + 3 × T521D** | **103.7 µF** | **133 µF** | **38 %** | **139 mV** | **18.8 dB** | **185 mm²** | **3.1 mm** |
-| 5 × 22 µF + 2 × T521D (applied first, same day) | 83.4 µF | 109 µF | 33 % | 123 mV | 17.8 dB | 158 mm² | 3.1 mm |
-| 6 × 22 µF + 2 × T521D | 89.6 µF | 117 µF | 28 % | 104 mV | 18.5 dB | 172 mm² | 3.1 mm |
+| Option | Effective C (worst, 20 V) | Typ. | Worst part | Ripple | Damping | Area | Height | Polymer cost |
+|---|---|---|---|---|---|---|---|---|
+| Before: 4 × 22 µF 1210 + 100 µF can | 104.5 µF | 134 µF | 65 % (can) | 162 mV | 19.7 dB | 125 mm² | 7.7 mm | |
+| 4 × 22 µF + 2 × T521D 33 µF | 77.3 µF (low) | 100 µF | 40 % | 150 mV | 17.1 dB | 143 mm² | 3.1 mm | $6.40 |
+| 5 × 22 µF + 2 × T521D (first pass) | 83.4 µF | 109 µF | 33 % | 123 mV | 17.8 dB | 158 mm² | 3.1 mm | $6.40 |
+| 4 × 22 µF + 3 × T521D (second pass) | 103.7 µF | 133 µF | 38 % | 139 mV | 18.8 dB | 185 mm² | 3.1 mm | $9.60 |
+| 4 × 22 µF + 3 × CA45 33 µF (MnO₂) | 103.7 µF | 133 µF | 43 % | 162 mV | 18.7 dB | 185 mm² | 2.8 mm | $2.14 |
+| **Applied: 4 × 22 µF + 2 × CA55 47 µF** | **99.7 µF** | **128 µF** | **43 %** | **160 mV** | **20.0 dB** | **143 mm²** | **2.8 mm** | **$2.97** |
+| 4 × 22 µF + 3 × CA55 47 µF | 137.3 µF | 175 µF | 42 % | 157 mV | 21.0 dB | 185 mm² | 2.8 mm | $4.46 |
 
-- **C421/C521:** KEMET T521D336M035ATE065 (LCSC C696815, 518 in stock): 33 µF 35 V polymer tantalum, 65 mΩ, 2.2 A rms at 85 °C, 7343-31 case, 3.1 mm max. Running it at 57 % of its rating is inside KEMET's 80 % polymer derating.
-- **Added per port:** C456/C556 and C457/C557, a second and third T521D, on AC_SNS_N next to C430. The first pass used a fifth 22 µF 1210 for C456; it is now a 33 µF T521D, because no 33 µF MLCC is stocked in 1210. This gives 20 µF more margin, for +27 mm² and about +$3 per port.
+- **C421/C521 and C456/C556:** CCTC CA55-D035M476T (LCSC C2761440, 3,658 in stock, $1.49). 47 µF 35 V polymer tantalum, 150 mΩ, 1.225 A rms at 100 kHz. 7343-28 case, 2.8 mm max, on the standard 7343 D land pattern. Polymer tantalum needs only 20 % voltage derating; at 20 V on a 35 V part it runs at 57 %. C456 sits on AC_SNS_N next to C430.
+- **Why not the CA45-D035K336T.** It's $0.71 and it simulates fine, but it is an MnO₂ solid tantalum. Those fail short and can ignite. Makers want ≥ 50 % voltage derating, more on a low-impedance input. This one would run at 57 % on a USB input that sees hot-plug surges from a 5 A charger, and in reverse mode the pack feeds it through the converter. The CA55 is the same maker's polymer series, which avoids both problems.
+- **T521D history:** the first pass used two KEMET T521D336M035ATE065 plus a fifth 22 µF 1210 (C457). The second pass used three T521Ds. Both are replaced by the CA55 pair: about $6.60 cheaper per port, one part fewer, 42 mm² smaller, with better damping.
 - **C427/C527** leaves the cut list: the bank is designed with it.
-- **PPHV inrush** (sheet note 9): about 133 µF typical, against about 125 µF before. With soft-start at setting 0 that is still only about 0.06 A.
-- **Fallback:** if the T521D runs short, CDE MPD330M1VD28040R (33 µF 35 V polymer aluminium, 2.8 mm, 7.3 × 4.3 mm) fits the same pads. Stock was low (38) on 2026-10-18.
+- **PPHV inrush** (sheet note 9): about 128 µF typical, against about 134 µF before. With soft-start at setting 0 that is still only about 0.06 A.
+- **Fallback:** CDE MPD330M1VD28040R (33 µF 35 V polymer aluminium, 2.8 mm). It would need three per port and has low stock, or KEMET T521D as above.
 
 **PACK_P bus** (≥ 80 µF at 16.8 V; each charger sees the whole bus through its RBAT):
 
@@ -373,12 +376,12 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 - **Leakage:** effectively zero.
 - **Damping:** still about 20 dB; the pack's own resistance damps the bus.
 
-**Cost of the change:** about +165 mm² of courtyard (+60 mm² per USB side, +45 mm² on PACK_P) and 9 more parts (276 → 285 in the schematic). It also adds about +$21 per board at JLC small-quantity prices, mostly the six T521Ds at $3.20 each; the MPD fallback is $1.34. In return, no part rises above 3.1 mm.
+**Cost of the change:** about +81 mm² of courtyard (+18 mm² per USB side, +45 mm² on PACK_P) and 7 more parts (276 → 283 in the schematic). At JLC small-quantity prices it adds roughly +$8 per board: four CA55s at $1.49 and the extra 1210s. In return, no part rises above 3.1 mm.
 
-**PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343-31), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus nine new parts: C209–C213, and C456/C556 and C457/C557 (both 7343-31).
+**PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343 D), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus seven new parts: C209–C213 and C456/C556 (7343 D).
 
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
-2. **No cap cuts on hold.** C427/C527 is part of the 104 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
+2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
 3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
