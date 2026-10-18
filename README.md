@@ -42,6 +42,14 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
             - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
             - **Cost of the protection:** the pack is now 56.4 × 50.4 × 96.6 mm, and about 361 g including the pads and mica (+23 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
             - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
+            - **Pack connections:** everything is soldered from the open side once the board is in, so it all lands on F.Cu (`monolith_side_tabs.png`).
+                - **PACK- and PACK+:** 0.15 × 7 mm nickel strips from the C1 and C4 bottoms. Each drops down behind the board, wraps under its bottom edge and is soldered to an F.Cu pad, 8 × 5 mm at KiCad x 89.1 / 110.9, y 134.7. The shim is now one centre block between them.
+                - **CELL1, CELL3 and CELL2:** sense taps only, so thin wires (about 28 AWG silicone) go through plated holes at KiCad (98.0, 71.5), (102.0, 71.5) and (102.0, 133.5).
+                    - The top two run down the groove behind the board between C1 and C4, which has 5 mm free.
+                    - CELL2 runs in a channel in the floor spacer.
+                    - The top EVA has slots for the wires.
+                - Holes and pads are on the board DXF's `TAB_PADS` layer.
+                - Take the gauge's PACK-/PACK+ Kelvin sense from the pads.
             - **BLE antenna:** the CC2340R5MODA goes on the right board edge (+y, the C4 / PACK+ side), antenna end at the edge, centre 19.1 mm below the top edge (KiCad about 116.6, 81.9). That leaves 10 mm of ground above it and 10 mm to the USB-C bodies. The cover has a 12 x 6 mm notch over it, closed by a printed plate (`monolith_side_ant_plate.stl`) set in neutral-cure silicone. `monolith_side_pcb.dxf` shows the module (`BLE_MODULE`) and where the gap pad must stop (`GAPPAD_KEEPOUT`).
         - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
         - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
@@ -50,7 +58,8 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
     - `monolith_side_renders.py` renders the side tray's drop design:
         - `monolith_side_exploded.png`: assembled and exploded views;
         - `monolith_side_sections.png`: sections A-A and B-B;
-        - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables.
+        - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables;
+        - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions.
     - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 

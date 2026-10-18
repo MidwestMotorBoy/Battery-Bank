@@ -184,6 +184,18 @@ SB_ANT_CLEAR = 0.15                  # plate to notch, each side
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
 SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
+# Pack connections. The tabs are soldered from the open side after the board is in, so everything lands on F.Cu.
+# - PACK- (C1 bottom) and PACK+ (C4 bottom): nickel strips that wrap under the board's bottom edge onto F.Cu pads.
+#   The shim under the board is one centre block between them; the floor spacer and EVA get reliefs beside the board.
+# - CELL1 (C1+/C2- strip, top), CELL3 (C3+/C4- strip, top), CELL2 (C2+/C3- strip, bottom): sense taps only, so thin
+#   wires through plated holes. They run in the deep groove behind the board between C1 and C4 (5 mm free at |y| = 2),
+#   in slots in the top EVA, and for CELL2 in a channel in the floor spacer.
+SB_TAB_W, SB_TAB_T = 7.0, 0.15       # nickel strip (all strips)
+SB_TAB_PAD_H = 5.0                   # PACK+/- F.Cu pads: from the bottom edge up
+SB_SHIM_HALF = 6.0                   # centre shim block |y| (the PACK strips pass either side)
+SB_WIRE_D = 0.8                      # sense wire, e.g. 28 AWG silicone
+SB_TAP_HOLES = {'CELL1': (-2.0, 70.0), 'CELL3': (2.0, 70.0), 'CELL2': (2.0, 8.0)}   # (y, z) plated holes, ~1.0 mm drill
+SB_TAP_PAD_D = 2.0                   # tap hole pad diameter
 # derived (x across the board, y along the board width, z along the cells)
 sb_xb0 = a_in + SB_INSUL                      # board inner face
 sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
@@ -218,6 +230,9 @@ SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cav
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
 sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z), the notch is centred on it
+sb_tab_y = {'PACK-': sb_cell_xy[(1, -1)][1], 'PACK+': sb_cell_xy[(1, 1)][1]}   # PACK strip centrelines (C1, C4)
+sb_z_mid = (sb_zb0 + sb_zb1) / 2
+def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
 sb_ant_z0, sb_ant_z1 = sb_ant_zc - SB_ANT_NOTCH[0]/2, sb_ant_zc + SB_ANT_NOTCH[0]/2
 sb_ant_y0, sb_ant_y1 = sb_cover_w/2 - SB_ANT_NOTCH[1], sb_cover_w/2   # |y| span of the notch
 
@@ -243,6 +258,9 @@ def write_side_dxf(path):
     s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module at the edge; no gap pad over the notch area
     _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE')
     _rect(e, s*(sb_ant_y0 + sb_ant_y1)/2, sb_ant_zc, sb_ant_y1 - sb_ant_y0, sb_ant_z1 - sb_ant_z0, 'GAPPAD_KEEPOUT')
+    for yc in sb_tab_y.values():              # PACK strip pads on F.Cu, and the sense-wire holes
+        _rect(e, yc, sb_zb0 + SB_TAB_PAD_H/2, SB_TAB_W + 1.0, SB_TAB_PAD_H, 'TAB_PADS')
+    for y, z in SB_TAP_HOLES.values(): _circ(e, y, z, SB_TAP_PAD_D/2, 'TAB_PADS')
     _dxf(path, e)
 
 def write_cover_dxf(path):
@@ -294,6 +312,8 @@ if __name__ == '__main__':
           + f"; bottom-down drops add {0.65*SB_PAD_T:.1f} mm of floor pad between the cells and the tray")
     print(f"side board {sb_board_w:.2f} x {sb_board_l:.2f} mm, corner notches -> {sb_board_area:.0f} mm2 per side, "
           f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
+    print("pack connections (KiCad x, y): " + ", ".join(f"{n} {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[0]:.1f}, {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[1]:.1f} pad"
+          for n, y in sb_tab_y.items()) + "; " + ", ".join(f"{n} {kicad(y, z)[0]:.1f}, {kicad(y, z)[1]:.1f} hole" for n, (y, z) in SB_TAP_HOLES.items()))
     ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
     print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
     # assembly checks (positive = clearance)
@@ -313,6 +333,15 @@ if __name__ == '__main__':
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
         'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
+        'PACK strip between the floor spacer and the board (x)': (sb_xb0 - a_in) - SB_TAB_T,
+        'PACK strips clear of the centre shim (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2) - SB_SHIM_HALF,
+        'PACK strips clear of the board corner notches (y)': sb_notch_y - (max(abs(v) for v in sb_tab_y.values()) + SB_TAB_W/2),
+        'room under the board edge for the strip wrap (z)': (sb_zb0 - SB_TAB_T) - SB_END_T - 1.0,
+        'PACK pads clear of the vent keep-out (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (SB_VENT_D/2 + 2),
+        'top tap holes below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (max(SB_TAP_HOLES['CELL1'][1], SB_TAP_HOLES['CELL3'][1]) + SB_TAP_PAD_D/2) - 1.0,
+        'tap wires in the groove behind the board (free height - wire)': float(side_groove_depth(abs(SB_TAP_HOLES['CELL1'][0]))) - SB_WIRE_D,
+        'tap wires beside the mica (y)': abs(SB_TAP_HOLES['CELL1'][0]) - SB_WIRE_D/2 - SB_SEP_T/2 - 0.5,
+        'CELL2 hole clear of the PACK pads (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (abs(SB_TAP_HOLES['CELL2'][0]) + SB_TAP_PAD_D/2),
         'antenna notch below the top cap band (z)': (SB_H - SB_CAP_BAND) - sb_ant_z1,
         'antenna notch below the cover lip slot (z)': sb_z_top_in - sb_ant_z1,
         'BLE module: ground along the edge above it (>= 10)': sb_zb1 - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,

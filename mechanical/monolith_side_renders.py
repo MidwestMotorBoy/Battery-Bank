@@ -3,6 +3,7 @@ Run: python monolith_side_renders.py [v1_dir]
 -> monolith_side_exploded.png  (assembled view, exploded view with numbered balloons, parts list)
    monolith_side_sections.png  (A-A across the cells, B-B along C1/C2, with dimensions)
    monolith_side_parts.png     (cap zones, tray floor, pads; mass, drop and print-setting tables)
+   monolith_side_tabs.png      (nickel strips and sense wires, and the board face with pad / hole positions)
 v1_dir (optional) holds the previous monolith_side_shell.stl and monolith_side_bumper.stl for the mass comparison.
 Design basis: reports/Battery pack potting and drop protection.md (no potting; crush caps outside a stiff core).
 Everything is drawn at SS x size and downsampled, so edges and text are antialiased."""
@@ -15,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SS = 2
 C = dict(shell=(214, 214, 208), cover=(196, 204, 222), board=(52, 140, 84), cell=(84, 132, 196), soft=(250, 210, 160),
          firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200),
-         mica=(212, 180, 56), shim=(54, 166, 166), antp=(120, 120, 128))
+         mica=(212, 180, 56), shim=(54, 166, 166), antp=(120, 120, 128), nickel=(150, 150, 140), wire=(200, 50, 50))
 INK, MUTED, RULE, PANEL, ACCENT = (34, 34, 38), (110, 112, 118), (222, 222, 226), (247, 247, 249), (31, 78, 121)
 LEADER = (150, 152, 158)
 
@@ -28,19 +29,22 @@ def mv(V, dx=0, dy=0, dz=0): return V + [dx, dy, dz]
 PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish paper', 'wrap'),
          (3, 'Floor spacer 3.8 mm', 'TPU 95A, ~20 % gyroid', 'pad_floor'), (4, 'Floor pad 1.0 mm', 'EVA foam', 'eva_floor'),
          (5, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (6, 'Insulator rings on + ends (4)', 'fish paper 0.2', 'rings'),
+         (17, 'Nickel strips 0.15 x 7, 5', 'nickel', 'nickel'), (18, 'Sense wires CELL1-3', '28 AWG silicone', 'wire'),
          (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Top pad 1.0 mm', 'EVA foam', 'pad_top'),
          (9, 'Board insulator 0.2 mm', 'fish paper', 'insul'), (10, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'),
          (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
          (13, 'Cover 1.0 mm, 2 x M2, antenna notch', 'aluminium', 'cover'),
          (14, 'Antenna window plate', 'PETG, silicone-sealed', 'antp'),
          (15, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (16, 'Top crush cap', 'TPU 95A lattice', 'capt')]
+PARTS.sort(key=lambda r: r[0])
 NUM = {k: n for n, _, _, k in PARTS}
 def assembly():
     A = [('shell', P.side_shell(), C['shell'])]
     cell = P.cell_solid()
     for k in S.SB_CELLS:
         x, y = S.sb_cell_xy[k]; A.append(('cell', mv(cell, x, y, S.sb_z_cell0), C['cell']))
-    A += [('mica', P.mica_cross(), C['mica']), ('wrap', P.side_pad(), C['paper']),
+    A += [('nickel', P.nickel_strips(), C['nickel']), ('wire', P.sense_wires(), C['wire']),
+          ('mica', P.mica_cross(), C['mica']), ('wrap', P.side_pad(), C['paper']),
           ('pad_floor', P.end_pad('bottom', 'spacer'), C['spacer']), ('eva_floor', P.end_pad('bottom'), C['eva']),
           ('pad_top', P.end_pad('top'), C['eva']),
           ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
@@ -222,7 +226,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(antp=1.27, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(nickel=8.9, wire=3.0, antp=1.27, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -244,7 +248,7 @@ if __name__ == '__main__':
     cx1, cy1 = S.sb_cell_xy[(1, -1)]; cx2 = S.sb_cell_xy[(-1, -1)][0]
     LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA foam', C['eva']),
            ('mica', C['mica']), ('fish paper', C['paper']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
-           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('antenna plate', C['antp'])]
+           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('antenna plate', C['antp']), ('nickel', C['nickel']), ('sense wire', C['wire'])]
     w, d, L = SIZE()
 
     # ================= 1. assembled + exploded + parts list =================
@@ -265,7 +269,7 @@ if __name__ == '__main__':
                 475, 'r', 150)
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
-    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
+    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), nickel=(58, 0, 0), wire=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
               insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), antp=(146, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
@@ -279,7 +283,7 @@ if __name__ == '__main__':
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
     BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
-               hold=60, cover=0, antp=20, capb=180, capt=180)
+               hold=60, cover=0, antp=20, nickel=340, wire=30, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
                 for g_, (ax, ay) in anchors.items()}
@@ -302,7 +306,7 @@ if __name__ == '__main__':
 
     # ================= 2. sections =================
     sh = Sheet(2700, 1270)
-    sh.header('Sections', 'Cut from the same meshes that make the STLs. Board and USB-C are envelopes; nickel tabs, the 0.5 mm gap pad '
+    sh.header('Sections', 'Cut from the same meshes that make the STLs. Board and USB-C are envelopes; the nickel strips are 0.15 mm (thin lines). The 0.5 mm gap pad '
               'to the cover and the parts on the board are not drawn.')
     zc = (S.sb_z_cell0 + S.sb_z_cell1) / 2 + 0.03; aI, aC = S.a_in, S.a_cav; pxa = 11.0
     sh.panel_title(40, 128, f'A-A   across the pack at mid-cell (z = {zc:.0f} mm), seen from the port end', 1180)
@@ -341,7 +345,7 @@ if __name__ == '__main__':
                  (tb(S.sb_port_x + S.USB_UP + 0.8, S.SB_H - 4), 'USB-C hold-down, 2 x 1 mm EVA'),
                  (tb(S.sb_xb0 + 0.8, 35), '1.6 mm board'),
                  (tb(S.sb_x_cv0 + 0.5, 30), 'Aluminium cover'),
-                 (tb(S.sb_xb0 + 0.8, S.SB_END_T + 1.2), 'TPU shim under the board'),
+                 (tb(S.sb_xb1 + 0.1, S.sb_zb0 + 3.0), 'PACK- strip wraps under the board\nedge onto an F.Cu pad'),
                  (tb(S.sb_x_cv1 - 2, S.sb_screw_z), 'M2 insert pillar (behind the cut)')], x0 + 1000, 'r', 170)
     xl = -S.a_sb - S.SB_CAP_PROUD
     sh.dim(tb(xl, -S.SB_CAP_T), tb(xl, S.SB_H + S.SB_CAP_T), -40, f'{L:.1f}')
@@ -410,6 +414,62 @@ if __name__ == '__main__':
             ['Mica (buy)', '0.2 mm sheet: McMaster 85825K42, RS PRO']]
     sh.table(x, y0 + 46, ['Part', 'Material / setting'], rows, [170, 650], 14)
     sh.save('monolith_side_parts.png')
+
+    # ================= 4. pack connections =================
+    sh = Sheet(2700, 1020)
+    sh.header('Pack connections: nickel strips and sense wires',
+              'Everything is soldered from the open side after the board is in, so every connection lands on F.Cu. '
+              'PACK+/- carry the pack current; CELL1-3 are gauge sense taps only.')
+    conn = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire', 'board', 'shim')]
+    sh.panel_title(40, 128, 'From the cover side, below', 820)
+    Ra = camera((1.0, -0.75, -0.45)); oa = (290, 700)
+    sh.render(conn, Ra, oa, 4.8); pa = proj(Ra, oa, 4.8)
+    yP, yN = S.sb_tab_y['PACK+'], S.sb_tab_y['PACK-']
+    sh.callouts([(pa((S.sb_xb1 + 0.1, yN, S.sb_zb0 + 3)), 'PACK- strip (C1 bottom) folded\nup onto its F.Cu pad'),
+                 (pa((S.sb_xb1 + 0.1, yP, S.sb_zb0 + 3)), 'PACK+ strip (C4 bottom)'),
+                 (pa((S.sb_xb1, 0, S.sb_zb0 - 1.3)), 'Shim: one centre block,\nthe strips pass either side'),
+                 (pa((S.sb_xb1 + 0.5, S.SB_TAP_HOLES['CELL2'][0], S.SB_TAP_HOLES['CELL2'][1])), 'CELL2 wire through its hole'),
+                 (pa((S.sb_xb1 + 0.5, S.SB_TAP_HOLES['CELL1'][0], S.SB_TAP_HOLES['CELL1'][1])), 'CELL1 and CELL3 wires\nthrough holes below the USB-C')],
+                590, 'r', 160)
+    sh.panel_title(900, 128, 'Behind the board (board hidden)', 820)
+    back = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire')]
+    Rb = camera((1.0, 0.35, 0.25)); ob = (1130, 700)
+    sh.render(back, Rb, ob, 4.8); pb = proj(Rb, ob, 4.8)
+    sh.callouts([(pb((P.TAP_X, S.SB_TAP_HOLES['CELL3'][0], 60)), 'CELL1 / CELL3 wires run down\nthe groove between C1 and C4\n(5 mm free, beside the mica)'),
+                 (pb((8.0, 9.0, S.sb_z_cell1 + 0.6)), 'Taps start on the top series\nstrips, in slots in the top EVA'),
+                 (pb((P.TAP_X, S.SB_TAP_HOLES['CELL2'][0], 5.5)), 'CELL2 comes from the bottom C2/C3\nstrip in a channel in the floor spacer'),
+                 (pb((S.a_in + 0.1, yP, 5.5)), 'PACK+ strip drops down\nbehind the board edge')],
+                1420, 'r', 160)
+    # board face
+    x0 = 1760; sh.panel_title(x0, 128, 'Board face (F.Cu, from the cover)', 900)
+    ps = 8.0; ob2 = (x0 + 200, 190 + 37.2*ps)
+    def bp(y, z): kx, ky = S.kicad(y, z); return ob2[0] + ps*(kx - 100), ob2[1] + ps*(ky - 100)
+    w, z0, z1, ny, nz = S.sb_board_w/2, S.sb_zb0, S.sb_zb1, S.sb_notch_y, S.sb_notch_z
+    out = [(-ny, z0), (ny, z0), (ny, nz), (w, nz), (w, z1), (-w, z1), (-w, nz), (-ny, nz)]
+    sh.g.polygon([(bp(*q)[0]*SS, bp(*q)[1]*SS) for q in out], fill=(222, 238, 226), outline=C['board'], width=3*SS)
+    for py in (-S.SB_PORT_Y, S.SB_PORT_Y):
+        a, b = bp(py - 5.1, z1), bp(py + 5.1, z1 - 5.65); sh.rect(a[0], a[1], b[0], b[1], fill=(205, 205, 210), outline=(90, 90, 95))
+        sh.text((a[0] + b[0])/2, (a[1] + b[1])/2, 'USB-C', 12, anchor='mm')
+    a, b = bp(S.sb_board_w/2 - S.SB_ANT_MOD[1], S.sb_ant_zc + 3.5), bp(S.sb_board_w/2, S.sb_ant_zc - 3.5)
+    sh.rect(a[0], a[1], b[0], b[1], fill=(170, 190, 225), outline=(60, 80, 140)); sh.text((a[0]+b[0])/2, (a[1]+b[1])/2, 'BLE', 12, anchor='mm')
+    vx, vy = bp(0, S.SB_VENT_Z); r = (S.SB_VENT_D/2 + 2)*ps
+    sh.g.ellipse([(vx - r)*SS, (vy - r)*SS, (vx + r)*SS, (vy + r)*SS], outline=(120, 120, 120), width=2*SS)
+    labels = []
+    for n, yc in S.sb_tab_y.items():
+        a, b = bp(yc - S.SB_TAB_W/2 - 0.5, z0 + S.SB_TAB_PAD_H), bp(yc + S.SB_TAB_W/2 + 0.5, z0)
+        sh.rect(a[0], a[1], b[0], b[1], fill=(214, 170, 60), outline=(120, 90, 20))
+        kx, ky = S.kicad(yc, z0 + S.SB_TAB_PAD_H/2); labels.append((((a[0]+b[0])/2, (a[1]+b[1])/2), f'{n}  {kx:.1f}, {ky:.1f}'))
+    for n, (y, z) in S.SB_TAP_HOLES.items():
+        cx, cy = bp(y, z); rr = S.SB_TAP_PAD_D/2*ps
+        sh.g.ellipse([(cx - rr)*SS, (cy - rr)*SS, (cx + rr)*SS, (cy + rr)*SS], fill=(214, 170, 60), outline=(120, 90, 20), width=SS)
+        kx, ky = S.kicad(y, z); labels.append(((cx, cy), f'{n}  {kx:.1f}, {ky:.1f}'))
+    sh.callouts(labels, x0 + 440, 'r', 180, size=14)
+    sh.text(x0 + 440, 870, 'KiCad coordinates (board centred at 100, 100).\nPads are F.Cu; holes ~1.0 mm plated.\n'
+            'Kelvin: take the gauge sense for PACK-\n(VC0 / SRN side) and PACK+ (VC4) from the\npad, not from the current path.', 13, fill=MUTED)
+    sh.line([(40, 950), (2660, 950)], RULE, 1.5)
+    sh.legend([('cells', C['cell']), ('mica', C['mica']), ('nickel strip', C['nickel']), ('sense wire', C['wire']), ('board', C['board']),
+               ('TPU shim', C['shim']), ('pad / hole', (214, 170, 60)), ('BLE module', (170, 190, 225))], 40, 970, 14)
+    sh.save('monolith_side_tabs.png')
     print(f"pack {total:.1f} g; " + ", ".join(f"{k} {v:.1f}" for k, v in m.items()))
     if v1: print(f"v1 {sum(v1.values()):.1f} g")
-    print("wrote monolith_side_exploded.png, monolith_side_sections.png, monolith_side_parts.png")
+    print("wrote monolith_side_exploded.png, monolith_side_sections.png, monolith_side_parts.png, monolith_side_tabs.png")

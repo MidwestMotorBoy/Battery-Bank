@@ -402,9 +402,61 @@ def end_pad(end, layer='eva'):
     caps = S.sb_pos_caps[end]; r = S.SB_VENT_CUT_D/2
     if end == 'top': zs = [S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
     elif layer == 'eva': zs = [S.sb_z_pad1 - S.SB_EVA_T, S.sb_z_pad1]
-    else: zs = [S.SB_END_T, S.sb_z_pad1 - S.SB_EVA_T]
-    cur = _cellzone_pts() + [circ_pts(x, y, r) for x, y in caps]
-    return build(cur, zs, lambda k, x, y: _cellzone_in(x, y) & ~(sum(circ_in(x, y, cx, cy, r) for cx, cy in caps) > 0))
+    else: zs = [S.SB_END_T, S.sb_z_pad1 - S.SB_EVA_T - 1.0, S.sb_z_pad1 - S.SB_EVA_T]
+    cuts = TOP_SLOTS if end == 'top' else BOTTOM_RELIEFS + (CELL2_SLOT if layer == 'eva' else [])
+    deep = BOTTOM_RELIEFS   # through the whole spacer; the CELL2 channel is only in its top 1 mm
+    cur = _cellzone_pts() + [circ_pts(x, y, r) for x, y in caps] + [xrect_pts(*c) for c in cuts + CELL2_SLOT]
+    def solid(k, x, y):
+        s = _cellzone_in(x, y) & ~(sum(circ_in(x, y, cx, cy, r) for cx, cy in caps) > 0)
+        s &= ~(sum(xrect_in(x, y, *c) for c in cuts) > 0)
+        if end == 'bottom' and layer == 'spacer' and k == 1: s &= ~(sum(xrect_in(x, y, *c) for c in CELL2_SLOT) > 0)
+        return s
+    return build(cur, zs, solid)
+# reliefs and slots for the pack connections (see SB_TAB_* / SB_TAP_HOLES in monolith_shell.py)
+_w = S.SB_WIRE_D/2 + 0.2
+BOTTOM_RELIEFS = [(aI - 1.0, aI + 0.01, yc - S.SB_TAB_W/2 - 0.5, yc + S.SB_TAB_W/2 + 0.5) for yc in S.sb_tab_y.values()]
+_y2 = S.SB_TAP_HOLES['CELL2'][0]
+CELL2_SLOT = [(-S.pocket_r - 1.0, aI + 0.01, _y2 - _w, _y2 + _w)]
+TAP_X = aI - 1.5                      # the wires drop down the groove here
+def _top_slot(y):
+    s = 1 if y > 0 else -1; ys = s*(S.pocket_r - S.SB_TAB_W/2 + 1.0)    # 1 mm onto the strip
+    return [(7.4, 8.6, min(y, ys), max(y, ys)), (7.4, aI + 0.01, y - _w, y + _w)]
+TOP_SLOTS = _top_slot(S.SB_TAP_HOLES['CELL1'][0]) + _top_slot(S.SB_TAP_HOLES['CELL3'][0])
+
+def _box(x0, x1, y0, y1, z0, z1):
+    p = (x0, x1, y0, y1)
+    return build([xrect_pts(*p, )], [z0, z1], lambda k, x, y: xrect_in(x, y, *p))
+def nickel_strips():
+    """series strips and the two PACK strips (wrapped under the board edge onto F.Cu); bought, not printed"""
+    t, hw, pr = S.SB_TAB_T, S.SB_TAB_W/2, S.pocket_r
+    zt0, zb1 = S.sb_z_cell1 + 0.2, S.sb_z_cell0 - 0.2           # over the + rings, under the cell bottoms
+    B = [_box(-pr, pr, -pr - hw, -pr + hw, zt0, zt0 + t),         # C1+ -> C2-  (CELL1), top
+         _box(-pr, pr, pr - hw, pr + hw, zt0, zt0 + t),           # C3+ -> C4-  (CELL3), top
+         _box(-pr - hw, -pr + hw, -pr, pr, zb1 - t, zb1)]         # C2+ -> C3-  (CELL2), bottom
+    xv = aI + 0.08                                                # down the gap between the floor pads and the board
+    for yc in S.sb_tab_y.values():
+        y0, y1 = yc - hw, yc + hw
+        B += [_box(pr - hw, xv + t, y0, y1, zb1 - t, zb1),         # on the cell bottom, out to the board
+              _box(xv, xv + t, y0, y1, S.sb_zb0 - t, zb1 - t),     # down behind the board
+              _box(xv, S.sb_xb1 + t, y0, y1, S.sb_zb0 - t, S.sb_zb0),   # under the bottom edge
+              _box(S.sb_xb1, S.sb_xb1 + t, y0, y1, S.sb_zb0 - t, S.sb_zb0 + S.SB_TAB_PAD_H)]   # up onto the F.Cu pad
+    return np.vstack(B)
+def sense_wires():
+    """CELL1 / CELL3 from the top strips, CELL2 from the bottom strip, each to a plated hole (through to F.Cu)"""
+    r = S.SB_WIRE_D/2; out = []
+    def seg(p, q):
+        lo = np.minimum(p, q) - r; hi = np.maximum(p, q) + r
+        out.append(_box(lo[0], hi[0], lo[1], hi[1], lo[2], hi[2]))
+    zt = S.sb_z_cell1 + S.TAB_T + 0.45
+    for n in ('CELL1', 'CELL3'):
+        y, z = S.SB_TAP_HOLES[n]; s = 1 if y > 0 else -1
+        p0 = np.array([8.0, s*(S.pocket_r - S.SB_TAB_W/2 + 0.6), zt])
+        pts = [p0, [8.0, y, zt], [TAP_X, y, zt], [TAP_X, y, z], [S.sb_xb1 + 0.5, y, z]]
+        for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
+    y, z = S.SB_TAP_HOLES['CELL2']; zc = S.sb_z_pad1 - S.SB_EVA_T - 0.5
+    pts = [[-S.pocket_r, y, S.sb_z_cell0 - 0.6], [-S.pocket_r, y, zc], [TAP_X, y, zc], [TAP_X, y, z], [S.sb_xb1 + 0.5, y, z]]
+    for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
+    return np.vstack(out)
 CELL_ENV = (-aI, aI + 1.0, aI, cI, 0.0)      # cell block envelope (square on the board side)
 def side_pad():
     """SB_SIDE_PAD fish paper liner round the -x and +-y faces of the cells, slotted for the rib"""
@@ -422,7 +474,8 @@ def hold_pads():
     return build([xrect_pts(*p) for p in ps], [S.SB_H - S.USB_DEPTH + 0.5, S.sb_z_top_in],
                  lambda k, x, y: sum(xrect_in(x, y, *p) for p in ps) > 0)
 def board_shim():
-    p = (S.sb_xb0, S.sb_xb1, -(S.sb_notch_y - 0.2), S.sb_notch_y - 0.2)
+    """centre block only: the PACK strips wrap under the board edge either side of it"""
+    p = (S.sb_xb0, S.sb_xb1, -S.SB_SHIM_HALF, S.SB_SHIM_HALF)
     return build([xrect_pts(*p)], [S.SB_END_T, S.sb_zb0], lambda k, x, y: xrect_in(x, y, *p))
 def cell_solid():
     r = S.CELL_D/2
