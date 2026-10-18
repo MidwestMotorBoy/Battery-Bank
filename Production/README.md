@@ -224,6 +224,25 @@ U405/U505 changed from the TPD4S201 (CC + SBU, 3.5×3.5 mm QFN-20) to the **TPD2
 - **Code:** `tools/tpd2s300.py` holds the symbol; `make_production.py` places the part and labels its pins.
 - **Totals:** 246 parts, courtyard area **1,884 mm²**.
 
+## Board outline 45.5 mm, both USB-C ports on one side (2026-10-17)
+
+Both ports exit the same face, for mechanical assembly: the seal flanges stick out ~1.95 mm past the board edge, so a board with ports on opposite faces can't drop into the cap.
+
+- **Why the board grew:** one face of the 40.5 mm board had only 21.8 mm of straight edge, and each connector needs ~12.5 mm (10.2 mm notch plus shell tabs at ±5.8 mm).
+- **New outline: 45.5 × 45.5 mm (+5 mm in x and y), corner radius kept at R9.35**, so each face has **26.8 mm** straight.
+    - Growing the outline concentric with the tube would have kept the corner centres, and the straight edge would have stayed 21.8 mm.
+    - **The cap and tube have to follow:** the board is now wider than the tube's 43.6 mm inner width, and `mechanical/monolith_parts.py` needs the new top-cap geometry.
+- **Placement:** J501 (USB2) at y = 93.5 and **J401 (USB1)** at y = 106.5 on the right edge (x = 122.75), 13 mm apart, rotated 90°, locked.
+    - The footprint origin is the board edge. The board outline leaves a 10.2 mm gap at each connector, and the footprint's own Edge.Cuts closes its 10.2 × 5.65 mm notch. DRC confirms the outline is closed.
+    - A 2.8 mm board rib between the notches carries the neighbouring shell tabs. Those pads are 0.5 mm apart, both GND.
+    - On the cap face, the two 10.25 mm seal flanges leave a ~2.75 mm wall rib between the openings.
+- **Area:** about 2,000 mm² per side, up from 1,565.
+- `tools/make_board.py` draws the outline (`PORTS_Y` sets the notch positions) and places the connectors.
+
+**Found while checking DRC (not changed):**
+- The via minimum in `Monolith.kicad_pro` is back at 0.45/0.3 mm. KiCad was open and rewrote the project file. Set 0.35/0.2 in Board Setup, or re-run the change with KiCad closed.
+- The dev library's TPD2S300 footprint (`TI_YFF0009_DSBGA-9_P0.4mm`) puts a 0.15 mm-drill via in the centre ball pad (0.05 mm annular ring). That's inside JLC's ≤ 1 mm-board limits but trips the project rules. Decide at fan-out whether to keep it.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

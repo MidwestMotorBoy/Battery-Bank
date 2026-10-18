@@ -4,8 +4,9 @@ Stack-up: 6 layers, 0.8 mm, 2 oz outer / 0.5 oz inner, ENIG, vias filled and cap
 The dielectric split is a symmetric approximation that sums to 0.8 mm; JLC publishes no 0.8 mm 6-layer stack and no
 net here is impedance-controlled, so set it to JLC's stack at order time.
 
-Outline: the top-cap board from mechanical/monolith_parts.py (BOARD = prof(SK_I - BOARD_CLEAR)): 40.5 x 40.5 mm
-rounded square, R9.35 corners, centred on (100, 100). The USB-C notches are added once the ports are placed.
+Outline: 45.5 x 45.5 mm rounded square, R9.35 corners, centred on (100, 100) (2026-10-17: the 40.5 mm top-cap board from
+mechanical/monolith_parts.py plus 5 mm in x and y, so both USB-C ports fit on the right edge). The outline leaves gaps
+for the connector notches (PORTS_Y), and place_ports() puts J401/J501 there.
 (mechanical/monolith_bottom_pcb.dxf is the 43.3 mm bottom end board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force]
@@ -20,7 +21,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
 DEV = os.path.normpath(os.path.join(PROD, "..", "DevBoard"))
 OUT = os.path.join(PROD, "Monolith.kicad_pcb")
-CX, CY, HALF, R = 100.0, 100.0, 20.25, 9.35
+CX, CY, HALF, R = 100.0, 100.0, 22.75, 9.35  # 45.5 mm (2026-10-17: +5 mm in x and y for both ports on one side)
+# USB-C notches on the right edge (x = CX + HALF): connector centres along y. The footprint's own Edge.Cuts draws the
+# 10.2 x 5.65 notch (origin = board edge), so the board outline leaves a 10.2 mm gap at each. 13 mm apart: each
+# connector needs ~12.5 mm (notch + shell tabs at +-5.8), all inside the 26.8 mm straight edge (R9.35 corners).
+PORTS_Y = {"J501": CY - 6.5, "J401": CY + 6.5}
+NOTCH_HALF = 5.1
 
 COPPER = [("F.Cu", 0.07), ("In1.Cu", 0.0175), ("In2.Cu", 0.0175), ("In3.Cu", 0.0175), ("In4.Cu", 0.0175), ("B.Cu", 0.07)]
 DIELECTRIC = [("prepreg", 0.10, 4.4), ("core", 0.12, 4.6), ("prepreg", 0.15, 4.4), ("core", 0.12, 4.6), ("prepreg", 0.10, 4.4)]
@@ -91,8 +97,11 @@ def arc(cx, cy, a0):
 
 def outline():
     k = HALF - R
-    g = [line(CX - k, CY - HALF, CX + k, CY - HALF), line(CX + HALF, CY - k, CX + HALF, CY + k),
-         line(CX + k, CY + HALF, CX - k, CY + HALF), line(CX - HALF, CY + k, CX - HALF, CY - k)]
+    g = [line(CX - k, CY - HALF, CX + k, CY - HALF), line(CX + k, CY + HALF, CX - k, CY + HALF),
+         line(CX - HALF, CY + k, CX - HALF, CY - k)]
+    ys = [CY - k] + [y for c in sorted(PORTS_Y.values()) for y in (c - NOTCH_HALF, c + NOTCH_HALF)] + [CY + k]
+    for y0, y1 in zip(ys[0::2], ys[1::2]):  # right edge, with gaps where the connector notches are
+        g.append(line(CX + HALF, y0, CX + HALF, y1))
     for (sx, sy), a0 in (((1, 1), 0), ((-1, 1), 90), ((-1, -1), 180), ((1, -1), 270)):
         g.append(arc(CX + sx * k, CY + sy * k, a0))
     return "\n".join(g)
@@ -128,15 +137,43 @@ def patch(path, layers):
         s = s[:st + 1] + stackup().lstrip("\n") + s[block_end(s, st + 3):]
     else:
         s = s[:a] + "\t(setup\n" + stackup() + s[a + len("\t(setup"):]
-    if '(layer "Edge.Cuts")\n\t\t(uuid' not in s.split("\n\t(footprint", 1)[0] and "\n\t(gr_" not in s:
-        s = s.rstrip()[:-1].rstrip() + "\n" + outline() + "\n)\n"
+    # redraw the outline: drop top-level Edge.Cuts lines/arcs (footprint notches stay with their footprints)
+    re = __import__("re")
+    spans = []
+    for m in re.finditer(r"\n\t\((gr_line|gr_arc)\b", s):
+        a = m.start() + 2
+        b = block_end(s, a)
+        if '(layer "Edge.Cuts")' in s[a:b]:
+            spans.append((m.start(), b))
+    for a, b in reversed(spans):
+        s = s[:a] + s[b:]
+    s = s.rstrip()[:-1].rstrip() + "\n" + outline() + "\n)\n"
     open(path, "w", encoding="utf-8", newline="\n").write(s)
     print("patched %s: %g mm, 6 layers, stack-up and outline; footprints untouched" % (path, THICK))
+
+
+def place_ports(path):
+    """Put J401/J501 on the right edge: footprint origin on the edge, notch pointing into the board (90 deg), locked."""
+    import pcbnew
+    b = pcbnew.LoadBoard(path)
+    for ref, y in PORTS_Y.items():
+        f = b.FindFootprintByReference(ref)
+        if f is None:
+            print("no %s on the board (run Update PCB from Schematic)" % ref)
+            continue
+        if f.IsFlipped():
+            f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
+        f.SetOrientationDegrees(90)
+        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(CX + HALF), pcbnew.FromMM(y)))
+        f.SetLocked(True)
+        print("%s at (%.2f, %.2f) 90 deg, locked" % (ref, CX + HALF, y))
+    pcbnew.SaveBoard(path, b)
 
 
 def main():
     if os.path.exists(OUT) and "--force" not in sys.argv:
         patch(OUT, LAYERS)
+        place_ports(OUT)
         if not os.path.exists(os.path.join(PROD, "Monolith.kicad_dru")):
             shutil.copy2(os.path.join(DEV, "MonolithDev.kicad_dru"), os.path.join(PROD, "Monolith.kicad_dru"))
         return
