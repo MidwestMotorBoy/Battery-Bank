@@ -144,14 +144,14 @@ SWAP = {  # parts changed in place: new lib_id and properties (pins land on the 
             "Notes": "PP5V bulk, third 22 uF 1206 with C441/C442 (about 33 uF effective at 5.16 V; was a 100 uF polymer "
                      "on the dev board). Each port's PP5V is a dedicated supply, so USB PD cSrcBulk (10 uF min) applies, "
                      "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
-        # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py L2 / N1
+        # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py L3 / N1
         "C421": (None, {
             "Value": "33u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "C696815",
             "MPN": "KEMET T521D336M035ATE065 (polymer tantalum)",
-            "Notes": "USB-side bulk with C457 (two 33 uF polymer tantalum, 65 mOhm, 2.2 A rms, 3.1 mm max) and five "
-                     "22u 35V 1210: 83 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
+            "Notes": "USB-side bulk with C456/C457 (three 33 uF polymer tantalum, 65 mOhm, 2.2 A rms, 3.1 mm max) and four "
+                     "22u 35V 1210: 104 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
                      "AC_SNS_N is dead in sleep, so the polymer leakage rating does not matter here: "
-                     "Production/tools/low_profile_sims.py option L2"}),
+                     "Production/tools/low_profile_sims.py option L3"}),
         **{c: (None, {**GMK_PROPS, "Notes": "Battery-side MLCC at the charger FETs, 22u 35V 1210 (about 10 uF at 16.8 V): "
                       "shared PACK_P bulk is C208-C213, Production/tools/low_profile_sims.py option N1"})
            for c in ("C431", "C434")},
@@ -772,18 +772,18 @@ LOW_PROFILE_AT = {"C456": (378.46, 121.92), "C457": (388.62, 121.92)}  # usb she
 
 
 def add_usb_bulk(s, templates):
-    """Per port: one more GMK325 22u 35V 1210 (C456) and a second T521D 33u 35V polymer tantalum (C457) on AC_SNS_N,
-    with C421 -> T521D: low_profile_sims.py option L2. Clones of C420 / C421 (both ports' instance paths)."""
+    """Per port: a second and third T521D 33u 35V polymer tantalum (C456, C457) on AC_SNS_N, with C421 -> T521D:
+    low_profile_sims.py option L3. Clones of C421 (both ports' instance paths)."""
     syms = {y["ref"]: y for y in symbols(s)}
     add = ""
-    for ref, src in (("C456", "C420"), ("C457", "C421")):
+    for ref, src in (("C456", "C421"), ("C457", "C421")):
         tmpl = s[syms[src]["a"]:syms[src]["b"]]
         val = re.search(r'\(property "Value" "([^"]*)"', tmpl).group(1)
         fp = re.search(r'\(property "Footprint" "([^"]*)"', tmpl).group(1)
         blk = clone(tmpl, ref, val, fp, LOW_PROFILE_AT[ref], src)
         blk = blk.replace('(reference "%s")' % (src[0] + "5" + src[2:]), '(reference "%s")' % (ref[0] + "5" + ref[2:]))
         if '(property "Notes" ' in blk:
-            blk = set_prop(blk, "Notes", "Second T521D on AC_SNS_N, see C421")
+            blk = set_prop(blk, "Notes", "T521D on AC_SNS_N with C421, see C421")
         add += "\n\t" + blk
     s = insert_top(s, add)
     pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in LOW_PROFILE_AT}

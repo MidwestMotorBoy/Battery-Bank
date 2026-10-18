@@ -2,10 +2,10 @@
 taller than the inductors (APS0730M2R2F, 3.1 mm max).
 
 USB side (AC_SNS_N, per port): unpowered in sleep, so leakage does not matter; 35 V polymer tantalum KEMET
-T521D336M035ATE065 (33 uF, 65 mOhm, 2.2 A rms at 85 C, 3.1 mm max, 7343-31) next to more GMK325 22u 35V 1210.
+T521D336M035ATE065 (33 uF, 65 mOhm, 2.2 A rms at 85 C, 3.1 mm max, 7343-31) next to GMK325 22u 35V 1210s.
 PACK_P (shared bus): always live, so only MLCCs. Polymer aluminium chips (SP-Cap, CDE MPD) and polymer tantalum
-are rated 0.1-0.3 CV of leakage (hundreds of uA), against a ~150 uA sleep budget. TMK325ABJ476MM 47u 25V 1210
-(2.5 mm) gives the most capacitance per mm^2 at 16.8 V of the stocked MLCCs.
+are rated 0.1-0.3 CV of leakage (hundreds of uA), against a ~150 uA sleep budget. GMK325BJ226MM 22u 35V 1210
+(2.7 mm max) keeps ~10 uF at 16.8 V, more than a TMK325 47u 25V (~8 uF). Applied: L3 (USB) and N1 (PACK_P).
 
 Reuses DevBoard/tools/cap_sims.py (USB side: ripple, RMS, cable damping) and pack_bus_sims.py (shared bus).
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/low_profile_sims.py

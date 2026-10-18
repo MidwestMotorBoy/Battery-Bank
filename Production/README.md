@@ -347,13 +347,14 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 |---|---|---|---|---|---|---|---|
 | Before: 4 × 22 µF 1210 + 100 µF can | 104.5 µF | 134 µF | 65 % (can) | 162 mV | 19.7 dB | 125 mm² | 7.7 mm |
 | 4 × 22 µF + 2 × T521D | 77.3 µF (low) | 100 µF | 40 % | 150 mV | 17.1 dB | 143 mm² | 3.1 mm |
-| **Applied: 5 × 22 µF + 2 × T521D** | **83.4 µF** | **109 µF** | **33 %** | **123 mV** | **17.8 dB** | **158 mm²** | **3.1 mm** |
+| **Applied: 4 × 22 µF + 3 × T521D** | **103.7 µF** | **133 µF** | **38 %** | **139 mV** | **18.8 dB** | **185 mm²** | **3.1 mm** |
+| 5 × 22 µF + 2 × T521D (applied first, same day) | 83.4 µF | 109 µF | 33 % | 123 mV | 17.8 dB | 158 mm² | 3.1 mm |
 | 6 × 22 µF + 2 × T521D | 89.6 µF | 117 µF | 28 % | 104 mV | 18.5 dB | 172 mm² | 3.1 mm |
 
 - **C421/C521:** KEMET T521D336M035ATE065 (LCSC C696815, 518 in stock): 33 µF 35 V polymer tantalum, 65 mΩ, 2.2 A rms at 85 °C, 7343-31 case, 3.1 mm max. Running it at 57 % of its rating is inside KEMET's 80 % polymer derating.
-- **Added per port:** C457/C557, a second T521D, and C456/C556, a fifth GMK325BJ226MM-P 22 µF 35 V 1210. Both sit on AC_SNS_N next to C430.
-- **C427/C527** leaves the cut list: the bank needs it.
-- **PPHV inrush** (sheet note 9) drops from about 125 µF to about 110 µF typical, so it is further under the soft-start limit.
+- **Added per port:** C456/C556 and C457/C557, a second and third T521D, on AC_SNS_N next to C430. The first pass used a fifth 22 µF 1210 for C456; it is now a 33 µF T521D, because no 33 µF MLCC is stocked in 1210. This gives 20 µF more margin, for +27 mm² and about +$3 per port.
+- **C427/C527** leaves the cut list: the bank is designed with it.
+- **PPHV inrush** (sheet note 9): about 133 µF typical, against about 125 µF before. With soft-start at setting 0 that is still only about 0.06 A.
 - **Fallback:** if the T521D runs short, CDE MPD330M1VD28040R (33 µF 35 V polymer aluminium, 2.8 mm, 7.3 × 4.3 mm) fits the same pads. Stock was low (38) on 2026-10-18.
 
 **PACK_P bus** (≥ 80 µF at 16.8 V; each charger sees the whole bus through its RBAT):
@@ -372,12 +373,12 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 - **Leakage:** effectively zero.
 - **Damping:** still about 20 dB; the pack's own resistance damps the bus.
 
-**Cost of the change:** about +110 mm² of courtyard (+33 mm² per USB side, +45 mm² on PACK_P) and 9 more parts (276 → 285 in the schematic). It also adds about +$16 per board at JLC small-quantity prices, mostly the four T521Ds at $3.20 each; the MPD fallback is $1.34. In return, no part rises above 3.1 mm.
+**Cost of the change:** about +165 mm² of courtyard (+60 mm² per USB side, +45 mm² on PACK_P) and 9 more parts (276 → 285 in the schematic). It also adds about +$21 per board at JLC small-quantity prices, mostly the six T521Ds at $3.20 each; the MPD fallback is $1.34. In return, no part rises above 3.1 mm.
 
-**PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343-31), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus nine new parts: C209–C213, C456/C556 and C457/C557.
+**PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343-31), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus nine new parts: C209–C213, and C456/C556 and C457/C557 (both 7343-31).
 
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
-2. **No cap cuts on hold.** C427/C527 is part of the 83 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
+2. **No cap cuts on hold.** C427/C527 is part of the 104 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
 3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
