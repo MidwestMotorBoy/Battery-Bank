@@ -276,6 +276,21 @@ The dev board won't be built, to save cost. P0 trains the gauge and carries the 
 
 **Totals:** 276 parts, courtyard area 1,899 mm². The netlist check passes, with the new WAKE net and J302 checked. ERC shows only the known warnings.
 
+## Gauge choice: BQ40Z50-R2 kept, U102 kept (2026-10-18)
+
+**BQ41Z50 considered and not adopted:**
+
+- **Not a drop-in.** Its pinout and package differ (RSN WQFN-32), so it would need a new symbol and footprint and a gauge sheet redrawn and re-reviewed against TI's reference design.
+- **Cost and stock.** $7.44 with 17 in stock at JLC, against $1.96 with ~9,700 for the BQ40Z50-R2.
+- **Same training.** It still needs chemistry selection, calibration, a learning cycle and a golden image.
+- **What it would gain:** better state of charge under dynamic load, max-power reporting, 25 mA balancing and 1 MHz SMBus. Worth looking at for a later spin.
+
+**Second-level protection stays as it is.**
+
+- Both gauges have the same "software 1st- and 2nd-level protection" plus a FUSE pin, running in the same chip. That gives no independent layer.
+- TI's BQ41Z50 reference design still pairs it with an external protector (BQ296103).
+- So U102 (BQ294700) stays as the independent hardware second level that blows F102 through Q104, as decided on 2026-10-13.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
