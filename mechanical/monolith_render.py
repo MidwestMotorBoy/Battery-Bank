@@ -47,9 +47,8 @@ def side_assembly():
     for sx in (-1, 1):
         for sy in (-1, 1): a.append(('cell', moved(cell, sx*S.pocket_r, sy*S.pocket_r, S.sb_z_cell0), CELL, False, True))
     a.append(('side board', load('monolith_side_board_dummy'), BOARD, False, True))
-    a.append(('plate', moved(load('monolith_side_plate'), S.sb_x_out - S.SB_PLATE_T, 0, P.SB_PZ - S.SB_PLATE_L/2), PLATE, False, True))
-    a.append(('lid', load('monolith_side_lid'), CAP, True, False))
-    bump = load('monolith_side_bumper'); top = S.SB_H + S.SB_LID_T + P.BUMP_LIP_T
+    a.append(('cover', load('monolith_side_cover'), PLATE, True, True))
+    bump = load('monolith_side_bumper'); top = S.SB_H + P.BUMP_LIP_T
     a.append(('bumper', moved(bump, dz=-P.BUMP_LIP_T), BUMP, True, False))
     a.append(('bumper', moved(bump, flip_z=top), BUMP, True, False))
     return a, (-P.BUMP_LIP_T, top)
@@ -71,12 +70,14 @@ def draw(img, parts, R, origin, light=(0.4, -0.5, 0.75)):
     for i in order:
         p = T[i]; g.polygon([(ox + PX*x, oy - PX*y) for x, y in p[:, :2]], fill=tuple(C[i]))
 
-def panel_parts(asm, iso):
+def panel_parts(asm, iso, z_top=None):
     out = []
     for name, V, c, cut, end in asm:
         if iso:
             if cut: V = V[V[:,:,1].mean(1) > 0]       # cut away the -y half of the shell, caps and bumpers
         elif not end: continue
+        elif z_top is not None and name == 'shell':
+            V = V[V[:,:,2].min(1) < z_top - 0.01]     # drop the closed top wall so the end view sees inside
         out.append((V, c))
     return out
 
@@ -99,11 +100,11 @@ if __name__ == '__main__':
             plate=P.PLATE_L*P.PLATE_W*P.PLATE_T/1000*rho['plate'], area=top_board_a),
         'side board': dict(
             w=S.sb_x_out + S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), d=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), l=sz1 - sz0,
-            shell=g(side, 'shell', rho['shell']), cap=g(side, 'lid', rho['cap']), bump=g(side, 'bumper', rho['bump']),
-            board=board_g(S.sb_board_w*S.sb_board_l), extra=0.0,
-            plate=g(side, 'plate', rho['plate']), area=S.sb_board_w*S.sb_board_l)}
+            shell=g(side, 'shell', rho['shell']), cap=0.0, bump=g(side, 'bumper', rho['bump']),
+            board=board_g(S.sb_board_area), extra=0.0,
+            plate=g(side, 'cover', rho['plate']), area=S.sb_board_area)}
     lines = []
-    hdr = f"{'':18s}{'outside (mm)':>22s}{'box cm3':>9s}{'board mm2/side':>16s}{'shell':>7s}{'cap/lid':>8s}{'bumpers':>8s}{'end pcb':>8s}{'Al plate':>9s}{'board':>7s}{'cells':>7s}{'total g':>9s}"
+    hdr = f"{'':18s}{'outside (mm)':>22s}{'box cm3':>9s}{'board mm2/side':>16s}{'shell':>7s}{'cap/lid':>8s}{'bumpers':>8s}{'end pcb':>8s}{'Al':>9s}{'board':>7s}{'cells':>7s}{'total g':>9s}"
     print(hdr); lines.append(hdr)
     for k, r in rows.items():
         tot = r['shell'] + r['cap'] + r['bump'] + r['extra'] + r['plate'] + r['board'] + 4*CELL_G
@@ -113,22 +114,30 @@ if __name__ == '__main__':
         print(s); lines.append(s)
 
     # ---------------- picture: iso cutaway + end view for each layout ----------------
-    W, Hh = 1400, 1060
+    W, Hh = 2040, 1060
     img = Image.new('RGB', (W, Hh), (255, 255, 255)); t = ImageDraw.Draw(img)
     f1, f2 = font(22), font(15)
     iso = camera((1.0, -1.25, 0.85)); end = camera((0, 0, 1), up=(0, 1, 0))
-    for col, (title, asm, z0, z1, key) in enumerate((('Top-cap board (today\'s model, 40.5 mm board)', top, tz0, tz1, 'top cap (today)'),
-                                                    ('Side board', side, sz0, sz1, 'side board'))):
+    for col, (title, asm, z0, z1, key, zt) in enumerate((('Top-cap board (today\'s model, 40.5 mm board)', top, tz0, tz1, 'top cap (today)', None),
+                                                        ('Side board, one-piece tray', side, sz0, sz1, 'side board', S.sb_z_top_in))):
         x0 = 30 + col*700; r = rows[key]
         t.text((x0, 18), title, fill=(20, 20, 20), font=f1)
         draw(img, panel_parts(asm, True), iso, (x0 + 260, 560))
-        draw(img, panel_parts(asm, False), end, (x0 + 520, 760))
-        t.text((x0 + 420, 900), "end view, lid off", fill=(90, 90, 90), font=f2)
+        draw(img, panel_parts(asm, False, zt), end, (x0 + 470, 760))
+        t.text((x0 + 380, 900), "end view from the port end, top removed", fill=(90, 90, 90), font=f2)
         for i, s in enumerate((f"outside {r['w']:.1f} x {r['d']:.1f} x {r['l']:.1f} mm (with bumpers), box {r['box']:.0f} cm3",
                                f"board area {r['area']:.0f} mm2 per side",
                                f"enclosure + board {r['tot'] - 4*CELL_G:.1f} g, pack {r['tot']:.0f} g")):
             t.text((x0, 940 + 22*i), s, fill=(20, 20, 20), font=f2)
+    x0 = 1430
+    t.text((x0, 18), 'Tray with the cover off', fill=(20, 20, 20), font=f1)
+    tray = [(V, c) for n, V, c, *_ in side if n in ('shell', 'side board')]
+    draw(img, tray, camera((1.0, -0.55, 0.45)), (x0 + 230, 520))
+    for i, s_ in enumerate(("Opening on the board side only. Top-wall lip holds",
+                            "the cover's top edge; two M2 inserts in the bottom",
+                            "corner pillars. Board slides +z to seat the ports.")):
+        t.text((x0, 940 + 22*i), s_, fill=(20, 20, 20), font=f2)
     t.text((30, Hh - 28), "Blue: cells. Green: boards and USB-C envelopes. Light grey: shell (front half cut away). "
-           "Dark: TPU bumpers. Silver: aluminium plate.", fill=(90, 90, 90), font=f2)
+           "Dark: TPU bumpers. Silver: aluminium cover (Al plate on the top-cap layout is not drawn).", fill=(90, 90, 90), font=f2)
     img.save(os.path.join(HERE, 'monolith_layout_compare.png'))
     print("wrote monolith_layout_compare.png")

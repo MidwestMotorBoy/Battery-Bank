@@ -27,7 +27,12 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
 - `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
 - `datasheets/` holds the datasheets and app notes the designs were checked against, indexed in `datasheets/sources.csv`.
 - `mechanical/` holds STL models for the shell, cap and test-print parts, the bottom board outline (DXF), and the Python scripts that generate them.
-    - Since 2026-10-18 the scripts also model a **side-board layout**, still under evaluation: the board runs along one face of the cells and the ports exit the top lid. Its parts are `monolith_side_*.stl`, and its board outline is `monolith_side_pcb.dxf`. Parameters are `SB_*` in `monolith_shell.py`; `python monolith_parts.py side` builds only these parts.
+    - Since 2026-10-18 the scripts also model a **side-board layout**, still under evaluation. The board runs along one face of the cells, inside a one-piece printed tray whose only opening is the board side.
+        - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into heat-set inserts in the bottom corner pillars.
+        - **Ports:** the board drops in, then slides 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall.
+        - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
+        - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
+        - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
     - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 
