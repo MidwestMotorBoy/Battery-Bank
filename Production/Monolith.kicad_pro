@@ -272,7 +272,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "A8"
+      "sch_revision": "P0"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -1000,7 +1000,7 @@
   "sheets": [
     [
       "f83241ae-2bb3-4ed7-b986-c0a03971de0a",
-      "MonolithDev"
+      "Monolith"
     ],
     [
       "5f8e2264-136e-4c01-877f-88ca3aa05650",
@@ -1008,11 +1008,11 @@
     ],
     [
       "d9806540-c841-409c-9faa-82254b30b220",
-      "Sleep Current and 3V3"
+      "3V3 Rail"
     ],
     [
       "6a5b5100-a69b-4069-8141-b35cace08af3",
-      "MCU and Sensors"
+      "MCU"
     ],
     [
       "ac72c9a4-7723-4f18-89ba-289142807a08",
