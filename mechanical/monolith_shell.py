@@ -132,7 +132,8 @@ def write_dxf(path):
 #   two M2 screws into heat-set inserts in the bottom corner pillars (hidden under the bumper).
 # The cover is recessed SB_LIP into a frame in the walls and doubles as the heat spreader.
 # No airflow vents; one adhesive ePTFE pressure vent over a hole in the cover (altitude).
-SB_INSUL     = 0.3    # 0.2 mm fish paper between the cell cans and the board, plus 0.1 clearance
+SB_INSUL     = 0.3    # 0.2 mm fish paper on the cells' board-side face, plus 0.1
+SB_BCU_H     = 2.3    # extra room behind the board for B.Cu parts (the BLE module is 2.3 mm max), 2026-10-18
 SB_PCB_T     = 1.6    # production board thickness (1.6 mm for cost, 2026-10-18; was 0.8)
 SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1; the USB-C body is 1.97 above a 1.6 mm board)
 SB_GAP       = 0.5    # compressed gap pad between those parts and the cover
@@ -173,14 +174,17 @@ SB_CAP_PROUD = 2.0    # band wall: stands this proud of the shell faces, so flat
 SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the cap, in x and y
 SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
 SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
-# BLE module (CC2340R5MODA, 7 x 10 mm) on the right (+y, C4 / PACK+) board edge, antenna end at the edge: >= 10 mm of
-# ground along the edge above it (TI SWRS349A fig. 9-2) and the cans 7-10 mm behind. The cover gets a notch over it,
-# closed by a printed plate set in neutral-cure silicone.
+# BLE module (CC2340R5MODA, 7 x 10 x 2.3 mm max) on B.Cu at the right (+y, C4 / PACK+) board edge, antenna end at the
+# edge: the board's ground plane sits between it and the aluminium cover, and it radiates out through the printed
+# side wall. >= 10 mm of ground along the edge above it (TI SWRS349A fig. 9-2). The cover is whole (no notch).
 SB_ANT_SIDE  = 1                     # +1 = right edge seen from the cover (+y), -1 = left
 SB_ANT_BELOW = 19.1                  # module centre below the board's top edge (10 mm of ground above, 10 mm from the USB-C bodies)
 SB_ANT_MOD   = (7.0, 10.0)           # module: along the edge, into the board
-SB_ANT_NOTCH = (12.0, 6.0)           # cover notch: along the edge, in from the cover edge
-SB_ANT_CLEAR = 0.15                  # plate to notch, each side
+SB_ANT_H     = 2.3                   # module height on B.Cu
+# EVA lanes (3 x 1 mm EVA, compressed) between the insulated cells and B.Cu along the two cell tangent lines: they hold
+# the cells off the board now that there is a gap for B.Cu parts. The +y lane stops either side of the BLE module.
+SB_LANE_W, SB_LANE_LAYERS = 6.0, 3
+SB_LANE_GAP = 2.0                    # lane end to the module (z)
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
 SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
@@ -197,7 +201,7 @@ SB_WIRE_D = 0.8                      # sense wire, e.g. 28 AWG silicone
 SB_TAP_HOLES = {'CELL1': (-2.0, 70.0), 'CELL3': (2.0, 70.0), 'CELL2': (2.0, 8.0)}   # (y, z) plated holes, ~1.0 mm drill
 SB_TAP_PAD_D = 2.0                   # tap hole pad diameter
 # derived (x across the board, y along the board width, z along the cells)
-sb_xb0 = a_in + SB_INSUL                      # board inner face
+sb_xb0 = a_in + SB_INSUL + SB_BCU_H           # board inner face (B.Cu)
 sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
 sb_x_cv0 = sb_xb1 + SB_OUT_H + SB_GAP         # cover inner face (rests on the rebates and pillars)
 sb_x_cv1 = sb_x_cv0 + SB_COVER_T
@@ -229,12 +233,21 @@ SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
 SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
-sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z), the notch is centred on it
+sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z)
+sb_ant_y = (sb_board_w/2 - SB_ANT_MOD[1], sb_board_w/2)   # module |y| span (antenna end at the edge)
+def sb_lanes():
+    """EVA lanes as (y0, y1, z0, z1)"""
+    z0, z1 = sb_z_cell0 + 2.0, sb_z_cell1 - 2.0; out = []
+    for s in (-1, 1):
+        y0, y1 = s*pocket_r - SB_LANE_W/2, s*pocket_r + SB_LANE_W/2
+        if s == SB_ANT_SIDE:
+            g0, g1 = sb_ant_zc - SB_ANT_MOD[0]/2 - SB_LANE_GAP, sb_ant_zc + SB_ANT_MOD[0]/2 + SB_LANE_GAP
+            out += [(y0, y1, z0, g0), (y0, y1, g1, z1)]
+        else: out.append((y0, y1, z0, z1))
+    return out
 sb_tab_y = {'PACK-': sb_cell_xy[(1, -1)][1], 'PACK+': sb_cell_xy[(1, 1)][1]}   # PACK strip centrelines (C1, C4)
 sb_z_mid = (sb_zb0 + sb_zb1) / 2
 def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
-sb_ant_z0, sb_ant_z1 = sb_ant_zc - SB_ANT_NOTCH[0]/2, sb_ant_zc + SB_ANT_NOTCH[0]/2
-sb_ant_y0, sb_ant_y1 = sb_cover_w/2 - SB_ANT_NOTCH[1], sb_cover_w/2   # |y| span of the notch
 
 def _dxf(path, ents):
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")
@@ -255,9 +268,9 @@ def write_side_dxf(path):
     for y in (-pocket_r, 0, pocket_r): _line(e, y, z0, y, z1, 'CELLS_REF')
     for z in (sb_z_cell0, sb_z_cell1): _line(e, -w, z, w, z, 'CELLS_REF')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2 + 2, 'VENT_KEEPOUT')
-    s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module at the edge; no gap pad over the notch area
-    _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE')
-    _rect(e, s*(sb_ant_y0 + sb_ant_y1)/2, sb_ant_zc, sb_ant_y1 - sb_ant_y0, sb_ant_z1 - sb_ant_z0, 'GAPPAD_KEEPOUT')
+    s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module on B.Cu at the edge, and the EVA lanes (no B.Cu parts there)
+    _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE_BCU')
+    for y0, y1, z0, z1 in sb_lanes(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_EVA_LANES')
     for yc in sb_tab_y.values():              # PACK strip pads on F.Cu, and the sense-wire holes
         _rect(e, yc, sb_zb0 + SB_TAB_PAD_H/2, SB_TAB_W + 1.0, SB_TAB_PAD_H, 'TAB_PADS')
     for y, z in SB_TAP_HOLES.values(): _circ(e, y, z, SB_TAP_PAD_D/2, 'TAB_PADS')
@@ -266,15 +279,10 @@ def write_side_dxf(path):
 def write_cover_dxf(path):
     """Aluminium cover flat pattern: DXF x = shell y, DXF y = shell z. OUTLINE, HOLES (M2 clearance,
     use low-head screws: the bottom bumper covers them), VENT (ePTFE patch on the inside)."""
-    e = []; s, w = SB_ANT_SIDE, sb_cover_w/2
-    p = [(-w, sb_cover_z0), (w, sb_cover_z0), (w, sb_cover_z1), (-w, sb_cover_z1)]   # corners, counter-clockwise
-    notch = [(s*w, sb_ant_z0), (s*sb_ant_y0, sb_ant_z0), (s*sb_ant_y0, sb_ant_z1), (s*w, sb_ant_z1)]
-    p = p[:2] + notch + p[2:] if s > 0 else p + notch[::-1]
-    for i in range(len(p)): _line(e, *p[i], *p[(i+1) % len(p)], 'OUTLINE')
+    e = []
+    _rect(e, 0, (sb_cover_z0 + sb_cover_z1)/2, sb_cover_w, sb_cover_z1 - sb_cover_z0, 'OUTLINE')
     for sy in (-1, 1): _circ(e, sy*sb_pillar_y, sb_screw_z, 1.1, 'HOLES')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2, 'VENT')
-    c = SB_ANT_CLEAR    # the printed antenna window plate: notch less the clearance, outer edge on the cover edge
-    _rect(e, s*(sb_ant_y0 + c + w)/2, sb_ant_zc, w - sb_ant_y0 - c, sb_ant_z1 - sb_ant_z0 - 2*c, 'ANT_PLATE')
     _dxf(path, e)
 
 def drop_g(h_m, stroke_mm, shape=1.3):
@@ -342,8 +350,10 @@ if __name__ == '__main__':
         'tap wires in the groove behind the board (free height - wire)': float(side_groove_depth(abs(SB_TAP_HOLES['CELL1'][0]))) - SB_WIRE_D,
         'tap wires beside the mica (y)': abs(SB_TAP_HOLES['CELL1'][0]) - SB_WIRE_D/2 - SB_SEP_T/2 - 0.5,
         'CELL2 hole clear of the PACK pads (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (abs(SB_TAP_HOLES['CELL2'][0]) + SB_TAP_PAD_D/2),
-        'antenna notch below the top cap band (z)': (SB_H - SB_CAP_BAND) - sb_ant_z1,
-        'antenna notch below the cover lip slot (z)': sb_z_top_in - sb_ant_z1,
+        'BLE module on B.Cu: room behind it to the fish paper (min over its span)':
+            float(np.min(side_groove_depth(np.linspace(*sb_ant_y, 41)))) - SB_INSUL - SB_ANT_H,
+        'EVA lanes: 3 x 1 mm squeezed into the gap (compression)': SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2)),
+        'EVA lanes not over-squeezed (< 40 %)': 0.4*SB_LANE_LAYERS - (SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2))),
         'BLE module: ground along the edge above it (>= 10)': sb_zb1 - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
         'BLE module 10 mm below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
     }

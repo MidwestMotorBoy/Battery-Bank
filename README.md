@@ -35,12 +35,13 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
             - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
             - **Inside (hobby build: the only sheet stock is 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper):**
                 - Cell-end pads of 1 mm EVA, with cut-outs over each positive cap so the vent stays open. The floor pad sits on a printed 3.8 mm TPU spacer (about 20 % gyroid).
-                - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), the insulator on the board's back, and rings on the four + ends (21 mm OD, about 10 mm hole).
+                - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), a sheet on the cells' board-side face (it also covers the B.Cu parts), and rings on the four + ends (21 mm OD, about 10 mm hole).
+                - EVA lanes (3 × 1 mm, about 20 % squeezed) between that sheet and B.Cu, along the two cell tangent lines. They hold the cells off the board now that there is a 2.3 mm gap behind it. Keep B.Cu parts out of the lanes (`BCU_EVA_LANES` on the board DXF) and under 2.3 mm tall elsewhere.
                 - A 0.2 mm mica cross between the cells.
                 - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
                 - A TPU shim under the board, and 2 x 1 mm EVA hold-downs over the USB-C bodies.
             - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
-            - **Cost of the protection:** the pack is now 56.4 × 50.4 × 96.6 mm, and about 361 g including the pads and mica (+23 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+            - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
             - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
             - **Pack connections:** everything is soldered from the open side once the board is in, so it all lands on F.Cu (`monolith_side_tabs.png`).
                 - **PACK- and PACK+:** 0.15 × 7 mm nickel strips from the C1 and C4 bottoms. Each drops down behind the board, wraps under its bottom edge and is soldered to an F.Cu pad, 8 × 5 mm at KiCad x 89.1 / 110.9, y 134.7. The shim is now one centre block between them.
@@ -50,7 +51,11 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
                     - The top EVA has slots for the wires.
                 - Holes and pads are on the board DXF's `TAB_PADS` layer.
                 - Take the gauge's PACK-/PACK+ Kelvin sense from the pads.
-            - **BLE antenna:** the CC2340R5MODA goes on the right board edge (+y, the C4 / PACK+ side), antenna end at the edge, centre 19.1 mm below the top edge (KiCad about 116.6, 81.9). That leaves 10 mm of ground above it and 10 mm to the USB-C bodies. The cover has a 12 x 6 mm notch over it, closed by a printed plate (`monolith_side_ant_plate.stl`) set in neutral-cure silicone. `monolith_side_pcb.dxf` shows the module (`BLE_MODULE`) and where the gap pad must stop (`GAPPAD_KEEPOUT`).
+            - **BLE antenna:** the CC2340R5MODA goes on B.Cu at the right board edge (+y, the C4 / PACK+ side), antenna end at the edge, centre 19.1 mm below the top edge (KiCad about 116.6, 81.9).
+                - That leaves 10 mm of ground above it and 10 mm to the USB-C bodies.
+                - The board's ground plane sits between it and the aluminium cover, and it radiates out through the printed side wall. The cover stays whole.
+                - To make room for it, the board sits 2.3 mm further from the cells (`SB_BCU_H`); the outline and ports didn't change.
+                - `monolith_side_pcb.dxf` shows it on `BLE_MODULE_BCU`.
         - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
         - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
         - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.

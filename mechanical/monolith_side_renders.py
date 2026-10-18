@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SS = 2
 C = dict(shell=(214, 214, 208), cover=(196, 204, 222), board=(52, 140, 84), cell=(84, 132, 196), soft=(250, 210, 160),
          firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200),
-         mica=(212, 180, 56), shim=(54, 166, 166), antp=(120, 120, 128), nickel=(150, 150, 140), wire=(200, 50, 50))
+         mica=(212, 180, 56), shim=(54, 166, 166), ble=(150, 175, 225), nickel=(150, 150, 140), wire=(200, 50, 50))
 INK, MUTED, RULE, PANEL, ACCENT = (34, 34, 38), (110, 112, 118), (222, 222, 226), (247, 247, 249), (31, 78, 121)
 LEADER = (150, 152, 158)
 
@@ -33,8 +33,8 @@ PARTS = [(1, 'Printed tray', 'PETG', 'shell'), (2, 'Side liner 0.2 mm', 'fish pa
          (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Top pad 1.0 mm', 'EVA foam', 'pad_top'),
          (9, 'Board insulator 0.2 mm', 'fish paper', 'insul'), (10, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'),
          (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
-         (13, 'Cover 1.0 mm, 2 x M2, antenna notch', 'aluminium', 'cover'),
-         (14, 'Antenna window plate', 'PETG, silicone-sealed', 'antp'),
+         (13, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
+         (14, 'EVA lanes, 3 x 1 mm, behind the board', 'EVA foam', 'lanes'),
          (15, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (16, 'Top crush cap', 'TPU 95A lattice', 'capt')]
 PARTS.sort(key=lambda r: r[0])
 NUM = {k: n for n, _, _, k in PARTS}
@@ -49,7 +49,7 @@ def assembly():
           ('pad_top', P.end_pad('top'), C['eva']),
           ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
           ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover']),
-          ('antp', P.ant_plate(), C['antp'])]
+          ('lanes', P.eva_lanes(), C['eva']), ('ble', P.ble_module(), C['ble'])]
     for z in ('soft', 'firm', 'corner', 'band'):
         A.append(('capb_' + z, P.side_cap(z), C[z]))
         A.append(('capt_' + z, flipz(P.side_cap(z, True), S.SB_H), C[z]))
@@ -226,7 +226,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(nickel=8.9, wire=3.0, antp=1.27, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(nickel=8.9, wire=3.0, lanes=0.20, shell=1.18, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -248,7 +248,7 @@ if __name__ == '__main__':
     cx1, cy1 = S.sb_cell_xy[(1, -1)]; cx2 = S.sb_cell_xy[(-1, -1)][0]
     LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA foam', C['eva']),
            ('mica', C['mica']), ('fish paper', C['paper']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
-           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('antenna plate', C['antp']), ('nickel', C['nickel']), ('sense wire', C['wire'])]
+           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('BLE module', C['ble']), ('nickel', C['nickel']), ('sense wire', C['wire'])]
     w, d, L = SIZE()
 
     # ================= 1. assembled + exploded + parts list =================
@@ -263,14 +263,13 @@ if __name__ == '__main__':
                  (pj((S.SB_CAP_OUT[1] - 2, -S.SB_CAP_OUT[2] + 2, S.SB_H + S.SB_CAP_T - 3)), 'Dense corner noses for corner drops'),
                  (pj((S.sb_x_cv1, -8, 45)), 'Aluminium cover, also the heat spreader'),
                  (pj((S.sb_x_cv1, 0, S.SB_VENT_Z)), 'ePTFE pressure vent'),
-                 (pj((S.sb_x_cv1, S.SB_ANT_SIDE*(S.sb_ant_y0 + S.sb_ant_y1)/2, S.sb_ant_zc)), 'Antenna window: printed plate in a\ncover notch over the BLE module'),
                  (pj((S.SB_CAP_OUT[1], -14, S.SB_CAP_BAND - 2)), 'Solid band 2 mm proud of the tray:\nflat side drops land here'),
                  (pj((S.SB_CAP_OUT[1] - 12, -10, -S.SB_CAP_T + 1)), '8 mm graded TPU lattice at each end')],
                 475, 'r', 150)
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), nickel=(58, 0, 0), wire=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
-              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), antp=(146, 0, 0))
+              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), lanes=(74, 0, 0), ble=(108, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
         dd = EX.get(k, (0, 0, -40) if k.startswith('capb') else (0, 0, 40))
@@ -283,7 +282,7 @@ if __name__ == '__main__':
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
     BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
-               hold=60, cover=0, antp=20, nickel=340, wire=30, capb=180, capt=180)
+               hold=60, cover=0, lanes=110, ble=20, nickel=340, wire=30, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
                 for g_, (ax, ay) in anchors.items()}
@@ -308,8 +307,8 @@ if __name__ == '__main__':
     sh = Sheet(2700, 1270)
     sh.header('Sections', 'Cut from the same meshes that make the STLs. Board and USB-C are envelopes; the nickel strips are 0.15 mm (thin lines). The 0.5 mm gap pad '
               'to the cover and the parts on the board are not drawn.')
-    zc = (S.sb_z_cell0 + S.sb_z_cell1) / 2 + 0.03; aI, aC = S.a_in, S.a_cav; pxa = 11.0
-    sh.panel_title(40, 128, f'A-A   across the pack at mid-cell (z = {zc:.0f} mm), seen from the port end', 1180)
+    zc = S.sb_ant_zc + 0.03; aI, aC = S.a_in, S.a_cav; pxa = 11.0
+    sh.panel_title(40, 128, f'A-A   across the pack through the BLE module (z = {zc:.0f} mm), seen from the port end', 1180)
     oa = (620, 560)
     tp = sh.section(A, 2, zc, 0, 1, oa, pxa)
     for k, (name, end) in S.SB_CELLS.items():
@@ -321,7 +320,9 @@ if __name__ == '__main__':
     sh.callouts([(tp(aI + 0.6, aI - 1), 'Board side guide: the tray\nsteps in to the board width'),
                  (tp(S.sb_xb0 + 0.8, 12), '1.6 mm board, coated and staked'),
                  (tp(S.sb_x_cv0 + 0.5, 3), 'Aluminium cover'),
-                 (tp(aI + 0.15, -6), '0.2 mm fish paper insulator'),
+                 (tp(aI + 0.1, -6), '0.2 mm fish paper on the cells'),
+                 (tp((aI + S.sb_xb0)/2 + 0.1, -S.pocket_r), 'EVA lane, 3 x 1 mm: holds the\ncells off the board'),
+                 (tp(S.sb_xb0 - 1.0, 19.0), 'BLE module on B.Cu: radiates out\nthrough the side wall, the board\nground shields it from the cover'),
                  (tp(0.6, -16), 'Mica cross 0.2 mm in the 0.3 mm\ngaps between the cells'),
                  (tp(S.sb_x_cv0 + 0.5, -aI - 0.25), 'Cover rests in the rebates')], 1070, 'r', 250)
     sh.dim(tp(-S.a_sb, -S.a_sb), tp(S.sb_x_out, -S.a_sb), 70, f'{S.sb_x_out + S.a_sb:.1f} tray')
@@ -451,7 +452,7 @@ if __name__ == '__main__':
         a, b = bp(py - 5.1, z1), bp(py + 5.1, z1 - 5.65); sh.rect(a[0], a[1], b[0], b[1], fill=(205, 205, 210), outline=(90, 90, 95))
         sh.text((a[0] + b[0])/2, (a[1] + b[1])/2, 'USB-C', 12, anchor='mm')
     a, b = bp(S.sb_board_w/2 - S.SB_ANT_MOD[1], S.sb_ant_zc + 3.5), bp(S.sb_board_w/2, S.sb_ant_zc - 3.5)
-    sh.rect(a[0], a[1], b[0], b[1], fill=(170, 190, 225), outline=(60, 80, 140)); sh.text((a[0]+b[0])/2, (a[1]+b[1])/2, 'BLE', 12, anchor='mm')
+    sh.rect(a[0], a[1], b[0], b[1], fill=(170, 190, 225), outline=(60, 80, 140)); sh.text((a[0]+b[0])/2, (a[1]+b[1])/2, 'BLE\n(B.Cu)', 11, anchor='mm')
     vx, vy = bp(0, S.SB_VENT_Z); r = (S.SB_VENT_D/2 + 2)*ps
     sh.g.ellipse([(vx - r)*SS, (vy - r)*SS, (vx + r)*SS, (vy + r)*SS], outline=(120, 120, 120), width=2*SS)
     labels = []

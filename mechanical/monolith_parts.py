@@ -333,18 +333,10 @@ def side_shell():
         return s
     return build(cur, zs, solid)
 
-ANT_NOTCH = (S.sb_x_cv0, S.sb_x_cv1, *sorted((S.SB_ANT_SIDE*S.sb_ant_y0, S.SB_ANT_SIDE*S.sb_ant_y1)))
 def side_cover():
-    """1.0 mm aluminium with the antenna notch; screw and vent holes are in monolith_side_cover.dxf, not in this model"""
+    """1.0 mm aluminium; screw and vent holes are in monolith_side_cover.dxf, not in this model"""
     p = (S.sb_x_cv0, S.sb_x_cv1, -S.sb_cover_w/2, S.sb_cover_w/2)
-    return build([xrect_pts(*p), xrect_pts(*ANT_NOTCH)], [S.sb_cover_z0, S.sb_ant_z0, S.sb_ant_z1, S.sb_cover_z1],
-                 lambda k, x, y: xrect_in(x, y, *p) & ~(xrect_in(x, y, *ANT_NOTCH) & (k == 1)))
-def ant_plate():
-    """printed window plate in the cover notch (cover thickness), set in neutral-cure silicone"""
-    c = S.SB_ANT_CLEAR; s = S.SB_ANT_SIDE
-    ya, yb = sorted((s*(S.sb_ant_y0 + c), s*S.sb_ant_y1))
-    p = (S.sb_x_cv0, S.sb_x_cv1, ya, yb)
-    return build([xrect_pts(*p)], [S.sb_ant_z0 + c, S.sb_ant_z1 - c], lambda k, x, y: xrect_in(x, y, *p))
+    return build([xrect_pts(*p)], [S.sb_cover_z0, S.sb_cover_z1], lambda k, x, y: xrect_in(x, y, *p))
 
 def side_board_dummy():
     """board slab (bottom corners notched) plus the two USB-C envelopes (bottom flush with the board bottom)"""
@@ -433,7 +425,7 @@ def nickel_strips():
     B = [_box(-pr, pr, -pr - hw, -pr + hw, zt0, zt0 + t),         # C1+ -> C2-  (CELL1), top
          _box(-pr, pr, pr - hw, pr + hw, zt0, zt0 + t),           # C3+ -> C4-  (CELL3), top
          _box(-pr - hw, -pr + hw, -pr, pr, zb1 - t, zb1)]         # C2+ -> C3-  (CELL2), bottom
-    xv = aI + 0.08                                                # down the gap between the floor pads and the board
+    xv = aI + 0.5                                                 # down the gap between the floor pads and the board
     for yc in S.sb_tab_y.values():
         y0, y1 = yc - hw, yc + hw
         B += [_box(pr - hw, xv + t, y0, y1, zb1 - t, zb1),         # on the cell bottom, out to the board
@@ -467,8 +459,16 @@ def mica_cross():
     return build([xrect_pts(*a), xrect_pts(*b)], [S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0],
                  lambda k, x, y: xrect_in(x, y, *a) | xrect_in(x, y, *b))
 def insulator():
-    p = (S.sb_xb0 - 0.2, S.sb_xb0, -(aI - 0.2), aI - 0.2)   # 0.2 mm fish paper on the board's back
+    p = (aI, aI + 0.2, -(aI - 0.2), aI - 0.2)   # 0.2 mm fish paper on the cells' board-side face (covers B.Cu parts too)
     return build([xrect_pts(*p)], [S.sb_z_cell0 - S.TAB_T, S.sb_z_cell1 + S.TAB_T], lambda k, x, y: xrect_in(x, y, *p))
+def eva_lanes():
+    """3 x 1 mm EVA strips between the fish paper and B.Cu along the cell tangent lines (shown compressed)"""
+    x0, x1 = aI + 0.2, S.sb_xb0
+    return np.vstack([_box(x0, x1, y0, y1, z0, z1) for y0, y1, z0, z1 in S.sb_lanes()])
+def ble_module():
+    """BLE module envelope on B.Cu at the right edge (render only)"""
+    y0, y1 = sorted((S.SB_ANT_SIDE*S.sb_ant_y[0], S.SB_ANT_SIDE*S.sb_ant_y[1]))
+    return _box(S.sb_xb0 - S.SB_ANT_H, S.sb_xb0, y0, y1, S.sb_ant_zc - S.SB_ANT_MOD[0]/2, S.sb_ant_zc + S.SB_ANT_MOD[0]/2)
 def hold_pads():
     ps = [(S.sb_port_x + S.USB_UP, SB_XC, py - 4.5, py + 4.5) for _, py in SB_PORTS]
     return build([xrect_pts(*p) for p in ps], [S.SB_H - S.USB_DEPTH + 0.5, S.sb_z_top_in],
@@ -498,7 +498,7 @@ SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cove
               ('monolith_side_eva_top', lambda: end_pad('top'), 0.20, 1),
               ('monolith_side_liner', side_pad, 1.2, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
               ('monolith_side_insulator', insulator, 1.2, 1), ('monolith_side_usb_hold', hold_pads, 0.20, 1),
-              ('monolith_side_shim', board_shim, 1.21, 1), ('monolith_side_ant_plate', ant_plate, 1.27, 1)]
+              ('monolith_side_shim', board_shim, 1.21, 1), ('monolith_side_eva_lanes', eva_lanes, 0.20, 1)]
 if __name__ == '__main__':
     import sys
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all
