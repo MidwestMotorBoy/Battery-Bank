@@ -123,8 +123,136 @@ def write_dxf(path):
             for i in range(4): line(*p[i], *p[(i+1) % 4], l='RIB_STOPS_REF')
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(e) + "0\nENDSEC\n0\nEOF\n")
 
+# ---------------- side-board layout (board along the +x face of the cells) ----------------
+# A one-piece printed tray, closed on five sides; the +x face is the only opening.
+# Assembly: foam pad on the floor -> cell module in through the side -> board in through the side,
+#   then slid +z by SB_SLIDE so both USB-C mating faces pass into their holes in the top wall
+#   (the connector's own mating direction, so the seal rings seat whole) -> shim under the board ->
+#   solder the nickel tabs -> gap pad -> aluminium cover: top edge under the top-wall lip, then
+#   two M2 screws into heat-set inserts in the bottom corner pillars (hidden under the bumper).
+# The cover is recessed SB_LIP into a frame in the walls and doubles as the heat spreader.
+# No airflow vents; one adhesive ePTFE pressure vent over a hole in the cover (altitude).
+SB_INSUL     = 0.3    # Kapton / fish paper between the cell cans and the board
+SB_PCB_T     = 1.6    # production board thickness (1.6 mm for cost, 2026-10-18; was 0.8)
+SB_OUT_H     = 3.2    # tallest outer part (APS0730 inductor 3.1; the USB-C body is 1.97 above a 1.6 mm board)
+SB_GAP       = 0.5    # compressed gap pad between those parts and the cover
+SB_COVER_T   = 1.0    # aluminium cover
+SB_LIP       = 0.8    # frame lip outside the cover (cover sits this far below the rim)
+SB_REB       = 0.5    # rebate into the +-y walls that the cover edges rest in (wall left 0.7)
+SB_SLOT      = 1.0    # cover top edge tucks this far under the top-wall lip
+SB_END_T     = 1.6    # bottom and top walls
+SB_PAD_T     = 4.8    # floor zone under the cells: foam pad, and the two screw pillars beside it
+SB_TOP_PAD   = 1.0    # foam between the cell tops and the top wall
+SB_SLIDE     = 2.5    # board slide that engages the ports (needs > SB_END_T - (USB_FACE_OUT - SB_END_T))
+SB_PCB_CLEAR = 0.2    # board edge to wall, and board to the end zones
+SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production board)
+SB_INSERT_D, SB_INSERT_L = 3.2, 4.0   # M2 heat-set insert pilot (e.g. M2 x 3 x 3.2): diameter, depth
+SB_PILLAR_W  = 5.0    # pillar width in y, from the wall inward
+SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the bottom bumper band)
+# ShouHan TYPE-C 16PCB<t> IP68 (DevBoard/tools/make_3d_usbc.py), the variant for the board thickness:
+# mid-mount, body bottom flush with the board bottom, centreline 1.627 above the board bottom
+# (0.027 above the top of a 1.6 mm board), mating face 1.949 past the board edge
+USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
+USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
+USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
+# drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md):
+# nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.
+SB_SIDE_PAD  = 1.0    # pad wrapped round the -x and +-y faces of the cells: PORON (compliance); a silicone gap pad if the 100 W test runs hot
+SB_SEP_T     = 0.2    # mica sheets in the cross-shaped gap between the cells (propagation barrier)
+SB_VENT_CUT_D = 14.0  # end-pad cut-out over each positive cap: button and vent holes stay open, the pad bears on the crimp rim
+SB_RUPT_D, SB_RUPT_T = 10.0, 0.6     # rupture windows: bottom wall thinned to SB_RUPT_T under the two bottom positive caps
+SB_STOP_Y0   = 14.0   # board top stops on the top-wall inside face, |y| from here to the wall (clear of the port holes)
+SB_HOLD_T    = 2.0    # silicone hold-down pad between each USB-C body and the cover (compresses to the gap)
+SB_CAP_T     = 8.0    # TPU lattice crush zone beyond each end wall
+SB_CAP_SOFT  = 4.0    # outer part of it printed softer (graded: soft at the face, firmer behind)
+SB_CAP_BAND  = 9.0    # how far each cap's band wraps over the sides (bottom band stays clear of the cover vent)
+SB_CAP_PROUD = 2.0    # band wall: stands this proud of the shell faces, so flat side drops land on the bands
+SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the cap, in x and y
+SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
+SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
+SB_ANT_WIN   = (12.5, 21.0, 10.0)    # OPTION, not cut: cover window over the BLE antenna (y0, y1, height down from the board top)
+# cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
+# C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
+SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
+# derived (x across the board, y along the board width, z along the cells)
+sb_xb0 = a_in + SB_INSUL                      # board inner face
+sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
+sb_x_cv0 = sb_xb1 + SB_OUT_H + SB_GAP         # cover inner face (rests on the rebates and pillars)
+sb_x_cv1 = sb_x_cv0 + SB_COVER_T
+sb_x_out = sb_x_cv1 + SB_LIP                  # rim of the tray
+sb_z_pad1 = SB_END_T + SB_PAD_T               # top of the floor zone
+sb_z_cell0 = sb_z_pad1 + TAB_T                # cell bottoms
+sb_z_cell1 = sb_z_cell0 + CELL_L              # cell tops
+sb_z_top_in = sb_z_cell1 + TAB_T + SB_TOP_PAD # top wall, inside face
+SB_H = sb_z_top_in + SB_END_T                 # overall shell length (outside of the top wall)
+sb_zb1 = SB_H - USB_FACE_OUT                  # board top edge: mating faces flush with the top wall
+sb_zb0 = SB_END_T + SB_SLIDE + SB_PCB_CLEAR   # board bottom edge (slid up; the shim fills SB_SLIDE)
+sb_notch_y = a_in - SB_PILLAR_W - SB_PCB_CLEAR # bottom corners notched around the screw pillars:
+sb_notch_z = sb_z_pad1 + SB_SLIDE + SB_PCB_CLEAR   #   |y| > sb_notch_y and z < sb_notch_z
+sb_port_x = sb_xb1 + USB_ZC
+sb_board_w = 2 * (a_in - SB_PCB_CLEAR)
+sb_board_l = sb_zb1 - sb_zb0
+sb_board_area = sb_board_w * sb_board_l - 2 * (sb_board_w/2 - sb_notch_y) * (sb_notch_z - sb_zb0)
+assert SB_SEP_T < 2 * pocket_r - CELL_D, "mica does not fit the cell-to-cell gap"
+a_cav, c_cav = a_in + SB_SIDE_PAD, c_in + SB_SIDE_PAD   # cell-zone cavity (x < a_in): grown by the side pad
+a_sb, c_sb = a_cav + WALL, c_cav + WALL                 # tray outside half-width and -x corner radius
+sb_pillar_y = a_in - SB_PILLAR_W / 2          # insert axis at y = +-sb_pillar_y, z = sb_screw_z (pillars sit in the board zone)
+sb_screw_z = SB_END_T + SB_PAD_T / 2
+sb_cover_w = 2 * (a_in + SB_REB) - 0.2
+sb_cover_z0, sb_cover_z1 = SB_END_T + 0.1, sb_z_top_in + SB_SLOT - 0.1
+sb_cell_xy = {k: (k[0] * pocket_r, k[1] * pocket_r) for k in SB_CELLS}
+sb_pos_caps = {end: [sb_cell_xy[k] for k, (_, e) in SB_CELLS.items() if e == end] for end in ('top', 'bottom')}
+# profiles: rounded rect x0..x1, |y| <= h, corner radius rl (-x side), rr (+x side)
+SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
+SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
+SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
+sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
+
+def _dxf(path, ents):
+    open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")
+def _line(e, x1, y1, x2, y2, l): e.append(f"0\nLINE\n8\n{l}\n10\n{x1:.4f}\n20\n{y1:.4f}\n11\n{x2:.4f}\n21\n{y2:.4f}\n")
+def _circ(e, x, y, r, l): e.append(f"0\nCIRCLE\n8\n{l}\n10\n{x:.4f}\n20\n{y:.4f}\n40\n{r:.4f}\n")
+def _rect(e, cx, cy, w, h, l):
+    p = [(cx-w/2, cy-h/2), (cx+w/2, cy-h/2), (cx+w/2, cy+h/2), (cx-w/2, cy+h/2)]
+    for i in range(4): _line(e, *p[i], *p[(i+1) % 4], l)
+
+def write_side_dxf(path):
+    """Side board outline in the board plane: DXF x = shell y, DXF y = shell z (shell bottom at 0).
+    Layers: OUTLINE, USB_NOTCH (10.20 x 5.65 footprint notches), CELLS_REF (cell tangent lines,
+    groove centreline, cell ends), VENT_KEEPOUT (no gap pad or tall parts under the cover vent)."""
+    e = []; w, z0, z1, ny, nz = sb_board_w / 2, sb_zb0, sb_zb1, sb_notch_y, sb_notch_z
+    p = [(-ny, z0), (ny, z0), (ny, nz), (w, nz), (w, z1), (-w, z1), (-w, nz), (-ny, nz)]
+    for i in range(len(p)): _line(e, *p[i], *p[(i+1) % len(p)], 'OUTLINE')
+    for py in (-SB_PORT_Y, SB_PORT_Y): _rect(e, py, z1 - 5.65/2, 10.20, 5.65, 'USB_NOTCH')
+    for y in (-pocket_r, 0, pocket_r): _line(e, y, z0, y, z1, 'CELLS_REF')
+    for z in (sb_z_cell0, sb_z_cell1): _line(e, -w, z, w, z, 'CELLS_REF')
+    _circ(e, 0, SB_VENT_Z, SB_VENT_D/2 + 2, 'VENT_KEEPOUT')
+    _dxf(path, e)
+
+def write_cover_dxf(path):
+    """Aluminium cover flat pattern: DXF x = shell y, DXF y = shell z. OUTLINE, HOLES (M2 clearance,
+    use low-head screws: the bottom bumper covers them), VENT (ePTFE patch on the inside)."""
+    e = []
+    _rect(e, 0, (sb_cover_z0 + sb_cover_z1)/2, sb_cover_w, sb_cover_z1 - sb_cover_z0, 'OUTLINE')
+    for sy in (-1, 1): _circ(e, sy*sb_pillar_y, sb_screw_z, 1.1, 'HOLES')
+    _circ(e, 0, SB_VENT_Z, SB_VENT_D/2, 'VENT')
+    y0, y1, h = SB_ANT_WIN   # option only: a window here needs a bonded non-metal patch
+    _rect(e, (y0 + y1)/2, sb_zb1 - h/2, y1 - y0, h, 'ANT_WINDOW_OPTION')
+    _dxf(path, e)
+
+def drop_g(h_m, stroke_mm, shape=1.3):
+    """peak deceleration (g) for a free fall of h_m stopped over stroke_mm; shape > 1 for a real (non-flat) foam curve"""
+    return shape * h_m * 1000 / stroke_mm
+
+def side_groove_depth(y):
+    """Free height between the board's inner face and the cells at board position y (mm)."""
+    dy = np.abs(np.abs(y) - pocket_r)
+    r = CELL_D / 2
+    return np.where(dy < r, sb_xb0 - (pocket_r + np.sqrt(np.maximum(r*r - dy*dy, 0))), sb_xb0 - pocket_r)
+
 if __name__ == '__main__':
     write_stl('monolith_shell.stl'); write_dxf('monolith_bottom_pcb.dxf')
+    write_side_dxf('monolith_side_pcb.dxf'); write_cover_dxf('monolith_side_cover.dxf')
     # checks
     from collections import Counter
     key = lambda p: tuple(p)
@@ -138,3 +266,34 @@ if __name__ == '__main__':
     print(f"rib zone z {z_rib0:.2f}..{z_rib1:.2f}; volume {vol/1000:.2f} cm3; mass @1.18 g/cc {vol/1000*1.18:.1f} g")
     print(f"min wall {np.min(r_out - r_wall):.3f}")
     print(f"PCB outline {2*(a_in-PCB_CLEAR):.2f} sq, corner R {c_in-PCB_CLEAR:.2f}")
+    print(f"side layout: tray {sb_x_out + a_sb:.2f} x {2*a_sb:.2f} x {SB_H:.2f}; with caps "
+          f"{sb_x_out + a_sb + 2*SB_CAP_PROUD:.2f} x {2*(a_sb + SB_CAP_PROUD):.2f} x {sb_len:.2f}; "
+          f"cover {sb_cover_w:.2f} x {sb_cover_z1 - sb_cover_z0:.2f} x {SB_COVER_T}")
+    st = 0.65 * SB_CAP_T
+    print(f"end-cap stroke ~{st:.1f} mm (65 % of {SB_CAP_T}): est. peak "
+          + ", ".join(f"{h} m -> {drop_g(h, st):.0f} g" for h in (1.0, 1.5))
+          + f"; bottom-down drops add {0.65*SB_PAD_T:.1f} mm of floor pad between the cells and the tray")
+    print(f"side board {sb_board_w:.2f} x {sb_board_l:.2f} mm, corner notches -> {sb_board_area:.0f} mm2 per side, "
+          f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
+    ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
+    print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
+    # assembly checks (positive = clearance)
+    chk = {
+        'port faces below the top wall while the board drops in': sb_z_top_in - (SB_H - SB_SLIDE),
+        'board bottom above the floor while it drops in': sb_zb0 - SB_SLIDE - SB_END_T,
+        'board notches above the pillars while it drops in': sb_notch_z - SB_SLIDE - sb_z_pad1,
+        'port hole to the cover slot (x)': sb_x_cv0 - (sb_port_x + (USB_SEAL_H + 0.2)/2),
+        'USB-C body to the cover (x)': sb_x_cv0 - (sb_port_x + USB_UP),
+        'seal ring (0.5-1.5 behind the face) inside the top wall': SB_END_T - 1.5,
+        'cover top edge under the lip': sb_cover_z1 - sb_z_top_in,
+        'pillars below the cells (z)': sb_z_cell0 - TAB_T - sb_z_pad1,
+        'board top stops: board edge to the top wall (stop height)': sb_z_top_in - sb_zb1,
+        'board stops clear of the port holes (y)': SB_STOP_Y0 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
+        'hold-down pad compressed (pad - gap)': SB_HOLD_T - (sb_x_cv0 - (sb_port_x + USB_UP)),
+        'port well clear of the seal holes (y)': SB_WELL_W/2 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
+        'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
+        'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
+        'rupture windows clear of the pillars (x)': (sb_x_cv0 - SB_INSERT_L - 1.5) - (pocket_r + SB_RUPT_D/2),
+        'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
+    }
+    for k, v in chk.items(): print(f"  {'ok ' if v >= 0 else 'BAD'} {v:6.2f}  {k}")

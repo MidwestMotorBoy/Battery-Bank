@@ -2,6 +2,8 @@
 
 Dev board for the Monolith battery bank, described in `../docs/devboard/circuit-description.md`. The schematic was first drawn on 2026-10-11 with the KiCad MCP.
 
+**Not built (decided 2026-10-18):** production P0 (`Production/`) is the first build; this project stays as the design reference.
+
 **Status (rev A8, 2026-10-14):**
 - **Schematic:** four datasheet reviews done (`../docs/devboard/schematic-review-*.md`), cost-down applied, review 4 fully applied (rev A8, items 41–42).
 - **Board:** 6-layer, every part placed by block (`tools/place_blocks.py`), updated for rev A8. **Not routed, not built.**

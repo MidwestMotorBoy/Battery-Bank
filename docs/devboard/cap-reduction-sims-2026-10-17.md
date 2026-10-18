@@ -58,6 +58,12 @@ All of the worst cases occur in forward mode, 9 V into a 16.8 V pack, with the c
    - U2 (two 1210s gone) overloads the polymer (123 %). No.
 3. **The biggest win is the PP5V polymer C443/C543.** Swapping it for one more 22 µF 1206 (P3) still gives 33 µF, which is above TI's 20 µF typical. The estimated step undershoot of about 190 mV is within the 250 mV budget. That saves about 43 mm² per port. It also brings the TPS62933 back near TI's tested range: the present 103 µF is 5× typical, which the datasheet warns can hurt start-up and loop stability (review 4 already flagged this).
    - **Blocker:** the TPS25751 datasheet's capacitor table lists 120 µF on PP5V, citing USB PD *cSrcBulkShared*. That name suggests it applies to a supply shared between ports. Each port here has its own TPS62933, which would fall under the much smaller dedicated-supply value. This is unverified: confirm in the USB PD spec, or with TI, before relying on it.
+   - **Checked 2026-10-17: the dedicated-supply value applies.**
+     - USB PD Rev 3.0 v1.2 (quoted in Microchip AN3265, table 5-3) defines cSrcBulk as the "source bulk capacitance when a port is powered from a dedicated supply", minimum 10 µF. cSrcBulkShared (120 µF) is its shared-supply counterpart.
+     - The TPS25751 table cites cSrcBulkShared with no condition, because the usual design is one 5 V rail feeding several ports. Its own hard floor is the footnote: at least 10 µF directly at PP5V (C407 here).
+     - Each Monolith port's PP5V comes from its own TPS62933 and feeds only that port's VBUS and VCONN, so cSrcBulk ≥ 10 µF applies. P3 has about 33 µF effective.
+     - Still to measure at bring-up: the PP5V 0.5 → 3 A load step with C443 removed (estimated about 190 mV against a 250 mV budget).
+     - Caveats: the PD spec table was read through Microchip's quote, not the spec itself. TI's EVM (single port) fits 220 µF on PP5V anyway, which is conservative rather than required. If Fast Role Swap is ever enabled, revisit this, because FRS relies on the bulk capacitance to hold VBUS.
 4. **Keep both 5V_IN caps.** With one, ripple doubles to about 180 mV and that cap carries about 1.4 A, more than half its assumed rating, against TI's 10 µF typical.
 5. **Not covered here:** the charger inductor L401/L501 has a 132 mm² courtyard, more than any capacitor bank. The BQ25756 tops out at about 600 kHz, so a smaller inductor would trade against higher ripple current and peak current. It would need its own study.
 
