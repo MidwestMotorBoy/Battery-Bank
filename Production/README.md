@@ -174,7 +174,7 @@ Parts: 256.
 
 - **Second ground:** the gauge's VSS (CELL_N) is local fill on F.Cu/B.Cu around U101, joined to GND only through RS101. It never goes on In1/In4.
 - **Antenna:** keep-out on every layer under the CC2340 antenna end, with solid ground either side at a board edge.
-- **Board thickness:** 1.6 mm, for cost. JLC's multilayer minimum at 1.6 mm is a 0.15 mm hole on a 0.25 mm via, with a surcharge below a 0.2 mm hole or under a 0.45 mm via. The 0.1 mm / 0.2 mm via option needs a board of 1 mm or less, so it's gone. The project minimum (0.35/0.2 mm) and the TPD2S300's 0.15 mm via-in-pad are still inside JLC's limits ([JLC capabilities](https://jlcpcb.com/capabilities/pcb-capabilities), checked 2026-10-18).
+- **Board thickness:** 1.6 mm, for cost. JLC's multilayer minimum at 1.6 mm is a 0.15 mm hole on a 0.25 mm via, with a surcharge below a 0.2 mm hole or under a 0.45 mm via. The 0.1 mm / 0.2 mm via option needs a board of 1 mm or less, so it's gone. The project minimum (0.35/0.2 mm) is still inside JLC's limits (the TPD2S300's 0.15 mm via-in-pad is gone: U405/U505 are TPD6S300s since 2026-10-18) ([JLC capabilities](https://jlcpcb.com/capabilities/pcb-capabilities), checked 2026-10-18).
 - **Via rules (`Monolith.kicad_pro`):**
     - default 0.45/0.3 mm, HighCurrent 0.8/0.4 mm;
     - minimum lowered to **0.35/0.2 mm** for fan-out (holes under 0.3 mm may carry a JLC surcharge: check the quote);
@@ -201,7 +201,7 @@ The board moved from the top cap to one side of the cells, in a one-piece printe
 - **Still to do:**
     - Placement: every part except J401/J501 still sits where it was.
     - Four hand-drawn VBUS traces near the old J401 position were kept as they were (`--keep-copper`). They now dangle (3 DRC warnings).
-    - DRC otherwise shows only the known items: the pending Update PCB from Schematic for the P0 additions, and the TPD2S300 via-in-pad. There are no outline errors.
+    - DRC otherwise shows only the known items: the pending Update PCB from Schematic for the P0 additions. (The TPD2S300 via-in-pad errors went with the TPD6S300 swap.) There are no outline errors.
 
 ## Charger FETs: one Vishay SiZ240DT per leg (2026-10-17)
 
@@ -233,7 +233,30 @@ R421–R423 (R521–R523 on port 2), the 10 kΩ pull-ups on STAT1, STAT2 and PG,
 - Set DIS_STAT_PINS = 1 in the BQ25756 configuration so they stay off.
 - This also removes up to 0.33 mA per pin while the charger pulls it low.
 
+## CC protection: TPD2S300 → TPD6S300 (2026-10-18)
+
+U405/U505 changed from the TPD2S300YFFR (WCSP-9) to the **TPD6S300RUKR** (WQFN-20, 3 × 3 mm, 0.4 mm pitch, LCSC C2649810, $0.51, 17,307 in stock on 2026-10-18).
+
+- **Why:** the TPD2S300's centre ball (GND) is boxed in by the other eight, so it needed a 0.15 mm via-in-pad. That's under JLC's no-surcharge hole size and failed the project's 0.3 mm minimum drill and 0.075 mm minimum annular ring (4 DRC errors). The TPD6S300 has perimeter pads plus an exposed pad, so it fans out with standard vias.
+- **Same job on CC:** short-to-VBUS OVP (24 V DC tolerant), IEC 61000-4-2 ±8 kV contact, FLT open drain. It is the TPD4S201's sibling in TI's port-protector family (similar pinout).
+- **Wiring** (`tools/tpd6s300.py`):
+    - VPWR → LDO_3V3 with C452 (the part has no VM pin);
+    - VBIAS → C451 (0.1 µF 50 V);
+    - FLT → SBU_FLT, then R441 → GPIO3, as before;
+    - RPD_G1 → C_CC1 and RPD_G2 → C_CC2. This gives the dead-battery Rd while unpowered, which the TPD2S300 had built in.
+    - GND pins and the exposed pad go to GND. Pins 16/17 (N.C.) also go to GND, as the datasheet asks.
+    - The SBU channels (C_SBU1/2, SBU1/2) and the USB2 ESD pins D1/D2 are no-connects.
+- **CC capacitance:** 60–120 pF (TPD2S300: 30–120 pF). The maximum is the same, so C401/C402 (220 pF) still keep the total under the TPS25751's 480 pF.
+- **Footprint:** `MonolithDev:TI_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm_Via0.3`. It is KiCad's RUK0020B land pattern with four 0.3 / 0.5 mm GND vias in the exposed pad (KiCad's own thermal-via version uses 0.2 mm drills). `make_production.py` writes it.
+- **Board:** both footprints were swapped in place, keeping their position, rotation and schematic link. U405 moved 0.65 mm down (+y) to clear U401's courtyard. DRC shows nothing on U405/U505 except unrouted ratsnest.
+- **Cost of the swap:**
+    - **Quiescent current:** IVPWR is 90 µA typical / 135 µA maximum per part, against 3.2 µA for the TPD2S300. That's about +175 µA on the two LDO_3V3 rails, the same order as the TPD4S201's 224 µA.
+    - **Area:** 3 × 3 mm instead of 1.4 × 1.4 mm.
+- **Code:** `tools/tpd6s300.py` holds the symbol, the footprint and the pin nets; `make_production.py` places the part. `tools/tpd2s300.py` was removed (it is in git history).
+
 ## CC protection: TPD4S201 → TPD2S300 (2026-10-17)
+
+_Superseded on 2026-10-18 by the TPD6S300 above (via-in-pad); kept as history._
 
 U405/U505 changed from the TPD4S201 (CC + SBU, 3.5×3.5 mm QFN-20) to the **TPD2S300YFFR** (CC only, 1.4×1.4 mm WCSP-9, LCSC C2650411).
 
@@ -268,7 +291,7 @@ Both ports exit the same face, for mechanical assembly: the seal flanges stick o
 
 **Found while checking DRC (not changed):**
 - The via minimum in `Monolith.kicad_pro` is back at 0.45/0.3 mm. KiCad was open and rewrote the project file. Set 0.35/0.2 in Board Setup, or re-run the change with KiCad closed.
-- The dev library's TPD2S300 footprint (`TI_YFF0009_DSBGA-9_P0.4mm`) puts a 0.15 mm-drill via in the centre ball pad (0.05 mm annular ring). That's inside JLC's ≤ 1 mm-board limits but trips the project rules. Decide at fan-out whether to keep it.
+- The dev library's TPD2S300 footprint (`TI_YFF0009_DSBGA-9_P0.4mm`) puts a 0.15 mm-drill via in the centre ball pad (0.05 mm annular ring). That's inside JLC's ≤ 1 mm-board limits but trips the project rules. Decide at fan-out whether to keep it. (Resolved 2026-10-18: U405/U505 are TPD6S300s.)
 
 ## P0 is the first build: training and test additions (2026-10-18)
 

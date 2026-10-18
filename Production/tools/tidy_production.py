@@ -32,7 +32,7 @@ TEXTS = {
             "2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
             "3.  3V3 Rail:  TPS62177 always-on 3V3",
             "4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)",
-            "5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD2S300 + BQ25756 + TPS62933 per port",
+            "5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port",
             "Rails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)",
             "Spec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."),
         "REVISION LOG": T(
@@ -131,7 +131,7 @@ TEXTS = {
     "usb_port.kicad_sch": {
         "TEST POINTS / POWER FLAGS": "PROBE PADS (1.0 mm): VBUS PPHV PP5V REGN SW1 SW2 + GND",
         "GATE / BOOTSTRAP TUNING": "GATE LINKS (0R, fitted) + SNUBBERS (DNP): P0 tuning hedge",
-        "CC/SBU PROTECTION (TPD4S201)": "CC PROTECTION (TPD2S300)",
+        "CC/SBU PROTECTION (TPD4S201)": "CC PROTECTION (TPD6S300)",
         "BATTERY-SIDE BULK": "BATTERY-SIDE LOCAL: 2 x 22u MLCC; bulk is the shared PACK_P hybrid C208 (3V3 Rail sheet)",
         "PP5V SUPPLY  TPS62933": "PP5V SUPPLY  TPS62933 (1.2 MHz, 5.16 V, 3 x 22u out)  - 5 V source + VCONN",
         "NOTES  (this sheet is used twice": T(
@@ -140,9 +140,10 @@ TEXTS = {
             "   port 2 ADCIN1 = ADCIN2 = GND (0x21). Both are SafeMode (TPS25751 table 8-6).",
             "2. Unused TPS25751 GPIOs (0, 1, 2, 4-7, 11) tied to GND per datasheet (KiCad ERC flags this; expected).",
             "   Never configure them as outputs.",
-            "3. CC is protected by U405 (TPD2S300: CC short-to-VBUS OVP, 24 V DC, + IEC 61000-4-2 ESD; the TPS25751 CC pins are",
-            "   26 V abs max but only +-1 kV HBM). VPWR/VM on LDO_3V3 (normal mode), VBIAS C451 0.1u 50V (>= 35 V needed).",
-            "   C401/C402 (220 pF) on the controller side: with the TPD2S300's 30-120 pF the total stays under 480 pF.",
+            "3. CC is protected by U405 (TPD6S300: CC short-to-VBUS OVP, 24 V DC, + IEC 61000-4-2 ESD; the TPS25751 CC pins are",
+            "   26 V abs max but only +-1 kV HBM). VPWR on LDO_3V3, VBIAS C451 0.1u 50V (>= 35 V needed). RPD_G1/G2 to",
+            "   C_CC1/C_CC2: dead-battery Rd while unpowered. Its SBU and D1/D2 channels are unused (no-connects).",
+            "   C401/C402 (220 pF) on the controller side: with the TPD6S300's 60-120 pF the total stays under 480 pF.",
             "   D+ and D- are tied together at the connector (net DPDN_DCP: passive BC1.2 DCP); the TPS25751 does no BC1.2.",
             "   No liquid detection and no SBU use on production (IP68 connectors, potted board): the connector SBU pins are",
             "   no-connects; GPIO4-7 are tied to GND (note 2). U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):",
