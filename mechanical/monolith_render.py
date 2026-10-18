@@ -48,10 +48,9 @@ def side_assembly():
         for sy in (-1, 1): a.append(('cell', moved(cell, sx*S.pocket_r, sy*S.pocket_r, S.sb_z_cell0), CELL, False, True))
     a.append(('side board', load('monolith_side_board_dummy'), BOARD, False, True))
     a.append(('cover', load('monolith_side_cover'), PLATE, True, True))
-    bump = load('monolith_side_bumper'); top = S.SB_H + P.BUMP_LIP_T
-    a.append(('bumper', moved(bump, dz=-P.BUMP_LIP_T), BUMP, True, False))
-    a.append(('bumper', moved(bump, flip_z=top), BUMP, True, False))
-    return a, (-P.BUMP_LIP_T, top)
+    a.append(('bumper', load('monolith_side_cap_bottom'), BUMP, True, False))
+    a.append(('bumper', moved(load('monolith_side_cap_top'), flip_z=S.SB_H), BUMP, True, False))
+    return a, (-S.SB_CAP_T, S.SB_H + S.SB_CAP_T)
 
 # ---------------- flat-shaded painter's renderer ----------------
 def camera(d, up=(0, 0, 1)):
@@ -99,8 +98,8 @@ if __name__ == '__main__':
             board=board_g(top_board_a, S.SB_PCB_T), extra=g(top, 'bottom pcb', FR4_RHO),
             plate=P.PLATE_L*P.PLATE_W*P.PLATE_T/1000*rho['plate'], area=top_board_a),
         'side board': dict(
-            w=S.sb_x_out + S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), d=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), l=sz1 - sz0,
-            shell=g(side, 'shell', rho['shell']), cap=0.0, bump=g(side, 'bumper', rho['bump']),
+            w=S.sb_x_out + S.a_sb + 2*S.SB_CAP_PROUD, d=2*(S.a_sb + S.SB_CAP_PROUD), l=sz1 - sz0,
+            shell=g(side, 'shell', rho['shell']), cap=0.0, bump=P.cap_mass(False) + P.cap_mass(True),
             board=board_g(S.sb_board_area, S.SB_PCB_T), extra=0.0,
             plate=g(side, 'cover', rho['plate']), area=S.sb_board_area)}
     lines = []
@@ -119,7 +118,7 @@ if __name__ == '__main__':
     f1, f2 = font(22), font(15)
     iso = camera((1.0, -1.25, 0.85)); end = camera((0, 0, 1), up=(0, 1, 0))
     for col, (title, asm, z0, z1, key, zt) in enumerate((('Top-cap board (today\'s model, 40.5 mm board)', top, tz0, tz1, 'top cap (today)', None),
-                                                        ('Side board, one-piece tray', side, sz0, sz1, 'side board', S.sb_z_top_in))):
+                                                        ('Side board, one-piece tray, TPU crush caps', side, sz0, sz1, 'side board', S.sb_z_top_in))):
         x0 = 30 + col*700; r = rows[key]
         t.text((x0, 18), title, fill=(20, 20, 20), font=f1)
         draw(img, panel_parts(asm, True), iso, (x0 + 260, 560))
@@ -138,6 +137,6 @@ if __name__ == '__main__':
                             "corner pillars. Board slides +z to seat the ports.")):
         t.text((x0, 940 + 22*i), s_, fill=(20, 20, 20), font=f2)
     t.text((30, Hh - 28), "Blue: cells. Green: boards and USB-C envelopes. Light grey: shell (front half cut away). "
-           "Dark: TPU bumpers. Silver: aluminium cover (Al plate on the top-cap layout is not drawn).", fill=(90, 90, 90), font=f2)
+           "Dark: TPU bumpers / crush caps (lattice, mass at print fill). Silver: aluminium cover (Al plate on the top-cap layout is not drawn).", fill=(90, 90, 90), font=f2)
     img.save(os.path.join(HERE, 'monolith_layout_compare.png'))
     print("wrote monolith_layout_compare.png")

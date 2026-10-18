@@ -31,10 +31,27 @@ An ultralight 100 W USB-C battery bank for backpacking: four EVE INR21700-58E ce
         - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into heat-set inserts in the bottom corner pillars.
         - **Ports:** the board drops in, then slides 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall.
         - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
+        - **Drop protection (2026-10-18):** no potting. The basis is `reports/Battery pack potting and drop protection.md`. The tray, cells and board form one stiff core, and TPU end caps outside it are the crush zone.
+            - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
+            - **Inside:**
+                - PORON pads at the cell ends: 4.8 mm floor, 1.0 mm top. Cut-outs over each positive cap leave the vent open.
+                - A 1.0 mm PORON side wrap. Swap it for a silicone gap pad only if the 100 W test runs hot.
+                - A 0.2 mm mica cross between the cells.
+                - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
+                - A TPU shim under the board, and silicone hold-down pads over the USB-C bodies.
+            - **Rupture windows:** the floor is thinned to 0.6 mm under the bottom positive caps (C2, C4). This is a concept, still to be tested.
+            - **Cost of the protection:** the pack is now 57.2 × 52.0 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+            - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
+            - **Open item:** the aluminium cover sits over the BLE antenna. `monolith_side_cover.dxf` has an `ANT_WINDOW_OPTION` layer for a possible window.
         - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
         - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
         - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
     - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
+    - `monolith_side_renders.py` renders the side tray's drop design:
+        - `monolith_side_exploded.png`: assembled and exploded views;
+        - `monolith_side_sections.png`: sections A-A and B-B;
+        - `monolith_side_parts.png`: the cap zones, the floor pad and rupture windows, plus mass, drop and print-setting tables.
+    - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
 - `tools/fetch_datasheets.sh` fetches the datasheets.
 
 ## Dev board main parts

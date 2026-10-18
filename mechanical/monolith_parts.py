@@ -71,9 +71,38 @@ def stad_pts(cx, cy, L, W, step=0.2):
     return P + [cx, cy]
 
 # ---------------- layered mesher ----------------
+def _crossings(curves):
+    """points where segments of two different curves cross (not at a shared vertex)"""
+    X = []
+    for i in range(len(curves)):
+        for j in range(i + 1, len(curves)):
+            P, Q = curves[i], curves[j]
+            if (P.min(0) > Q.max(0)).any() or (Q.min(0) > P.max(0)).any(): continue
+            a, r = P[:, None, :], (np.roll(P, -1, 0) - P)[:, None, :]
+            c, s = Q[None, :, :], (np.roll(Q, -1, 0) - Q)[None, :, :]
+            cr = lambda u, v: u[..., 0]*v[..., 1] - u[..., 1]*v[..., 0]
+            den = cr(r, s); ok = np.abs(den) > 1e-12
+            with np.errstate(divide='ignore', invalid='ignore'):
+                t = cr(c - a, s) / den; u = cr(c - a, r) / den
+            ok &= (t > 1e-9) & (t < 1 - 1e-9) & (u > 1e-9) & (u < 1 - 1e-9)
+            ia, ib = np.nonzero(ok)
+            if len(ia): X.append(P[ia] + t[ia, ib][:, None] * (np.roll(P, -1, 0) - P)[ia])
+    return np.round(np.vstack(X), 6) if X else np.zeros((0, 2))
+def _split_at(c, X, tol=1e-5):
+    out = []
+    for a, b in zip(c, np.roll(c, -1, axis=0)):
+        out.append(a); d = b - a; L2 = d @ d
+        if L2 < 1e-18: continue
+        s_ = (X - a) @ d / L2; off = np.abs((X[:,0]-a[0])*d[1] - (X[:,1]-a[1])*d[0]) / np.sqrt(L2)
+        ok = (off < tol) & (s_ > 1e-7) & (s_ < 1 - 1e-7)
+        for i in np.argsort(s_[ok]): out.append(X[ok][i])
+    return np.array(out)
+
 def build(curves, zs, solid):
     """curves: list of closed polylines; zs: ascending z levels; solid(k, x, y) -> bool for slab k"""
     curves = [np.round(c, 6) for c in curves]
+    X = _crossings(curves)                 # curves may cross: split both at the crossing
+    if len(X): curves = [_split_at(c, X) for c in curves]
     for _ in range(6):
         pts = np.unique(np.vstack(curves), axis=0)
         kd = cKDTree(pts); split = []      # split segments at any point lying on them
@@ -239,22 +268,26 @@ def poly_pts(P, step=0.25):
         out.append(a + np.linspace(0, 1, n, endpoint=False)[:,None]*(b-a))
     return np.vstack(out)
 
-# tray cavity: the cell pocket (rounded on -x), open on +x, plus the rebates the cover rests in
+# tray cavity: the cell zone (x < a_in, rounded on -x, grown by the side pad), the board zone (x >= a_in, board width:
+# the step is the board's side guide) and the rebates the cover rests in
 SB_X, SB_XC, SB_R = S.sb_x_out, S.sb_x_cv0, S.SB_REB
+aC, cC = S.a_cav, S.c_cav
 def cav_in(x, y):
-    return rr_in(x, y, -aI, SB_X, aI, cI, 0) | xrect_in(x, y, SB_XC, SB_X, -(aI + SB_R), aI + SB_R)
+    return (rr_in(x, y, *S.SB_CAV) | xrect_in(x, y, aI, SB_X, -aI, aI)
+            | xrect_in(x, y, SB_XC, SB_X, -(aI + SB_R), aI + SB_R))
 def cav_pts(step=0.25):
-    m = max(4, int(np.ceil(cI*np.pi/2/step)))
+    m = max(4, int(np.ceil(cC*np.pi/2/step)))
     def arc(cx, cy, u0):
         u = u0 - np.linspace(0, np.pi/2, m, endpoint=False)
-        return [tuple(p) for p in np.c_[cx + cI*np.cos(u), cy + cI*np.sin(u)]]
-    P = [(SB_X, -(aI + SB_R)), (SB_XC, -(aI + SB_R)), (SB_XC, -aI)] + arc(-aI + cI, -aI + cI, -np.pi/2)
-    P += [(-aI, -aI + cI)] + arc(-aI + cI, aI - cI, np.pi) + [(-aI + cI, aI), (SB_XC, aI), (SB_XC, aI + SB_R), (SB_X, aI + SB_R)]
+        return [tuple(p) for p in np.c_[cx + cC*np.cos(u), cy + cC*np.sin(u)]]
+    P = [(SB_X, -(aI + SB_R)), (SB_XC, -(aI + SB_R)), (SB_XC, -aI), (aI, -aI), (aI, -aC)]
+    P += arc(-aC + cC, -aC + cC, -np.pi/2) + [(-aC, -aC + cC)] + arc(-aC + cC, aC - cC, np.pi)
+    P += [(-aC + cC, aC), (aI, aC), (aI, aI), (SB_XC, aI), (SB_XC, aI + SB_R), (SB_X, aI + SB_R)]
     return poly_pts(P, step)
 
 SB_RIB_T = aI - S.RIB_DEPTH
 def rib1_in(x, y): return (np.abs(y) <= S.RIB_W/2) & (x <= -SB_RIB_T)   # -x face only: side insertion
-def rib1_pts(): return rect_pts(-(SB_RIB_T + S.RIB_DEPTH/2), 0, S.RIB_DEPTH, S.RIB_W)
+def rib1_pts(): return xrect_pts(-aC, -SB_RIB_T, -S.RIB_W/2, S.RIB_W/2)
 
 # screw pillars in the bottom corners, beside the floor pad, with stepped insert pilots along x
 SB_PIL = [(SB_XC - S.SB_INSERT_L - 1.5, SB_XC, sy*aI - (sy > 0)*S.SB_PILLAR_W, sy*aI + (sy < 0)*S.SB_PILLAR_W) for sy in (-1, 1)]
@@ -268,23 +301,30 @@ def stady_in(x, y, cx, cy, L, W): return stad_in(y, x, cy, cx, L, W)     # long 
 def stady_pts(cx, cy, L, W): return stad_pts(cy, cx, L, W)[:, ::-1]
 SB_PORTS = [(S.sb_port_x, -S.SB_PORT_Y), (S.sb_port_x, S.SB_PORT_Y)]
 SB_PORT_L, SB_PORT_W = S.USB_SEAL_W + 0.2, S.USB_SEAL_H + 0.2
+# board top stops: the board's top edge bears on these, so drop loads reach the tray through the board edge, not the USB-C
+SB_STOPS = [(aI, SB_XC, S.SB_STOP_Y0, aI), (aI, SB_XC, -aI, -S.SB_STOP_Y0)]   # x to SB_XC: shares edges with the pillars
+SB_RUPT = S.sb_pos_caps['bottom']
 
 def side_shell():
     """one-piece tray, open on +x only"""
     hz, hw = hole_slabs()
-    zs = sorted({0.0, S.SB_END_T, S.sb_z_pad1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H, *[round(z, 6) for z in hz]})
-    cur = [rr_pts(*S.SB_OUT), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL]
-    cur += [stady_pts(x, y, SB_PORT_L, SB_PORT_W) for x, y in SB_PORTS]
+    zr = S.SB_END_T - S.SB_RUPT_T
+    zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H,
+                 *[round(z, 6) for z in hz]})
+    cur = [rr_pts(*S.SB_OUT), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL + SB_STOPS]
+    cur += [stady_pts(x, y, SB_PORT_L, SB_PORT_W) for x, y in SB_PORTS] + [circ_pts(x, y, S.SB_RUPT_D/2) for x, y in SB_RUPT]
     for w in set(np.round(hw, 6)):
         for sy in (-1, 1): cur.append(xrect_pts(SB_XC - S.SB_INSERT_L, SB_XC, sy*S.sb_pillar_y - w, sy*S.sb_pillar_y + w))
     def solid(k, x, y):
         zm = (zs[k] + zs[k+1]) / 2
         out = rr_in(x, y, *S.SB_OUT)
+        if zm < zr: return out & ~(sum(circ_in(x, y, cx, cy, S.SB_RUPT_D/2) for cx, cy in SB_RUPT) > 0)
         if zm < S.SB_END_T: return out
         if zm > S.sb_z_top_in:
             s = out & ~(sum(stady_in(x, y, px, py, SB_PORT_L, SB_PORT_W) for px, py in SB_PORTS) > 0)
             return s & ~xrect_in(x, y, *SB_SLOT) if zm < S.sb_z_top_in + S.SB_SLOT else s
         s = (out & ~cav_in(x, y)) | (rib1_in(x, y) & cav_in(x, y))
+        if zm > S.sb_zb1: s |= sum(xrect_in(x, y, *p) for p in SB_STOPS) > 0
         if zm < S.sb_z_pad1:
             s |= sum(xrect_in(x, y, *p) for p in SB_PIL) > 0
             for z0, z1, w in zip(hz[:-1], hz[1:], hw):
@@ -314,17 +354,86 @@ def side_board_dummy():
         return [xrect_in(x, y, xb0, xb1, -ny, ny), board, board | conn, conn][k]
     return build(cur, zs, solid)
 
-def side_bumper():
-    bi = rr_off(S.SB_OUT, -BUMP_SQUEEZE); bo = rr_off(bi, BUMP_WALL); lip = rr_off(S.SB_OUT, -BUMP_LIP_IN)
+# ---- end caps: TPU 95A, the crush zone. One body to print; the zones are slicer modifier volumes ----
+# soft: outer SB_CAP_SOFT of the end slab, gyroid ~15 %; firm: the rest of the slab, ~30 %;
+# corner noses: ~60 %, they meet corner drops; band: solid walls, it wraps the tray and takes flat side drops.
+CAP_FILL = dict(soft=0.15, firm=0.30, corner=0.60, band=1.0)
+CAP_BAND_IN = rr_off(S.SB_OUT, -S.SB_CAP_SQUEEZE)
+def cap_corner_in(x, y):
+    x0, x1, h = S.SB_CAP_OUT[0], S.SB_CAP_OUT[1], S.SB_CAP_OUT[2]; c = S.SB_CAP_CORNER
+    return ((x < x0 + c) | (x > x1 - c)) & (np.abs(y) > h - c)
+SB_WELL = (S.sb_port_x - S.SB_WELL_H/2, S.sb_port_x + S.SB_WELL_H/2, -S.SB_WELL_W/2, S.SB_WELL_W/2)
+def side_cap(zone='body', well=False):
+    """bottom cap in place (z < 0 is the crush slab); the top cap is the same part mirrored, with the port well"""
+    T, So, B = S.SB_CAP_T, S.SB_CAP_SOFT, S.SB_CAP_BAND
+    x0, x1, h = S.SB_CAP_OUT[0], S.SB_CAP_OUT[1], S.SB_CAP_OUT[2]; c = S.SB_CAP_CORNER
+    cur = [rr_pts(*S.SB_CAP_OUT), rr_pts(*CAP_BAND_IN)]
+    for xa, xb in ((x0, x0 + c), (x1 - c, x1)):
+        for ya, yb in ((-h, -h + c), (h - c, h)): cur.append(xrect_pts(xa, xb, ya, yb))
+    if well: cur.append(xrect_pts(*SB_WELL))
     def solid(k, x, y):
-        return rr_in(x, y, *bo) & ~rr_in(x, y, *(lip if k == 0 else bi))
-    return build([rr_pts(*p) for p in (bi, bo, lip)], [0, BUMP_LIP_T, BUMP_LIP_T + BUMP_BAND], solid)
+        s = rr_in(x, y, *S.SB_CAP_OUT)
+        if well: s &= ~xrect_in(x, y, *SB_WELL)
+        if k == 2: s &= ~rr_in(x, y, *CAP_BAND_IN)
+        cn = cap_corner_in(x, y)
+        if zone == 'body': return s
+        if zone == 'corner': return s & cn
+        return s & ~cn & ({'soft': k == 0, 'firm': k == 1, 'band': k == 2}[zone])
+    return build(cur, [-T, -T + So, 0.0, B], solid)
+
+def cap_mass(well):
+    return sum(abs(check(side_cap(z, well))[1])/1000 * 1.21 * f for z, f in CAP_FILL.items())
+
+# ---- inside parts (no potting) ----
+def _cellzone_in(x, y): return rr_in(x, y, *S.SB_CAV) & ~rib1_in(x, y)
+def _cellzone_pts(): return [rr_pts(*S.SB_CAV), rib1_pts()]
+def end_pad(end):
+    """PORON pad between the cell ends and an end wall: floor pad (4.8, bottom) or top pad (1.0); cut-outs over the
+    positive caps leave the button and vent holes open into a plenum"""
+    caps = S.sb_pos_caps[end]; r = S.SB_VENT_CUT_D/2
+    zs = [S.SB_END_T, S.sb_z_pad1] if end == 'bottom' else [S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
+    cur = _cellzone_pts() + [circ_pts(x, y, r) for x, y in caps]
+    return build(cur, zs, lambda k, x, y: _cellzone_in(x, y) & ~(sum(circ_in(x, y, cx, cy, r) for cx, cy in caps) > 0))
+CELL_ENV = (-aI, aI + 1.0, aI, cI, 0.0)      # cell block envelope (square on the board side)
+def side_pad():
+    """SB_SIDE_PAD wrap round the -x and +-y faces of the cells (PORON; gap pad if the cells run hot), slotted for the rib"""
+    cur = _cellzone_pts() + [rr_pts(*CELL_ENV)]
+    return build(cur, [S.sb_z_cell0, S.sb_z_cell1], lambda k, x, y: _cellzone_in(x, y) & ~rr_in(x, y, *CELL_ENV))
+def mica_cross():
+    t = S.SB_SEP_T/2; a = (-SB_RIB_T + 0.2, aI - 0.2, -t, t); b = (-t, t, -(aI - 0.2), aI - 0.2)
+    return build([xrect_pts(*a), xrect_pts(*b)], [S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0],
+                 lambda k, x, y: xrect_in(x, y, *a) | xrect_in(x, y, *b))
+def insulator():
+    p = (aI, S.sb_xb0, -(aI - 0.2), aI - 0.2)
+    return build([xrect_pts(*p)], [S.sb_z_cell0 - S.TAB_T, S.sb_z_cell1 + S.TAB_T], lambda k, x, y: xrect_in(x, y, *p))
+def hold_pads():
+    ps = [(S.sb_port_x + S.USB_UP, SB_XC, py - 4.5, py + 4.5) for _, py in SB_PORTS]
+    return build([xrect_pts(*p) for p in ps], [S.SB_H - S.USB_DEPTH + 0.5, S.sb_z_top_in],
+                 lambda k, x, y: sum(xrect_in(x, y, *p) for p in ps) > 0)
+def board_shim():
+    p = (S.sb_xb0, S.sb_xb1, -(S.sb_notch_y - 0.2), S.sb_notch_y - 0.2)
+    return build([xrect_pts(*p)], [S.SB_END_T, S.sb_zb0], lambda k, x, y: xrect_in(x, y, *p))
+def cell_solid():
+    r = S.CELL_D/2
+    return build([circ_pts(0, 0, r, 0.4)], [0, S.CELL_L], lambda k, x, y: circ_in(x, y, 0, 0, r))
 
 PARTS = [('monolith_top_cap', top_cap, 1.20, 1), ('monolith_top_board_dummy', board_dummy, 1.2, 1),
          ('monolith_bottom_pcb_dummy', pcb_dummy, 1.2, 1), ('monolith_cell_dummy', cell_dummy, 1.2, 4),
          ('monolith_fit_ring', fit_ring, 1.2, 1), ('monolith_end_bumper', bumper, 1.21, 2)]
+# (file, mesh, density g/cm3 as built, qty). Caps: the print body (mass from its zone fills); mod_*: slicer modifiers.
 SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cover', side_cover, 2.70, 1),
-              ('monolith_side_board_dummy', side_board_dummy, 1.2, 1), ('monolith_side_bumper', side_bumper, 1.21, 2)]
+              ('monolith_side_board_dummy', side_board_dummy, 1.2, 1),
+              ('monolith_side_cap_bottom', lambda: side_cap('body'), None, 1),
+              ('monolith_side_cap_top', lambda: side_cap('body', True), None, 1),
+              ('monolith_side_cap_bottom_mod_soft', lambda: side_cap('soft'), 0, 1),
+              ('monolith_side_cap_bottom_mod_corner', lambda: side_cap('corner'), 0, 1),
+              ('monolith_side_cap_top_mod_soft', lambda: side_cap('soft', True), 0, 1),
+              ('monolith_side_cap_top_mod_corner', lambda: side_cap('corner', True), 0, 1),
+              ('monolith_side_pad_floor', lambda: end_pad('bottom'), 0.24, 1),
+              ('monolith_side_pad_top', lambda: end_pad('top'), 0.24, 1),
+              ('monolith_side_pad_wrap', side_pad, 0.24, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
+              ('monolith_side_insulator', insulator, 1.4, 1), ('monolith_side_usb_hold', hold_pads, 1.1, 1),
+              ('monolith_side_shim', board_shim, 1.21, 1)]
 if __name__ == '__main__':
     import sys
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all
@@ -332,6 +441,7 @@ if __name__ == '__main__':
     for name, fn, rho, qty in todo:
         V = fn(); bad, vol = check(V); write_stl(name + '.stl', V)
         lo, hi = V.reshape(-1, 3).min(0), V.reshape(-1, 3).max(0)
-        print(f"{name:28s} x{qty} tris {len(V):6d} open-edges {bad} size {np.round(hi-lo,2)} vol {vol/1000:5.2f} cm3 ~{vol/1000*rho:4.1f} g")
+        g = cap_mass(name.endswith('top')) if rho is None else vol/1000*rho
+        print(f"{name:30s} x{qty} tris {len(V):6d} open-edges {bad} size {np.round(hi-lo,2)} vol {vol/1000:5.2f} cm3 ~{g:4.1f} g")
     print(f"cap: skirt bottom z {z_sk}, board {z_bb}..{z_bt}, face {z_face_bot}..{z_face_top} (z=0 is the tube rim)")
     print(f"skirt outer {2*SK_O[0]:.2f} R{SK_O[1]:.2f}; board outline {2*BOARD[0]:.2f} R{BOARD[1]:.2f}")
