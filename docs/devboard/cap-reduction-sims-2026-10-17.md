@@ -1,6 +1,6 @@
 # Capacitor reduction: simulations (2026-10-17)
 
-For [rev2-changes.md item 1d](rev2-changes.md) (shrink the board, electrolytics first). Script: [`DevBoard/tools/cap_sims.py`](../../DevBoard/tools/cap_sims.py) (numpy; writes `cap_sims.json`). Every figure is per port; port 2 is identical. These results pick what to try at bring-up. They don't replace the bring-up measurements.
+For [rev2-changes.md item 1d](rev2-changes.md) (shrink the board, electrolytics first). Script: [`hardware/DevBoard/tools/cap_sims.py`](../../hardware/DevBoard/tools/cap_sims.py) (numpy; writes `cap_sims.json`). Every figure is per port; port 2 is identical. These results pick what to try at bring-up. They don't replace the bring-up measurements.
 
 ## What was simulated
 

@@ -1,169 +1,111 @@
-# Monolith battery bank
+# Monolith
 
-<p align="center"><img src="mechanical/monolith_side_hero.png" alt="Monolith: the assembled pack in two colourways, with the laser-marked aluminium cover" width="100%"></p>
+An ultralight 82 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidirectional USB-C PD ports designed for 100 W total, TI CC2340 Bluetooth LE MCU.
 
-An ultralight 100 W USB-C battery bank for backpacking. Four EVE INR21700-58E cells sit in a one-piece MJF nylon tray, with TPU crush caps and a laser-marked aluminium cover that is also the heatsink. It has two USB-C PD ports and Bluetooth.
+<p align="center"><img src="hardware/mechanical/monolith_side_hero.png" alt="Render of the assembled pack in two colourways, with the laser-marked aluminium cover" width="100%"></p>
+
+## Design overview
+
+The goal is a hiking power bank that is lighter and better behaved than the off-the-shelf ones: under the 100 Wh carry-on limit, able to charge or run 20 V USB-C PD loads, with a proper fuel gauge and a phone app. The pack is four EVE INR21700-58E cells (5.7 Ah, 3.6 V nominal) in 4S1P: 14.4 V, 82 Wh nominal, spot-welded with nickel strip and managed by a TI BQ40Z50-R2 gauge/protector with hardware second-level protection (BQ294700 plus a chemical fuse). Each of the two USB-C ports has its own TPS25751 PD controller and BQ25756 bidirectional buck-boost converter, so either port can charge the pack (including from a 5 V solar panel) or source up to 20 V / 5 A, with the pair thermally limited to 100 W; a TPS62933 buck supplies each port's 5 V source rail and a TPS62177 buck supplies the 3.3 V rail. A CC2340R5MODA Bluetooth LE module runs the charge policy, port power sharing and a custom GATT service for an iPhone app. The electronics live on one 43 × 74 mm 6-layer board along one face of the cells, inside a one-piece MJF nylon tray with TPU crush caps and a 1 mm anodized aluminium cover that doubles as the heat spreader.
 
 | | |
 |---|---|
-| **Energy** | 82 Wh: 4S1P, 14.4 V, 5.7 Ah. Under the 100 Wh carry-on limit. |
-| **Power** | 2 × USB-C PD in/out, 100 W max |
-| **Size** | 58.7 × 50.4 × 96.6 mm with the caps |
-| **Mass** | about 376 g (estimate: 361 g modelled, plus the board's parts) |
-| **Build** | MJF PA12 tray and TPU 95A caps (JLC3DP), 1.0 mm 5052 cover, black anodized and laser-marked (JLCCNC) |
-| **Drop** | No potting. 8 mm TPU crush caps outside a stiff core ([report](reports/Battery%20pack%20potting%20and%20drop%20protection.md)) |
+| **Energy** | 82 Wh nominal (4S1P, 14.4 V, 5.7 Ah), under the 100 Wh carry-on limit |
+| **Ports** | 2 × USB-C, each bidirectional PD 5–20 V up to 5 A; designed for 100 W total, thermally throttled |
+| **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), AGM404AP1 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
+| **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
+| **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer copper, ENIG, filled and capped vias; JLCPCB assembly |
+| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 58.7 × 50.4 × 96.6 mm, about 376 g (modelled estimate) |
+| **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app, planned) |
 
-**Status (2026-10-18):** nothing has been built, test-fitted or bench-tested yet.
-- **Production P0** (`Production/`) is the first build; the dev board is skipped.
-    - The schematic is the dev board's rev A8 with the production changes.
-    - The side-board outline is set, and layout is in progress.
-    - Start with [`Production/README.md`](Production/README.md).
-- **Mechanical** (`mechanical/`): the side-tray design is modelled, with drop, thermal, vibration and assembly checks. See [Mechanical design](#mechanical-design) below.
-- **Firmware** (`firmware/`): a bring-up skeleton for the LP-EM-CC2340R53 LaunchPad, not built yet.
-    - It targets TI's LPF3 SDK (SysConfig, TI Arm Clang, XDS110 debugger).
-    - Install steps are in [`firmware/README.md`](firmware/README.md).
-- **Dev board** (`DevBoard/`): the bench version of the electronics. It stays as the reference for P0 and won't be built.
+## Status
 
-## The design in pictures
+In progress. Nothing has been built, assembled or bench-tested yet; every number above is a design value, not a measurement.
 
-<table>
-<tr>
-<td width="50%"><a href="mechanical/monolith_side_exploded.png"><img src="mechanical/monolith_side_exploded.png" alt="Assembled and exploded views with a numbered parts list"></a><br><b>Exploded view and parts list.</b> Everything goes in through the open side, then the caps go on.</td>
-<td width="50%"><a href="mechanical/monolith_side_sections.png"><img src="mechanical/monolith_side_sections.png" alt="Sections A-A and B-B"></a><br><b>Sections.</b> A-A passes through the BLE module on B.Cu, and B-B along C1 and C2: crush caps, pads, vent cut-outs, board stops.</td>
-</tr>
-<tr>
-<td width="50%"><a href="mechanical/monolith_side_tabs.png"><img src="mechanical/monolith_side_tabs.png" alt="Nickel strips, sense wires and board pad positions"></a><br><b>Pack connections.</b> The PACK± strips wrap under the board's bottom edge, the CELL1–3 sense wires run through plated holes, and KiCad positions are given.</td>
-<td width="50%"><a href="mechanical/monolith_side_cover_preview.png"><img src="mechanical/monolith_side_cover_preview.png" alt="Laser-marked aluminium cover"></a><br><b>Cover.</b> 1.0 mm anodized 5052 with a laser-marked label, our own carry-on badge and a topo-map trail graphic.</td>
-</tr>
-<tr>
-<td width="50%"><a href="mechanical/monolith_side_parts.png"><img src="mechanical/monolith_side_parts.png" alt="Caps, tray and pads with mass, drop and print tables"></a><br><b>Parts, mass and drop estimate.</b> Cap print zones, the tray, the floor spacer and EVA pads, and the print settings.</td>
-<td width="50%"><a href="mechanical/monolith_layout_compare.png"><img src="mechanical/monolith_layout_compare.png" alt="Top-cap layout against the side-board layout"></a><br><b>Layout comparison.</b> The original top-cap tube against the side-board tray.</td>
-</tr>
-</table>
+**Done**
 
-All of these come from the Python models in `mechanical/`. Re-run the scripts after changing a parameter (see [Mechanical design](#mechanical-design)).
+- Schematic: four reviews of the bench "dev board" schematic (rev A8, about 430 parts), then the production P0 schematic derived from it by script (283 parts) with a netlist check that every surviving pin kept its net. Design notes, reviews and simulations are in `docs/devboard/` and `hardware/Production/README.md`.
+- Dev board layout: 196 × 115 mm, 6 layers, routed, DRC clean apart from known footprint-library warnings, JLC fab outputs generated (`hardware/DevBoard/fab/`). It was not ordered: the decision on 2026-10-18 was to skip it and build P0 directly.
+- Production board: stack-up, outline and USB-C placement locked to the enclosure model (`hardware/Production/tools/make_board.py` imports the outline from `hardware/mechanical/monolith_shell.py`).
+- Mechanical: parametric enclosure model with drop, thermal-expansion, vibration and assembly-clearance checks, STL/STEP/DXF outputs and renders (`docs/mechanical-design.md`).
+- Firmware: a command-line build for the LP-EM-CC2340R53 LaunchPad that compiles with no warnings (about 10 KB flash).
+- Research: potting versus crush-zone drop protection, with sources (`reports/`).
 
-## Contents
+**Remaining**
 
-- `Production/` is the production P0 KiCad 10 project: start with [`Production/README.md`](Production/README.md).
-- `firmware/` holds the MCU firmware (CC2340, LPF3 SDK, command-line build).
-- `DevBoard/` is the dev board's KiCad 10 project.
-    - It has its own library, its generator and placement scripts, and a costed BOM (`bom_cost.csv`).
-    - Start with [`DevBoard/README.md`](DevBoard/README.md): files, board rules, status and the full change log.
-- `docs/devboard/` holds the dev board documents:
-    - the circuit description;
-    - schematic reviews 1–3;
-    - the cost-down list;
-    - the power budget and the MCU pin-by-power-state plan (STM32-era, rewrite pending);
-    - the CC2340R5MODA pin budget (`cc2340-pin-budget.md`);
-    - the bring-up configuration checklist;
-    - the LP-EM-CC2340R53 LaunchPad plan (`launchpad-cc2340-plan.md`);
-    - changes planned for rev 2.
-- `docs/project/` holds project notes: next actions, cell datasheet notes, TPS25751 EEPROM programming.
-- `datasheets/` holds the datasheets and app notes the designs were checked against, indexed in `datasheets/sources.csv`.
-- `mechanical/` holds the enclosure models (STL, DXF, STEP), the Python scripts that generate them, and the renders above. See [Mechanical design](#mechanical-design).
-- `reports/` holds research reports (potting and drop protection), with their sourced notes in `research_notes/`.
-- `tools/fetch_datasheets.sh` fetches the datasheets.
+- Place and route the production board on the side outline; update it from the P0 schematic; DRC.
+- Order P0 from JLCPCB, weld the pack, train the gauge (`docs/production/p0-bringup-and-training.md`).
+- Firmware beyond the skeleton: gauge and PD-controller drivers, charge policy, power sharing, BLE GATT, MCUboot OTA.
+- Fit print of the tray and caps; drop and 100 W thermal tests; label ratings.
+- iPhone app (SwiftUI + CoreBluetooth).
 
-## Mechanical design
+Open decisions and the working checklist are in `docs/project/monolith-next-actions.md`.
 
-The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), alongside the current design:
+## Hardware
 
-- **Side-board layout (2026-10-18, the current design).** The board runs along one face of the cells, inside a one-piece printed tray whose only opening is the board side.
-    - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into the bottom corner pillars (thread-forming screws straight into the MJF nylon, or heat-set inserts).
-    - **Ports:** the board drops in, then slides 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall.
-    - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
-    - **Drop protection (2026-10-18):** no potting. The basis is `reports/Battery pack potting and drop protection.md`. The tray, cells and board form one stiff core, and TPU end caps outside it are the crush zone.
-        - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
-        - **Inside (hobby build: the only sheet stock is 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper):**
-            - Cell-end pads of 1 mm EVA, with cut-outs over each positive cap so the vent stays open. The floor pad sits on a printed 3.8 mm TPU spacer (about 20 % gyroid).
-            - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), a sheet on the cells' board-side face (it also covers the B.Cu parts), and rings on the four + ends (21 mm OD, about 10 mm hole).
-            - EVA lanes (3 × 1 mm, about 20 % squeezed) between that sheet and B.Cu, along the two cell tangent lines. They hold the cells off the board now that there is a 2.3 mm gap behind it. Keep B.Cu parts out of the lanes (`BCU_EVA_LANES` on the board DXF) and under 2.3 mm tall elsewhere.
-            - A 0.2 mm mica cross between the cells.
-            - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
-            - A TPU shim under the board, and 2 x 1 mm EVA hold-downs over the USB-C bodies.
-        - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
-        - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
-        - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
-        - **Pack connections:** everything is soldered from the open side once the board is in, so it all lands on F.Cu (`monolith_side_tabs.png`).
-            - **PACK- and PACK+:** 0.15 × 7 mm nickel strips from the C1 and C4 bottoms. Each drops down behind the board, wraps under its bottom edge and is soldered to an F.Cu pad, 8 × 5 mm at KiCad x 89.1 / 110.9, y 134.7. The shim is now one centre block between them.
-            - **CELL1, CELL3 and CELL2:** sense taps only, so thin wires (about 28 AWG silicone) go through plated holes at KiCad (98.0, 71.5), (102.0, 71.5) and (102.0, 133.5).
-                - The top two run down the groove behind the board between C1 and C4, which has 5 mm free.
-                - CELL2 runs in a channel in the floor spacer.
-                - The top EVA has slots for the wires.
-            - Holes and pads are on the board DXF's `TAB_PADS` layer.
-            - Take the gauge's PACK-/PACK+ Kelvin sense from the pads.
-        - **Vibration and trail durability (2026-10-18):**
-            - **Cells are preloaded everywhere:**
-                - crush ribs on the cell-zone walls flatten 0.25 mm into the liner;
-                - the floor spacer prints 0.4 mm taller than its gap, which takes up MJF's ±0.3 mm;
-                - the EVA lanes are squeezed about 20 %.
-            - **Cover:**
-                - It has a 0.3 mm joint all round, because nylon grows about 0.35 mm more than aluminium over 60 K.
-                - The joint is sealed with a bead of neutral-cure silicone, which acts as the gasket.
-                - Four SMD standoffs (about 3.6 mm, `COVER_STANDOFFS` on the board DXF) carry crush loads instead of the parts.
-                - Use M2 thread-forming screws with a nylon patch or a plastic-safe threadlocker.
-            - **Caps:**
-                - A bead inside each cap band snaps into a 0.3 mm groove round the tray.
-                - The top cap has a drain channel from the port well.
-            - **Assembly:**
-                - Give the PACK strips a small S-bend, and keep their solder joints away from the bend.
-                - Weld at the cells.
-                - Tack the sense wires in their slots with neutral-cure silicone.
-            - **Part heights:** the 7.7 mm bulk cans (C421/C521, C208) didn't fit the 3.2 mm F.Cu height. Fixed in the production schematic on 2026-10-18: every bulk cap is now 3.1 mm or less (`Production/README.md`, *Low-profile bulk*).
-        - **BLE antenna:** the CC2340R5MODA goes on B.Cu at the right board edge (+y, the C4 / PACK+ side), antenna end at the edge, centre 19.1 mm below the top edge (KiCad about 116.6, 81.9).
-            - That leaves 10 mm of ground above it and 10 mm to the USB-C bodies.
-            - The board's ground plane sits between it and the aluminium cover, and it radiates out through the printed side wall. The cover stays whole.
-            - To make room for it, the board sits 2.3 mm further from the cells (`SB_BCU_H`); the outline and ports didn't change.
-            - `monolith_side_pcb.dxf` shows it on `BLE_MODULE_BCU`.
-    - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
-    - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
-    - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
-- `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
-- `monolith_side_renders.py` renders the side tray's drop design:
-    - `monolith_side_exploded.png`: assembled and exploded views;
-    - `monolith_side_sections.png`: sections A-A and B-B;
-    - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables;
-    - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions;
-    - `monolith_side_hero.png`: the assembled pack with its laser-marked label, in two colourways JLC3DP sells (MJF PA12 black or grey, TPU black or blue).
-- **Cover heatsink and label (prototype):** `monolith_cover_label.py` builds the aluminium cover for JLCCNC sheet metal: 1.0 mm 5052, black anodized, laser-marked.
-    - It needs shapely and matplotlib as well, and KiCad 10's `kicad-cli` for the STEP.
-    - **Outputs:**
-        - `monolith_side_cover.step`: the plate (JLCCNC requires a STEP);
-        - `monolith_side_cover_marking.dxf` / `.svg`: the marking as outlined shapes, every line at least 0.2 mm (JLCCNC asks for outlined, double-line text);
-        - `monolith_side_cover_preview.png`.
-    - **Label:** Li-ion 4S1P, 14.4 V, 5.7 Ah, 82 Wh (from `docs/project/eve-58e-datasheet-notes.md`), the USB-C PD ratings, warnings, the recycling and WEEE symbols, and our own carry-on badge (an airliner in a ring with a check disc, "CARRY-ON OK · < 100 Wh"). It carries no certification marks.
-    - **Graphic:** a topo map with a dashed trail from the trailhead to a summit flag at "EL. 82 Wh".
-    - The script checks the art stays between the cap bands, clear of the vent, and has no line under 0.2 mm. Ratings are prototype values, to confirm before the final.
-- **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
+The KiCad 10 sources are in `hardware/`, with the production board as the design of record and the dev board kept as the reviewed reference it was derived from.
 
-## Dev board main parts
+| Project | Path | What it is |
+|---|---|---|
+| **Production P0** | [`hardware/Production/`](hardware/Production/) | First board to be built. The dev-board schematic with the bench-only parts removed, JLC extended/0201 passives, SiZ240DT half-bridge FETs, low-profile bulk capacitors, Tag-Connect SWD and gauge-training pads. Generated and checked by the scripts in `tools/`. [README](hardware/Production/README.md) has every change with its reasoning. |
+| **Dev board** | [`hardware/DevBoard/`](hardware/DevBoard/) | Bench version with cell holders, test points, jumpers and a sleep-current measurement section. Routed and fab-ready, not ordered. [README](hardware/DevBoard/README.md) is the change log (items 1–50) and board rules. |
+| **Mechanical** | [`hardware/mechanical/`](hardware/mechanical/) | Python-generated enclosure (tray, caps, cover, pads, board dummy) as STL/STEP/DXF, plus the renders. Notes in [`docs/mechanical-design.md`](docs/mechanical-design.md). |
 
-- **Gauge and protection:** BQ40Z50-R2 gauge with CHG/DSG FETs and a 1 mΩ shunt. A BQ294700 second-level protector drives a chemical fuse.
-- **Each USB-C port:**
-    - TPS25751D PD controller with EEPROM;
-    - TPD4S201 CC/SBU protection and liquid detection;
-    - BQ25756 buck-boost charger with four discrete PGQ04N070 FETs;
-    - TPS62933 5 V source.
-- **Supply and sleep current:** TPS62177 3.3 V rail, and INA190 amplifiers on a 10 Ω R_MEAS for measuring sleep current.
-- **MCU:** TI CC2340R5MODA Bluetooth LE module (rev A7; was the STM32WB1MMC). Its 10 usable GPIOs are all assigned.
-- **Board temperature:** no dedicated sensors (rev A8). The gauge reports the four cell NTCs and the protection-FET temperature; each charger's NTC is read through its PD controller. The USB-C connectors are not monitored.
+**Schematics (PDF)**
 
-## Known open items
+- [`docs/hardware/monolith-p0-schematic.pdf`](docs/hardware/monolith-p0-schematic.pdf): production P0, 6 sheets (root index, cells and gauge, 3V3 rail, MCU, USB port 1, USB port 2).
+- [`docs/hardware/monolithdev-schematic.pdf`](docs/hardware/monolithdev-schematic.pdf): dev board rev A8.
 
-**Dev board:**
-- silkscreen pass;
-- routing;
-- LCSC numbers, stock and price for the rev A7 parts (CC2340R5MODA, RF match);
-- antenna match tuning (C314/C315) and a BLE range check on the real board;
-- rewrite of the MCU pin-by-power-state plan for the CC2340;
-- the U403/U503 footprint library warning;
-- ~~production board thickness~~: decided 2026-10-18, 1.6 mm for cost (`Production/README.md`).
+**Board plots (dev board, the routed one; P0 is placed only at the connectors so far)**
 
-Details are in `DevBoard/README.md`, and rev 2 changes in `docs/devboard/rev2-changes.md`.
+| Front (F.Cu, mask, silk) | Back (B.Cu, mask, silk, mirrored) |
+|---|---|
+| [<img src="docs/hardware/monolithdev-board-front.png" alt="Dev board front plot">](docs/hardware/monolithdev-board-front.png) | [<img src="docs/hardware/monolithdev-board-back.png" alt="Dev board back plot">](docs/hardware/monolithdev-board-back.png) |
 
-**Mechanical:**
-- a fit print of the tray, caps and board dummy, with real cells;
-- a drop test with dummy cells (1.0 and 1.5 m);
-- a 100 W thermal run;
-- confirm the label ratings before ordering the cover.
+**Per port**
+
+- TPS25751D USB-C PD controller, configured from its own M24512 EEPROM (patch-bundle programming notes in `docs/project/tps25751-eeprom-programming.md`).
+- BQ25756 bidirectional buck-boost at 600 kHz, 2.2 µH inductor, 5 mΩ sense resistors, two SiZ240DT 40 V half-bridges (dev board: four PGQ04N070 singles); gate resistors fitted as 0 Ω links with DNP RC snubbers so ringing can be fixed without a respin.
+- TPS62933 5 V buck for the port's 5 V source rail; TPD6S300 CC protection (24 V short-to-VBUS, IEC ESD); TVS2200 flat clamp on VBUS.
+- Shou Han IP68 right-angle USB-C receptacle, 5 A / 20 V.
+
+**Pack and supervision**
+
+- BQ40Z50-R2 with four cell NTCs, cell balancing and JEITA; 1 mΩ shunt; BQ294700 per-cell OVP that fires the WSFB1514 chemical fuse independently of the gauge.
+- One wire-ORed interrupt line (both PD controllers, gauge BTP) into the MCU; CHG_INH pulled up so a reset, hang or unprogrammed MCU stops charging.
+- Idle current budgeted by state in `docs/devboard/power-budget.md` (dev board rev A8 estimate about 230 µA; P0's TPD6S300 CC protectors add about 175 µA on top, per `hardware/Production/README.md`), with a gauge ship mode for storage.
+
+Datasheets and app notes the design was checked against are in `datasheets/` (indexed in `datasheets/sources.csv`).
+
+## Firmware
+
+`firmware/` targets the CC2340R5MODA with TI's SimpleLink Low Power F3 SDK. Until a board exists it runs on the LP-EM-CC2340R53 LaunchPad, which has the same silicon and memory.
+
+- **Toolchain:** TI Arm Clang, SysConfig and `gmake` from Code Composer Studio 21, the LPF3 SDK 9.23, and UniFlash/DSLite with an XDS110 probe. Everything is driven from a `Makefile` in the style of TI's SDK examples; CCS itself is only used for debugging. Install steps and version pins are in [`firmware/README.md`](firmware/README.md).
+- **Structure:** `boards/<board>.syscfg` holds the pin map and CCFG per target (LaunchPad now, dev board/P0 next); SysConfig generates the driver configuration and linker includes into `build/<board>/syscfg/`; `app/` is the application. NoRTOS for bring-up, moving to FreeRTOS when the BLE stack comes in.
+- **State:** the skeleton builds (banner and reset reason on the XDS110 UART, heartbeat LED, a button standing in for the IRQ line) and has not been run on hardware yet.
+- **Planned:** SMBus gauge driver, TPS25751 4CC commands and EEPROM patch loading, charge policy and port power sharing per `docs/project/monolith-next-actions.md`, settings in flash, BLE GATT service, MCUboot signed OTA.
+
+## Repo layout
+
+```
+.
+├── README.md
+├── LICENSE
+├── hardware/
+│   ├── Production/        KiCad 10 project "Monolith" (P0): schematic, board, library, generator scripts
+│   ├── DevBoard/          KiCad 10 project "MonolithDev": schematic, routed board, library, fab/, tools/, 3dmodels/
+│   └── mechanical/        Enclosure models (Python → STL/STEP/DXF) and renders
+├── firmware/              CC2340 firmware: Makefile, boards/*.syscfg, app/, tools.mak.example
+├── docs/
+│   ├── hardware/          Schematic PDFs and board plots exported from KiCad
+│   ├── devboard/          Circuit description, schematic reviews 1–4, power budget, pin budget, bring-up checklist, simulations
+│   ├── production/        P0 bring-up and gauge-training procedure
+│   ├── project/           Next actions, cell datasheet notes, TPS25751 EEPROM programming
+│   ├── mechanical-design.md
+│   └── project-status/    HTML status deck
+├── datasheets/            Manufacturer datasheets and app notes (sources.csv lists where each came from)
+├── reports/               Research reports (potting and drop protection), sources in research_notes/
+├── research_notes/
+└── tools/                 fetch_datasheets.sh
+```

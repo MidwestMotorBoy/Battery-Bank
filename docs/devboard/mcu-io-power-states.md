@@ -1,6 +1,6 @@
 # MCU I/O versus power states (rev A8, 2026-10-14)
 
-This document sets the state of every CC2340R5MODA (U301) pin in every power state. U301 replaced the STM32WB1MMC in rev A7 (`cc2340-pin-budget.md`, `DevBoard/README.md` items 40–41). It is reconciled against:
+This document sets the state of every CC2340R5MODA (U301) pin in every power state. U301 replaced the STM32WB1MMC in rev A7 (`cc2340-pin-budget.md`, `hardware/DevBoard/README.md` items 40–41). It is reconciled against:
 
 - the sleep plan in `power-budget.md`: about 240 µA idle at the pack, the MCU in Standby between BLE advertising events, and the TPS62177 in sleep mode with no cable attached;
 - the CHG_INH and watchdog decisions (`schematic-review-2-2026-10-12.md`, D1);

@@ -4,7 +4,7 @@ KiCad 10 project `Monolith`. **Status (2026-10-18): the dev board is skipped, so
 
 ## How P0 was made
 
-`tools/make_production.py` (re-runnable) copies the dev board's sheets, libraries and project file from `DevBoard/` and edits them as follows:
+`tools/make_production.py` (re-runnable) copies the dev board's sheets, libraries and project file from `hardware/DevBoard/` and edits them as follows:
 
 - deletes parts by reference, then prunes the wires, labels, junctions, no-connects and power symbols left dangling;
 - replaces 0 Ω links with wires;
@@ -20,24 +20,24 @@ KiCad 10 project `Monolith`. **Status (2026-10-18): the dev board is skipped, so
 
 `tools/check_netlist.py` then compares the result with the dev board netlist. Every surviving pin must keep its dev net, with only the intended link merges, and every new pad must take the net of the pin it replaces. Result: 956 pins checked, no differences, and 424 parts down to 295. ERC shows the dev board's 8 pin-to-pin warnings plus 3 off-grid notes on the root sheet pins.
 
-`tools/layout_production.py` lays the sheets out: block moves through `DevBoard/tools/move_region.py`, then `place_fields.py` and `check_overlaps.py` (it should report 0 overlaps).
+`tools/layout_production.py` lays the sheets out: block moves through `hardware/DevBoard/tools/move_region.py`, then `place_fields.py` and `check_overlaps.py` (it should report 0 overlaps).
 
 Run all four in order with KiCad's Python (make, tidy, layout, check):
 
 ```bash
-"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/make_production.py
+"/c/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/make_production.py
 ```
 
 ```bash
-"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/tidy_production.py
+"/c/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/tidy_production.py
 ```
 
 ```bash
-"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/layout_production.py
+"/c/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/layout_production.py
 ```
 
 ```bash
-"/c/Program Files/KiCad/10.0/bin/python.exe" Production/tools/check_netlist.py
+"/c/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/check_netlist.py
 ```
 
 Re-running overwrites the sheets. Once you start editing them by hand in KiCad, stop using the scripts.
@@ -159,7 +159,7 @@ Parts: 256.
 
 **Outline:** since 2026-10-18, the side board of the one-piece tray. The details are in *Side outline and 1.6 mm board* below. The 40.5 mm and then 45.5 mm top-cap outlines that came before it are kept below as history.
 
-- `mechanical/monolith_bottom_pcb.dxf` is the old 43.3 mm bottom end board with the 8 mm vent, not this board.
+- `hardware/mechanical/monolith_bottom_pcb.dxf` is the old 43.3 mm bottom end board with the 8 mm vent, not this board.
 
 **Stack-up:** 6 layers, **1.6 mm** (2026-10-18, for cost; it was 0.8 mm), 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. No net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
 
@@ -183,11 +183,11 @@ Parts: 256.
 
 ## Side outline and 1.6 mm board (2026-10-18)
 
-The board moved from the top cap to one side of the cells, in a one-piece printed tray (`mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
+The board moved from the top cap to one side of the cells, in a one-piece printed tray (`hardware/mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
 
 - **Outline:** 43.2 × 74.35 mm, about 3,164 mm² per side.
     - The bottom corners are notched 5.0 × 4.8 mm around the tray's screw pillars.
-    - The outline comes from `mechanical/monolith_shell.py` (`sb_*`), which `tools/make_board.py` imports, so the tray and the board can't drift apart. The same outline is in `mechanical/monolith_side_pcb.dxf`.
+    - The outline comes from `hardware/mechanical/monolith_shell.py` (`sb_*`), which `tools/make_board.py` imports, so the tray and the board can't drift apart. The same outline is in `hardware/mechanical/monolith_side_pcb.dxf`.
     - It is centred at (100, 100). KiCad x is across the pack (left = the C1 / PACK- side), and KiCad y runs down the pack, with the port end at the top.
 - **Ports:** J501 (USB2) at x = 93.5 and J401 (USB1) at x = 106.5, on the top edge (y = 62.82), rotated 180°, locked. The outline leaves the two 10.2 mm notch gaps.
 - **Faces:**
@@ -281,7 +281,7 @@ Both ports exit the same face, for mechanical assembly: the seal flanges stick o
 - **Why the board grew:** one face of the 40.5 mm board had only 21.8 mm of straight edge, and each connector needs ~12.5 mm (10.2 mm notch plus shell tabs at ±5.8 mm).
 - **New outline: 45.5 × 45.5 mm (+5 mm in x and y), corner radius kept at R9.35**, so each face has **26.8 mm** straight.
     - Growing the outline concentric with the tube would have kept the corner centres, and the straight edge would have stayed 21.8 mm.
-    - **The cap and tube have to follow:** the board is now wider than the tube's 43.6 mm inner width, and `mechanical/monolith_parts.py` needs the new top-cap geometry.
+    - **The cap and tube have to follow:** the board is now wider than the tube's 43.6 mm inner width, and `hardware/mechanical/monolith_parts.py` needs the new top-cap geometry.
 - **Placement:** J501 (USB2) at y = 93.5 and **J401 (USB1)** at y = 106.5 on the right edge (x = 122.75), 13 mm apart, rotated 90°, locked.
     - The footprint origin is the board edge. The board outline leaves a 10.2 mm gap at each connector, and the footprint's own Edge.Cuts closes its 10.2 × 5.65 mm notch. DRC confirms the outline is closed.
     - A 2.8 mm board rib between the notches carries the neighbouring shell tabs. Those pads are 0.5 mm apart, both GND.

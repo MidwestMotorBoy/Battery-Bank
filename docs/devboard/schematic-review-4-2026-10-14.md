@@ -1,6 +1,6 @@
 # Schematic review 4: rev A7 team review (2026-10-14)
 
-Fourth review of the MonolithDev schematic, at **rev A7** (`DevBoard/README.md` item 40). Four reviewers worked in parallel. They then challenged each other's findings in a second round and defended or conceded in a third. The deepest look went to the four change sets no review had covered yet:
+Fourth review of the MonolithDev schematic, at **rev A7** (`hardware/DevBoard/README.md` item 40). Four reviewers worked in parallel. They then challenged each other's findings in a second round and defended or conceded in a third. The deepest look went to the four change sets no review had covered yet:
 
 - **Item 37:** cost-down.
 - **Item 38:** discrete charger FETs.
@@ -281,9 +281,9 @@ Totals after this change: **0 critical, 1 major (A-2), 21 minor.**
 
 ## Status
 
-- **Applied in rev A8 (2026-10-14, `DevBoard/README.md` item 41):** A-1b, A-5, A-6, A-7, A-9, A-10, B-3 (1206 0.66 W; the 2010 didn't fit), C-3, C-4 (TVS2200DRVR) and C-8. The board is synced.
+- **Applied in rev A8 (2026-10-14, `hardware/DevBoard/README.md` item 41):** A-1b, A-5, A-6, A-7, A-9, A-10, B-3 (1206 0.66 W; the 2010 didn't fit), C-3, C-4 (TVS2200DRVR) and C-8. The board is synced.
 - **Decided:** S-1 (Shutdown Voltage 2700 mV, ship mode), and B-1 (keep the PGQ04N070; gate-drive test at bring-up). Both are recorded in the checklist.
-- **Closed in rev A8 part 2 (2026-10-14, `DevBoard/README.md` item 42):** A-2 (procedure, Notes and sheet note), D-5 (D105 SMAJ18A on J104), all DOC items (A-11, A-12, B-10, C-12–C-14, D-8–D-11), and every CONFIG item, now written into `bringup-config-checklist.md` and `mcu-io-power-states.md`.
-- **B-4 closed (2026-10-15):** C432/C532 changed to the Panasonic EEH-ZA1E101XP hybrid polymer: same 100 µF and 30 mΩ, leakage limit 25 µA instead of 500 µA (`DevBoard/README.md` item 43).
+- **Closed in rev A8 part 2 (2026-10-14, `hardware/DevBoard/README.md` item 42):** A-2 (procedure, Notes and sheet note), D-5 (D105 SMAJ18A on J104), all DOC items (A-11, A-12, B-10, C-12–C-14, D-8–D-11), and every CONFIG item, now written into `bringup-config-checklist.md` and `mcu-io-power-states.md`.
+- **B-4 closed (2026-10-15):** C432/C532 changed to the Panasonic EEH-ZA1E101XP hybrid polymer: same 100 µF and 30 mΩ, leakage limit 25 µA instead of 500 µA (`hardware/DevBoard/README.md` item 43).
 - **Left to bring-up:** the MINORs that are measurements or production choices (B-2, B-5, B-6, C-2, C-5–C-7, D-3), each with a line in the checklist §5.
 - **Open decisions:** J301's replacement header. (Ship-mode SOC threshold: 5 %, decided 2026-10-15.)
