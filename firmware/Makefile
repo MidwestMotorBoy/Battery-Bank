@@ -2,7 +2,8 @@
 # LP-EM-CC2340R53 LaunchPad for bring-up. Run from Git Bash with gmake.
 #
 #   make                  build for the LaunchPad (BOARD=launchpad)
-#   make flash            flash over the XDS110 with DSLite
+#   make BOARD=devboard   build for the dev board (U301 CC2340R5MODA)
+#   make flash            flash over the XDS110 with DSLite (add BOARD=... too)
 #   make gui              open the pin/peripheral config in the SysConfig GUI
 #   make clean
 #
@@ -36,7 +37,7 @@ OBJS := $(addprefix $(BUILD)/,$(notdir $(APP_SRCS:.c=.obj))) \
 
 CFLAGS := -mcpu=cortex-m0plus -march=thumbv6m -mfloat-abi=soft -mthumb \
           -Oz -gdwarf-3 -Wall -std=c11 \
-          -I app -I $(GEN) \
+          -I app -I $(GEN) -DBOARD_NAME='"$(BOARD)"' \
           $(addprefix @,$(SYSCFG_OPT_FILES)) \
           -I "$(SDK)/source" \
           -I "$(SDK)/kernel/nortos" \

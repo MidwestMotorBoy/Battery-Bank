@@ -18,7 +18,7 @@ ledHeartbeat.$hardware = board.LED_RED;
 
 /* BTN-1: stands in for IRQ_N (falling edge, active low) */
 const btnIrq = GPIO.addInstance();
-btnIrq.$name            = "CONFIG_GPIO_BTN_IRQ";
+btnIrq.$name            = "CONFIG_GPIO_IRQ_N";
 btnIrq.$hardware        = board["BTN-1"];
 btnIrq.interruptTrigger = "Falling Edge";
 

@@ -1,0 +1,99 @@
+/**
+ * MonolithDev dev board, U301 CC2340R5MODA, bring-up build (NoRTOS).
+ *
+ * Pin map from docs/devboard/cc2340-pin-budget.md (rev A7/A8); the state of
+ * every pin per power state is in docs/devboard/mcu-io-power-states.md.
+ *
+ * The module is a CC2340R5 die with 512 KB flash / 64 KB RAM, so it is
+ * configured as the CC2340R53 (same memory map and the DIO numbers are the
+ * die's). Only the 12 DIOs the module bonds out are used: 3, 4, 6, 8, 11,
+ * 12, 16, 17, 18, 20, 21, 24.
+ *
+ * @cliArgs --device "CC2340R53" --package "RGE" --part "Default" --rtos "nortos"
+ */
+
+const CCFG   = scripting.addModule("/ti/devices/CCFG");
+const GPIO   = scripting.addModule("/ti/drivers/GPIO");
+const UART2  = scripting.addModule("/ti/drivers/UART2");
+const I2C    = scripting.addModule("/ti/drivers/I2C");
+
+/* ---- Outputs: every one comes up in its safe state (rule 7) ------------- */
+
+/* DIO12 LED_DRV: R306 330R + D301 red to GND; high = on, high drive */
+const ledHeartbeat = GPIO.addInstance();
+ledHeartbeat.$name              = "CONFIG_GPIO_LED_HEARTBEAT";
+ledHeartbeat.mode               = "Output";
+ledHeartbeat.initialOutputState = "Low";
+ledHeartbeat.outputStrength     = "High";
+ledHeartbeat.gpioPin.$assign    = "DIO12";
+
+/* DIO24 CHG_INH: high = charging inhibited (R417/R517 pull-ups hold it high
+ * in reset). Drive it low only from the supervision loop in S0. */
+const chgInh = GPIO.addInstance();
+chgInh.$name              = "CONFIG_GPIO_CHG_INH";
+chgInh.mode               = "Output";
+chgInh.initialOutputState = "High";
+chgInh.outputStrength     = "High";
+chgInh.gpioPin.$assign    = "DIO24";
+
+/* DIO3 EN_5V1, DIO4 EN_5V2: TPS62933 enables, 100k pull-downs. Low = PP5V off.
+ * Never enable LFXT on these pins (no 32 kHz crystal fitted). */
+const en5v1 = GPIO.addInstance();
+en5v1.$name              = "CONFIG_GPIO_EN_5V1";
+en5v1.mode               = "Output";
+en5v1.initialOutputState = "Low";
+en5v1.gpioPin.$assign    = "DIO3";
+
+const en5v2 = GPIO.addInstance();
+en5v2.$name              = "CONFIG_GPIO_EN_5V2";
+en5v2.mode               = "Output";
+en5v2.initialOutputState = "Low";
+en5v2.gpioPin.$assign    = "DIO4";
+
+/* DIO21 3V3_SLEEP: TPS62177 SLEEP. High = normal mode (R313 pulls it up in
+ * reset). Low only in S2, and back high before any deliberate reset: it is
+ * also the ROM bootloader's default trigger pin (see CCFG below). */
+const sleep3v3 = GPIO.addInstance();
+sleep3v3.$name              = "CONFIG_GPIO_3V3_SLEEP";
+sleep3v3.mode               = "Output";
+sleep3v3.initialOutputState = "High";
+sleep3v3.gpioPin.$assign    = "DIO21";
+
+/* ---- Inputs -------------------------------------------------------------- */
+
+/* DIO11 IRQ_N: wire-OR of the two TPS25751 IRQs and the gauge BTP, open
+ * drain, R314 47k external pull-up. Internal pull off, falling-edge wake. */
+const irqN = GPIO.addInstance();
+irqN.$name            = "CONFIG_GPIO_IRQ_N";
+irqN.mode             = "Input";
+irqN.pull             = "None";
+irqN.interruptTrigger = "Falling Edge";
+irqN.gpioPin.$assign  = "DIO11";
+
+/* ---- UART0 on J302 (TX RX G), through R322/R323 1k ----------------------- */
+const uartLog = UART2.addInstance();
+uartLog.$name                = "CONFIG_UART_LOG";
+uartLog.uart.$assign         = "UART0";
+uartLog.uart.txPin.$assign   = "DIO18";
+uartLog.uart.rxPin.$assign   = "DIO20";
+uartLog.rxPinInstance.pull   = "Pull Up";   /* idle high when no adapter is attached */
+
+/* ---- I2C0: gauge (0x0B), TPS25751 ×2 (0x20, 0x21); 3.3k pull-ups via R312 */
+const i2cBus = I2C.addInstance();
+i2cBus.$name               = "CONFIG_I2C_BUS";
+i2cBus.i2c.$assign         = "I2C0";
+i2cBus.i2c.sclPin.$assign  = "DIO6";
+i2cBus.i2c.sdaPin.$assign  = "DIO8";
+
+/*
+ * CCFG (review 4 A-1, A-8):
+ * - LF clock from LF RCOSC: no 32 kHz crystal on the board.
+ * - The default FCFG bootloader is triggered by DIO21 low, and DIO21 is
+ *   3V3_SLEEP, driven low in S2. Keep the serial bootloader for recovery
+ *   but turn the pin trigger off, so a reset from S2 can't strand the MCU
+ *   in the bootloader.
+ */
+CCFG.srcClkLF          = "LF RCOSC";
+CCFG.bldrSetting       = "Default FCFG bootloader, with CCFG settings";
+CCFG.bldrEnabled       = true;
+CCFG.pinTriggerEnabled = false;
