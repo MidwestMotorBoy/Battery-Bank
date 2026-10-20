@@ -119,6 +119,7 @@ The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), along
     - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`Production/tools/make_board.py` imports it from `monolith_shell.py`).
     - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
     - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
+- **Home-print kit:** `monolith_print_kit.py` writes `print_kit/`. It holds FDM print-pose STLs of the side tray, fit coupons, the TPU caps with their modifiers, ballastable dummy cells, a dummy board and a cover stand-in. Settings, ballast and assembly are in `print_kit/README.md`. It also needs trimesh and manifold3d.
 - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
 - `monolith_side_renders.py` renders the side tray's drop design:
     - `monolith_side_exploded.png`: assembled and exploded views;
