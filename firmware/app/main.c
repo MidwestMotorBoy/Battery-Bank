@@ -90,9 +90,12 @@ static void mainThread(uint32_t resetReason)
         /* Once a second, so the UART wiring can be checked without a reset */
         if ((++ticks & 1) == 0)
         {
-            char line[48];
-            snprintf(line, sizeof line, "tick %lu btn=%u irqs=%lu\r\n", (unsigned long)(ticks / 2),
-                     (unsigned)GPIO_read(CONFIG_GPIO_BTN_IRQ), (unsigned long)irqCount);
+            /* Reset reason repeated here: the banner is gone before a
+             * terminal can reconnect after a power cycle */
+            char line[80];
+            snprintf(line, sizeof line, "tick %lu btn=%u irqs=%lu rst=%s\r\n", (unsigned long)(ticks / 2),
+                     (unsigned)GPIO_read(CONFIG_GPIO_BTN_IRQ), (unsigned long)irqCount,
+                     resetReasonName(resetReason));
             logStr(line);
         }
         if (irqSeen)
