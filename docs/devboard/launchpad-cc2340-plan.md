@@ -23,9 +23,10 @@ Firmware lives in [`../../firmware/`](../../firmware/README.md). Claude writes t
 
 1. [ ] On the LP-MSPM0G3519, pull the NRST, SWDIO, SWCLK, TXD and RXD jumpers on J101 so its own MSPM0 is off the probe lines.
 2. [ ] **Before plugging in, measure J102 pin 1 against GND** with the LP-MSPM0G3519 on USB. Write down the voltage. This answers the open J301 question: does the probe drive 3.3 V onto the target?
-3. [ ] Connect J102 → 10-pin cable → LaunchPad P4, plus the 2-wire power cable, polarity checked.
-4. [ ] UniFlash: new configuration, CC2340R53, Texas Instruments XDS110 USB Debug Probe. "Verify" (connect) must read the device. Save the `.ccxml`; `make flash` will use it.
-5. [ ] Flash `firmware/build/launchpad/batterybank_launchpad.out`. Expected: red LED blinks at 1 Hz; the XDS110 UART COM port at 115200 8N1 shows the banner and the reset reason; BTN-1 prints a line.
+3. [x] Connect J102 → 10-pin cable → LaunchPad P4, plus the 2-wire power cable, polarity checked. The 10-pin cable carries SWD only; the log UART is on P3, so add two wires: LaunchPad **DIO20** (TX) → J101 XDS110-side **TXD >>**, and **DIO22** (RX) → XDS110-side **RXD <<**. J101's labels name the target's side of the line, so TX goes to TXD. A loose 10-pin cable shows up as DSLite error -615 (bad SWD header).
+4. [x] UniFlash: new configuration, CC2340R53, Texas Instruments XDS110 USB Debug Probe. "Verify" (connect) must read the device. Saved as `firmware/targets/lp_em_cc2340r53_xds110.ccxml`; `gmake flash` uses it.
+5. [x] Flash `firmware/build/launchpad/batterybank_launchpad.out`. Expected: red LED blinks at 1 Hz; the XDS110 UART COM port at 115200 8N1 shows the banner and the reset reason, then `tick N` every second; BTN-1 prints a line.
+   - 2026-10-20: the first UniFlash load failed main-flash verify (CRC32 mismatch) on every retry. A **Chip Erase** before programming fixed it, so set UniFlash's erase method to Chip Erase. Its verify still flags the CCFG user record at 0x4E020750 afterwards. The loader skips that record on purpose, so the flag isn't a failed flash.
 6. [ ] Reset with the LaunchPad reset button, then power-cycle: the banner shows `PIN` and then `POR`.
 
 ## 2. Days 2–4: dev-board risks on the LaunchPad

@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -71,9 +72,17 @@ static void mainThread(uint32_t resetReason)
     GPIO_setCallback(CONFIG_GPIO_BTN_IRQ, irqCallback);
     GPIO_enableInt(CONFIG_GPIO_BTN_IRQ);
 
+    uint32_t ticks = 0;
     while (1)
     {
         GPIO_toggle(CONFIG_GPIO_LED_HEARTBEAT);
+        /* Once a second, so the UART wiring can be checked without a reset */
+        if ((++ticks & 1) == 0)
+        {
+            char line[24];
+            snprintf(line, sizeof line, "tick %lu\r\n", (unsigned long)(ticks / 2));
+            logStr(line);
+        }
         if (irqSeen)
         {
             irqSeen = false;

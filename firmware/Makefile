@@ -22,6 +22,7 @@ SYSCFG  := boards/$(BOARD).syscfg
 
 CC      := "$(TICLANG_ARMCOMPILER)/bin/tiarmclang"
 OBJCOPY := "$(TICLANG_ARMCOMPILER)/bin/tiarmobjcopy"
+CRCTOOL := "$(SDK)/tools/common/crc_tool/crc_tool"
 SYSCFG_CMD := "$(SYSCONFIG_TOOL)" --compiler ticlang --product "$(SDK)/.metadata/product.json"
 
 # Ask SysConfig which files it will generate (TI does the same at parse time)
@@ -69,6 +70,9 @@ $(BUILD)/%.obj: $(GEN)/%.c $(SYSCFG_H_FILES) $(SYSCFG_OPT_FILES) | $(BUILD)
 $(BUILD)/$(NAME).out: $(OBJS)
 	@echo "LD  $@"
 	@$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) -o $@
+	@# CCFG and image CRCs: the linker leaves them 0, TI's crc_tool fills them
+	@# in (as the SDK example makefiles do). Without this the flash verify fails.
+	@$(CRCTOOL) patch-image --elf $@ --symbol-prefix ti_utils_build_GenMap_sym_CRC --output $@
 
 $(BUILD)/$(NAME).hex: $(BUILD)/$(NAME).out
 	@$(OBJCOPY) -O ihex $< $@
