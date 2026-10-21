@@ -127,6 +127,7 @@ The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), along
     - `monolith_side_parts.png`: the cap zones, the tray and the pads, plus mass, drop and print-setting tables;
     - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions;
     - `monolith_side_hero.png`: the assembled pack with its laser-marked label, in two colourways JLC3DP sells (MJF PA12 black or grey, TPU black or blue).
+    - `monolith_side_standoffs.png` (`monolith_standoff_detail.py`): what the four cover standoffs H101–H104 do, with a 3D view, a section through two of them, and the squeeze load path, next to the two real cover screws.
 - **Cover heatsink and label (prototype):** `monolith_cover_label.py` builds the aluminium cover for JLCCNC sheet metal: 1.0 mm 5052, black anodized, laser-marked.
     - It needs shapely and matplotlib as well, and KiCad 10's `kicad-cli` for the STEP.
     - **Outputs:**
