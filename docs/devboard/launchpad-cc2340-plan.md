@@ -62,6 +62,14 @@ Results go in a new section at the end of this file, with dates.
 - `STALLEN = 0`: the counter kept counting down while halted (81221 → 14772 in 2 s, about 32.8 k/s, matching the 32768 Hz LF clock). The chip reset about 3 s in (`rst=WATCHDOG`), and the debugger lost the target (DSLite -615).
 - **Decision:** production firmware sets stall ON explicitly when it starts the watchdog. That is TI's Watchdog driver default (`Watchdog_DEBUG_STALL_ON`). The bit only matters while a debugger has the CPU halted, so it costs nothing in the field, and breakpoints stay usable with the watchdog running.
 
+**T5 — pass, 2026-10-20.** Test build: `gmake EXTRA_CFLAGS=-DBRINGUP_T5`. The loop sleeps up to 10 s per pass, the green LED (DIO15) is driven high, and a Power notify counts Standby entries.
+- The green LED stayed on through Standby: outputs hold.
+- `stby` climbed on every line: Standby was really entered.
+- Each BTN-1 press woke the chip at once (`wake: IRQ`).
+- Holding BTN-1 low for 20 s gave one wake, then only 10 s timeouts. Release didn't wake (falling edge only).
+- Control: the same results with no change to `EVTULL_WKUPMASK`. TI's stock `Power_init` (RTC only in that mask) still lets a GPIO edge wake Standby, so the extra wake-mask write added during Day 1 was removed.
+- Difference from P0: the LaunchPad needs BTN-1's internal pull-up (its external one doesn't work). On P0, IRQ_N has R314 (47 kΩ) and the internal pull stays off.
+
 ## 3. After that: firmware before the dev board
 
 - [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), BQ25756 `TS_ADC` through the TPS25751 `I2Cr`/`I2Cw` tasks (no TMP1075s since rev A8).
