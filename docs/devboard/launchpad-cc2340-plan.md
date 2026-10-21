@@ -21,13 +21,17 @@ Firmware lives in [`../../firmware/`](../../firmware/README.md). Claude writes t
 
 ## 1. Day 1: probe and toolchain
 
-1. [ ] On the LP-MSPM0G3519, pull the NRST, SWDIO, SWCLK, TXD and RXD jumpers on J101 so its own MSPM0 is off the probe lines.
-2. [ ] **Before plugging in, measure J102 pin 1 against GND** with the LP-MSPM0G3519 on USB. Write down the voltage. This answers the open J301 question: does the probe drive 3.3 V onto the target?
+1. [x] On the LP-MSPM0G3519, pull the NRST, SWDIO, SWCLK, TXD and RXD jumpers on J101 so its own MSPM0 is off the probe lines.
+2. [x] **Before plugging in, measure J102 pin 1 against GND** with the LP-MSPM0G3519 on USB. Write down the voltage. This answers the open J301 question: does the probe drive 3.3 V onto the target?
+   - 2026-10-20: **3.3 V.** The saved `.ccxml` has Power Selection = "Probe supplied power", 3.3 V, so the XDS110 drives pin 1. That's fine for the LaunchPad. **For P0 use a separate `.ccxml` set to "Target supplied power"**: J301 pin 1 is the board's 3V3 rail (TPS62177 output, U301, U401, U501), and probe power would back-feed it. With target-supplied power, pin 1 is only a sense input and J301 needs no change. (An earlier reading of about 1 V was probably taken while the probe wasn't driving.)
 3. [x] Connect J102 → 10-pin cable → LaunchPad P4, plus the 2-wire power cable, polarity checked. The 10-pin cable carries SWD only; the log UART is on P3, so add two wires: LaunchPad **DIO20** (TX) → J101 XDS110-side **TXD >>**, and **DIO22** (RX) → XDS110-side **RXD <<**. J101's labels name the target's side of the line, so TX goes to TXD. A loose 10-pin cable shows up as DSLite error -615 (bad SWD header).
 4. [x] UniFlash: new configuration, CC2340R53, Texas Instruments XDS110 USB Debug Probe. "Verify" (connect) must read the device. Saved as `firmware/targets/lp_em_cc2340r53_xds110.ccxml`; `gmake flash` uses it.
 5. [x] Flash `firmware/build/launchpad/batterybank_launchpad.out`. Expected: red LED blinks at 1 Hz; the XDS110 UART COM port at 115200 8N1 shows the banner and the reset reason, then `tick N` every second; BTN-1 prints a line.
    - 2026-10-20: the first UniFlash load failed main-flash verify (CRC32 mismatch) on every retry. A **Chip Erase** before programming fixed it, so set UniFlash's erase method to Chip Erase. Its verify still flags the CCFG user record at 0x4E020750 afterwards. The loader skips that record on purpose, so the flag isn't a failed flash.
-6. [ ] Reset with the LaunchPad reset button, then power-cycle: the banner shows `PIN` and then `POR`.
+6. [x] Reset, then power-cycle: the reset reason shows `PIN` and then `POR`. The LaunchPad has no reset button: tap its RST pin to GND briefly. The banner is gone before CCS reconnects after a power cycle, so every `tick` line repeats the reason (`rst=...`).
+   - 2026-10-20: `SWD (debugger)`, `POR` and `PIN` all seen. BTN-1 floated (no working external pull-up on this board): after the first press it read 0 for 90 s. With the internal pull-up and Standby on, 10 presses gave 11-12 IRQs (switch bounce). On P0, R314 (47 kΩ to 3V3) pulls IRQ_N up.
+
+**Day 1 done 2026-10-20.**
 
 ## 2. Days 2–4: dev-board risks on the LaunchPad
 
