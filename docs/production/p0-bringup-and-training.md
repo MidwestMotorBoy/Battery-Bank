@@ -4,7 +4,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 
 ## Equipment
 
-- **SWD:** XDS110 (LP-MSPM0G3519 LaunchPad) on J301.
+- **SWD:** XDS110 (LP-MSPM0G3519 LaunchPad) on J301. **Use a `.ccxml` with Power Selection = "Target supplied power"**, not the LaunchPad's `lp_em_cc2340r53_xds110.ccxml`. That one is set to "Probe supplied power", and the probe then drives 3.3 V on pin 1 (measured 2026-10-20), which is J301 VCC, the board's 3V3 rail. Power the board from its own pack.
 - **Gauge:** EV2400 (clone) with TI BQStudio on J302.
 - **Cable:** one Tag-Connect TC2030-IDC-NL serves both J301 and J302; its 2×3 0.1″ end takes the jumper wires. Add a TC2030-CLIP to hold it hands-free during long runs.
 - **Power:**
