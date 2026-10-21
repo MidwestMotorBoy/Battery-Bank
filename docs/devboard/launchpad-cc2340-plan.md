@@ -70,6 +70,12 @@ Results go in a new section at the end of this file, with dates.
 - Control: the same results with no change to `EVTULL_WKUPMASK`. TI's stock `Power_init` (RTC only in that mask) still lets a GPIO edge wake Standby, so the extra wake-mask write added during Day 1 was removed.
 - Difference from P0: the LaunchPad needs BTN-1's internal pull-up (its external one doesn't work). On P0, IRQ_N has R314 (47 kΩ) and the internal pull stays off.
 
+**T6 — pass, 2026-10-20.** Firmware: TI's `basic_ble` (SDK 9.23) copied unchanged into `firmware/ble/`, built with `gmake -C ble` (187 KB flash, 31 KB RAM). The only change is Low Frequency Clock Source = LF RCOSC in the SysConfig GUI. The generated output then differs from TI's only in `PowerLPF3_selectLFOSC()` and `SRC_CLK_IS_LFOSC=1`; the link layer takes the default 1500 ppm extra allowance.
+- On the chip, CKMD `LFCLKSEL` reads LFOSC and `LFCLKSTAT` reads GOOD, so the LaunchPad crystal is unused.
+- Phone (TI SimpleLink Connect / nRF Connect) found it, connected, and wrote and read FFF1 (0x44 seen on the board).
+- The connection held at least 62 min (22:11 to 23:14) with the phone screen locked. It ended with reason 19 (phone ended it), not 8 (supervision timeout, which drift would give). Advertising restarted, and the phone reconnected at 2 Mbps PHY.
+- For P0: keep LF RCOSC with `SRC_CLK_IS_LFOSC=1`. The example's console prints `Terminated - reason = N`, a cheap field check.
+
 ## 3. After that: firmware before the dev board
 
 - [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), BQ25756 `TS_ADC` through the TPS25751 `I2Cr`/`I2Cw` tasks (no TMP1075s since rev A8).
