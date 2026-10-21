@@ -16,7 +16,7 @@ from monolith_render import camera, board_g, vol, CELL_G
 HERE = os.path.dirname(os.path.abspath(__file__))
 SS = 2
 C = dict(shell=(214, 214, 208), cover=(196, 204, 222), board=(52, 140, 84), cell=(84, 132, 196), soft=(250, 210, 160),
-         firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200),
+         firm=(236, 156, 80), corner=(186, 88, 40), band=(118, 72, 50), eva=(222, 118, 168), paper=(176, 128, 98), spacer=(70, 180, 200), frame=(70, 180, 200), strip=(40, 110, 70), contact=(235, 190, 60),
          mica=(212, 180, 56), shim=(54, 166, 166), ble=(150, 175, 225), nickel=(150, 150, 140), wire=(200, 50, 50))
 INK, MUTED, RULE, PANEL, ACCENT = (34, 34, 38), (110, 112, 118), (222, 222, 226), (247, 247, 249), (31, 78, 121)
 LEADER = (150, 152, 158)
@@ -28,15 +28,15 @@ def mv(V, dx=0, dy=0, dz=0): return V + [dx, dy, dz]
 # ---------------- the assembly: (key, part number, mesh, colour) ----------------
 # part numbers follow the assembly order; the caps are four print-zone meshes each
 PARTS = [(1, 'Printed tray', 'MJF PA12 nylon', 'shell'), (2, 'Side liner 0.2 mm', 'fish paper', 'wrap'),
-         (3, 'Floor spacer 3.8 mm', 'TPU 95A, ~20 % gyroid', 'pad_floor'), (4, 'Floor pad 1.0 mm', 'EVA foam', 'eva_floor'),
+         (3, 'Cell frame: bottom holder, spring rings', 'TPU 95A', 'holder'), (4, 'Cell frame: top plate, bars, web', 'TPU 95A', 'frame'),
          (5, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (6, 'Insulator rings on + ends (4)', 'fish paper 0.2', 'rings'),
-         (17, 'Nickel: 3 series strips, 2 PACK tabs', 'nickel 0.15 x 7', 'nickel'), (18, 'Sense leads CELL1-3', '28 AWG silicone', 'wire'),
+         (17, 'Nickel: 3 series strips, 2 PACK tabs', 'nickel 0.15 x 7', 'nickel'), (18, 'Sense leads: CELL1-3, 1N, 4P', '28 AWG silicone', 'wire'),
          (20, 'PACK+ / PACK- leads', '18 AWG silicone', 'lead'),
-         (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Top pad 1.0 mm', 'EVA foam', 'pad_top'),
+         (7, 'Mica cross 0.2 mm', 'mica', 'mica'), (8, 'Sense strip, 5 pads', 'PCB 0.6 mm, ENIG', 'strip'),
          (9, 'Board insulator 0.2 mm', 'fish paper', 'insul'), (10, 'Board 1.6 mm, coated + staked', 'FR4, 6 layers', 'board'),
          (11, 'Board shim', 'TPU 95A', 'shim'), (12, 'USB-C hold-downs, 2 x 1 mm', 'EVA foam', 'hold'),
          (13, 'Cover 1.0 mm, 2 x M2', 'aluminium', 'cover'),
-         (14, 'EVA lanes, 3 x 1 mm, behind the board', 'EVA foam', 'lanes'),
+         (14, 'Spring contacts (5), on B.Cu', 'gold', 'contacts'),
          (19, 'Cover standoffs (4), SMD 3.6 mm', 'brass / steel', 'stand'),
          (15, 'Bottom crush cap', 'TPU 95A lattice', 'capb'), (16, 'Top crush cap', 'TPU 95A lattice', 'capt')]
 PARTS.sort(key=lambda r: r[0])
@@ -49,11 +49,10 @@ def assembly():
     A += [('nickel', P.nickel_strips(), C['nickel']), ('wire', P.sense_wires(), C['wire']),
           ('lead', P.pack_leads('PACK+'), (200, 40, 40)), ('lead', P.pack_leads('PACK-'), (45, 45, 50)),
           ('mica', P.mica_cross(), C['mica']), ('wrap', P.side_pad(), C['paper']),
-          ('pad_floor', P.end_pad('bottom', 'spacer'), C['spacer']), ('eva_floor', P.end_pad('bottom'), C['eva']),
-          ('pad_top', P.end_pad('top'), C['eva']),
+          ('holder', P.bottom_holder(), C['frame']), ('frame', P.top_frame(), C['frame']), ('strip', P.sense_strip(), C['strip']),
           ('insul', P.insulator(), C['paper']), ('board', P.side_board_dummy(), C['board']),
           ('shim', P.board_shim(), C['shim']), ('hold', P.hold_pads(), C['eva']), ('cover', P.side_cover(), C['cover']),
-          ('lanes', P.eva_lanes(), C['eva']), ('ble', P.ble_module(), C['ble']),
+          ('contacts', P.spring_contacts(), C['contact']), ('ble', P.ble_module(), C['ble']),
           ('stand', P.cover_standoffs(), C['nickel'])]
     for z in ('soft', 'firm', 'corner', 'band'):
         A.append(('capb_' + z, P.side_cap(z), C[z]))
@@ -232,7 +231,7 @@ def load_from(d, name):
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         dt = np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')])
         return np.frombuffer(f.read(50*n), dtype=dt)['v'].reshape(-1, 3, 3).astype(float)
-RHO = dict(nickel=8.9, wire=3.0, lead=3.5, lanes=0.20, stand=3.0, shell=1.01, cover=2.70, pad_floor=0.30, eva_floor=0.20, pad_top=0.20, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
+RHO = dict(nickel=8.9, wire=3.0, lead=3.5, contacts=3.0, strip=1.9, holder=1.0, frame=1.0, stand=3.0, shell=1.01, cover=2.70, wrap=1.2, mica=2.8, insul=1.2, hold=0.20, shim=1.21)
 def masses(A, v1_dir):
     m = {}
     for k, V, _ in A:
@@ -252,9 +251,9 @@ if __name__ == '__main__':
     v1_dir = sys.argv[1] if len(sys.argv) > 1 else None
     A = assembly(); m, v1 = masses(A, v1_dir); total = sum(m.values())
     cx1, cy1 = S.sb_cell_xy[(1, -1)]; cx2 = S.sb_cell_xy[(-1, -1)][0]
-    LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA foam', C['eva']),
+    LEG = [('tray', C['shell']), ('cells', C['cell']), ('board', C['board']), ('Al cover', C['cover']), ('EVA (hold-downs)', C['eva']),
            ('mica', C['mica']), ('fish paper', C['paper']), ('TPU soft 15 %', C['soft']), ('TPU firm 30 %', C['firm']),
-           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU floor spacer', C['spacer']), ('TPU shim', C['shim']), ('BLE module', C['ble']), ('nickel', C['nickel']), ('sense wire', C['wire']), ('PACK lead', (200, 40, 40))]
+           ('TPU corners 60 %', C['corner']), ('TPU band, solid', C['band']), ('TPU cell frame', C['frame']), ('sense strip', C['strip']), ('spring contact', C['contact']), ('TPU shim', C['shim']), ('BLE module', C['ble']), ('nickel', C['nickel']), ('sense wire', C['wire']), ('PACK lead', (200, 40, 40))]
     w, d, L = SIZE()
 
     # ================= 1. assembled + exploded + parts list =================
@@ -274,8 +273,8 @@ if __name__ == '__main__':
                 475, 'r', 150)
     # exploded
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
-    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), nickel=(58, 0, 0), wire=(58, 0, 0), lead=(58, 0, 0), pad_floor=(58, 0, -24), eva_floor=(58, 0, -12), pad_top=(58, 0, 16),
-              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), lanes=(74, 0, 0), ble=(108, 0, 0), stand=(108, 0, 0))
+    EX = dict(shell=(0, 0, 0), wrap=(30, 0, 0), cell=(58, 0, 0), mica=(58, 0, 0), nickel=(58, 0, 0), wire=(58, 0, 0), lead=(58, 0, 0), holder=(58, 0, -18), frame=(74, 0, 14), strip=(74, 0, 14),
+              insul=(88, 0, 0), board=(108, 0, 0), shim=(108, 0, -14), hold=(128, 0, 0), cover=(146, 0, 0), contacts=(108, 0, 0), ble=(108, 0, 0), stand=(108, 0, 0))
     ex, gid = [], []
     for k, V, c in A:
         dd = EX.get(k, (0, 0, -40) if k.startswith('capb') else (0, 0, 40))
@@ -287,8 +286,8 @@ if __name__ == '__main__':
         a = visible_anchor(pid, [i for i, x in enumerate(gid) if x == g_])
         if a is not None: anchors[g_] = a
     # balloon direction per part (screen degrees, 0 = right, 90 = up), chosen to land in clear space
-    BAL = dict(shell=180, wrap=240, pad_floor=250, eva_floor=330, cell=65, mica=300, pad_top=95, insul=125, board=75, shim=300,
-               hold=60, cover=0, lanes=110, ble=20, stand=300, nickel=340, wire=30, lead=290, capb=180, capt=180)
+    BAL = dict(shell=180, wrap=240, holder=250, frame=95, strip=330, contacts=300, cell=65, mica=300, insul=125, board=75, shim=300,
+               hold=60, cover=0, ble=20, stand=300, nickel=340, wire=30, lead=290, capb=180, capt=180)
     DIST = dict(capb=150, capt=150)
     balloons = {g_: np.array([ax + DIST.get(g_, 80)*np.cos(np.radians(BAL[g_])), ay - DIST.get(g_, 80)*np.sin(np.radians(BAL[g_]))])
                 for g_, (ax, ay) in anchors.items()}
@@ -328,7 +327,7 @@ if __name__ == '__main__':
                  (tp(S.sb_xb0 + 0.8, 12), '1.6 mm board, coated and staked'),
                  (tp(S.sb_x_cv0 + 0.5, 3), 'Aluminium cover'),
                  (tp(aI + 0.1, -6), '0.2 mm fish paper on the cells'),
-                 (tp((aI + S.sb_xb0)/2 + 0.1, -S.pocket_r), 'EVA lane, 3 x 1 mm: holds the\ncells off the board'),
+                 (tp((aI + S.sb_xb0)/2 + 0.1, -S.pocket_r), 'TPU frame bar: holds the\ncells off the board'),
                  (tp(S.sb_xb0 - 1.0, 19.0), 'BLE module on B.Cu: radiates out\nthrough the side wall, the board\nground shields it from the cover'),
                  (tp(0.6, -16), 'Mica cross 0.2 mm in the 0.3 mm\ngaps between the cells'),
                  (tp(S.sb_x_cv0 + 0.5, -aI - 0.25), 'Cover rests in the rebates')], 1070, 'r', 250)
@@ -344,10 +343,10 @@ if __name__ == '__main__':
     sh.callouts([(tb(-12, S.SB_H + S.SB_CAP_T - 2), 'Top crush cap: 4 mm soft\n+ 4 mm firm lattice'),
                  (tb(-S.SB_CAP_OUT[2] + 1, S.SB_H - 4), 'Solid band over the tray end'),
                  (tb(-S.a_sb + 0.1, S.SB_H - S.SB_GROOVE_Z), 'Bead in the band snaps into a' + chr(10) + 'groove round the tray'),
-                 (tb(cx1 - 6, S.sb_z_top_in - 0.5), 'Top pad cut-out over the C1 + cap'),
+                 (tb(cx1 - 6, S.sb_z_top_in - 0.5), 'TPU top plate, cut-out over the C1 + cap'),
                  (tb(-2, 55), 'Mica between C1 and C2'),
-                 (tb(cx2 + 9, S.SB_END_T + 2.4), '3.8 mm TPU spacer + 1 mm EVA:\n~3 mm more stroke for the cells\nin bottom-down drops'),
-                 (tb(cx2 - 2, S.SB_END_T + 3.5), 'Cut-out over the C2 + cap:\nthe cell vent is not blocked'),
+                 (tb(cx2 + 9, S.SB_END_T + 3.4), 'TPU bottom holder: spring rings\nunder each cell (printed 0.4 mm\nproud, so the stack is preloaded)'),
+                 (tb(cx2 - 2, S.SB_END_T + 3.5), 'Ring and base open over the C2 +\ncap: the cell vent is not blocked'),
                  (tb(-10, -S.SB_CAP_T + 2), 'Bottom crush cap, band wraps\n9 mm up the sides')], x0 + 300, 'l', 170)
     sh.callouts([(tb(S.sb_port_x, S.SB_H + S.SB_CAP_T - 3), 'Port well: the plug reaches the\nUSB-C through the cap'),
                  (tb(S.sb_xb0 + 0.8, S.sb_zb1 + 0.17), 'Board top stop: drop loads go\nboard edge -> tray, not via USB-C'),
@@ -377,14 +376,12 @@ if __name__ == '__main__':
               'One port well for both plugs,\non the cover side'),
              (pick(lambda k: k == 'shell'), camera((1.0, -0.55, 0.45)), 3.5, 'Tray',
               'Open on the board side only;\nM2 insert pillars in the corners'),
-             (pick(lambda k: k in ('pad_floor', 'eva_floor', 'pad_top')), camera((0.6, -0.9, 0.9)), 4.6, 'Floor spacer and EVA pads',
-              'Cut-outs over the + caps,\nnotch for the rib')]
+             (pick(lambda k: k in ('holder', 'frame', 'strip')), camera((0.75, -0.9, 0.55)), 3.6, 'TPU cell frame',
+              'Bottom holder with spring rings; top\nplate, bars and the sense-strip web')]
     cw = 640
     for i, (parts, Rv, pxv, t, s) in enumerate(cards):
         x = 40 + i*(cw + 20)
         sh.rect(x, 128, x + cw, 640, fill=PANEL, r=10)
-        if i == 3:   # floor pad in front, top pad behind it
-            parts = [(mv(V, 0, 0, -(S.sb_z_cell1 - S.SB_END_T) + 40) if V[..., 2].mean() > 40 else V, c) for V, c in parts]
         sh.render(centre(parts), Rv, (x + cw/2, 390), pxv)
         sh.text(x + 24, 560, t, 18, True); sh.text(x + 24, 590, s, 14, fill=MUTED, spacing=3)
     # mass table
@@ -392,7 +389,8 @@ if __name__ == '__main__':
     sh.panel_title(x, y0, 'Mass', 820)
     rows = [['Tray (MJF PA12)', f"{m['shell']:.1f}"], ['Aluminium cover', f"{m['cover']:.1f}"],
             ['TPU crush caps, 2, at print fill', f"{m['capb'] + m['capt']:.1f}"],
-            ['TPU floor spacer, EVA pads', f"{m['pad_floor'] + m['eva_floor'] + m['pad_top']:.1f}"],
+            ['TPU cell frame (2 parts)', f"{m['holder'] + m['frame']:.1f}"],
+            ['Sense strip, spring contacts', f"{m['strip'] + m['contacts']:.1f}"],
             ['Fish paper: liner, insulator, rings', f"{m['wrap'] + m['insul'] + m['rings']:.1f}"],
             ['Mica cross', f"{m['mica']:.1f}"], ['EVA hold-downs and TPU shim', f"{m['hold'] + m['shim']:.1f}"],
             ['Board, 1.6 mm (estimate)', f"{m['board']:.1f}"], ['Cells, 4 x 71 g', f"{m['cell']:.1f}"], ['Pack total', f'{total:.1f}']]
@@ -410,13 +408,13 @@ if __name__ == '__main__':
     y = sh.table(x, y0 + 46, ['', f'>{S.SB_CAP_T:g} mm caps (model)', '>10 mm caps'], rows, [250, 230, 200], 14)
     for i, s in enumerate((f'Stroke is 65 % of the cap thickness, with a 1.3 factor for a real foam curve.',
                            'Benchmark: the UN 38.3 T4 shock is 150 g for 6 ms. The cells\' margin above that is not published.',
-                           'Bottom-down drops add ~3 mm of floor pad for the cells; top-down only the 1 mm top pad.',
+                           'Inside, the spring rings and the 1.2 mm top plate keep the cells preloaded; the caps do the crushing.',
                            'Corner drops: the dense noses crush progressively, where soft foam would bottom out.')):
         sh.text(x, y + 18 + 26*i, s, 14, fill=MUTED)
     # materials table
     x = 1840; sh.panel_title(x, y0, 'Materials and print settings (starting point)', 820)
     rows = [['Caps', 'TPU 95A; modifier STLs: soft 15 %,'], ['', 'slab 30 %, corners 60 %, band solid'],
-            ['Cell-end pads', '1 mm EVA, cut-outs over the + caps;'], ['', 'floor: on a 3.8 mm TPU spacer (20 % gyroid)'],
+            ['Cell frame', 'TPU 95A, 2 parts; holder rings print 0.4 mm proud'], ['Sense strip', '0.6 mm PCB, ENIG; 5 gold spring contacts on B.Cu'],
             ['Fish paper', '0.2 mm: wall liner, board insulator,'], ['', '+ end rings (21 x ~10 mm, vents open)'],
             ['Mica', '0.2 mm sheet, two slotted pieces'],
             ['Board', 'conformal coat; soft silicone staking'], ['', 'BLE antenna end left bare'],
@@ -426,10 +424,10 @@ if __name__ == '__main__':
 
     # ================= 4. pack connections =================
     sh = Sheet(2700, 1020)
-    sh.header('Pack connections: the cell module\'s five leads',
-              'The cell module is built on the bench with five leads. The board is lowered over them (threaded through plated holes), '
-              'slid up into the ports, and every lead is soldered on F.Cu from the open side.')
-    conn = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire', 'lead', 'board', 'shim')]
+    sh.header('Pack connections: two soldered leads, five spring contacts',
+              'PACK+/- are 18 AWG leads through plated holes, soldered on F.Cu. CELL1-3 and the Kelvin taps 1N / 4P go to a sense strip on '
+              'the TPU frame; spring contacts on B.Cu land on it as the board drops in and wipe 2.5 mm as it slides up.')
+    conn = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire', 'lead', 'board', 'shim', 'frame', 'strip', 'contacts')]
     sh.panel_title(40, 128, 'From the cover side, below', 820)
     Ra = camera((1.0, -0.75, -0.45)); oa = (290, 700)
     sh.render(conn, Ra, oa, 4.8); pa = proj(Ra, oa, 4.8)
@@ -438,16 +436,15 @@ if __name__ == '__main__':
     sh.callouts([(pa((S.sb_xb1 + 0.6, hN[0], hN[1])), 'PACK- lead (18 AWG) through its\nplated hole, soldered on F.Cu'),
                  (pa((S.sb_xb1 + 0.6, hP[0], hP[1])), 'PACK+ lead'),
                  (pa((S.sb_xb1, 0, S.sb_zb0 - 1.3)), 'Shim under the board\n(fitted after the slide)'),
-                 (pa((S.sb_xb1 + 0.5, S.SB_TAP_HOLES['CELL2'][0], S.SB_TAP_HOLES['CELL2'][1])), 'CELL2 wire through its hole'),
-                 (pa((S.sb_xb1 + 0.5, S.SB_TAP_HOLES['CELL1'][0], S.SB_TAP_HOLES['CELL1'][1])), 'CELL1 and CELL3 wires\nthrough holes below the USB-C')],
+                 (pa((S.sb_xb0 - 1.0, 0.0, 5.0)), 'TPU frame bars hold the\ncells off B.Cu')],
                 590, 'r', 160)
     sh.panel_title(900, 128, 'Behind the board (board hidden)', 820)
-    back = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire', 'lead')]
+    back = [(V, c) for k, V, c in A if k in ('cell', 'mica', 'nickel', 'wire', 'lead', 'frame', 'strip', 'contacts', 'holder')]
     Rb = camera((1.0, 0.35, 0.25)); ob = (1130, 700)
     sh.render(back, Rb, ob, 4.8); pb = proj(Rb, ob, 4.8)
-    sh.callouts([(pb((P.TAP_X, S.SB_TAP_HOLES['CELL3'][0], 60)), 'CELL1 / CELL3 wires run down\nthe groove between C1 and C4\n(5 mm free, beside the mica)'),
-                 (pb((8.0, 9.0, S.sb_z_cell1 + 0.6)), 'Taps start on the top series\nstrips, in slots in the top EVA'),
-                 (pb((P.TAP_X, S.SB_TAP_HOLES['CELL2'][0], 5.5)), 'CELL2 comes from the bottom C2/C3\nstrip in a channel in the floor spacer'),
+    sh.callouts([(pb((P.TAP_X, S.SB_TAP_HOLES['CELL3'][0], 50)), 'CELL1 / CELL3 run down the groove\nbetween C1 and C4 to the strip'),
+                 (pb((S.SB_WEB['x1'], 0, S.SB_CONTACT_Z)), 'Sense strip on the frame web:\nfive pads, long enough for the\n2.5 mm slide; contacts press here'),
+                 (pb((19.2, 0.0, 5.5)), 'CELL2, 1N and 4P run between the\nspring rings, then up to the strip'),
                  (pb((S.SB_LEAD_X, (yP + hP[0]) / 2, S.sb_z_cell0 - 3.8)), 'PACK+ tab, then its lead: down, a\nsideways loop for the 2.5 mm slide,\nup to the hole')],
                 1420, 'r', 160)
     # board face
@@ -469,16 +466,20 @@ if __name__ == '__main__':
         cx, cy = bp(y, z); rr = S.SB_LEAD_PAD/2*ps
         sh.g.ellipse([(cx - rr)*SS, (cy - rr)*SS, (cx + rr)*SS, (cy + rr)*SS], fill=(214, 170, 60), outline=(120, 90, 20), width=SS)
         kx, ky = S.kicad(y, z); labels.append(((cx, cy), f'{n}  {kx:.1f}, {ky:.1f}  (18 AWG)'))
-    for n, (y, z) in S.SB_TAP_HOLES.items():
-        cx, cy = bp(y, z); rr = S.SB_TAP_PAD_D/2*ps
-        sh.g.ellipse([(cx - rr)*SS, (cy - rr)*SS, (cx + rr)*SS, (cy + rr)*SS], fill=(214, 170, 60), outline=(120, 90, 20), width=SS)
-        kx, ky = S.kicad(y, z); labels.append(((cx, cy), f'{n}  {kx:.1f}, {ky:.1f}'))
+    for n, y in S.SB_CONTACTS.items():
+        cx, cy = bp(y, S.SB_CONTACT_Z)
+        sh.rect(cx - 0.6*ps, cy - 0.8*ps, cx + 0.6*ps, cy + 0.8*ps, fill=(235, 190, 60), outline=(120, 90, 20))
+    for y0, y1, z0, z1 in S.sb_lanes():
+        a, b = bp(y0, z1), bp(y1, max(z0, S.sb_zb0))
+        sh.rect(a[0], a[1], b[0], b[1], outline=(70, 180, 200), width=1.5)
+    cx, cy = bp(0, S.SB_CONTACT_Z); kx, ky = S.kicad(0, S.SB_CONTACT_Z)
+    labels.append(((cx, cy), 'B.Cu spring contacts, x ' + ', '.join(f'{100 + y:.0f}' for y in S.SB_CONTACTS.values()) + f', y {ky:.1f}'))
     sh.callouts(labels, x0 + 440, 'r', 180, size=14)
-    sh.text(x0 + 440, 800, 'KiCad coordinates (board centred at 100, 100).\nPACK holes 1.6 mm, taps ~1.0 mm, plated.\n'
+    sh.text(x0 + 440, 815, 'KiCad coordinates (board centred at 100, 100).\nPACK holes 1.6 mm plated. Contacts: 1N, CELL1,\nCELL2, CELL3, 4P, left to right. Blue: frame bars (B.Cu keep-out).\n'
             'Kelvin: take the gauge sense for PACK-\n(VC0 / SRN side) and PACK+ (VC4) from the\npad, not from the current path.', 13, fill=MUTED)
     sh.line([(40, 950), (2660, 950)], RULE, 1.5)
     sh.legend([('cells', C['cell']), ('mica', C['mica']), ('nickel', C['nickel']), ('sense lead', C['wire']), ('PACK+ / PACK- lead', (200, 40, 40)), ('board', C['board']),
-               ('TPU shim', C['shim']), ('pad / hole', (214, 170, 60)), ('BLE module', (170, 190, 225))], 40, 970, 14)
+               ('TPU shim', C['shim']), ('TPU frame', C['frame']), ('sense strip', C['strip']), ('spring contact', C['contact']), ('pad / hole', (214, 170, 60))], 40, 970, 14)
     sh.save('monolith_side_tabs.png')
     # ================= 5. hero: the assembled pack with its label, in colours JLC sells =================
     import monolith_cover_label as CL

@@ -26,13 +26,14 @@ The tray is dimensioned for MJF PA12 (±0.3 mm). FDM holes and slots usually pri
 | `02_cover_standin` | 1 | PETG / PLA | Flat. Stands in for the 1.0 mm aluminium cover: 2 × M2 clearance holes plus the vent hole. |
 | `03_cell_body` | 4 | PLA | Upright, 3 walls. A 21.5 mm can, open at the + end for ballast. |
 | `04_cell_cap` | 4 | PLA | Spigot down, nub up. Glue it into the can: this is the + end. |
-| `05_board_dummy` | 1 | PLA (green) | B.Cu face down. 1.6 mm board with the USB-C envelopes, the 4 cover standoffs, the 3 sense-wire holes and the BLE locating pocket. |
+| `05_board_dummy` | 1 | PLA (green) | B.Cu face down. 1.6 mm board with the USB-C envelopes, the 4 cover standoffs, the 2 PACK lead holes and the BLE locating pocket. |
 | `06_ble_block` | 1 | PLA | Glue it into the pocket on the B.Cu face. That makes the 7 × 10 × 2.3 mm CC2340 module envelope. |
 | `07_cap_bottom` | 1 | TPU 95A | Crush slab down. Load it with `_mod_soft` and `_mod_corner` as modifiers (see below). |
 | `08_cap_top` | 1 | TPU 95A | Same as the bottom cap. This one has the port well and the drain. |
-| `09_floor_spacer` | 1 | TPU 95A | ~20 % gyroid. Printed 0.4 mm proud on purpose, to preload the cell stack. |
+| `09_cell_holder_bottom` | 1 | TPU 95A | Cell frame, bottom holder: base plate and a slotted spring ring under each cell. Printed 0.4 mm proud on purpose, to preload the cell stack. |
 | `10_board_shim` | 1 | TPU 95A | Tiny. Print it alongside the spacer. |
-| `11_eva_floor`, `12_eva_top` | 1 each | EVA template **or** TPU | Trace on 1 mm EVA and cut, or print in TPU as a stand-in. |
+| `11_cell_frame_top` | 1 | TPU 95A | Cell frame, top part: top plate, the two bars that hold the cells off the board, and the web that carries the sense strip. Plate on the bed. |
+| `12_sense_strip_standin` | 1 | PLA | Stand-in for the 0.6 mm ENIG sense strip; glue it into the web pocket. |
 | `13_usb_hold` | 1 | EVA template or TPU | Two 2 mm pads (2 × 1 mm EVA). |
 
 **Cap modifiers:** in PrusaSlicer, Bambu Studio or Orca, add the two `_mod_` STLs as *modifiers* to the cap (right-click → Add modifier → Load). Do not add them as separate objects. They are already registered to the cap. Set their infill as follows:
@@ -63,9 +64,9 @@ For a plain fit mock-up, skip the ballast and just glue the caps on.
 
 ## Assembly order (as production)
 
-1. Floor spacer, then EVA floor pad into the tray.
+1. Bottom holder into the floor zone, rings up.
 2. Fish-paper liner (optional for a mock-up), then the 4 cells. The + nubs go to the ends shown in `../monolith_side_exploded.png`: C1 and C3 + up, C2 and C4 + down.
-3. Mica cross (optional), then the EVA top pad.
+3. Mica cross (optional), then the top frame over the cells (plate on the + ends, bars down the board side).
 4. Board dummy: drop it in, then slide it +z until the USB-C blocks pass through the top wall and the top edge seats on the stops. Board shim under the bottom edge.
 5. USB-C hold pads, then the cover: top edge under the lip, then 2 × M2 into the bottom pillars. The screws are M2 thread-forming, or M2 × 3 × 3.2 heat-set inserts in the pilots.
 6. TPU caps over each end. The bead snaps into the groove round the tray.
@@ -75,7 +76,7 @@ For a plain fit mock-up, skip the ballast and just glue the caps on.
 - 2 × M2 × 4 low-head screws (thread-forming for plastic; the pilots are 4 mm deep), or M2 heat-set inserts plus machine screws.
 - Steel BBs, about 250 g for 4 cells, plus epoxy or wax.
 - CA glue.
-- The sheet stock you already have: 1 mm EVA, 0.2 mm mica, 0.2 mm fish paper.
+- The sheet stock you already have: 0.2 mm mica, 0.2 mm fish paper (1 mm EVA only for the USB-C hold-downs now).
 
 ## What the dummy board does and doesn't show
 

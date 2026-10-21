@@ -16,7 +16,7 @@ CELL_WALL, CELL_FLOOR = 1.6, 1.6     # dummy cell: printed can
 CELL_CAP_T, CELL_NUB_H, CELL_NUB_R = 2.0, 0.6, 3.5   # glued + end cap with a button nub
 CELL_SPIGOT_L, CELL_SPIGOT_CLR = 3.0, 0.15
 BLE_POCKET, BLE_CLR = 0.6, 0.15      # locating pocket in the dummy board's B.Cu face for the glued-on BLE block
-TAP_DRILL = 1.2                      # sense-wire holes in the dummy board
+LEAD_DRILL = 2.2                     # PACK lead holes in the dummy board (passes an insulated 18 AWG lead for the fit)
 COVER_HOLE_D = 2.2                   # M2 clearance in the printed cover stand-in
 COUPONS = {'coupon_bottom_end': (0.0, 10.0),            # floor, screw pillars and insert pilots
            'coupon_mid': (40.0, 48.0),                  # cell pockets, rib, crush ribs, cover rebates
@@ -37,6 +37,7 @@ def diff(a, *bs): return trimesh.boolean.difference([a, *bs], engine='manifold')
 def inter(a, b): return trimesh.boolean.intersection([a, b], engine='manifold')
 
 OPEN_UP = trimesh.transformations.rotation_matrix(-np.pi/2, [0, 1, 0])   # tray frame +x (open side) -> print +z
+FLIP = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])          # upside down (top plate onto the bed)
 def on_bed(m, T=None):
     m = m.copy()
     if T is not None: m.apply_transform(T)
@@ -60,13 +61,13 @@ def ble_span():
     y0, y1 = sorted((S.SB_ANT_SIDE*S.sb_ant_y[0], S.SB_ANT_SIDE*S.sb_ant_y[1]))
     return y0, y1, S.sb_ant_zc - S.SB_ANT_MOD[0]/2, S.sb_ant_zc + S.SB_ANT_MOD[0]/2
 def board_dummy():
-    """side_board_dummy (notched slab + USB-C envelopes) with the F.Cu cover standoffs, sense-wire holes and a
+    """side_board_dummy (notched slab + USB-C envelopes) with the F.Cu cover standoffs, the two PACK lead holes and a
     pocket in B.Cu that locates the separate BLE block. Seated position; on_bed() lays it flat."""
     b = mesh(P.side_board_dummy()); xb0, xb1, h = S.sb_xb0, S.sb_xb1, S.SB_STANDOFF_D/2
     add = [box(xb1 - 0.01, xb1 + S.sb_standoff_h, y - h, y + h, z - h, z + h) for y, z in S.SB_STANDOFFS]
     y0, y1, z0, z1 = ble_span(); c = BLE_CLR
     cut = [box(xb0 - 1, xb0 + BLE_POCKET, y0 - c, y1 + 1, z0 - c, z1 + c)]
-    cut += [xcyl(TAP_DRILL/2, xb0 - 1, xb1 + 1, y, z) for y, z in S.SB_TAP_HOLES.values()]
+    cut += [xcyl(LEAD_DRILL/2, xb0 - 1, xb1 + 1, y, z) for y, z in S.SB_LEAD_HOLES.values()]
     return diff(union(b, *add), *cut, mesh(P.side_shell()))   # the tray cut trims the square USB-C corners to the round port holes
 def ble_block():
     """CC2340R5MODA envelope, 7 x 10 x 2.3 mm, plus the part that sits in the pocket"""
@@ -100,10 +101,10 @@ def kit():
         for z in ('soft', 'corner'):
             K.append((f'{n}_cap_{end}_mod_{z}', same_move(body, mesh(P.side_cap(z, well))), 0, 'modifier',
                       f'infill {int(P.CAP_FILL[z]*100)} %'))
-    K.append(('09_floor_spacer', on_bed(mesh(P.end_pad('bottom', 'spacer', free=True))), 1, 'TPU 95A', '~20 % gyroid'))
+    K.append(('09_cell_holder_bottom', on_bed(mesh(P.bottom_holder(free=True))), 1, 'TPU 95A', 'rings up; printed 0.4 mm proud on purpose'))
     K.append(('10_board_shim', on_bed(mesh(P.board_shim())), 1, 'TPU 95A', ''))
-    K.append(('11_eva_floor', on_bed(mesh(P.end_pad('bottom'))), 1, 'EVA template or TPU', 'trace on 1 mm EVA, or print in TPU as a stand-in'))
-    K.append(('12_eva_top', on_bed(mesh(P.end_pad('top'))), 1, 'EVA template or TPU', 'trace on 1 mm EVA, or print in TPU as a stand-in'))
+    K.append(('11_cell_frame_top', on_bed(mesh(P.top_frame()), FLIP), 1, 'TPU 95A', 'plate on the bed, bars and web up'))
+    K.append(('12_sense_strip_standin', on_bed(mesh(P.sense_strip())), 1, 'PLA', 'stand-in for the 0.6 mm ENIG strip; glue into the web pocket'))
     K.append(('13_usb_hold', on_bed(mesh(P.hold_pads()), OPEN_UP), 1, 'EVA template or TPU', '2 pads, 2 mm (2 x 1 mm EVA)'))
     return K
 

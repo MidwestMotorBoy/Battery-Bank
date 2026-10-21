@@ -79,27 +79,32 @@ The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), along
     - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
     - **Drop protection (2026-10-18):** no potting. The basis is `reports/Battery pack potting and drop protection.md`. The tray, cells and board form one stiff core, and TPU end caps outside it are the crush zone.
         - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
-        - **Inside (hobby build: the only sheet stock is 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper):**
-            - Cell-end pads of 1 mm EVA, with cut-outs over each positive cap so the vent stays open. The floor pad sits on a printed 3.8 mm TPU spacer (about 20 % gyroid).
+        - **Inside (2026-10-21: a printed TPU cell frame replaces all the foam; sheet stock is 0.2 mm mica and 0.2 mm fish paper):**
+            - **TPU cell frame, two parts** (`monolith_side_cell_holder_bottom.stl`, `monolith_side_cell_frame_top.stl`).
+                - **Bottom holder:** fills the floor zone, with a base plate and a slotted spring ring under each cell, printed 0.4 mm proud to preload the stack. It's open over the + caps.
+                - **Top frame:** a 1.2 mm top plate (+ cap cut-outs, slots for the sense wires), two bars down the board side that hold the cells off B.Cu, and a web carrying the sense strip.
+                - The floor zone gave up 0.2 mm for the top plate, so the board outline is unchanged.
             - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), a sheet on the cells' board-side face (it also covers the B.Cu parts), and rings on the four + ends (21 mm OD, about 10 mm hole).
-            - EVA lanes (3 × 1 mm, about 20 % squeezed) between that sheet and B.Cu, along the two cell tangent lines. They hold the cells off the board now that there is a 2.3 mm gap behind it. Keep B.Cu parts out of the lanes (`BCU_EVA_LANES` on the board DXF) and under 2.3 mm tall elsewhere.
+            - The frame bars sit behind B.Cu at |y| 6.0–11.2 mm. Keep B.Cu parts out of them (`BCU_FRAME_BARS` on the board DXF) and under 2.3 mm tall elsewhere. `sb_lanes()` now returns the bars, so `make_board.py`'s keep-outs follow.
             - A 0.2 mm mica cross between the cells.
             - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
             - A TPU shim under the board, and 2 x 1 mm EVA hold-downs over the USB-C bodies.
         - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
-        - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+        - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 366 g modelled, including the frame and mica (+28 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
         - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
-        - **Pack connections (2026-10-21):** a cell module built on the bench with five flying leads, joined to the board inside the tray (`monolith_side_tabs.png`, `docs/production/p0-assembly.md`).
+        - **Pack connections (2026-10-21):** two soldered leads and five spring contacts (`monolith_side_tabs.png`, `docs/production/p0-assembly.md`).
             - **PACK− and PACK+:** an 18 AWG lead each, soldered to a short nickel tab on the C1 and C4 bottoms. Each loops in the floor-zone gap to take the board's 2.5 mm slide, and comes up through a plated hole at KiCad (86.0, 134.6) and (114.0, 134.6).
-            - **CELL1–3:** 28 AWG leads through plated holes at (98.0, 71.5), (102.0, 71.5) and (102.0, 133.5).
-            - All five are soldered on F.Cu from the open side.
-            - The holes are on the board DXF's `TAB_PADS` layer.
-            - Take the gauge's PACK−/PACK+ Kelvin sense from the hole pads.
+            - **Sense (CELL1–3, plus the gauge's Kelvin taps 1N and 4P):** 28 AWG leads, soldered on the bench to a 0.6 mm ENIG sense strip on the frame web.
+                - Five gold spring contacts on B.Cu (KiCad x 96, 98, 100, 102, 104 at y 123.5, about 2.8 mm working height) land on its pads as the board drops in, and wipe 2.5 mm as it slides up.
+                - The contacts are on `BCU_SENSE_CONTACTS`.
+            - Only the two PACK leads are soldered inside the tray, on F.Cu from the open side.
+            - The PACK holes are on the board DXF's `TAB_PADS` layer.
+            - Take the gauge's PACK−/PACK+ current path from the hole pads. Its Kelvin sense comes in through the 1N and 4P contacts.
         - **Vibration and trail durability (2026-10-18):**
             - **Cells are preloaded everywhere:**
                 - crush ribs on the cell-zone walls flatten 0.25 mm into the liner;
-                - the floor spacer prints 0.4 mm taller than its gap, which takes up MJF's ±0.3 mm;
-                - the EVA lanes are squeezed about 20 %.
+                - the bottom holder prints 0.4 mm taller than its zone, which takes up MJF's ±0.3 mm;
+                - the frame bars press the cells against the walls through the liner.
             - **Cover:**
                 - It has a 0.3 mm joint all round, because nylon grows about 0.35 mm more than aluminium over 60 K.
                 - The joint is sealed with a bead of neutral-cure silicone, which acts as the gasket.

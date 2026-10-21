@@ -8,7 +8,7 @@ Rules (from the mechanical model; positions are SB_STANDOFFS in monolith_shell.p
   must clear the hole too;
 - it only helps under the free middle of the cover: the ends are held by the top lip, the screws and the cap bands;
 - keep-outs: USB-C bodies, PACK lead holes, sense-tap holes, the vent, the BLE module (and 5 mm round it), board edges/notches;
-- best over an EVA lane on the back, so the load goes straight on into the cells."""
+- best over a TPU frame bar on the back, so the load goes straight on into the cells."""
 import sys, json, os
 
 def dump(board, out):
@@ -94,7 +94,7 @@ def suggest(Z):
 def draw(Z, cands, path):
     sh = Sheet(2200, 1040)
     sh.header('Cover standoffs: where they can go', 'Green: where a standoff centre may sit given the keep-outs and the parts placed so far. '
-              'Dark green: also over an EVA lane on the back (best load path). Board seen from the cover side (F.Cu), KiCad coordinates.')
+              'Dark green: also over a TPU frame bar on the back (best load path). Board seen from the cover side (F.Cu), KiCad coordinates.')
     ps, ox, oy = 11.0, 130, 160                      # screen = ox + ps*(X - 78), oy + ps*(Y - 62)
     T = lambda X, Y: (ox + ps * (X - 77.5), oy + ps * (Y - 62.0))
     def poly(g, fill=None, outline=None, width=1):
@@ -129,7 +129,7 @@ def draw(Z, cands, path):
               'Grey band at each end: the cover is already held there (top lip, screws, cap bands). A standoff only',
               'helps in the free middle.',
               'Red: keep-outs (USB-C bodies, PACK pads, sense-tap holes, the vent, and the BLE module plus 5 mm).',
-              'Pink outline: the EVA lanes on the back. A standoff over a lane passes its load straight into the cells.',
+              'Pink outline: the TPU frame bars on the back. A standoff over a bar passes its load straight into the cells.',
               'Spread them: one pair in the lower half and one in the upper half, one each side, so no part of the',
               'cover is more than about 15 mm from a support. Three can work; two is too few.',
               'Black outlines: F.Cu courtyards placed now. Blue: B.Cu. Grey rings: H101-H104 where they are today.']:
@@ -139,7 +139,7 @@ def draw(Z, cands, path):
     for i, c in enumerate(cands):
         if c: rows.append([f'S{i + 1}', f'{c[1]:.1f}', f'{c[2]:.1f}', 'yes' if c[3] else 'no'])
         else: rows.append([f'S{i + 1}', '-', '-', 'no room'])
-    y = sh.table(x0, y, ['', '>KiCad x', '>KiCad y', 'over a lane'], rows, [60, 140, 140, 160], 15)
+    y = sh.table(x0, y, ['', '>KiCad x', '>KiCad y', 'over a bar'], rows, [60, 140, 140, 160], 15)
     y += 20
     for s in ['These follow your placement: re-run this after moving parts, or tell me the spots you want.',
               'Changing them is one edit: SB_STANDOFFS in mechanical/monolith_shell.py (shell y, z). The model, the checks,',

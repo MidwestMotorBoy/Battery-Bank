@@ -31,7 +31,7 @@ def screws(dx=0.0):
     return np.vstack(out)
 
 if __name__ == '__main__':
-    A = assembly(); get = {k: (V, c) for k, V, c in A if k in ('shell', 'board', 'cover', 'lanes', 'cell')}
+    A = assembly(); get = {k: (V, c) for k, V, c in A if k in ('shell', 'board', 'cover', 'frame', 'cell')}
     sh = Sheet(2700, 1500)
     sh.header('Cover standoffs: what the four "screw mounts" on the board do',
               'They are not screws, and nothing screws into them. Four steel spacers soldered to the cover side of the board stand '
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     tmp = Sheet(2700, 1500)
     pxs = 15.0; os_ = (690, 1330)                     # screen = (ox + px*y, oy - px*(x - X0))
     X0 = 17.0
-    Asec = [(k, V - [X0, 0, 0], c) for k, V, c in A if k in ('shell', 'board', 'cover', 'lanes', 'cell', 'insul', 'wrap')]
+    Asec = [(k, V - [X0, 0, 0], c) for k, V, c in A if k in ('shell', 'board', 'cover', 'frame', 'cell', 'insul', 'wrap')]
     Asec.append(('stand', standoffs() - [X0, 0, 0], STEEL))
     tp = tmp.section(Asec, 2, zc, 1, 0, os_, pxs)
     crop = (40 * SS, 1045 * SS, 1300 * SS, 1440 * SS)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
                  (T(15.0, S.sb_xb1 + S.sb_standoff_h + 0.1), '0.2 mm gap to the cover'),
                  (T(19.0, S.sb_x_cv0 + 0.5), '1.0 mm aluminium cover'),
                  (T(19.5, S.sb_xb1 - 0.8), '1.6 mm board'),
-                 (T(10.9, S.sb_xb0 - 1.2), 'EVA lane (3 x 1 mm) behind the board:\nthe load goes on into the cells'),
+                 (T(10.9, S.sb_xb0 - 1.2), 'TPU frame bar behind the board:\nthe load goes on into the cells'),
                  (T(5.0, S.sb_xb0 - 3.4), 'cells')], 1070, 'r', 1060, size=13)
     sh.dim(T(21.0, S.sb_xb1), T(21.0, S.sb_x_cv0), 22, f'{S.sb_x_cv0 - S.sb_xb1:.1f}', 13)
 
@@ -115,7 +115,7 @@ if __name__ == '__main__':
     Y2, H2 = diagram(x0 + 260, 960, True, 'Squeezed (strap, sat on, flat drop): the cover bends')
     sh.callouts([((Y2(15), H2(3.5)), 'Cover lands on the standoffs after 0.2 mm'),
                  ((Y2(-5), H2(3.3)), 'between them it can sag only a little more,\nso the parts see a squeezed gap pad,\nnot the cover itself'),
-                 ((Y2(10.9), H2(-2.1)), 'load path: cover -> standoffs -> board\n-> EVA lanes -> cells -> tray -> TPU')], x0 + 520, 'r', 760, size=14)
+                 ((Y2(10.9), H2(-2.1)), 'load path: cover -> standoffs -> board\n-> frame bars -> cells -> tray -> TPU')], x0 + 520, 'r', 760, size=14)
     sh.text(x0, 1130, 'Schematic, not to scale (heights exaggerated about 3x to show the 0.2 mm gaps).', 14, fill=MUTED)
     notes = ['Why they are needed: by rough plate maths a 200 N point load on the 1 mm cover bends it about 0.7 mm,',
              'which is more than the 0.5 mm gap pad and would push straight onto the inductors and USB-C bodies.',
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     for i, s in enumerate(notes): sh.text(x0, 1175 + 24 * i, s, 14, fill=INK)
     sh.line([(40, 1460), (2660, 1460)], RULE, 1.5)
     sh.legend([('tray', C['shell']), ('board', C['board']), ('standoff (steel)', STEEL), ('screw', SCREW), ('Al cover', C['cover']),
-               ('EVA', C['eva']), ('cells', C['cell']), ('gap pad (indicative)', (150, 200, 230)), ('board parts (indicative)', (80, 80, 86))],
+               ('TPU frame', C['frame']), ('cells', C['cell']), ('gap pad (indicative)', (150, 200, 230)), ('board parts (indicative)', (80, 80, 86))],
               40, 1470, 13)
     sh.save('monolith_side_standoffs.png')
     print('wrote monolith_side_standoffs.png')

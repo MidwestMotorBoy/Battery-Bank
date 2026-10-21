@@ -318,7 +318,7 @@ def side_shell():
     g0, g1 = S.SB_GROOVE_Z - S.SB_GROOVE_W/2, S.SB_GROOVE_Z + S.SB_GROOVE_W/2
     grooves = [(g0, g1), (S.SB_H - g1, S.SB_H - g0)]
     zc0, zc1 = S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0
-    zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H, zc0, zc1,
+    zs = sorted({0.0, zr, S.SB_END_T, S.sb_z_pad1, S.sb_z_pil, S.sb_zb1, S.sb_z_top_in, S.sb_z_top_in + S.SB_SLOT, S.SB_H, zc0, zc1,
                  *[round(z, 6) for z in hz], *[v for gz in grooves for v in gz]})
     cur = [rr_pts(*S.SB_OUT), rr_pts(*S.SB_GROOVE), cav_pts(), rib1_pts(), xrect_pts(*SB_SLOT)] + [xrect_pts(*p) for p in SB_PIL + SB_STOPS + CRUSH]
     cur += [stady_pts(x, y, SB_PORT_L, SB_PORT_W) for x, y in SB_PORTS] + [circ_pts(x, y, S.SB_RUPT_D/2) for x, y in SB_RUPT]
@@ -335,7 +335,7 @@ def side_shell():
         s = (out & ~cav_in(x, y)) | (rib1_in(x, y) & cav_in(x, y))
         if zc0 < zm < zc1: s |= sum(xrect_in(x, y, *p) for p in CRUSH) > 0
         if zm > S.sb_zb1: s |= sum(xrect_in(x, y, *p) for p in SB_STOPS) > 0
-        if zm < S.sb_z_pad1:
+        if zm < S.sb_z_pil:
             s |= sum(xrect_in(x, y, *p) for p in SB_PIL) > 0
             for z0, z1, w in zip(hz[:-1], hz[1:], hw):
                 if z0 < zm < z1:
@@ -460,7 +460,9 @@ def pack_leads(which=None):
         for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
     return np.vstack(out)
 def sense_wires():
-    """CELL1 / CELL3 from the top strips, CELL2 from the bottom strip, each to a plated hole (through to F.Cu)"""
+    """28 AWG sense leads, soldered on the bench to the sense strip on the frame web:
+    CELL1 / CELL3 from the top strips down the groove; CELL2 (bottom strip) and the Kelvin taps 1N (PACK- tab, C1)
+    and 4P (PACK+ tab, C4) along the channel between the spring rings, then up the groove"""
     r = S.SB_WIRE_D/2; out = []
     def seg(p, q):
         lo = np.minimum(p, q) - r; hi = np.maximum(p, q) + r
@@ -469,24 +471,79 @@ def sense_wires():
     for n in ('CELL1', 'CELL3'):
         y, z = S.SB_TAP_HOLES[n]; s = 1 if y > 0 else -1
         p0 = np.array([8.0, s*(S.pocket_r - S.SB_TAB_W/2 + 0.6), zt])
-        pts = [p0, [8.0, y, zt], [TAP_X, y, zt], [TAP_X, y, z], [S.sb_xb1 + 0.5, y, z]]
+        pts = [p0, [8.0, y, zt], [TAP_X, y, zt], [TAP_X, y, S.SB_WEB['z1']]]
         for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
-    y, z = S.SB_TAP_HOLES['CELL2']; zc = S.sb_z_pad1 - S.SB_EVA_T - 0.5
-    pts = [[-S.pocket_r, y, S.sb_z_cell0 - 0.6], [-S.pocket_r, y, zc], [TAP_X, y, zc], [TAP_X, y, z], [S.sb_xb1 + 0.5, y, z]]
-    for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
+    zc = S.SB_END_T + S.SB_FRAME_BASE + r + 0.05; zw = S.SB_WEB['z0']; pr = S.pocket_r
+    runs = [[(-pr, 0.0, S.sb_z_cell0 - 0.6), (-pr, 0.0, zc), (19.2, 0.0, zc), (19.2, 0.0, zw)],                 # CELL2
+            [(pr, -7.8, S.sb_z_cell0 - 0.6), (pr, -7.8, zc), (pr, -1.4, zc), (18.4, -1.4, zc), (18.4, -1.4, zw)],   # 1N
+            [(pr, 7.8, S.sb_z_cell0 - 0.6), (pr, 7.8, zc), (pr, 1.4, zc), (18.4, 1.4, zc), (18.4, 1.4, zw)]]       # 4P
+    for pts in runs:
+        for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
     return np.vstack(out)
+
+# ---- cell frame (TPU): bottom holder with spring rings, top frame with bars and the sense web ----
+def bottom_holder(free=False):
+    """floor zone: base plate + a slotted spring ring under each cell; printed SB_AXIAL_PRELOAD proud (free=True)"""
+    z0, zb, z1 = S.SB_END_T, S.SB_END_T + S.SB_FRAME_BASE, S.sb_z_pad1 + (S.SB_AXIAL_PRELOAD if free else 0.0)
+    caps = S.sb_pos_caps['bottom']; rc = S.SB_VENT_CUT_D/2; ro, ri, hs = S.SB_RING_OD/2, S.SB_RING_ID/2, S.SB_RING_SLOT/2
+    cells = list(S.sb_cell_xy.values())
+    slots = [(cx - ro - 0.1, cx + ro + 0.1, cy - hs, cy + hs) for cx, cy in cells] + [(cx - hs, cx + hs, cy - ro - 0.1, cy + ro + 0.1) for cx, cy in cells]
+    cur = _cellzone_pts() + [circ_pts(x, y, rc) for x, y in caps] + [circ_pts(x, y, ro) for x, y in cells] \
+          + [circ_pts(x, y, ri) for x, y in cells] + [xrect_pts(*q) for q in slots]
+    def solid(k, x, y):
+        if k == 0: return _cellzone_in(x, y) & ~(sum(circ_in(x, y, cx, cy, rc) for cx, cy in caps) > 0)
+        ring = sum(circ_in(x, y, cx, cy, ro) & ~circ_in(x, y, cx, cy, ri) for cx, cy in cells) > 0
+        return ring & _cellzone_in(x, y) & ~(sum(xrect_in(x, y, *q) for q in slots) > 0)
+    return build(cur, [z0, zb, z1], solid)
+WEB = S.SB_WEB
+STRIP = (WEB['x1'] - S.SB_STRIP_T, WEB['x1'], -(WEB['y'] - 0.4), WEB['y'] - 0.4)
+STRIP_Z = (WEB['z0'] + 0.5, WEB['z1'] - 0.5)
+def top_frame():
+    """top plate (+ cap cut-outs, wire slots) + two bars down the board side + the web carrying the sense strip"""
+    caps = S.sb_pos_caps['top']; rc = S.SB_VENT_CUT_D/2
+    b0, b1 = S.SB_BAR_Y; xb0, xb1 = aI + 0.2, S.sb_xb0
+    bars = [(xb0, xb1, -b1, -b0), (xb0, xb1, b0, b1)]
+    plate_ext = [(aI - 0.01, xb1, -b1, -b0), (aI - 0.01, xb1, b0, b1)]          # the plate reaches over the bars
+    web = (WEB['x0'], WEB['x1'], -WEB['y'], WEB['y'])
+    bridges = [(21.0, xb0 + 0.2, WEB['y'] - 0.01, b0 + 0.01), (21.0, xb0 + 0.2, -b0 - 0.01, -WEB['y'] + 0.01)]
+    zs = [S.SB_BAR_Z0, WEB['z0'], STRIP_Z[0], STRIP_Z[1], WEB['z1'], S.sb_z_cell1 + S.TAB_T, S.sb_z_top_in]
+    cur = _cellzone_pts() + [circ_pts(x, y, rc) for x, y in caps] + [xrect_pts(*c) for c in TOP_SLOTS] \
+          + [xrect_pts(*q) for q in bars + plate_ext + bridges + [web, STRIP]]
+    def solid(k, x, y):
+        s = sum(xrect_in(x, y, *q) for q in bars) > 0
+        if k in (1, 2, 3): s |= xrect_in(x, y, *web) | (sum(xrect_in(x, y, *q) for q in bridges) > 0)
+        if k == 2: s &= ~xrect_in(x, y, *STRIP)                                # the strip's pocket
+        if k == 5:
+            p = (_cellzone_in(x, y) | (sum(xrect_in(x, y, *q) for q in plate_ext) > 0))
+            p &= ~(sum(circ_in(x, y, cx, cy, rc) for cx, cy in caps) > 0) & ~(sum(xrect_in(x, y, *c) for c in TOP_SLOTS) > 0)
+            s |= p
+        return s
+    return build(cur, zs, solid)
+def sense_strip():
+    """the ENIG sense strip in the web pocket (render), with its five pads on the +x face"""
+    out = [_box(*STRIP, *STRIP_Z)]
+    for y in S.SB_CONTACTS.values():
+        out.append(_box(STRIP[1], STRIP[1] + 0.05, y - 0.7, y + 0.7, S.SB_CONTACT_Z - S.SB_PAD_L/2, S.SB_CONTACT_Z + S.SB_PAD_L/2))
+    return np.vstack(out)
+def spring_contacts(dz=0.0):
+    """gold spring contacts on B.Cu, compressed onto the strip pads (render)"""
+    return np.vstack([_box(STRIP[1] + 0.05, S.sb_xb0, y - 0.5, y + 0.5, S.SB_CONTACT_Z + dz - 0.6, S.SB_CONTACT_Z + dz + 0.6)
+                      for y in S.SB_CONTACTS.values()])
 CELL_ENV = (-aI, aI + 1.0, aI, cI, 0.0)      # cell block envelope (square on the board side)
 def side_pad():
     """SB_SIDE_PAD fish paper liner round the -x and +-y faces of the cells, slotted for the rib"""
     cur = _cellzone_pts() + [rr_pts(*CELL_ENV)]
     return build(cur, [S.sb_z_cell0, S.sb_z_cell1], lambda k, x, y: _cellzone_in(x, y) & ~rr_in(x, y, *CELL_ENV))
 def mica_cross():
-    t = S.SB_SEP_T/2; a = (-SB_RIB_T + 0.2, aI - 0.2, -t, t); b = (-t, t, -(aI - 0.2), aI - 0.2)
+    t = S.SB_SEP_T/2; a = (-SB_RIB_T + 0.2, S.SB_MICA_X1, -t, t); b = (-t, t, -(aI - 0.2), aI - 0.2)   # y=0 sheet trimmed at the web
     return build([xrect_pts(*a), xrect_pts(*b)], [S.sb_z_cell0 + 1.0, S.sb_z_cell1 - 1.0],
                  lambda k, x, y: xrect_in(x, y, *a) | xrect_in(x, y, *b))
 def insulator():
-    p = (aI, aI + 0.2, -(aI - 0.2), aI - 0.2)   # 0.2 mm fish paper on the cells' board-side face (covers B.Cu parts too)
-    return build([xrect_pts(*p)], [S.sb_z_cell0 - S.TAB_T, S.sb_z_cell1 + S.TAB_T], lambda k, x, y: xrect_in(x, y, *p))
+    """0.2 mm fish paper on the cells' board-side face (covers the B.Cu parts too), with a window at the sense web"""
+    p = (aI, aI + 0.2, -(aI - 0.2), aI - 0.2); w = (aI - 0.1, aI + 0.3, -(S.SB_WEB['y'] + 1.4), S.SB_WEB['y'] + 1.4)
+    z0, z1 = S.sb_z_cell0 - S.TAB_T, S.sb_z_cell1 + S.TAB_T; wz0, wz1 = S.SB_WEB['z0'] - 0.5, S.SB_WEB['z1'] + 0.5
+    return build([xrect_pts(*p), xrect_pts(*w)], [z0, wz0, wz1, z1],
+                 lambda k, x, y: xrect_in(x, y, *p) & ~(xrect_in(x, y, *w) & (k == 1)))
 def eva_lanes():
     """3 x 1 mm EVA strips between the fish paper and B.Cu along the cell tangent lines (shown compressed)"""
     x0, x1 = aI + 0.2, S.sb_xb0
@@ -523,12 +580,11 @@ SIDE_PARTS = [('monolith_side_shell', side_shell, 1.18, 1), ('monolith_side_cove
               ('monolith_side_cap_bottom_mod_corner', lambda: side_cap('corner'), 0, 1),
               ('monolith_side_cap_top_mod_soft', lambda: side_cap('soft', True), 0, 1),
               ('monolith_side_cap_top_mod_corner', lambda: side_cap('corner', True), 0, 1),
-              ('monolith_side_floor_spacer', lambda: end_pad('bottom', 'spacer', free=True), 0.30, 1),
-              ('monolith_side_eva_floor', lambda: end_pad('bottom'), 0.20, 1),
-              ('monolith_side_eva_top', lambda: end_pad('top'), 0.20, 1),
+              ('monolith_side_cell_holder_bottom', lambda: bottom_holder(free=True), 1.0, 1),
+              ('monolith_side_cell_frame_top', top_frame, 1.0, 1),
               ('monolith_side_liner', side_pad, 1.2, 1), ('monolith_side_mica', mica_cross, 2.8, 1),
               ('monolith_side_insulator', insulator, 1.2, 1), ('monolith_side_usb_hold', hold_pads, 0.20, 1),
-              ('monolith_side_shim', board_shim, 1.21, 1), ('monolith_side_eva_lanes', eva_lanes, 0.20, 1)]
+              ('monolith_side_shim', board_shim, 1.21, 1)]
 if __name__ == '__main__':
     import sys
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all
