@@ -380,8 +380,31 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 
 **PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343 D), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus seven new parts: C209–C213 and C456/C556 (7343 D).
 
+## Cover standoffs, no screw holes (2026-10-20)
+
+The board has **no screw holes**. It is held by:
+- the top wall stop and the two USB-C bodies in their wall holes;
+- the shim under its bottom edge;
+- the aluminium cover pressing down through the gap pad.
+
+The two M2 cover screws go into heat-set inserts in the tray's bottom corner pillars. Those pillars sit in the board's corner notches, beside the board, not through it.
+
+What does mount on the board is **four SMT standoffs** on F.Cu, `COVER_STANDOFFS` on `mechanical/monolith_side_pcb.dxf`.
+
+- **Job:** they hold the cover 0.2 mm off the parts, so a drop or squeeze loads the steel standoffs rather than the inductors, the gap pad and the USB-C bodies.
+- **Part:** Würth WA-SMSI 9774035243R (LCSC C5266183, 134 in stock on 2026-10-20). M2 internal thread, 4.35 mm body, 3.5 mm tall, reflowed with the rest of F.Cu.
+- **Footprint:** KiCad's `Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243`, a pad ring plus a 3 mm unplated hole and a 5.8 mm courtyard.
+- **Net:** the pad ring has no net. The cover only touches the standoffs when it flexes, so they can't serve as a ground bond.
+- **Schematic:** H101–H104, on the 3V3 Rail sheet, so they reach the JLC BOM and placement file.
+- **Positions:** from `mechanical/monolith_shell.py` `SB_STANDOFFS` (single source for the tray and the board). In KiCad, H101 (85.0, 113.5), H102 (115.0, 113.5), H103 (85.0, 93.5) and H104 (115.0, 93.5), all 6.6 mm in from the side edges.
+    - The upper pair moved from tray z 56 to z 48. At z 56 it sat on the port-1 BQ25756 and on the lower end of the BLE module (right edge, z 56–63).
+    - A new mechanical check keeps the standoffs at least 5 mm from the module (0.9 mm of margin now).
+- **Placing them:** run Update PCB from Schematic, close or save the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --standoffs`. It moves only H101–H104 to these positions and locks them.
+    - A dry run on the current placement shows H104's courtyard 0.4 mm into U403's, so move U403 up by 0.5 mm.
+- **Still to update:** the mechanical renders (`monolith_parts.py`, `monolith_print_kit.py`) still show the old standoff spots until they are re-run in the mechanical venv.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
+3. **Place the board** on the side outline. Run Update PCB from Schematic and then `make_board.py --standoffs` first, so the four locked cover standoffs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.

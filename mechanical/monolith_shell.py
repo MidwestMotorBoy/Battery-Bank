@@ -181,8 +181,9 @@ SB_COVER_GAP = 0.3       # cover edge to tray, all round: nylon grows ~0.35 mm m
 SB_GROOVE_Z, SB_GROOVE_W, SB_GROOVE_D = 4.5, 1.2, 0.3   # cap retention: groove round the tray (-x, +-y faces) at each end
 SB_BEAD_W = 0.9          # matching bead inside each cap band
 SB_DRAIN_W, SB_DRAIN_H = 2.0, 1.5    # drain channel from the port well out through the top cap's +x wall
-SB_STANDOFFS = [(-15.0, 28.0), (15.0, 28.0), (-15.0, 56.0), (15.0, 56.0)]   # (y, z) SMD standoffs on F.Cu for the cover
-SB_STANDOFF_D = 3.0      # footprint size of each standoff (render only)
+SB_STANDOFFS = [(-15.0, 28.0), (15.0, 28.0), (-15.0, 48.0), (15.0, 48.0)]   # (y, z) SMD standoffs on F.Cu for the cover
+#   (upper pair was z 56: that sat on the port-1 BQ25756 and on the BLE module end, 2026-10-20)
+SB_STANDOFF_D = 4.35     # Wuerth WA-SMSI 9774035243R body diameter (KiCad courtyard 5.8)
 SB_WELL_W, SB_WELL_H = 28.0, 9.0     # one port well through the top cap for both plugs (USB-C overmold rec. max 12.35 x 6.5)
 # BLE module (CC2340R5MODA, 7 x 10 x 2.3 mm max) on B.Cu at the right (+y, C4 / PACK+) board edge, antenna end at the
 # edge: the board's ground plane sits between it and the aluminium cover, and it radiates out through the printed
@@ -244,7 +245,7 @@ SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cav
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
 SB_GROOVE = (SB_OUT[0] + SB_GROOVE_D, SB_OUT[1], SB_OUT[2] - SB_GROOVE_D, SB_OUT[3] - SB_GROOVE_D, 0.0)   # tray profile in the groove
-sb_standoff_h = SB_OUT_H + SB_GAP - 0.1       # standoff height: 0.1 mm under the cover, so it only bears once the cover flexes
+sb_standoff_h = 3.5                           # Wuerth WA-SMSI 9774035243R (M2, 3.5 mm): 0.2 mm under the cover, so it only bears once the cover flexes
 sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z)
 sb_ant_y = (sb_board_w/2 - SB_ANT_MOD[1], sb_board_w/2)   # module |y| span (antenna end at the edge)
 def sb_lanes():
@@ -377,6 +378,7 @@ if __name__ == '__main__':
             float(np.min(side_groove_depth(np.linspace(*sb_ant_y, 41)))) - SB_INSUL - SB_ANT_H,
         'EVA lanes: 3 x 1 mm squeezed into the gap (compression)': SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2)),
         'EVA lanes not over-squeezed (< 40 %)': 0.4*SB_LANE_LAYERS - (SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2))),
+        'standoffs clear of the BLE module (z, >= 5 mm)': min(abs(z - sb_ant_zc) - SB_ANT_MOD[0]/2 - SB_STANDOFF_D/2 for y, z in SB_STANDOFFS if y * SB_ANT_SIDE > 0) - 5.0,
         'BLE module: ground along the edge above it (>= 10)': sb_zb1 - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
         'BLE module 10 mm below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 10.0,
     }

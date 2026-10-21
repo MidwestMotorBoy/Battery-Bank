@@ -15,6 +15,7 @@ F.Cu faces the aluminium cover (outer face), B.Cu faces the cells. The outline l
 board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
+     ... make_board.py --standoffs   (only places the cover standoffs H101-H104, after Update PCB from Schematic)
 """
 import math
 import os
@@ -181,7 +182,35 @@ def place_ports(path):
     pcbnew.SaveBoard(path, b)
 
 
+STANDOFFS = {"H101": 0, "H102": 1, "H103": 2, "H104": 3}  # ref -> index into M.SB_STANDOFFS
+
+
+def place_standoffs(path):
+    """Put the cover standoffs H101-H104 (Wuerth WA-SMSI M2 x 3.5 mm) where mechanical/monolith_shell.py
+    SB_STANDOFFS has them: F.Cu, locked. Only moves those four footprints; run after Update PCB from Schematic,
+    with the board closed in KiCad (or reload it afterwards)."""
+    import pcbnew
+    b = pcbnew.LoadBoard(path)
+    for ref, k in STANDOFFS.items():
+        f = b.FindFootprintByReference(ref)
+        if f is None:
+            print("no %s on the board (run Update PCB from Schematic)" % ref)
+            continue
+        if f.IsFlipped():
+            f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
+        y, z = M.SB_STANDOFFS[k]
+        x, yk = CX + y, Y(z)
+        f.SetOrientationDegrees(0)
+        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(yk)))
+        f.SetLocked(True)
+        print("%s at (%.2f, %.2f), F.Cu, locked" % (ref, x, yk))
+    pcbnew.SaveBoard(path, b)
+
+
 def main():
+    if "--standoffs" in sys.argv:
+        place_standoffs(OUT)
+        return
     if os.path.exists(OUT) and "--force" not in sys.argv:
         patch(OUT, LAYERS)
         place_ports(OUT)

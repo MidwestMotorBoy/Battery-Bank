@@ -95,6 +95,8 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
 NEW_PARTS = {**{c: {"1": ("TP106", "1"), "2": ("TP109", "1")} for c in ("C208", "C209", "C210", "C211", "C212", "C213")},
+             # cover standoffs (2026-10-20): mechanical only, the pad ring has no net
+             **{h: {"1": "unconnected %s.1" % h} for h in ("H101", "H102", "H103", "H104")},
              # low-profile USB-side bulk (2026-10-18): new per-port caps on AC_SNS_N
              **{c % p: {"1": ("C%s20" % p, "1"), "2": ("TP109", "1")} for c in ("C%s56",) for p in "45"},
              # P0 training parts (2026-10-18); a string value names a net that is new on production
@@ -768,6 +770,54 @@ def add_shared_bulk(s):
     return insert_top(s, add)
 
 
+STANDOFFS = ["H101", "H102", "H103", "H104"]  # cover standoffs, placed on the board by make_board.py place_standoffs()
+STANDOFF_AT = (63.5, 154.94)                   # power sheet, under the shared bulk (outside layout_production's moves)
+MECH_SYM = r"C:\Program Files\KiCad\10.0\share\kicad\symbols\Mechanical.kicad_sym"
+STANDOFF_PROPS = {"Value": "WA-SMSI M2 3.5mm",
+                  "Footprint": "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243",
+                  "Datasheet": "https://www.we-online.com/components/products/datasheet/9774035243R.pdf",
+                  "Description": "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py "
+                                 "SB_STANDOFFS)",
+                  "LCSC": "C5266183", "MPN": "Wurth 9774035243R"}
+
+
+def add_standoffs(s):
+    """Four reflowed SMT standoffs on F.Cu that hold the aluminium cover 0.2 mm off the parts, so drops load the
+    standoffs instead of the inductors and the gap pad (mechanical/monolith_shell.py SB_STANDOFFS, 2026-10-20).
+    Not screwed: the cover screws go into the tray pillars beside the board's corner notches. The pad ring is left
+    unconnected (no net). Cloned from C206 with the Mechanical:MountingHole_Pad symbol."""
+    from schlib import block_end
+    lib = open(MECH_SYM, encoding="utf-8").read()
+    a = lib.index('\n\t(symbol "MountingHole_Pad"') + 1
+    sym = lib[a:block_end(lib, a + 1)].replace('(symbol "MountingHole_Pad"', '(symbol "Mechanical:MountingHole_Pad"', 1)
+    sym = "\n".join("\t" + ln for ln in sym.split("\n"))
+    i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+    s = s[:i] + "\n" + sym + s[i:]
+    host = next(y for y in symbols(s) if y["ref"] == "C206")
+    tmpl = s[host["a"]:host["b"]]
+    add = ""
+    for k, ref in enumerate(STANDOFFS):
+        blk = clone(tmpl, ref, STANDOFF_PROPS["Value"], STANDOFF_PROPS["Footprint"],
+                    (STANDOFF_AT[0] + 15.24 * k, STANDOFF_AT[1]), "C206")
+        blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "Mechanical:MountingHole_Pad")', blk, count=1)
+        for prop in ("Datasheet", "Description", "LCSC", "MPN"):
+            blk = set_prop(blk, prop, STANDOFF_PROPS[prop])
+        pa = blk.index('\n\t\t(pin "')
+        pb = blk.index("\n\t\t(instances")
+        blk = blk[:pa] + '\n\t\t(pin "1"\n\t\t\t(uuid "%s")\n\t\t)' % uid() + blk[pb:]
+        add += "\n\t" + blk
+    s = insert_top(s, add)
+    pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in STANDOFFS}
+    add = "".join(nc_text(pins[r]["1"]) for r in STANDOFFS)
+    head = next((a, b) for a, b in top_blocks(s, "text") if "3.3 V ALWAYS-ON RAIL" in s[a:b])
+    t = new_uuids(s[head[0]:head[1]])
+    t = re.sub(r'\(text "[^"]*"', '(text "COVER STANDOFFS  (Wurth WA-SMSI M2 x 3.5 mm on F.Cu, no net; '
+               'positions from mechanical/monolith_shell.py, placed by make_board.py)"', t, count=1)
+    t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 40.64 142.24", t, count=1)
+    add += "\n\t" + t
+    return insert_top(s, add)
+
+
 LOW_PROFILE_AT = {"C456": (378.46, 121.92)}  # usb sheet, right of C430 on AC_SNS_N
 
 
@@ -842,6 +892,7 @@ def process(sheet, src):
     s, n = prune(s)
     if sheet == "power.kicad_sch":
         s = add_shared_bulk(s)
+        s = add_standoffs(s)
     if sheet == "mcu.kicad_sch":  # after pruning, so its pins can't catch J301's old wires
         s = add_tc2030(s, old)
         s = add_gauge_tc2030(s)
