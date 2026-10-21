@@ -16,6 +16,7 @@ board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
      ... make_board.py --standoffs   (only places the cover standoffs H101-H104, after Update PCB from Schematic)
+     ... make_board.py --keepouts    (redraws the KO_* mechanical keep-out rule areas from mechanical/monolith_shell.py)
 """
 import math
 import os
@@ -190,12 +191,16 @@ def place_standoffs(path):
     SB_STANDOFFS has them: F.Cu, locked. Only moves those four footprints; run after Update PCB from Schematic,
     with the board closed in KiCad (or reload it afterwards)."""
     import pcbnew
+    lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
+    if os.path.exists(lock):
+        sys.exit("%s is open in KiCad (lock file %s): save and close the PCB editor first" % (path, lock))
     b = pcbnew.LoadBoard(path)
+    missing = [r for r in STANDOFFS if b.FindFootprintByReference(r) is None]
+    if missing:
+        sys.exit("not on the board: %s. In the PCB editor run Tools > Update PCB from Schematic (F8), drop the new "
+                 "footprints anywhere, save, close the PCB editor, then run this again. Board not written." % ", ".join(missing))
     for ref, k in STANDOFFS.items():
         f = b.FindFootprintByReference(ref)
-        if f is None:
-            print("no %s on the board (run Update PCB from Schematic)" % ref)
-            continue
         if f.IsFlipped():
             f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
         y, z = M.SB_STANDOFFS[k]
@@ -207,9 +212,89 @@ def place_standoffs(path):
     pcbnew.SaveBoard(path, b)
 
 
+def keepout_list():
+    """Mechanical keep-outs as (name, layers, polygon, rules), all from mechanical/monolith_shell.py.
+    rules: subset of footprints / tracks / vias / pour (each one is 'not allowed' inside)."""
+    k = M.kicad
+
+    def rect(x0, y0, x1, y1):
+        return [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    out = []
+    # F.Cu: no tall parts and no gap pad under the cover's ePTFE vent
+    cx, cy = k(0, M.SB_VENT_Z)
+    r = M.SB_VENT_D / 2 + 2
+    out.append(("KO_F_cover_vent", ["F.Cu"], [(cx + r * math.cos(a * math.pi / 16), cy + r * math.sin(a * math.pi / 16))
+                                              for a in range(32)], {"footprints"}))
+    # F.Cu: nothing above the module's antenna end (the module footprint already clears copper on every layer)
+    s = M.SB_ANT_SIDE
+    xa = sorted((CX + s * (HALF_W - 3.2 - 1.0), CX + s * HALF_W))
+    ya = (k(0, M.sb_ant_zc + M.SB_ANT_MOD[0] / 2)[1] - 1.0, k(0, M.sb_ant_zc - M.SB_ANT_MOD[0] / 2)[1] + 1.0)
+    out.append(("KO_F_above_antenna", ["F.Cu"], rect(xa[0], ya[0], xa[1], ya[1]), {"footprints"}))
+    # both faces: the top edge bears on the top wall's inside face beyond |x| = SB_STOP_Y0
+    for side, (x0, x1) in (("L", (CX - HALF_W, CX - M.SB_STOP_Y0)), ("R", (CX + M.SB_STOP_Y0, CX + HALF_W))):
+        out.append(("KO_top_stop_" + side, ["F.Cu", "B.Cu"], rect(x0, Y_TOP, x1, Y_TOP + 1.0), {"footprints"}))
+    # B.Cu: EVA lanes pressed onto the board along the cell tangents
+    for i, (y0, y1, z0, z1) in enumerate(M.sb_lanes()):
+        out.append(("KO_B_EVA_lane_%d" % (i + 1), ["B.Cu"], rect(CX + y0, Y(z1), CX + y1, Y(z0)), {"footprints"}))
+    # B.Cu: the PACK nickel strips run behind the board and wrap the bottom edge onto the F.Cu pads
+    for name, yc in M.sb_tab_y.items():
+        w = M.SB_TAB_W / 2 + 0.5
+        out.append(("KO_B_%s_strip" % name.replace("+", "P").replace("-", "N"), ["B.Cu"],
+                    rect(CX + yc - w, Y(M.sb_zb0 + M.SB_TAB_PAD_H), CX + yc + w, Y_BOT), {"footprints", "tracks"}))
+    # B.Cu: cell sense wires behind the board, from the tap holes to the top EVA slots / the floor channel
+    (x1, y1), (x3, y3), (x2, y2) = (k(*M.SB_TAP_HOLES[n]) for n in ("CELL1", "CELL3", "CELL2"))
+    out.append(("KO_B_tap_wires_top", ["B.Cu"], rect(min(x1, x3) - 1.5, Y_TOP, max(x1, x3) + 1.5, y1 + 1.5), {"footprints"}))
+    out.append(("KO_B_tap_wire_CELL2", ["B.Cu"], rect(x2 - 1.5, y2 - 1.5, x2 + 1.5, Y_BOT), {"footprints"}))
+    return out
+
+
+def add_keepouts(path):
+    """Draw keepout_list() as named rule areas (replacing earlier KO_* areas) plus a B.Cu height note on
+    Cmts.User, so DRC flags parts that land on them. Board must be closed in KiCad."""
+    import pcbnew
+    lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
+    if os.path.exists(lock):
+        sys.exit("%s is open in KiCad (lock file %s): save and close the PCB editor first" % (path, lock))
+    b = pcbnew.LoadBoard(path)
+    for z in [z for z in b.Zones() if z.GetIsRuleArea() and z.GetZoneName().startswith("KO_")]:
+        b.Remove(z)
+    for d in [d for d in b.GetDrawings() if d.GetLayer() == pcbnew.Cmts_User and "KO_NOTE" in str(getattr(d, "GetText", lambda: "")())]:
+        b.Remove(d)
+    for name, layers, poly, rules in keepout_list():
+        z = pcbnew.ZONE(b)
+        z.SetIsRuleArea(True)
+        z.SetZoneName(name)
+        ls = pcbnew.LSET()
+        for l in layers:
+            ls.AddLayer(b.GetLayerID(l))
+        z.SetLayerSet(ls)
+        z.SetDoNotAllowFootprints("footprints" in rules)
+        z.SetDoNotAllowTracks("tracks" in rules)
+        z.SetDoNotAllowVias("vias" in rules)
+        z.SetDoNotAllowZoneFills("pour" in rules)
+        z.SetDoNotAllowPads(False)
+        o = z.Outline()
+        o.NewOutline()
+        for x, y in poly:
+            o.Append(pcbnew.FromMM(x), pcbnew.FromMM(y))
+        b.Add(z)
+        print("%-22s %-14s %s" % (name, "+".join(layers), ", ".join(sorted(rules)) + " not allowed"))
+    t = pcbnew.PCB_TEXT(b)
+    t.SetLayer(pcbnew.Cmts_User)
+    t.SetText("KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre "
+              "strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. F.Cu: parts <= 3.2 mm (cover gap pad).")
+    t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(0.8), pcbnew.FromMM(0.8)))
+    t.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(CX), pcbnew.FromMM(Y_BOT + 4)))
+    b.Add(t)
+    pcbnew.SaveBoard(path, b)
+
+
 def main():
     if "--standoffs" in sys.argv:
         place_standoffs(OUT)
+        return
+    if "--keepouts" in sys.argv:
+        add_keepouts(OUT)
         return
     if os.path.exists(OUT) and "--force" not in sys.argv:
         patch(OUT, LAYERS)
