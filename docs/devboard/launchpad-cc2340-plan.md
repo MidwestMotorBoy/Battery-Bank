@@ -40,7 +40,7 @@ Firmware lives in [`../../firmware/`](../../firmware/README.md). Claude writes t
 | T1 | **CCFG bootloader trigger off.** Build has "Default FCFG bootloader, with CCFG settings", pin trigger disabled. Hold DIO21 low (jumper to GND) and reset | App starts (banner prints). Repeat with the SDK default CCFG to see the bootloader take over, then recover by flashing over SWD | Review 4 A-1, checklist §1.4 |
 | T2 | **Mass-erase recovery.** With a CCFG that blocks the app, UniFlash chip erase over SWD | Device is erased and reflashes | Recovery path for the dev board |
 | T3 | **WDT with the debugger halted.** Enable the WDT, halt at a breakpoint for longer than the period | Record whether the target resets. Decides how we debug with the WDT on | Checklist §1.5 |
-| T4 | **Reset to first GPIO write.** First line of `main` restores two outputs from retained RAM; scope RESET and the pin | Time from reset release to pin valid, well under 16 ms, with the BLE stack not yet started | Review 4 C-6 / A-8 |
+| T4 | ~~Reset to first GPIO write~~ **Moved to P0 (2026-10-20).** The LaunchPad number would only show our startup takes a few ms against an 8–80 ms window; the real risk is firmware order. P0 measures it end to end with a real PD contract (`p0-bringup-and-training.md` §4) | — | Review 4 C-6 / A-8 |
 | T5 | **Standby keeps GPIO states**, wake on a falling edge with the internal pull off | Output stays driven through Standby; a button edge wakes it; no wake while the line is low | Checklist §4 IRQ_N, CHG_INH |
 | T6 | **LF RCOSC only** (crystal unused) with BLE advertising | Phone sees stable advertising over an hour; connection holds | Review 4 A-8 |
 | T7 | **I2C0 at 100 kHz**: 9-pulse bus clear, clock stretching tolerated, TMP1075 one-shot and shutdown (if the breakout is bought) | Clean scope trace; reads match a thermometer within ±1 °C | Checklist §4 boot order |
@@ -65,6 +65,7 @@ Results go in a new section at the end of this file, with dates.
 ## 3. After that: firmware before the dev board
 
 - [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), BQ25756 `TS_ADC` through the TPS25751 `I2Cr`/`I2Cw` tasks (no TMP1075s since rev A8).
+- [ ] **First action after any reset, before BLE or stack init: restore EN_5V1/EN_5V2** from retention RAM (or high if the TPS25751 shows an attached source or VBUS). The CC2340 keeps no GPIO state across reset (review 4 C-6).
 - [ ] IRQ_N dispatcher that reads and clears all seven sources and loops until the line is high.
 - [ ] Supervision state machine: CHG_INH rules, charge and source sharing, ship mode, WDT servicing only from the supervision loop. Runs on the LaunchPad against fake devices.
 - [ ] BLE GATT service: status (cells, SOC, ports, temperatures) and the ship-mode command.
