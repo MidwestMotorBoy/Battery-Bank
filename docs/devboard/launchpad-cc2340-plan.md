@@ -57,6 +57,11 @@ Results go in a new section at the end of this file, with dates.
 
 **T2 — partly done, 2026-10-20.** With the chip stuck in the ROM bootloader (DIO21 still at GND), DSLite connected over SWD and reflashed the normal build. After that a RST tap boots the app with DIO21 still low. A chip erase also cleared a failed first flash on Day 1. **The rest is dropped (decision 2026-10-20):** we won't test chip erase with a CCFG that blocks the debug port. Our CCFG leaves every permission open (debug, program, chip erase), and the DIO21 case is covered above, so the test would risk the LaunchPad to cover a mistake we don't plan to make. Revisit only if production ever locks the debug port, and then on a spare board.
 
+**T3 — pass, 2026-10-20.** Test builds: `gmake EXTRA_CFLAGS=-DBRINGUP_WDT_STALL=1` (or `=0`). These run the watchdog with a 3 s timeout, fed every 500 ms. A CCS scripting session (`ccs/scripting/run.bat`) halted the CPU for 10 s and read `WDTCNT` (0x40001300) every 2 s.
+- `WDTTEST.STALLEN = 1`: the counter froze at 86094 for all 10 s, and the app resumed with no reset.
+- `STALLEN = 0`: the counter kept counting down while halted (81221 → 14772 in 2 s, about 32.8 k/s, matching the 32768 Hz LF clock). The chip reset about 3 s in (`rst=WATCHDOG`), and the debugger lost the target (DSLite -615).
+- **Decision:** production firmware sets stall ON explicitly when it starts the watchdog. That is TI's Watchdog driver default (`Watchdog_DEBUG_STALL_ON`). The bit only matters while a debugger has the CPU halted, so it costs nothing in the field, and breakpoints stay usable with the watchdog running.
+
 ## 3. After that: firmware before the dev board
 
 - [ ] Drivers: BQ40Z50 (SMBus, MAC commands), TPS25751 (INT_EVENT1 read/clear, source PDO changes), BQ25756 `TS_ADC` through the TPS25751 `I2Cr`/`I2Cw` tasks (no TMP1075s since rev A8).

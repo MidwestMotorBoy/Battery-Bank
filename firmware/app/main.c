@@ -23,8 +23,29 @@
 #include DeviceFamily_constructPath(inc/hw_types.h)
 #include DeviceFamily_constructPath(inc/hw_memmap.h)
 #include DeviceFamily_constructPath(inc/hw_evtull.h)
+#include DeviceFamily_constructPath(driverlib/ckmd.h)
 
 #include "ti_drivers_config.h"
+
+/* Plan test T3: build with EXTRA_CFLAGS=-DBRINGUP_WDT_STALL=1 (watchdog stops
+ * while the debugger halts the CPU) or =0 (keeps counting). 3 s timeout on
+ * the 32768 Hz LF clock, fed every 500 ms loop pass. */
+#ifdef BRINGUP_WDT_STALL
+#define WDT_TICKS (3U * 32768U)
+
+static void wdtFeed(void)
+{
+    CKMDUnlockWatchdog();
+    CKMDSetWatchdogCounter(WDT_TICKS); /* writing the counter relocks */
+}
+
+static void wdtStart(bool stallWhenHalted)
+{
+    CKMDUnlockWatchdog();
+    CKMDSetWatchdogDebugConfig(stallWhenHalted);
+    wdtFeed();
+}
+#endif
 
 static UART2_Handle uartLog;
 static volatile bool irqSeen;
@@ -75,6 +96,10 @@ static void mainThread(uint32_t resetReason)
     logStr("Reset reason: ");
     logStr(resetReasonName(resetReason));
     logStr("\r\n");
+#ifdef BRINGUP_WDT_STALL
+    wdtStart(BRINGUP_WDT_STALL != 0);
+    logStr(BRINGUP_WDT_STALL ? "WDT: 3 s, stall when halted ON\r\n" : "WDT: 3 s, stall when halted OFF\r\n");
+#endif
 
     /* BTN-1 floats on this LaunchPad (the board file's external pull-up is
      * not there in practice: the pin stayed low after the first press).
@@ -87,6 +112,9 @@ static void mainThread(uint32_t resetReason)
     while (1)
     {
         GPIO_toggle(CONFIG_GPIO_LED_HEARTBEAT);
+#ifdef BRINGUP_WDT_STALL
+        wdtFeed();
+#endif
         /* Once a second, so the UART wiring can be checked without a reset */
         if ((++ticks & 1) == 0)
         {
