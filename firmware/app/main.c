@@ -16,13 +16,19 @@
 #include <NoRTOS.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/UART2.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/power/PowerCC23X0.h>
 #include <ti/devices/DeviceFamily.h>
 #include DeviceFamily_constructPath(driverlib/pmctl.h)
+#include DeviceFamily_constructPath(inc/hw_types.h)
+#include DeviceFamily_constructPath(inc/hw_memmap.h)
+#include DeviceFamily_constructPath(inc/hw_evtull.h)
 
 #include "ti_drivers_config.h"
 
 static UART2_Handle uartLog;
 static volatile bool irqSeen;
+static volatile uint32_t irqCount;
 
 static void logStr(const char *s)
 {
@@ -54,6 +60,7 @@ static void irqCallback(uint_least8_t index)
 {
     (void)index;
     irqSeen = true;
+    irqCount++;
 }
 
 static void mainThread(uint32_t resetReason)
@@ -69,6 +76,10 @@ static void mainThread(uint32_t resetReason)
     logStr(resetReasonName(resetReason));
     logStr("\r\n");
 
+    /* BTN-1 floats on this LaunchPad (the board file's external pull-up is
+     * not there in practice: the pin stayed low after the first press).
+     * TODO: move the pull-up into boards/launchpad.syscfg via SysConfig. */
+    GPIO_setConfig(CONFIG_GPIO_BTN_IRQ, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
     GPIO_setCallback(CONFIG_GPIO_BTN_IRQ, irqCallback);
     GPIO_enableInt(CONFIG_GPIO_BTN_IRQ);
 
@@ -79,8 +90,9 @@ static void mainThread(uint32_t resetReason)
         /* Once a second, so the UART wiring can be checked without a reset */
         if ((++ticks & 1) == 0)
         {
-            char line[24];
-            snprintf(line, sizeof line, "tick %lu\r\n", (unsigned long)(ticks / 2));
+            char line[48];
+            snprintf(line, sizeof line, "tick %lu btn=%u irqs=%lu\r\n", (unsigned long)(ticks / 2),
+                     (unsigned)GPIO_read(CONFIG_GPIO_BTN_IRQ), (unsigned long)irqCount);
             logStr(line);
         }
         if (irqSeen)
@@ -98,7 +110,13 @@ int main(void)
     uint32_t resetReason = PMCTLGetResetReason();
 
     Board_init();
+    /* Power_init (inside Board_init) leaves only the RTC as a standby wakeup
+     * source, so a GPIO edge during standby is lost. IRQ_N must wake us. */
+    HWREG(EVTULL_BASE + EVTULL_O_WKUPMASK) |= EVTULL_WKUPMASK_AON_IOC_COMB_M;
     NoRTOS_start();
+#ifdef BRINGUP_NO_STANDBY
+    Power_setConstraint(PowerLPF3_DISALLOW_STANDBY);
+#endif
     mainThread(resetReason);
     return 0;
 }

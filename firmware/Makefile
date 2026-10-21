@@ -43,7 +43,8 @@ CFLAGS := -mcpu=cortex-m0plus -march=thumbv6m -mfloat-abi=soft -mthumb \
           -I "$(SDK)/kernel/nortos" \
           -I "$(SDK)/kernel/nortos/posix" \
           -I "$(SDK)/source/ti/posix/ticlang" \
-          -DDeviceFamily_CC23X0R5
+          -DDeviceFamily_CC23X0R5 \
+          $(EXTRA_CFLAGS)
 
 LFLAGS := -Wl,-i"$(SDK)/source" -Wl,-i"$(SDK)/kernel/nortos" -Wl,-i$(GEN) \
           -Wl,-l,ti_utils_build_linker.cmd.genlibs \
