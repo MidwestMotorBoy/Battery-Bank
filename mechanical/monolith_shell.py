@@ -199,15 +199,21 @@ SB_LANE_GAP = 2.0                    # lane end to the module (z)
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
 SB_CELLS = {(1, -1): ('C1', 'top'), (-1, -1): ('C2', 'bottom'), (-1, 1): ('C3', 'top'), (1, 1): ('C4', 'bottom')}
-# Pack connections. The tabs are soldered from the open side after the board is in, so everything lands on F.Cu.
-# - PACK- (C1 bottom) and PACK+ (C4 bottom): nickel strips that wrap under the board's bottom edge onto F.Cu pads.
-#   The shim under the board is one centre block between them; the floor spacer and EVA get reliefs beside the board.
-# - CELL1 (C1+/C2- strip, top), CELL3 (C3+/C4- strip, top), CELL2 (C2+/C3- strip, bottom): sense taps only, so thin
-#   wires through plated holes. They run in the deep groove behind the board between C1 and C4 (5 mm free at |y| = 2),
+# Pack connections (2026-10-21: flying leads). The cell module is built and tested on the bench with five leads, goes
+# into the tray first, and the board is lowered over the leads (threaded through plated holes from B.Cu), slid up into
+# the ports, and every lead is soldered on F.Cu from the open side. The leads take the board's 2.5 mm slide.
+# - PACK- (C1 bottom) and PACK+ (C4 bottom): a short nickel tab welded to the cell, with an 18 AWG silicone lead soldered
+#   to its end on the bench. The lead drops into the floor-zone gap behind the board, loops sideways for slack, and
+#   comes up through its hole near the board's bottom edge.
+# - CELL1 (C1+/C2- strip, top), CELL3 (C3+/C4- strip, top), CELL2 (C2+/C3- strip, bottom): sense taps only, 28 AWG,
+#   through plated holes. They run in the deep groove behind the board between C1 and C4 (5 mm free at |y| = 2),
 #   in slots in the top EVA, and for CELL2 in a channel in the floor spacer.
 SB_TAB_W, SB_TAB_T = 7.0, 0.15       # nickel strip (all strips)
-SB_TAB_PAD_H = 5.0                   # PACK+/- F.Cu pads: from the bottom edge up
-SB_SHIM_HALF = 6.0                   # centre shim block |y| (the PACK strips pass either side)
+SB_LEAD_D = 1.9                      # PACK+/- lead: 18 AWG silicone outside diameter (7-9 A over ~30 mm)
+SB_LEAD_HOLE, SB_LEAD_PAD = 1.6, 3.4 # its plated hole (stripped conductor ~1.2 mm) and pad
+SB_LEAD_HOLES = {'PACK-': (-14.0, 6.9), 'PACK+': (14.0, 6.9)}   # (y, z): above the bottom edge, below the EVA lanes
+SB_LEAD_X = None                     # set below: the lead runs at the middle of the gap behind the board
+SB_SHIM_HALF = 16.4                  # shim under the board, full width again (the leads pass behind the board)
 SB_WIRE_D = 0.8                      # sense wire, e.g. 28 AWG silicone
 SB_TAP_HOLES = {'CELL1': (-2.0, 70.0), 'CELL3': (2.0, 70.0), 'CELL2': (2.0, 8.0)}   # (y, z) plated holes, ~1.0 mm drill
 SB_TAP_PAD_D = 2.0                   # tap hole pad diameter
@@ -258,7 +264,8 @@ def sb_lanes():
             out += [(y0, y1, z0, g0), (y0, y1, g1, z1)]
         else: out.append((y0, y1, z0, z1))
     return out
-sb_tab_y = {'PACK-': sb_cell_xy[(1, -1)][1], 'PACK+': sb_cell_xy[(1, 1)][1]}   # PACK strip centrelines (C1, C4)
+sb_tab_y = {'PACK-': sb_cell_xy[(1, -1)][1], 'PACK+': sb_cell_xy[(1, 1)][1]}   # PACK tab centrelines (C1, C4)
+SB_LEAD_X = (a_in + 0.2 + sb_xb0) / 2         # leads run midway between the fish-paper sheet and B.Cu
 sb_z_mid = (sb_zb0 + sb_zb1) / 2
 def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
 
@@ -284,8 +291,7 @@ def write_side_dxf(path):
     s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module on B.Cu at the edge, and the EVA lanes (no B.Cu parts there)
     _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE_BCU')
     for y0, y1, z0, z1 in sb_lanes(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_EVA_LANES')
-    for yc in sb_tab_y.values():              # PACK strip pads on F.Cu, and the sense-wire holes
-        _rect(e, yc, sb_zb0 + SB_TAB_PAD_H/2, SB_TAB_W + 1.0, SB_TAB_PAD_H, 'TAB_PADS')
+    for y, z in SB_LEAD_HOLES.values(): _circ(e, y, z, SB_LEAD_PAD/2, 'TAB_PADS')   # PACK lead holes and sense-wire holes
     for y, z in SB_TAP_HOLES.values(): _circ(e, y, z, SB_TAP_PAD_D/2, 'TAB_PADS')
     for y, z in SB_STANDOFFS: _rect(e, y, z, SB_STANDOFF_D, SB_STANDOFF_D, 'COVER_STANDOFFS')
     _dxf(path, e)
@@ -334,8 +340,8 @@ if __name__ == '__main__':
           + f"; bottom-down drops add {0.65*SB_PAD_T:.1f} mm of floor pad between the cells and the tray")
     print(f"side board {sb_board_w:.2f} x {sb_board_l:.2f} mm, corner notches -> {sb_board_area:.0f} mm2 per side, "
           f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
-    print("pack connections (KiCad x, y): " + ", ".join(f"{n} {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[0]:.1f}, {kicad(y, sb_zb0 + SB_TAB_PAD_H/2)[1]:.1f} pad"
-          for n, y in sb_tab_y.items()) + "; " + ", ".join(f"{n} {kicad(y, z)[0]:.1f}, {kicad(y, z)[1]:.1f} hole" for n, (y, z) in SB_TAP_HOLES.items()))
+    print("pack connections (KiCad x, y): " + ", ".join(f"{n} {kicad(y, z)[0]:.1f}, {kicad(y, z)[1]:.1f} 18 AWG hole"
+          for n, (y, z) in SB_LEAD_HOLES.items()) + "; " + ", ".join(f"{n} {kicad(y, z)[0]:.1f}, {kicad(y, z)[1]:.1f} hole" for n, (y, z) in SB_TAP_HOLES.items()))
     ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
     print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
     # assembly checks (positive = clearance)
@@ -364,16 +370,19 @@ if __name__ == '__main__':
         'drain channel: cap wall beside it (x)': SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 1.0,
         'standoffs: 0.1 below the cover': (sb_x_cv0 - sb_xb1) - sb_standoff_h - 0.1 + 0.1,
         'standoffs clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_STANDOFFS) - (SB_VENT_D/2 + 2 + SB_STANDOFF_D/2),
-        'standoffs clear of the PACK pads (z)': min(z for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - (sb_zb0 + SB_TAB_PAD_H) - 1.0,
-        'PACK strip between the floor spacer and the board (x)': (sb_xb0 - a_in) - SB_TAB_T,
-        'PACK strips clear of the centre shim (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2) - SB_SHIM_HALF,
-        'PACK strips clear of the board corner notches (y)': sb_notch_y - (max(abs(v) for v in sb_tab_y.values()) + SB_TAB_W/2),
+        'standoffs clear of the PACK holes (z)': min(z for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - (max(z for _, z in SB_LEAD_HOLES.values()) + SB_LEAD_PAD/2) - 1.0,
+        'PACK lead fits the gap behind the board (x)': (sb_xb0 - (a_in + 0.2)) - SB_LEAD_D - 0.3,
+        'PACK lead loop clear of the shim (x: lead behind B.Cu)': sb_xb0 - (SB_LEAD_X + SB_LEAD_D/2),
+        'PACK lead loop above the tray floor (z)': (sb_z_cell0 - 0.2 - 3.6 - SB_LEAD_D/2) - SB_END_T,
+        'PACK lead pads clear of the board corner notches (y)': sb_notch_y - (max(abs(y) for y, _ in SB_LEAD_HOLES.values()) + SB_LEAD_PAD/2) - 0.5,
+        'PACK lead pads above the bottom edge (z)': min(z for _, z in SB_LEAD_HOLES.values()) - SB_LEAD_PAD/2 - sb_zb0 - 0.5,
+        'PACK lead pads below the EVA lanes (z)': min(l[2] for l in sb_lanes()) - (max(z for _, z in SB_LEAD_HOLES.values()) + SB_LEAD_PAD/2),
         'room under the board edge for the strip wrap (z)': (sb_zb0 - SB_TAB_T) - SB_END_T - 1.0,
-        'PACK pads clear of the vent keep-out (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (SB_VENT_D/2 + 2),
+        'PACK lead pads clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_LEAD_HOLES.values()) - SB_LEAD_PAD/2 - (SB_VENT_D/2 + 2),
         'top tap holes below the USB-C bodies (z)': (sb_zb1 + USB_FACE_OUT - USB_DEPTH) - (max(SB_TAP_HOLES['CELL1'][1], SB_TAP_HOLES['CELL3'][1]) + SB_TAP_PAD_D/2) - 1.0,
         'tap wires in the groove behind the board (free height - wire)': float(side_groove_depth(abs(SB_TAP_HOLES['CELL1'][0]))) - SB_WIRE_D,
         'tap wires beside the mica (y)': abs(SB_TAP_HOLES['CELL1'][0]) - SB_WIRE_D/2 - SB_SEP_T/2 - 0.5,
-        'CELL2 hole clear of the PACK pads (y)': (min(abs(v) for v in sb_tab_y.values()) - SB_TAB_W/2 - 0.5) - (abs(SB_TAP_HOLES['CELL2'][0]) + SB_TAP_PAD_D/2),
+        'CELL2 hole clear of the PACK lead pads': min(np.hypot(y - SB_TAP_HOLES['CELL2'][0], z - SB_TAP_HOLES['CELL2'][1]) for y, z in SB_LEAD_HOLES.values()) - (SB_LEAD_PAD + SB_TAP_PAD_D)/2 - 0.5,
         'BLE module on B.Cu: room behind it to the fish paper (min over its span)':
             float(np.min(side_groove_depth(np.linspace(*sb_ant_y, 41)))) - SB_INSUL - SB_ANT_H,
         'EVA lanes: 3 x 1 mm squeezed into the gap (compression)': SB_LANE_LAYERS*1.0 - (sb_xb0 - (a_in + 0.2)),

@@ -39,6 +39,10 @@ An ultralight 100 W USB-C battery bank for backpacking. Four EVE INR21700-58E ce
 <td width="50%"><a href="mechanical/monolith_side_parts.png"><img src="mechanical/monolith_side_parts.png" alt="Caps, tray and pads with mass, drop and print tables"></a><br><b>Parts, mass and drop estimate.</b> Cap print zones, the tray, the floor spacer and EVA pads, and the print settings.</td>
 <td width="50%"><a href="mechanical/monolith_layout_compare.png"><img src="mechanical/monolith_layout_compare.png" alt="Top-cap layout against the side-board layout"></a><br><b>Layout comparison.</b> The original top-cap tube against the side-board tray.</td>
 </tr>
+<tr>
+<td width="50%"><a href="mechanical/monolith_side_assembly.png"><img src="mechanical/monolith_side_assembly.png" alt="Assembly in six steps"></a><br><b>Assembly.</b> The cell module is built on the bench, then the tray, then the board over five leads, then the cover and caps. See <a href="docs/production/p0-assembly.md">p0-assembly.md</a>.</td>
+<td width="50%"><a href="mechanical/monolith_side_standoffs.png"><img src="mechanical/monolith_side_standoffs.png" alt="Cover standoffs explained"></a><br><b>Cover standoffs.</b> Four steel spacers on the board carry crush loads off the parts. The two real screws are shown alongside.</td>
+</tr>
 </table>
 
 All of these come from the Python models in `mechanical/`. Re-run the scripts after changing a parameter (see [Mechanical design](#mechanical-design)).
@@ -85,14 +89,12 @@ The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), along
         - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
         - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 364 g including the pads and mica (+26 g). The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
         - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
-        - **Pack connections:** everything is soldered from the open side once the board is in, so it all lands on F.Cu (`monolith_side_tabs.png`).
-            - **PACK- and PACK+:** 0.15 × 7 mm nickel strips from the C1 and C4 bottoms. Each drops down behind the board, wraps under its bottom edge and is soldered to an F.Cu pad, 8 × 5 mm at KiCad x 89.1 / 110.9, y 134.7. The shim is now one centre block between them.
-            - **CELL1, CELL3 and CELL2:** sense taps only, so thin wires (about 28 AWG silicone) go through plated holes at KiCad (98.0, 71.5), (102.0, 71.5) and (102.0, 133.5).
-                - The top two run down the groove behind the board between C1 and C4, which has 5 mm free.
-                - CELL2 runs in a channel in the floor spacer.
-                - The top EVA has slots for the wires.
-            - Holes and pads are on the board DXF's `TAB_PADS` layer.
-            - Take the gauge's PACK-/PACK+ Kelvin sense from the pads.
+        - **Pack connections (2026-10-21):** a cell module built on the bench with five flying leads, joined to the board inside the tray (`monolith_side_tabs.png`, `docs/production/p0-assembly.md`).
+            - **PACK− and PACK+:** an 18 AWG lead each, soldered to a short nickel tab on the C1 and C4 bottoms. Each loops in the floor-zone gap to take the board's 2.5 mm slide, and comes up through a plated hole at KiCad (86.0, 134.6) and (114.0, 134.6).
+            - **CELL1–3:** 28 AWG leads through plated holes at (98.0, 71.5), (102.0, 71.5) and (102.0, 133.5).
+            - All five are soldered on F.Cu from the open side.
+            - The holes are on the board DXF's `TAB_PADS` layer.
+            - Take the gauge's PACK−/PACK+ Kelvin sense from the hole pads.
         - **Vibration and trail durability (2026-10-18):**
             - **Cells are preloaded everywhere:**
                 - crush ribs on the cell-zone walls flatten 0.25 mm into the liner;
@@ -128,6 +130,8 @@ The original top-cap tube is still in `mechanical/` (`monolith_shell.py`), along
     - `monolith_side_tabs.png`: the nickel strips and sense wires, and the board face with the pad and hole positions;
     - `monolith_side_hero.png`: the assembled pack with its laser-marked label, in two colourways JLC3DP sells (MJF PA12 black or grey, TPU black or blue).
     - `monolith_side_standoffs.png` (`monolith_standoff_detail.py`): what the four cover standoffs H101–H104 do, with a 3D view, a section through two of them, and the squeeze load path, next to the two real cover screws.
+    - `monolith_side_assembly.png` (`monolith_assembly_steps.py`): assembly in six steps. The written procedure is [`docs/production/p0-assembly.md`](docs/production/p0-assembly.md).
+    - `monolith_side_standoff_zones.png` (`monolith_standoff_zones.py`): where the cover standoffs may go around the current board placement.
 - **Cover heatsink and label (prototype):** `monolith_cover_label.py` builds the aluminium cover for JLCCNC sheet metal: 1.0 mm 5052, black anodized, laser-marked.
     - It needs shapely and matplotlib as well, and KiCad 10's `kicad-cli` for the STEP.
     - **Outputs:**

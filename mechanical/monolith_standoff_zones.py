@@ -7,7 +7,7 @@ Rules (from the mechanical model; positions are SB_STANDOFFS in monolith_shell.p
 - the standoff (Wurth WA-SMSI, 5.8 mm courtyard) sits on F.Cu, and its 3 mm hole goes through the board, so B.Cu parts
   must clear the hole too;
 - it only helps under the free middle of the cover: the ends are held by the top lip, the screws and the cap bands;
-- keep-outs: USB-C bodies, PACK pads, sense-tap holes, the vent, the BLE module (and 5 mm round it), board edges/notches;
+- keep-outs: USB-C bodies, PACK lead holes, sense-tap holes, the vent, the BLE module (and 5 mm round it), board edges/notches;
 - best over an EVA lane on the back, so the load goes straight on into the cells."""
 import sys, json, os
 
@@ -48,8 +48,7 @@ def zones(fps):
     keep = []
     for py in (-S.SB_PORT_Y, S.SB_PORT_Y):                                         # USB-C bodies + notches
         keep.append(kpoly((py - 5.6, py + 5.6, S.sb_zb1 + S.USB_FACE_OUT - S.USB_DEPTH - 0.5, S.sb_zb1 + 1)))
-    for yc in S.sb_tab_y.values():                                                 # PACK pads
-        keep.append(kpoly((yc - S.SB_TAB_W / 2 - 0.5, yc + S.SB_TAB_W / 2 + 0.5, S.sb_zb0 - 1, S.sb_zb0 + S.SB_TAB_PAD_H)))
+    for y, z in S.SB_LEAD_HOLES.values(): keep.append(Point(*K(y, z)).buffer(S.SB_LEAD_PAD / 2 + 0.3))   # PACK lead holes
     for y, z in S.SB_TAP_HOLES.values(): keep.append(Point(*K(y, z)).buffer(S.SB_TAP_PAD_D / 2 + 0.3))
     keep.append(Point(*K(0, S.SB_VENT_Z)).buffer(S.SB_VENT_D / 2 + 2))           # vent keep-out
     s = S.SB_ANT_SIDE; ya, yb = sorted((s * S.sb_ant_y[0], s * S.sb_ant_y[1]))

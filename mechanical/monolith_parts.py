@@ -437,20 +437,28 @@ def _box(x0, x1, y0, y1, z0, z1):
     p = (x0, x1, y0, y1)
     return build([xrect_pts(*p, )], [z0, z1], lambda k, x, y: xrect_in(x, y, *p))
 def nickel_strips():
-    """series strips and the two PACK strips (wrapped under the board edge onto F.Cu); bought, not printed"""
+    """series strips and the two PACK tabs (cell bottom out into the gap behind the board); bought, not printed"""
     t, hw, pr = S.SB_TAB_T, S.SB_TAB_W/2, S.pocket_r
     zt0, zb1 = S.sb_z_cell1 + 0.2, S.sb_z_cell0 - 0.2           # over the + rings, under the cell bottoms
     B = [_box(-pr, pr, -pr - hw, -pr + hw, zt0, zt0 + t),         # C1+ -> C2-  (CELL1), top
          _box(-pr, pr, pr - hw, pr + hw, zt0, zt0 + t),           # C3+ -> C4-  (CELL3), top
          _box(-pr - hw, -pr + hw, -pr, pr, zb1 - t, zb1)]         # C2+ -> C3-  (CELL2), bottom
-    xv = aI + 0.5                                                 # down the gap between the floor pads and the board
-    for yc in S.sb_tab_y.values():
-        y0, y1 = yc - hw, yc + hw
-        B += [_box(pr - hw, xv + t, y0, y1, zb1 - t, zb1),         # on the cell bottom, out to the board
-              _box(xv, xv + t, y0, y1, S.sb_zb0 - t, zb1 - t),     # down behind the board
-              _box(xv, S.sb_xb1 + t, y0, y1, S.sb_zb0 - t, S.sb_zb0),   # under the bottom edge
-              _box(S.sb_xb1, S.sb_xb1 + t, y0, y1, S.sb_zb0 - t, S.sb_zb0 + S.SB_TAB_PAD_H)]   # up onto the F.Cu pad
+    for yc in S.sb_tab_y.values():                                # PACK tabs: cell bottom out to the lead joint
+        B.append(_box(pr - hw, S.SB_LEAD_X + 1.0, yc - hw, yc + hw, zb1 - t, zb1))
     return np.vstack(B)
+def pack_leads(which=None):
+    """18 AWG PACK leads: soldered to the tab end (on the bench), down into the floor-zone gap, a sideways loop for the
+    board's 2.5 mm slide, up to the hole and through the board"""
+    r = S.SB_LEAD_D/2; out = []; xl = S.SB_LEAD_X; zb = S.sb_z_cell0 - 0.2 - 3.6
+    def seg(p, q):
+        lo = np.minimum(p, q) - r; hi = np.maximum(p, q) + r
+        out.append(_box(lo[0], hi[0], lo[1], hi[1], lo[2], hi[2]))
+    for n, (yh, zh) in S.SB_LEAD_HOLES.items():
+        if which and n != which: continue
+        yt = S.sb_tab_y[n]; zt = S.sb_z_cell0 - 0.2 - r
+        pts = [(xl, yt, zt), (xl, yt, zb), (xl, yh, zb), (xl, yh, zh), (S.sb_xb1 + 0.8, yh, zh)]
+        for a, b in zip(pts, pts[1:]): seg(np.array(a, float), np.array(b, float))
+    return np.vstack(out)
 def sense_wires():
     """CELL1 / CELL3 from the top strips, CELL2 from the bottom strip, each to a plated hole (through to F.Cu)"""
     r = S.SB_WIRE_D/2; out = []
