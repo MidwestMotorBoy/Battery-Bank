@@ -380,8 +380,59 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 
 **PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343 D), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus seven new parts: C209–C213 and C456/C556 (7343 D).
 
+## Cover standoffs, no screw holes (2026-10-20)
+
+The board has **no screw holes**. It is held by:
+- the top wall stop and the two USB-C bodies in their wall holes;
+- the PA12 wedge under its bottom edge (it replaced the shim, 2026-10-21);
+- the aluminium cover pressing down through the gap pad.
+
+The two M2 cover screws go into heat-set inserts in the tray's bottom corner pillars. Those pillars sit in the board's corner notches, beside the board, not through it.
+
+What does mount on the board is **four SMT standoffs** on F.Cu, `COVER_STANDOFFS` on `mechanical/monolith_side_pcb.dxf`.
+
+- **Job:** they hold the cover 0.2 mm off the parts, so a drop or squeeze loads the steel standoffs rather than the inductors, the gap pad and the USB-C bodies.
+- **Part:** Würth WA-SMSI 9774035243R (LCSC C5266183, 134 in stock on 2026-10-20). M2 internal thread, 4.35 mm body, 3.5 mm tall, reflowed with the rest of F.Cu.
+- **Footprint:** KiCad's `Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243`, a pad ring plus a 3 mm unplated hole and a 5.8 mm courtyard.
+- **Net:** the pad ring has no net. The cover only touches the standoffs when it flexes, so they can't serve as a ground bond.
+- **Schematic:** H101–H104, on the 3V3 Rail sheet, so they reach the JLC BOM and placement file.
+- **Positions:** from `mechanical/monolith_shell.py` `SB_STANDOFFS` (single source for the tray and the board). In KiCad, H101 (85.0, 113.5), H102 (115.0, 113.5), H103 (85.0, 93.5) and H104 (115.0, 93.5), all 6.6 mm in from the side edges.
+    - The upper pair moved from tray z 56 to z 48. At z 56 it sat on the port-1 BQ25756 and on the lower end of the BLE module (right edge, z 56–63).
+    - A new mechanical check keeps the standoffs at least 5 mm from the module (0.9 mm of margin now).
+- **Placing them:** run Update PCB from Schematic, close or save the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --standoffs`. It moves only H101–H104 to these positions and locks them.
+    - A dry run on the current placement shows H104's courtyard 0.4 mm into U403's, so move U403 up by 0.5 mm.
+- **Still to update:** the mechanical renders (`monolith_parts.py`, `monolith_print_kit.py`) still show the old standoff spots until they are re-run in the mechanical venv.
+
+## Mechanical keep-outs on the board (2026-10-21)
+
+JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `mechanical/monolith_shell.py`, and re-running it replaces the old `KO_*` areas. Run it with the board closed in KiCad.
+
+| Rule area | Layer | Not allowed | Why |
+|---|---|---|---|
+| `KO_F_cover_vent` (Ø7 mm at 100, 129.5) | F.Cu | parts | under the cover's ePTFE vent: no tall parts or gap pad |
+| `KO_F_above_antenna` (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | nothing metal over the BLE module's antenna end. The module footprint already keeps copper off every layer there |
+| `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
+| `KO_B_EVA_lane_1..3` (x 86.1–92.1 and 107.9–113.9; split round the module) | B.Cu | parts | EVA strips pressed onto the board along the cell tangents, where free height is lowest |
+| `KO_B_PACKN_strip` / `KO_B_PACKP_strip` (x 85.1–93.1 and 106.9–114.9, bottom 5 mm) | B.Cu | parts, tracks | the PACK nickel strips lie on B.Cu and wrap the bottom edge onto the F.Cu pads. A pour of the strip's own net is fine |
+| `KO_B_tap_wires_top` (x 96.5–103.5, top edge to y 73) and `KO_B_tap_wire_CELL2` | B.Cu | parts | cell sense wires behind the board, from the tap holes to the EVA slots and the floor channel |
+
+There is no rule-area type for height, so a note on Cmts.User under the board holds those limits:
+- **F.Cu:** parts up to 3.2 mm, set by the cover gap pad.
+- **B.Cu:** parts up to 2.3 mm in most places. Up to about 5 mm only in the centre strip (x 96–104) or more than 18 mm from the centre line. No heat sources.
+
+**Hand-soldered B.Cu parts (19):**
+- **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
+- **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
+- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports.
+
+Fit all 19 before the first power-up: the chargers need both bulk banks.
+
+**DRC on the 2026-10-21 placement:**
+- Port 1's stage sits over the antenna area: U403, Q402, C434, R446 and R447 are in `KO_F_above_antenna`.
+- L401 is on B.Cu in EVA lane 3. It belongs on F.Cu with the FETs.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Place the board** on the side outline. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
+3. **Place the board** on the side outline. Run Update PCB from Schematic and then `make_board.py --standoffs` first, so the four locked cover standoffs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.

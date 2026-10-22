@@ -23,6 +23,7 @@ SYSCFG  := boards/$(BOARD).syscfg
 
 CC      := "$(TICLANG_ARMCOMPILER)/bin/tiarmclang"
 OBJCOPY := "$(TICLANG_ARMCOMPILER)/bin/tiarmobjcopy"
+CRCTOOL := "$(SDK)/tools/common/crc_tool/crc_tool"
 SYSCFG_CMD := "$(SYSCONFIG_TOOL)" --compiler ticlang --product "$(SDK)/.metadata/product.json"
 
 # Ask SysConfig which files it will generate (TI does the same at parse time)
@@ -37,13 +38,14 @@ OBJS := $(addprefix $(BUILD)/,$(notdir $(APP_SRCS:.c=.obj))) \
 
 CFLAGS := -mcpu=cortex-m0plus -march=thumbv6m -mfloat-abi=soft -mthumb \
           -Oz -gdwarf-3 -Wall -std=c11 \
-          -I app -I $(GEN) -DBOARD_NAME='"$(BOARD)"' \
+          -I app -I $(GEN) -DBOARD_NAME='"$(BOARD)"' -DBOARD_$(BOARD) \
           $(addprefix @,$(SYSCFG_OPT_FILES)) \
           -I "$(SDK)/source" \
           -I "$(SDK)/kernel/nortos" \
           -I "$(SDK)/kernel/nortos/posix" \
           -I "$(SDK)/source/ti/posix/ticlang" \
-          -DDeviceFamily_CC23X0R5
+          -DDeviceFamily_CC23X0R5 \
+          $(EXTRA_CFLAGS)
 
 LFLAGS := -Wl,-i"$(SDK)/source" -Wl,-i"$(SDK)/kernel/nortos" -Wl,-i$(GEN) \
           -Wl,-l,ti_utils_build_linker.cmd.genlibs \
@@ -70,6 +72,9 @@ $(BUILD)/%.obj: $(GEN)/%.c $(SYSCFG_H_FILES) $(SYSCFG_OPT_FILES) | $(BUILD)
 $(BUILD)/$(NAME).out: $(OBJS)
 	@echo "LD  $@"
 	@$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) -o $@
+	@# CCFG and image CRCs: the linker leaves them 0, TI's crc_tool fills them
+	@# in (as the SDK example makefiles do). Without this the flash verify fails.
+	@$(CRCTOOL) patch-image --elf $@ --symbol-prefix ti_utils_build_GenMap_sym_CRC --output $@
 
 $(BUILD)/$(NAME).hex: $(BUILD)/$(NAME).out
 	@$(OBJCOPY) -O ihex $< $@

@@ -743,7 +743,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f6490637-41c8-4bcd-a75a-2649ea49b0c0")
+		(uuid "1308b834-d26d-4f51-ab23-6812cfbd4397")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -755,7 +755,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "42059cd5-454f-4f08-82c2-dee8390ce86c")
+		(uuid "3e25ef6f-b98d-4cd4-a848-e7c2b9d09804")
 		(property "Reference" "#PWR9001"
 			(at 222.25 119.38 0)
 			(hide yes)
@@ -811,7 +811,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "2d5e6ea3-9a49-4e27-872c-2ec57b225e8a")
+			(uuid "f67dacee-b801-46c6-aaef-57bc023ac701")
 		)
 		(instances
 			(project "Monolith"
@@ -830,7 +830,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "39085a66-dda8-4cd7-b9d9-b01c39646b24")
+		(uuid "255d0862-a9c1-4310-99cf-87f78fb5429d")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -842,7 +842,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "e65c0735-9050-4aac-9074-1a8d20267f6f")
+		(uuid "e030e543-bce7-45e9-8fae-14cc2c06c9bf")
 		(property "Reference" "#PWR9003"
 			(at 222.25 114.3 0)
 			(hide yes)
@@ -898,7 +898,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "825547fd-1f58-4c56-ae74-ff6ca4b77865")
+			(uuid "1de909f3-db14-477a-97e9-ed6acfff52f1")
 		)
 		(instances
 			(project "Monolith"
@@ -927,7 +927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f13914d7-d300-4967-8d01-900de52fb165")
+		(uuid "e164fd5d-c47e-4079-8485-53d8a4d84c37")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -939,7 +939,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "ac5f9709-2cc6-4ad4-9c28-83643df76322")
+		(uuid "2941f520-291b-4325-badf-d01dafffac04")
 		(property "Reference" "#PWR9005"
 			(at 92.71 119.38 0)
 			(hide yes)
@@ -995,7 +995,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "d92c5aa0-6998-4afa-8b74-115f64dae708")
+			(uuid "8de36a5a-b414-4bdd-859e-e6ba8f788fe4")
 		)
 		(instances
 			(project "Monolith"
@@ -1008,7 +1008,7 @@
 	)
 	(no_connect
 		(at 220 124.46)
-		(uuid "dc4b8111-d436-4271-b623-f7daf740ff2f")
+		(uuid "898fb2cf-f50f-4b9e-ac9b-2f5ce60ec184")
 	)
 	(sheet_instances
 		(path "/"

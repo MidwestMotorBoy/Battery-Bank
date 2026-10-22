@@ -4,7 +4,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 
 ## Equipment
 
-- **SWD:** XDS110 (LP-MSPM0G3519 LaunchPad) on J301.
+- **SWD:** XDS110 (LP-MSPM0G3519 LaunchPad) on J301. **Use a `.ccxml` with Power Selection = "Target supplied power"**, not the LaunchPad's `lp_em_cc2340r53_xds110.ccxml`. That one is set to "Probe supplied power", and the probe then drives 3.3 V on pin 1 (measured 2026-10-20), which is J301 VCC, the board's 3V3 rail. Power the board from its own pack.
 - **Gauge:** EV2400 (clone) with TI BQStudio on J302.
 - **Cable:** one Tag-Connect TC2030-IDC-NL serves both J301 and J302; its 2×3 0.1″ end takes the jumper wires. Add a TC2030-CLIP to hold it hands-free during long runs.
 - **Power:**
@@ -82,6 +82,7 @@ Steps:
 | SiZ240DT and APS0730 temperatures at the worst case | Reverse 20 V / 5 A from a ~10 V pack, then forward 20 V / 3 A | Thermal throttle limits; XAL7070 fallback for the inductor |
 | PP5V load step 0.5 → 3 A | Scope on TP403 | C443 size (P3: estimated ~190 mV) |
 | PD voltage transitions 5 → 20 V with several chargers | Watch VBUS and source resets, with and without firmware SRYR/SRDY sequencing | Firmware sequence required or not |
+| PD contract survives an MCU reset (LaunchPad T4, moved here 2026-10-20) | Laptop on a 20 V contract with the e-marked 5 A cable. Force a watchdog reset; scope RST, EN_5V1 and PP5V (TP403) together | EN_5Vx back high before PP5V falls below 4.75 V (review 4 C-6: 8–80 ms window); the laptop must not see a disconnect |
 | Gauge wakes on USB plug-in | Gauge in SHUTDOWN, plug in a charger | Whether the WAKE pad can go in the next spin |
 | Sleep current | DMM in series with one pack lead | Firmware power states (target ~150 µA) |
 | USB-side bank stress | CA55 C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
