@@ -1,14 +1,14 @@
 """Monolith layout comparison: top-cap board vs side board (numpy + PIL; imports the generators).
 Run after monolith_shell.py and monolith_parts.py:  python3 monolith_render.py
 -> monolith_layout_compare.png, plus a size / mass table on stdout.
-Masses: printed parts from STL volume x density; cells 71 g each (EVE 58E datasheet);
+Masses: printed parts from STL volume x density; cells 75 g each (FEB 21700G listing; Batemo measures 73.4 g);
 boards estimated at the production thickness (SB_PCB_T) as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
 import numpy as np, struct, os
 from PIL import Image, ImageDraw, ImageFont
 import monolith_shell as S, monolith_parts as P
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CELL_G = 71.0
+CELL_G = 75.0          # FEB 21700G (was 71 g, EVE 58E)
 FR4_RHO, CU_RHO, CU_T, CU_FILL = 1.85, 8.96, 2*0.070 + 4*0.0175, 0.70
 PX = 5.0                        # pixels per mm, same for every view
 

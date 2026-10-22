@@ -5,14 +5,14 @@ import numpy as np
 import monolith_shell as S
 from monolith_side_renders import Sheet, camera, proj, C, INK, MUTED, RULE, ACCENT, assembly
 
-MOD = ('holder', 'cell', 'mica', 'nickel', 'tails', 'wrap', 'frame', 'insul', 'board', 'ble', 'stand')
-CELLS = ('holder', 'cell', 'mica', 'nickel', 'tails', 'wrap')
+MOD = ('holder', 'cell', 'cage', 'nickel', 'tails', 'frame', 'insul', 'board', 'ble', 'stand')
+CELLS = ('holder', 'cell', 'cage', 'nickel', 'tails')
 BOARD = ('board', 'ble', 'stand')
 def lift(dz, dx=0.0): return {k: (dx, 0, dz) for k in MOD}
 DROP = S.SB_WEDGE_T - S.SB_AXIAL_PRELOAD      # how low the module sits on its ring carrier before the lift
 STEPS = [
-    ('1  Cells welded, on the bench',
-     'Weld the 4S pack: series strips, the split PACK tabs on C1 / C4\nand the three sense tails, all cut long. Mica cross, + rings,\nkapton on the CELL2 tail, ring carrier under the cells, liner.',
+    ('1  Cells in the cage, welded, on the bench',
+     'Cells into the TPU cage on the ring carrier, + rings on. Weld the\nseries strips, the split PACK tabs on C1 / C4 and the three sense\ntails, all cut long, over the cage. Kapton on the CELL2 tail.',
      CELLS, {}),
     ('2  Frame and board on, on the bench',
      'Top frame over the cells, fish paper on their board side. Lower\nthe board onto the frame bars with the seven tails through their\nslots. Solder on F.Cu, PACK- first, then trim.',
@@ -27,7 +27,7 @@ STEPS = [
      'Lift the module 2.5 mm: the USB-C faces enter the top wall and the\nboard edge seats on the stops. Push the PA12 wedge in under it from\nthe open side; its nose takes up the 0.4 mm preload.',
      ('shell',) + MOD + ('wedge', 'hold'), {'wedge': (14, 0, 0)}),
     ('6  Close',
-     'Gap pad on the tall parts, ePTFE vent patch, silicone bead in\nthe cover joint, cover under the top lip (it traps the wedge),\n2 x M2 screws. Then the caps snap on over the ends.',
+     'Gap pad on the tall parts, ePTFE vent patch, silicone bead in\nthe cover joint, cover under the top lip, 2 x M2 screws into the\nwedge bosses. Then the caps snap on over the ends.',
      ('shell', 'cell', 'board', 'cover', 'capb_soft', 'capb_firm', 'capb_corner', 'capb_band', 'capt_soft', 'capt_firm', 'capt_corner', 'capt_band'), {}),
 ]
 

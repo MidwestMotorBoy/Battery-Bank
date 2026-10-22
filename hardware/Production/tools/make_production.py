@@ -198,7 +198,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R404": P(R0201, "C473048", "0201WMF1002TEE"),
         "R410": P(R0402, "C25893", "0402WGF4022TCE"),
         "R412": P(R0201, "C423536", "0201WMF4022TEE"),
-        "R413": P(R0402, "C25926", "0402WGF9101TCE"),
+        "R413": P(R0402, "C93752", "0402WGF1182TCE"),       # 11.8k: ICHG ceiling <= 4.45 A for the FEB 21700G (was 9.1k C25926)
         "R414": P(R0402, "C25891", "0402WGF3601TCE"),
         "R415": P(R0402, "C25871", "0402WGF1801TCE"),
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),

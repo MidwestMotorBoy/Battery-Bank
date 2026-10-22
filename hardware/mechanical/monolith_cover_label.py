@@ -1,5 +1,5 @@
 """Monolith side cover: laser-cut 1.0 mm 5052 aluminium, black anodized, laser-marked label (JLCCNC sheet metal).
-PROTOTYPE artwork, built from the data we have now (cells: docs/project/eve-58e-datasheet-notes.md).
+PROTOTYPE artwork, built from the data we have now (cells: docs/project/feb-21700g-datasheet-notes.md).
 Run: python monolith_cover_label.py   (numpy, shapely, matplotlib, Pillow; KiCad 10 for the STEP)
 -> monolith_side_cover.step            plate with holes, the 3D file JLCCNC requires (made by kicad-cli from a
                                         throw-away board file, since the plate is just a 1.0 mm outline with holes)
@@ -26,7 +26,8 @@ MIN_LINE = 0.2            # JLCCNC: marking lines at least 0.2 mm
 STROKE = 0.3              # line art width used here
 
 # ---------------- label data (PROTOTYPE: confirm before the final) ----------------
-PACK = dict(chem='Li-ion', config='4S1P', v_nom=14.4, ah=5.7, wh=82)   # 4 x 3.60 V x 5.7 Ah = 82.1 Wh (label 82 Wh)
+PACK = dict(chem='Li-ion', config='4S1P', v_nom=14.4, ah=6.5, wh=93.6)   # FEB 21700G: 4 x 3.60 V x 6.5 Ah = 93.6 Wh
+                                                                        # (was 82 Wh with the EVE 58E)
 PORTS = 'USB-C PD in/out  5-20 V  ·  100 W max'
 
 # ---------------- plate geometry, all from monolith_shell ----------------
@@ -84,7 +85,7 @@ def rrect(x0, y0, x1, y1, r):
 def wordmark():
     t = fit(text('MONOLITH', F_BOLD, 5.4, 0, 64.0, 'c', track=0.9))
     rule = stroke([(ART[0] + 2, 61.6), (ART[2] - 2, 61.6)], 0.3)
-    sub = text('82 Wh  ·  100 W  ·  USB-C PD', F_SEMI, 1.7, 0, 58.8, 'c')
+    sub = text(f'{PACK["wh"]} Wh  ·  100 W  ·  USB-C PD', F_SEMI, 1.7, 0, 58.8, 'c')
     return unary_union([t, rule, sub])
 
 def topo():
@@ -288,7 +289,7 @@ def preview(path, g):
              'Finish', '  black anodize, laser marking', '  (mask the vent patch area inside', '   if JLC can; optional)', '',
              'Label', f'  {PACK["chem"]} {PACK["config"]}, {PACK["v_nom"]:.1f} V, {PACK["ah"]:.1f} Ah, {PACK["wh"]} Wh',
              '  carry-on badge: our own plane +', '  check mark; under 100 Wh, so no', '  airline approval needed', '  no certification marks', '', 'Art', '  topo map of a peak, a trail from',
-             '  the trailhead, the summit flag at', '  "EL. 82 Wh"']
+             '  the trailhead, the summit flag at', f'  "EL. {PACK["wh"]} Wh"']
     for i, s in enumerate(notes):
         d.text((nx * SS, (ny + 24 * i) * SS), s, font=fnt(15, not s.startswith(' ') and s != ''), fill=(30, 30, 34))
     img.resize((Wf, Hf), Image.LANCZOS).save(path)

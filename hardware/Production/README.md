@@ -186,7 +186,7 @@ Parts: 256.
 The board moved from the top cap to one side of the cells, in a one-piece printed tray (`hardware/mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
 
 - **Outline:** 43.2 × 74.35 mm, about 3,164 mm² per side.
-    - The bottom corners are notched 5.0 × 4.8 mm around the tray's screw pillars.
+    - The bottom corners are notched 5.0 × 4.8 mm around the cover-screw bosses (on the wedge since 2026-10-21; they were tray pillars).
     - The outline comes from `hardware/mechanical/monolith_shell.py` (`sb_*`), which `tools/make_board.py` imports, so the tray and the board can't drift apart. The same outline is in `hardware/mechanical/monolith_side_pcb.dxf`.
     - It is centred at (100, 100). KiCad x is across the pack (left = the C1 / PACK- side), and KiCad y runs down the pack, with the port end at the top.
 - **Ports:** J501 (USB2) at x = 93.5 and J401 (USB1) at x = 106.5, on the top edge (y = 62.82), rotated 180°, locked. The outline leaves the two 10.2 mm notch gaps.
@@ -387,7 +387,7 @@ The board has **no screw holes**. It is held by:
 - the PA12 wedge under its bottom edge (it replaced the shim, 2026-10-21);
 - the aluminium cover pressing down through the gap pad.
 
-The two M2 cover screws go into heat-set inserts in the tray's bottom corner pillars. Those pillars sit in the board's corner notches, beside the board, not through it.
+The two M2 cover screws go into heat-set inserts in two bosses on the PA12 wedge (2026-10-21; they were tray pillars). The bosses sit in the board's corner notches, beside the board, not through it.
 
 What does mount on the board is **four SMT standoffs** on F.Cu, `COVER_STANDOFFS` on `mechanical/monolith_side_pcb.dxf`.
 
@@ -430,6 +430,26 @@ Fit all 19 before the first power-up: the chargers need both bulk banks.
 **DRC on the 2026-10-21 placement:**
 - Port 1's stage sits over the antenna area: U403, Q402, C434, R446 and R447 are in `KO_F_above_antenna`.
 - L401 is on B.Cu in EVA lane 3. It belongs on F.Cu with the FETs.
+
+## FEB 21700G cells (2026-10-21)
+
+The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 Wh. Why and how: `docs/project/feb-21700g-datasheet-notes.md`, `research_notes/Loss reduction/G_feb_21700g.md`, `docs/firmware/charge-and-thermal-policy.md`.
+
+- **R413/R513 (ICHG) 9.1k → 11.8k 1 %** (UNI-ROYAL 0402WGF1182TCE, LCSC C93752; `tools/make_production.py` updated). The hardware charge ceiling becomes 48–52 A·kΩ / 11.8 kΩ = 4.07–4.45 A per port, under the FEB's 4.55 A maximum (the 9.1k allowed up to 5.83 A). Check C93752 stock before ordering; 12k (C25752, 4.0–4.33 A) is the fallback.
+- **Board outline unchanged** (43.20 × 74.35 mm). The mechanical model holds the board's guide line at the 58E-era value, and the extra 0.3 mm of cell length comes out of the floor zone.
+- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. **Not yet applied to `Monolith.kicad_pcb`:** re-run `tools/make_board.py` (or move the slots by hand) once the in-progress layout is merged.
+- **Footprint values:** run Update PCB from Schematic so R413/R513 carry 11.8k.
+- **Gauge:** design capacity 6,500 mAh, new temperature ranges and protections, and a new chemistry ID (`docs/production/p0-bringup-and-training.md`).
+- **Heat:** about 12 W at 100 W out (cells ~6.5 W of it). Firmware keeps the 100 W offer but starts a linear derate at ~33 °C on the hottest cell, down to ~40 W.
+
+## Enclosure: the cup (2026-10-21)
+
+The side tray and its aluminium cover are retired; the enclosure is now **the cup** (`hardware/mechanical/monolith_cup.py`, `docs/production/p0-assembly.md`). Same board outline, slots and tails. Board changes it needs (not yet applied to `Monolith.kicad_pcb`):
+- **Gap-filler zone on B.Cu:** |y| 7–16 mm, z 27–53 mm (shell coordinates): no parts, solid copper, a dense thermal-via array from the power stages on F.Cu. This replaces the cover as the heat path.
+- **Carrier rails split:** the B.Cu frame-bar keep-outs stay at |y| 6.5–11.3 mm but stop between z 25 and 55 mm.
+- **Two peg holes** (Ø2.0 mm) for the carrier at y ±8.6 mm, z 14 and 68 mm.
+- **Cover standoffs H101–H104 can go** (nothing to bear on), and the bottom corner notches no longer clear any bosses (harmless, left as they are).
+- **F.Cu height:** the cup's board-face wall sits 0.5 mm over the tallest part (3.2 mm limit unchanged).
 
 ## Next
 

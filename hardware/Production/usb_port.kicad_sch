@@ -7483,7 +7483,7 @@
 		)
 		(uuid "1f00cd9c-23d9-4e49-9f69-1746bb161f5a")
 	)
-	(text "BQ25756 CONTROLLER  (600 kHz, ICHG 5.5 A max, ILIM 5.6 A, VAC 4.1-22.5 V window)"
+	(text "BQ25756 CONTROLLER  (600 kHz, ICHG 4.4 A max (FEB cell), ILIM 5.6 A, VAC 4.1-22.5 V window)"
 		(exclude_from_sim no)
 		(at 304.8 167.64 0)
 		(effects
@@ -20161,7 +20161,7 @@
 				)
 			)
 		)
-		(property "Value" "9.1k 1%"
+		(property "Value" "11.8k 1%"
 			(at 350.52 246.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20204,7 +20204,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
+		(property "Notes" "ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -20215,7 +20215,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25926"
+		(property "LCSC" "C93752"
 			(at 350.52 236.22 0)
 			(hide yes)
 			(show_name no)
@@ -20226,7 +20226,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF9101TCE"
+		(property "MPN" "0402WGF1182TCE"
 			(at 350.52 236.22 0)
 			(hide yes)
 			(show_name no)

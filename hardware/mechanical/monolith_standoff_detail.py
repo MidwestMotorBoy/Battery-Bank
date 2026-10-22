@@ -22,7 +22,7 @@ def standoffs():
     """Wuerth WA-SMSI 9774035243R: steel tube 3.5 mm tall, M2 internal thread (unused here), reflow-soldered to F.Cu"""
     return np.vstack([cyl_x(y, z, S.sb_xb1, S.sb_xb1 + S.sb_standoff_h, S.SB_STANDOFF_D / 2, 1.0) for y, z in S.SB_STANDOFFS])
 def screws(dx=0.0):
-    """the two real fasteners: M2 thread-forming screws through the cover into the tray's bottom-corner pillars"""
+    """the two real fasteners: M2 screws through the cover into heat-set inserts in the wedge's two corner bosses"""
     out = []
     for sy in (-1, 1):
         y, z = sy * S.sb_pillar_y, S.sb_screw_z
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     # ---------- 1. 3D: caps off, cover and screws lifted ----------
     sh.panel_title(40, 128, '1.  Where they are (caps off, cover and its screws lifted)', 1240)
-    SIDE = 56.0     # the cover is slid off to the right so the standoffs show; the screws only lift out of their pillars
+    SIDE = 56.0     # the cover is slid off to the right so the standoffs show; the screws only lift out of their bosses
     parts = [get['shell'], get['board'], (standoffs(), STEEL), (get['cover'][0] + [6.0, SIDE, 0], C['cover']),
              (screws(9.0), SCREW)]
     R1 = camera((1.0, -0.55, 0.42)); o1 = (500, 860); px1 = 5.6
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         items.append((pj((xs, y, z)), f'{n} standoff  (KiCad {kx:.0f}, {ky:.1f})'))
     sh.callouts(items, 300, 'l', 330, size=14)
     sh.callouts([(pj((S.sb_x_cv1 + 6.0, SIDE, 45)), 'Aluminium cover, slid aside here.\nIn the pack it sits 0.2 mm above\nthe four standoff tops.'),
-                 (pj((S.sb_x_cv1 + 9.0 + 1.3, S.sb_pillar_y, S.sb_screw_z)), 'The only screws: 2 x M2 through the\ncover into the tray pillars, hidden\nunder the bottom cap. Not through\nthe board.'),
+                 (pj((S.sb_x_cv1 + 9.0 + 1.3, S.sb_pillar_y, S.sb_screw_z)), 'The only screws: 2 x M2 through the\ncover into the wedge bosses, hidden\nunder the bottom cap. Not through\nthe board.'),
                  (pj((S.sb_xb1, 5, 66)), 'Board: held by the tray guides, the top\nstops and the shim. Not screwed down.')],
                 1040, 'r', 300, size=14)
 

@@ -18,7 +18,7 @@ CELL_SPIGOT_L, CELL_SPIGOT_CLR = 3.0, 0.15
 BLE_POCKET, BLE_CLR = 0.6, 0.15      # locating pocket in the dummy board's B.Cu face for the glued-on BLE block
 SLOT_PRINT_W = 1.0                   # tab slots in the dummy board, printed wider than the 0.6 mm plated slots
 COVER_HOLE_D = 2.2                   # M2 clearance in the printed cover stand-in
-COUPONS = {'coupon_bottom_end': (0.0, 10.0),            # floor, screw pillars and insert pilots
+COUPONS = {'coupon_bottom_end': (0.0, 10.0),            # floor and the wedge's snap ridge
            'coupon_mid': (40.0, 48.0),                  # cell pockets, rib, crush ribs, cover rebates
            'coupon_top_end': (S.SB_H - 10.0, S.SB_H)}   # port holes, cover slot under the lip, board stops
 
@@ -104,6 +104,7 @@ def kit():
     K.append(('09_ring_carrier', on_bed(mesh(P.ring_carrier(free=True))), 1, 'TPU 95A', 'rings up; printed 0.4 mm proud on purpose'))
     K.append(('10_wedge', on_bed(mesh(P.wedge())), 1, 'PETG or PLA', 'flat side down; MJF PA12 in the real pack'))
     K.append(('11_cell_frame_top', on_bed(mesh(P.top_frame()), FLIP), 1, 'TPU 95A', 'plate on the bed, bars up'))
+    K.append(('12_cell_cage', on_bed(mesh(P.cell_cage())), 1, 'TPU 95A', 'upright, spine vertical; FDM needs supports under the bands'))
     K.append(('13_usb_hold', on_bed(mesh(P.hold_pads()), OPEN_UP), 1, 'EVA template or TPU', '2 pads, 2 mm (2 x 1 mm EVA)'))
     return K
 
