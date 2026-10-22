@@ -1,22 +1,44 @@
-# KiCad local and temporary files
-*.lck
+# KiCad local, temporary and backup files
 *-backups/
 *.kicad_prl
 fp-info-cache
+*.lck
 *.bak
+*.bck
 ~*
 _autosave-*
-# check reports
+.history/
+_restore_backup_*/
+# KiCad check reports and default-named plots
 ERC.rpt
 DRC.rpt
-__pycache__/
+*.rpt
+hardware/DevBoard/MonolithDev.pdf
+hardware/Production/Monolith.pdf
+# Fab outputs are tracked only as the zipped order package (hardware/*/fab/*.zip)
+hardware/*/fab/gerbers/
+hardware/**/*.gbr
+hardware/**/*.gbrjob
+hardware/**/*.drl
 
-# KiCad 10 local history
-.history/
-__pycache__/
-# duplicate default-name schematic plot (the tracked export is MonolithDev_schematic.pdf)
-DevBoard/MonolithDev.pdf
+# Firmware build outputs and local tool paths (see firmware/.gitignore)
+firmware/build/
+firmware/**/*.out
+firmware/**/*.hex
+firmware/**/*.map
+firmware/**/*.obj
+firmware/tools.mak
 
-# review 4 reviewers' scratch work (fetched datasheets, renders)
+# Python
+__pycache__/
+*.pyc
+
+# Editor and OS
+.~lock.*#
+*.log
+.DS_Store
+Thumbs.db
+
+# Local agent settings and reviewers' scratch work
+**/.claude/settings.local.json
 docs/devboard/review4/scratch-*/
-DevBoard/fab/gerbers/

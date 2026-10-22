@@ -1,10 +1,17 @@
 /*
  * MonolithDev MCU firmware, bring-up skeleton (NoRTOS).
  *
- * Day 1 on the LP-EM-CC2340R53: proves the build, the probe and the UART.
- * - prints a banner and the reset reason on the XDS110 UART (115200 8N1)
+ * Builds for the LP-EM-CC2340R53 LaunchPad (BOARD=launchpad) and the dev
+ * board (BOARD=devboard). Proves the build, the probe and the UART:
+ * - drives every dev-board output to its safe state before anything else
+ *   (CHG_INH high, EN_5V1/EN_5V2 low, 3V3_SLEEP high; mcu-io-power-states.md
+ *   rule 7)
+ * - prints a banner and the reset reason on the log UART (115200 8N1)
  * - blinks the heartbeat LED at 1 Hz
- * - logs each falling edge on the IRQ input (BTN-1 on the LaunchPad)
+ * - logs each falling edge on IRQ_N (BTN-1 on the LaunchPad) and, on the
+ *   dev board, the level of IRQ_N every second so a stuck-low source shows
+ * Plan-test builds (EXTRA_CFLAGS=...): -DBRINGUP_WDT_STALL=0/1 (T3),
+ * -DBRINGUP_T5 (T5), -DBRINGUP_NO_STANDBY.
  */
 
 #include <stdbool.h>
@@ -45,12 +52,24 @@ static void wdtStart(bool stallWhenHalted)
 #endif
 
 static UART2_Handle uartLog;
-static volatile bool irqSeen;
-static volatile uint32_t irqCount;
+static volatile uint32_t irqEdges;
 
 static void logStr(const char *s)
 {
     UART2_write(uartLog, s, strlen(s), NULL);
+}
+
+static void logUint(uint32_t v)
+{
+    char buf[11];
+    int i = sizeof(buf) - 1;
+    buf[i] = '\0';
+    do
+    {
+        buf[--i] = (char)('0' + v % 10);
+        v /= 10;
+    } while (v && i);
+    logStr(&buf[i]);
 }
 
 static const char *resetReasonName(uint32_t reason)
@@ -96,10 +115,30 @@ static int_fast16_t t5StandbyNotify(uint_fast16_t eventType, uintptr_t eventArg,
 static void irqCallback(uint_least8_t index)
 {
     (void)index;
-    irqSeen = true;
-    irqCount++;
+    irqEdges++;
 #ifdef BRINGUP_T5
     SemaphoreP_post(t5Sem);
+#endif
+}
+
+/*
+ * Safe outputs. SysConfig already sets the initial levels, so this is belt
+ * and braces: it is the first thing main() does after Board_init(), and it
+ * is where the EN_5Vx restore-from-retained-RAM goes later (review 4 C-6).
+ */
+static void outputsSafe(void)
+{
+#ifdef CONFIG_GPIO_CHG_INH
+    GPIO_write(CONFIG_GPIO_CHG_INH, 1);     /* charging inhibited */
+#endif
+#ifdef CONFIG_GPIO_EN_5V1
+    GPIO_write(CONFIG_GPIO_EN_5V1, 0);      /* PP5V off */
+#endif
+#ifdef CONFIG_GPIO_EN_5V2
+    GPIO_write(CONFIG_GPIO_EN_5V2, 0);
+#endif
+#ifdef CONFIG_GPIO_3V3_SLEEP
+    GPIO_write(CONFIG_GPIO_3V3_SLEEP, 1);   /* TPS62177 normal mode */
 #endif
 }
 
@@ -119,10 +158,10 @@ static void t5Loop(void)
         bool byIrq = SemaphoreP_pend(t5Sem, 10000000U / tickUs) == SemaphoreP_OK;
         uint32_t now = ClockP_getSystemTicks();
         GPIO_toggle(CONFIG_GPIO_LED_HEARTBEAT);
-        snprintf(line, sizeof line, "wake: %s  +%lu ms  stby=%lu btn=%u irqs=%lu\r\n",
+        snprintf(line, sizeof line, "wake: %s  +%lu ms  stby=%lu IRQ_N=%u irqs=%lu\r\n",
                  byIrq ? "IRQ    " : "timeout", (unsigned long)((now - last) * (tickUs / 1000U)),
-                 (unsigned long)t5StandbyCount, (unsigned)GPIO_read(CONFIG_GPIO_BTN_IRQ),
-                 (unsigned long)irqCount);
+                 (unsigned long)t5StandbyCount, (unsigned)GPIO_read(CONFIG_GPIO_IRQ_N),
+                 (unsigned long)irqEdges);
         logStr(line);
         last = now;
     }
@@ -137,6 +176,7 @@ static void mainThread(uint32_t resetReason)
     uartLog = UART2_open(CONFIG_UART_LOG, &params);
 
     logStr("\r\n\r\nMonolithDev firmware, bring-up skeleton\r\n");
+    logStr("Board: " BOARD_NAME "\r\n");
     logStr("Built " __DATE__ " " __TIME__ "\r\n");
     logStr("Reset reason: ");
     logStr(resetReasonName(resetReason));
@@ -146,42 +186,55 @@ static void mainThread(uint32_t resetReason)
     logStr(BRINGUP_WDT_STALL ? "WDT: 3 s, stall when halted ON\r\n" : "WDT: 3 s, stall when halted OFF\r\n");
 #endif
 
+#ifdef BOARD_launchpad
     /* BTN-1 floats on this LaunchPad (the board file's external pull-up is
      * not there in practice: the pin stayed low after the first press).
+     * The dev board has its own pull-up on IRQ_N, so its internal pull stays off.
      * TODO: move the pull-up into boards/launchpad.syscfg via SysConfig. */
-    GPIO_setConfig(CONFIG_GPIO_BTN_IRQ, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setConfig(CONFIG_GPIO_IRQ_N, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+#endif
 #ifdef BRINGUP_T5
     t5Sem = SemaphoreP_createBinary(0);
 #endif
-    GPIO_setCallback(CONFIG_GPIO_BTN_IRQ, irqCallback);
-    GPIO_enableInt(CONFIG_GPIO_BTN_IRQ);
+    GPIO_setCallback(CONFIG_GPIO_IRQ_N, irqCallback);
+    GPIO_enableInt(CONFIG_GPIO_IRQ_N);
 
 #ifdef BRINGUP_T5
     t5Loop();
 #endif
-    uint32_t ticks = 0;
+    uint32_t tick = 0;
+    uint32_t edgesSeen = 0;
     while (1)
     {
         GPIO_toggle(CONFIG_GPIO_LED_HEARTBEAT);
 #ifdef BRINGUP_WDT_STALL
         wdtFeed();
 #endif
-        /* Once a second, so the UART wiring can be checked without a reset */
-        if ((++ticks & 1) == 0)
+
+        uint32_t edges = irqEdges;
+        if (edges != edgesSeen)
         {
-            /* Reset reason repeated here: the banner is gone before a
-             * terminal can reconnect after a power cycle */
-            char line[80];
-            snprintf(line, sizeof line, "tick %lu btn=%u irqs=%lu rst=%s\r\n", (unsigned long)(ticks / 2),
-                     (unsigned)GPIO_read(CONFIG_GPIO_BTN_IRQ), (unsigned long)irqCount,
-                     resetReasonName(resetReason));
-            logStr(line);
+            logStr("IRQ_N: falling edge(s), total ");
+            logUint(edges);
+            logStr("\r\n");
+            edgesSeen = edges;
         }
-        if (irqSeen)
+
+        /* Once a second: uptime, the IRQ_N level (a source stuck low
+         * would hold it at 0 and cost 70 uA in S2; see rule 3), and the reset
+         * reason again (the banner is gone before a terminal can reconnect
+         * after a power cycle) */
+        if ((++tick & 1) == 0)
         {
-            irqSeen = false;
-            logStr("IRQ: falling edge\r\n");
+            logStr("t=");
+            logUint(tick / 2);
+            logStr("s IRQ_N=");
+            logUint(GPIO_read(CONFIG_GPIO_IRQ_N));
+            logStr(" rst=");
+            logStr(resetReasonName(resetReason));
+            logStr("\r\n");
         }
+
         usleep(500000);
     }
 }
@@ -192,6 +245,7 @@ int main(void)
     uint32_t resetReason = PMCTLGetResetReason();
 
     Board_init();
+    outputsSafe();
     /* No wake-mask change needed: T5 showed a GPIO edge wakes the chip from
      * Standby at once with TI's stock Power_init (EVTULL WKUPMASK = RTC only). */
     NoRTOS_start();

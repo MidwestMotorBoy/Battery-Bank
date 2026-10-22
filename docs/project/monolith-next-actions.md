@@ -2,9 +2,9 @@
 _From the 2026-10-09 session · updated 2026-10-11_
 
 ## Changes on 2026-10-18
-- **Side board in a one-piece tray.** The production board moved from the top cap to one face of the cells, in a printed tray whose only opening is the board side, closed by a 1 mm aluminium cover (also the heat spreader). The ports seat by sliding the board up into the top wall. There are no airflow vents, only one ePTFE pressure vent. Model and checks are in `mechanical/`; assembly steps are in the Claude doc "Monolith assembly (side-board tray)".
-- **Board thickness 1.6 mm, for cost** (was 0.8 mm). J401/J501 are now the TYPE-C 16PCB1.6 IP68 (C55629729), the same land pattern. The side outline (43.2 × 74.35 mm, notched bottom corners) is on `Production/Monolith.kicad_pcb`. This supersedes the 0.8 mm and top-cap entries below.
-- **Dev board skipped; separate training board dropped.** Production P0 (`Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
+- **Side board in a one-piece tray.** The production board moved from the top cap to one face of the cells, in a printed tray whose only opening is the board side, closed by a 1 mm aluminium cover (also the heat spreader). The ports seat by sliding the board up into the top wall. There are no airflow vents, only one ePTFE pressure vent. Model and checks are in `hardware/mechanical/`; assembly steps are in the Claude doc "Monolith assembly (side-board tray)".
+- **Board thickness 1.6 mm, for cost** (was 0.8 mm). J401/J501 are now the TYPE-C 16PCB1.6 IP68 (C55629729), the same land pattern. The side outline (43.2 × 74.35 mm, notched bottom corners) is on `hardware/Production/Monolith.kicad_pcb`. This supersedes the 0.8 mm and top-cap entries below.
+- **Dev board skipped; separate training board dropped.** Production P0 (`hardware/Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
 
 ## Changes on 2026-10-11
 - **Total output raised to 100 W (from 80 W).** Electrically fine: each BQ25756 port can do 20 V × 5 A, and the connector is rated 5 A / 20 V. The limits are heat and current, so 100 W is treated as a thermally limited rating, not a guaranteed continuous one.
@@ -119,7 +119,7 @@ _From the 2026-10-09 session · updated 2026-10-11_
 - **Inductor split:** the three small-converter inductors (two TPS62933 5 V bucks, one TPS62177 3.3 V buck) go on the hand-soldered bottom side to free top-side space. The two big BQ25756 inductors stay on top against the gap pad, because they dissipate ~0.5–1 W each at full power and that heat should go to the plate, not the cells. If the floorplan still doesn't fit, the BQ25756 inductors are the next candidates to move.
 
 ## Changes on 2026-10-10
-- **Cell confirmed:** EVE INR21700-58E stays the pick over the Samsung 58E (more Wh, lighter, slimmer, better cold discharge). Specs and design notes in `claude/eve-58e-datasheet-notes.md`.
+- **Cell (superseded 2026-10-21 by the FEB 21700G, `feb-21700g-datasheet-notes.md`):** EVE INR21700-58E stays the pick over the Samsung 58E (more Wh, lighter, slimmer, better cold discharge). Specs and design notes in `claude/eve-58e-datasheet-notes.md`.
 - **Housing cavity corrected:** cells are up to 21.7 mm wide (not 21 mm) and EVE recommends > 1 mm between cells, so the 2x2 inner cavity is ~44.5–45 mm, outer ~46–46.5 mm with 0.8 mm FR4. The earlier 42.5 mm figure was wrong.
 - **Pack energy:** 82 Wh nominal (80.6 Wh min); use 82 Wh on the label.
 - **Cell vendor:** the store found online is **18650batterystore.com**; the earlier notes said 18650battery.com. Confirm the right site before ordering.
@@ -222,6 +222,8 @@ _From the 2026-10-09 session · updated 2026-10-11_
 - If the floorplan runs out of room: move a few more passives to the bottom first; then, if needed, the two BQ25756 inductors (low-DCR parts with exposed terminations, and recheck cell temperatures in the thermal test). Never move ICs to the bottom
 
 ## Charging plan
+
+> **Superseded on 2026-10-21:** the cell is now the FEB 21700G 6500 mAh (93.6 Wh, 4.55 A max charge). The charge and thermal policy is in `docs/firmware/charge-and-thermal-policy.md`; the 58E stage table below is history.
 **Control:** the BQ40Z50-R2 is the authority (it knows cell voltages, temperature and SOC). The STM32WB reads its requested charge voltage/current and SOC and sets the charging BQ25756(s) over I2C. Each BQ25756's own TS input and safety timers are hardware backups if firmware hangs.
 
 **Stages (4S EVE 58E, 1C = 5.6 A):**
@@ -336,7 +338,7 @@ A roomy prototype of the whole production circuit, no space limits, for gauge tr
 - [ ] **Scope outputs:** two TI INA190 current-sense amps on the 10 Ω (high-side, very low input bias): gain 500 → 5 mV/µA, ~1 mA full scale (sleep detail); gain 25 → 0.25 V/mA, ~20 mA full scale (Bluetooth bursts). BNC or SMA connectors plus test points. Amps powered by an on-board TI TPS70950 5 V LDO (C96028) fed from the pack bus outside the 10 Ω, so their current isn't measured and no external supply is needed. INA190A5IDDFR (gain 500) + INA190A1IDDFR (gain 25, C1852068), SMA outputs, enable jumper. Note the offset (~±1.5 µA) with the load link open. Clip the scope ground only to board ground. Check INA190 stock at JLC
 - [ ] **Cells:** four MYOUNG BH-21700-B1BJ001 21700 spring holders (JLC C20606791, JLC-assembled; backup Keystone 1121), clearly marked, in series, plus a fuse; check each cell voltage before closing the fuse since open holders accept a reversed cell; good for a few amps only, so 100 W and thermal tests use the welded pack. Wire the gauge's cell-voltage taps to the cell end of each contact (Kelvin) so spring resistance isn't learned as cell impedance
 - [ ] Pack connector beside the holders so the final learning cycle runs on the real welded pack (learned capacity belongs to those cells)
-- [x] 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, 175 × 115 mm (the holders don't fit 100 × 80), six M3 holes; board set up 2026-10-12 (see `DevBoard/README.md`)
+- [x] 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, 175 × 115 mm (the holders don't fit 100 × 80), six M3 holes; board set up 2026-10-12 (see `hardware/DevBoard/README.md`)
 - [ ] Draft it in ProtoFlow first, before the production board
 
 ## Gauge training (BQ40Z50-R2, on the dev board)

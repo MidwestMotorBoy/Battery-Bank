@@ -14,7 +14,7 @@
 - `tps62177.pdf` (SLEEP pin, EC table and "Sleep Mode Operation"), `tps62933.pdf` (EN, EC table), `ao3400a.pdf`, `stm32wb15cc.pdf` (DS13258 table 15, PB6/PB7 = FT_f).
 - TI CC23xx TRM SWCU193, ROM serial bootloader table 8-38 (web): https://ti.com/document-viewer/lit/html/SWCU193/GUID-93C18248-3D8F-40C6-BD16-D38F8539967E
 - SimpleLink Low Power F3 SDK 8.10 user's guide, "Device Configuration (CCFG)" (web): https://dev.ti.com/tirex/content/simplelink_lowpower_f3_sdk_8_10_01_02/docs/ble5stack/ble_user_guide/html/sysconfig/device-configuration-cc23xx.html
-- `nets.txt`, `parts.txt`, `erc.txt`, `DevBoard/MonolithDev.kicad_pcb` (footprint positions via pcbnew; the board is not routed yet), the sheet text in `mcu.kicad_sch` and `MonolithDev.kicad_sch`, `cc2340-pin-budget.md`, README item 40, `mcu-io-power-states.md`, `bringup-config-checklist.md`, `power-budget.md`.
+- `nets.txt`, `parts.txt`, `erc.txt`, `hardware/DevBoard/MonolithDev.kicad_pcb` (footprint positions via pcbnew; the board is not routed yet), the sheet text in `mcu.kicad_sch` and `MonolithDev.kicad_sch`, `cc2340-pin-budget.md`, README item 40, `mcu-io-power-states.md`, `bringup-config-checklist.md`, `power-budget.md`.
 - Peer answers: D (BQ40Z50 BTP, broadcasts, bus-low behaviour) and C (TPS25751 I2Ct addresses, IRQ, back-power), recorded where used.
 - Scripts and renders: `scratch-a/`.
 

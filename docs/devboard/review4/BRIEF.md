@@ -5,14 +5,14 @@ Four reviewers (A, B, C, D) do a deep review of the MonolithDev dev-board schema
 ## The project
 
 - **The product:** Monolith, a 100 W USB-C battery bank. It has 4 × EVE INR21700-58E cells in series (4S1P, up to 16.8 V), two USB-C PD ports, and BLE.
-- **The dev board** is a bench version of the electronics. KiCad 10 project in `DevBoard/`. The sheets are:
+- **The dev board** is a bench version of the electronics. KiCad 10 project in `hardware/DevBoard/`. The sheets are:
     - `MonolithDev.kicad_sch`: top sheet and revision log.
     - `gauge.kicad_sch`: Cells and Gauge.
     - `power.kicad_sch`: Sleep Current and 3V3.
     - `mcu.kicad_sch`: MCU and sensors.
     - `usb_port.kicad_sch`: USB Port, instantiated twice; port 1 refs are 4xx and port 2 refs are 5xx.
 - **Start here:**
-    - `DevBoard/README.md`: the change log, items 1–40. Rev A7 is item 40. Items 37–39 are the cost-down, the discrete charger FETs, and the 6-layer board with the TPD4S201.
+    - `hardware/DevBoard/README.md`: the change log, items 1–40. Rev A7 is item 40. Items 37–39 are the cost-down, the discrete charger FETs, and the 6-layer board with the TPD4S201.
     - `docs/devboard/circuit-description.md`: the design intent.
     - `docs/devboard/cc2340-pin-budget.md`: the rev A7 MCU pin plan.
     - `docs/devboard/power-budget.md`, `mcu-io-power-states.md`, `bringup-config-checklist.md`, `rev2-changes.md`, `cost-down-2026-10-14.md`.
@@ -20,7 +20,7 @@ Four reviewers (A, B, C, D) do a deep review of the MonolithDev dev-board schema
     - `docs/devboard/schematic-review-2026-10-12.md`, `schematic-review-2-2026-10-12.md`, `schematic-review-3-2026-10-14.md`.
     - Review 2's per-reviewer files are in `docs/devboard/review2/`. They show the format and depth we expect.
     - Items closed there stay closed. Re-raise one only with new evidence, and say that you are doing so.
-- **What changed since review 3** (review 3 covered rev A6 up to liquid detection): items 37, 38, 39 and 40 in `DevBoard/README.md`. These have **never been reviewed**, so they get the deepest look. Everything else gets a fresh-eyes pass.
+- **What changed since review 3** (review 3 covered rev A6 up to liquid detection): items 37, 38, 39 and 40 in `hardware/DevBoard/README.md`. These have **never been reviewed**, so they get the deepest look. Everything else gets a fresh-eyes pass.
 
 ## Inputs in this folder
 
@@ -28,7 +28,7 @@ Four reviewers (A, B, C, D) do a deep review of the MonolithDev dev-board schema
 - `parts.txt`: one line per part (ref, value, DNP, footprint, sheet, MPN, LCSC, Notes property).
 - `nets.txt`: one line per net, listing every `ref.pin(pinfunction)` on it.
 - `erc.txt`: the current ERC. It has 8 warnings, all known: TPS25751 unused GPIOs tied to GND.
-- `DevBoard/MonolithDev_schematic.pdf`: a plot of every sheet. It may be slightly behind the .kicad_sch files; the netlist is the truth.
+- `docs/hardware/monolithdev-schematic.pdf`: a plot of every sheet. It may be slightly behind the .kicad_sch files; the netlist is the truth.
 - `datasheets/`: every datasheet and app note we hold, indexed in `datasheets/sources.csv`.
 
 ## Tools on this machine (Windows)
