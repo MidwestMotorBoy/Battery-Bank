@@ -9,14 +9,17 @@ here is impedance-controlled, so set it to JLC's stack at order time. JLC multil
 Outline: the side board of the one-piece tray, from mechanical/monolith_shell.py (sb_* values, also written to
 mechanical/monolith_side_pcb.dxf): 43.2 mm wide, its bottom corners notched around the tray's screw pillars, centred on
 (100, 100). KiCad x = the tray's y (left = the C1 / PACK- side), KiCad y = down the pack (top edge = the port end).
-F.Cu faces the aluminium cover (outer face), B.Cu faces the cells. The outline leaves gaps for the connector notches
+F.Cu faces the cup wall (outer face), B.Cu faces the cells. The outline leaves gaps for the connector notches
 (PORTS_X), and place_ports() puts J401/J501 there.
 (History: 40.5 mm then 45.5 mm top-cap boards, 2026-10-17. mechanical/monolith_bottom_pcb.dxf is the old bottom end
 board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
-     ... make_board.py --standoffs   (only places the cover standoffs H101-H104, after Update PCB from Schematic)
+     ... make_board.py --mech        (only places the tail slots and carrier peg holes, after Update PCB from Schematic)
      ... make_board.py --keepouts    (redraws the KO_* mechanical keep-out rule areas from mechanical/monolith_shell.py)
+Enclosure (2026-10-21): the cup (mechanical/monolith_cup.py). The board rides on the PA12 carrier's rails and pegs, F.Cu
+faces the cup wall (0.5 mm over the tallest part), B.Cu faces the cells, and a gap filler joins B.Cu to the two front
+cells over the power stages. The aluminium cover, its standoffs and the side tray are retired.
 """
 import math
 import os
@@ -29,7 +32,9 @@ PROD = os.path.normpath(os.path.join(HERE, ".."))
 DEV = os.path.normpath(os.path.join(PROD, "..", "DevBoard"))
 OUT = os.path.join(PROD, "Monolith.kicad_pcb")
 sys.path.insert(0, os.path.normpath(os.path.join(PROD, "..", "mechanical")))
-import monolith_shell as M  # noqa: E402  (side-board geometry: one source for the tray and the board)
+import monolith_shell as M  # noqa: E402  (side-board geometry: one source for the cup and the board)
+sys.path.insert(0, HERE)
+import make_production as MP  # noqa: E402  (slot and peg-hole references)
 
 CX, CY = 100.0, 100.0
 HALF_W = M.sb_board_w / 2                     # 21.6
@@ -183,48 +188,54 @@ def place_ports(path):
     pcbnew.SaveBoard(path, b)
 
 
-STANDOFFS = {"H101": 0, "H102": 1, "H103": 2, "H104": 3}  # ref -> index into M.SB_STANDOFFS
-
-
-def place_standoffs(path):
-    """Put the cover standoffs H101-H104 (Wuerth WA-SMSI M2 x 3.5 mm) where mechanical/monolith_shell.py
-    SB_STANDOFFS has them: F.Cu, locked. Only moves those four footprints; run after Update PCB from Schematic,
-    with the board closed in KiCad (or reload it afterwards)."""
+def place_mech(path):
+    """Put the seven tail slots (J108-J112, J115, J116) at sb_slots() and the four carrier peg holes (H101-H104) at
+    CUP_PEGS, from mechanical/monolith_shell.py: F.Cu, 0 deg, locked. Only moves those footprints; run after Update PCB
+    from Schematic, with the board closed in KiCad (or reload it afterwards)."""
     import pcbnew
     lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
     if os.path.exists(lock):
         sys.exit("%s is open in KiCad (lock file %s): save and close the PCB editor first" % (path, lock))
+    want = {MP.SLOT_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_slots().items()}
+    want.update({ref: M.kicad(y, z) for ref, (y, z) in zip(MP.PEGS, M.CUP_PEGS)})
     b = pcbnew.LoadBoard(path)
-    missing = [r for r in STANDOFFS if b.FindFootprintByReference(r) is None]
+    missing = [r for r in want if b.FindFootprintByReference(r) is None]
     if missing:
         sys.exit("not on the board: %s. In the PCB editor run Tools > Update PCB from Schematic (F8), drop the new "
                  "footprints anywhere, save, close the PCB editor, then run this again. Board not written." % ", ".join(missing))
-    for ref, k in STANDOFFS.items():
+    for ref, (x, y) in want.items():
         f = b.FindFootprintByReference(ref)
         if f.IsFlipped():
             f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
-        y, z = M.SB_STANDOFFS[k]
-        x, yk = CX + y, Y(z)
         f.SetOrientationDegrees(0)
-        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(yk)))
+        f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
         f.SetLocked(True)
-        print("%s at (%.2f, %.2f), F.Cu, locked" % (ref, x, yk))
+        print("%s at (%.3f, %.3f), F.Cu, locked" % (ref, x, y))
+    pro = path[:-len(".kicad_pcb")] + ".kicad_pro"   # KiCad 10's SaveBoard rewrites the project file: keep ours
+    keep = open(pro, "rb").read()
     pcbnew.SaveBoard(path, b)
+    open(pro, "wb").write(keep)
 
 
 def keepout_list():
-    """Mechanical keep-outs as (name, layers, polygon, rules), all from mechanical/monolith_shell.py.
-    rules: subset of footprints / tracks / vias / pour (each one is 'not allowed' inside)."""
+    """Mechanical keep-outs for the cup as (name, layers, polygon, rules), all from mechanical/monolith_shell.py.
+    rules: subset of footprints / tracks / vias / pour (each one is 'not allowed' inside). The peg holes need none:
+    their footprints carry courtyards on both faces."""
     k = M.kicad
 
     def rect(x0, y0, x1, y1):
+        y0, y1 = max(min(y0, y1), Y_TOP), min(max(y0, y1), Y_BOT)   # clipped to the board
         return [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+
+    def yz(y0, y1, z0, z1):  # monolith_shell (y, z) span -> KiCad rect
+        (xa, ya), (xb, yb) = k(y0, z1), k(y1, z0)
+        return rect(xa, ya, xb, yb)
     out = []
-    # F.Cu: no tall parts and no gap pad under the cover's ePTFE vent
-    cx, cy = k(0, M.SB_VENT_Z)
+    # F.Cu: nothing under the ePTFE vent in the cup's board-side wall (its bare hole is the leak-test port)
+    cx, cy = k(*M.CUP_VENT)
     r = M.SB_VENT_D / 2 + 2
-    out.append(("KO_F_cover_vent", ["F.Cu"], [(cx + r * math.cos(a * math.pi / 16), cy + r * math.sin(a * math.pi / 16))
-                                              for a in range(32)], {"footprints"}))
+    out.append(("KO_F_cup_vent", ["F.Cu"], [(cx + r * math.cos(a * math.pi / 16), cy + r * math.sin(a * math.pi / 16))
+                                            for a in range(32)], {"footprints"}))
     # F.Cu: nothing above the module's antenna end (the module footprint already clears copper on every layer)
     s = M.SB_ANT_SIDE
     xa = sorted((CX + s * (HALF_W - 3.2 - 1.0), CX + s * HALF_W))
@@ -233,65 +244,70 @@ def keepout_list():
     # both faces: the top edge bears on the top wall's inside face beyond |x| = SB_STOP_Y0
     for side, (x0, x1) in (("L", (CX - HALF_W, CX - M.SB_STOP_Y0)), ("R", (CX + M.SB_STOP_Y0, CX + HALF_W))):
         out.append(("KO_top_stop_" + side, ["F.Cu", "B.Cu"], rect(x0, Y_TOP, x1, Y_TOP + 1.0), {"footprints"}))
-    # B.Cu: EVA lanes pressed onto the board along the cell tangents
-    for i, (y0, y1, z0, z1) in enumerate(M.sb_lanes()):
-        out.append(("KO_B_EVA_lane_%d" % (i + 1), ["B.Cu"], rect(CX + y0, Y(z1), CX + y1, Y(z0)), {"footprints"}))
-    # B.Cu: the PACK nickel strips run behind the board and wrap the bottom edge onto the F.Cu pads
-    for name, yc in M.sb_tab_y.items():
-        w = M.SB_TAB_W / 2 + 0.5
-        out.append(("KO_B_%s_strip" % name.replace("+", "P").replace("-", "N"), ["B.Cu"],
-                    rect(CX + yc - w, Y(M.sb_zb0 + M.SB_TAB_PAD_H), CX + yc + w, Y_BOT), {"footprints", "tracks"}))
-    # B.Cu: cell sense wires behind the board, from the tap holes to the top EVA slots / the floor channel
-    (x1, y1), (x3, y3), (x2, y2) = (k(*M.SB_TAP_HOLES[n]) for n in ("CELL1", "CELL3", "CELL2"))
-    out.append(("KO_B_tap_wires_top", ["B.Cu"], rect(min(x1, x3) - 1.5, Y_TOP, max(x1, x3) + 1.5, y1 + 1.5), {"footprints"}))
-    out.append(("KO_B_tap_wire_CELL2", ["B.Cu"], rect(x2 - 1.5, y2 - 1.5, x2 + 1.5, Y_BOT), {"footprints"}))
+    # B.Cu: the carrier rails bear on the board along the front cells' tangents, split where the gap filler is
+    for y0, y1, z0, z1 in M.cup_rails():
+        name = "KO_B_rail_%s_%s" % ("L" if y0 < 0 else "R", "bottom" if z1 <= M.CUP_RAIL_GAP[0] else "top")
+        out.append((name, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
+    # B.Cu: the gap filler from the board to the two front cells (solid copper and thermal vias there, no parts)
+    for side, sy in (("L", -1), ("R", 1)):
+        y0, y1 = sorted((sy * M.CUP_FILL_Y[0], sy * M.CUP_FILL_Y[1]))
+        out.append(("KO_B_gap_filler_" + side, ["B.Cu"], yz(y0, y1, *M.CUP_FILL_Z), {"footprints"}))
+    # B.Cu: nickel tails behind the board (bottom fingers and kinks, CELL1 / CELL3 down the gap)
+    names = ["PACK-", "1N", "PACK+", "4P", "CELL2", "CELL1", "CELL3"]   # sb_tail_runs() order
+    for n, (y0, y1, z0, z1) in zip(names, M.sb_tail_runs()):
+        out.append(("KO_B_tail_" + n.replace("+", "P").replace("-", "N"), ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     return out
+
+
+def zone_text(name, layers, poly, rules):
+    """One keep-out rule area as board-file text (the format KiCad 10 writes)."""
+    def r(k):
+        return "not_allowed" if k in rules else "allowed"
+    pts = " ".join("(xy %g %g)" % (round(x, 4), round(y, 4)) for x, y in poly)
+    return ('\t(zone\n\t\t(layers %s)\n\t\t(uuid "%s")\n\t\t(name "%s")\n\t\t(hatch edge 0.5)\n'
+            '\t\t(connect_pads yes\n\t\t\t(clearance 0)\n\t\t)\n\t\t(min_thickness 0.25)\n'
+            '\t\t(keepout\n\t\t\t(tracks %s)\n\t\t\t(vias %s)\n\t\t\t(pads allowed)\n\t\t\t(copperpour %s)\n'
+            '\t\t\t(footprints %s)\n\t\t)\n\t\t(placement\n\t\t\t(enabled no)\n\t\t\t(sheetname "")\n\t\t)\n'
+            '\t\t(fill\n\t\t\t(thermal_gap 0.5)\n\t\t\t(thermal_bridge_width 0.5)\n\t\t\t(island_removal_mode 0)\n\t\t)\n'
+            '\t\t(polygon\n\t\t\t(pts\n\t\t\t\t%s\n\t\t\t)\n\t\t)\n\t)'
+            % (" ".join('"%s"' % l for l in layers), u(), name, r("tracks"), r("vias"), r("pour"), r("footprints"), pts))
 
 
 def add_keepouts(path):
     """Draw keepout_list() as named rule areas (replacing earlier KO_* areas) plus a B.Cu height note on
-    Cmts.User, so DRC flags parts that land on them. Board must be closed in KiCad."""
-    import pcbnew
+    Cmts.User, so DRC flags parts that land on them. Board must be closed in KiCad. Edits the file as text: KiCad 10's
+    python can't build zone outlines or iterate the board's drawings."""
+    import re
     lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
     if os.path.exists(lock):
         sys.exit("%s is open in KiCad (lock file %s): save and close the PCB editor first" % (path, lock))
-    b = pcbnew.LoadBoard(path)
-    for z in [z for z in b.Zones() if z.GetIsRuleArea() and z.GetZoneName().startswith("KO_")]:
-        b.Remove(z)
-    for d in [d for d in b.GetDrawings() if d.GetLayer() == pcbnew.Cmts_User and "KO_NOTE" in str(getattr(d, "GetText", lambda: "")())]:
-        b.Remove(d)
+    s = open(path, encoding="utf-8").read()
+    spans = []
+    for m in re.finditer(r"\n\t\((zone|gr_text)\b", s):
+        e = block_end(s, m.start() + 2)
+        blk = s[m.start():e]
+        if (m.group(1) == "zone" and '(name "KO_' in blk and "(keepout" in blk) or \
+                blk.startswith('\n\t(gr_text "KO_NOTE'):
+            spans.append((m.start(), e))
+    for a, e in reversed(spans):
+        s = s[:a] + s[e:]
+    add = []
     for name, layers, poly, rules in keepout_list():
-        z = pcbnew.ZONE(b)
-        z.SetIsRuleArea(True)
-        z.SetZoneName(name)
-        ls = pcbnew.LSET()
-        for l in layers:
-            ls.AddLayer(b.GetLayerID(l))
-        z.SetLayerSet(ls)
-        z.SetDoNotAllowFootprints("footprints" in rules)
-        z.SetDoNotAllowTracks("tracks" in rules)
-        z.SetDoNotAllowVias("vias" in rules)
-        z.SetDoNotAllowZoneFills("pour" in rules)
-        z.SetDoNotAllowPads(False)
-        o = z.Outline()
-        o.NewOutline()
-        for x, y in poly:
-            o.Append(pcbnew.FromMM(x), pcbnew.FromMM(y))
-        b.Add(z)
+        add.append(zone_text(name, layers, poly, rules))
         print("%-22s %-14s %s" % (name, "+".join(layers), ", ".join(sorted(rules)) + " not allowed"))
-    t = pcbnew.PCB_TEXT(b)
-    t.SetLayer(pcbnew.Cmts_User)
-    t.SetText("KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre "
-              "strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. F.Cu: parts <= 3.2 mm (cover gap pad).")
-    t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(0.8), pcbnew.FromMM(0.8)))
-    t.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(CX), pcbnew.FromMM(Y_BOT + 4)))
-    b.Add(t)
-    pcbnew.SaveBoard(path, b)
+    note = ("KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= %g mm tall; up to ~5 mm only in the centre strip "
+            "x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. Gap filler zones: solid copper + thermal vias "
+            "to the power stages. F.Cu: parts <= %g mm (cup wall 0.5 mm above)." % (M.SB_BCU_H, M.SB_OUT_H))
+    add.append('\t(gr_text "%s"\n\t\t(at %g %g 0)\n\t\t(layer "Cmts.User")\n\t\t(uuid "%s")\n\t\t(effects\n'
+               '\t\t\t(font\n\t\t\t\t(size 0.8 0.8)\n\t\t\t)\n\t\t)\n\t)' % (note, CX, round(Y_BOT + 4, 4), u()))
+    s = s.rstrip()[:-1].rstrip() + "\n" + "\n".join(add) + "\n)\n"
+    open(path, "w", encoding="utf-8", newline="\n").write(s)
+    print("removed %d old KO_* items, wrote %d keep-outs and the KO_NOTE" % (len(spans), len(add) - 1))
 
 
 def main():
-    if "--standoffs" in sys.argv:
-        place_standoffs(OUT)
+    if "--mech" in sys.argv:
+        place_mech(OUT)
         return
     if "--keepouts" in sys.argv:
         add_keepouts(OUT)

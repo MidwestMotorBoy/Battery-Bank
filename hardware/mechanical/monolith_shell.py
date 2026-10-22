@@ -333,6 +333,19 @@ SB_TAP_HOLES = {n: (y, z) for n, (y, z, _) in sb_slots().items() if n.startswith
 SB_TAB_PAD_H = 5.0                             # (legacy: the old PACK strip pads; Production/tools/make_board.py still reads it)
 sb_z_mid = (sb_zb0 + sb_zb1) / 2
 def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
+# The cup (monolith_cup.py, adopted 2026-10-21): its board-facing values live here so Production/tools/make_board.py
+# can read them (KiCad's python can't import monolith_cup: manifold3d).
+CUP_FILL_Y, CUP_FILL_Z = (7.0, 16.0), (27.0, 53.0)   # gap filler, B.Cu to the two front cells: |y| span, z span
+CUP_RAIL_GAP = (25.0, 55.0)          # carrier rails (|y| SB_BAR_Y) stop here so the filler reaches the cell tangents
+CUP_PEGS = [(s * 8.6, z) for s in (-1, 1) for z in (14.0, 68.0)]   # carrier pegs through the board, (y, z)
+CUP_PEG_D, CUP_PEG_HOLE_D = 2.0, 2.2  # peg, and its NPTH hole in the board
+CUP_PEG_PROUD = 0.6                  # peg tip above F.Cu
+CUP_VENT = (0.0, 14.0)               # ePTFE vent in the cup's board-side wall, (y, z)
+cup_fr_b0 = sb_z_tail_b - SB_PACK_T - 0.05 - 1.6     # carrier bottom frame, underside (monolith_cup.py FR_B0)
+def cup_rails():
+    """the carrier rails pressing on B.Cu, as (y0, y1, z0, z1): two per side, split at CUP_RAIL_GAP"""
+    return [(y0, y1, z0, z1) for y0, y1 in ((-SB_BAR_Y[1], -SB_BAR_Y[0]), SB_BAR_Y)
+            for z0, z1 in ((cup_fr_b0, CUP_RAIL_GAP[0]), (CUP_RAIL_GAP[1], sb_z_top_in))]
 
 def _dxf(path, ents):
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")

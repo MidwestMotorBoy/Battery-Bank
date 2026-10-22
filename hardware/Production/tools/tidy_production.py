@@ -29,11 +29,11 @@ TEXTS = {
     ROOT: {
         "MONOLITH DEV BOARD - SHEET INDEX": T(
             "MONOLITH PRODUCTION BOARD - SHEET INDEX",
-            "2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
+            "2.  Cells and Gauge:  welded 4S pack slots (nickel tails, 1N/4P Kelvin), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
             "3.  3V3 Rail:  TPS62177 always-on 3V3",
             "4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)",
             "5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port",
-            "Rails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)",
+            "Rails (power symbols): PACK_P, 3V3, GND, CELL_N (cell 1 negative at the PACK- power slot; gauge VSS is the CELL_1N label)",
             "Spec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."),
         "REVISION LOG": T(
             "REVISION LOG",
@@ -41,6 +41,8 @@ TEXTS = {
             "                sleep-current section, bench supply, cell holders, headers, buttons, status LED, test points, DNP options",
             "                and 0R links. Added pack wire pads, TC2030-NL SWD + GAUGE pads, training and probe pads (P0 is the first build).",
             "                Author: Claude Code.  Reviewer: none yet.",
+            "P0  2026-10-21  Cup enclosure: the pack pads become 7 plated slots for nickel tails (PACK+/- power, 1N/4P Kelvin",
+            "                on new nets CELL_1N / CELL_4P, CELL1-3); cover standoffs H101-H104 become carrier peg holes.",
             "Dev board history (A0-A8): DevBoard/README.md and the DevBoard root sheet."),
         "TPS25751 ADDRESS / DEAD-BATTERY STRAPS": T(
             "TPS25751 ADDRESS / DEAD-BATTERY STRAPS (SafeMode)",
@@ -52,20 +54,21 @@ TEXTS = {
         "WAKE + BENCH SUPPLY": None,
         "HOST SMBus (gauge 0x0B) / EV2400": "GAUGE SMBus (0x0B): access via J302 on the MCU sheet",
         "TEST POINTS / POWER FLAGS": "TEST + TRAINING PADS",
-        "CELL STACK (4S)": "PACK WIRES  (welded 4S EVE INR21700-58E)",
+        "CELL STACK (4S)": "PACK SLOTS  (welded 4S FEB 21700G, nickel tails soldered on F.Cu)",
         "Holders BT101-BT104 OR welded pack": T(
-            "J108 PACK- and J112 PACK+: 16 AWG leads in 1.7 mm plated holes. J109-J111: cell tap wires.",
-            "Connect with USB unplugged, in order: PACK-, CELL1, CELL2, CELL3, PACK+ (note 15)."),
+            "J108 PACK- / J112 PACK+: power fingers. J115 1N / J116 4P: Kelvin fingers of the same tabs (no current).",
+            "J109-J111: CELL1-3 tails. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."),
         "NOTES": T(
             "NOTES",
-            "1. CELL_N = gauge VSS (cell 1 negative). GND = system ground, on the far side of RS101.",
+            "1. CELL_N = cell 1 negative at the PACK- power slot J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only",
+            "   at the 1N Kelvin slot J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.",
             "2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).",
-            "3. VC taps are separate thin traces from the tap pads J109-J111 and from the J108/J112 pads;",
-            "    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.",
+            "3. VC taps are separate thin traces from the slots J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,",
+            "    the 4P Kelvin slot J116 (before F102 and off the power finger): fuse and tab drop are not read as cell voltage.",
             "4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only",
             "    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.",
             "5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).",
-            "6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).",
+            "6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).",
             "7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.",
             "8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.",
             "   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).",
@@ -78,7 +81,7 @@ TEXTS = {
             "13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).",
             "14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;",
             "    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.",
-            "15. Connect the pack with USB unplugged, PACK- first, then the taps bottom-up, then PACK+: a floating tap can read",
+            "15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read",
             "    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."),
     },
     "power.kicad_sch": {
@@ -94,7 +97,8 @@ TEXTS = {
             "4. U204 pin 4 (NC) goes to GND, as TI recommends.",
             "5. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.",
             "6. The dev board's sleep-current section (R201 R_MEAS, 2 x INA190, HT7550-1) is not on P0: PACK_LP is PACK_P.",
-            "   Measure sleep current on P0 with a meter in series with one pack lead (J108 or J112).",
+            "   Measure sleep current on P0 with a meter in series with the PACK+ power finger (J112) before it is soldered;",
+            "   the gauge and U102 draw through the 4P finger (J116) and are not included.",
             "7. C208-C213 (6 x 22u 35V 1210) = the shared battery-side bulk for both chargers and both 5 V buck inputs",
             "   (was one hybrid can per port). Place them between the two power stages on PACK_P, beside both RBAT pads",
             "   (USB sheet note 5). Nothing on the board is taller than the 3.1 mm inductors."),
@@ -189,10 +193,10 @@ MOVE_TEXT = {"usb_port.kicad_sch": {"Charger battery side joins PACK_P here": (4
                                    "NOTES  (this sheet is used twice": (299.72, 406.4)},
              "gauge.kicad_sch": {"PROTECTION FETs": (106.68, 19.05)}}
 SHEET_NAMES = {"Sleep Current and 3V3": "3V3 Rail", "MCU and Sensors": "MCU"}
-COMMENT1 = {"gauge.kicad_sch": "Welded 4S pack pads, BQ40Z50-R2 gauge/protector, protection FETs",
+COMMENT1 = {"gauge.kicad_sch": "Welded 4S pack slots, BQ40Z50-R2 gauge/protector, protection FETs",
             "power.kicad_sch": "TPS62177 3V3 always-on rail",
             "mcu.kicad_sch": "CC2340R5MODA, TC2030-NL SWD pads"}
-SHOW_VALUE = ["J108", "J109", "J110", "J111", "J112", "TP110", "TP111", "TP112"]
+SHOW_VALUE = ["J108", "J109", "J110", "J111", "J112", "J115", "J116", "TP110", "TP111", "TP112"]
 
 
 def text_body(blk):

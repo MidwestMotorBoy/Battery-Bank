@@ -31,7 +31,7 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`; the cup uses the same board, slots and tails. **FEB 21700G (2026-10-21):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
-- **The PACK tabs split near the board.** The power finger takes the current; the Kelvin finger carries none, so it gives the gauge a true sense at the tab. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
+- **The PACK tabs split near the board.** The power finger takes the current; the Kelvin finger carries none, so it gives the gauge a true sense at the tab. 1N and 4P must stay separate nets on the board: 1N (CELL_1N) is the gauge's low-current ground, star-connected at its slot (VSS, BQ294700 VSS, NTC returns), and 4P (CELL_4P) feeds VC4, the BQ294700 V4/VDD and the BAT diode. The shunt and SRP stay on the PACK− power net (TI SLUA660 §2.3–2.4; `hardware/Production/README.md`).
 - **Power loss:** about 1 mΩ per PACK tab (12 mm of 0.2 × 4.2 nickel), so about 0.09 W each at 9.4 A.
 - **Strain relief:** the bottom tails have a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
 - **Behind B.Cu:** the tails run about 1.1 mm behind B.Cu in the areas on `BCU_TAIL_RUNS`. Only low parts (≤ 0.6 mm) there.
@@ -41,7 +41,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 - Remove the two 18 AWG PACK holes and the five B.Cu spring contacts.
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
-- Two holes for the carrier's board pegs (Ø2.0 at y ±8.6, z 14 and 68).
+- Four holes for the carrier's board pegs (Ø2.0 pegs at y ±8.6, z 14 and 68; 2.2 mm NPTH, H101–H104).
 - The cover standoffs (H101–H104) and the wedge's screw bosses no longer exist: the standoffs can go.
 
 ## Materials and tools
@@ -76,7 +76,8 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 1. **Form the tails:** the 1 mm kink in the bottom tails, and the drop and 90° turn in the CELL1 / CELL3 tails, so each ends pointing +x at its slot. A printed bending jig makes them repeatable.
 2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it.
 3. **Board on:** lower it onto the carrier's pegs, threading the seven tails through their slots from B.Cu.
-4. **Solder on F.Cu,** PACK− first, then PACK+, then the five sense tails. Trim each tail to about 0.5 mm proud.
+4. **Solder on F.Cu,** USB unplugged: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Trim each tail to about 0.5 mm proud.
+    - The order follows the gauge sheet's note 15: with PACK+ on and a tap still floating, a tap can read > 4.35 V, the BQ294700 trips after 1–2 s and F102 blows.
     - The BQ40Z50-R2 datasheet (SLUSCS4C §9.2.2.1.3) gives no connection order, only the Kelvin rule for 1N and 4P.
     - The BQ294700 datasheet hasn't been checked yet. Check it before the first build.
 

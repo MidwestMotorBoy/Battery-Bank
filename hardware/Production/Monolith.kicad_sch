@@ -270,7 +270,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "MONOLITH PRODUCTION BOARD - SHEET INDEX\n2.  Cells and Gauge:  welded 4S pack pads, BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)\n3.  3V3 Rail:  TPS62177 always-on 3V3\n4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (gauge VSS only)\nSpec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."
+	(text "MONOLITH PRODUCTION BOARD - SHEET INDEX\n2.  Cells and Gauge:  welded 4S pack slots (nickel tails, 1N/4P Kelvin), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)\n3.  3V3 Rail:  TPS62177 always-on 3V3\n4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (cell 1 negative at the PACK- power slot; gauge VSS is the CELL_1N label)\nSpec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."
 		(exclude_from_sim no)
 		(at 30.48 205.74 0)
 		(effects
@@ -281,7 +281,7 @@
 		)
 		(uuid "17ac7dae-221c-4f1f-bf54-587de0440efb")
 	)
-	(text "REVISION LOG\nP0  2026-10-17  Dev board rev A8 with the dev-only parts removed (Production/tools/make_production.py, tidy_production.py):\n                sleep-current section, bench supply, cell holders, headers, buttons, status LED, test points, DNP options\n                and 0R links. Added pack wire pads, TC2030-NL SWD + GAUGE pads, training and probe pads (P0 is the first build).\n                Author: Claude Code.  Reviewer: none yet.\nDev board history (A0-A8): DevBoard/README.md and the DevBoard root sheet."
+	(text "REVISION LOG\nP0  2026-10-17  Dev board rev A8 with the dev-only parts removed (Production/tools/make_production.py, tidy_production.py):\n                sleep-current section, bench supply, cell holders, headers, buttons, status LED, test points, DNP options\n                and 0R links. Added pack wire pads, TC2030-NL SWD + GAUGE pads, training and probe pads (P0 is the first build).\n                Author: Claude Code.  Reviewer: none yet.\nP0  2026-10-21  Cup enclosure: the pack pads become 7 plated slots for nickel tails (PACK+/- power, 1N/4P Kelvin\n                on new nets CELL_1N / CELL_4P, CELL1-3); cover standoffs H101-H104 become carrier peg holes.\nDev board history (A0-A8): DevBoard/README.md and the DevBoard root sheet."
 		(exclude_from_sim no)
 		(at 30.48 265.43 0)
 		(effects
@@ -743,7 +743,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1308b834-d26d-4f51-ab23-6812cfbd4397")
+		(uuid "b8426261-1846-4824-92c5-4ae57e244e56")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -755,7 +755,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3e25ef6f-b98d-4cd4-a848-e7c2b9d09804")
+		(uuid "0687f942-112d-4667-b96f-72a4f922988d")
 		(property "Reference" "#PWR9001"
 			(at 222.25 119.38 0)
 			(hide yes)
@@ -811,7 +811,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "f67dacee-b801-46c6-aaef-57bc023ac701")
+			(uuid "d9d0b3f0-ec5a-4846-987a-a5f5b87723a4")
 		)
 		(instances
 			(project "Monolith"
@@ -830,7 +830,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "255d0862-a9c1-4310-99cf-87f78fb5429d")
+		(uuid "912374c6-b453-4a21-8a99-7864bd373912")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -842,7 +842,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "e030e543-bce7-45e9-8fae-14cc2c06c9bf")
+		(uuid "14bbe3cb-a297-44ab-b64b-76fd3f84bbcb")
 		(property "Reference" "#PWR9003"
 			(at 222.25 114.3 0)
 			(hide yes)
@@ -898,7 +898,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "1de909f3-db14-477a-97e9-ed6acfff52f1")
+			(uuid "bc8a50f5-9ac3-477a-b273-5be08e24b321")
 		)
 		(instances
 			(project "Monolith"
@@ -927,7 +927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e164fd5d-c47e-4079-8485-53d8a4d84c37")
+		(uuid "3f8a8aa5-11af-48b7-b0c6-bc3b38ac32fe")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -939,7 +939,7 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "2941f520-291b-4325-badf-d01dafffac04")
+		(uuid "d0bd43b3-0201-4958-a68c-66256113397c")
 		(property "Reference" "#PWR9005"
 			(at 92.71 119.38 0)
 			(hide yes)
@@ -995,7 +995,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "8de36a5a-b414-4bdd-859e-e6ba8f788fe4")
+			(uuid "c09d8ef9-4e33-4cce-a405-df054faca547")
 		)
 		(instances
 			(project "Monolith"
@@ -1008,7 +1008,7 @@
 	)
 	(no_connect
 		(at 220 124.46)
-		(uuid "898fb2cf-f50f-4b9e-ac9b-2f5ce60ec184")
+		(uuid "2a6e24dc-93a3-4aec-802c-02ee84302189")
 	)
 	(sheet_instances
 		(path "/"

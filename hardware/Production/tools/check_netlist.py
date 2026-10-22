@@ -67,8 +67,11 @@ for (r, p), (orf, op) in mp.siz240dt.PIN_REMAP.items():  # leg FETs merged into 
 for ref, _, _, (oref, opin) in mp.GAUGE_PADS:
     expect[(ref, "1")] = find(old[(oref, opin)])
 for (ref, pin), to in mp.NET_MOVES.items():
-    for r in (ref, ref[:-3] + "5" + ref[-2:]):  # port 1 and port 2
-        expect[(r, pin)] = find(old[("TP109", "1")]) if to == "GND" else "unconnected %s.%s" % (r, pin)
+    for r in both_ports([ref], "usb_port.kicad_sch"):  # a port-1 ref brings its port-2 twin
+        if to == "GND":
+            expect[(r, pin)] = find(old[("TP109", "1")])
+        else:
+            expect[(r, pin)] = to or "unconnected %s.%s" % (r, pin)   # "new NAME": a net new on production
 for ref, pins in mp.NEW_PARTS.items():
     for p, src in pins.items():
         expect[(ref, p)] = src if isinstance(src, str) else find(old[src])

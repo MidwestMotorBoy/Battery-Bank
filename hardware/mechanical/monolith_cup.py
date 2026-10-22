@@ -35,12 +35,12 @@ SKIRT_T = 2.1                      # radial skirt wall
 ORING_CS, GROOVE_D = 2.0, 1.4      # 2.0 mm cord, groove 2.6 wide x 1.4 deep (+0.1 bore gap) -> ~25 % squeeze
 GROOVE_Z = (Z_MOUTH + 2.6, Z_MOUTH + 5.2)
 SCREW_X, SCREW_Z = 16.0, Z_MOUTH + 1.0   # two M2, radially through the side walls into skirt bosses, below the O-ring
-VENT_Y, VENT_Z = 0.0, 14.0         # ePTFE vent on the board-side face (its bare hole is the leak-test port)
-FR_B1 = S.sb_z_tail_b - S.SB_PACK_T - 0.05; FR_B0 = FR_B1 - 1.6     # carrier bottom frame, under the bottom strips
+VENT_Y, VENT_Z = S.CUP_VENT          # ePTFE vent on the board-side face (its bare hole is the leak-test port)
+FR_B0 = S.cup_fr_b0; FR_B1 = FR_B0 + 1.6                            # carrier bottom frame, under the bottom strips
 FR_T0, FR_T1 = S.sb_z_cell1 + S.TAB_T, Z_TOP0                       # carrier top frame, bears on the top wall
 WIN_R = 7.0                        # weld / + cap windows in the frames
-FILL_Z = (27.0, 53.0)              # gap filler, board B.Cu to the two front cells, over the power stages
-RAIL_GAP = (25.0, 55.0)            # board rails stop here so the filler reaches the cell tangents
+FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
+RAIL_GAP = S.CUP_RAIL_GAP          # board rails stop here so the filler reaches the cell tangents
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
@@ -107,12 +107,13 @@ def carrier():
     for s in (-1, 1):
         r = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*S.SB_BAR_Y[1])))
         m += [pz(r, FR_B0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
-    m += [cylx(s*8.6, z, 1.0, S.sb_xb0 - 0.5, S.sb_xb1 + 0.6) for s in (-1, 1) for z in (14.0, 68.0)]   # board pegs
+    m += [cylx(y, z, S.CUP_PEG_D / 2, S.sb_xb0 - 0.5, S.sb_xb1 + S.CUP_PEG_PROUD) for y, z in S.CUP_PEGS]   # board pegs
     return U(*m, webs())
 def filler():
     blk = MF.cube((S.sb_xb0 - 19.0, 37.0, FILL_Z[1] - FILL_Z[0])).translate((19.0, -18.5, FILL_Z[0]))
     cells = U(*[pz(circ(x, y, CR), FILL_Z[0] - 1, FILL_Z[1] + 1) for x, y in CELLS])
-    keep = pz(CS.batch_boolean([rect(19.0, S.sb_xb0, -16.0, -7.0), rect(19.0, S.sb_xb0, 7.0, 16.0)], M3.OpType.Add), *FILL_Z)
+    fy0, fy1 = S.CUP_FILL_Y
+    keep = pz(CS.batch_boolean([rect(19.0, S.sb_xb0, -fy1, -fy0), rect(19.0, S.sb_xb0, fy0, fy1)], M3.OpType.Add), *FILL_Z)
     return (blk ^ keep) - cells
 def bumper(top):
     out = cs_out.offset(BUMP_WALL, ROUND); ring = CS.batch_boolean([out, cs_out], M3.OpType.Subtract)

@@ -2385,7 +2385,7 @@
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "48f02b1e-ccfc-40de-91f3-aa896cd70a1d")
@@ -3272,524 +3272,6 @@
 		)
 		(embedded_fonts no)
 		(model "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1210_3225Metric.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243"
-		(locked yes)
-		(layer "F.Cu")
-		(uuid "130b2bfe-01ef-46a9-af08-033a71ab58eb")
-		(at 85 93.4755)
-		(descr "Mounting Hardware, inside through hole M2, height 3.5, Wuerth electronics 9774035243 (https://www.we-online.com/components/products/datasheet/9774035243R.pdf)")
-		(tags "Mounting M2 9774035243")
-		(property "Reference" "H103"
-			(at 0 -3.6 0)
-			(layer "F.SilkS")
-			(uuid "f5b579f4-0e76-4dc3-bc55-efd04046fb8d")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "WA-SMSI M2 3.5mm"
-			(at 0 3.6 0)
-			(layer "F.Fab")
-			(uuid "14c03d02-3bbf-4fd0-8d40-64c3f8f761ee")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/9774035243R.pdf"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "05adabe1-b91c-4891-837f-52444fcef7b6")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py SB_STANDOFFS)"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "a8f7f9d4-006d-43dd-b859-4f74325c6a9f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5266183"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d0e20b4f-375f-4dbd-b061-f1c9acf1e550")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "MPN" "Wurth 9774035243R"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "14edeefd-0847-479e-b586-5a4f607f73aa")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "MountingHole*Pad*")
-		(path "/d9806540-c841-409c-9faa-82254b30b220/a0c4d664-0919-4a98-bc8f-26353955c361")
-		(sheetname "/3V3 Rail/")
-		(sheetfile "power.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr smd allow_soldermask_bridges)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 2.9 0)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "9cea926b-ac19-403b-9394-49b73a5a2d53")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 2.175 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "b98ea9f3-9351-457e-9f68-2b022478ff85")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "8bfaa965-9edd-4231-81fd-a26527945616")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "" smd custom
-			(at -1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -0.147677 1.053104)
-					(mid 0.286378 0.286378)
-					(end 1.053104 -0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.240295 1.053104)
-					(mid 0.222739 0.222739)
-					(end 1.053104 -0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.332645 1.053104)
-					(mid 0.159099 0.159099)
-					(end 1.053104 -0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.424767 1.053104)
-					(mid 0.095459 0.095459)
-					(end 1.053104 -0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.516693 1.053104)
-					(mid 0.03182 0.03182)
-					(end 1.053104 -0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.608448 1.053104)
-					(mid -0.03182 -0.03182)
-					(end 1.053104 -0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.700056 1.053104)
-					(mid -0.095459 -0.095459)
-					(end 1.053104 -0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.791534 1.053104)
-					(mid -0.159099 -0.159099)
-					(end 1.053104 -0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.882896 1.053104)
-					(mid -0.222739 -0.222739)
-					(end 1.053104 -0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.974157 1.053104)
-					(mid -0.286378 -0.286378)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 -0.147677)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 1.053104)
-					(end -0.974157 1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "f90c2276-ab50-4f1d-93b7-bdbeb7b97b6e")
-		)
-		(pad "" smd custom
-			(at -1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 1.053104 0.147677)
-					(mid 0.286378 -0.286378)
-					(end -0.147677 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.240295)
-					(mid 0.222739 -0.222739)
-					(end -0.240295 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.332645)
-					(mid 0.159099 -0.159099)
-					(end -0.332645 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.424767)
-					(mid 0.095459 -0.095459)
-					(end -0.424767 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.516693)
-					(mid 0.03182 -0.03182)
-					(end -0.516693 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.608448)
-					(mid -0.03182 0.03182)
-					(end -0.608448 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.700056)
-					(mid -0.095459 0.095459)
-					(end -0.700056 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.791534)
-					(mid -0.159099 0.159099)
-					(end -0.791534 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.882896)
-					(mid -0.222739 0.222739)
-					(end -0.882896 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.974157)
-					(mid -0.286378 0.286378)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 -1.053104)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 0.147677)
-					(end 1.053104 0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "2c54afde-466c-4829-b4a6-50e27d762840")
-		)
-		(pad "" np_thru_hole circle
-			(at 0 0)
-			(size 3 3)
-			(drill 3)
-			(layers "*.Cu" "*.Mask")
-			(uuid "86667573-994e-48a8-bfb6-c297584889da")
-		)
-		(pad "" smd custom
-			(at 1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -1.053104 -0.147677)
-					(mid -0.286378 0.286378)
-					(end 0.147677 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.240295)
-					(mid -0.222739 0.222739)
-					(end 0.240295 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.332645)
-					(mid -0.159099 0.159099)
-					(end 0.332645 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.424767)
-					(mid -0.095459 0.095459)
-					(end 0.424767 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.516693)
-					(mid -0.03182 0.03182)
-					(end 0.516693 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.608448)
-					(mid 0.03182 -0.03182)
-					(end 0.608448 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.700056)
-					(mid 0.095459 -0.095459)
-					(end 0.700056 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.791534)
-					(mid 0.159099 -0.159099)
-					(end 0.791534 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.882896)
-					(mid 0.222739 -0.222739)
-					(end 0.882896 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.974157)
-					(mid 0.286378 -0.286378)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 1.053104)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 -0.147677)
-					(end -1.053104 -0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "9b2f48c3-4a62-4b71-a27a-287c97fa37d5")
-		)
-		(pad "" smd custom
-			(at 1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 0.147677 -1.053104)
-					(mid -0.286378 -0.286378)
-					(end -1.053104 0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.240295 -1.053104)
-					(mid -0.222739 -0.222739)
-					(end -1.053104 0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.332645 -1.053104)
-					(mid -0.159099 -0.159099)
-					(end -1.053104 0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.424767 -1.053104)
-					(mid -0.095459 -0.095459)
-					(end -1.053104 0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.516693 -1.053104)
-					(mid -0.03182 -0.03182)
-					(end -1.053104 0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.608448 -1.053104)
-					(mid 0.03182 0.03182)
-					(end -1.053104 0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.700056 -1.053104)
-					(mid 0.095459 0.095459)
-					(end -1.053104 0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.791534 -1.053104)
-					(mid 0.159099 0.159099)
-					(end -1.053104 0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.882896 -1.053104)
-					(mid 0.222739 0.222739)
-					(end -1.053104 0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.974157 -1.053104)
-					(mid 0.286378 0.286378)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 0.147677)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 -1.053104)
-					(end 0.974157 -1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "a46bf44b-b831-4509-9aa6-c470ceafd0ab")
-		)
-		(pad "1" smd circle
-			(at -2.075 0)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H103-Pad1)")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "0141093f-dee7-439f-9f6d-508b07f2c7ce")
-		)
-		(pad "1" smd circle
-			(at 0 -2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H103-Pad1)_2")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "28f83f26-61c7-409b-aa62-162d0c851981")
-		)
-		(pad "1" smd circle
-			(at 0 2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H103-Pad1)_3")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "31607c29-99bf-458f-acdb-abe129485f1a")
-		)
-		(pad "1" smd custom
-			(at 2.075 0)
-			(size 1.15 1.15)
-			(layers "F.Cu" "F.Mask")
-			(net "unconnected-(H103-Pad1)_1")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_circle
-					(center -2.075 0)
-					(end 0 0)
-					(width 1.15)
-					(fill no)
-				)
-			)
-			(uuid "101a8c54-fdc6-48c8-84f7-ef93262e15aa")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Mounting_Wuerth.3dshapes/Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -7806,7 +7288,7 @@
 			(size 0.4 0.7)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.125)
-			(net "/Cells and Gauge/CELL_P_RAW")
+			(net "/Cells and Gauge/CELL_4P")
 			(pinfunction "A_2")
 			(pintype "passive")
 			(solder_paste_margin -0.05)
@@ -8239,7 +7721,7 @@
 				)
 			)
 		)
-		(property "Notes" "battery side low side (LODRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+		(property "Notes" "battery side high side (HIDRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -9224,6 +8706,107 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Slot_Tab_4.6x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "28a359eb-e6ce-4b8c-a48c-f9b55f40bc49")
+		(at 113.025 135.4755)
+		(descr "Plated slot 4.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J112"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "cbff4cd9-1623-434e-be6e-2878af218127")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "PACK+ power slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "b5bb158a-d508-4685-bdac-301098956743")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0b2434e0-7e0e-47e0-ac55-d70e9f516a8d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "911a3627-2510-4463-8052-2efaa020424d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/794c79d4-69a9-4225-bd3b-be6a1aaefd41")
+		(sheetname "/Cells and Gauge/")
+		(sheetfile "gauge.kicad_sch")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -2.8 -0.8)
+			(end 2.8 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "e6fad2d4-6474-44f2-a835-e36febefbbd2")
+		)
+		(fp_rect
+			(start -2.3 -0.3)
+			(end 2.3 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "713e8779-5214-4471-8748-69df58464fbc")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "ccf9ea46-93ee-47bf-873b-3222e3ca8a6a")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 5.4 1.4)
+			(drill oval 4.6 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL_P_RAW")
+			(uuid "0289b2f9-63bc-4f85-8d60-e5997a87e0b4")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
@@ -10464,7 +10047,7 @@
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "bf28c52c-3a0e-4f36-859b-d1ca5b0168f1")
@@ -11196,524 +10779,6 @@
 			)
 		)
 	)
-	(footprint "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243"
-		(locked yes)
-		(layer "F.Cu")
-		(uuid "30655474-bf18-459d-9937-3484d9b448e1")
-		(at 85 113.4755)
-		(descr "Mounting Hardware, inside through hole M2, height 3.5, Wuerth electronics 9774035243 (https://www.we-online.com/components/products/datasheet/9774035243R.pdf)")
-		(tags "Mounting M2 9774035243")
-		(property "Reference" "H101"
-			(at 0 -3.6 0)
-			(layer "F.SilkS")
-			(uuid "6684c4ac-5878-462b-82ea-c81d9d4903ef")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "WA-SMSI M2 3.5mm"
-			(at 0 3.6 0)
-			(layer "F.Fab")
-			(uuid "ec5b87aa-b696-40f5-b024-ace7f080278f")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/9774035243R.pdf"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "72eff396-4429-4b47-996e-d2dd6f6c73db")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py SB_STANDOFFS)"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d5c6d64b-7cd8-4009-8253-294131ed4488")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5266183"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "cbf291f4-9945-4eef-857f-fcb80836ba94")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "MPN" "Wurth 9774035243R"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "bd8fe612-5b21-4e37-b4bd-ed01b69eebf9")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "MountingHole*Pad*")
-		(path "/d9806540-c841-409c-9faa-82254b30b220/3bdfcfd9-5ea4-4f48-a62a-a1c73a5f9426")
-		(sheetname "/3V3 Rail/")
-		(sheetfile "power.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr smd allow_soldermask_bridges)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 2.9 0)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "330638f3-2884-4baf-b022-8726f995806d")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 2.175 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "0a7ad2fe-ffc2-4ce2-9fff-060088057496")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "a30c7fa7-345d-46cc-b4e7-d8084529064d")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "" smd custom
-			(at -1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -0.147677 1.053104)
-					(mid 0.286378 0.286378)
-					(end 1.053104 -0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.240295 1.053104)
-					(mid 0.222739 0.222739)
-					(end 1.053104 -0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.332645 1.053104)
-					(mid 0.159099 0.159099)
-					(end 1.053104 -0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.424767 1.053104)
-					(mid 0.095459 0.095459)
-					(end 1.053104 -0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.516693 1.053104)
-					(mid 0.03182 0.03182)
-					(end 1.053104 -0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.608448 1.053104)
-					(mid -0.03182 -0.03182)
-					(end 1.053104 -0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.700056 1.053104)
-					(mid -0.095459 -0.095459)
-					(end 1.053104 -0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.791534 1.053104)
-					(mid -0.159099 -0.159099)
-					(end 1.053104 -0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.882896 1.053104)
-					(mid -0.222739 -0.222739)
-					(end 1.053104 -0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.974157 1.053104)
-					(mid -0.286378 -0.286378)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 -0.147677)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 1.053104)
-					(end -0.974157 1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "bb447fe8-c990-46e4-9558-210fd7c5f3bc")
-		)
-		(pad "" smd custom
-			(at -1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 1.053104 0.147677)
-					(mid 0.286378 -0.286378)
-					(end -0.147677 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.240295)
-					(mid 0.222739 -0.222739)
-					(end -0.240295 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.332645)
-					(mid 0.159099 -0.159099)
-					(end -0.332645 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.424767)
-					(mid 0.095459 -0.095459)
-					(end -0.424767 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.516693)
-					(mid 0.03182 -0.03182)
-					(end -0.516693 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.608448)
-					(mid -0.03182 0.03182)
-					(end -0.608448 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.700056)
-					(mid -0.095459 0.095459)
-					(end -0.700056 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.791534)
-					(mid -0.159099 0.159099)
-					(end -0.791534 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.882896)
-					(mid -0.222739 0.222739)
-					(end -0.882896 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.974157)
-					(mid -0.286378 0.286378)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 -1.053104)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 0.147677)
-					(end 1.053104 0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "8ea99ae4-5223-45a5-838f-b25f8db9349f")
-		)
-		(pad "" np_thru_hole circle
-			(at 0 0)
-			(size 3 3)
-			(drill 3)
-			(layers "*.Cu" "*.Mask")
-			(uuid "4c31a9e1-c147-4e0c-bb60-e162c8aa35e0")
-		)
-		(pad "" smd custom
-			(at 1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -1.053104 -0.147677)
-					(mid -0.286378 0.286378)
-					(end 0.147677 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.240295)
-					(mid -0.222739 0.222739)
-					(end 0.240295 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.332645)
-					(mid -0.159099 0.159099)
-					(end 0.332645 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.424767)
-					(mid -0.095459 0.095459)
-					(end 0.424767 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.516693)
-					(mid -0.03182 0.03182)
-					(end 0.516693 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.608448)
-					(mid 0.03182 -0.03182)
-					(end 0.608448 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.700056)
-					(mid 0.095459 -0.095459)
-					(end 0.700056 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.791534)
-					(mid 0.159099 -0.159099)
-					(end 0.791534 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.882896)
-					(mid 0.222739 -0.222739)
-					(end 0.882896 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.974157)
-					(mid 0.286378 -0.286378)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 1.053104)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 -0.147677)
-					(end -1.053104 -0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "a762371b-4857-4d82-9d95-711b1ca258a2")
-		)
-		(pad "" smd custom
-			(at 1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 0.147677 -1.053104)
-					(mid -0.286378 -0.286378)
-					(end -1.053104 0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.240295 -1.053104)
-					(mid -0.222739 -0.222739)
-					(end -1.053104 0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.332645 -1.053104)
-					(mid -0.159099 -0.159099)
-					(end -1.053104 0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.424767 -1.053104)
-					(mid -0.095459 -0.095459)
-					(end -1.053104 0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.516693 -1.053104)
-					(mid -0.03182 -0.03182)
-					(end -1.053104 0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.608448 -1.053104)
-					(mid 0.03182 0.03182)
-					(end -1.053104 0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.700056 -1.053104)
-					(mid 0.095459 0.095459)
-					(end -1.053104 0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.791534 -1.053104)
-					(mid 0.159099 0.159099)
-					(end -1.053104 0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.882896 -1.053104)
-					(mid 0.222739 0.222739)
-					(end -1.053104 0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.974157 -1.053104)
-					(mid 0.286378 0.286378)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 0.147677)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 -1.053104)
-					(end 0.974157 -1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "ea92522a-aff3-47b9-a08b-887092afd47c")
-		)
-		(pad "1" smd circle
-			(at -2.075 0)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H101-Pad1)")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "34abfb9f-a67a-4d1e-899a-95ca9a184f10")
-		)
-		(pad "1" smd circle
-			(at 0 -2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H101-Pad1)_3")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "e4fc5795-47bc-44a8-ac59-c35b7fadb793")
-		)
-		(pad "1" smd circle
-			(at 0 2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H101-Pad1)_1")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "d826b0d0-c122-42e2-9744-388a28796a2a")
-		)
-		(pad "1" smd custom
-			(at 2.075 0)
-			(size 1.15 1.15)
-			(layers "F.Cu" "F.Mask")
-			(net "unconnected-(H101-Pad1)_2")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_circle
-					(center -2.075 0)
-					(end 0 0)
-					(width 1.15)
-					(fill no)
-				)
-			)
-			(uuid "e17b7908-f23f-4308-8aba-8cff5e4efb21")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Mounting_Wuerth.3dshapes/Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
 	(footprint "MonolithDev:L_Coilank_APS0530"
 		(layer "F.Cu")
 		(uuid "323dd0a3-4e8d-4aa0-b2cf-4e12b5fd3960")
@@ -12054,530 +11119,12 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "64db5dc5-fa16-4d28-991b-844afae476c7")
 		)
 		(embedded_fonts no)
 		(model "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243"
-		(locked yes)
-		(layer "F.Cu")
-		(uuid "339f96b0-1b44-4d22-9edb-3c55820c190d")
-		(at 115 113.4755)
-		(descr "Mounting Hardware, inside through hole M2, height 3.5, Wuerth electronics 9774035243 (https://www.we-online.com/components/products/datasheet/9774035243R.pdf)")
-		(tags "Mounting M2 9774035243")
-		(property "Reference" "H102"
-			(at 0 -3.6 0)
-			(layer "F.SilkS")
-			(uuid "1ad937c1-410b-4a66-bf0c-07511db1c770")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "WA-SMSI M2 3.5mm"
-			(at 0 3.6 0)
-			(layer "F.Fab")
-			(uuid "a0ee2d91-81c3-4c1c-8331-ac77131367ae")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/9774035243R.pdf"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "b03d87a4-2284-4b84-9b72-cf8e576d9fd9")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py SB_STANDOFFS)"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "48bde178-67fc-49f2-bf33-c5bf381753a2")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5266183"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "e9e075e3-0c4a-443c-85e0-5f3e1b571203")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "MPN" "Wurth 9774035243R"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "238094b9-a114-497f-add0-444b8f04b1a6")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "MountingHole*Pad*")
-		(path "/d9806540-c841-409c-9faa-82254b30b220/cd30101e-5871-409c-9e01-657d2d52c6a5")
-		(sheetname "/3V3 Rail/")
-		(sheetfile "power.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr smd allow_soldermask_bridges)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 2.9 0)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "c7fc9af5-7115-4088-9a67-e450c6afc0c6")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 2.175 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "887ae801-0a66-47b3-956b-7b6348d9da8d")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "45ca59d0-1de2-48d5-a260-9210335985f1")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "" smd custom
-			(at -1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -0.147677 1.053104)
-					(mid 0.286378 0.286378)
-					(end 1.053104 -0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.240295 1.053104)
-					(mid 0.222739 0.222739)
-					(end 1.053104 -0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.332645 1.053104)
-					(mid 0.159099 0.159099)
-					(end 1.053104 -0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.424767 1.053104)
-					(mid 0.095459 0.095459)
-					(end 1.053104 -0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.516693 1.053104)
-					(mid 0.03182 0.03182)
-					(end 1.053104 -0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.608448 1.053104)
-					(mid -0.03182 -0.03182)
-					(end 1.053104 -0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.700056 1.053104)
-					(mid -0.095459 -0.095459)
-					(end 1.053104 -0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.791534 1.053104)
-					(mid -0.159099 -0.159099)
-					(end 1.053104 -0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.882896 1.053104)
-					(mid -0.222739 -0.222739)
-					(end 1.053104 -0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.974157 1.053104)
-					(mid -0.286378 -0.286378)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 -0.147677)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 1.053104)
-					(end -0.974157 1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "37c8faac-728e-4b67-9eda-d01a5fcd39f6")
-		)
-		(pad "" smd custom
-			(at -1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 1.053104 0.147677)
-					(mid 0.286378 -0.286378)
-					(end -0.147677 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.240295)
-					(mid 0.222739 -0.222739)
-					(end -0.240295 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.332645)
-					(mid 0.159099 -0.159099)
-					(end -0.332645 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.424767)
-					(mid 0.095459 -0.095459)
-					(end -0.424767 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.516693)
-					(mid 0.03182 -0.03182)
-					(end -0.516693 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.608448)
-					(mid -0.03182 0.03182)
-					(end -0.608448 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.700056)
-					(mid -0.095459 0.095459)
-					(end -0.700056 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.791534)
-					(mid -0.159099 0.159099)
-					(end -0.791534 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.882896)
-					(mid -0.222739 0.222739)
-					(end -0.882896 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.974157)
-					(mid -0.286378 0.286378)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 -1.053104)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 0.147677)
-					(end 1.053104 0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "32bfd8fe-620c-4c83-9fd1-eb3a78dfcba0")
-		)
-		(pad "" np_thru_hole circle
-			(at 0 0)
-			(size 3 3)
-			(drill 3)
-			(layers "*.Cu" "*.Mask")
-			(uuid "98ad8e38-2dfe-4799-ac67-99a64ad68f52")
-		)
-		(pad "" smd custom
-			(at 1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -1.053104 -0.147677)
-					(mid -0.286378 0.286378)
-					(end 0.147677 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.240295)
-					(mid -0.222739 0.222739)
-					(end 0.240295 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.332645)
-					(mid -0.159099 0.159099)
-					(end 0.332645 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.424767)
-					(mid -0.095459 0.095459)
-					(end 0.424767 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.516693)
-					(mid -0.03182 0.03182)
-					(end 0.516693 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.608448)
-					(mid 0.03182 -0.03182)
-					(end 0.608448 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.700056)
-					(mid 0.095459 -0.095459)
-					(end 0.700056 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.791534)
-					(mid 0.159099 -0.159099)
-					(end 0.791534 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.882896)
-					(mid 0.222739 -0.222739)
-					(end 0.882896 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.974157)
-					(mid 0.286378 -0.286378)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 1.053104)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 -0.147677)
-					(end -1.053104 -0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "107959c6-9083-4e70-8297-701a711f296b")
-		)
-		(pad "" smd custom
-			(at 1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 0.147677 -1.053104)
-					(mid -0.286378 -0.286378)
-					(end -1.053104 0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.240295 -1.053104)
-					(mid -0.222739 -0.222739)
-					(end -1.053104 0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.332645 -1.053104)
-					(mid -0.159099 -0.159099)
-					(end -1.053104 0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.424767 -1.053104)
-					(mid -0.095459 -0.095459)
-					(end -1.053104 0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.516693 -1.053104)
-					(mid -0.03182 -0.03182)
-					(end -1.053104 0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.608448 -1.053104)
-					(mid 0.03182 0.03182)
-					(end -1.053104 0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.700056 -1.053104)
-					(mid 0.095459 0.095459)
-					(end -1.053104 0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.791534 -1.053104)
-					(mid 0.159099 0.159099)
-					(end -1.053104 0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.882896 -1.053104)
-					(mid 0.222739 0.222739)
-					(end -1.053104 0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.974157 -1.053104)
-					(mid 0.286378 0.286378)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 0.147677)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 -1.053104)
-					(end 0.974157 -1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "35f6fcfe-00d0-494b-9589-aa92e531b86e")
-		)
-		(pad "1" smd circle
-			(at -2.075 0)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H102-Pad1)_2")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "c494bcc0-4db7-4bb4-b62b-cf57c34e5951")
-		)
-		(pad "1" smd circle
-			(at 0 -2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H102-Pad1)_1")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "2f2c7bf3-3250-42a5-96dc-a5e321d7613d")
-		)
-		(pad "1" smd circle
-			(at 0 2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H102-Pad1)")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "1cb64d03-00c7-481a-a4bd-92ddfdcf16b2")
-		)
-		(pad "1" smd custom
-			(at 2.075 0)
-			(size 1.15 1.15)
-			(layers "F.Cu" "F.Mask")
-			(net "unconnected-(H102-Pad1)_3")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_circle
-					(center -2.075 0)
-					(end 0 0)
-					(width 1.15)
-					(fill no)
-				)
-			)
-			(uuid "cc972a03-d138-4681-8fbc-c6b9b4228b6e")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Mounting_Wuerth.3dshapes/Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -12606,7 +11153,7 @@
 				)
 			)
 		)
-		(property "Value" "9.1k 1%"
+		(property "Value" "11.8k 1%"
 			(at 0 1.17 0)
 			(layer "F.Fab")
 			(uuid "155255b8-f93f-4662-b89c-ff4b22e877a6")
@@ -12639,7 +11186,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
+		(property "Notes" "ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -12652,7 +11199,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25926"
+		(property "LCSC" "C93752"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -12665,7 +11212,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF9101TCE"
+		(property "MPN" "0402WGF1182TCE"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -14997,6 +13544,106 @@
 			)
 		)
 	)
+	(footprint "MonolithDev:Slot_Tab_1.6x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "3ce508f8-3157-459d-aa2a-2cfbff5d25b0")
+		(at 91.275 135.4755)
+		(descr "Plated slot 1.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J115"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "0f8718e6-5347-4386-b6a1-96ae05ca9dc0")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "1N Kelvin slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "3ca59856-dcfb-428e-8ff9-acf9ba70fdd0")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a7ee78dd-d25e-4a91-a556-ef1c762561cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ea3493b8-6ba4-4b02-b390-45d601835ace")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/42c51467-78f8-4ef1-aabf-724405ae2e67")
+		(sheetname "/Cells and Gauge/")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -1.3 -0.8)
+			(end 1.3 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "b28fe398-a2b6-4aea-90b5-89d4ca2eacd8")
+		)
+		(fp_rect
+			(start -0.8 -0.3)
+			(end 0.8 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "c8010d9b-1797-4078-955c-dc55684e634d")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "8c756844-b16e-47f6-819b-573218a31662")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 2.4 1.4)
+			(drill oval 1.6 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL_1N")
+			(uuid "dd73b5e5-3d2f-453d-bbb1-b30193ea7144")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "TestPoint:TestPoint_Pad_D1.0mm"
 		(layer "F.Cu")
 		(uuid "3cf01fd4-97b7-4d99-99b1-0acd04d57e81")
@@ -16775,530 +15422,12 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "17480759-d486-466f-9a41-ebf3db55ce8e")
 		)
 		(embedded_fonts no)
 		(model "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243"
-		(locked yes)
-		(layer "F.Cu")
-		(uuid "4486a808-c2f9-4f07-bd00-d2d732033cf6")
-		(at 115 93.4755)
-		(descr "Mounting Hardware, inside through hole M2, height 3.5, Wuerth electronics 9774035243 (https://www.we-online.com/components/products/datasheet/9774035243R.pdf)")
-		(tags "Mounting M2 9774035243")
-		(property "Reference" "H104"
-			(at 0 -3.6 0)
-			(layer "F.SilkS")
-			(uuid "c660fdd4-55c2-4b2d-bbf8-47b33f3df88e")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "WA-SMSI M2 3.5mm"
-			(at 0 3.6 0)
-			(layer "F.Fab")
-			(uuid "4b4edd20-5044-4d6b-91bf-b7cac94f30c3")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/9774035243R.pdf"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "0c8df07a-e58e-4790-ad6f-ce593a4f6376")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py SB_STANDOFFS)"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "5370e08b-72d4-4d70-a4e3-ec938c8b65e5")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5266183"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "bba00446-74a3-4aeb-977f-a313becef826")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "MPN" "Wurth 9774035243R"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "4e12e871-81d4-44be-88c1-9c82710e512a")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "MountingHole*Pad*")
-		(path "/d9806540-c841-409c-9faa-82254b30b220/c00425b5-9967-450f-96ac-1457b786f8a8")
-		(sheetname "/3V3 Rail/")
-		(sheetfile "power.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr smd allow_soldermask_bridges)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 2.9 0)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "7b8f1a93-5a19-4abe-9914-cb051058e453")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 2.175 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "3ba9fcba-0979-42c0-a590-5e82e1995a00")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "34d28a8f-f763-486a-8a08-2713c9910b61")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "" smd custom
-			(at -1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -0.147677 1.053104)
-					(mid 0.286378 0.286378)
-					(end 1.053104 -0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.240295 1.053104)
-					(mid 0.222739 0.222739)
-					(end 1.053104 -0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.332645 1.053104)
-					(mid 0.159099 0.159099)
-					(end 1.053104 -0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.424767 1.053104)
-					(mid 0.095459 0.095459)
-					(end 1.053104 -0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.516693 1.053104)
-					(mid 0.03182 0.03182)
-					(end 1.053104 -0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.608448 1.053104)
-					(mid -0.03182 -0.03182)
-					(end 1.053104 -0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.700056 1.053104)
-					(mid -0.095459 -0.095459)
-					(end 1.053104 -0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.791534 1.053104)
-					(mid -0.159099 -0.159099)
-					(end 1.053104 -0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.882896 1.053104)
-					(mid -0.222739 -0.222739)
-					(end 1.053104 -0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -0.974157 1.053104)
-					(mid -0.286378 -0.286378)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 -0.147677)
-					(end 1.053104 -0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 1.053104)
-					(end -0.974157 1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "39a43248-99b6-4c42-a03f-2a80c720c04a")
-		)
-		(pad "" smd custom
-			(at -1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 1.053104 0.147677)
-					(mid 0.286378 -0.286378)
-					(end -0.147677 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.240295)
-					(mid 0.222739 -0.222739)
-					(end -0.240295 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.332645)
-					(mid 0.159099 -0.159099)
-					(end -0.332645 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.424767)
-					(mid 0.095459 -0.095459)
-					(end -0.424767 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.516693)
-					(mid 0.03182 -0.03182)
-					(end -0.516693 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.608448)
-					(mid -0.03182 0.03182)
-					(end -0.608448 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.700056)
-					(mid -0.095459 0.095459)
-					(end -0.700056 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.791534)
-					(mid -0.159099 0.159099)
-					(end -0.791534 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.882896)
-					(mid -0.222739 0.222739)
-					(end -0.882896 -1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 1.053104 0.974157)
-					(mid -0.286378 0.286378)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -0.147677 -1.053104)
-					(end -0.974157 -1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 1.053104 0.147677)
-					(end 1.053104 0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "6374969d-d1f3-41c2-a33f-0b103ce03cee")
-		)
-		(pad "" np_thru_hole circle
-			(at 0 0)
-			(size 3 3)
-			(drill 3)
-			(layers "*.Cu" "*.Mask")
-			(uuid "fdf92ed8-0804-45f4-99c3-2abc619f0ce1")
-		)
-		(pad "" smd custom
-			(at 1.453104 -1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start -1.053104 -0.147677)
-					(mid -0.286378 0.286378)
-					(end 0.147677 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.240295)
-					(mid -0.222739 0.222739)
-					(end 0.240295 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.332645)
-					(mid -0.159099 0.159099)
-					(end 0.332645 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.424767)
-					(mid -0.095459 0.095459)
-					(end 0.424767 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.516693)
-					(mid -0.03182 0.03182)
-					(end 0.516693 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.608448)
-					(mid 0.03182 -0.03182)
-					(end 0.608448 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.700056)
-					(mid 0.095459 -0.095459)
-					(end 0.700056 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.791534)
-					(mid 0.159099 -0.159099)
-					(end 0.791534 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.882896)
-					(mid 0.222739 -0.222739)
-					(end 0.882896 1.053104)
-					(width 0.2)
-				)
-				(gr_arc
-					(start -1.053104 -0.974157)
-					(mid 0.286378 -0.286378)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 1.053104)
-					(end 0.974157 1.053104)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 -0.147677)
-					(end -1.053104 -0.974157)
-					(width 0.2)
-				)
-			)
-			(uuid "45f3d1cc-2d31-4816-b225-63cb53ebc7b5")
-		)
-		(pad "" smd custom
-			(at 1.453104 1.453104)
-			(size 0.505 0.505)
-			(layers "F.Paste")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_arc
-					(start 0.147677 -1.053104)
-					(mid -0.286378 -0.286378)
-					(end -1.053104 0.147677)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.240295 -1.053104)
-					(mid -0.222739 -0.222739)
-					(end -1.053104 0.240295)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.332645 -1.053104)
-					(mid -0.159099 -0.159099)
-					(end -1.053104 0.332645)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.424767 -1.053104)
-					(mid -0.095459 -0.095459)
-					(end -1.053104 0.424767)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.516693 -1.053104)
-					(mid -0.03182 -0.03182)
-					(end -1.053104 0.516693)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.608448 -1.053104)
-					(mid 0.03182 0.03182)
-					(end -1.053104 0.608448)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.700056 -1.053104)
-					(mid 0.095459 0.095459)
-					(end -1.053104 0.700056)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.791534 -1.053104)
-					(mid 0.159099 0.159099)
-					(end -1.053104 0.791534)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.882896 -1.053104)
-					(mid 0.222739 0.222739)
-					(end -1.053104 0.882896)
-					(width 0.2)
-				)
-				(gr_arc
-					(start 0.974157 -1.053104)
-					(mid 0.286378 0.286378)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start -1.053104 0.147677)
-					(end -1.053104 0.974157)
-					(width 0.2)
-				)
-				(gr_line
-					(start 0.147677 -1.053104)
-					(end 0.974157 -1.053104)
-					(width 0.2)
-				)
-			)
-			(uuid "c9b6eddf-7a9c-40db-85d5-0c0ee1b75386")
-		)
-		(pad "1" smd circle
-			(at -2.075 0)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H104-Pad1)_1")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "9fd93d1e-edbf-4d8b-b474-1691939a67a8")
-		)
-		(pad "1" smd circle
-			(at 0 -2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H104-Pad1)_2")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "cae36aeb-df2e-4cce-903f-f1f5da291207")
-		)
-		(pad "1" smd circle
-			(at 0 2.075)
-			(size 0.642 0.642)
-			(layers "F.Cu")
-			(net "unconnected-(H104-Pad1)")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(uuid "01df49da-ac49-4ac0-8c9d-c70070a3a70c")
-		)
-		(pad "1" smd custom
-			(at 2.075 0)
-			(size 1.15 1.15)
-			(layers "F.Cu" "F.Mask")
-			(net "unconnected-(H104-Pad1)_3")
-			(pinfunction "1_1")
-			(pintype "input+no_connect")
-			(options
-				(clearance outline)
-				(anchor circle)
-			)
-			(primitives
-				(gr_circle
-					(center -2.075 0)
-					(end 0 0)
-					(width 1.15)
-					(fill no)
-				)
-			)
-			(uuid "f4715ed9-3710-477d-abb8-7123f2095154")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Mounting_Wuerth.3dshapes/Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -17386,7 +15515,7 @@
 				)
 			)
 		)
-		(property "Notes" "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS (CELL_N)."
+		(property "Notes" "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS (CELL_1N, the Kelvin ground at the 1N tab)."
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17654,7 +15783,7 @@
 			(size 0.6 0.25)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "VSS_6")
 			(pintype "power_in")
 			(uuid "251e5971-8c02-4536-a8f8-376cd4dc4393")
@@ -17684,7 +15813,7 @@
 			(size 0.9 1.6)
 			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "VSS_9")
 			(pintype "passive")
 			(zone_connect 2)
@@ -21953,139 +20082,6 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
-		(layer "F.Cu")
-		(uuid "5384059f-fa01-499b-a33b-5f4f2a375401")
-		(at 209.087 24.332)
-		(descr "Soldered wire connection, for a single 1.5 mm² wire, reinforced insulation, conductor diameter 1.7mm, outer diameter 3.9mm, size source Multi-Contact FLEXI-xV 1.5 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=11), bend radius 3 times outer diameter")
-		(tags "connector wire 1.5sqmm")
-		(property "Reference" "J108"
-			(at 0 -3.15 0)
-			(layer "F.SilkS")
-			(uuid "a6da0c9c-b20e-488d-a97e-5fb42e28182b")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "PACK-"
-			(at 0 3.15 0)
-			(layer "F.Fab")
-			(uuid "dda882bf-9eca-4950-811e-495a07caa514")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "3b900ab5-6895-4ab2-9548-22b0d929a5af")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "aca2476c-538c-46a0-8d3a-c92daf713068")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "CELL_N"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "a94f135f-8471-4f71-b2b3-77b556362c77")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/888a6dd7-6e74-4e6a-95f4-468f1faaff67")
-		(sheetname "/Cells and Gauge/")
-		(sheetfile "gauge.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr exclude_from_bom)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_rect
-			(start -2.7 -2.45)
-			(end 2.7 2.45)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "14b47294-1c1f-4f7d-9164-0ad72e995b64")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 1.95 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "b73c9438-cf80-47d4-93eb-5fc3d9af791e")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "313a22e0-e625-4e4e-b5c5-95d906165756")
-			(effects
-				(font
-					(size 0.98 0.98)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "1" thru_hole roundrect
-			(at 0 0)
-			(size 3.9 3.9)
-			(drill 2.15)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.064103)
-			(net "CELL_N")
-			(pinfunction "1_1")
-			(pintype "passive")
-			(uuid "9569e485-d8d9-4e5f-be54-419c4ad88bef")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "5456b10c-5ba8-4dd2-800b-2956a011ae16")
@@ -23174,7 +21170,7 @@
 				)
 			)
 		)
-		(property "Value" "9.1k 1%"
+		(property "Value" "11.8k 1%"
 			(at 0 1.17 0)
 			(layer "F.Fab")
 			(uuid "e605e233-547f-40c4-8e94-a56d7750a1ac")
@@ -23207,7 +21203,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/9.1 = 5.5 A per port (5.3-5.8 A over K_ICHG and 1 %): one port can charge at about 1C. Firmware keeps the sum of both ports at 5.6 A max (TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
+		(property "Notes" "ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -23220,7 +21216,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25926"
+		(property "LCSC" "C93752"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -23233,7 +21229,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF9101TCE"
+		(property "MPN" "0402WGF1182TCE"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -25354,7 +23350,7 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "c966a33b-2f14-4b8f-a578-f1867c716bcd")
 		)
@@ -27124,7 +25120,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "c1d07ac4-1002-4b72-93e2-4a7a8fc91947")
 		)
@@ -27140,6 +25136,107 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "6706c6c8-d2b4-4d3f-ab3e-4d57fe52b8b8")
+		(at 100 135.4505)
+		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J110"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "7f2af6bb-f102-4259-a624-59b635ac04f7")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "CELL2 slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "c0e95776-2c8b-4c23-a372-416207c3e62d")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d98f597f-6b6d-4aa2-a6a9-8108ef9660b7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "45024cf2-22f5-4bc7-af14-7c311ebf1d39")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/54cb1fdb-50eb-43bd-ac48-569bf18c169c")
+		(sheetname "/Cells and Gauge/")
+		(sheetfile "gauge.kicad_sch")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -2.2 -0.8)
+			(end 2.2 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "1523678b-1fc2-4512-9917-5c1583455b4b")
+		)
+		(fp_rect
+			(start -1.7 -0.3)
+			(end 1.7 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "eabb8e92-8019-4c84-8dad-5ce6faf56865")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "918ee239-d314-4521-bee9-9ebcc3e26d8a")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 4.2 1.4)
+			(drill oval 3.4 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL2")
+			(uuid "783cc2e6-fa45-422e-9235-4008412494ca")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -27679,7 +25776,7 @@
 			(size 1 1.45)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "919f1099-cd3a-4380-8d43-df1da6f11b7a")
 		)
@@ -28956,7 +27053,7 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/Cells and Gauge/CELL_P_RAW")
+			(net "/Cells and Gauge/CELL_4P")
 			(pintype "passive")
 			(uuid "7605532a-4d0a-45a6-bdf5-0e886bd05aef")
 		)
@@ -29685,7 +27782,7 @@
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "6356db86-c243-4b5d-8bd5-2f360d459687")
@@ -31038,6 +29135,129 @@
 			)
 		)
 	)
+	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "78321227-d1f8-4372-bff6-82d53c70d36a")
+		(at 108.6 73.4755)
+		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg hole npth")
+		(property "Reference" "H104"
+			(at 0 -2.2 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "24851888-3bce-4e46-9f3d-76d60d319d44")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "Peg hole 2.2 NPTH"
+			(at 0 2.2 0)
+			(layer "F.Fab")
+			(uuid "bf425a74-ea67-4530-a98c-c00837217756")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d88e7586-1947-486f-8d8d-d890878839be")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "NPTH for a 2 mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ea4f0fef-f421-4933-a181-d5df09025389")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "404390d5-e420-4e42-9cb7-7188352884a9")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "6eb19982-1813-418a-8715-8e81c46a8c90")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/d9806540-c841-409c-9faa-82254b30b220/c00425b5-9967-450f-96ac-1457b786f8a8")
+		(sheetname "/3V3 Rail/")
+		(sheetfile "power.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "3d333602-6fdc-46b6-8db8-7ef5abef1f12")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "B.CrtYd")
+			(uuid "07ebec6a-5867-48fc-830e-c6194d439f8c")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "ba2f9e4a-9027-47ec-a153-1d329ff35d1d")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 2.2 2.2)
+			(drill 2.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "3a99c54d-eeab-4fbb-9051-1686d0f6c25c")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "Capacitor_SMD:C_1206_3216Metric"
 		(layer "F.Cu")
 		(uuid "796f4b23-c3aa-4083-a28c-69e6a93cd874")
@@ -31286,7 +29506,7 @@
 				)
 			)
 		)
-		(property "Notes" "battery side low side (LODRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
+		(property "Notes" "battery side high side (HIDRV2). JinYu PGQ04N070 (cost-down 2026-10-14, replaces the IAUC45N04S6L063H half-bridge): 40 V, 7 mOhm max at 10 V, 10 mOhm max at 4.5 V, Qg 14.7 nC. Place the pair as a tight half-bridge with C430/C438 across it"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -32710,7 +30930,7 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/Cells and Gauge/CELL_P_RAW")
+			(net "/Cells and Gauge/CELL_4P")
 			(pintype "passive")
 			(uuid "f658145b-031a-4f5b-83b6-98087c569a36")
 		)
@@ -34338,139 +32558,6 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
-		(layer "F.Cu")
-		(uuid "88bf81e6-e213-4360-a515-3171ce659b67")
-		(at 209.087 30.282)
-		(descr "Soldered wire connection, for a single 1.5 mm² wire, reinforced insulation, conductor diameter 1.7mm, outer diameter 3.9mm, size source Multi-Contact FLEXI-xV 1.5 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=11), bend radius 3 times outer diameter")
-		(tags "connector wire 1.5sqmm")
-		(property "Reference" "J112"
-			(at 0 -3.15 0)
-			(layer "F.SilkS")
-			(uuid "43f468e2-8e50-47db-9d4c-daa9336ad71e")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "PACK+"
-			(at 0 3.15 0)
-			(layer "F.Fab")
-			(uuid "fb122db4-4e89-4eae-95ec-881c457a6ecf")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8b141ca3-048b-4434-a67c-ec3f5432524a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "9c9ebdc8-ce18-4f7e-a754-d6a2bf968587")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "CELL_P_RAW"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "282120b0-2f62-41aa-9478-2beefc4f05fd")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/794c79d4-69a9-4225-bd3b-be6a1aaefd41")
-		(sheetname "/Cells and Gauge/")
-		(sheetfile "gauge.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr exclude_from_bom)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_rect
-			(start -2.7 -2.45)
-			(end 2.7 2.45)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "9f6181c3-d17a-49a6-8689-41fa1881d328")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 1.95 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "93d6b381-2404-480d-a770-61ec54ad9258")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "54d6c4b4-9192-43e4-903d-6efcee15d0e2")
-			(effects
-				(font
-					(size 0.98 0.98)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "1" thru_hole roundrect
-			(at 0 0)
-			(size 3.9 3.9)
-			(drill 2.15)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.064103)
-			(net "/Cells and Gauge/CELL_P_RAW")
-			(pinfunction "1_1")
-			(pintype "passive")
-			(uuid "e9c7fa78-2619-49f7-ad9e-fa7b6b345183")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "8a323347-cce2-48b6-addf-83efa335ffe3")
@@ -35409,126 +33496,6 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
-		(layer "F.Cu")
-		(uuid "90dab2b2-c9cc-4e42-89a6-55601023da67")
-		(at 214.337 30.732)
-		(descr "Soldered wire connection, for a single 0.15 mm² wire, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
-		(tags "connector wire 0.15sqmm")
-		(property "Reference" "J111"
-			(at 0 -2.05 0)
-			(layer "F.SilkS")
-			(uuid "861a913b-a8d9-4ac7-9893-1c66fd0df524")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "CELL3 tap"
-			(at 0 2.05 0)
-			(layer "F.Fab")
-			(uuid "7fce7f0b-efd0-499e-99c7-fc19b74c2020")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8702af49-3d16-4284-a214-e09da184eb0f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "3e71aac2-63e9-48fd-a0ef-551b763301e0")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/9c5d9ed4-4f21-4fc8-9084-a43bf89acf1a")
-		(sheetname "/Cells and Gauge/")
-		(sheetfile "gauge.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr exclude_from_bom)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_rect
-			(start -1.5 -1.35)
-			(end 1.5 1.35)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "87f47098-a544-4531-a042-ff247889c771")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0.75 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "e62666d8-c542-4e46-879f-d9c079b50f02")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "beba9245-eb61-476f-99e1-5ea98e3de961")
-			(effects
-				(font
-					(size 0.38 0.38)
-					(thickness 0.06)
-				)
-			)
-		)
-		(pad "1" thru_hole roundrect
-			(at 0 0)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.147059)
-			(net "/Cells and Gauge/CELL3")
-			(pinfunction "1_1")
-			(pintype "passive")
-			(uuid "a57833c8-e5fc-494c-b878-009ed42ace0b")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "91318a12-1cd2-4ce0-b1e4-47f0e2f99c33")
@@ -35872,6 +33839,129 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "91c5e20a-9ff9-475b-8f34-78d612a6307d")
+		(at 91.4 73.4755)
+		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg hole npth")
+		(property "Reference" "H102"
+			(at 0 -2.2 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "a2cbfa73-c56c-4646-b9d5-2de75b2fe55a")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "Peg hole 2.2 NPTH"
+			(at 0 2.2 0)
+			(layer "F.Fab")
+			(uuid "52bbe2f2-f561-4627-972d-56774046245a")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "32c69c4d-332d-4445-a883-8ea92b6b1064")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "NPTH for a 2 mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "99caeae0-3a02-4c4f-a128-4996b4fe88c7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "dea66433-863b-4068-91dd-ee3120386c0d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "c88bf06e-4e25-4893-b8f8-10f9341aa2e1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/d9806540-c841-409c-9faa-82254b30b220/cd30101e-5871-409c-9e01-657d2d52c6a5")
+		(sheetname "/3V3 Rail/")
+		(sheetfile "power.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "c300a38c-2422-49c7-a537-074102466e26")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "B.CrtYd")
+			(uuid "ae27d4af-4e26-4b17-9970-3176d3779e3b")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "f6cdc37f-09d5-4a91-b4f1-e10bd92bc0df")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 2.2 2.2)
+			(drill 2.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "a3420fbd-286b-4758-ae59-da55b5dd404f")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -40942,126 +39032,6 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
-		(layer "F.Cu")
-		(uuid "b0696b53-41d9-4fcd-be26-f95dbf170776")
-		(at 214.337 23.232)
-		(descr "Soldered wire connection, for a single 0.15 mm² wire, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
-		(tags "connector wire 0.15sqmm")
-		(property "Reference" "J109"
-			(at 0 -2.05 0)
-			(layer "F.SilkS")
-			(uuid "e7d4b610-f720-4c82-b070-89d7ace1a513")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "CELL1 tap"
-			(at 0 2.05 0)
-			(layer "F.Fab")
-			(uuid "f835b16f-31cc-40e9-b8c3-15772502b95f")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "66a61d38-357c-4370-88c4-2fd3218f4d89")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "abc5c853-d0db-4838-bc07-3ee768c73a67")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/868e8ddc-b998-49fc-b2cb-18f3bb10cfeb")
-		(sheetname "/Cells and Gauge/")
-		(sheetfile "gauge.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr exclude_from_bom)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_rect
-			(start -1.5 -1.35)
-			(end 1.5 1.35)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "1d62d14a-7d3b-44cb-a22a-39999ffd0701")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0.75 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "d6f25ddd-6c5b-49f0-9b2e-8492bbb18984")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(uuid "1908e4cc-7aca-45f3-98a3-36ca1e662114")
-			(effects
-				(font
-					(size 0.38 0.38)
-					(thickness 0.06)
-				)
-			)
-		)
-		(pad "1" thru_hole roundrect
-			(at 0 0)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.147059)
-			(net "/Cells and Gauge/CELL1")
-			(pinfunction "1_1")
-			(pintype "passive")
-			(uuid "911f6837-0939-49e3-9122-13ffb1c0447a")
-		)
-		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "b0f166cd-50d8-4536-a712-c1ece0024d82")
@@ -43714,6 +41684,107 @@
 			)
 		)
 	)
+	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "c2614329-ca3a-4d21-8a1a-17eb12e918e7")
+		(at 113.9 69.4755)
+		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J111"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "58430ecd-2ea2-4eac-979a-89d45c4b5b59")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "CELL3 slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "38f50b73-a8cb-4a31-aab6-a45b7b1dbe47")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5dd76af5-255e-452a-9372-d03b6d052a88")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "00591520-c747-4d19-a208-0a7f09adb06b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/9c5d9ed4-4f21-4fc8-9084-a43bf89acf1a")
+		(sheetname "/Cells and Gauge/")
+		(sheetfile "gauge.kicad_sch")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -2.2 -0.8)
+			(end 2.2 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "94c8f101-2072-4b12-9082-05dd781961fa")
+		)
+		(fp_rect
+			(start -1.7 -0.3)
+			(end 1.7 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "464710bb-b3e3-4a1c-8511-bb0f0e126e84")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "4cb01d27-56b6-4211-9688-a6bb00bf48e3")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 4.2 1.4)
+			(drill oval 3.4 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL3")
+			(uuid "2382b24e-500b-4e12-a6ce-b8d3835e4763")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "c2b380c4-21b0-4982-bc0c-b2d3a7688757")
@@ -44415,7 +42486,7 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/Cells and Gauge/CELL_P_RAW")
+			(net "/Cells and Gauge/CELL_4P")
 			(pintype "passive")
 			(uuid "e0d8973a-2cf5-4306-a9d3-1b15e5c271e2")
 		)
@@ -44603,6 +42674,129 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "c71b3298-f5d7-4f84-8a4f-77a723e6d8fd")
+		(at 108.6 127.4755)
+		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg hole npth")
+		(property "Reference" "H103"
+			(at 0 -2.2 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "8ac5c6dc-b624-4d2f-a961-cab93d6f4992")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "Peg hole 2.2 NPTH"
+			(at 0 2.2 0)
+			(layer "F.Fab")
+			(uuid "3400c283-43c7-4fab-8a13-f9b525ad1027")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fd5f8d6d-c121-4f5c-946b-d0ce5841eaff")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "NPTH for a 2 mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "06a7b2b6-5675-4d39-9f53-4e50adbf203e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "ec11427d-dd7a-43ac-8afa-cfc9e7ad49f1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "42775a86-0a11-410d-990b-0f92cebac963")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/d9806540-c841-409c-9faa-82254b30b220/a0c4d664-0919-4a98-bc8f-26353955c361")
+		(sheetname "/3V3 Rail/")
+		(sheetfile "power.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "457cbae5-8eb9-461d-a809-42e7c945b1ad")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "B.CrtYd")
+			(uuid "2d8ac1ab-2884-4ab6-b73a-6c91b5d679c5")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "42af1434-0fa7-47d1-9825-a3c5f988f1b7")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 2.2 2.2)
+			(drill 2.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "b9c54a8b-e64c-4fd0-9889-0ada4541ab28")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
@@ -45135,7 +43329,7 @@
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "9396b279-9381-4f0a-8855-1ae0cd98557f")
@@ -45581,6 +43775,107 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "cd68b8a2-c2b9-44a9-848e-621634a8fbae")
+		(at 86.1 69.4755)
+		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J109"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "f8046088-e274-4daa-93c6-259d6cdc322a")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "CELL1 slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "fbd685c7-187e-49fc-8d9b-ddb7b7e8b157")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9580506c-b48e-4acf-a8ed-64816c6fcb5d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7a41d2c2-7271-47fd-93c9-34e145ec9fe9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/868e8ddc-b998-49fc-b2cb-18f3bb10cfeb")
+		(sheetname "/Cells and Gauge/")
+		(sheetfile "gauge.kicad_sch")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -2.2 -0.8)
+			(end 2.2 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "eedc1f8f-5e67-4b8f-8cc3-5aa71cd551bf")
+		)
+		(fp_rect
+			(start -1.7 -0.3)
+			(end 1.7 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "9562e7bc-e7c3-44ab-9986-4498a551a213")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "160c1401-1586-45d6-9512-df4a4d4be4f4")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 4.2 1.4)
+			(drill oval 3.4 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL1")
+			(uuid "e9b5fac8-5a27-46d6-8350-1f72d30000ea")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -46100,6 +44395,106 @@
 			)
 		)
 	)
+	(footprint "MonolithDev:Slot_Tab_1.6x0.6mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "cf4b072a-f223-4d0b-bc85-ecc8a5365e51")
+		(at 108.725 135.4755)
+		(descr "Plated slot 1.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J116"
+			(at 0 -1.4 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "d4aaa483-0bfc-4724-878a-a34b5116e1da")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "4P Kelvin slot"
+			(at 0 1.4 0)
+			(layer "F.Fab")
+			(uuid "82886742-64d9-43d2-b162-070dab206d86")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a26aad15-39f1-4231-a2ef-54efbdefebfd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fb748f1e-8062-461b-a3cc-005bdcd7fc86")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/5250807b-1d9b-472b-9f07-3540ffd6b6b6")
+		(sheetname "/Cells and Gauge/")
+		(attr through_hole exclude_from_pos_files)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -1.3 -0.8)
+			(end 1.3 0.8)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "ff6bfcad-4b23-45b9-9857-2175b07a7e42")
+		)
+		(fp_rect
+			(start -0.8 -0.3)
+			(end 0.8 0.3)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "60bb955d-5b17-4309-889c-9e02538a05fb")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "27fe4df0-a9b2-4440-b305-fcfa4f0c59df")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" thru_hole oval
+			(at 0 0)
+			(size 2.4 1.4)
+			(drill oval 1.6 0.6)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/Cells and Gauge/CELL_4P")
+			(uuid "b3de75c0-73b4-49b3-89d7-c49d8634de74")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "cf626c0e-1c22-4f70-9cfc-175629bd85a6")
@@ -46554,7 +44949,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "f0e5317e-043a-4ddd-a7ec-56e396055701")
 		)
@@ -46764,6 +45159,129 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+		(locked yes)
+		(layer "F.Cu")
+		(uuid "d67b1131-a9af-47d8-bbb8-da9c96a41a27")
+		(at 91.4 127.4755)
+		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg hole npth")
+		(property "Reference" "H101"
+			(at 0 -2.2 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "66c38818-8413-4515-a456-b73ffc61c421")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "Peg hole 2.2 NPTH"
+			(at 0 2.2 0)
+			(layer "F.Fab")
+			(uuid "6cc9e8b9-c3a5-4683-8579-624b3e87186c")
+			(effects
+				(font
+					(size 0.6 0.6)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7234a63a-bbc4-4af0-940e-29a407495ccf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "NPTH for a 2 mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bdbb2253-4088-423e-8c01-a7424c0b87f7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "5ad88e2f-720c-4ad7-9ab7-1e1522e8beb7")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "2e10963e-3e31-4735-8a92-8f76772a4c1a")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/d9806540-c841-409c-9faa-82254b30b220/3bdfcfd9-5ea4-4f48-a62a-a1c73a5f9426")
+		(sheetname "/3V3 Rail/")
+		(sheetfile "power.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "77dcbdb3-fa39-4aa9-87bd-7bc095a8af1e")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "B.CrtYd")
+			(uuid "ba98dad3-e37a-4fc4-a3bd-b20d54afc17e")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.6 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "a38ebc95-b050-409b-978d-8c04729b4ac2")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 2.2 2.2)
+			(drill 2.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "5718f646-0364-478d-a8f6-c44c72103873")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -49317,31 +47835,33 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
+	(footprint "MonolithDev:Slot_Tab_4.6x0.6mm"
+		(locked yes)
 		(layer "F.Cu")
-		(uuid "dc20946e-21d0-428d-a139-a4b100b3ca50")
-		(at 214.337 26.982)
-		(descr "Soldered wire connection, for a single 0.15 mm² wire, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
-		(tags "connector wire 0.15sqmm")
-		(property "Reference" "J110"
-			(at 0 -2.05 0)
+		(uuid "dc4bafb0-3be0-4cdc-b1be-843002233e7b")
+		(at 86.975 135.4755)
+		(descr "Plated slot 4.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "slot nickel tab battery")
+		(property "Reference" "J108"
+			(at 0 -1.4 0)
 			(layer "F.SilkS")
-			(uuid "ff58f765-7da2-4d24-96fd-b645b0030f29")
+			(hide yes)
+			(uuid "a02c9786-faf3-4829-8939-bfa0373343a8")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.6 0.6)
+					(thickness 0.1)
 				)
 			)
 		)
-		(property "Value" "CELL2 tap"
-			(at 0 2.05 0)
+		(property "Value" "PACK- power slot"
+			(at 0 1.4 0)
 			(layer "F.Fab")
-			(uuid "ec97fa60-d40c-4781-9fe3-f30d7691f003")
+			(uuid "f73125df-2d14-4748-a373-29ffa0418362")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.6 0.6)
+					(thickness 0.1)
 				)
 			)
 		)
@@ -49349,7 +47869,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "085952be-2792-4c4b-aca9-bf54897e53bf")
+			(uuid "f549edd0-51ca-41e3-be79-90e13b8caaa0")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -49360,82 +47880,61 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "13cf4ba0-a472-4db1-a28e-b9166bbf6329")
+			(uuid "c171a527-2f91-488b-a9dc-ffb4d95388cd")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/54cb1fdb-50eb-43bd-ac48-569bf18c169c")
+		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/888a6dd7-6e74-4e6a-95f4-468f1faaff67")
 		(sheetname "/Cells and Gauge/")
 		(sheetfile "gauge.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1")
-			)
-		)
-		(attr exclude_from_bom)
+		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -1.5 -1.35)
-			(end 1.5 1.35)
+			(start -2.8 -0.8)
+			(end 2.8 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "b497c71f-c2e5-4cfd-a554-6edd6a71f455")
+			(uuid "166bcf99-3650-4f7b-811a-6d666e4e45c4")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 0.75 0)
+		(fp_rect
+			(start -2.3 -0.3)
+			(end 2.3 0.3)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.Fab")
-			(uuid "909512ec-1994-4e8c-9520-e65e27a4cc5e")
+			(uuid "69b1980e-ee7d-4863-bcaa-ebb00a6c4212")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 0)
 			(layer "F.Fab")
-			(uuid "6539c692-35f7-4ef1-b1c8-73d9a1ec61f7")
+			(uuid "a94255b8-69f7-4d2b-b415-62484e2d04fd")
 			(effects
 				(font
-					(size 0.38 0.38)
+					(size 0.4 0.4)
 					(thickness 0.06)
 				)
 			)
 		)
-		(pad "1" thru_hole roundrect
+		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 1.7 1.7)
-			(drill 0.7)
+			(size 5.4 1.4)
+			(drill oval 4.6 0.6)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(roundrect_rratio 0.147059)
-			(net "/Cells and Gauge/CELL2")
-			(pinfunction "1_1")
-			(pintype "passive")
-			(uuid "17a4798a-462c-4764-b5ec-49c188b7cebf")
+			(net "CELL_N")
+			(uuid "96dd7837-ef1b-44d5-a374-a5b2a55ddfbf")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -49937,7 +48436,7 @@
 			(size 0.2 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "VSS_9")
 			(pintype "power_in")
 			(uuid "cf779236-a807-450c-a270-ec9052a8b426")
@@ -50007,7 +48506,7 @@
 			(size 0.2 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "PRES/SHUTDN_16")
 			(pintype "input")
 			(uuid "ffdebabe-fa93-42ec-8254-938f3eb794f1")
@@ -50017,7 +48516,7 @@
 			(size 0.6 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "DISP_17")
 			(pintype "input")
 			(uuid "02eb23eb-8b21-4d17-892c-f20aa4a390b9")
@@ -50077,7 +48576,7 @@
 			(size 0.6 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "PTC_23")
 			(pintype "input")
 			(uuid "bca131d9-b8f2-4294-a50d-c10594a1c4b8")
@@ -50087,7 +48586,7 @@
 			(size 0.6 0.2)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "PTCEN_24")
 			(pintype "input")
 			(uuid "fffdcd94-d15b-452a-ad54-a5c0f10438fa")
@@ -50176,7 +48675,7 @@
 			(at 0 0)
 			(size 1.4 1.4)
 			(layers "F.Cu" "F.Mask")
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pinfunction "VSS_33")
 			(pintype "passive")
 			(uuid "2fe2f3ec-26b7-4393-b247-266e2610f9cb")
@@ -53788,7 +52287,7 @@
 			(size 0.56 0.62)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "CELL_N")
+			(net "/Cells and Gauge/CELL_1N")
 			(pintype "passive")
 			(uuid "3e8b2d22-0870-4aae-bda2-5af0c5e434a2")
 		)
@@ -60500,10 +58999,10 @@
 		(layer "Edge.Cuts")
 		(uuid "5c50c070-2709-4d2e-b095-808d12f1731f")
 	)
-	(gr_text "KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. F.Cu: parts <= 3.2 mm (cover gap pad)."
-		(at 100 141.1755 0)
+	(gr_text "KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. Gap filler zones: solid copper + thermal vias to the power stages. F.Cu: parts <= 3.2 mm (cup wall 0.5 mm above)."
+		(at 100 141.175 0)
 		(layer "Cmts.User")
-		(uuid "12c72bdc-50f1-4928-b99b-2927cfee87e6")
+		(uuid "0a27d633-53b2-4b0d-b47e-a6e7c97a8b30")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -60536,8 +59035,8 @@
 	)
 	(zone
 		(layer "F.Cu")
-		(uuid "a9f165ab-6d8d-4d88-9018-2ff8893c79fa")
-		(name "KO_F_cover_vent")
+		(uuid "744e0cb7-4871-4aa7-ac78-2f3a6a4421ce")
+		(name "KO_F_above_antenna")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -60561,21 +59060,14 @@
 		)
 		(polygon
 			(pts
-				(xy 103.5 129.4755) (xy 103.432748 130.158316) (xy 103.233578 130.814892) (xy 102.910143 131.419995)
-				(xy 102.474873 131.950373) (xy 101.944495 132.385643) (xy 101.339392 132.709078) (xy 100.682816 132.908248)
-				(xy 100 132.9755) (xy 99.317183 132.908248) (xy 98.660607 132.709078) (xy 98.055504 132.385643)
-				(xy 97.525126 131.950373) (xy 97.089856 131.419995) (xy 96.766421 130.814892) (xy 96.567251 130.158316)
-				(xy 96.5 129.4755) (xy 96.567251 128.792683) (xy 96.766421 128.136107) (xy 97.089856 127.531004)
-				(xy 97.525126 127.000626) (xy 98.055504 126.565356) (xy 98.660607 126.241921) (xy 99.317183 126.042751)
-				(xy 100 125.9755) (xy 100.682816 126.042751) (xy 101.339392 126.241921) (xy 101.944495 126.565356)
-				(xy 102.474873 127.000626) (xy 102.910143 127.531004) (xy 103.233578 128.136107) (xy 103.432748 128.792683)
+				(xy 117.4 77.4245) (xy 121.6 77.4245) (xy 121.6 86.4245) (xy 117.4 86.4245)
 			)
 		)
 	)
 	(zone
-		(layers "F.Cu" "B.Cu")
-		(uuid "0b1ebc7f-c301-443e-81a5-a71eae0d1748")
-		(name "KO_top_stop_L")
+		(layer "F.Cu")
+		(uuid "c67e0df0-8b87-4340-8700-65a67eee8dfd")
+		(name "KO_F_cup_vent")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -60599,13 +59091,19 @@
 		)
 		(polygon
 			(pts
-				(xy 78.4 62.8245) (xy 86 62.8245) (xy 86 63.8245) (xy 78.4 63.8245)
+				(xy 103.5 127.475) (xy 103.433 128.158) (xy 103.234 128.815) (xy 102.91 129.42) (xy 102.475 129.95)
+				(xy 101.945 130.386) (xy 101.339 130.709) (xy 100.683 130.908) (xy 100 130.976) (xy 99.3172 130.908)
+				(xy 98.6606 130.709) (xy 98.0555 130.386) (xy 97.5251 129.95) (xy 97.0899 129.42) (xy 96.7664 128.815)
+				(xy 96.5673 128.158) (xy 96.5 127.475) (xy 96.5673 126.793) (xy 96.7664 126.136) (xy 97.0899 125.531)
+				(xy 97.5251 125.001) (xy 98.0555 124.565) (xy 98.6606 124.242) (xy 99.3172 124.043) (xy 100 123.975)
+				(xy 100.683 124.043) (xy 101.339 124.242) (xy 101.945 124.565) (xy 102.475 125.001) (xy 102.91 125.531)
+				(xy 103.234 126.136) (xy 103.433 126.793)
 			)
 		)
 	)
 	(zone
 		(layers "F.Cu" "B.Cu")
-		(uuid "fb93040e-c460-401b-a65b-504bacf2a909")
+		(uuid "572ad569-ea04-41e8-8353-987bd8480440")
 		(name "KO_top_stop_R")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -60635,40 +59133,9 @@
 		)
 	)
 	(zone
-		(layer "B.Cu")
-		(uuid "3f24ad38-945f-4c49-a856-be49d9c3caed")
-		(name "KO_B_PACKN_strip")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks not_allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 85.1 132.1755) (xy 93.1 132.1755) (xy 93.1 137.1755) (xy 85.1 137.1755)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "46247e39-4824-49f0-87bc-5c19dd07d378")
-		(name "KO_B_tap_wire_CELL2")
+		(layers "F.Cu" "B.Cu")
+		(uuid "8af40303-ad42-451d-b4ec-62c68d752b8e")
+		(name "KO_top_stop_L")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -60692,14 +59159,14 @@
 		)
 		(polygon
 			(pts
-				(xy 100.5 131.9755) (xy 103.5 131.9755) (xy 103.5 137.1755) (xy 100.5 137.1755)
+				(xy 78.4 62.8245) (xy 86 62.8245) (xy 86 63.8245) (xy 78.4 63.8245)
 			)
 		)
 	)
 	(zone
 		(layer "B.Cu")
-		(uuid "c34815c1-0607-4132-9d5b-9a5c3bbbef86")
-		(name "KO_B_EVA_lane_1")
+		(uuid "003049e5-952f-4b16-a2bd-7157304c6626")
+		(name "KO_B_rail_L_top")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -60723,45 +59190,14 @@
 		)
 		(polygon
 			(pts
-				(xy 86.1 65.8755) (xy 92.1 65.8755) (xy 92.1 132.6755) (xy 86.1 132.6755)
+				(xy 88.7 62.8245) (xy 93.5 62.8245) (xy 93.5 86.4755) (xy 88.7 86.4755)
 			)
 		)
 	)
 	(zone
 		(layer "B.Cu")
-		(uuid "e28cb1dc-d6a2-491f-be45-4663b053e849")
-		(name "KO_B_PACKP_strip")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks not_allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 106.9 132.1755) (xy 114.9 132.1755) (xy 114.9 137.1755) (xy 106.9 137.1755)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "ffe0fa4c-acbf-40b3-8f8f-462cd1323397")
-		(name "KO_B_tap_wires_top")
+		(uuid "0c38872b-7d39-4981-9f13-626e28047da4")
+		(name "KO_B_tail_PACKN")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -60785,7 +59221,348 @@
 		)
 		(polygon
 			(pts
-				(xy 96.5 62.8245) (xy 103.5 62.8245) (xy 103.5 72.9755) (xy 96.5 72.9755)
+				(xy 84.375 134.875) (xy 89.575 134.875) (xy 89.575 137.076) (xy 84.375 137.076)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "15a5b526-bd9a-4181-92b4-3f6bbdc90121")
+		(name "KO_B_tail_1N")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 90.175 134.875) (xy 92.375 134.875) (xy 92.375 137.076) (xy 90.175 137.076)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "21c464b5-62a9-41d6-ae54-e7e86a2fa848")
+		(name "KO_B_tail_CELL1")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 84.1 62.8245) (xy 88.1 62.8245) (xy 88.1 69.9755) (xy 84.1 69.9755)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "2c719321-8a18-4067-977d-6207b0b26fdf")
+		(name "KO_B_gap_filler_R")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 107 88.4755) (xy 116 88.4755) (xy 116 114.475) (xy 107 114.475)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "4be3adf0-e3d4-49fd-8ce6-8904285d6046")
+		(name "KO_B_rail_R_bottom")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 106.5 116.475) (xy 111.3 116.475) (xy 111.3 137.175) (xy 106.5 137.175)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "4d1ceee9-cee5-43c4-8836-0664a124aab9")
+		(name "KO_B_tail_CELL2")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 98 134.875) (xy 102 134.875) (xy 102 137.076) (xy 98 137.076)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "53016edc-d54d-4bc3-a311-b3703326c66c")
+		(name "KO_B_rail_R_top")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 106.5 62.8245) (xy 111.3 62.8245) (xy 111.3 86.4755) (xy 106.5 86.4755)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "6b5a1676-ca5c-4f0e-bac6-77bfb62fd4e2")
+		(name "KO_B_tail_4P")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 107.625 134.875) (xy 109.825 134.875) (xy 109.825 137.076) (xy 107.625 137.076)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "bf25aab5-d57f-42c4-82a6-9c66bfeebf71")
+		(name "KO_B_gap_filler_L")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "e63d46af-9c91-4501-860f-00e4696dd4ea")
+		(name "KO_B_tail_PACKP")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 110.425 134.875) (xy 115.625 134.875) (xy 115.625 137.076) (xy 110.425 137.076)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "f29460d2-d2a8-45e1-83f0-f84a047c5b75")
+		(name "KO_B_rail_L_bottom")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 88.7 116.475) (xy 93.5 116.475) (xy 93.5 137.175) (xy 88.7 137.175)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "feaea0ea-16dd-4630-81ed-45f9ec67bfa0")
+		(name "KO_B_tail_CELL3")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 111.9 62.8245) (xy 115.9 62.8245) (xy 115.9 69.9755) (xy 111.9 69.9755)
 			)
 		)
 	)

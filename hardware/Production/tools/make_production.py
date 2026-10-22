@@ -6,8 +6,9 @@ Copies the DevBoard schematic sheets, symbol/footprint libraries and project fil
   * removes dev-only parts by reference and prunes the wires, labels, junctions, no-connects and power
     symbols left dangling;
   * replaces 0 ohm links and jumpers with a wire between their two pins;
-  * cell holders -> wire pads to the welded pack (16 AWG pack +/-, small pads for the taps), NTC headers ->
-    2-pad wire footprints, EV2400 header -> three gauge pogo pads, SWD header J301 -> Tag-Connect TC2030-NL;
+  * cell holders -> plated slots for the welded pack's nickel tails (PACK+/- power fingers, CELL1-3, and the 1N / 4P
+    Kelvin fingers on their own nets), NTC headers -> 2-pad wire footprints, EV2400 header -> three gauge pogo pads,
+    SWD header J301 -> Tag-Connect TC2030-NL;
   * keeps a few dev test points as factory test pads (PACK_P, GND, 3V3, VBUS per port).
 
 Run from the repo root or anywhere:  "C:/Program Files/KiCad/10.0/bin/python.exe" Production/tools/make_production.py
@@ -27,6 +28,8 @@ import tpd6s300  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
 DEV = os.path.normpath(os.path.join(PROD, "..", "DevBoard"))
+sys.path.insert(0, os.path.normpath(os.path.join(PROD, "..", "mechanical")))
+import monolith_shell as MS  # noqa: E402  (slot sizes and peg holes: one source for the cup and the board)
 KICAD_SYM = r"C:\Program Files\KiCad\10.0\share\kicad\symbols\Connector.kicad_sym"
 
 SHEETS = ["gauge.kicad_sch", "power.kicad_sch", "mcu.kicad_sch", "usb_port.kicad_sch"]
@@ -95,8 +98,8 @@ RENAME = {  # labels on nets a link joined: new label name, ("pwr", net) to put 
                            "3V3_PD": ("pwr", "3V3"), "5V_IN": ("pwr", "PACK_P")},
 }
 NEW_PARTS = {**{c: {"1": ("TP106", "1"), "2": ("TP109", "1")} for c in ("C208", "C209", "C210", "C211", "C212", "C213")},
-             # cover standoffs (2026-10-20): mechanical only, the pad ring has no net
-             **{h: {"1": "unconnected %s.1" % h} for h in ("H101", "H102", "H103", "H104")},
+             # 1N / 4P Kelvin slots (2026-10-21): new nets, with the pins in KELVIN
+             "J115": {"1": "new CELL_1N"}, "J116": {"1": "new CELL_4P"},
              # low-profile USB-side bulk (2026-10-18): new per-port caps on AC_SNS_N
              **{c % p: {"1": ("C%s20" % p, "1"), "2": ("TP109", "1")} for c in ("C%s56",) for p in "45"},
              # P0 training parts (2026-10-18); a string value names a net that is new on production
@@ -117,9 +120,25 @@ for _p in ("4", "5"):  # TPD6S300 U405/U505 (tpd6s300.py): pin -> a dev pin on t
 PIN_ACTIONS = {"usb_port.kicad_sch": {
     "SBU1_SNS": {"U401": "GND", "U405": "NC"}, "SBU2_SNS": {"U401": "GND", "U405": "NC"},
     "LIQ_PU": {"U401": "GND"}, "LIQ_PD": {"U401": "GND"}}}
-# check_netlist: pins that deliberately change net (port 1 refs; port 2 follows). "GND" or None (left unconnected)
+# Kelvin split (2026-10-21): the PACK tabs end in a power finger and a Kelvin finger, each through its own slot, and
+# these pins move from the power nets to the Kelvin nets (BQ40Z50 SLUSCS4C 9.2.2.1.3, SLUA660 2.3-2.4).
+# CELL_1N: the gauge's low-current ground (VSS star, its strapped pins and decoupling), the BQ294700's VSS and the NTC
+#   returns, joined to the pack only at the 1N tab. The shunt (RS101, SRP filter R107) and the fuse-heater FET Q104
+#   (up to 1.5 A, with its gate resistor R125) stay on CELL_N with the PACK- power finger.
+# CELL_4P: VC4, the BQ294700's V4 / VDD filters and the BAT diode (TI fig. 9-12: D1 on 4P). F102 stays on CELL_P_RAW.
+KELVIN = {
+    "CELL_1N": ["U101.9", "U101.33", "U101.16", "U101.17", "U101.23", "U101.24", "U102.6", "U102.9", "C104.2", "C105.2",
+                "C115.2", "C116.2", "C117.1", "C118.2", "R117.2", "J102.2", "J105.2", "J106.2", "J107.2"],
+    "CELL_4P": ["R104.1", "R119.1", "R123.2", "D101.2"],
+}
+KELVIN_FROM = {"CELL_1N": "CELL_N", "CELL_4P": "CELL_P_RAW"}   # the power net each one leaves
+# gauge sheet, beside where J108 / J112 end up (outside layout_production's moves, which bring J108 to y 99.06)
+KELVIN_AT = {"J115": ("CELL_1N", (55.88, 96.52)), "J116": ("CELL_4P", (55.88, 58.42))}
+# check_netlist: pins that deliberately change net (port 1 refs; port 2 follows). "GND", None (left unconnected) or
+# "new NAME" (a net that is new on production)
 NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND", ("U401", "37"): "GND",
-             ("J401", "A8"): None, ("J401", "B8"): None}
+             ("J401", "A8"): None, ("J401", "B8"): None,
+             **{tuple(rp.split(".")): "new " + net for net, rps in KELVIN.items() for rp in rps}}
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
 EXTRA_NC = {ROOT: [(220, 124.46)]}  # port 2's LDO_3V3 sheet pin: only port 1's strap used it
 PAD = "TestPoint:TestPoint_Pad_D1.0mm"  # P0: small probe pads (2026-10-18)
@@ -170,6 +189,13 @@ def P(fp, lcsc, mpn, value=None):
     return (None, props)
 
 
+R413_NOTES = ("ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G "
+              "cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports "
+              "at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; "
+              "TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 "
+              "so a watchdog expiry stops charging instead of falling back to this pin")
+# sheet text changed in place: (old, new), each must occur once (the sheet notes are tidy_production.py's)
+TEXT_EDITS = {"usb_port.kicad_sch": [("ICHG 5.5 A max, ILIM", "ICHG 4.4 A max (FEB cell), ILIM")]}
 R0201, R0402, C0201, C0402 = ("Resistor_SMD:R_0201_0603Metric", "Resistor_SMD:R_0402_1005Metric",
                               "Capacitor_SMD:C_0201_0603Metric", "Capacitor_SMD:C_0402_1005Metric")
 SOD882 = P("Diode_SMD:D_SOD-882", "C549279", "BAT54L,315 (Nexperia)")
@@ -183,6 +209,9 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R116": P(R0201, "C270366", "0201WMF1000TEE"),
         "RS101": P("Resistor_SMD:R_1206_3216Metric", "C154629", "LR1206-21R001F4 (Ralec, 75 ppm)", "1m 1% 1W"),
         "D101": SOD882,
+        "U102": (None, {"Notes": "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) "
+                                 "after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS "
+                                 "(CELL_1N, the Kelvin ground at the 1N tab)."}),
     },
     "mcu.kicad_sch": {
         **{c: P(C0201, "C307380", "CL03A104KO3NNNC", "0.1u 16V") for c in ("C302", "C303", "C304")},
@@ -198,7 +227,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R404": P(R0201, "C473048", "0201WMF1002TEE"),
         "R410": P(R0402, "C25893", "0402WGF4022TCE"),
         "R412": P(R0201, "C423536", "0201WMF4022TEE"),
-        "R413": P(R0402, "C93752", "0402WGF1182TCE"),       # 11.8k: ICHG ceiling <= 4.45 A for the FEB 21700G (was 9.1k C25926)
+        "R413": (None, {**P(R0402, "C93752", "0402WGF1182TCE", "11.8k 1%")[1], "Notes": R413_NOTES}),  # was 9.1k C25926
         "R414": P(R0402, "C25891", "0402WGF3601TCE"),
         "R415": P(R0402, "C25871", "0402WGF1801TCE"),
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),
@@ -234,16 +263,24 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
 }
 for _sheet, _parts in DOWNSIZE.items():
     SWAP.setdefault(_sheet, {}).update(_parts)
-WIRE16 = "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"   # 16 AWG pack leads
-WIRE26 = "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"  # cell tap leads
+SLOT_W, SLOT_RING = MS.SB_SLOT_W, MS.SB_SLOT_RING   # plated slot width and annular ring (mechanical/monolith_shell.py)
+
+
+def slot_name(length):
+    return "Slot_Tab_%gx%gmm" % (round(length, 2), SLOT_W)
+
+
+SLOTS = {n: "MonolithDev:" + slot_name(v[2]) for n, v in MS.sb_slots().items()}   # slot name -> footprint
 # new one-pin pads on the gauge sheet: (ref, value, footprint, (old ref, old pin) whose position it takes)
 GAUGE_PADS = [
-    ("J108", "PACK- (CELL_N)", WIRE16, ("BT101", "2")),
-    ("J109", "CELL1 tap", WIRE26, ("BT101", "1")),
-    ("J110", "CELL2 tap", WIRE26, ("BT102", "1")),
-    ("J111", "CELL3 tap", WIRE26, ("BT103", "1")),
-    ("J112", "PACK+ (CELL_P_RAW)", WIRE16, ("BT104", "1")),
+    ("J108", "PACK- power slot", SLOTS["PACK-"], ("BT101", "2")),
+    ("J109", "CELL1 slot", SLOTS["CELL1"], ("BT101", "1")),
+    ("J110", "CELL2 slot", SLOTS["CELL2"], ("BT102", "1")),
+    ("J111", "CELL3 slot", SLOTS["CELL3"], ("BT103", "1")),
+    ("J112", "PACK+ power slot", SLOTS["PACK+"], ("BT104", "1")),
 ]
+SLOT_REFS = {"PACK-": "J108", "CELL1": "J109", "CELL2": "J110", "CELL3": "J111", "PACK+": "J112", "1N": "J115",
+             "4P": "J116"}   # make_board.py --mech places these at sb_slots()
 # the pogo pads get their own spaced row (J103's pins were 2.54 mm apart), tied by a global label or GND symbol
 POGO_AT = {}  # P0: gauge SMBus moved to the GAUGE Tag-Connect J302 on the MCU sheet (2026-10-18)
 
@@ -737,6 +774,72 @@ def add_gauge_pads(s, old):
     return insert_top(s, add)
 
 
+def group_pins(s, p):
+    """'REF.pin' of every non-power pin wired to point p (wire ends, T-joins and pins along the wires)."""
+    syms, ws, ends, labels, pins = connection_state(s)
+    seen, todo = {p}, [p]
+    while todo:
+        q = todo.pop()
+        for w in ws:
+            if q in w["p"] or on_segment(q, w["p"]):
+                for r in w["p"]:
+                    if r not in seen:
+                        seen.add(r)
+                        todo.append(r)
+    hit = set(seen)
+    for w in ws:
+        if any(q in w["p"] for q in seen):
+            hit |= {q for q in pins if on_segment(q, w["p"])}
+    return {"%s.%s" % (y["ref"], n) for q in hit for y in pins.get(q, []) if not y["power"]
+            for n, pp in y["pins"].items() if pp == q}
+
+
+def add_kelvin(s):
+    """1N / 4P Kelvin split (KELVIN): each CELL_N power symbol or CELL_P_RAW label whose pins all move becomes a
+    CELL_1N / CELL_4P label, and the two Kelvin slots J115 / J116 are added beside J108 / J112."""
+    spans, add, moved = [], "", set()
+    for y in symbols(s):
+        if y["power"] and '(property "Value" "%s"' % KELVIN_FROM["CELL_1N"] in s[y["a"]:y["b"]]:
+            p = list(y["pins"].values())[0]
+            g = group_pins(s, p)
+            if g and g <= set(KELVIN["CELL_1N"]):
+                spans.append((y["a"], y["b"]))
+                left = abs(y["at"][2] - 270) < 1   # rotated to point left: keep the label on that side
+                add += label_text("CELL_1N", p, 180 if left else 0)
+                moved |= g
+            else:
+                assert not g & set(KELVIN["CELL_1N"]), ("CELL_N symbol mixes Kelvin and power pins", sorted(g))
+    for x in anchors(s, "label"):
+        if x["name"] == KELVIN_FROM["CELL_4P"]:
+            g = group_pins(s, x["p"])
+            if g and g <= set(KELVIN["CELL_4P"]):
+                spans.append((x["a"], x["b"]))
+                add += "\n\t" + s[x["a"]:x["b"]].replace('(label "CELL_P_RAW"', '(label "CELL_4P"', 1)
+                moved |= g
+            else:
+                assert not g & set(KELVIN["CELL_4P"]), ("CELL_P_RAW label mixes Kelvin and power pins", sorted(g))
+    missing = (set(KELVIN["CELL_1N"]) | set(KELVIN["CELL_4P"])) - moved
+    assert not missing, ("Kelvin pins not found on their power net", sorted(missing))
+    s = insert_top(cut(s, spans), add)
+    syms = {y["ref"]: y for y in symbols(s)}
+    tmpl = s[syms["TP106"]["a"]:syms["TP106"]["b"]]
+    add = ""
+    for ref, (net, at) in KELVIN_AT.items():
+        slot = "1N" if net == "CELL_1N" else "4P"
+        add += "\n\t" + clone(tmpl, ref, "%s Kelvin slot" % slot, SLOTS[slot], at, "TP106")
+        add += label_text(net, at)
+    # CELL_1N feeds the gauge's VSS pins: a PWR_FLAG on a stub to the left of J115, as #FLG101 sits beside J108
+    flg = syms["#FLG101"]
+    x0, y0 = flg["at"][:2]
+    at = KELVIN_AT["J115"][1]
+    q = (round(at[0] - 5.08, 2), at[1])
+    b = new_uuids(s[flg["a"]:flg["b"]]).replace('"#FLG101"', '"#FLG107"')
+    b = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + q[0], 2), round(float(m.group(2)) - y0 + q[1], 2)), b)
+    add += "\n\t" + b + wire_text(q, at)
+    return insert_top(s, add)
+
+
 SHARED_BULK_AT = (63.5, 133.35)  # power sheet, under the 3V3 rail
 SHARED_BULK = ["C208", "C209", "C210", "C211", "C212", "C213"]
 GMK = GMK_PROPS
@@ -770,49 +873,45 @@ def add_shared_bulk(s):
     return insert_top(s, add)
 
 
-STANDOFFS = ["H101", "H102", "H103", "H104"]  # cover standoffs, placed on the board by make_board.py place_standoffs()
-STANDOFF_AT = (63.5, 154.94)                   # power sheet, under the shared bulk (outside layout_production's moves)
+PEGS = ["H101", "H102", "H103", "H104"]  # carrier peg holes, in MS.CUP_PEGS order; make_board.py --mech places them
+PEG_AT = (63.5, 154.94)                   # power sheet, under the shared bulk (outside layout_production's moves)
 MECH_SYM = r"C:\Program Files\KiCad\10.0\share\kicad\symbols\Mechanical.kicad_sym"
-STANDOFF_PROPS = {"Value": "WA-SMSI M2 3.5mm",
-                  "Footprint": "Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243",
-                  "Datasheet": "https://www.we-online.com/components/products/datasheet/9774035243R.pdf",
-                  "Description": "SMT steel spacer, M2 internal thread, 3.5 mm: cover standoff (mechanical/monolith_shell.py "
-                                 "SB_STANDOFFS)",
-                  "LCSC": "C5266183", "MPN": "Wurth 9774035243R"}
+PEG_FP = "Peg_NPTH_D%gmm" % MS.CUP_PEG_HOLE_D
+PEG_PROPS = {"Value": "Peg hole %g NPTH" % MS.CUP_PEG_HOLE_D, "Footprint": "MonolithDev:" + PEG_FP,
+             "Datasheet": "", "Description": "NPTH for a %g mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
+             % MS.CUP_PEG_D, "LCSC": "", "MPN": ""}
 
 
-def add_standoffs(s):
-    """Four reflowed SMT standoffs on F.Cu that hold the aluminium cover 0.2 mm off the parts, so drops load the
-    standoffs instead of the inductors and the gap pad (mechanical/monolith_shell.py SB_STANDOFFS, 2026-10-20).
-    Not screwed: the cover screws go into the tray pillars beside the board's corner notches. The pad ring is left
-    unconnected (no net). Cloned from C206 with the Mechanical:MountingHole_Pad symbol."""
+def add_pegs(s):
+    """Four NPTH holes for the cup carrier's board pegs (mechanical/monolith_cup.py, 2026-10-21): the pegs locate the
+    board on the carrier and stand CUP_PEG_PROUD above F.Cu. They replace the aluminium cover's SMT standoffs (same
+    references H101-H104, so Update PCB swaps the footprints). Mechanical:MountingHole symbol: no pins, no net, not in
+    the BOM. Cloned from C206."""
     from schlib import block_end
     lib = open(MECH_SYM, encoding="utf-8").read()
-    a = lib.index('\n\t(symbol "MountingHole_Pad"') + 1
-    sym = lib[a:block_end(lib, a + 1)].replace('(symbol "MountingHole_Pad"', '(symbol "Mechanical:MountingHole_Pad"', 1)
+    a = lib.index('\n\t(symbol "MountingHole"\n') + 1
+    sym = lib[a:block_end(lib, a + 1)].replace('(symbol "MountingHole"', '(symbol "Mechanical:MountingHole"', 1)
     sym = "\n".join("\t" + ln for ln in sym.split("\n"))
     i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
     s = s[:i] + "\n" + sym + s[i:]
     host = next(y for y in symbols(s) if y["ref"] == "C206")
     tmpl = s[host["a"]:host["b"]]
     add = ""
-    for k, ref in enumerate(STANDOFFS):
-        blk = clone(tmpl, ref, STANDOFF_PROPS["Value"], STANDOFF_PROPS["Footprint"],
-                    (STANDOFF_AT[0] + 15.24 * k, STANDOFF_AT[1]), "C206")
-        blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "Mechanical:MountingHole_Pad")', blk, count=1)
+    for k, ref in enumerate(PEGS):
+        blk = clone(tmpl, ref, PEG_PROPS["Value"], PEG_PROPS["Footprint"], (PEG_AT[0] + 15.24 * k, PEG_AT[1]), "C206")
+        blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "Mechanical:MountingHole")', blk, count=1)
+        blk = blk.replace("(in_bom yes)", "(in_bom no)", 1)
         for prop in ("Datasheet", "Description", "LCSC", "MPN"):
-            blk = set_prop(blk, prop, STANDOFF_PROPS[prop])
-        pa = blk.index('\n\t\t(pin "')
-        pb = blk.index("\n\t\t(instances")
-        blk = blk[:pa] + '\n\t\t(pin "1"\n\t\t\t(uuid "%s")\n\t\t)' % uid() + blk[pb:]
+            blk = set_prop(blk, prop, PEG_PROPS[prop])
+        if '(property "Notes" ' in blk:
+            blk = set_prop(blk, "Notes", "")
+        blk = blk[:blk.index('\n\t\t(pin "')] + blk[blk.index("\n\t\t(instances"):]
         add += "\n\t" + blk
-    s = insert_top(s, add)
-    pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in STANDOFFS}
-    add = "".join(nc_text(pins[r]["1"]) for r in STANDOFFS)
     head = next((a, b) for a, b in top_blocks(s, "text") if "3.3 V ALWAYS-ON RAIL" in s[a:b])
     t = new_uuids(s[head[0]:head[1]])
-    t = re.sub(r'\(text "[^"]*"', '(text "COVER STANDOFFS  (Wurth WA-SMSI M2 x 3.5 mm on F.Cu, no net; '
-               'positions from mechanical/monolith_shell.py, placed by make_board.py)"', t, count=1)
+    t = re.sub(r'\(text "[^"]*"', '(text "CARRIER PEG HOLES  (4x %g mm NPTH for the cup carrier\'s %g mm pegs; positions '
+               'from mechanical/monolith_shell.py CUP_PEGS, placed by make_board.py --mech)"'
+               % (MS.CUP_PEG_HOLE_D, MS.CUP_PEG_D), t, count=1)
     t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 40.64 142.24", t, count=1)
     add += "\n\t" + t
     return insert_top(s, add)
@@ -860,6 +959,28 @@ def title_block(s, sheet):
     return s
 
 
+SYM_UUID = re.compile(r'\n\t\t\(uuid "([^"]+)"\)')
+
+
+def keep_symbol_uuids(s, old_path):
+    """Give each part the symbol uuid it had in the existing production sheet. Cloned parts get fresh uuids on every
+    run, and Update PCB links footprints by uuid: without this, placed parts would come back as new footprints."""
+    if not os.path.exists(old_path):
+        return s
+    o = open(old_path, encoding="utf-8").read()
+    old = {y["ref"]: SYM_UUID.search(o[y["a"]:y["b"]]).group(1) for y in symbols(o) if not y["power"]}
+    reps = []
+    for y in symbols(s):
+        if y["power"] or y["ref"] not in old:
+            continue
+        m = SYM_UUID.search(s, y["a"], y["b"])
+        if m.group(1) != old[y["ref"]]:
+            reps.append((m.start(1), m.end(1), old[y["ref"]]))
+    for a, b, u in sorted(reps, reverse=True):
+        s = s[:a] + u + s[b:]
+    return s
+
+
 def process(sheet, src):
     s = open(src, encoding="utf-8").read()
     s = s.replace('(project "MonolithDev"', '(project "Monolith"')
@@ -890,9 +1011,11 @@ def process(sheet, src):
         s = add_gauge_pads(s, old)
         s = add_training_gauge(s)
     s, n = prune(s)
+    if sheet == "gauge.kicad_sch":
+        s = add_kelvin(s)
     if sheet == "power.kicad_sch":
         s = add_shared_bulk(s)
-        s = add_standoffs(s)
+        s = add_pegs(s)
     if sheet == "mcu.kicad_sch":  # after pruning, so its pins can't catch J301's old wires
         s = add_tc2030(s, old)
         s = add_gauge_tc2030(s)
@@ -903,6 +1026,9 @@ def process(sheet, src):
     s, n2 = prune(s)
     n += n2
     s = insert_top(s, "".join(nc_text(p) for p in EXTRA_NC.get(sheet, [])))
+    for a, b in TEXT_EDITS.get(sheet, []):
+        assert s.count(a) == 1, (sheet, a)
+        s = s.replace(a, b)
     s = edit_symbols(s, sheet)
     if sheet == "usb_port.kicad_sch":
         s = swap_fets(s)
@@ -914,6 +1040,7 @@ def process(sheet, src):
     cur = {y["ref"]: y for y in symbols(s)}
     opened = sorted(rp for rp in before - now if rp[0] in cur and rp[0] not in drop and not cur[rp[0]]["power"])
     s = insert_top(s, "".join(nc_text(cur[r]["pins"][p]) for r, p in opened))
+    s = keep_symbol_uuids(s, os.path.join(PROD, sheet))
     open(os.path.join(PROD, sheet), "w", encoding="utf-8", newline="\n").write(s)
     print("%-20s removed %3d parts, %d links, pruned %3d items, new no-connects: %s"
           % (sheet, len(REMOVE.get(sheet, [])), len(LINKS.get(sheet, [])), n, ", ".join("%s.%s" % rp for rp in opened) or "-"))
@@ -939,6 +1066,55 @@ APS0730 = """(footprint "L_Coilank_APS0730"
 """
 
 
+def slot_footprint(length):
+    """Plated slot for a nickel tail: oval drill length x SLOT_W along x, pad SLOT_RING bigger all round, on both
+    faces, no paste (soldered by hand on F.Cu). Courtyard 0.1 mm outside the pad: the PACK and Kelvin pads of one
+    tab sit only 0.4 mm apart (monolith_shell.py SB_FINGER)."""
+    L = round(length, 2)
+    px, py = L + 2 * SLOT_RING, SLOT_W + 2 * SLOT_RING
+    cx, cy = px / 2 + 0.1, py / 2 + 0.1
+    return "\n".join([
+        '(footprint "%s"' % slot_name(L), "\t(version 20241229)", '\t(generator "make_production.py")', '\t(layer "F.Cu")',
+        '\t(descr "Plated slot %g x %g mm, %g mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py '
+        'sb_slots)")' % (L, SLOT_W, SLOT_RING),
+        '\t(tags "slot nickel tab battery")',
+        '\t(property "Reference" "REF**" (at 0 -%g 0) (layer "F.SilkS") (hide yes) (effects (font (size 0.6 0.6) '
+        '(thickness 0.1))))' % (cy + 0.6),
+        '\t(property "Value" "%s" (at 0 %g 0) (layer "F.Fab") (effects (font (size 0.6 0.6) (thickness 0.1))))'
+        % (slot_name(L), cy + 0.6),
+        "\t(attr through_hole exclude_from_pos_files)",
+        '\t(pad "1" thru_hole oval (at 0 0) (size %g %g) (drill oval %g %g) (layers "*.Cu" "*.Mask") '
+        '(remove_unused_layers no))' % (px, py, L, SLOT_W),
+        '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))'
+        % (cx, cy, cx, cy),
+        '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))'
+        % (L / 2, SLOT_W / 2, L / 2, SLOT_W / 2),
+        '\t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.4 0.4) (thickness 0.06))))',
+        ")", ""])
+
+
+def peg_footprint():
+    """NPTH for a carrier peg; courtyard on both faces 0.5 mm outside the hole (the peg stands proud of F.Cu and
+    the carrier rail bears on B.Cu around it)."""
+    d = MS.CUP_PEG_HOLE_D
+    r = d / 2 + 0.5
+    crt = "".join('\n\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.05) (type solid)) (fill no) (layer "%s"))'
+                  % (r, lay) for lay in ("F.CrtYd", "B.CrtYd"))
+    return "\n".join([
+        '(footprint "%s"' % PEG_FP, "\t(version 20241229)", '\t(generator "make_production.py")', '\t(layer "F.Cu")',
+        '\t(descr "NPTH %g mm for a %g mm PA12 carrier peg (mechanical/monolith_cup.py)")' % (d, MS.CUP_PEG_D),
+        '\t(tags "peg hole npth")',
+        '\t(property "Reference" "REF**" (at 0 -%g 0) (layer "F.SilkS") (hide yes) (effects (font (size 0.6 0.6) '
+        '(thickness 0.1))))' % (r + 0.6),
+        '\t(property "Value" "%s" (at 0 %g 0) (layer "F.Fab") (effects (font (size 0.6 0.6) (thickness 0.1))))'
+        % (PEG_FP, r + 0.6),
+        "\t(attr exclude_from_pos_files exclude_from_bom)",
+        '\t(pad "" np_thru_hole circle (at 0 0) (size %g %g) (drill %g) (layers "*.Cu" "*.Mask"))' % (d, d, d)]
+        + [crt.lstrip("\n"),
+           '\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))' % r,
+           ")", ""])
+
+
 def main():
     for f in ("MonolithDev.kicad_sym", "sym-lib-table", "fp-lib-table"):
         shutil.copy2(os.path.join(DEV, f), os.path.join(PROD, f))
@@ -954,6 +1130,12 @@ def main():
     with open(os.path.join(PROD, "MonolithDev.pretty", tpd6s300.FP_NAME + ".kicad_mod"), "w", encoding="utf-8",
               newline="\n") as f:
         f.write(tpd6s300.footprint())
+    for length in sorted({v[2] for v in MS.sb_slots().values()}):
+        with open(os.path.join(PROD, "MonolithDev.pretty", slot_name(length) + ".kicad_mod"), "w", encoding="utf-8",
+                  newline="\n") as f:
+            f.write(slot_footprint(length))
+    with open(os.path.join(PROD, "MonolithDev.pretty", PEG_FP + ".kicad_mod"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(peg_footprint())
     lib = os.path.join(PROD, "MonolithDev.kicad_sym")
     t = open(lib, encoding="utf-8").read()
     if '(symbol "SiZ240DT"' not in t:
