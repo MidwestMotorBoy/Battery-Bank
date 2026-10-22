@@ -34,6 +34,8 @@ VENT_Y, VENT_Z = 0.0, 14.0         # ePTFE vent on the board-side face (the leak
 FR_B0, FR_B1, FR_T0, FR_T1 = 4.6, 6.2, 77.8, Z_TOP0   # carrier frames
 FILL_Z = (27.0, 53.0)              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = (23.0, 56.0)            # board rails stop here so the filler reaches the cell tangents
+WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs: |x| half-width, reach either side of the
+                                   # tangent line, cell clearance; a 1.2 mm link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 PORT_X, PORT_YS = H.PORT_X, H.PORT_YS
 
@@ -75,7 +77,14 @@ def carrier():
         r = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*S.SB_BAR_Y[1])))
         m += [pz(r, FR_B0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [H.cylx(s*8.6, z, 1.0, S.sb_xb0 - 0.5, S.sb_xb1 + 0.6) for s in (-1, 1) for z in (14.0, 68.0)]
-    return U(*m)
+    return U(*m, webs())
+def webs():
+    """full-length PA12 webs in the front-back gaps (C1-C2, C4-C3): they carry heat from the board-heated front pair
+    to the back pair, and join the side spines. Cells load sideways: front pair from the board side, back pair from the back."""
+    cells = U(*[pz(circ(x, y, CR + WEB_CLR), S.sb_z_cell0 - 1, S.sb_z_cell1 + 1) for x, y in CELLS])
+    w = [pz(rect(-WEB_X, WEB_X, *sorted((s*(PR - WEB_IN), s*(PR + WEB_IN)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
+    w += [pz(rect(-WEB_LINK, WEB_LINK, *sorted((s*(PR + WEB_IN - 0.5), s*(PR + CR)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
+    return U(*w) - cells
 def filler():
     blk = MF.cube((S.sb_xb0 - 19.0, 2*18.5, FILL_Z[1] - FILL_Z[0])).translate((19.0, -18.5, FILL_Z[0]))
     cells = U(*[pz(circ(x, y, CR), FILL_Z[0] - 1, FILL_Z[1] + 1) for x, y in CELLS])
@@ -110,7 +119,7 @@ def assembly():
         A += [(k + '_band', tris(b), C['bump']), (k + '_slab', tris(s), C['bslab'])]
     return A
 group = H.group
-PARTS = [(1, 'Cell carrier: frames, spines, split rails, pegs', 'MJF PA12', 'carrier'), (2, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'),
+PARTS = [(1, 'Cell carrier: frames, spines, rails, pegs, front-back webs', 'MJF PA12', 'carrier'), (2, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'),
          (3, 'Nickel series strips (3)', 'nickel 0.15', 'nickel'), (4, 'Nickel tongues: PACK+/- (power + Kelvin), CELL1-3', 'nickel 0.15 / 0.2', 'tails'),
          (5, 'Gap filler, board to the front cells (dispensed)', '~3 W/mK, 2.6 g/cm3', 'filler'),
          (6, 'Board 1.6 mm, thermal vias under the power stages', 'FR4, 6 layers', 'board'),
@@ -202,7 +211,8 @@ def sheet_sections(A):
         q = tp(x, y); sh.text(q[0], q[1], nm, 22, True, fill='white', anchor='mm')
     sh.callouts([(tp(-YI - WALL/2, 6), '1.2 mm MJF PA12 cup wall,\nclosed all round'),
                  (tp(-PR - CR + 2.5, 0), 'Carrier spine (the core is rigid)'),
-                 (tp(0, PR + CR - 2), 'Side spine')], 300, 'l', 230)
+                 (tp(0, PR + CR - 2), 'Side spine'),
+                 (tp(0, -PR), 'PA12 web, full length: carries heat\nfrom the front pair to the back pair')], 300, 'l', 230)
     sh.callouts([(tp(X_IN + WALL/2, 0), 'Board face: just the cup wall,\n0.5 mm over the tallest part'),
                  (tp(S.sb_xb0 + 0.8, -2), 'Board, fixed to the carrier;\nthermal vias under the power stages'),
                  (tp(23.6, -11.45), 'Gap filler: B.Cu to the two front cells.\nThe cells (~270 J/K) are the heat sink'),
@@ -272,7 +282,7 @@ def sheet_compare(A, m):
     y = sh.table(40, 750, ['', '>Current', '>Cup', '>Cup - current', '>Hybrid'], rows, [420, 200, 200, 220, 200], 15, bold_last=True, rh=36)
     for i, s in enumerate(('Current: TPU cage, frame and carrier recomputed at 1.2 g/cm3 (the model uses 1.0); +1.65 g for the gap pad,',
                            '2 x M2 + inserts and the silicone bead, which it doesn\'t model. Hybrid: gap filler at 0.5 mm, +0.2 g RTV.',
-                           'Cup gap filler: 3.8 g modelled over both front cells, 26 mm of the length.')):
+                           'Cup: gap filler 3.8 g over both front cells (26 mm of the length); carrier includes 2.7 g of front-back webs.')):
         sh.text(40, y + 14 + 24*i, s, 13, fill=MUTED)
     rows2 = [
         ['Outside (mm)', f'{wc:.1f} x {dc:.1f} x {Lc:.1f}', f'{su[0]:.1f} x {su[1]:.1f} x {su[2]:.1f}', f'{sh_[0]:.1f} x {sh_[1]:.1f} x {sh_[2]:.1f}'],
@@ -281,15 +291,15 @@ def sheet_compare(A, m):
         ['Seal joints', 'bead round the cover, 2 port rings, vent', '1 radial O-ring, 2 port rings, vent', '1 face O-ring, 2 port rings + moats, vent'],
         ['What sets the squeeze', 'bead fill (hand-applied)', 'cap skirt vs cup bore (dimensions)', 'groove depth vs hard stop'],
         ['Core install', 'drop in, lift 2.5 mm, wedge', 'push in from the bottom, cap on', 'tilt in, rotate down, pad'],
-        ['Heat path for bursts', 'board -> 1 mm Al cover (8.5 J/K)', 'board -> vias + filler -> cells (~270 J/K)', 'board -> 3 mm lid (32 J/K)'],
-        ['100 W until a limit (model)', '~5 min', '~16 min', '~9 min'],
-        ['Cells after 10 min 100 W + 30 W', '~37 C', '~42 C', '~36 C'],
-        ['Charging 88 W, 1 h (cells)', '~48 C', '~54 C', '~46 C'],
+        ['Heat path for bursts', 'board -> 1 mm Al cover (8.5 J/K)', 'board -> vias + filler -> front cells, webs -> back', 'board -> 3 mm lid (32 J/K)'],
+        ['100 W until a limit (model)', '~5 min', '~13 min', '~9 min'],
+        ['Cells, 10 min 100 W then 30 W (peak)', '~37 C', '~47 front / 38 back C', '~36 C'],
+        ['Charging 88 W, 1 h (cells)', '~48 C', '~57 front / 50 back C', '~46 C'],
         ['BLE antenna', 'Al cover 1 board-thickness away', 'no metal at all', 'CNC lid over the board'],
         ['Label', 'laser-marked on the Al cover', 'embossed PA12 or a small plate', 'laser-marked on the lid']]
     sh.panel_title(1320, 700, 'Side by side', 1340)
     y2 = sh.table(1320, 750, ['', 'Current', 'Cup', 'Hybrid'], rows2, [300, 340, 360, 340], 14, rh=36)
-    sh.text(1320, y2 + 14, 'Thermal rows: research_notes/.../model/thermal_burst.py, a lumped estimate, 25 C ambient. The dev-board 100 W run should replace it.', 13, fill=MUTED)
+    sh.text(1320, y2 + 14, 'Thermal rows: lumped estimates, 25 C ambient (thermal_burst.py; the cup from thermal_cell_spread.py, front/back cell pairs, PA12 webs).', 13, fill=MUTED)
     save(sh, 'cup_vs_current.png')
 
 if __name__ == '__main__':
