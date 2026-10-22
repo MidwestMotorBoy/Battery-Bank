@@ -1,10 +1,10 @@
 # P0 assembly: one power module, then the tray
 
-How a Monolith P0 goes together, from the mechanical model in `mechanical/` (side tray). The six steps are shown in `mechanical/monolith_side_assembly.png`; the connections are in `mechanical/monolith_side_tabs.png`.
+How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (side tray). The six steps are shown in `hardware/mechanical/monolith_side_assembly.png`; the connections are in `hardware/mechanical/monolith_side_tabs.png`.
 
 **Status:** a plan, updated 2026-10-21 for the bench-built power module (it replaces the flying leads and the spring-contact sense strip). Nothing has been built yet, so expect it to change at the first fit print.
 
-![Assembly steps](../../mechanical/monolith_side_assembly.png)
+![Assembly steps](../../hardware/mechanical/monolith_side_assembly.png)
 
 ## The idea
 
@@ -30,7 +30,7 @@ The tray opens on one side only, and the USB-C faces have to pass into the top w
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
-The positions come from `sb_slots()` in `mechanical/monolith_shell.py`. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
+The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
 - **The PACK tabs split near the board.** The power finger takes the current; the Kelvin finger carries none, so it gives the gauge a true sense at the tab. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.

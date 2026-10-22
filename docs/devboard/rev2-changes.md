@@ -1,8 +1,8 @@
 # Monolith dev board — rev 2.0 change list
 
-_Started 2026-10-12. Rev 1 (`DevBoard/`) is placed but not routed, ordered or built._
+_Started 2026-10-12. Rev 1 (`hardware/DevBoard/`) is placed but not routed, ordered or built._
 
-**2026-10-18: the dev board will not be built.** These items now feed the production board (`Production/`); the bring-up checks below move to production P0 (`docs/production/p0-bringup-and-training.md`).
+**2026-10-18: the dev board will not be built.** These items now feed the production board (`hardware/Production/`); the bring-up checks below move to production P0 (`docs/production/p0-bringup-and-training.md`).
 
 Changes to make in the next revision of the dev board. Add items as rev 1 is routed, built and tested; mark each one done when it is in the rev 2 schematic and layout.
 
@@ -24,7 +24,7 @@ Changes to make in the next revision of the dev board. Add items as rev 1 is rou
 - **Rev 1 decision (2026-10-12):** no hardware protector. The MCU cross-checks the gauge and can stop both chargers through CHG_INH (PB8 → each BQ25756 CE). That depends on firmware, which certification bodies usually only credit with software evaluation.
 - **Decision (2026-10-12):** no hardware second-level protector or chemical fuse, for rev 2 or production. The second layer is software: the STM32 cross-checks the gauge (alive, read-back configuration, cell sum vs gauge stack vs charger VBAT ADC, FET stuck on) and stops charging through CHG_INH (review doc firmware item 12), backed by the charger's stack CV regulation and BAT_OVP, gauge hardware SCD/OLD and F101.
 - **Consequences to keep in mind:** that layer only works while the MCU firmware runs, so it needs a hardware watchdog, a fail-safe boot path and test coverage of each check. Certification bodies usually credit software protection only after software evaluation (IEC 60730-1 Annex H / UL 1998 style); plan for that if the product is certified.
-- **Reversed (2026-10-13):** hardware second level added in rev 1 after all: BQ294700 (4.35 V/cell OVP) and the gauge FUSE pin blow a TLC WSFB1514 chemical fuse (F102, 4-cell, 15 A) at the cell top; F102 replaces F101 as the pack fuse, TI fig. 9-11. A DNP bench bypass (R127) sits across it. Details: DevBoard/README.md item 33. The software checks above stay as a third layer.
+- **Reversed (2026-10-13):** hardware second level added in rev 1 after all: BQ294700 (4.35 V/cell OVP) and the gauge FUSE pin blow a TLC WSFB1514 chemical fuse (F102, 4-cell, 15 A) at the cell top; F102 replaces F101 as the pack fuse, TI fig. 9-11. A DNP bench bypass (R127) sits across it. Details: hardware/DevBoard/README.md item 33. The software checks above stay as a third layer.
 - **Status:** done in the schematic (rev 1, branch hand-review); layout still to do.
 
 ### 1c. Production: short D+ to D− directly, drop R440/R540 (requested 2026-10-16)

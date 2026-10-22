@@ -60,11 +60,21 @@ The output goes to `build/launchpad/batterybank_launchpad.out`, with a `.hex` an
 gmake flash
 ```
 
+**Dev board (U301 CC2340R5MODA):** same probe, same `.ccxml`, J102 → cable → J301. Power the board from a current-limited bench supply on J104 first (`docs/devboard/bringup-config-checklist.md` §1); the probe must not be the only thing holding up 3V3.
+
+```bash
+gmake BOARD=devboard
+gmake BOARD=devboard flash
+```
+
+Output: `build/devboard/batterybank_devboard.out`. Logs come out on J302 (TX RX G) at 115200 8N1; wire TX/RX/G to the XDS110's UART pins on the LP-MSPM0G3519 (J101 TXD/RXD, XDS side), only with the board's 3V3 up.
+
 ## What the skeleton does
 
 - It prints a banner and the reset reason on the XDS110 UART: 115200 8N1, on the COM port called "XDS110 Class Application/User UART".
 - The red LED blinks at 1 Hz.
-- BTN-1 stands in for IRQ_N. Each press logs a falling edge.
+- BTN-1 stands in for IRQ_N. Each press logs a falling edge. On the dev board the real IRQ_N is used, and its level is logged once a second.
+- On the dev board, `outputsSafe()` drives CHG_INH high, EN_5V1/EN_5V2 low and 3V3_SLEEP high first thing after `Board_init()`.
 - **CCFG:** LF clock from LF RCOSC, and the bootloader's pin trigger is off. Both choices are explained in `boards/launchpad.syscfg`.
 
 ## Layout
@@ -74,7 +84,7 @@ gmake flash
 | `Makefile` | Command-line build in the style of TI's SDK example makefiles. SysConfig generates into `build/<board>/syscfg` |
 | `tools.mak.example` | Tool paths. Copy it to `tools.mak`, which git ignores |
 | `boards/launchpad.syscfg` | LaunchPad pins (from TI's board file) and CCFG |
-| `boards/devboard.syscfg` | To do: dev-board pin map from `docs/devboard/cc2340-pin-budget.md` |
+| `boards/devboard.syscfg` | Dev-board pin map from `docs/devboard/cc2340-pin-budget.md`: DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N, UART0 on DIO18/20, I2C0 on DIO6/8. Every output starts in its safe state |
 | `app/` | Application sources |
 | `targets/` | `.ccxml` target configurations saved from UniFlash |
 

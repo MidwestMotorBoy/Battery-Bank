@@ -2,9 +2,9 @@
 _From the 2026-10-09 session · updated 2026-10-11_
 
 ## Changes on 2026-10-18
-- **Side board in a one-piece tray.** The production board moved from the top cap to one face of the cells, in a printed tray whose only opening is the board side, closed by a 1 mm aluminium cover (also the heat spreader). The ports seat by sliding the board up into the top wall. There are no airflow vents, only one ePTFE pressure vent. Model and checks are in `mechanical/`; assembly steps are in the Claude doc "Monolith assembly (side-board tray)".
-- **Board thickness 1.6 mm, for cost** (was 0.8 mm). J401/J501 are now the TYPE-C 16PCB1.6 IP68 (C55629729), the same land pattern. The side outline (43.2 × 74.35 mm, notched bottom corners) is on `Production/Monolith.kicad_pcb`. This supersedes the 0.8 mm and top-cap entries below.
-- **Dev board skipped; separate training board dropped.** Production P0 (`Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
+- **Side board in a one-piece tray.** The production board moved from the top cap to one face of the cells, in a printed tray whose only opening is the board side, closed by a 1 mm aluminium cover (also the heat spreader). The ports seat by sliding the board up into the top wall. There are no airflow vents, only one ePTFE pressure vent. Model and checks are in `hardware/mechanical/`; assembly steps are in the Claude doc "Monolith assembly (side-board tray)".
+- **Board thickness 1.6 mm, for cost** (was 0.8 mm). J401/J501 are now the TYPE-C 16PCB1.6 IP68 (C55629729), the same land pattern. The side outline (43.2 × 74.35 mm, notched bottom corners) is on `hardware/Production/Monolith.kicad_pcb`. This supersedes the 0.8 mm and top-cap entries below.
+- **Dev board skipped; separate training board dropped.** Production P0 (`hardware/Production/`) is the first build. The BQ40Z50-R2 is trained on P0 through the GAUGE Tag-Connect J302, with learning-cycle load pads and a gauge WAKE pad. The dev board checks are done on P0, and a second spin follows only if needed. Procedure: `docs/production/p0-bringup-and-training.md`.
 
 ## Changes on 2026-10-11
 - **Total output raised to 100 W (from 80 W).** Electrically fine: each BQ25756 port can do 20 V × 5 A, and the connector is rated 5 A / 20 V. The limits are heat and current, so 100 W is treated as a thermally limited rating, not a guaranteed continuous one.
@@ -336,7 +336,7 @@ A roomy prototype of the whole production circuit, no space limits, for gauge tr
 - [ ] **Scope outputs:** two TI INA190 current-sense amps on the 10 Ω (high-side, very low input bias): gain 500 → 5 mV/µA, ~1 mA full scale (sleep detail); gain 25 → 0.25 V/mA, ~20 mA full scale (Bluetooth bursts). BNC or SMA connectors plus test points. Amps powered by an on-board TI TPS70950 5 V LDO (C96028) fed from the pack bus outside the 10 Ω, so their current isn't measured and no external supply is needed. INA190A5IDDFR (gain 500) + INA190A1IDDFR (gain 25, C1852068), SMA outputs, enable jumper. Note the offset (~±1.5 µA) with the load link open. Clip the scope ground only to board ground. Check INA190 stock at JLC
 - [ ] **Cells:** four MYOUNG BH-21700-B1BJ001 21700 spring holders (JLC C20606791, JLC-assembled; backup Keystone 1121), clearly marked, in series, plus a fuse; check each cell voltage before closing the fuse since open holders accept a reversed cell; good for a few amps only, so 100 W and thermal tests use the welded pack. Wire the gauge's cell-voltage taps to the cell end of each contact (Kelvin) so spring resistance isn't learned as cell impedance
 - [ ] Pack connector beside the holders so the final learning cycle runs on the real welded pack (learned capacity belongs to those cells)
-- [x] 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, 175 × 115 mm (the holders don't fit 100 × 80), six M3 holes; board set up 2026-10-12 (see `DevBoard/README.md`)
+- [x] 4 layers, 0.8 mm, 2 oz outer / 1 oz inner, 175 × 115 mm (the holders don't fit 100 × 80), six M3 holes; board set up 2026-10-12 (see `hardware/DevBoard/README.md`)
 - [ ] Draft it in ProtoFlow first, before the production board
 
 ## Gauge training (BQ40Z50-R2, on the dev board)

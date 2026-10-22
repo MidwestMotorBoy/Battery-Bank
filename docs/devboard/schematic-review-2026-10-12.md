@@ -21,7 +21,7 @@ The board is not routed yet, so every schematic and footprint fix below is still
 
 ## Status (rev A4, 2026-10-12)
 
-Fixed in the schematic and board unless marked otherwise. Details are in DevBoard/README.md item 17.
+Fixed in the schematic and board unless marked otherwise. Details are in hardware/DevBoard/README.md item 17.
 
 | Item | Status |
 |---|---|

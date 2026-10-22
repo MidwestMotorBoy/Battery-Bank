@@ -2,7 +2,7 @@
 
 Draft 5, 2026-10-11 (gauge network, charger ACUV/ACOV, USB ESD and cell holders added). Written as the plain-English input for ProtoFlow's schematic drafting, and as the checklist to verify what it generates. Every symbol, pin number and footprint ProtoFlow produces must be checked against the datasheet before layout.
 
-**Status: schematic drafted in KiCad (`DevBoard/`, 2026-10-11; see `DevBoard/README.md` for changes from this description). Not reviewed, laid out, built or tested.** Values marked *TBD* still need a datasheet calculation.
+**Status: schematic drafted in KiCad (`hardware/DevBoard/`, 2026-10-11; see `hardware/DevBoard/README.md` for changes from this description). Not reviewed, laid out, built or tested.** Values marked *TBD* still need a datasheet calculation.
 
 ## Purpose
 
@@ -88,7 +88,7 @@ Values from the BQ40Z50-R2 datasheet reference schematic (section 9).
 
 ## 5. MCU and Bluetooth (CC2340R5MODA, rev A7)
 
-- **U301:** TI CC2340R5MODA module (BLE only; Cortex-M0+, 512 kB flash, 64 kB RAM; on-chip OTA updates), wired per SWRS349A fig. 9-1. It replaced the STM32WB1MMC in rev A7 (`cc2340-pin-budget.md`, `DevBoard/README.md` item 40).
+- **U301:** TI CC2340R5MODA module (BLE only; Cortex-M0+, 512 kB flash, 64 kB RAM; on-chip OTA updates), wired per SWRS349A fig. 9-1. It replaced the STM32WB1MMC in rev A7 (`cc2340-pin-budget.md`, `hardware/DevBoard/README.md` item 40).
 - **Supply:** VDDS from 3V3 through R301 (0 Ω) as 3V3_MCU, with C301–C303.
 - **Reset:** R302 100k pull-up and C304 100 nF on RSTN (fig. 9-1 R1/C92); reset button SW301.
 - **Antenna:** integrated, at a board edge with ground 10–20 mm either side. A 7.0 × 3.2 mm keep-out on all layers is drawn in the footprint (fig. 9-2).
