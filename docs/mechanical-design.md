@@ -47,8 +47,9 @@ The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py
             - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
             - 2 x 1 mm EVA hold-downs over the USB-C bodies.
         - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
-        - **Cost of the protection:** the pack is now 59.6 × 51.1 × 96.6 mm (the cage added 0.9 and 0.7 mm), and about 370 g modelled, including the cage, frame and wedge. The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+        - **Cost of the protection:** the pack is now 59.6 × 51.1 × 96.6 mm (the cage added 0.9 and 0.7 mm), and about 370 g modelled, including the cage, frame and wedge. *(With the FEB 21700G cells from 2026-10-21: 60.3 × 51.8 × 96.6 mm and about 387 g; see below.)* The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
         - **Unchanged:** the board outline and ports. The cavity is 0.6 mm wider than the board each side now; the USB-C bodies in the port holes locate it.
+        - **FEB 21700G cells (2026-10-21):** the cell is now the FEB 21700G (68E) 6500 mAh, 93.6 Wh (`project/feb-21700g-datasheet-notes.md`). The model is designed to its 21.85 mm maximum diameter and 71.1 mm length: cell pitch 23.25 mm (was 22.9), the tray 0.7 mm wider and 0.35 mm deeper, same length. The board outline doesn't change (its guide line is held at the 58E-era value); the extra cell length comes out of the floor zone (SB_PAD_T 4.6 → 4.3), and the five bottom slots move 0.30 mm on the board. Cells 75 g each: pack about 387 g modelled.
         - **Pack connections (2026-10-21): one power module.** The cells, TPU frame and board are joined on the bench by seven nickel tails through seven plated slots, soldered on F.Cu, and the module is programmed and tested before it goes into the tray. Nothing is soldered in the tray (`monolith_side_tabs.png`, `monolith_side_assembly.png`, `docs/production/p0-assembly.md`).
             - **PACK− and PACK+:** a 0.2 × 7 mm nickel tab on the C1 and C4 bottoms. Near the board it splits into a 4.2 mm power finger and a 1.2 mm Kelvin finger (1N / 4P), each through its own slot, and a 1 mm kink in the gap behind the board gives it some give.
             - **CELL2:** a 3 mm tail off the bottom strip, along the channel between the spring rings (kapton wrapped), into its slot at the bottom edge.
@@ -98,8 +99,8 @@ The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py
         - `monolith_side_cover.step`: the plate (JLCCNC requires a STEP);
         - `monolith_side_cover_marking.dxf` / `.svg`: the marking as outlined shapes, every line at least 0.2 mm (JLCCNC asks for outlined, double-line text);
         - `monolith_side_cover_preview.png`.
-    - **Label:** Li-ion 4S1P, 14.4 V, 5.7 Ah, 82 Wh (from `project/eve-58e-datasheet-notes.md`), the USB-C PD ratings, warnings, the recycling and WEEE symbols, and our own carry-on badge (an airliner in a ring with a check disc, "CARRY-ON OK · < 100 Wh"). It carries no certification marks.
-    - **Graphic:** a topo map with a dashed trail from the trailhead to a summit flag at "EL. 82 Wh".
+    - **Label:** Li-ion 4S1P, 14.4 V, 6.5 Ah, 93.6 Wh (from `project/feb-21700g-datasheet-notes.md`; was 5.7 Ah / 82 Wh with the EVE 58E), the USB-C PD ratings, warnings, the recycling and WEEE symbols, and our own carry-on badge (an airliner in a ring with a check disc, "CARRY-ON OK · < 100 Wh"). It carries no certification marks.
+    - **Graphic:** a topo map with a dashed trail from the trailhead to a summit flag at "EL. 93.6 Wh".
     - The script checks the art stays between the cap bands, clear of the vent, and has no line under 0.2 mm. Ratings are prototype values, to confirm before the final.
 - **Cap print zones:** each cap prints as one TPU body. Load the `*_mod_soft` and `*_mod_corner` STLs as slicer modifiers.
 

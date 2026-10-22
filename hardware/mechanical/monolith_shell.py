@@ -4,8 +4,10 @@ All dimensions in mm. Z = 0 is the bottom rim of the tube."""
 import numpy as np, struct
 
 # ---------------- parameters ----------------
-CELL_D      = 21.5    # EVE INR21700-58E listed diameter (measure yours)
-CELL_L      = 70.8    # listed length
+CELL_D      = 21.85   # FEB 21700G (68E) 6500 mAh: 21.65 +-0.2 mm, so design to the 21.85 maximum (measure yours)
+CELL_L      = 71.1    # 70.95 +-0.2 mm; Batemo measures 71.1. A 71.15 maximum cell squeezes the spring rings 0.05 more.
+                      # Was the EVE 58E, 21.5 x 70.8, until 2026-10-21
+CELL_D_58E  = 21.5    # the board outline is still derived from the 58E-era pocket (see pocket_r), so it doesn't change
 CELL_CLEAR  = 0.30    # diametral clearance per cell pocket
 WALL        = 1.20
 PCB_RECESS  = 2.0     # bottom PCB sits this far inside the rim
@@ -19,7 +21,8 @@ RIB_DEPTH   = 2.5
 VENT_D      = 8.0     # placeholder vent hole in the PCB outline
 N_ANGLES    = 720
 # ---------------- derived ----------------
-pocket_r = (CELL_D + CELL_CLEAR) / 2          # also the inner corner radius
+pocket_r = (CELL_D_58E + CELL_CLEAR) / 2      # also the inner corner radius. Frozen at the 58E value: a_in is the side board's
+                                              # guide line (43.2 mm board), which must not move with the cell
 a_in  = 2 * pocket_r                          # inner half-width
 a_out = a_in + WALL
 c_in, c_out = pocket_r, pocket_r + WALL
@@ -143,7 +146,8 @@ SB_LIP       = 0.8    # frame lip outside the cover (cover sits this far below t
 SB_REB       = 0.5    # rebate into the +-y walls that the cover edges rest in (wall left 0.7)
 SB_SLOT      = 1.0    # cover top edge tucks this far under the top-wall lip
 SB_END_T     = 1.6    # bottom and top walls
-SB_PAD_T     = 4.6    # floor zone under the cells: the TPU bottom holder (base plate + spring rings)
+SB_PAD_T     = 4.3    # floor zone under the cells: the TPU bottom holder (base plate + spring rings). 4.6 -> 4.3 with the
+                     # FEB cell (0.3 longer), so the tray and the board outline keep their length
 SB_PIL_T     = 4.8    # screw-boss zone in the bottom corners (sets the board's corner notches and the screw height: unchanged)
 SB_TOP_PAD   = 1.2    # TPU top plate of the cell frame (JLC TPU minimum wall 1.2); the floor zone gave up the 0.2
 SB_SLIDE     = 2.5    # board slide that engages the ports (needs > SB_END_T - (USB_FACE_OUT - SB_END_T))
@@ -207,7 +211,7 @@ SB_ANT_H     = 2.3                   # module height on B.Cu
 # - top frame: top plate (cut-outs over the + caps) + two bars down the board side that hold the cells off B.Cu.
 SB_FRAME_BASE = 0.8                  # ring carrier base plate (the floor zone is now wedge + carrier)
 SB_RING_OD, SB_RING_ID, SB_RING_SLOT = 17.0, 14.4, 2.0   # spring rings (ID clears the + cap cut-out), 4 slots
-SB_BAR_Y = (6.5, 11.3)               # bars: |y| span (up to the cell tangent at 11.45, clear of the BLE module at 11.6)
+SB_BAR_Y = (6.5, 11.3)               # bars: |y| span (to within 0.33 of the cell tangent at 11.625, clear of the BLE module at 11.6)
 SB_BAR_Z0 = None                     # set below: bars start above the bottom tails
 # TPU cell cage (2026-10-21, replaces the mica cross and the liner): a cross of SB_CAGE_WEB webs between the four cells in
 # three bands (bottom, middle, top), joined by a round spine along the pack axis. The cells sit SB_CAGE_WEB + 2 x
@@ -249,7 +253,7 @@ SB_TAIL_W = 3.0                      # CELL1-3 tails
 SB_TAIL_Y = 13.9                     # |y| of the CELL1 / CELL3 tails (outside the frame bars and the USB-C notches)
 SB_TAIL_TOP_Z = 72.0                 # CELL1 / CELL3 slots (a 5 mm drop behind the board gives the tail some give)
 SB_SLOT_W, SB_SLOT_CLR, SB_SLOT_RING = 0.6, 0.4, 0.4    # plated slot: width (z), length over the tail (y), annular ring
-SB_KINK = (23.0, 24.2, 1.0)          # strain-relief kink in the bottom tails: x from, x to, depth
+SB_KINK = (23.35, 24.55, 1.0)        # strain-relief kink in the bottom tails: x from, x to, depth (+0.35 with the FEB cell)
 SB_WIRE_D = 0.8                      # (legacy)
 # derived (x across the board, y along the board width, z along the cells)
 sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
@@ -440,7 +444,8 @@ if __name__ == '__main__':
         'standoffs clear of the top slots (z)': min(abs(z - SB_TAIL_TOP_Z) for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - 1.0,
         'standoffs clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_STANDOFFS) - (SB_VENT_D/2 + 2 + SB_STANDOFF_D/2),
         'frame bars clear of the BLE module (y)': sb_ant_y[0] - SB_BAR_Y[1] - 0.3,
-        'frame bars reach the cell tangent (y, within 0.2)': SB_BAR_Y[1] - (sb_pr - 0.2),
+        'frame bars bear on the cans (can surface at the bar end <= 0.05 below the tangent)':
+            0.05 - (CELL_D/2 - float(np.sqrt((CELL_D/2)**2 - max(sb_pr - SB_BAR_Y[1], 0)**2))),
         'top plate meets the JLC TPU minimum wall': SB_TOP_PAD - 1.2,
         'module drop, resting on its ring carrier: port faces under the top wall': sb_z_top_in - (SB_H - (SB_WEDGE_T - SB_AXIAL_PRELOAD)),
         'wedge nose lifts more than the preload': SB_WEDGE_NOSE[1] - SB_AXIAL_PRELOAD - 0.3,

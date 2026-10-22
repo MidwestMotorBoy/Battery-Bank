@@ -54,12 +54,14 @@ To keep the MCU off the SMBus while BQStudio is connected:
 Steps:
 
 1. **Basic data flash:**
-    - 4 cells, design capacity 5,800 mAh;
+    - 4 cells, design capacity 6,500 mAh (FEB 21700G, 6,350 mAh minimum);
     - TS1–TS4 enabled;
     - FET temperature sensor configured;
-    - protection thresholds per the design notes;
+    - protection thresholds per the design notes and the FEB limits: OTC 45 °C, UTC 0 °C, OTD 60 °C, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell;
+    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/firmware/charge-and-thermal-policy.md`);
+    - the cell thermistors that matter are on the front cells (C1 / C4, the pair the board heats), so the hottest cells are seen;
     - COV delay 1 s and Min Blow Fuse Voltage 10,500 mV (second-level protection).
-2. **Chemistry:** select the EVE INR21700-58E chemistry ID if it's in TI's database. Otherwise run TI's GPCCHEM flow first.
+2. **Chemistry:** select the FEB 21700G chemistry ID if it's in TI's database (unlikely). Otherwise run TI's GPCCHEM flow first: a slow (~C/10) discharge with rests, logged and submitted to TI's GPCCHEM tool.
 3. **Calibration:**
     - voltage (DMM at the taps);
     - current (known DC load on J113/J114 through RS101);

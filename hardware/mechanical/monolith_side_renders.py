@@ -28,7 +28,7 @@ def mv(V, dx=0, dy=0, dz=0): return V + [dx, dy, dz]
 # ---------------- the assembly: (key, part number, mesh, colour) ----------------
 # part numbers follow the assembly order; the caps are four print-zone meshes each
 PARTS = [(1, 'Printed tray', 'MJF PA12 nylon', 'shell'), (2, 'Cell frame: ring carrier', 'TPU 95A', 'holder'),
-         (3, 'Cells C1-C4, welded 4S', 'EVE INR21700-58E', 'cell'), (4, 'Cell cage: 1.2 mm webs, spine', 'TPU 95A', 'cage'),
+         (3, 'Cells C1-C4, welded 4S', 'FEB 21700G 6500 mAh', 'cell'), (4, 'Cell cage: 1.2 mm webs, spine', 'TPU 95A', 'cage'),
          (5, 'Insulator rings on + ends (4)', 'fish paper 0.2', 'rings'),
          (6, 'Nickel series strips (3)', 'nickel 0.15 x 7', 'nickel'),
          (7, 'Nickel tails: PACK+/- (split), CELL1-3', 'nickel 0.2 / 0.15', 'tails'),
@@ -519,7 +519,7 @@ if __name__ == '__main__':
         return out, ids
     sh = Sheet(2700, 1240)
     w_, d_, L_ = SIZE()
-    sh.header('Monolith', f'Side-board 4S1P 21700 power bank, 82 Wh, 2 x USB-C PD 100 W.  {w_:.1f} x {d_:.1f} x {L_:.1f} mm, '
+    sh.header('Monolith', f'Side-board 4S1P 21700 power bank, 93.6 Wh, 2 x USB-C PD 100 W.  {w_:.1f} x {d_:.1f} x {L_:.1f} mm, '
               f'about {total + 15:.0f} g with the board populated (estimate).')
     Rh = camera((1.0, -0.9, 0.55))
     for i, (name, mat, tray_c, cap_c) in enumerate(WAYS):

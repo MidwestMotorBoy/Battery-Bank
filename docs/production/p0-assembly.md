@@ -22,15 +22,15 @@ The tray opens on one side only, and the USB-C faces have to pass into the top w
 
 | Connection | From | Nickel | Slot (KiCad x, y), length along x × 0.6 mm |
 |---|---|---|---|
-| PACK− | C1 bottom (can) | 0.2 × 7 tab, power finger 4.2 mm | (87.15, 135.18), 4.6 |
-| 1N (gauge Kelvin) | same tab, Kelvin finger 1.2 mm | | (91.45, 135.18), 1.6 |
-| CELL2 | C2+ / C3− strip, bottom | 0.15 × 3 tail, between the spring rings, kapton wrapped | (100.00, 135.15), 3.4 |
-| 4P (gauge Kelvin) | PACK+ tab, Kelvin finger 1.2 mm | | (108.55, 135.18), 1.6 |
-| PACK+ | C4 bottom (+ cap) | 0.2 × 7 tab, power finger 4.2 mm | (112.85, 135.18), 4.6 |
+| PACK− | C1 bottom (can) | 0.2 × 7 tab, power finger 4.2 mm | (86.97, 135.48), 4.6 |
+| 1N (gauge Kelvin) | same tab, Kelvin finger 1.2 mm | | (91.28, 135.48), 1.6 |
+| CELL2 | C2+ / C3− strip, bottom | 0.15 × 3 tail, between the spring rings, kapton wrapped | (100.00, 135.45), 3.4 |
+| 4P (gauge Kelvin) | PACK+ tab, Kelvin finger 1.2 mm | | (108.72, 135.48), 1.6 |
+| PACK+ | C4 bottom (+ cap) | 0.2 × 7 tab, power finger 4.2 mm | (113.03, 135.48), 4.6 |
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
-The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
+The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`. **FEB 21700G (2026-10-21):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
 - **The PACK tabs split near the board.** The power finger takes the current; the Kelvin finger carries none, so it gives the gauge a true sense at the tab. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
@@ -46,7 +46,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`.
 
 ## Materials and tools
 
-- **Cells:** 4 × EVE INR21700-58E, matched to within 10 mV and checked for internal resistance.
+- **Cells:** 4 × FEB 21700G (68E) 6500 mAh (`docs/project/feb-21700g-datasheet-notes.md`), same batch, matched to within 10 mV and to within 1 mΩ on an AC (1 kHz) meter. Measure each cell's diameter: the tray is designed to the 21.85 mm maximum.
 - **Nickel:**
     - 0.15 × 7 mm pure nickel for the three series strips. The top two are cut long, so they run on as the CELL1 / CELL3 tails.
     - 0.15 mm nickel, cut to 3 mm, for the CELL2 tail.

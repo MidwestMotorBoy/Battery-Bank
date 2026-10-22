@@ -431,6 +431,17 @@ Fit all 19 before the first power-up: the chargers need both bulk banks.
 - Port 1's stage sits over the antenna area: U403, Q402, C434, R446 and R447 are in `KO_F_above_antenna`.
 - L401 is on B.Cu in EVA lane 3. It belongs on F.Cu with the FETs.
 
+## FEB 21700G cells (2026-10-21)
+
+The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 Wh. Why and how: `docs/project/feb-21700g-datasheet-notes.md`, `research_notes/Loss reduction/G_feb_21700g.md`, `docs/firmware/charge-and-thermal-policy.md`.
+
+- **R413/R513 (ICHG) 9.1k → 11.8k 1 %** (UNI-ROYAL 0402WGF1182TCE, LCSC C93752; `tools/make_production.py` updated). The hardware charge ceiling becomes 48–52 A·kΩ / 11.8 kΩ = 4.07–4.45 A per port, under the FEB's 4.55 A maximum (the 9.1k allowed up to 5.83 A). Check C93752 stock before ordering; 12k (C25752, 4.0–4.33 A) is the fallback.
+- **Board outline unchanged** (43.20 × 74.35 mm). The mechanical model holds the board's guide line at the 58E-era value, and the extra 0.3 mm of cell length comes out of the floor zone.
+- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. **Not yet applied to `Monolith.kicad_pcb`:** re-run `tools/make_board.py` (or move the slots by hand) once the in-progress layout is merged.
+- **Footprint values:** run Update PCB from Schematic so R413/R513 carry 11.8k.
+- **Gauge:** design capacity 6,500 mAh, new temperature ranges and protections, and a new chemistry ID (`docs/production/p0-bringup-and-training.md`).
+- **Heat:** about 12 W at 100 W out (cells ~6.5 W of it). Firmware keeps the 100 W offer but starts a linear derate at ~33 °C on the hottest cell, down to ~40 W.
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

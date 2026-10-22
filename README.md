@@ -1,21 +1,21 @@
 # Monolith
 
-An ultralight 82 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidirectional USB-C PD ports designed for 100 W total, TI CC2340 Bluetooth LE MCU.
+An ultralight 93.6 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidirectional USB-C PD ports designed for 100 W total, TI CC2340 Bluetooth LE MCU.
 
 <p align="center"><img src="hardware/mechanical/monolith_side_hero.png" alt="Render of the assembled pack in two colourways, with the laser-marked aluminium cover" width="100%"></p>
 
 ## Design overview
 
-The goal is a hiking power bank that is lighter and better behaved than the off-the-shelf ones: under the 100 Wh carry-on limit, able to charge or run 20 V USB-C PD loads, with a proper fuel gauge and a phone app. The pack is four EVE INR21700-58E cells (5.7 Ah, 3.6 V nominal) in 4S1P: 14.4 V, 82 Wh nominal, spot-welded with nickel strip and managed by a TI BQ40Z50-R2 gauge/protector with hardware second-level protection (BQ294700 plus a chemical fuse). Each of the two USB-C ports has its own TPS25751 PD controller and BQ25756 bidirectional buck-boost converter, so either port can charge the pack (including from a 5 V solar panel) or source up to 20 V / 5 A, with the pair thermally limited to 100 W; a TPS62933 buck supplies each port's 5 V source rail and a TPS62177 buck supplies the 3.3 V rail. A CC2340R5MODA Bluetooth LE module runs the charge policy, port power sharing and a custom GATT service for an iPhone app. The electronics live on one 43 × 74 mm 6-layer board along one face of the cells, inside a one-piece MJF nylon tray with TPU crush caps and a 1 mm anodized aluminium cover that doubles as the heat spreader.
+The goal is a hiking power bank that is lighter and better behaved than the off-the-shelf ones: under the 100 Wh carry-on limit, able to charge or run 20 V USB-C PD loads, with a proper fuel gauge and a phone app. The pack is four FEB 21700G cells (6.5 Ah, 3.6 V nominal) in 4S1P: 14.4 V, 93.6 Wh nominal, spot-welded with nickel strip and managed by a TI BQ40Z50-R2 gauge/protector with hardware second-level protection (BQ294700 plus a chemical fuse). Each of the two USB-C ports has its own TPS25751 PD controller and BQ25756 bidirectional buck-boost converter, so either port can charge the pack (including from a 5 V solar panel) or source up to 20 V / 5 A, with the pair thermally limited to 100 W; a TPS62933 buck supplies each port's 5 V source rail and a TPS62177 buck supplies the 3.3 V rail. A CC2340R5MODA Bluetooth LE module runs the charge policy, port power sharing and a custom GATT service for an iPhone app. The electronics live on one 43 × 74 mm 6-layer board along one face of the cells, inside a one-piece MJF nylon tray with TPU crush caps and a 1 mm anodized aluminium cover that doubles as the heat spreader.
 
 | | |
 |---|---|
-| **Energy** | 82 Wh nominal (4S1P, 14.4 V, 5.7 Ah), under the 100 Wh carry-on limit |
+| **Energy** | 93.6 Wh nominal (4S1P, 14.4 V, 6.5 Ah, FEB 21700G cells), under the 100 Wh carry-on limit |
 | **Ports** | 2 × USB-C, each bidirectional PD 5–20 V up to 5 A; designed for 100 W total, thermally throttled |
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), AGM404AP1 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer copper, ENIG, filled and capped vias; JLCPCB assembly |
-| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 59.6 × 51.1 × 96.6 mm, about 385 g (modelled estimate, board populated) |
+| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 60.3 × 51.8 × 96.6 mm, about 400 g (modelled estimate, board populated) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app, planned) |
 
 ## Status

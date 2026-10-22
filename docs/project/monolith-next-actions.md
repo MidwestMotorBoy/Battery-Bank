@@ -119,7 +119,7 @@ _From the 2026-10-09 session · updated 2026-10-11_
 - **Inductor split:** the three small-converter inductors (two TPS62933 5 V bucks, one TPS62177 3.3 V buck) go on the hand-soldered bottom side to free top-side space. The two big BQ25756 inductors stay on top against the gap pad, because they dissipate ~0.5–1 W each at full power and that heat should go to the plate, not the cells. If the floorplan still doesn't fit, the BQ25756 inductors are the next candidates to move.
 
 ## Changes on 2026-10-10
-- **Cell confirmed:** EVE INR21700-58E stays the pick over the Samsung 58E (more Wh, lighter, slimmer, better cold discharge). Specs and design notes in `claude/eve-58e-datasheet-notes.md`.
+- **Cell (superseded 2026-10-21 by the FEB 21700G, `feb-21700g-datasheet-notes.md`):** EVE INR21700-58E stays the pick over the Samsung 58E (more Wh, lighter, slimmer, better cold discharge). Specs and design notes in `claude/eve-58e-datasheet-notes.md`.
 - **Housing cavity corrected:** cells are up to 21.7 mm wide (not 21 mm) and EVE recommends > 1 mm between cells, so the 2x2 inner cavity is ~44.5–45 mm, outer ~46–46.5 mm with 0.8 mm FR4. The earlier 42.5 mm figure was wrong.
 - **Pack energy:** 82 Wh nominal (80.6 Wh min); use 82 Wh on the label.
 - **Cell vendor:** the store found online is **18650batterystore.com**; the earlier notes said 18650battery.com. Confirm the right site before ordering.
@@ -222,6 +222,8 @@ _From the 2026-10-09 session · updated 2026-10-11_
 - If the floorplan runs out of room: move a few more passives to the bottom first; then, if needed, the two BQ25756 inductors (low-DCR parts with exposed terminations, and recheck cell temperatures in the thermal test). Never move ICs to the bottom
 
 ## Charging plan
+
+> **Superseded on 2026-10-21:** the cell is now the FEB 21700G 6500 mAh (93.6 Wh, 4.55 A max charge). The charge and thermal policy is in `docs/firmware/charge-and-thermal-policy.md`; the 58E stage table below is history.
 **Control:** the BQ40Z50-R2 is the authority (it knows cell voltages, temperature and SOC). The STM32WB reads its requested charge voltage/current and SOC and sets the charging BQ25756(s) over I2C. Each BQ25756's own TS input and safety timers are hardware backups if firmware hangs.
 
 **Stages (4S EVE 58E, 1C = 5.6 A):**
