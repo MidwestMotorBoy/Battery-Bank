@@ -48,8 +48,9 @@ def zones(fps):
     keep = []
     for py in (-S.SB_PORT_Y, S.SB_PORT_Y):                                         # USB-C bodies + notches
         keep.append(kpoly((py - 5.6, py + 5.6, S.sb_zb1 + S.USB_FACE_OUT - S.USB_DEPTH - 0.5, S.sb_zb1 + 1)))
-    for y, z in S.SB_LEAD_HOLES.values(): keep.append(Point(*K(y, z)).buffer(S.SB_LEAD_PAD / 2 + 0.3))   # PACK lead holes
-    for y, z in S.SB_TAP_HOLES.values(): keep.append(Point(*K(y, z)).buffer(S.SB_TAP_PAD_D / 2 + 0.3))
+    for y, z, l in S.sb_slots().values():                                          # nickel tab slots and their pads
+        a, b = l / 2 + S.SB_SLOT_RING + 0.3, S.SB_SLOT_W / 2 + S.SB_SLOT_RING + 0.3
+        keep.append(kpoly((y - a, y + a, z - b, z + b)))
     keep.append(Point(*K(0, S.SB_VENT_Z)).buffer(S.SB_VENT_D / 2 + 2))           # vent keep-out
     s = S.SB_ANT_SIDE; ya, yb = sorted((s * S.sb_ant_y[0], s * S.sb_ant_y[1]))
     ble = kpoly((ya, yb, S.sb_ant_zc - S.SB_ANT_MOD[0] / 2, S.sb_ant_zc + S.SB_ANT_MOD[0] / 2))

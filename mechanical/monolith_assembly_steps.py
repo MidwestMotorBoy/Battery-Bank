@@ -5,34 +5,38 @@ import numpy as np
 import monolith_shell as S
 from monolith_side_renders import Sheet, camera, proj, C, INK, MUTED, RULE, ACCENT, assembly
 
+MOD = ('holder', 'cell', 'mica', 'nickel', 'tails', 'wrap', 'frame', 'insul', 'board', 'ble', 'stand')
+CELLS = ('holder', 'cell', 'mica', 'nickel', 'tails', 'wrap')
+BOARD = ('board', 'ble', 'stand')
+def lift(dz, dx=0.0): return {k: (dx, 0, dz) for k in MOD}
+DROP = S.SB_WEDGE_T - S.SB_AXIAL_PRELOAD      # how low the module sits on its ring carrier before the lift
 STEPS = [
-    ('1  Cell module in its frame, on the bench',
-     'Weld the 4S pack (series strips, PACK tabs on C1 / C4), mica cross,\n+ rings, liner. Slide it into the TPU top frame; solder the five sense\nleads to the strip and the two 18 AWG PACK leads to their tabs.',
-     ('cell', 'mica', 'nickel', 'wire', 'lead', 'wrap', 'frame', 'strip'), {}),
-    ('2  Prepare the tray',
-     'Drop the TPU bottom holder into the floor zone: spring rings\nup, open over the C2 / C4 + caps.',
-     ('shell', 'holder'), {}),
-    ('3  Cell module in',
-     'Slide the framed module in through the open side. The crush\nribs squeeze the liner, the rings preload the ends. PACK leads\ngo down into the gap below the board zone.',
-     ('shell', 'holder', 'cell', 'mica', 'nickel', 'wire', 'lead', 'wrap', 'frame', 'strip'), {}),
-    ('4  Board in, over the two PACK leads',
-     'Lower the board 2.5 mm low, threading the PACK leads through\ntheir holes; the spring contacts land on the sense strip. Slide it\nup: the USB-C faces enter the top wall, the contacts wipe 2.5 mm.',
-     ('shell', 'holder', 'cell', 'mica', 'nickel', 'wire', 'lead', 'wrap', 'frame', 'strip', 'insul', 'board', 'ble', 'stand', 'contacts'),
-     {'board': (16, 0, -S.SB_SLIDE), 'ble': (16, 0, -S.SB_SLIDE), 'stand': (16, 0, -S.SB_SLIDE), 'contacts': (16, 0, -S.SB_SLIDE)}),
-    ('5  Shim, solder, program, test',
-     'Fit the shim under the board. Solder the two PACK leads on F.Cu,\nPACK- first, and trim. Check the five sense voltages, then\nprogram and test through the pogo pads / Tag-Connect.',
-     ('shell', 'holder', 'cell', 'mica', 'nickel', 'wire', 'lead', 'wrap', 'frame', 'strip', 'insul', 'board', 'ble', 'stand', 'contacts', 'shim', 'hold'), {}),
+    ('1  Cells welded, on the bench',
+     'Weld the 4S pack: series strips, the split PACK tabs on C1 / C4\nand the three sense tails, all cut long. Mica cross, + rings,\nkapton on the CELL2 tail, ring carrier under the cells, liner.',
+     CELLS, {}),
+    ('2  Frame and board on, on the bench',
+     'Top frame over the cells, fish paper on their board side. Lower\nthe board onto the frame bars with the seven tails through their\nslots. Solder on F.Cu, PACK- first, then trim.',
+     MOD, {k: (12, 0, 0) for k in BOARD}),
+    ('3  Test the module, on the bench',
+     'Check the seven voltages, flash the CC2340, gauge training on\nthe SMBus pads, charge and discharge on each port at 100 W.\nConformal coat and staking last. Fix anything here.',
+     MOD, {}),
+    ('4  Module into the tray',
+     'In through the open side, resting on its ring carrier: the board\nsits about 2.1 mm low, so the USB-C faces pass under the top wall.',
+     ('shell',) + MOD, lift(-DROP, 10.0)),
+    ('5  Lift and wedge',
+     'Lift the module 2.5 mm: the USB-C faces enter the top wall and the\nboard edge seats on the stops. Push the PA12 wedge in under it from\nthe open side; its nose takes up the 0.4 mm preload.',
+     ('shell',) + MOD + ('wedge', 'hold'), {'wedge': (14, 0, 0)}),
     ('6  Close',
-     'Gap pad on the tall parts, ePTFE vent patch, silicone bead in\nthe cover joint, cover under the top lip, 2 x M2 screws. Then\nthe caps snap on over the ends.',
+     'Gap pad on the tall parts, ePTFE vent patch, silicone bead in\nthe cover joint, cover under the top lip (it traps the wedge),\n2 x M2 screws. Then the caps snap on over the ends.',
      ('shell', 'cell', 'board', 'cover', 'capb_soft', 'capb_firm', 'capb_corner', 'capb_band', 'capt_soft', 'capt_firm', 'capt_corner', 'capt_band'), {}),
 ]
 
 if __name__ == '__main__':
     A = assembly()
     sh = Sheet(2700, 1560)
-    sh.header('Assembly: a framed cell module and the board',
-              'The framed cell module is built and tested on the bench and goes in first. The board drops in over two PACK leads; '
-              'five spring contacts on B.Cu pick up the sense strip. Only two joints are soldered inside the tray.')
+    sh.header('Assembly: one power module, built and tested on the bench',
+              'Cells, TPU frame and board are joined on the bench by seven nickel tails and fully tested there. In the tray the module '
+              'drops in, lifts 2.5 mm into the ports, and a wedge locks it. Nothing is soldered in the tray.')
     R = camera((1.0, -0.8, 0.5))
     for i, (title, text, keys, moves) in enumerate(STEPS):
         col, row = i % 3, i // 3
@@ -44,6 +48,6 @@ if __name__ == '__main__':
         sh.render(parts, R, o, pxi)
         sh.text(x0, y0 + 575, text, 14, fill=INK, spacing=5)
     sh.line([(40, 1520), (2660, 1520)], RULE, 1.5)
-    sh.text(40, 1530, 'Procedure and checks: docs/production/p0-assembly.md. Rings, gap pad and vent patch are not drawn.', 14, fill=MUTED)
+    sh.text(40, 1530, 'Procedure and checks: docs/production/p0-assembly.md. Fish-paper rings, kapton, gap pad and vent patch are not drawn.', 14, fill=MUTED)
     sh.save('monolith_side_assembly.png')
     print('wrote monolith_side_assembly.png')

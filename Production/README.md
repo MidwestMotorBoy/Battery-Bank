@@ -384,7 +384,7 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 
 The board has **no screw holes**. It is held by:
 - the top wall stop and the two USB-C bodies in their wall holes;
-- the shim under its bottom edge;
+- the PA12 wedge under its bottom edge (it replaced the shim, 2026-10-21);
 - the aluminium cover pressing down through the gap pad.
 
 The two M2 cover screws go into heat-set inserts in the tray's bottom corner pillars. Those pillars sit in the board's corner notches, beside the board, not through it.

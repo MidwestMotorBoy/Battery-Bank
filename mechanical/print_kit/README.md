@@ -26,14 +26,13 @@ The tray is dimensioned for MJF PA12 (±0.3 mm). FDM holes and slots usually pri
 | `02_cover_standin` | 1 | PETG / PLA | Flat. Stands in for the 1.0 mm aluminium cover: 2 × M2 clearance holes plus the vent hole. |
 | `03_cell_body` | 4 | PLA | Upright, 3 walls. A 21.5 mm can, open at the + end for ballast. |
 | `04_cell_cap` | 4 | PLA | Spigot down, nub up. Glue it into the can: this is the + end. |
-| `05_board_dummy` | 1 | PLA (green) | B.Cu face down. 1.6 mm board with the USB-C envelopes, the 4 cover standoffs, the 2 PACK lead holes and the BLE locating pocket. |
+| `05_board_dummy` | 1 | PLA (green) | B.Cu face down. 1.6 mm board with the USB-C envelopes, the 4 cover standoffs, the 7 nickel tab slots and the BLE locating pocket. |
 | `06_ble_block` | 1 | PLA | Glue it into the pocket on the B.Cu face. That makes the 7 × 10 × 2.3 mm CC2340 module envelope. |
 | `07_cap_bottom` | 1 | TPU 95A | Crush slab down. Load it with `_mod_soft` and `_mod_corner` as modifiers (see below). |
 | `08_cap_top` | 1 | TPU 95A | Same as the bottom cap. This one has the port well and the drain. |
-| `09_cell_holder_bottom` | 1 | TPU 95A | Cell frame, bottom holder: base plate and a slotted spring ring under each cell. Printed 0.4 mm proud on purpose, to preload the cell stack. |
-| `10_board_shim` | 1 | TPU 95A | Tiny. Print it alongside the spacer. |
-| `11_cell_frame_top` | 1 | TPU 95A | Cell frame, top part: top plate, the two bars that hold the cells off the board, and the web that carries the sense strip. Plate on the bed. |
-| `12_sense_strip_standin` | 1 | PLA | Stand-in for the 0.6 mm ENIG sense strip; glue it into the web pocket. |
+| `09_ring_carrier` | 1 | TPU 95A | Cell frame, ring carrier: thin base and a slotted spring ring under each cell. Rides with the module. Printed 0.4 mm proud on purpose, to preload the cell stack. |
+| `10_wedge` | 1 | PETG or PLA | Goes in last, under the lifted module; also holds the board's bottom edge. MJF PA12 in the real pack. |
+| `11_cell_frame_top` | 1 | TPU 95A | Cell frame, top part: top plate and the two bars that hold the cells off the board. Plate on the bed. |
 | `13_usb_hold` | 1 | EVA template or TPU | Two 2 mm pads (2 × 1 mm EVA). |
 
 **Cap modifiers:** in PrusaSlicer, Bambu Studio or Orca, add the two `_mod_` STLs as *modifiers* to the cap (right-click → Add modifier → Load). Do not add them as separate objects. They are already registered to the cap. Set their infill as follows:
@@ -64,10 +63,11 @@ For a plain fit mock-up, skip the ballast and just glue the caps on.
 
 ## Assembly order (as production)
 
-1. Bottom holder into the floor zone, rings up.
-2. Fish-paper liner (optional for a mock-up), then the 4 cells. The + nubs go to the ends shown in `../monolith_side_exploded.png`: C1 and C3 + up, C2 and C4 + down.
-3. Mica cross (optional), then the top frame over the cells (plate on the + ends, bars down the board side).
-4. Board dummy: drop it in, then slide it +z until the USB-C blocks pass through the top wall and the top edge seats on the stops. Board shim under the bottom edge.
+The real pack goes in as one bench-built module (cells, frame and board joined by nickel tabs). For the mock-up, build the same module on the bench and hold it together with tape:
+1. Ring carrier under the 4 cells, rings up. The + nubs go to the ends shown in `../monolith_side_exploded.png`: C1 and C3 + up, C2 and C4 + down.
+2. Mica cross (optional), then the top frame over the cells (plate on the + ends, bars down the board side), then the board dummy on the bars. Fish-paper liner round the outside (optional). Tape the lot.
+3. Module into the tray through the open side, resting on the ring carrier.
+4. Lift it about 2.5 mm until the USB-C blocks pass through the top wall and the top edge seats on the stops. Hold it there and push the wedge in under it, nose first, from the open side.
 5. USB-C hold pads, then the cover: top edge under the lip, then 2 × M2 into the bottom pillars. The screws are M2 thread-forming, or M2 × 3 × 3.2 heat-set inserts in the pilots.
 6. TPU caps over each end. The bead snaps into the groove round the tray.
 
