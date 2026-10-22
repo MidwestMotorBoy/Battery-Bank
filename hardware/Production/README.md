@@ -186,7 +186,7 @@ Parts: 256.
 The board moved from the top cap to one side of the cells, in a one-piece printed tray (`hardware/mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
 
 - **Outline:** 43.2 × 74.35 mm, about 3,164 mm² per side.
-    - The bottom corners are notched 5.0 × 4.8 mm around the tray's screw pillars.
+    - The bottom corners are notched 5.0 × 4.8 mm around the cover-screw bosses (on the wedge since 2026-10-21; they were tray pillars).
     - The outline comes from `hardware/mechanical/monolith_shell.py` (`sb_*`), which `tools/make_board.py` imports, so the tray and the board can't drift apart. The same outline is in `hardware/mechanical/monolith_side_pcb.dxf`.
     - It is centred at (100, 100). KiCad x is across the pack (left = the C1 / PACK- side), and KiCad y runs down the pack, with the port end at the top.
 - **Ports:** J501 (USB2) at x = 93.5 and J401 (USB1) at x = 106.5, on the top edge (y = 62.82), rotated 180°, locked. The outline leaves the two 10.2 mm notch gaps.
@@ -387,7 +387,7 @@ The board has **no screw holes**. It is held by:
 - the PA12 wedge under its bottom edge (it replaced the shim, 2026-10-21);
 - the aluminium cover pressing down through the gap pad.
 
-The two M2 cover screws go into heat-set inserts in the tray's bottom corner pillars. Those pillars sit in the board's corner notches, beside the board, not through it.
+The two M2 cover screws go into heat-set inserts in two bosses on the PA12 wedge (2026-10-21; they were tray pillars). The bosses sit in the board's corner notches, beside the board, not through it.
 
 What does mount on the board is **four SMT standoffs** on F.Cu, `COVER_STANDOFFS` on `mechanical/monolith_side_pcb.dxf`.
 

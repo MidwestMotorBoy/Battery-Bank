@@ -22,11 +22,11 @@ The tray opens on one side only, and the USB-C faces have to pass into the top w
 
 | Connection | From | Nickel | Slot (KiCad x, y), length along x × 0.6 mm |
 |---|---|---|---|
-| PACK− | C1 bottom (can) | 0.2 × 7 tab, power finger 4.2 mm | (87.70, 135.18), 4.6 |
-| 1N (gauge Kelvin) | same tab, Kelvin finger 1.2 mm | | (92.00, 135.18), 1.6 |
+| PACK− | C1 bottom (can) | 0.2 × 7 tab, power finger 4.2 mm | (87.15, 135.18), 4.6 |
+| 1N (gauge Kelvin) | same tab, Kelvin finger 1.2 mm | | (91.45, 135.18), 1.6 |
 | CELL2 | C2+ / C3− strip, bottom | 0.15 × 3 tail, between the spring rings, kapton wrapped | (100.00, 135.15), 3.4 |
-| 4P (gauge Kelvin) | PACK+ tab, Kelvin finger 1.2 mm | | (108.00, 135.18), 1.6 |
-| PACK+ | C4 bottom (+ cap) | 0.2 × 7 tab, power finger 4.2 mm | (112.30, 135.18), 4.6 |
+| 4P (gauge Kelvin) | PACK+ tab, Kelvin finger 1.2 mm | | (108.55, 135.18), 1.6 |
+| PACK+ | C4 bottom (+ cap) | 0.2 × 7 tab, power finger 4.2 mm | (112.85, 135.18), 4.6 |
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
@@ -55,12 +55,11 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`.
 - **Insulation:** kapton tape, fish-paper + rings.
 - **Printed parts:**
     - the tray (MJF PA12);
-    - the wedge (MJF PA12);
-    - the TPU cell frame: ring carrier and top frame;
+    - the wedge (MJF PA12), with two M2 heat-set inserts in its corner bosses;
+    - the TPU cell cage, and the TPU cell frame (ring carrier and top frame);
     - the TPU caps.
 - **Sheet stock:**
-    - 0.2 mm mica, for the cross;
-    - 0.2 mm fish paper: liner, the sheet on the board side, four + end rings;
+    - 0.2 mm fish paper: the sheet on the board side, four + end rings;
     - 1 mm EVA, only for the two USB-C hold-downs.
 - **Cover and fixings:** the anodized cover and 2 × M2 thread-forming screws with a nylon patch.
 - **Other:**
@@ -74,12 +73,11 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`.
 
 ### 1. Cells welded, on the bench
 1. **Check the cells.** Measure each cell's voltage and internal resistance, and reject outliers.
-2. **Ring carrier under the cells**, rings up, and the cells in their positions (`SB_CELLS` in the model: C1 and C3 + up, C2 and C4 + down). Fish-paper rings on the four + ends, mica cross between the cells.
+2. **Cells into the cage**, standing on the ring carrier (rings up), in their positions (`SB_CELLS` in the model: C1 and C3 + up, C2 and C4 + down). The webs keep them 1.4 mm apart. Fish-paper rings on the four + ends.
 3. **Weld:**
-    - Series strips: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
+    - Series strips, over the cage: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
     - The CELL2 tail onto the middle of the bottom strip, along the channel between the spring rings. Wrap it in kapton: it passes under the C1 and C4 rims.
     - The PACK− tab on the C1 bottom and the PACK+ tab on the C4 bottom, fingers toward the board side.
-4. **Liner** round the −x and ±y faces.
 
 ### 2. Frame and board on, on the bench
 1. Top frame over the cells: plate on the top ends, bars down the board side.
@@ -101,19 +99,19 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`.
 4. **Conformal coat and staking**, last. Keep the coat off the antenna end and the pogo pads.
 
 ### 4. Module into the tray
-Slide it in through the open side, resting on its ring carrier. The board sits about 2.1 mm low, so the USB-C faces pass under the top wall. The crush ribs squeeze the liner as it goes in.
+Slide it in through the open side, resting on its ring carrier. The board sits about 2.1 mm low, so the USB-C faces pass under the top wall. The crush ribs bear on the cell wraps as it goes in.
 
 ### 5. Lift and wedge
 1. Lift the module 2.5 mm, for example with a flat spudger under the board's bottom edge, until the USB-C faces sit in the top wall and the board's top edge bears on the stops.
 2. Hold it there and push the wedge in under it from the open side, nose first. The nose lifts the ring carrier the last 0.4 mm, which preloads the cell stack.
-3. Check that the wedge's +x end sits flush with the cover rebate, so the cover will trap it.
+3. It clicks home over the ridge on the tray floor. Its two corner bosses now sit beside the board's notches, ready for the cover screws.
 
 ### 6. Close
 1. Gap pad on the tall parts, kept clear of the vent.
 2. ePTFE vent patch inside the cover.
 3. Silicone bead along the cover joint.
 4. USB-C hold-downs (2 × 1 mm EVA).
-5. **Cover:** tuck it under the top lip, then drive the 2 M2 screws. It traps the wedge, and the four cover standoffs sit 0.2 mm under it.
+5. **Cover:** tuck it under the top lip, then drive the 2 M2 screws into the wedge's inserts. The four cover standoffs sit 0.2 mm under it.
 6. Snap the TPU caps on.
 
 ## Open items

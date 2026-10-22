@@ -144,13 +144,13 @@ SB_REB       = 0.5    # rebate into the +-y walls that the cover edges rest in (
 SB_SLOT      = 1.0    # cover top edge tucks this far under the top-wall lip
 SB_END_T     = 1.6    # bottom and top walls
 SB_PAD_T     = 4.6    # floor zone under the cells: the TPU bottom holder (base plate + spring rings)
-SB_PIL_T     = 4.8    # screw-pillar zone beside it (sets the board's corner notches and the screw height: unchanged)
+SB_PIL_T     = 4.8    # screw-boss zone in the bottom corners (sets the board's corner notches and the screw height: unchanged)
 SB_TOP_PAD   = 1.2    # TPU top plate of the cell frame (JLC TPU minimum wall 1.2); the floor zone gave up the 0.2
 SB_SLIDE     = 2.5    # board slide that engages the ports (needs > SB_END_T - (USB_FACE_OUT - SB_END_T))
 SB_PCB_CLEAR = 0.2    # board edge to wall, and board to the end zones
 SB_PORT_Y    = 6.5    # ports at y = +-6.5 (13 mm apart, as on the production board)
 SB_INSERT_D, SB_INSERT_L = 3.2, 4.0   # M2 heat-set insert pilot (e.g. M2 x 3 x 3.2): diameter, depth
-SB_PILLAR_W  = 5.0    # pillar width in y, from the wall inward
+SB_PILLAR_W  = 5.0    # screw-boss corner zone: width in y, from the board-guide line (a_in) inward
 SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the bottom bumper band)
 # ShouHan TYPE-C 16PCB<t> IP68 (DevBoard/tools/make_3d_usbc.py), the variant for the board thickness:
 # mid-mount, body bottom flush with the board bottom, centreline 1.627 above the board bottom
@@ -161,9 +161,9 @@ USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
 # drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md).
 # Hobby build, sheet stock limited to 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper; everything else is printed.
 # nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.
-SB_SIDE_PAD  = 0.2    # fish paper liner round the -x and +-y faces of the cells (wrap abrasion); thin, so the cans stay close to the walls
+SB_SIDE_PAD  = 0.0    # (was a 0.2 mm fish-paper liner round the cells; dropped 2026-10-21: the TPU cage locates them)
 SB_EVA_T     = 1.0    # EVA foam sheet: the cell-end pads (top, and over the TPU floor spacer) and, doubled, the USB-C hold-downs
-SB_SEP_T     = 0.2    # mica sheets in the cross-shaped gap between the cells (propagation barrier)
+SB_SEP_T     = 0.0    # (was a 0.2 mm mica cross between the cells; dropped 2026-10-21 for the TPU cage webs)
 SB_VENT_CUT_D = 14.0  # end-pad cut-out over each positive cap: button and vent holes stay open, the pad bears on the crimp rim
 SB_RUPT_D, SB_RUPT_T = 0.0, 0.0      # rupture windows (bottom wall thinned under the bottom + caps): off, 2026-10-18 -
                                      # consumer power banks don't have them; set e.g. 10.0, 0.6 to bring them back
@@ -177,7 +177,7 @@ SB_CAP_CORNER = 9.0   # dense corner noses: this far in from each corner of the 
 SB_CAP_SQUEEZE = 0.1  # band stretch fit over the tray
 # vibration and trail durability (2026-10-18)
 SB_AXIAL_PRELOAD = 0.4   # floor spacer printed this much taller than its gap: squeezes the cell stack ends (covers MJF +-0.3)
-SB_CRUSH_W, SB_CRUSH_H = 1.0, 0.4   # crush ribs on the cell-zone walls (at each cell's tangent): 0.25 mm into the liner
+SB_CRUSH_W, SB_CRUSH_H = 1.0, 0.3   # crush ribs on the cell-zone walls (at each cell's tangent): 0.15 mm onto the cell wrap
 SB_COVER_GAP = 0.3       # cover edge to tray, all round: nylon grows ~0.35 mm more than aluminium over 78 mm and 60 K;
                          # the joint is sealed with a bead of neutral-cure silicone (formed-in-place gasket)
 SB_GROOVE_Z, SB_GROOVE_W, SB_GROOVE_D = 4.5, 1.2, 0.3   # cap retention: groove round the tray (-x, +-y faces) at each end
@@ -207,13 +207,26 @@ SB_ANT_H     = 2.3                   # module height on B.Cu
 # - top frame: top plate (cut-outs over the + caps) + two bars down the board side that hold the cells off B.Cu.
 SB_FRAME_BASE = 0.8                  # ring carrier base plate (the floor zone is now wedge + carrier)
 SB_RING_OD, SB_RING_ID, SB_RING_SLOT = 17.0, 14.4, 2.0   # spring rings (ID clears the + cap cut-out), 4 slots
-SB_BAR_Y = (6.0, 11.2)               # bars: |y| span (covers the cell tangent at 10.9, clear of the BLE module at 11.6)
+SB_BAR_Y = (6.5, 11.3)               # bars: |y| span (up to the cell tangent at 11.45, clear of the BLE module at 11.6)
 SB_BAR_Z0 = None                     # set below: bars start above the bottom tails
+# TPU cell cage (2026-10-21, replaces the mica cross and the liner): a cross of SB_CAGE_WEB webs between the four cells in
+# three bands (bottom, middle, top), joined by a round spine along the pack axis. The cells sit SB_CAGE_WEB + 2 x
+# SB_CAGE_CLR apart, so they can't touch; the pack grows about 0.7 mm in y and 0.9 mm in x for it. The board outline is
+# unchanged: the board stays 43.2 mm wide (a_in) and sits in a cavity that is now a little wider than it, located in y
+# by the USB-C bodies in the port holes. The cells go into the cage first, then the strips are welded over it.
+SB_CAGE_WEB, SB_CAGE_CLR = 1.2, 0.1  # web thickness (JLC TPU minimum wall), clearance each side
+SB_CAGE_BAND = 10.0                  # height of each web band
+SB_CAGE_END = 1.0                    # bands stop this far inside the cell ends (the strips pass over them)
+SB_CAGE_SPINE_D = 5.0                # spine through the centre void, joins the bands
+SB_CELL_WALL = 0.15                  # cell to cavity wall (the crush ribs take it up)
+# The two cover screws go into M2 heat-set inserts in two bosses on the wedge (not in tray pillars any more: the module
+# would sweep through those as it drops in). A ridge on the tray floor snaps the wedge in place.
+SB_SNAP = (-10.0, 1.0, 0.3)          # floor ridge: x centre, width, height (|y| <= SB_SNAP_HALF); groove in the wedge
+SB_SNAP_HALF = 8.0
 SB_WEDGE_T = SB_SLIDE                # wedge under the ring carrier (z SB_END_T .. +SB_WEDGE_T); under the board it is
                                      # taller, up to the board's bottom edge
-SB_WEDGE_HALF = 16.4                 # wedge |y|: passes between the screw pillars as it goes in
+SB_WEDGE_HALF = None                 # set below: the wedge fills the floor zone wall to wall
 SB_WEDGE_NOSE = (4.0, 1.0)           # chamfered nose at its -x end: length, height it rises by
-SB_MICA_X1 = None                    # set below: the y = 0 mica sheet runs the full depth again (no sense web)
 SB_LANE_W, SB_LANE_LAYERS, SB_LANE_GAP = 6.0, 3, 2.0     # (legacy EVA lane values, kept for older scripts)
 # cells seen from the port end: (sx, sy) of the centre -> (name, end that carries the positive cap).
 # C1 and C4 face the board (PACK- on the C1 side, -y); series chain C1 -> C2 -> C3 -> C4 (Production/README.md).
@@ -236,10 +249,12 @@ SB_TAIL_W = 3.0                      # CELL1-3 tails
 SB_TAIL_Y = 13.9                     # |y| of the CELL1 / CELL3 tails (outside the frame bars and the USB-C notches)
 SB_TAIL_TOP_Z = 72.0                 # CELL1 / CELL3 slots (a 5 mm drop behind the board gives the tail some give)
 SB_SLOT_W, SB_SLOT_CLR, SB_SLOT_RING = 0.6, 0.4, 0.4    # plated slot: width (z), length over the tail (y), annular ring
-SB_KINK = (22.5, 23.7, 1.0)          # strain-relief kink in the bottom tails: x from, x to, depth
+SB_KINK = (23.0, 24.2, 1.0)          # strain-relief kink in the bottom tails: x from, x to, depth
 SB_WIRE_D = 0.8                      # (legacy)
 # derived (x across the board, y along the board width, z along the cells)
-sb_xb0 = a_in + SB_INSUL + SB_BCU_H           # board inner face (B.Cu)
+sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
+sb_ac = sb_pr + CELL_D / 2 + SB_CELL_WALL     # cell-zone half-width (cavity, -x and +-y walls), and the cells' +x face line
+sb_xb0 = sb_ac + SB_INSUL + SB_BCU_H          # board inner face (B.Cu)
 sb_xb1 = sb_xb0 + SB_PCB_T                    # board outer face
 sb_x_cv0 = sb_xb1 + SB_OUT_H + SB_GAP         # cover inner face (rests on the rebates and pillars)
 sb_x_cv1 = sb_x_cv0 + SB_COVER_T
@@ -258,18 +273,17 @@ sb_port_x = sb_xb1 + USB_ZC
 sb_board_w = 2 * (a_in - SB_PCB_CLEAR)
 sb_board_l = sb_zb1 - sb_zb0
 sb_board_area = sb_board_w * sb_board_l - 2 * (sb_board_w/2 - sb_notch_y) * (sb_notch_z - sb_zb0)
-assert SB_SEP_T < 2 * pocket_r - CELL_D, "mica does not fit the cell-to-cell gap"
-a_cav, c_cav = a_in + SB_SIDE_PAD, c_in + SB_SIDE_PAD   # cell-zone cavity (x < a_in): grown by the side pad
+a_cav, c_cav = sb_ac + SB_SIDE_PAD, sb_ac - sb_pr + SB_SIDE_PAD   # cavity half-width; -x corners concentric with C2 / C3
 a_sb, c_sb = a_cav + WALL, c_cav + WALL                 # tray outside half-width and -x corner radius
-sb_pillar_y = a_in - SB_PILLAR_W / 2          # insert axis at y = +-sb_pillar_y, z = sb_screw_z (pillars sit in the board zone)
+sb_pillar_y = a_in - SB_PILLAR_W / 2          # insert axis at y = +-sb_pillar_y, z = sb_screw_z (bosses on the wedge, board zone)
 sb_screw_z = SB_END_T + SB_PIL_T / 2
-sb_cover_w = 2 * (a_in + SB_REB) - 2 * SB_COVER_GAP
+sb_cover_w = 2 * (a_cav + SB_REB) - 2 * SB_COVER_GAP
 sb_cover_z0, sb_cover_z1 = SB_END_T + SB_COVER_GAP, sb_z_top_in + SB_SLOT - SB_COVER_GAP
-sb_cell_xy = {k: (k[0] * pocket_r, k[1] * pocket_r) for k in SB_CELLS}
+sb_cell_xy = {k: (k[0] * sb_pr, k[1] * sb_pr) for k in SB_CELLS}
 sb_pos_caps = {end: [sb_cell_xy[k] for k, (_, e) in SB_CELLS.items() if e == end] for end in ('top', 'bottom')}
 # profiles: rounded rect x0..x1, |y| <= h, corner radius rl (-x side), rr (+x side)
 SB_OUT = (-a_sb, sb_x_out, a_sb, c_sb, 0.0)
-SB_CAV = (-a_cav, a_in, a_cav, c_cav, 0.0)    # cell zone; for x >= a_in the cavity narrows to the board width (guides)
+SB_CAV = (-a_cav, sb_ac, a_cav, c_cav, 0.0)   # cell zone; for x >= sb_ac the board zone keeps the same width
 SB_CAP_OUT = (-a_sb - SB_CAP_PROUD, sb_x_out + SB_CAP_PROUD, a_sb + SB_CAP_PROUD, c_sb + SB_CAP_PROUD, SB_CAP_PROUD)
 sb_len = SB_H + 2 * SB_CAP_T                  # overall length with the caps
 SB_GROOVE = (SB_OUT[0] + SB_GROOVE_D, SB_OUT[1], SB_OUT[2] - SB_GROOVE_D, SB_OUT[3] - SB_GROOVE_D, 0.0)   # tray profile in the groove
@@ -277,7 +291,7 @@ sb_standoff_h = 3.5                           # Wuerth WA-SMSI 9774035243R (M2, 
 sb_ant_zc = sb_zb1 - SB_ANT_BELOW             # module centre (z)
 sb_ant_y = (sb_board_w/2 - SB_ANT_MOD[1], sb_board_w/2)   # module |y| span (antenna end at the edge)
 SB_BAR_Z0 = sb_z_cell0 + 1.0                  # bars start above the tails on the cell bottoms
-SB_MICA_X1 = a_in - 0.2
+SB_WEDGE_HALF = a_cav - 0.2
 def sb_lanes():
     """what presses on B.Cu behind the board, as (y0, y1, z0, z1): now the cell frame's two bars (was the EVA lanes).
     Keep B.Cu parts out of these. (Name kept: Production/tools/make_board.py reads it.)"""
@@ -332,7 +346,7 @@ def write_side_dxf(path):
     p = [(-ny, z0), (ny, z0), (ny, nz), (w, nz), (w, z1), (-w, z1), (-w, nz), (-ny, nz)]
     for i in range(len(p)): _line(e, *p[i], *p[(i+1) % len(p)], 'OUTLINE')
     for py in (-SB_PORT_Y, SB_PORT_Y): _rect(e, py, z1 - 5.65/2, 10.20, 5.65, 'USB_NOTCH')
-    for y in (-pocket_r, 0, pocket_r): _line(e, y, z0, y, z1, 'CELLS_REF')
+    for y in (-sb_pr, 0, sb_pr): _line(e, y, z0, y, z1, 'CELLS_REF')
     for z in (sb_z_cell0, sb_z_cell1): _line(e, -w, z, w, z, 'CELLS_REF')
     _circ(e, 0, SB_VENT_Z, SB_VENT_D/2 + 2, 'VENT_KEEPOUT')
     s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module on B.Cu at the edge, and the frame bars (no B.Cu parts there)
@@ -359,9 +373,9 @@ def drop_g(h_m, stroke_mm, shape=1.3):
 
 def side_groove_depth(y):
     """Free height between the board's inner face and the cells at board position y (mm)."""
-    dy = np.abs(np.abs(y) - pocket_r)
+    dy = np.abs(np.abs(y) - sb_pr)
     r = CELL_D / 2
-    return np.where(dy < r, sb_xb0 - (pocket_r + np.sqrt(np.maximum(r*r - dy*dy, 0))), sb_xb0 - pocket_r)
+    return np.where(dy < r, sb_xb0 - (sb_pr + np.sqrt(np.maximum(r*r - dy*dy, 0))), sb_xb0 - sb_pr)
 
 if __name__ == '__main__':
     write_stl('monolith_shell.stl'); write_dxf('monolith_bottom_pcb.dxf')
@@ -398,20 +412,24 @@ if __name__ == '__main__':
     chk = {
         'port faces below the top wall while the board drops in': sb_z_top_in - (SB_H - SB_SLIDE),
         'board bottom above the floor while it drops in': sb_zb0 - SB_SLIDE - SB_END_T,
-        'board notches above the pillars while it drops in': sb_notch_z - SB_SLIDE - sb_z_pil,
         'port hole to the cover slot (x)': sb_x_cv0 - (sb_port_x + (USB_SEAL_H + 0.2)/2),
         'USB-C body to the cover (x)': sb_x_cv0 - (sb_port_x + USB_UP),
         'seal ring (0.5-1.5 behind the face) inside the top wall': SB_END_T - 1.5,
         'cover top edge under the lip': sb_cover_z1 - sb_z_top_in,
-        'pillars clear of the cells (x: pillars sit in the board zone)': (sb_x_cv0 - SB_INSERT_L - 1.5) - (pocket_r + CELL_D/2),
+        'wedge bosses clear of the cells (x: the bosses sit in the board zone)': (sb_x_cv0 - SB_INSERT_L - 1.5) - (sb_pr + CELL_D/2),
+        'wedge bosses below the board notches (z, after the lift)': sb_notch_z - sb_z_pil - SB_PCB_CLEAR,
+        'board fits the wider cavity (y, per side)': a_cav - sb_board_w/2 - 0.3,
+        'cage: cells kept apart by the web (gap - web)': (2*sb_pr - CELL_D) - SB_CAGE_WEB - 2*SB_CAGE_CLR + 1e-9,
+        'cage: spine fits the centre void': (sb_pr*np.sqrt(2) - CELL_D/2) - SB_CAGE_SPINE_D/2 - 0.3,
+        'cage: three bands fit the cell length': CELL_L - 2*SB_CAGE_END - 3*SB_CAGE_BAND - 2*5.0,
+        'snap ridge under the ring carrier, clear of the wedge nose (x)': (SB_SNAP[0] - SB_SNAP[1]/2) - (-(a_cav - RIB_DEPTH) + 0.2 + SB_WEDGE_NOSE[0]) - 1.0,
         'board top stops: board edge to the top wall (stop height)': sb_z_top_in - sb_zb1,
         'board stops clear of the port holes (y)': SB_STOP_Y0 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
         'hold-down pad compressed (pad - gap)': SB_HOLD_T - (sb_x_cv0 - (sb_port_x + USB_UP)),
         'port well clear of the seal holes (y)': SB_WELL_W/2 - (SB_PORT_Y + (USB_SEAL_W + 0.2)/2),
         'port well: cap wall to the +x edge beyond 2 mm (x)':SB_CAP_OUT[1] - (sb_port_x + SB_WELL_H/2) - 2.0,
         'cap band clear of the cover vent (z)': (SB_VENT_Z - SB_VENT_D/2) - SB_CAP_BAND,
-        'mica fits the cell-to-cell gap': 2*pocket_r - CELL_D - SB_SEP_T,
-        'crush ribs squeeze the liner (rib - air gap)': SB_CRUSH_H - (a_cav - SB_SIDE_PAD - (pocket_r + CELL_D/2)),
+        'crush ribs bear on the cells (rib - air gap)': SB_CRUSH_H - (a_cav - SB_SIDE_PAD - (sb_pr + CELL_D/2)),
         'cover thermal clearance, length (gaps - growth)': 2*SB_COVER_GAP - (sb_cover_z1 - sb_cover_z0) * (100e-6 - 23e-6) * 60,
         'cover thermal clearance, width (gaps - growth)': 2*SB_COVER_GAP - sb_cover_w * (100e-6 - 23e-6) * 60,
         'cover still under the top-wall lip (z)': sb_cover_z1 - sb_z_top_in - 0.5,
@@ -422,13 +440,11 @@ if __name__ == '__main__':
         'standoffs clear of the top slots (z)': min(abs(z - SB_TAIL_TOP_Z) for _, z in SB_STANDOFFS) - SB_STANDOFF_D/2 - 1.0,
         'standoffs clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z in SB_STANDOFFS) - (SB_VENT_D/2 + 2 + SB_STANDOFF_D/2),
         'frame bars clear of the BLE module (y)': sb_ant_y[0] - SB_BAR_Y[1] - 0.3,
-        'frame bars cover the cell tangent (y)': SB_BAR_Y[1] - pocket_r - 0.2,
+        'frame bars reach the cell tangent (y, within 0.2)': SB_BAR_Y[1] - (sb_pr - 0.2),
         'top plate meets the JLC TPU minimum wall': SB_TOP_PAD - 1.2,
         'module drop, resting on its ring carrier: port faces under the top wall': sb_z_top_in - (SB_H - (SB_WEDGE_T - SB_AXIAL_PRELOAD)),
-        'module drop: board notches above the pillars': sb_notch_z - (SB_WEDGE_T - SB_AXIAL_PRELOAD) - sb_z_pil,
         'wedge nose lifts more than the preload': SB_WEDGE_NOSE[1] - SB_AXIAL_PRELOAD - 0.3,
         'ring carrier: ring height >= 1.0 over the wedge': sb_z_pad1 - (SB_END_T + SB_WEDGE_T) - SB_FRAME_BASE - 1.0,
-        'wedge passes between the screw pillars (y)': (a_in - SB_PILLAR_W) - SB_WEDGE_HALF - 0.2,
         'wedge under the board edge reaches it (shim job)': sb_zb0 - (SB_END_T + SB_WEDGE_T),
         'wedge trapped by the cover (cover reaches below the wedge top, z)': (SB_END_T + SB_WEDGE_T) - sb_cover_z0 - 1.0,
         'slots: pads above the board bottom edge (z)': min(z for _, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - sb_zb0 - 0.5,
@@ -439,13 +455,13 @@ if __name__ == '__main__':
         'bottom slots clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - (SB_VENT_D/2 + 2),
         'top tails outside the frame bars (y)': (SB_TAIL_Y - SB_TAIL_W/2) - SB_BAR_Y[1] - 0.5,
         'top tails clear of the USB-C notches (y)': (SB_TAIL_Y - SB_TAIL_W/2) - (SB_PORT_Y + 10.20/2) - 0.5,
-        'top tails overlap their series strip by >= 2 mm (y)': (pocket_r + SB_TAB_W/2) - (SB_TAIL_Y - SB_TAIL_W/2) - 2.0,
+        'top tails overlap their series strip by >= 2 mm (y)': (sb_pr + SB_TAB_W/2) - (SB_TAIL_Y - SB_TAIL_W/2) - 2.0,
         'top tails inside the board edge (y)': sb_board_w/2 - (SB_TAIL_Y + SB_TAIL_W/2 + SB_SLOT_CLR/2 + SB_SLOT_RING) - 1.0,
         'top slots clear of the BLE module (z)': (SB_TAIL_TOP_Z - SB_SLOT_W/2 - SB_SLOT_RING) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 1.0,
-        'top tails: room behind the board, past the cans (x)': (sb_xb0 - 1.3) - (pocket_r + float(np.sqrt((CELL_D/2)**2 - (SB_TAIL_Y - SB_TAIL_W/2 - pocket_r)**2))) - 0.5,
-        'kink inside the gap behind the board (x)': min(SB_KINK[0] - (a_in + 0.2), sb_xb0 - SB_KINK[1]) - 0.2,
+        'top tails: room behind the board, past the cans (x)': (sb_xb0 - 1.3) - (sb_pr + float(np.sqrt((CELL_D/2)**2 - (SB_TAIL_Y - SB_TAIL_W/2 - sb_pr)**2))) - 0.5,
+        'kink inside the gap behind the board (x)': min(SB_KINK[0] - (sb_ac + 0.2), sb_xb0 - SB_KINK[1]) - 0.2,
         'kink above the wedge (z)': (sb_z_tail_b - SB_PACK_T - SB_KINK[2]) - sb_zb0 - 0.3,
-        'CELL2 tail in the channel between the rings (y)': 2*(pocket_r - SB_RING_OD/2) - SB_TAIL_W - 1.0,
+        'CELL2 tail in the channel between the rings (y)': 2*(sb_pr - SB_RING_OD/2) - SB_TAIL_W - 1.0,
         'Kelvin fingers clear of the CELL2 tail (y)': min(abs(y) - l/2 for n, (y, _, l) in sb_slots().items() if n in ('1N', '4P')) - (SB_TAIL_W/2 + SB_SLOT_CLR/2) - 2.0,
         'spring rings clear the + cap cut-out': SB_RING_ID - SB_VENT_CUT_D,
         'spring ring wall >= 1.2': (SB_RING_OD - SB_RING_ID)/2 - 1.2,

@@ -30,25 +30,25 @@ All of these come from the Python models in `hardware/mechanical/`. Re-run the s
 The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py`), alongside the current design:
 
 - **Side-board layout (2026-10-18, the current design).** The board runs along one face of the cells, inside a one-piece printed tray whose only opening is the board side.
-    - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into the bottom corner pillars (thread-forming screws straight into the MJF nylon, or heat-set inserts).
+    - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into heat-set inserts in two bosses on the PA12 wedge, in the bottom corners beside the board's notches. (They were tray pillars until 2026-10-21; the module would sweep through those as it drops in.)
     - **Ports:** the power module (cells, frame and board, joined on the bench) drops in, then lifts 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall. A PA12 wedge pushed in under it holds it there.
     - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.
     - **Drop protection (2026-10-18):** no potting. The basis is `../reports/Battery pack potting and drop protection.md`. The tray, cells and board form one stiff core, and TPU end caps outside it are the crush zone.
         - **End caps:** 8 mm of TPU lattice, graded soft-outside and firm-behind. Corner noses are dense. A solid band, 2 mm proud of the tray, wraps 9 mm over each end, so flat side drops land on the bands. The top cap has one port well for both plugs.
-        - **Inside (2026-10-21: a printed TPU cell frame replaces all the foam; sheet stock is 0.2 mm mica and 0.2 mm fish paper):**
-            - **TPU cell frame, two parts** (`monolith_side_ring_carrier.stl`, `monolith_side_cell_frame_top.stl`). Both ride with the module.
+        - **Inside (2026-10-21: printed TPU holds the cells; the only sheet stock left is 0.2 mm fish paper):**
+            - **TPU cell cage** (`monolith_side_cell_cage.stl`): a cross of 1.2 mm webs between the four cells in three 10 mm bands (bottom, middle, top), joined by a 5 mm spine through the centre void. The cells sit 1.4 mm apart, so they can't touch, and the cage replaced the mica cross and the fish-paper liner. The cells drop into its quadrants and the strips are welded over it.
+            - **TPU cell frame, two parts** (`monolith_side_ring_carrier.stl`, `monolith_side_cell_frame_top.stl`). The cage and frame ride with the module.
                 - **Ring carrier:** a thin base and a slotted spring ring under each cell, printed 0.4 mm proud to preload the stack. It's open over the + caps.
                 - **Top frame:** a 1.2 mm top plate (+ cap cut-outs) and two bars down the board side that hold the cells off B.Cu.
                 - The floor zone gave up 0.2 mm for the top plate, so the board outline is unchanged.
-            - **PA12 wedge** (`monolith_side_wedge.stl`): 2.5 mm under the ring carrier, and up to the board's bottom edge under the board, so it is also the old shim. It goes in last, nose first, and the cover traps it.
-            - Fish paper, 0.2 mm, in three places: a liner round the cells (the cans stay close to the walls for heat), a sheet on the cells' board-side face (it also covers the B.Cu parts), and rings on the four + ends (21 mm OD, about 10 mm hole).
-            - The frame bars sit behind B.Cu at |y| 6.0–11.2 mm. Keep B.Cu parts out of them (`BCU_FRAME_BARS` on the board DXF) and under 2.3 mm tall elsewhere. `sb_lanes()` now returns the bars, so `make_board.py`'s keep-outs follow.
-            - A 0.2 mm mica cross between the cells.
+            - **PA12 wedge** (`monolith_side_wedge.stl`): 2.5 mm under the ring carrier, and up to the board's bottom edge under the board, so it is also the old shim. It carries the two cover-screw bosses. It goes in last, nose first, and a groove in its underside snaps over a 0.3 mm ridge on the tray floor.
+            - Fish paper, 0.2 mm, in two places: a sheet on the cells' board-side face (the only thing between the cans and the live B.Cu pads and nickel tails), and rings on the four + ends (21 mm OD, about 10 mm hole) under the strips that cross each can's negative shoulder. No liner: the cans sit straight on the tray walls, for heat.
+            - The frame bars sit behind B.Cu at |y| 6.5–11.3 mm. Keep B.Cu parts out of them (`BCU_FRAME_BARS` on the board DXF) and under 2.3 mm tall elsewhere. `sb_lanes()` now returns the bars, so `make_board.py`'s keep-outs follow.
             - Board top stops, so drop loads reach the tray through the board edge rather than the USB-C.
             - 2 x 1 mm EVA hold-downs over the USB-C bodies.
         - **No rupture windows:** removed 2026-10-18. No consumer power bank found has a designed burst point (UL 2056 has no venting requirement), and a printed tray splits anyway. The pad cut-outs stay so the cells' own vents aren't blocked.
-        - **Cost of the protection:** the pack is now 58.7 × 50.4 × 96.6 mm, and about 369 g modelled, including the frame, wedge and mica. The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
-        - **Unchanged:** the board outline and ports (the tray only widens in the cell zone).
+        - **Cost of the protection:** the pack is now 59.6 × 51.1 × 96.6 mm (the cage added 0.9 and 0.7 mm), and about 370 g modelled, including the cage, frame and wedge. The estimated peak is about 250 g at 1.0 m and about 375 g at 1.5 m. These are estimates, to be measured.
+        - **Unchanged:** the board outline and ports. The cavity is 0.6 mm wider than the board each side now; the USB-C bodies in the port holes locate it.
         - **Pack connections (2026-10-21): one power module.** The cells, TPU frame and board are joined on the bench by seven nickel tails through seven plated slots, soldered on F.Cu, and the module is programmed and tested before it goes into the tray. Nothing is soldered in the tray (`monolith_side_tabs.png`, `monolith_side_assembly.png`, `docs/production/p0-assembly.md`).
             - **PACK− and PACK+:** a 0.2 × 7 mm nickel tab on the C1 and C4 bottoms. Near the board it splits into a 4.2 mm power finger and a 1.2 mm Kelvin finger (1N / 4P), each through its own slot, and a 1 mm kink in the gap behind the board gives it some give.
             - **CELL2:** a 3 mm tail off the bottom strip, along the channel between the spring rings (kapton wrapped), into its slot at the bottom edge.
@@ -57,9 +57,9 @@ The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py
             - 1N and 4P are separate nets from the PACK power pads: they carry the gauge's Kelvin sense.
         - **Vibration and trail durability (2026-10-18):**
             - **Cells are preloaded everywhere:**
-                - crush ribs on the cell-zone walls flatten 0.25 mm into the liner;
+                - crush ribs on the cell-zone walls bear 0.15 mm onto the cell wraps;
                 - the ring carrier prints 0.4 mm taller than its zone, which takes up MJF's ±0.3 mm;
-                - the frame bars press the cells against the walls through the liner.
+                - the frame bars press the cells against the walls, and the cage webs hold them apart.
             - **Cover:**
                 - It has a 0.3 mm joint all round, because nylon grows about 0.35 mm more than aluminium over 60 K.
                 - The joint is sealed with a bead of neutral-cure silicone, which acts as the gasket.
@@ -79,7 +79,7 @@ The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py
             - To make room for it, the board sits 2.3 mm further from the cells (`SB_BCU_H`); the outline and ports didn't change.
             - `monolith_side_pcb.dxf` shows it on `BLE_MODULE_BCU`.
     - **Board:** 1.6 mm thick (for cost; the pack is 0.8 mm wider than with a 0.8 mm board). The outline is on the production board as well (`hardware/Production/tools/make_board.py` imports it from `monolith_shell.py`).
-    - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the pillars) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
+    - **Files:** parts are `monolith_side_*.stl`; the board outline (with corner notches for the wedge's screw bosses) is `monolith_side_pcb.dxf`; the cover's flat pattern is `monolith_side_cover.dxf`.
     - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks. `python monolith_parts.py side` builds only these parts.
 - **Home-print kit:** `monolith_print_kit.py` writes `hardware/mechanical/print_kit/`. It holds FDM print-pose STLs of the side tray, fit coupons, the TPU caps with their modifiers, ballastable dummy cells, a dummy board and a cover stand-in. Settings, ballast and assembly are in `print_kit/README.md`. It also needs trimesh and manifold3d.
 - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.

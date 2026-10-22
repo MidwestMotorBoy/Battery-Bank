@@ -15,7 +15,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), AGM404AP1 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer copper, ENIG, filled and capped vias; JLCPCB assembly |
-| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 58.7 × 50.4 × 96.6 mm, about 384 g (modelled estimate, board populated) |
+| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 59.6 × 51.1 × 96.6 mm, about 385 g (modelled estimate, board populated) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app, planned) |
 
 ## Status
