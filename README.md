@@ -11,7 +11,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | | |
 |---|---|
 | **Energy** | 93.6 Wh nominal (4S1P, 14.4 V, 6.5 Ah, FEB 21700G cells), under the 100 Wh carry-on limit |
-| **Ports** | 2 × USB-C, each bidirectional PD 5–20 V up to 5 A; designed for 100 W total, thermally throttled |
+| **Ports** | 2 × USB-C, each bidirectional PD 5–20 V up to 5 A; 100 W total as a burst, then a linear thermal derate to a sustained ~40 W ([policy](docs/firmware/charge-and-thermal-policy.md)) |
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), AGM404AP1 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer copper, ENIG, filled and capped vias; JLCPCB assembly |
@@ -27,13 +27,18 @@ In progress. Nothing has been built, assembled or bench-tested yet; every number
 - Schematic: four reviews of the bench "dev board" schematic (rev A8, about 430 parts), then the production P0 schematic derived from it by script (283 parts) with a netlist check that every surviving pin kept its net. Design notes, reviews and simulations are in `docs/devboard/` and `hardware/Production/README.md`.
 - Dev board layout: 196 × 115 mm, 6 layers, routed, DRC clean apart from known footprint-library warnings, JLC fab outputs generated (`hardware/DevBoard/fab/`). It was not ordered: the decision on 2026-10-18 was to skip it and build P0 directly.
 - Production board: stack-up, outline and USB-C placement locked to the enclosure model (`hardware/Production/tools/make_board.py` imports the outline from `hardware/mechanical/monolith_shell.py`).
-- Mechanical: parametric enclosure model with drop, thermal-expansion, vibration and assembly-clearance checks, STL/STEP/DXF outputs and renders (`docs/mechanical-design.md`).
+- Mechanical: parametric enclosure model with drop, thermal-expansion, vibration and assembly-clearance checks, STL/STEP/DXF outputs and renders (`docs/mechanical-design.md`). On 2026-10-21 a ground-up study (five concepts, cross-examined) replaced the side tray and its aluminium cover with the heatsink-free cup ([report](reports/Ground-up%20mechanical%20design.md), models in `research_notes/Ground-up mechanical concepts/`).
 - Firmware: a command-line build for the LP-EM-CC2340R53 LaunchPad that compiles with no warnings (about 10 KB flash).
 - Research: potting versus crush-zone drop protection, with sources (`reports/`).
+- Thermal and loss models: part-by-part heat sources, burst and derate simulations for the tray, a CNC-lid hybrid and the cup (`research_notes/Ground-up mechanical concepts/model/`), and a five-area loss-reduction study with a cross-examination ([summary](research_notes/Loss%20reduction/summary.md)).
+- Cell choice: FEB 21700G 6500 mAh (93.6 Wh) over the EVE 58E and the Tenpower 60XG, for energy at trail loads ([notes](docs/project/feb-21700g-datasheet-notes.md)); hardware charge cap R413/R513 = 11.8 kΩ.
+- Charge and thermal policy for firmware: charge current and discharge power as linear ramps on the hottest cell temperature ([policy](docs/firmware/charge-and-thermal-policy.md)).
 
 **Remaining**
 
-- Place and route the production board on the side outline; update it from the P0 schematic; DRC.
+- Place and route the production board (layout in progress; the outline is unchanged by the cup); update it from the P0 schematic; DRC.
+- Board changes for the FEB cells and the cup: move the five bottom tab slots, the gap-filler zone with thermal vias, split carrier rails, two peg holes, drop the cover standoffs; update `make_board.py --keepouts` for the cup.
+- Decide the P0 loss cuts (protection FETs, 9 V gate drive, inductor and 500 kHz, nickel): about −1.6 W at 100 W ([summary](research_notes/Loss%20reduction/summary.md)).
 - Order P0 from JLCPCB, weld the pack, train the gauge (`docs/production/p0-bringup-and-training.md`).
 - Firmware beyond the skeleton: gauge and PD-controller drivers, charge policy, power sharing, BLE GATT, MCUboot OTA.
 - Fit print of the cup, cap and carrier, and an O-ring dunk coupon; drop and 100 W thermal tests; label ratings.
@@ -84,7 +89,7 @@ Datasheets and app notes the design was checked against are in `datasheets/` (in
 - **Toolchain:** TI Arm Clang, SysConfig and `gmake` from Code Composer Studio 21, the LPF3 SDK 9.23, and UniFlash/DSLite with an XDS110 probe. Everything is driven from a `Makefile` in the style of TI's SDK examples; CCS itself is only used for debugging. Install steps and version pins are in [`firmware/README.md`](firmware/README.md).
 - **Structure:** `boards/<board>.syscfg` holds the pin map and CCFG per target (LaunchPad now, dev board/P0 next); SysConfig generates the driver configuration and linker includes into `build/<board>/syscfg/`; `app/` is the application. NoRTOS for bring-up, moving to FreeRTOS when the BLE stack comes in.
 - **State:** the skeleton builds (banner and reset reason on the XDS110 UART, heartbeat LED, a button standing in for the IRQ line) and has not been run on hardware yet.
-- **Planned:** SMBus gauge driver, TPS25751 4CC commands and EEPROM patch loading, charge policy and port power sharing per `docs/project/monolith-next-actions.md`, settings in flash, BLE GATT service, MCUboot signed OTA.
+- **Planned:** SMBus gauge driver, TPS25751 4CC commands and EEPROM patch loading, the charge and thermal policy in [`docs/firmware/charge-and-thermal-policy.md`](docs/firmware/charge-and-thermal-policy.md), port power sharing, settings in flash, BLE GATT service, MCUboot signed OTA.
 
 ## Repo layout
 
@@ -100,12 +105,13 @@ Datasheets and app notes the design was checked against are in `datasheets/` (in
 ├── docs/
 │   ├── hardware/          Schematic PDFs and board plots exported from KiCad
 │   ├── devboard/          Circuit description, schematic reviews 1–4, power budget, pin budget, bring-up checklist, simulations
-│   ├── production/        P0 bring-up and gauge-training procedure
-│   ├── project/           Next actions, cell datasheet notes, TPS25751 EEPROM programming
+│   ├── production/        P0 assembly (the cup) and the bring-up and gauge-training procedure
+│   ├── firmware/          Charge and thermal policy
+│   ├── project/           Next actions, cell datasheet notes (FEB 21700G, EVE 58E), TPS25751 EEPROM programming
 │   ├── mechanical-design.md
 │   └── project-status/    HTML status deck
 ├── datasheets/            Manufacturer datasheets and app notes (sources.csv lists where each came from)
-├── reports/               Research reports (potting and drop protection), sources in research_notes/
-├── research_notes/
+├── reports/               Research reports (potting and drop protection; ground-up mechanical design)
+├── research_notes/        Sources and working notes: potting, the ground-up concepts and their models, loss reduction
 └── tools/                 fetch_datasheets.sh
 ```
