@@ -2,11 +2,11 @@
 
 An ultralight 93.6 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidirectional USB-C PD ports designed for 100 W total, TI CC2340 Bluetooth LE MCU.
 
-<p align="center"><img src="hardware/mechanical/monolith_side_hero.png" alt="Render of the assembled pack in two colourways, with the laser-marked aluminium cover" width="100%"></p>
+<p align="center"><img src="hardware/mechanical/monolith_cup_exploded.png" alt="The Monolith cup: assembled and exploded views with the parts list" width="100%"></p>
 
 ## Design overview
 
-The goal is a hiking power bank that is lighter and better behaved than the off-the-shelf ones: under the 100 Wh carry-on limit, able to charge or run 20 V USB-C PD loads, with a proper fuel gauge and a phone app. The pack is four FEB 21700G cells (6.5 Ah, 3.6 V nominal) in 4S1P: 14.4 V, 93.6 Wh nominal, spot-welded with nickel strip and managed by a TI BQ40Z50-R2 gauge/protector with hardware second-level protection (BQ294700 plus a chemical fuse). Each of the two USB-C ports has its own TPS25751 PD controller and BQ25756 bidirectional buck-boost converter, so either port can charge the pack (including from a 5 V solar panel) or source up to 20 V / 5 A, with the pair thermally limited to 100 W; a TPS62933 buck supplies each port's 5 V source rail and a TPS62177 buck supplies the 3.3 V rail. A CC2340R5MODA Bluetooth LE module runs the charge policy, port power sharing and a custom GATT service for an iPhone app. The electronics live on one 43 × 74 mm 6-layer board along one face of the cells, inside a one-piece MJF nylon tray with TPU crush caps and a 1 mm anodized aluminium cover that doubles as the heat spreader.
+The goal is a hiking power bank that is lighter and better behaved than the off-the-shelf ones: under the 100 Wh carry-on limit, able to charge or run 20 V USB-C PD loads, with a proper fuel gauge and a phone app. The pack is four FEB 21700G cells (6.5 Ah, 3.6 V nominal) in 4S1P: 14.4 V, 93.6 Wh nominal, spot-welded with nickel strip and managed by a TI BQ40Z50-R2 gauge/protector with hardware second-level protection (BQ294700 plus a chemical fuse). Each of the two USB-C ports has its own TPS25751 PD controller and BQ25756 bidirectional buck-boost converter, so either port can charge the pack (including from a 5 V solar panel) or source up to 20 V / 5 A, with the pair thermally limited to 100 W; a TPS62933 buck supplies each port's 5 V source rail and a TPS62177 buck supplies the 3.3 V rail. A CC2340R5MODA Bluetooth LE module runs the charge policy, port power sharing and a custom GATT service for an iPhone app. The electronics live on one 43 × 74 mm 6-layer board along one face of the cells, inside an MJF nylon cup closed on five sides and sealed by a bottom cap with one radial O-ring, with TPU bumpers at both ends. There is no metal enclosure: the power stage sheds its heat into the cells through thermal vias and a gap filler.
 
 | | |
 |---|---|
@@ -15,7 +15,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), AGM404AP1 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer copper, ENIG, filled and capped vias; JLCPCB assembly |
-| **Enclosure** | MJF PA12 tray, TPU 95A end caps, 1.0 mm 5052 cover; 60.3 × 51.8 × 96.6 mm, about 400 g (modelled estimate, board populated) |
+| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 59.8 × 51.9 × 97.2 mm, about 400 g (modelled estimate, board populated) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app, planned) |
 
 ## Status
@@ -36,7 +36,7 @@ In progress. Nothing has been built, assembled or bench-tested yet; every number
 - Place and route the production board on the side outline; update it from the P0 schematic; DRC.
 - Order P0 from JLCPCB, weld the pack, train the gauge (`docs/production/p0-bringup-and-training.md`).
 - Firmware beyond the skeleton: gauge and PD-controller drivers, charge policy, power sharing, BLE GATT, MCUboot OTA.
-- Fit print of the tray and caps; drop and 100 W thermal tests; label ratings.
+- Fit print of the cup, cap and carrier, and an O-ring dunk coupon; drop and 100 W thermal tests; label ratings.
 - iPhone app (SwiftUI + CoreBluetooth).
 
 Open decisions and the working checklist are in `docs/project/monolith-next-actions.md`.
@@ -49,7 +49,7 @@ The KiCad 10 sources are in `hardware/`, with the production board as the design
 |---|---|---|
 | **Production P0** | [`hardware/Production/`](hardware/Production/) | First board to be built. The dev-board schematic with the bench-only parts removed, JLC extended/0201 passives, SiZ240DT half-bridge FETs, low-profile bulk capacitors, Tag-Connect SWD and gauge-training pads. Generated and checked by the scripts in `tools/`. [README](hardware/Production/README.md) has every change with its reasoning. |
 | **Dev board** | [`hardware/DevBoard/`](hardware/DevBoard/) | Bench version with cell holders, test points, jumpers and a sleep-current measurement section. Routed and fab-ready, not ordered. [README](hardware/DevBoard/README.md) is the change log (items 1–50) and board rules. |
-| **Mechanical** | [`hardware/mechanical/`](hardware/mechanical/) | Python-generated enclosure (tray, caps, cover, pads, board dummy) as STL/STEP/DXF, plus the renders. Notes in [`docs/mechanical-design.md`](docs/mechanical-design.md). |
+| **Mechanical** | [`hardware/mechanical/`](hardware/mechanical/) | Python-generated enclosure (the cup: `monolith_cup.py`; the retired side tray is still there) as STL/STEP/DXF, plus the renders. Notes in [`docs/mechanical-design.md`](docs/mechanical-design.md). |
 
 **Schematics (PDF)**
 

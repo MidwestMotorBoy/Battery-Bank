@@ -1,8 +1,23 @@
 # Mechanical design
 
-_Moved from the root README on 2026-10-18; updated 2026-10-21 for the TPU cell frame and the bench-built power module. The models and renders live in `hardware/mechanical/`._
+_Moved from the root README on 2026-10-18; updated 2026-10-21 for the TPU cell frame and the bench-built power module, then the same day for **the cup** (the current enclosure) and the FEB 21700G cells. The models and renders live in `hardware/mechanical/`._
 
 ## Renders
+
+**The cup (current):**
+
+<table>
+<tr>
+<td width="50%"><a href="../hardware/mechanical/monolith_cup_exploded.png"><img src="../hardware/mechanical/monolith_cup_exploded.png" alt="Cup: assembled and exploded views with the parts list"></a><br><b>Exploded view and parts list.</b> The bench-built core (cells, PA12 carrier, board) goes in from the bottom; the cap seals it with one radial O-ring.</td>
+<td width="50%"><a href="../hardware/mechanical/monolith_cup_sections.png"><img src="../hardware/mechanical/monolith_cup_sections.png" alt="Cup sections"></a><br><b>Sections.</b> A-A through the gap filler and webs, B-B through a USB-C port, C-C through the cap screws and O-ring.</td>
+</tr>
+<tr>
+<td width="50%"><a href="../hardware/mechanical/monolith_cup_vs_tray.png"><img src="../hardware/mechanical/monolith_cup_vs_tray.png" alt="Side tray against the cup"></a><br><b>Tray vs cup.</b> Weight by function and the differences.</td>
+<td width="50%"></td>
+</tr>
+</table>
+
+**The side tray (retired 2026-10-21), kept for reference:**
 
 <table>
 <tr>
@@ -27,9 +42,21 @@ All of these come from the Python models in `hardware/mechanical/`. Re-run the s
 
 ## Design notes
 
-The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py`), alongside the current design:
+The original top-cap tube is still in `hardware/mechanical/` (`monolith_shell.py`), alongside the side tray and the current design:
 
-- **Side-board layout (2026-10-18, the current design).** The board runs along one face of the cells, inside a one-piece printed tray whose only opening is the board side.
+- **The cup (2026-10-21, the current design)** (`monolith_cup.py`; design study in `research_notes/Ground-up mechanical concepts/`).
+    - **Shell:** an MJF PA12 cup closed on five sides, 1.2 mm walls, with the two USB-C seal bores in its closed top wall. No aluminium cover, no wedge, no fish paper, no standoffs.
+    - **Core:** the cells sit in a one-piece PA12 carrier (two frames, spines, split rails, board pegs, full-length front-back webs). The board rides on the pegs, so cells and board move together; the nickel tongues only take up tolerance.
+    - **Closing it:** the core goes in from the bottom, port end first, until the USB-C faces seat in the top wall. A PA12 bottom cap seals it with one 2.0 mm radial O-ring in its skirt (~25 % squeeze), lands on the rim as a hard stop, and is held by two radial M2 screws below the seal. A TPU pad on the cap preloads the core.
+    - **Heat:** no heat spreader. The power stage dumps its heat through thermal vias and a dispensed gap filler into the two front cells (~300 J/K of thermal mass), and the PA12 webs share it with the back pair. Thermal models and the derate policy: `research_notes/Ground-up mechanical concepts/model/`, `docs/firmware/charge-and-thermal-policy.md`.
+    - **Drop:** TPU bumpers at both ends (8 mm slab over the port end with a port well, 4 mm over the cap, solid bands over the edges), plus the pad inside the cap.
+    - **Venting:** one ePTFE vent on the board-face wall; its bare hole is the leak-test port (+10–15 kPa) before the patch goes on.
+    - **Size and mass (FEB 21700G cells):** 59.8 × 51.9 × 97.2 mm, about 384 g modelled (6.8 g lighter than the tray with the same cells).
+    - **Board:** same outline, slots and tails as the tray. New: two peg holes, the gap-filler zone on B.Cu with thermal vias, the rails split at z 25–55 mm; the cover standoffs can go.
+    - **Open:** the label (emboss, or a small plate), an O-ring dunk coupon in MJF, the push-in force.
+
+
+- **Side-board layout (2026-10-18; retired 2026-10-21 for the cup).** The board runs along one face of the cells, inside a one-piece printed tray whose only opening is the board side.
     - **Closing it:** a recessed 1 mm aluminium cover (also the heat spreader). Its top edge tucks under a lip in the top wall, and two M2 screws go into heat-set inserts in two bosses on the PA12 wedge, in the bottom corners beside the board's notches. (They were tray pillars until 2026-10-21; the module would sweep through those as it drops in.)
     - **Ports:** the power module (cells, frame and board, joined on the bench) drops in, then lifts 2.5 mm toward the top so the USB-C mating faces pass into their holes in the top wall. A PA12 wedge pushed in under it holds it there.
     - **Venting:** no airflow vents; one ePTFE pressure vent over a hole in the cover.

@@ -442,6 +442,15 @@ The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 
 - **Gauge:** design capacity 6,500 mAh, new temperature ranges and protections, and a new chemistry ID (`docs/production/p0-bringup-and-training.md`).
 - **Heat:** about 12 W at 100 W out (cells ~6.5 W of it). Firmware keeps the 100 W offer but starts a linear derate at ~33 °C on the hottest cell, down to ~40 W.
 
+## Enclosure: the cup (2026-10-21)
+
+The side tray and its aluminium cover are retired; the enclosure is now **the cup** (`hardware/mechanical/monolith_cup.py`, `docs/production/p0-assembly.md`). Same board outline, slots and tails. Board changes it needs (not yet applied to `Monolith.kicad_pcb`):
+- **Gap-filler zone on B.Cu:** |y| 7–16 mm, z 27–53 mm (shell coordinates): no parts, solid copper, a dense thermal-via array from the power stages on F.Cu. This replaces the cover as the heat path.
+- **Carrier rails split:** the B.Cu frame-bar keep-outs stay at |y| 6.5–11.3 mm but stop between z 25 and 55 mm.
+- **Two peg holes** (Ø2.0 mm) for the carrier at y ±8.6 mm, z 14 and 68 mm.
+- **Cover standoffs H101–H104 can go** (nothing to bear on), and the bottom corner notches no longer clear any bosses (harmless, left as they are).
+- **F.Cu height:** the cup's board-face wall sits 0.5 mm over the tallest part (3.2 mm limit unchanged).
+
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.

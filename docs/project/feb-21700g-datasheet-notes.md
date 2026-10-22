@@ -24,7 +24,7 @@ Source: the [diy500amp listing](https://diy500amp.com/products/feb-21700-battery
 | Price | $7.49 (diy500amp, 2026-10-21) |
 
 ## What it means for the design
-- **Mechanical** (`hardware/mechanical/monolith_shell.py`): designed to 21.85 mm diameter and 71.1 mm length. Cell pitch 23.25 mm (was 22.9), the tray 0.7 mm wider and 0.35 mm deeper; same length and the same board outline. The five bottom slots move 0.30 mm on the board.
+- **Mechanical** (`hardware/mechanical/monolith_shell.py` for the cells, board and slots; `monolith_cup.py` for the enclosure): designed to 21.85 mm diameter and 71.1 mm length. Cell pitch 23.25 mm (was 22.9); same board outline. The five bottom slots move 0.30 mm on the board. The cup with these cells: 59.8 × 51.9 × 97.2 mm, about 384 g.
 - **Charger:** R413/R513 (ICHG) 9.1 k → 11.8 k: hardware ceiling 4.07–4.45 A, under 4.55 A.
 - **Gauge:** design capacity 6,500 mAh; temperature ranges and protections per `docs/firmware/charge-and-thermal-policy.md`; a new chemistry ID (likely a GPCCHEM run).
 - **Firmware:** charge current follows a linear ramp on the hottest cell inside the table above; discharge keeps the 100 W offer but starts a linear derate at ~33 °C down to ~40 W (`docs/firmware/charge-and-thermal-policy.md`).
