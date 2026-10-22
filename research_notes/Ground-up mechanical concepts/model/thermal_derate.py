@@ -3,14 +3,14 @@ Nodes: board (B), Al cover/lid (L, where there is one), front cell pair (F, face
 Firmware derate is linear, not a step: the allowed power falls from full to zero across a temperature band,
 on whichever sensor is worst (board copper, hottest cell). Losses scale with power:
   board loss  = 0.024 P + 3.1e-4 P^2  (fits ~1.0 W at 30 W, ~2.5 W at 60 W, ~5.5 W at 100 W: schematic review 4)
-  cell I2R    = 4.8e-4 P^2            (4 x 22 mOhm at 14.4 V; 4.8 W at 100 W)
-  charging    = board 2.6 W and cells 2.7 W at 88 W, same shape. CC-CV taper is ignored.
+  cell I2R    = 6.5e-4 P^2            (4 x ~30 mOhm FEB 21700G at 14.4 V; ~6.5 W at 100 W. Was 4.8e-4 for the EVE 58E)
+  charging    = board 2.6 W and cells 3.7 W at 88 W (FEB), same shape. CC-CV taper is ignored.
 Run: python thermal_derate.py  -> prints the scenario table; thermal_derate_visuals.py draws the sheet."""
 import numpy as np
 AMB = 25.0
 CB, CPAIR = 20.0, 135.0                     # board (+ parts), each cell pair (J/K)
 G_SKIN = 0.065                              # each cell pair -> skin -> air (W/K)
-PACK_WH = 82.0
+PACK_WH = 93.6                              # FEB 21700G, 6.5 Ah x 14.4 V (was 82 Wh with the EVE 58E)
 # design: Al mass (g), board->Al, Al->air, board->front pair, front<->back pair, board->air (W/K)
 DESIGNS = {
     'Current: 1 mm Al cover':  dict(al=9.5,  gbl=2.0, gla=0.039, gbf=0.04, gfk=0.06,  gba=0.0),    # TPU cage bands between the cells
@@ -19,14 +19,14 @@ DESIGNS = {
 }
 # linear derate bands (full power at or below the first temperature, zero at the second)
 BANDS = dict(board=(60.0, 75.0),            # board copper: stays clear of the 81 C TS hardware stop
-             cell_dis=(45.0, 55.0),         # hottest cell, discharging (EVE limit 60 C)
-             cell_chg=(40.0, 45.0))         # hottest cell, charging (EVE limit 45 C)
+             cell_dis=(45.0, 55.0),         # hottest cell, discharging (cell limit 60 C)
+             cell_chg=(40.0, 45.0))         # hottest cell, charging (cell limit 45 C)
 def ramp(t, band):
     lo, hi = band
     return float(np.clip((hi - t) / (hi - lo), 0.0, 1.0))
-def loss_dis(p): return 0.024*p + 3.1e-4*p*p, 4.8e-4*p*p
+def loss_dis(p): return 0.024*p + 3.1e-4*p*p, 6.5e-4*p*p
 def loss_chg(p):
-    x = p / 88.0; return 2.6*(0.4*x + 0.6*x*x), 2.7*x*x
+    x = p / 88.0; return 2.6*(0.4*x + 0.6*x*x), 3.7*x*x
 def run(design, demand, mode='dis', hours=6.0, derate=True, dt=1.0):
     """demand: W (constant). Returns dict of arrays: t (min), P delivered, B, L, F, K, energy (Wh)."""
     d = DESIGNS[design]; CL = d['al']*0.90

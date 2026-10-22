@@ -15,7 +15,9 @@ P0 = dict(BASE, prot=2*0.0024, nickel=0.0041, fet_9v=0.0090, ind=0.012, core=0.1
 T_EDGE, T_DEAD, V_BODY, C_OSS = 10e-9, 45e-9, 0.8, 600e-12
 def ocv(soc):          # per cell, rough NMC curve
     return np.interp(soc, [0.0, 0.05, 0.10, 0.20, 0.50, 0.80, 1.0], [3.00, 3.25, 3.38, 3.50, 3.65, 3.92, 4.18])
-def r_cell(soc):       # DC, new, 25 C: 22 mOhm mid-charge, ~33 near empty (Loss reduction D)
+def r_cell(soc):       # DC, new, 25 C, FEB 21700G (adopted 2026-10-21): ~30 mOhm mid-charge, ~50 near empty (estimate)
+    return float(np.interp(soc, [0.0, 0.10, 0.25, 1.0], [0.050, 0.043, 0.0315, 0.030]))
+def r_cell_58e(soc):   # the EVE 58E it replaced: 22 mOhm mid-charge, ~33 near empty (Loss reduction D)
     return float(np.interp(soc, [0.0, 0.10, 0.25, 1.0], [0.036, 0.031, 0.022, 0.021]))
 def losses(p, v_usb, soc, prm, charging=False):
     """returns (board W, cells+nickel W, battery current A)"""
@@ -44,7 +46,7 @@ def losses(p, v_usb, soc, prm, charging=False):
 BUILDS = {'Current tray (today\'s parts)': ('Current: 1 mm Al cover', BASE),
           'Cup (today\'s parts)': ('Cup: coupled + PA12 webs', BASE),
           'Cup + P0 loss cuts': ('Cup: coupled + PA12 webs', P0)}
-CAP_WH = 82.0
+CAP_WH = 93.6          # FEB 21700G 4S1P (82 Wh with the EVE 58E)
 def run(build, demand, v_usb=20.0, mode='dis', soc0=None, hours=6.0, derate=True, amb=TD.AMB):
     design, prm = BUILDS[build]; d = TD.DESIGNS[design]; CL = d['al']*0.90
     B = L = F = K = amb; soc = (1.0 if mode == 'dis' else 0.0) if soc0 is None else soc0
@@ -105,7 +107,7 @@ if __name__ == '__main__':
     hot = lambda r: np.maximum(r['F'], r['K'])
     fig = plt.figure(figsize=(18, 12), dpi=150)
     gs = fig.add_gridspec(2, 3, hspace=0.42, wspace=0.25, left=0.05, right=0.98, top=0.87, bottom=0.07)
-    fig.text(0.02, 0.955, 'Thermal rundown: current tray vs the cup, before and after the P0 loss cuts', fontsize=20, weight='bold')
+    fig.text(0.02, 0.955, 'Thermal rundown (FEB 21700G cells): current tray vs the cup, before and after the P0 loss cuts', fontsize=20, weight='bold')
     fig.text(0.02, 0.925, 'Corrected losses, cell resistance and pack voltage following the charge, linear derates (board 60→75 °C, cells 45→55 °C discharging, '
              '40→45 °C charging), 25 °C ambient. Estimates, not measurements.', fontsize=12, color=INK2)
     # 1 losses
@@ -124,28 +126,28 @@ if __name__ == '__main__':
     ax = fig.add_subplot(gs[0, 1]); style(ax)
     for b, (r30, r100, rlo, rch) in res.items():
         ax.plot(r100['t'], r100['P'], color=COL[b], lw=2, label=f"{b}: {wh(r100, 20):.0f} Wh in 20 min, empty at {r100['t'][-1]:.0f} min")
-    ax.set_xlim(0, 85); ax.set_ylim(0, 108); ax.set_xlabel('minutes, 100 W asked, from full'); ax.set_ylabel('power delivered, W')
+    ax.set_xlim(0, 125); ax.set_ylim(0, 108); ax.set_xlabel('minutes, 100 W asked, from full'); ax.set_ylabel('power delivered, W')
     ax.legend(frameon=False, fontsize=9.5, loc='lower left'); ax.set_title('2  100 W asked: what the derate lets out')
     # 3 100 W temps
     ax = fig.add_subplot(gs[0, 2]); style(ax)
     for b, (r30, r100, rlo, rch) in res.items():
         ax.plot(r100['t'], r100['B'], color=COL[b], lw=2, label=f'{b}: board'); ax.plot(r100['t'], hot(r100), color=COL[b], lw=2, ls=(0, (5, 3)), label=f'{b}: hottest cell')
     ax.axhspan(60, 75, color=BANDC, zorder=0); ax.axhspan(45, 55, color='#f6eef1', zorder=0)
-    ax.text(84, 75.5, 'board ramp', ha='right', fontsize=10, color=INK2); ax.text(84, 55.5, 'cell ramp', ha='right', fontsize=10, color=INK2)
-    ax.set_xlim(0, 85); ax.set_ylim(24, 80); ax.set_xlabel('minutes'); ax.set_ylabel('°C'); ax.legend(frameon=False, fontsize=8.5, loc='lower right')
+    ax.text(124, 75.5, 'board ramp', ha='right', fontsize=10, color=INK2); ax.text(124, 55.5, 'cell ramp', ha='right', fontsize=10, color=INK2)
+    ax.set_xlim(0, 125); ax.set_ylim(24, 80); ax.set_xlabel('minutes'); ax.set_ylabel('°C'); ax.legend(frameon=False, fontsize=8.5, loc='lower right')
     ax.set_title('3  100 W asked: temperatures')
     # 4 30 W
     ax = fig.add_subplot(gs[1, 0]); style(ax)
     for b, (r30, r100, rlo, rch) in res.items():
         ax.plot(r30['t']/60, r30['B'], color=COL[b], lw=2, label=f'{b}: board'); ax.plot(r30['t']/60, hot(r30), color=COL[b], lw=2, ls=(0, (5, 3)), label=f'{b}: hottest cell')
-    ax.axhline(45, color='#8a8984', lw=1.2, ls=(0, (4, 3))); ax.text(2.6, 45.4, 'cell derate starts at 45 °C', ha='right', fontsize=10, color=INK2)
-    ax.set_xlim(0, 2.75); ax.set_ylim(24, 50); ax.set_xlabel('hours at 30 W (15 V 2 A), full to empty'); ax.set_ylabel('°C')
+    ax.axhline(45, color='#8a8984', lw=1.2, ls=(0, (4, 3))); ax.text(3.05, 45.4, 'cell derate starts at 45 °C', ha='right', fontsize=10, color=INK2)
+    ax.set_xlim(0, 3.1); ax.set_ylim(24, 55); ax.set_xlabel('hours at 30 W (15 V 2 A), full to empty'); ax.set_ylabel('°C')
     ax.legend(frameon=False, fontsize=8.5, loc='lower right'); ax.set_title('4  30 W continuous: no derate in any build')
     # 5 charging power
     ax = fig.add_subplot(gs[1, 1]); style(ax)
     for b, (r30, r100, rlo, rch) in res.items():
         ax.plot(rch['t'], rch['P'], color=COL[b], lw=2, label=f"{b}: full at {rch['t'][-1]:.0f} min")
-    ax.set_xlim(0, 105); ax.set_ylim(0, 95); ax.set_xlabel('minutes charging, 88 W asked, empty to full (no CC-CV taper)'); ax.set_ylabel('charge power, W')
+    ax.set_xlim(0, 160); ax.set_ylim(0, 95); ax.set_xlabel('minutes charging, 88 W asked, empty to full (no CC-CV taper)'); ax.set_ylabel('charge power, W')
     ax.legend(frameon=False, fontsize=9.5, loc='lower left'); ax.set_title('5  Charging at 88 W')
     # 6 100 W from 25 %
     ax = fig.add_subplot(gs[1, 2]); style(ax)
@@ -154,6 +156,6 @@ if __name__ == '__main__':
     ax.set_xlim(0, 25); ax.set_ylim(0, 108); ax.set_xlabel('minutes, 100 W asked from 25 % charge (cells start at 25 °C)'); ax.set_ylabel('power delivered, W')
     ax.legend(frameon=False, fontsize=9.5, loc='lower left'); ax.set_title('6  Late in the charge: higher resistance, less headroom')
     fig.text(0.02, 0.02, 'P0 cuts: XRS120N04D protection FETs, 9 V gate drive (LDO, on above 45 W), XGL7030-332 at 500 kHz, 0.2 x 10 Ni strips + Cu PACK tails. '
-             'Both use F102 at 2.5 mΩ, inductor and gate-drive corrections, cells 21-36 mΩ by charge. The 5 V output path is not modelled.', fontsize=10.5, color=INK2)
+             'Both: F102 at 2.5 mΩ, FEB 21700G cells (30-50 mΩ by charge, 93.6 Wh). 5 V path not modelled.', fontsize=10.5, color=INK2)
     fig.savefig(os.path.join(HERE, 'thermal_rundown.png'), facecolor=SURF)
     print('wrote thermal_rundown.png')

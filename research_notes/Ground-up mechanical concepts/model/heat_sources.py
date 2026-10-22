@@ -7,7 +7,8 @@ V_PACK = 14.4                  # nominal 4S
 F_SW = 600e3                   # BQ25756 switching frequency (598 kHz, schematic review 4)
 # resistances (ohm), warm. Sources: datasheets/ and docs/devboard reviews
 R = dict(
-    cell=0.022,                # each of 4: EVE 58E 18 mOhm at 1 kHz new (eve-inr21700-58e.pdf 7.4); DC a little higher
+    cell=0.030,                # each of 4: FEB 21700G (68E), <= 25 mOhm spec; ~30 mOhm DC mid-charge is an estimate
+                               # (the cell adopted 2026-10-21; the EVE 58E it replaced was ~22 mOhm DC)
     nickel=0.005,              # strips + tongues, whole path (estimate)
     fuse=0.005,                # F101 hot (review 2, A-findings)
     shunt=0.001,               # RS101 gauge shunt (pa2512-1mohm)
@@ -104,7 +105,7 @@ if __name__ == '__main__':
     # 100 W detail table
     ax = fig.add_subplot(gs[1, 0]); ax.axis('off'); ax.set_title('2  100 W out, part by part', pad=10)
     g, ib, iu = res[2][1], res[2][2], res[2][3]
-    rows = [('Cells: 4 × 22 mΩ', f'{ib:.1f} A', 4*R['cell']*ib**2, 'inside the cans'),
+    rows = [('Cells: 4 × ~30 mΩ (FEB 21700G)', f'{ib:.1f} A', 4*R['cell']*ib**2, 'inside the cans'),
             ('Protection FETs Q101/Q102: 2 × ~5.7 mΩ', f'{ib:.1f} A', R['prot']*ib**2, 'pack input'),
             ('Nickel strips + tongues: ~5 mΩ', f'{ib:.1f} A', R['nickel']*ib**2, 'cell ends'),
             ('Fuse F101 ~5 mΩ, shunt 1 mΩ, copper ~2 mΩ', f'{ib:.1f} A', (R['fuse'] + R['shunt'] + R['pack_cu'])*ib**2, 'pack input'),
