@@ -10,7 +10,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 
 | Item | Current design |
 | --- | --- |
-| Energy | About 91 Wh rated (about 93 Wh measured at 1 A), under the 100 Wh carry-on limit |
+| Energy | 91 Wh typical, 88.9 Wh minimum (about 93 Wh measured at 1 A), under the 100 Wh carry-on limit |
 | Pack voltage | 14.4 V nominal, 16.8 V full, 11.2 V floor (2.8 V per cell) |
 | Ports | 2 × USB-C PD, each bidirectional, 5–20 V, up to 5 A |
 | Output | 100 W while the hottest cell is at or below 33 °C, then a linear derate to about 40 W sustained |
@@ -29,15 +29,15 @@ The gauge sits between the cells and a shared pack bus; each port's BQ25756 can 
 
 ## Cells and pack
 
-The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 in place of the FEB 21700G (which was chosen on 10-21 over the EVE 58E and Tenpower 60XG). At the same mass the 65E has about a third of the FEB's resistance and twice its discharge rating. The cell figures come from reseller listings ([Liion Wholesale](https://liionwholesale.com/products/bak-n21700cx-65e-19a-6500mah-flat-top-battery-genuine-wholesale-discount?variant=45216198492229) and [diy500amp](https://diy500amp.com/products/bak-65e-21700-6500mah-25a-battery-high-capacity-energy-cell)), not the maker's datasheet, so they need confirming before P0.
+The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 in place of the FEB 21700G (which was chosen on 10-21 over the EVE 58E and Tenpower 60XG). At the same mass the 65E has about a third of the FEB's AC resistance and about 1.5× its discharge rating. The cell figures come from BAK's product specification N21700CX-65E, version A/00, dated 2025-04-10 ([PDF hosted by Convoy](https://convoylight.com/uploads/72553/cart/resources/20250901/e7772d4426c2842dadb5e9466e077fbc.pdf)), with measured values from BatteryRealData via [diy500amp](https://diy500amp.com/products/bak-65e-21700-6500mah-25a-battery-high-capacity-energy-cell). The PDF still needs saving into `datasheets/` by hand.
 
 | Item | Value |
 | --- | --- |
-| Capacity | 6500 mAh rated, 6350 mAh minimum (6584 mAh measured at 1 A); 22.75 Wh rated per cell (3.5 V nominal on one listing, 3.6 V on another) |
-| Charge | 4.20 V. 3.17 A standard (0.5C), 12.7 A max (not for cycling), 0–45 °C, surface ≤ 60 °C. Firmware keeps the old FEB temperature ramp, capped at 4.55 A, until BAK's own table is confirmed |
-| Discharge | 25.4 A max (not for cycling; 19 A on one listing), −30–60 °C, surface ≤ 70 °C. Floor used: 2.8 V per cell |
-| Resistance | ≤ 8 mΩ (AC 1 kHz, presumed); about 12–16 mΩ DC (estimate, to measure) |
-| Size and mass | 21.7 × 71.0 mm max, 75 g (300 g for four) |
+| Capacity | 6500 mAh typical, 6350 mAh minimum (6584 mAh measured at 1 A); 3.5 V nominal; 22.75 Wh typical, 22.23 Wh minimum per cell |
+| Charge | 4.20 V. 4.25 V absolute. 3.175 A standard (0.5C), 12.7 A max (2C), 0–45 °C; surface ≤ 65 °C, recharge only once ≤ 45 °C. The datasheet has no temperature-stepped table (BAK supplies one on request), so firmware keeps the old FEB ramp, capped at 4.55 A, until it arrives |
+| Discharge | 19.05 A max (3C), −20–60 °C; surface ≤ 80 °C, resume once ≤ 60 °C. End voltage 2.5 V, absolute floor 2.0 V; floor used: 2.8 V per cell. Capacity ≥ 85 % at 0 °C and ≥ 80 % at −20 °C |
+| Resistance | AC ≤ 8 mΩ at 1 kHz; DC not specified (12–16 mΩ estimated, to measure) |
+| Size and mass | 21.7 × 71.0 mm max (reseller figures; the datasheet gives it only in a drawing), ≤ 75 g (300 g for four) |
 | Cycle life | ≥ 80 % at 501 cycles (0.5C charge / 1C discharge, 4.2–2.5 V) |
 | Price | $9.25–9.75 each, bare, no protection. Sold out at both US sellers on 10-23 |
 
@@ -267,13 +267,13 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | --- | --- | --- |
 | Dev board | Skipped for good; P0 is the Mk 1 build | `hardware/DevBoard/` stays in the repo as the reviewed reference only |
 | Port sharing | A user setting in the app | Two modes: **USB1 priority** (USB2 keeps a guaranteed minimum, 10–30 W, default 20 W) and **Balanced** (the port with the larger contract gives way first). Default: USB1 priority, to match the port labels. Needs a GATT setting and firmware support for both |
-| Fast-charge toggle | Kept in the app and GATT for future packs | Firmware always clamps to the cell's datasheet table. With the BAK 65E (12.7 A max, not for cycling) the toggle has real headroom, but it stays clamped to BAK's datasheet table once that is in hand |
+| Fast-charge toggle | Kept in the app and GATT for future packs | Firmware always clamps to the cell's datasheet table. With the BAK 65E (12.7 A max, 2C) the toggle has real headroom, but it stays clamped to BAK's datasheet table once that is in hand |
 | Max SOC default | 95 %, settable 60–100 % | No change |
 | Waterproofing | **IP67**: dust-tight, 1 m immersion for 30 min | The O-ring, both USB-C seals and the vent must pass a 1 m / 30 min dunk. The ePTFE vent must be an IP67-rated part |
 | Scope | Personal use and gifts to friends | No formal UL, IEC or FCC certification. Hand-deliver gifts: shipping a lithium pack by carrier needs UN38.3. Run a documented safety test set on each pack before gifting it |
 | Mass | About 400 g is fine; keep reducing | Mass reduction added to the to-do list |
-| Cell data | Treat the reseller figures as provisional; get BAK's N21700CX-65E product specification before ordering | No design change |
-| Cells | BAK N21700CX-65E replaces the FEB 21700G | About 91 Wh rated. Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
+| Cell data | BAK's datasheet (A/00, 2025-04-10) found on 10-23; ask BAK for its temperature-stepped charge profile and keep the FEB ramp until then | No design change |
+| Cells | BAK N21700CX-65E replaces the FEB 21700G | 91 Wh typical (88.9 Wh minimum). Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
