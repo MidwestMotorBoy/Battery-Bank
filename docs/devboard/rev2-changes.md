@@ -15,7 +15,7 @@ Changes to make in the next revision of the dev board. Add items as rev 1 is rou
   - How many sensors: one per cell (TS1–TS4) or one per holder pair.
   - How they mount: wired NTCs taped to the cells, or SMD NTCs on the board under or beside each holder. Wired sensors read the cell itself; board-mounted ones read the holder area and are easier to assemble.
   - Connectors: one 2-pin header per sensor like J102, or one shared multi-pin header.
-  - Firmware: enable TS2–TS4 in gauge data flash and include them in the 20 W thermal throttle and in the broken-sensor rule from `docs/project/monolith-next-actions.md`.
+  - Firmware: enable TS2–TS4 in gauge data flash and include them in the 20 W thermal throttle and in the broken-sensor rule from `docs/project/monolith-next-actions.md` (since retired; the current thermal policy is in `docs/spec.md`).
   - Whether the welded-pack connector J101 needs extra pins so the real pack's thermistors can use the same inputs.
 - **Status:** **done in rev 1 (rev A4, 2026-10-12)**: one wired 10k NTC per cell (TS1–TS4), each on its own 2-pin header (J102, J105–J107) beside the tap test point of the cell it watches. The welded pack's thermistors plug into the same headers, so J101 needs no extra pins. Firmware still to do: enable TS2–TS4 in data flash and use them in the throttle and broken-sensor rules.
 
