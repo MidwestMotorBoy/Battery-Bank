@@ -46,4 +46,15 @@
 	(fp_rect (start -4.05 -5.25) (end 4.05 5.55) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
 	(fp_text user "Antenna end at the board edge; ground 10-20 mm each side (SWRS349A fig. 9-2)" (at 0 -6.4) (layer "Cmts.User") (effects (font (size 0.5 0.5) (thickness 0.075))))
 	(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.5 0.5) (thickness 0.08))))
+	(model "${KIPRJMOD}/3dmodels/TI_MHA0024A_CC2340R5MODA_7x10mm.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

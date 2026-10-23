@@ -2391,7 +2391,7 @@
 			(uuid "48f02b1e-ccfc-40de-91f3-aa896cd70a1d")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -7988,6 +7988,17 @@
 			(uuid "5d532f78-35be-4774-8229-62f36f70a3b6")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Vishay_PowerPAIR_3x3S.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
@@ -10053,7 +10064,7 @@
 			(uuid "bf28c52c-3a0e-4f36-859b-d1ca5b0168f1")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -10767,7 +10778,7 @@
 			(uuid "536046cb-3079-4910-b9bc-59b8e6edc504")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/Texas_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step"
+		(model "${KIPRJMOD}/3dmodels/Texas_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -15820,7 +15831,7 @@
 			(uuid "60dde8a5-9013-4079-8bd9-84f45cb708dd")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SON.3dshapes/Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_SON.3dshapes/WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -22376,6 +22387,17 @@
 			(uuid "782183cd-6ae1-481f-9a4d-ad4a7c801ab6")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Vishay_PowerPAIR_3x3S.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -27788,7 +27810,7 @@
 			(uuid "6356db86-c243-4b5d-8bd5-2f360d459687")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -29773,6 +29795,17 @@
 			(uuid "67efc31f-0e64-4bc1-ab50-4dd1e74ba209")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Vishay_PowerPAIR_3x3S.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Diode_SMD:D_SOD-523"
 		(layer "F.Cu")
@@ -31314,6 +31347,17 @@
 			(uuid "09da2611-148e-45fa-9368-886e5bb49295")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/L_Coilank_APS0730.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -37385,6 +37429,17 @@
 			(uuid "1c34fc54-29bb-473d-9561-d1dd78d1cd14")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Vishay_PowerPAIR_3x3S.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -39900,7 +39955,7 @@
 			(uuid "4293d4cb-522d-4cef-b066-a03786b63257")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.5sqmm_1x01_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -43335,7 +43390,7 @@
 			(uuid "9396b279-9381-4f0a-8855-1ae0cd98557f")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -44222,6 +44277,17 @@
 			(uuid "788f8653-1014-4450-9a20-2c48968ad5ca")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/L_Coilank_APS0730.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
@@ -47300,7 +47366,7 @@
 			(uuid "b7a8c933-6461-425a-ba9a-9ad5777ecb22")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/Texas_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step"
+		(model "${KIPRJMOD}/3dmodels/Texas_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -54300,7 +54366,7 @@
 			(uuid "0d9f0000-b49f-4f39-8d91-dad9d971cd3d")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Connector_Wire.3dshapes/SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm.step"
+		(model "${KIPRJMOD}/3dmodels/SolderWire-0.5sqmm_1x01_standin.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -58695,6 +58761,17 @@
 			)
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/TI_MHA0024A_CC2340R5MODA_7x10mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "B.Cu")

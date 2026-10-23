@@ -1136,6 +1136,8 @@ def main():
             f.write(slot_footprint(length))
     with open(os.path.join(PROD, "MonolithDev.pretty", PEG_FP + ".kicad_mod"), "w", encoding="utf-8", newline="\n") as f:
         f.write(peg_footprint())
+    import make_3d_models  # 3D models the DevBoard footprints lack (Production/3dmodels, make_3d_models.py)
+    make_3d_models.attach_library(os.path.join(PROD, "MonolithDev.pretty"))
     lib = os.path.join(PROD, "MonolithDev.kicad_sym")
     t = open(lib, encoding="utf-8").read()
     if '(symbol "SiZ240DT"' not in t:
