@@ -44,7 +44,7 @@ The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 
 - **Interconnect:** spot-welded pure nickel, kWeld plus kCap. Series strips 0.15 × 7 mm; PACK tabs 0.2 × 7 mm split into a power finger and a Kelvin finger. Every connection is a nickel tail through a plated slot in the board, soldered on F.Cu. No wires, springs or connectors.
 - **Matching:** all four from one batch, within 10 mV and 1 mΩ (AC 1 kHz). Measure each diameter; the cup is designed to 21.85 mm.
 - **Carrier:** an MJF PA12 carrier holds the cells at 23.25 mm pitch, with webs between the front and back pairs. The board's heat goes into the two front cells, so those run hottest.
-- **Short circuit:** about 220–300 A available (estimate; it was 150–170 A with the FEB). This is the main design impact of the 65E; the checks are listed under Battery management and protection.
+- **Short circuit:** about 220–270 A from the cells' DC resistance (estimated at 12–16 mΩ, since BAK gives no DC figure), and up to about 370 A from the datasheet's ≤ 8 mΩ AC figure, which is closer to how a cell behaves in the first 100 µs of a short. It was 150–200 A with the FEB. This is why the protection FETs change to the BSZ018N04LS6 (see Battery management and protection).
 - **Future trial:** the carrier should accept a Molicel P60B/P60C later (lower resistance still; the short-circuit checks done for the 65E cover most of it).
 
 ## Battery management and protection
@@ -62,7 +62,7 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 - **Ship mode:** gauge SHUTDOWN, pack drains 3–4 µA. Entered from the app, after two weeks idle, or at RSOC ≤ 5 %, never with a cable attached. Wakes when a charger is plugged in (wake-on-USB is unproven; TP113 to TP106 is the manual wake).
 - **Training on P0:** there is no separate training board. BQStudio and the EV2400 clone connect through the J302 "GAUGE" Tag-Connect, with J113/J114 wire pads for the learning-cycle load. The BAK 65E needs a new chemistry ID (likely a GPCCHEM run), then a learning cycle per TI SLUA903, and the golden image goes in the repo.
 - **Considered and not adopted:** BQ41Z50 (not a drop-in, $7.44 vs $1.96, and still needs an external second-level protector). Worth a look for a later spin.
-- **Loss cut (adopted 2026-10-23):** replace the AGM404AP1 with the XNRUSEMI XRS120N04D (2.8 mΩ vs 6.0 mΩ, same footprint), about −0.45 W at 100 W. Short-circuit check for the 65E (open): a dead short now delivers about 220–300 A. Check the XRS120N04D SOA at about 250 A for 150 µs (about 135–250 W per FET during the delay, against about 104 W with the FEB; fallback BSZ018N04LS6), confirm F102's interrupting rating is above about 300 A at 16.8 V, check the 1 mΩ shunt and pack traces for pulse energy, and set the gauge SCD threshold and delay as low as false trips allow (≤ 120 µs).
+- **Loss cut (adopted 2026-10-23):** replace the AGM404AP1 with the Infineon BSZ018N04LS6 (1.8 mΩ max vs 6.0 mΩ, same footprint and pinout), about −0.5 W at 100 W. This changed from the XRS120N04D on 2026-10-23 because of the 65E's short-circuit current. The XRS stays as a stocked alternative only if a P0 short test passes. Short circuit with the 65E (from the BAK datasheet): up to about 370 A. Each BSZ018N04LS6 then dissipates about 280 W while it is on. Infineon's characterised Zth (about 0.2 K/W at 100 µs, 0.4 K/W at 250 µs) gives a 55–115 K rise, inside its 175 °C limit if the gauge clears the short within about 220 µs. The XRS would see about 330 W, over its own drawn SOA (about 260 W at 100 µs). Gauge settings: SCD1 with RSNS = 1 at about 133–155 A with a 61 µs delay, and SCD2 at about 89–100 A with ≤ 244 µs. F102 needs no change. It is not what clears a short (its 50 A break rating was already below the FEB's short current), and a 370 A trip cleared in 220 µs passes about 30 A²s, against roughly 270–600 A²s to melt it. A FET that fails shorted remains a gap that no 15 A fuse can close. The 1 mΩ shunt takes about 30 mJ per trip, which is a few kelvin.
 
 ## Ports, charging and power policy
 
@@ -116,7 +116,7 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
-**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): XRS120N04D protection FETs; a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
+**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): BSZ018N04LS6 protection FETs (was XRS120N04D); a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
 
 ## MCU, sensing and Bluetooth
 
@@ -149,7 +149,7 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (XRS120N04D, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSZ018N04LS6 protection FETs, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
@@ -306,13 +306,13 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 | 4. Thicker nickel, copper PACK tails | 0.02 W | 0.26 W | 0.47 W | 0.14 W | \~$3 | None |
 | **Total** | **\~0.2 W** | **\~1.6 W** | **\~2.7 W** | **\~0.8 W** |  |  |
 
-### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D
+### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D (BSZ018N04LS6 since 10-23)
 
 - **What:** Q101/Q102 are the gauge's back-to-back main switches; every amp in or out passes through both. The XRS120N04D (LCSC C50314144) has 2.8 mΩ max at the gauge's \~10 V gate drive, against 6.0 mΩ for today's part. Same package and pinout, so only the part fields change.
 - **Extra benefits:** about a third of the heat per FET during a short-circuit delay (about 104 W against 300 W), a softer inrush into the bus capacitors because it turns on more slowly, and 5,010 in stock at JLC against 477.
 - **Risks:** an obscure vendor with a sloppy datasheet; turn-off at a short is about 3× slower (about 13 µs), still inside its rating; the gauge's short-circuit delay must stay at ≤ \~120 µs. Fallback on the same footprint: Infineon BSZ018N04LS6 ($1.10, fully characterised, only \~200 in stock).
 - **Check on P0:** measure the FET pair's resistance with a Kelvin probe at 5 A and 10 A, scope the gate and a controlled short-circuit trip.
-- **Verdict:** yes. Cheapest and lowest-risk of the four.
+- **Verdict:** yes. Cheapest and lowest-risk of the four. Superseded on 10-23: the 65E's short-circuit current makes the BSZ018N04LS6 the pick. It costs about $1.9 more per board and saves about 0.08 W more at 100 W. LCSC stock is low (about 200), so buy from a distributor and consign.
 
 ### 2. 9 V gate drive (DRV\_SUP) per port
 
