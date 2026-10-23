@@ -36,7 +36,7 @@ Charge to 4.20 V. Discharge floor: the spec says 2.5 V, its cycle test used 2.75
 
 **Loop (once a second):** `ICHG_REG = min(gauge ChargingCurrent(), ramp(hottest cell), 4.55 A)`, written to each BQ25756 through its TPS25751 (`I2Cr/I2Cw`). With both ports sinking, split it so the sum stays under the ramp.
 
-**Backstops:** R_ICHG 11.5 kΩ (pin ceiling 4.17–4.52 A even if nothing is configured); gauge temperature ranges T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA; gauge OTC 45 °C, UTC 0 °C. BQ25756 JEITA stays **off** (its NTC is on the FET copper, not the cells).
+**Backstops:** R_ICHG (R413/R513) 11.8 kΩ (pin ceiling 4.07–4.45 A even if nothing is configured); gauge temperature ranges T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA; gauge OTC 45 °C, UTC 0 °C. BQ25756 JEITA stays **off** (its NTC is on the FET copper, not the cells).
 
 **What to expect (model, 88 W offered, empty to full):** ~2.0 h at 25 °C ambient (the board's heat holds the front cells in the 40–45 °C ramp), ~1.5 h at 10 °C, ~1.8 h at 3 °C.
 - **Self-warming in the cold:** the board's heat warms cold cells up through the 0.65 A and 3.25 A bands into the 4.55 A band within tens of minutes. Don't fight it.

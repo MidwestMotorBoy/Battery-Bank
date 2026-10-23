@@ -17,7 +17,7 @@ The listing gives these against **ambient** temperature. The pack has no ambient
 
 ## Where each limit lives
 **Hardware (works with no firmware):**
-1. **R_ICHG (R4xx/R5xx on ICHG) 9.1 kΩ → 11.5 kΩ 1 %.** The BQ25756 pin ceiling becomes 48–52 A·kΩ / 11.5 kΩ = 4.17–4.52 A (bq25756 §5.5; RBAT 5 mΩ), under the 4.55 A maximum even if the configuration never loads. Today's 9.1 kΩ allows up to 5.83 A.
+1. **R_ICHG (R4xx/R5xx on ICHG) 9.1 kΩ → 11.5 kΩ 1 %** *(applied as 11.8 kΩ, LCSC C93752: 11.5 kΩ isn't confirmed at LCSC; ceiling 4.07–4.45 A)*. The BQ25756 pin ceiling becomes 48–52 A·kΩ / 11.5 kΩ = 4.17–4.52 A (bq25756 §5.5; RBAT 5 mΩ), under the 4.55 A maximum even if the configuration never loads. Today's 9.1 kΩ allows up to 5.83 A.
 2. **IBAT_REV = 10 A** in each TPS25751 bundle (already planned): under the 13 A maximum.
 3. **BQ40Z50 protections:** OTC 45 °C and UTC 0 °C (open CHG); OTD 60 °C (opens DSG); OCD1 ≈ 12 A / OCD2 ≈ 14 A; CUV at the chosen discharge floor. The cell sensors must be on the **front cells** (the pair the board heats in the cup), or the hottest cells are never seen.
 
