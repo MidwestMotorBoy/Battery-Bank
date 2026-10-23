@@ -28,6 +28,22 @@ About 4.5 g (1.5 cc) of a 3–3.6 W/m·K dispensable silicone, between the B.Cu 
 - Gift packs: Bergquist TGF 3600 or Laird Tflex CR350S (3.6 W/m·K, two-part, room-temperature cure only with cells fitted).
 - Without filler, the board ramp ends the 100 W burst after 2 min and the hottest part runs 4.1 K hotter (6.4 K while charging). A 6 W/m·K grade, a wider zone, beads between cells and a parts-to-wall pad each buy 1–6 K for 4–11 g; not worth it. Filler between the cans and the cup wall does nothing (0.15 mm gap).
 
+## Cell temperature spread and a graphite wrap (`sheet.py`)
+
+The spread comes from the board, not the cells: the stage's heat goes into the front cell under it (C4 for USB1) through the gap filler. A graphite heat-spreader wrap round the four-cell bundle, in the 0.275 mm cell-to-cup gap and 65 mm tall, spreads it over all four cells. It is modelled as extra conductances along the sheet with full contact where it touches a can. Panasonic PGS grades: 70 µm, 750–950 W/m·K, 1.1 g/cc; 25 µm, 1500–1700 W/m·K, 2.1 g/cc. A PET-laminated type is needed because the bare sheet conducts electricity: A-SM is about 90 µm finished from the 70 µm base.
+
+| Case | Cell-to-cell, peak / average | Within one cell, peak | Hottest can | Hottest part |
+| --- | --- | --- | --- | --- |
+| 100 W, no wrap | 6.4 / 4.3 K | 10.4 K | 42.5 °C | 58.5 °C |
+| 100 W, 70 µm wrap (about 1.2 g) | 4.2 / 2.3 K | 5.6 K | 40.0 °C | 54.5 °C |
+| 100 W, 25 µm wrap (about 0.8 g) | 4.7 / 2.7 K | 6.5 K | 40.4 °C | 54.8 °C |
+| Charging, no wrap | 6.0 / 4.8 K | 6.4 K | 44.6 °C | 53.2 °C |
+| Charging, 70 µm wrap | 3.0 / 2.6 K | 3.1 K | 42.4 °C | 51.1 °C |
+| Pass-through, no wrap | 9.1 / 6.4 K | 11.8 K | 48.0 °C | 61.8 °C |
+| Pass-through, 70 µm wrap | 5.4 / 3.5 K | 6.6 K | 45.0 °C | 60.4 °C |
+
+With the 70 µm wrap, the 100 W burst grows from 6.2 to 6.8 min, and the first 40 minutes deliver 43.7 Wh instead of 40.8 Wh. Charging takes 83 min instead of 89. In pass-through the pack reaches 95 % instead of 83 % after 2 h. For scale, the USABC EV target is under 3 K cell-to-cell.
+
 ## Sensitivity (100 W, first 40 min)
 
 | Change | Full power | Energy in 40 min |
@@ -46,7 +62,7 @@ Cell DC resistance 14 mΩ at 25 °C (BAK gives only ≤ 8 mΩ AC), 1.8× at empt
 ## Files
 
 - `pack3d.py`: geometry, materials, voxel grid, electrical and loss model, firmware policy, cases.
-- `fill.py`: gap-filler variants. `sens.py`: sensitivity runs. `jobs.py`: runs everything on 4 cores (about 1.5 h).
+- `fill.py`: gap-filler variants. `sheet.py`: graphite wrap variants. `sens.py`: sensitivity runs. `jobs.py`: runs everything on 4 cores (about 1.5 h).
 - `render.py`: thermal maps and chart series. `summary.py`: summary table.
 - `make_text.py` and `page_template.html` with `build_page.py OUT_DIR`: builds the report.
 - `results/` (ignored) holds the per-run `.npz` files and grid caches.

@@ -32,6 +32,10 @@ FILL_Y, FILL_Z = (7.0, 16.0), (27.0, 53.0)    # gap filler / thermal-via zone, b
 FILL_ZONES = [(18.0, 25.3, 7.0, 16.0, 27.0, 53.0)]
 FILL_OVER_PA12 = []                           # zones that replace carrier PA12 too (front-back beads in place of the webs)
 GRID_TAG = ''
+# optional graphite heat-spreader wrap round the four-cell bundle (in the 0.275 mm cell-to-cup gap): None, or
+# dict(kt=in-plane conductivity x thickness, W/K, z=(z0, z1)). Added as extra voxel-to-voxel links along the sheet,
+# assuming full contact where the wrap touches a can (thin PSA: ~1e-4 K m2/W, far below the sheet's spreading resistance)
+SHEET = None
 RAIL_Y, RAIL_Z = (6.5, 11.3), ((4.6, 23.0), (56.0, 79.0))
 PORT_Y = {1: 6.5, 2: -6.5}                    # USB1 / USB2 receptacles
 STAGE_Y = {1: 11.6, 2: -11.6}                 # each port's power stage sits over its own front cell (C4 / C1)
@@ -249,10 +253,57 @@ class Grid:
             nb_plus[tuple(s_lo)] = ~self.dom[tuple(s_hi)]
             gext += np.where(self.dom & nb_minus, gm, 0) + np.where(self.dom & nb_plus, gp, 0)
         ge = gext[self.dom]
+        if SHEET:
+            i0, i1, g = self.sheet_links(SHEET['kt'], SHEET['z'])
+            rows += [i0, i1]; cols += [i1, i0]; vals += [-g, -g]
         K = sp.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))), shape=(N, N)).tocsr()
         diag = -np.asarray(K.sum(1)).ravel() + ge
         K = K + sp.diags(diag)
         return K.tocsr(), ge
+
+    def sheet_links(self, kt, zr, step=0.05):
+        """links (i0, i1, G) of a sheet wrapped round the cell bundle hull: a rounded square, R_CELL + 0.05 mm out from the
+        square through the four cell centres. Walk the loop, collapse it to the voxels it passes, and link neighbours along
+        the loop (kt * dz / arc) and along z (kt * arc_in_voxel / dz)"""
+        R = R_CELL + 0.05
+        pts = []                                           # closed loop, counter-clockwise from the front flat
+        corners = [(PR, PR, 0.0), (-PR, PR, 0.5*np.pi), (-PR, -PR, np.pi), (PR, -PR, 1.5*np.pi)]
+        for k, (cx, cy, a0) in enumerate(corners):
+            nx_, ny_ = corners[(k + 1) % 4][:2]
+            p0 = np.array([cx + R*np.cos(a0), cy + R*np.sin(a0)])   # flat from the end of the previous arc
+            pp = corners[k - 1]; q = np.array([pp[0] + R*np.cos(a0), pp[1] + R*np.sin(a0)])
+            n = max(2, int(np.hypot(*(p0 - q)) / step))
+            pts += list(q + (p0 - q)*np.linspace(0, 1, n, endpoint=False)[:, None])
+            th = a0 + np.linspace(0, 0.5*np.pi, max(2, int(0.5*np.pi*R/step)), endpoint=False)
+            pts += list(np.stack([cx + R*np.cos(th), cy + R*np.sin(th)], 1))
+        pts = np.array(pts)
+        seg = np.hypot(*np.diff(np.vstack([pts, pts[:1]]), axis=0).T)
+        ix = np.searchsorted(self.edges[0], pts[:, 0]) - 1; iy = np.searchsorted(self.edges[1], pts[:, 1]) - 1
+        key = ix*10000 + iy
+        runs = []                                          # (ix, iy, arc length, arc position of the run's middle)
+        s = np.concatenate([[0], np.cumsum(seg)])[:-1]
+        start = 0
+        for j in range(1, len(key) + 1):
+            if j == len(key) or key[j] != key[start]:
+                runs.append((ix[start], iy[start], seg[start:j].sum(), s[start] + 0.5*seg[start:j].sum())); start = j
+        if runs[0][:2] == runs[-1][:2]:                    # the loop starts mid-voxel: merge the two ends
+            a, b = runs[0], runs.pop()
+            runs[0] = (a[0], a[1], a[2] + b[2], b[3] - b[2]/2 + (a[2] + b[2])/2)
+        L = s[-1] + seg[-1]
+        kz = [k for k in range(self.n[2]) if zr[0] <= self.c[2][k] <= zr[1]]
+        dz = self.h[2]
+        I0, I1, G = [], [], []
+        for k in kz:
+            for j in range(len(runs)):
+                a, b = runs[j], runs[(j + 1) % len(runs)]
+                d = (b[3] - a[3]) % L
+                ia, ib = self.idx[a[0], a[1], k], self.idx[b[0], b[1], k]
+                if ia < 0 or ib < 0 or ia == ib: continue
+                I0.append(ia); I1.append(ib); G.append(kt*dz/d)
+                if k + 1 in kz:
+                    ic = self.idx[a[0], a[1], k + 1]
+                    if ic >= 0: I0.append(ia); I1.append(ic); G.append(kt*a[2]/dz)
+        return np.array(I0), np.array(I1), np.array(G)
 
     def box_weights(self, boxes):
         """fraction of each box's volume in each voxel (normalised to 1 over all boxes, by volume)"""
