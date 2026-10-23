@@ -62,7 +62,7 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 - **Ship mode:** gauge SHUTDOWN, pack drains 3–4 µA. Entered from the app, after two weeks idle, or at RSOC ≤ 5 %, never with a cable attached. Wakes when a charger is plugged in (wake-on-USB is unproven; TP113 to TP106 is the manual wake).
 - **Training on P0:** there is no separate training board. BQStudio and the EV2400 clone connect through the J302 "GAUGE" Tag-Connect, with J113/J114 wire pads for the learning-cycle load. The FEB cell needs a new chemistry ID (likely a GPCCHEM run), then a learning cycle per TI SLUA903, and the golden image goes in the repo.
 - **Considered and not adopted:** BQ41Z50 (not a drop-in, $7.44 vs $1.96, and still needs an external second-level protector). Worth a look for a later spin.
-- **Pending loss cut:** replace the AGM404AP1 with the XNRUSEMI XRS120N04D (2.8 mΩ vs 6.0 mΩ, same footprint), about −0.45 W at 100 W.
+- **Loss cut (adopted 2026-10-23):** replace the AGM404AP1 with the XNRUSEMI XRS120N04D (2.8 mΩ vs 6.0 mΩ, same footprint), about −0.45 W at 100 W.
 
 ## Ports, charging and power policy
 
@@ -116,7 +116,7 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
-**Pending loss cuts (see Your call: the four loss cuts)** (about −1.6 W at 100 W, not yet decided): XRS120N04D protection FETs; a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
+**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): XRS120N04D protection FETs; a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
 
 ## MCU, sensing and Bluetooth
 
@@ -202,7 +202,7 @@ Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with 
 - [ ] Move to FreeRTOS with the BLE5 stack; supervision loop on an RTC wake, watchdog that can't be stopped
 - [ ] Gauge driver: SBS reads, `DAStatus2`, Lifetime Data via `ManufacturerBlockAccess()`
 - [ ] TPS25751 driver: 4CC commands, `I2Cr`/`I2Cw` passthrough to the BQ25756, `GPsh`/`GPsl`, IRQ\_N decode and event masks
-- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, GPIO6 output if the gate-drive LDO goes in); EEPROM self-programming and repair on every boot
+- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 1, GPIO6 output for the gate-drive LDO if GPIO6 is the chosen enable); EEPROM self-programming and repair on every boot
 - [ ] Charge loop per the 10-21 policy; dual-port split; solar MPPT and dropout ride-through; pass-through; max SOC hold and recharge point; balancing charge; loop detection
 - [ ] Discharge `P_allow` with Source Capability re-advertising, hysteresis, and both port-sharing modes (USB1 priority, Balanced)
 - [ ] Gate-drive LDO sequencing (if adopted): enable converter, then `GPsl`; `GPsh` before disable or on charge-done/fault
@@ -261,7 +261,7 @@ The four cells are 300 g of the \~387 g modelled pack, so the housing and board 
 
 ## Decisions (2026-10-23)
 
-Logan answered the open questions on 2026-10-23. Two calls are still his: the charge-ceiling resistor and the loss cuts, both laid out in the next two sections.
+Logan answered the open questions on 2026-10-23. He approved all four loss cuts the same day. The charge-ceiling resistor is the one call still open, laid out in the next section.
 
 | Question | Decision | What it changes |
 | --- | --- | --- |
@@ -279,7 +279,7 @@ Logan answered the open questions on 2026-10-23. Two calls are still his: the ch
 
 Recommendation: keep **11.8 kΩ**. It is the only value of the two that stays under the cell's 4.55 A limit at every tolerance corner, and it costs well under a minute of charge time.
 
-**What the resistor does.** Each BQ25756 has an ICHG pin. The resistor on it sets a hardware charge-current ceiling for that charger: I = K\_ICHG / R, with K\_ICHG = 48–52 A·kΩ for the 5 mΩ RBAT (BQ25756 datasheet §5.5). Firmware normally writes a lower limit over I2C. The resistor is the backstop that still holds if the TPS25751 configuration never loads, the MCU is blank, or firmware writes a wrong value.
+**What the resistor does.** Each BQ25756 has an ICHG pin. The resistor on it sets a hardware charge-current ceiling for that charger: I = K\_ICHG / R, with K\_ICHG = 48–52 A·kΩ for the 5 mΩ RBAT (BQ25756 datasheet §5.5). Firmware normally writes a lower limit over I2C. The resistor is the backstop that still holds if the TPS25751 configuration never loads, the MCU is blank, or firmware writes a wrong value. Software cannot raise the current above the pin: with EN\_ICHG\_PIN = 1 the charger uses the lower of the pin limit and the ICHG register, and the only way past the pin is to clear EN\_ICHG\_PIN, which removes the backstop. So the conservative-default scheme works the other way round: the resistor sits at the cell maximum, the TPS25751 configuration loads a conservative register default (3.25 A, the 5–15 °C cell limit), and the MCU raises the register toward the pin limit once it is running and reading cell temperatures. The dev board used the same scheme (EN\_ICHG\_PIN = 1, EN\_CHG\_BIT\_RESET\_BEHAVIOR = 0, so a watchdog expiry stops charging instead of falling back to the pin).
 
 |  | 11.5 kΩ (policy doc, 10-21 plan) | 11.8 kΩ (applied in the P0 schematic) |
 | --- | --- | --- |
@@ -291,9 +291,9 @@ Recommendation: keep **11.8 kΩ**. It is the only value of the two that stays un
 
 The ceiling is per charger. With both ports charging, two chargers could together push past 4.55 A in hardware, and only firmware and the gauge stop that. So whichever value you pick, set the gauge's charge overcurrent (OCC) just above 4.55 A, around 5 A, as the pack-level backstop.
 
-## Your call: the four loss cuts for P0
+## Decided: the four loss cuts for P0
 
-Recommendation: take all four, with the 9 V gate drive fitted but switchable so P0 can A/B test it. Together they cut about 1.6 W of the \~12 W the pack makes at 100 W (about 13 %), which buys longer 100 W bursts before the derate starts. Only the inductor change helps much at trail loads.
+Decision (2026-10-23): take all four, with the 9 V gate drive fitted but switchable (default off) so P0 can A/B test it. Together they cut about 1.6 W of the \~12 W the pack makes at 100 W (about 13 %), which buys longer 100 W bursts before the derate starts. Only the inductor change helps much at trail loads.
 
 The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/`), which modelled the EVE cells. The FEB pack carries nearly the same currents, so the savings carry over. All are estimates, not measurements.
 
