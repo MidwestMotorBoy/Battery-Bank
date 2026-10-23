@@ -53,7 +53,7 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 
 | Layer | What | Trips on |
 | --- | --- | --- |
-| 1. Gauge | BQ40Z50-R2 (SMBus 0x0B), AGM404AP1 CHG/DSG FETs, 1 mΩ 1206 shunt | OTC 45 °C, UTC 0 °C, OTD 60 °C, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell |
+| 1. Gauge | BQ40Z50-R2 (SMBus 0x0B), AGM404AP1 CHG/DSG FETs, 1 mΩ 1206 shunt | OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell |
 | 2. Hardware | BQ294700 per-cell OVP firing a TLC WSFB1514 15 A chemical fuse (F102) through Q104 | Cell overvoltage, independent of the gauge |
 | 3. Firmware | MCU cross-checks and the charge/thermal policy | Everything above, with smoother limits |
 
@@ -73,7 +73,7 @@ Each USB-C port is an identical, self-contained power stage, so either port can 
 | Function | Part | Notes |
 | --- | --- | --- |
 | PD controller | TPS25751D | I2C 0x20 (USB1) / 0x21 (USB2), SafeMode dead-battery strap, own 512 Kbit EEPROM. It is the I2C master for its charger; the MCU reaches the BQ25756 through `I2Cr`/`I2Cw` |
-| Buck-boost charger | BQ25756 | 600 kHz, R\_ICHG 11.8 kΩ (hardware ceiling 4.07–4.45 A), DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
+| Buck-boost charger | BQ25756 | 600 kHz, ICHG pin 0 Ω to PGND with EN\_ICHG\_PIN = 0 (charge limit set by ICHG\_REG only), DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
 | Power FETs | 2 × Vishay SiZ240DT | 40 V half-bridge per leg. LCSC had only 2 in stock on 10-19; supply them to JLC yourself |
 | Inductor | Coilank APS0730M2R2F, 2.2 µH | 3.1 mm tall. Runs hotter than the Coilcraft option; measure it |
 | Sense resistors | 5 mΩ RAC (0805) and RBAT (1206) | TI fixes RBAT at 5 mΩ |
@@ -149,7 +149,7 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [ ] Move the five bottom tab slots 0.30 mm for the FEB cells; run Update PCB from Schematic (R413/R513 = 11.8k)
+- [ ] Move the five bottom tab slots 0.30 mm for the FEB cells; run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (XRS120N04D, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
@@ -165,14 +165,14 @@ The production P0 board is the design of record and the first board planned to b
 
 ## Contradictions between sources
 
-Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them on 10-23 except the resistor, which is laid out under Your call. The rest are stale text to clean up. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
+Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them all on 10-23. The rest are stale text to clean up. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
 
 | # | Topic | Older source says | Newer source says | Spec uses |
 | --- | --- | --- | --- | --- |
 | 1 | Dev board built? | Chat 10-20 and memory: dev board in hand, LEDs lit, probe measured 3.3 V back-feed | README and P0 docs: dev board skipped 10-18, never ordered | **Skipped (decided 10-23)** |
 | 2 | Port sharing | Project notes, GATT `usb2_min_w`: USB1 priority, USB2 guaranteed 20 W (10–30 W setting) | Thermal policy: the port with the higher contract gives way first | **User setting, both modes (10-23)** |
 | 3 | Charge rate and fast mode | Project notes, GATT `fast_charge`: 0.5C default, opt-in 1C at 20–80 %. Bring-up checklist: single port 5.5 A by default | Thermal policy: temperature ramp to 4.55 A, no fast mode mentioned | Ramp; fast toggle **kept, clamped to the cell table (10-23)** |
-| 4 | Charge ceiling resistor | Thermal policy: R\_ICHG 11.5 kΩ | README, P0 README, FEB notes: 11.8 kΩ | 11.8 kΩ; **see Your call** |
+| 4 | Charge ceiling resistor | Thermal policy: R\_ICHG 11.5 kΩ | README, P0 README, FEB notes: 11.8 kΩ | 0 Ω, register only (decided 10-23); **see Decided: resistor** |
 | 5 | Output and throttle | Project notes, GATT: 100 W thermally limited; when hot every port drops to 20 W; full power while 3 of 4 board sensors work | Thermal policy: 100 W burst, linear ramp to \~40 W sustained on the hottest cell | Ramp |
 | 6 | Board temperature sensors | Project notes, GATT Temperatures 5–9: TMP1075 T1–T3 (+T4/T5 DNP) | Dev board rev A8 (10-17): TMP1075s removed; gauge and charger TS only; USB-C receptacles unmonitored | Rev A8 |
 | 7 | LED and button | GATT: `led_mode`, `IDENTIFY`, ship mode woken "by a charger or the button" | P0: LED, reset and wake buttons all removed | P0 |
@@ -202,8 +202,8 @@ Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with 
 - [ ] Move to FreeRTOS with the BLE5 stack; supervision loop on an RTC wake, watchdog that can't be stopped
 - [ ] Gauge driver: SBS reads, `DAStatus2`, Lifetime Data via `ManufacturerBlockAccess()`
 - [ ] TPS25751 driver: 4CC commands, `I2Cr`/`I2Cw` passthrough to the BQ25756, `GPsh`/`GPsl`, IRQ\_N decode and event masks
-- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 1, GPIO6 output for the gate-drive LDO if GPIO6 is the chosen enable); EEPROM self-programming and repair on every boot
-- [ ] Charge loop per the 10-21 policy; dual-port split; solar MPPT and dropout ride-through; pass-through; max SOC hold and recharge point; balancing charge; loop detection
+- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 0, GPIO6 output for the gate-drive LDO if GPIO6 is the chosen enable); EEPROM self-programming and repair on every boot
+- [ ] Charge loop per the 10-21 policy; read back ICHG\_REG, EN\_ICHG\_PIN and EN\_CHG every second and before releasing CHG\_INH, rewriting the value or inhibiting charge on a mismatch; dual-port split; solar MPPT and dropout ride-through; pass-through; max SOC hold and recharge point; balancing charge; loop detection
 - [ ] Discharge `P_allow` with Source Capability re-advertising, hysteresis, and both port-sharing modes (USB1 priority, Balanced)
 - [ ] Gate-drive LDO sequencing (if adopted): enable converter, then `GPsl`; `GPsh` before disable or on charge-done/fault
 - [ ] Ship mode entry and exit rules; settings in flash with CRC and safe defaults
@@ -261,7 +261,7 @@ The four cells are 300 g of the \~387 g modelled pack, so the housing and board 
 
 ## Decisions (2026-10-23)
 
-Logan answered the open questions on 2026-10-23. He approved all four loss cuts the same day. The charge-ceiling resistor is the one call still open, laid out in the next section.
+Logan answered the open questions on 2026-10-23. He approved all four loss cuts the same day. The charge-ceiling resistor was settled the same day: 0 Ω (next section).
 
 | Question | Decision | What it changes |
 | --- | --- | --- |
@@ -275,9 +275,9 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Cell data | Treat the FEB table as cell temperature until FEB confirms; get the maker's datasheet before ordering | No design change |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 
-## Your call: the charge-ceiling resistor (R413 / R513)
+## Decided: the charge-ceiling resistor (R413 / R513)
 
-Recommendation: keep **11.8 kΩ**. It is the only value of the two that stays under the cell's 4.55 A limit at every tolerance corner, and it costs well under a minute of charge time.
+Original recommendation: keep **11.8 kΩ**. It is the only value of the two that stays under the cell's 4.55 A limit at every tolerance corner, and it costs well under a minute of charge time. Decision (2026-10-23): fit 0 Ω (ICHG pin to PGND) with EN\_ICHG\_PIN = 0, so a future cell needs only a software change. A charger overcurrent then needs two faults at once (a charger register reset while the MCU holds CHG\_INH low, and firmware failing to catch it), and the input-current limit caps it at about 6.5–8 A into the cells. Conditions: firmware reads back ICHG\_REG every second and before releasing CHG\_INH; the TPS25751 configuration loads ICHG\_REG = 3.25 A; gauge OCC ≈ 5 A is the hardware backstop. The comparison below is kept for reference.
 
 **What the resistor does.** Each BQ25756 has an ICHG pin. The resistor on it sets a hardware charge-current ceiling for that charger: I = K\_ICHG / R, with K\_ICHG = 48–52 A·kΩ for the 5 mΩ RBAT (BQ25756 datasheet §5.5). Firmware normally writes a lower limit over I2C. The resistor is the backstop that still holds if the TPS25751 configuration never loads, the MCU is blank, or firmware writes a wrong value. Software cannot raise the current above the pin: with EN\_ICHG\_PIN = 1 the charger uses the lower of the pin limit and the ICHG register, and the only way past the pin is to clear EN\_ICHG\_PIN, which removes the backstop. So the conservative-default scheme works the other way round: the resistor sits at the cell maximum, the TPS25751 configuration loads a conservative register default (3.25 A, the 5–15 °C cell limit), and the MCU raises the register toward the pin limit once it is running and reading cell temperatures. The dev board used the same scheme (EN\_ICHG\_PIN = 1, EN\_CHG\_BIT\_RESET\_BEHAVIOR = 0, so a watchdog expiry stops charging instead of falling back to the pin).
 
