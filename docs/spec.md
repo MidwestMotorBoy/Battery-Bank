@@ -4,13 +4,13 @@ Last updated 2026-10-23. This file is the single source of truth for the Monolit
 
 ## Overview
 
-Monolith is an ultralight 93.6 Wh backpacking power bank: four FEB 21700G cells in 4S1P, two identical bidirectional USB-C PD ports (100 W burst, about 40 W sustained), a BQ40Z50-R2 gauge, and a TI CC2340 Bluetooth LE MCU that talks to an iPhone app. The design of record is the production P0 board inside the MJF nylon "cup" enclosure. Nothing has been built or bench-tested yet, so every number here is a design value.
+Monolith is an ultralight 91 Wh backpacking power bank: four BAK N21700CX-65E cells in 4S1P, two identical bidirectional USB-C PD ports (100 W burst, about 40 W sustained), a BQ40Z50-R2 gauge, and a TI CC2340 Bluetooth LE MCU that talks to an iPhone app. The design of record is the production P0 board inside the MJF nylon "cup" enclosure. Nothing has been built or bench-tested yet, so every number here is a design value.
 
 This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sources disagree, the newest one wins and the conflict is listed under Contradictions. In order of authority: the repo README and `hardware/Production/README.md` (10-21), `docs/firmware/charge-and-thermal-policy.md` (10-21), the `app` branch GATT spec (10-16), the project's `monolith-next-actions.md` (10-16), then older notes and memory.
 
 | Item | Current design |
 | --- | --- |
-| Energy | 93.6 Wh nominal (91.4 Wh minimum), under the 100 Wh carry-on limit |
+| Energy | 91 Wh typical, 88.9 Wh minimum (about 93 Wh measured at 1 A), under the 100 Wh carry-on limit |
 | Pack voltage | 14.4 V nominal, 16.8 V full, 11.2 V floor (2.8 V per cell) |
 | Ports | 2 × USB-C PD, each bidirectional, 5–20 V, up to 5 A |
 | Output | 100 W while the hottest cell is at or below 33 °C, then a linear derate to about 40 W sustained |
@@ -19,7 +19,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Board | One 43.2 × 74.35 mm 6-layer board along one face of the cells |
 | Enclosure | MJF PA12 cup with an O-ring bottom cap and TPU bumpers. No metal, no potting |
 | Size and mass | 59.8 × 51.9 × 97.2 mm, about 384–400 g (modelled) |
-| Cost (estimate) | About $105 per board at 5 boards, about $155–160 per finished pack |
+| Cost (estimate) | About $105 per board at 5 boards, about $165 per finished pack with the 65E cells |
 
 ## System architecture
 
@@ -29,23 +29,23 @@ The gauge sits between the cells and a shared pack bus; each port's BQ25756 can 
 
 ## Cells and pack
 
-The pack is four FEB 21700G (68E) 6500 mAh cells in 4S1P, chosen on 2026-10-21 over the EVE 58E and Tenpower 60XG for energy at trail loads. The cell figures come from a reseller listing ([diy500amp](https://diy500amp.com/products/feb-21700-battery-cell-6500mah-13a-ultra-high-capacity-energy-cell?variant=42624877330503)), not the maker's datasheet, so they need confirming before P0.
+The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 in place of the FEB 21700G (which was chosen on 10-21 over the EVE 58E and Tenpower 60XG). At the same mass the 65E has about a third of the FEB's AC resistance and about 1.5× its discharge rating. The cell figures come from BAK's product specification N21700CX-65E, version A/00, dated 2025-04-10 ([PDF hosted by Convoy](https://convoylight.com/uploads/72553/cart/resources/20250901/e7772d4426c2842dadb5e9466e077fbc.pdf)), with measured values from BatteryRealData via [diy500amp](https://diy500amp.com/products/bak-65e-21700-6500mah-25a-battery-high-capacity-energy-cell). A copy is in `datasheets/bak-n21700cx-65e.pdf`.
 
 | Item | Value |
 | --- | --- |
-| Capacity | 6500 mAh nominal, 6350 mAh minimum, 23.4 Wh per cell |
-| Charge | 4.20 V. Max 4.55 A at 15–45 °C, 3.25 A at 5–15 °C, 0.65 A at 0–5 °C, none outside 0–45 °C |
-| Discharge | 13 A at 0–35 °C, 6.5 A at −20–0 and 35–45 °C, 3.25 A at 45–60 °C. Floor used: 2.8 V per cell |
-| Resistance | ≤ 25 mΩ spec; about 30 mΩ DC mid-charge and 50 mΩ near empty (estimate) |
-| Size and mass | 21.65 × 70.95 mm, 75 g (300 g for four) |
-| Cycle life | 500 cycles to ≥ 70 % at 0.5C charge / 1C discharge |
-| Price | $7.49 each, bare, no protection |
+| Capacity | 6500 mAh typical, 6350 mAh minimum (6584 mAh measured at 1 A); 3.5 V nominal; 22.75 Wh typical, 22.23 Wh minimum per cell |
+| Charge | 4.20 V. 4.25 V absolute. 3.175 A standard (0.5C), 12.7 A max (2C), 0–45 °C; surface ≤ 65 °C, recharge only once ≤ 45 °C. The datasheet has no temperature-stepped table (BAK supplies one on request), so firmware keeps the old FEB ramp, capped at 4.55 A, until it arrives |
+| Discharge | 19.05 A max (3C), −20–60 °C; surface ≤ 80 °C, resume once ≤ 60 °C. End voltage 2.5 V, absolute floor 2.0 V; floor used: 2.8 V per cell. Capacity ≥ 85 % at 0 °C and ≥ 80 % at −20 °C |
+| Resistance | AC ≤ 8 mΩ at 1 kHz; DC not specified (12–16 mΩ estimated, to measure) |
+| Size and mass | 21.7 × 71.0 mm max (reseller figures; the datasheet gives it only in a drawing), ≤ 75 g (300 g for four) |
+| Cycle life | ≥ 80 % at 501 cycles (0.5C charge / 1C discharge, 4.2–2.5 V) |
+| Price | $9.25–9.75 each, bare, no protection. Sold out at both US sellers on 10-23 |
 
 - **Interconnect:** spot-welded pure nickel, kWeld plus kCap. Series strips 0.15 × 7 mm; PACK tabs 0.2 × 7 mm split into a power finger and a Kelvin finger. Every connection is a nickel tail through a plated slot in the board, soldered on F.Cu. No wires, springs or connectors.
 - **Matching:** all four from one batch, within 10 mV and 1 mΩ (AC 1 kHz). Measure each diameter; the cup is designed to 21.85 mm.
 - **Carrier:** an MJF PA12 carrier holds the cells at 23.25 mm pitch, with webs between the front and back pairs. The board's heat goes into the two front cells, so those run hottest.
-- **Short circuit:** about 150–170 A available, less than the 58E, so the protection FETs and fuse have margin.
-- **Future trial:** the carrier should accept a Molicel P60B/P60C later (lower resistance, but about 300 A short-circuit current would force new FETs and fuse).
+- **Short circuit:** about 220–270 A from the cells' DC resistance (estimated at 12–16 mΩ, since BAK gives no DC figure), and up to about 370 A from the datasheet's ≤ 8 mΩ AC figure, which is closer to how a cell behaves in the first 100 µs of a short. It was 150–200 A with the FEB. This is why the protection FETs change to the BSZ018N04LS6 (see Battery management and protection).
+- **Future trial:** the carrier should accept a Molicel P60B/P60C later (lower resistance still; the short-circuit checks done for the 65E cover most of it).
 
 ## Battery management and protection
 
@@ -60,9 +60,9 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 - **Temperature inputs:** four wired 10k NTCs, one per cell, on TS1–TS4, plus the gauge's FET temperature and die. The policy acts on the hottest cell, which in the cup is a front cell.
 - **JEITA ranges in data flash:** T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA.
 - **Ship mode:** gauge SHUTDOWN, pack drains 3–4 µA. Entered from the app, after two weeks idle, or at RSOC ≤ 5 %, never with a cable attached. Wakes when a charger is plugged in (wake-on-USB is unproven; TP113 to TP106 is the manual wake).
-- **Training on P0:** there is no separate training board. BQStudio and the EV2400 clone connect through the J302 "GAUGE" Tag-Connect, with J113/J114 wire pads for the learning-cycle load. The FEB cell needs a new chemistry ID (likely a GPCCHEM run), then a learning cycle per TI SLUA903, and the golden image goes in the repo.
+- **Training on P0:** there is no separate training board. BQStudio and the EV2400 clone connect through the J302 "GAUGE" Tag-Connect, with J113/J114 wire pads for the learning-cycle load. The BAK 65E needs a new chemistry ID (likely a GPCCHEM run), then a learning cycle per TI SLUA903, and the golden image goes in the repo.
 - **Considered and not adopted:** BQ41Z50 (not a drop-in, $7.44 vs $1.96, and still needs an external second-level protector). Worth a look for a later spin.
-- **Loss cut (adopted 2026-10-23):** replace the AGM404AP1 with the XNRUSEMI XRS120N04D (2.8 mΩ vs 6.0 mΩ, same footprint), about −0.45 W at 100 W.
+- **Loss cut (adopted 2026-10-23):** replace the AGM404AP1 with the Infineon BSZ018N04LS6 (1.8 mΩ max vs 6.0 mΩ, same footprint and pinout), about −0.5 W at 100 W. This changed from the XRS120N04D on 2026-10-23 because of the 65E's short-circuit current. The XRS stays as a stocked alternative only if a P0 short test passes. Short circuit with the 65E (from the BAK datasheet): up to about 370 A. Each BSZ018N04LS6 then dissipates about 280 W while it is on. Infineon's characterised Zth (about 0.2 K/W at 100 µs, 0.4 K/W at 250 µs) gives a 55–115 K rise, inside its 175 °C limit if the gauge clears the short within about 220 µs. The XRS would see about 330 W, over its own drawn SOA (about 260 W at 100 µs). Gauge settings: SCD1 with RSNS = 1 at about 133–155 A with a 61 µs delay, and SCD2 at about 89–100 A with ≤ 244 µs. F102 needs no change. It is not what clears a short (its 50 A break rating was already below the FEB's short current), and a 370 A trip cleared in 220 µs passes about 30 A²s, against roughly 270–600 A²s to melt it. A FET that fails shorted remains a gap that no 15 A fuse can close. The 1 mΩ shunt takes about 30 mJ per trip, which is a few kelvin.
 
 ## Ports, charging and power policy
 
@@ -116,7 +116,7 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
-**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): XRS120N04D protection FETs; a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
+**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): BSZ018N04LS6 protection FETs (was XRS120N04D); a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
 
 ## MCU, sensing and Bluetooth
 
@@ -149,7 +149,7 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [ ] Move the five bottom tab slots 0.30 mm for the FEB cells; run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (XRS120N04D, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSZ018N04LS6 protection FETs, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
@@ -177,7 +177,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 6 | Board temperature sensors | Project notes, GATT Temperatures 5–9: TMP1075 T1–T3 (+T4/T5 DNP) | Dev board rev A8 (10-17): TMP1075s removed; gauge and charger TS only; USB-C receptacles unmonitored | Rev A8 |
 | 7 | LED and button | GATT: `led_mode`, `IDENTIFY`, ship mode woken "by a charger or the button" | P0: LED, reset and wake buttons all removed | P0 |
 | 8 | IP rating | Memory: IP65 (FR4 era). Mechanical brief: IP67 if possible | Cup docs state no target | **IP67 (decided 10-23)** |
-| 9 | Cells | Project notes, GATT `design_mah` 5600, EEPROM notes: EVE 58E, 82 Wh. Memory 10-14: switch to Amprius SA112 | Repo 10-21: FEB 21700G, 93.6 Wh | FEB |
+| 9 | Cells | Project notes, GATT `design_mah` 5600, EEPROM notes: EVE 58E, 82 Wh. Memory 10-14: switch to Amprius SA112 | Repo 10-21: FEB 21700G, 93.6 Wh. Logan 10-23: BAK 65E | BAK 65E (adopted 10-23) |
 | 10 | Enclosure | Memory, project notes: FR4 walls with printed end caps, top-cap board, aluminium heatsink plate | 10-18 side tray + aluminium cover; 10-21 the cup | Cup |
 | 11 | Potting | GATT §8, EEPROM notes, repo checklist: potted pack | Mechanical design 10-18: no potting | No potting |
 | 12 | Port protection | Project notes: TPD4S201 with liquid detection | P0 10-18: TPD6S300, liquid detection removed | TPD6S300 |
@@ -188,7 +188,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 17 | Checklist docs | Repo checklist: 10-11 base with STM32WB pin map, ProtoFlow, 10-18 header | Project notes: 10-16 rewrite for the CC2340. Both predate the FEB cells and the cup | This spec |
 | 18 | MCU in older notes | EEPROM programming notes: STM32WB, separate IRQ pins | CC2340, one IRQ\_N line | CC2340 (method unchanged) |
 | 19 | Mass | Early plan: \~345 g | FEB notes: \~384 g; README: \~400 g with the board | 384–400 g |
-| 20 | Learning-cycle load | P0 README: "\~C/5 ≈ 1.2 A" (58E math) | FEB C/5 = 1.3 A | 1.3 A |
+| 20 | Learning-cycle load | P0 README: "\~C/5 ≈ 1.2 A" (58E math) | C/5 of 6.5 Ah = 1.3 A | 1.3 A |
 
 ## To do: areas not yet specified or built
 
@@ -212,7 +212,7 @@ Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with 
 
 ### BLE protocol (GATT)
 
-The spec is v1.1 from 10-16 (`docs/app/ble-gatt-spec.md` on `app`). It needs a revision for the FEB cells, P0 hardware and the 10-21 policy.
+The spec is v1.1 from 10-16 (`docs/app/ble-gatt-spec.md` on `app`). It needs a revision for the BAK 65E cells, P0 hardware and the 10-21 policy.
 
 - [ ] `design_mah` 6500; product name and hardware revision strings for P0 (`hw_rev` 2)
 - [ ] Settings: keep, as a future field clamped to the cell table, `fast_charge`; add a port-sharing mode (USB1 priority / Balanced) beside `usb2_min_w` (the guaranteed USB2 minimum); reserve `led_mode`; consider a `longevity_4v10` flag
@@ -237,7 +237,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
 - [ ] Bending jig for the nickel tails; gap-filler dispense pattern
-- [ ] Outside label: 93.6 Wh, 14.4 V, USB1 / USB2, ratings
+- [ ] Outside label: 91 Wh, 14.4 V, USB1 / USB2, ratings
 
 ### Mass reduction (400 g accepted; keep working on it)
 
@@ -253,11 +253,11 @@ The four cells are 300 g of the \~387 g modelled pack, so the housing and board 
 
 - [ ] Bring-up per `docs/production/p0-bringup-and-training.md`: rails, flash, PD EEPROM load, gauge training
 - [ ] Thermal: 100 W full-to-empty logging every sensor, at 10, 25 and 35 °C ambient; tune the derate start and sustain power
-- [ ] Charging: 100, 65 and 30 W chargers, dual-port, solar in sun and shade; measure the FEB resistance curve
+- [ ] Charging: 100, 65 and 30 W chargers, dual-port, solar in sun and shade; measure the 65E resistance curve
 - [ ] Switching: SW1/SW2 ringing with 0 Ω gate links, inductor and SiZ240DT temperatures
 - [ ] Drop: 1 m onto rock on the bumpers, then a leak test
 - [ ] PD interoperability with a set of phones, laptops and chargers (a PD analyzer if one is available)
-- [ ] No formal certification (personal use and gifts). Write down a per-pack safety test set (cell match, protection trips, 100 W thermal run, dunk test) and run it before gifting; hand-deliver gifts rather than ship them
+- [ ] No formal certification (personal use and gifts). Write down a per-pack safety test set (cell match, protection trips including a controlled short circuit with the 65E cells, 100 W thermal run, dunk test) and run it before gifting; hand-deliver gifts rather than ship them
 
 ## Decisions (2026-10-23)
 
@@ -267,12 +267,13 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | --- | --- | --- |
 | Dev board | Skipped for good; P0 is the Mk 1 build | `hardware/DevBoard/` stays in the repo as the reviewed reference only |
 | Port sharing | A user setting in the app | Two modes: **USB1 priority** (USB2 keeps a guaranteed minimum, 10–30 W, default 20 W) and **Balanced** (the port with the larger contract gives way first). Default: USB1 priority, to match the port labels. Needs a GATT setting and firmware support for both |
-| Fast-charge toggle | Kept in the app and GATT for future packs | Firmware always clamps to the cell's datasheet table. On the FEB pack the temperature ramp already reaches the 4.55 A maximum, so the toggle has no headroom today |
+| Fast-charge toggle | Kept in the app and GATT for future packs | Firmware always clamps to the cell's datasheet table. With the BAK 65E (12.7 A max, 2C) the toggle has real headroom, but it stays clamped to BAK's datasheet table once that is in hand |
 | Max SOC default | 95 %, settable 60–100 % | No change |
 | Waterproofing | **IP67**: dust-tight, 1 m immersion for 30 min | The O-ring, both USB-C seals and the vent must pass a 1 m / 30 min dunk. The ePTFE vent must be an IP67-rated part |
 | Scope | Personal use and gifts to friends | No formal UL, IEC or FCC certification. Hand-deliver gifts: shipping a lithium pack by carrier needs UN38.3. Run a documented safety test set on each pack before gifting it |
 | Mass | About 400 g is fine; keep reducing | Mass reduction added to the to-do list |
-| Cell data | Treat the FEB table as cell temperature until FEB confirms; get the maker's datasheet before ordering | No design change |
+| Cell data | BAK's datasheet (A/00, 2025-04-10) found on 10-23; ask BAK for its temperature-stepped charge profile and keep the FEB ramp until then | No design change |
+| Cells | BAK N21700CX-65E replaces the FEB 21700G | 91 Wh typical (88.9 Wh minimum). Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
@@ -295,7 +296,7 @@ The ceiling is per charger. With both ports charging, two chargers could togethe
 
 Decision (2026-10-23): take all four, with the 9 V gate drive fitted but switchable (default off) so P0 can A/B test it. Together they cut about 1.6 W of the \~12 W the pack makes at 100 W (about 13 %), which buys longer 100 W bursts before the derate starts. Only the inductor change helps much at trail loads.
 
-The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/`), which modelled the EVE cells. The FEB pack carries nearly the same currents, so the savings carry over. All are estimates, not measurements.
+The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/`), which modelled the EVE cells. The 6500 mAh packs carry nearly the same currents, so the savings carry over. All are estimates, not measurements.
 
 | Change | 30 W | 100 W | 100 W near empty | 88 W charging | Cost per board | Board impact |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -305,13 +306,13 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 | 4. Thicker nickel, copper PACK tails | 0.02 W | 0.26 W | 0.47 W | 0.14 W | \~$3 | None |
 | **Total** | **\~0.2 W** | **\~1.6 W** | **\~2.7 W** | **\~0.8 W** |  |  |
 
-### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D
+### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D (BSZ018N04LS6 since 10-23)
 
 - **What:** Q101/Q102 are the gauge's back-to-back main switches; every amp in or out passes through both. The XRS120N04D (LCSC C50314144) has 2.8 mΩ max at the gauge's \~10 V gate drive, against 6.0 mΩ for today's part. Same package and pinout, so only the part fields change.
 - **Extra benefits:** about a third of the heat per FET during a short-circuit delay (about 104 W against 300 W), a softer inrush into the bus capacitors because it turns on more slowly, and 5,010 in stock at JLC against 477.
 - **Risks:** an obscure vendor with a sloppy datasheet; turn-off at a short is about 3× slower (about 13 µs), still inside its rating; the gauge's short-circuit delay must stay at ≤ \~120 µs. Fallback on the same footprint: Infineon BSZ018N04LS6 ($1.10, fully characterised, only \~200 in stock).
 - **Check on P0:** measure the FET pair's resistance with a Kelvin probe at 5 A and 10 A, scope the gate and a controlled short-circuit trip.
-- **Verdict:** yes. Cheapest and lowest-risk of the four.
+- **Verdict:** yes. Cheapest and lowest-risk of the four. Superseded on 10-23: the 65E's short-circuit current makes the BSZ018N04LS6 the pick. It costs about $1.9 more per board and saves about 0.08 W more at 100 W. LCSC stock is low (about 200), so buy from a distributor and consign.
 
 ### 2. 9 V gate drive (DRV\_SUP) per port
 
