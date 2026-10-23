@@ -14,7 +14,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Pack voltage | 14.4 V nominal, 16.8 V full, 11.2 V floor (2.8 V per cell) |
 | Ports | 2 × USB-C PD, each bidirectional, 5–20 V, up to 5 A |
 | Output | 100 W while the hottest cell is at or below 33 °C, then a linear derate to about 40 W sustained |
-| Charging | Up to 4.55 A into the pack, following a temperature ramp. About 2 h empty to full from an 88 W source at 25 °C |
+| Charging | Up to 4.55 A into the pack, following a temperature ramp. About 1.5 h from 5 % to 95 % on one 100 W charger at 25 °C (modelled) |
 | Wireless | Bluetooth LE (CC2340R5MODA), custom GATT service, signed OTA updates |
 | Board | One 43.2 × 74.35 mm 6-layer board along one face of the cells |
 | Enclosure | MJF PA12 cup with an O-ring bottom cap and TPU bumpers. No metal, no potting |
@@ -111,8 +111,13 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 | ≥ 60 °C | 0 (gauge OTD) |
 
 - `P_allow` also takes the board ramp (55 → 70 °C on the charger TS) and a low-pack-voltage limit. It changes the offer by re-advertising Source Capabilities in 5 W steps: down at once, up only after 2 K of cooling and 10 s.
-- Model results at 25 °C: about 4 min of full 100 W from a full pack; at 30 W nothing derates and the pack lasts about 3 h.
-- Heat at 100 W out is about 12 W in total, about 6.5 W of it in the cells.
+- Model results with the 65E cells and P0 parts (2026-10-23, `research_notes/Pack thermal BAK 65E/`, [interactive report](https://claude.ai/artifact/48csm6CzS7dAmMu56cYMhL)), at 25 °C in still air:
+  - 100 W from one port: about 6 min of full power, then 40 W; empty at about 111 min. Hottest can 42.5 °C, hottest board part 58.5 °C, outer face over the board 48 °C. Split 65 + 35 W over both ports: about 8 min.
+  - 60 W: full power for about 30 min, then 40 W. 30 W: nothing derates and the pack lasts about 3 h, cans at or below 37 °C.
+  - Charging from one 100 W charger: about 89 min from 5 % to 95 %, trimmed by the 40 °C ramp after about 33 min; hottest can 44.6 °C. Two 45 W chargers: about 85 min.
+  - Pass-through (100 W in on USB1, 30 W out on USB2) is the hottest case: board part 62 °C, can 48 °C, outer face 54 °C, charging trimmed after 6 min.
+- Heat at 100 W out is about 6.1 W: 2.3 W in the cells and 3.8 W on the board (the FEB-cell estimate was about 12 W, 6.5 W in the cells). The power stage is now the main heat source; it heats the front cell under it through the gap filler, so a front-cell NTC ends the burst, with the stage about 1 K short of the 55 °C board ramp.
+- The NTCs read low. At mid-length facing the pack centre, the hottest NTC reads up to 8.5 K under the hottest can point (the stripe facing the board) at 100 W and 4.5 K while charging. The 33 °C derate start is now the binding limit, far below BAK's 60 °C. In the model a 40 → 44 °C cell ramp kept the cans under 48 °C and delivered 20 % more energy in the first 40 minutes. Retune both together once P0 is measured: NTC position (board-facing side, just above the filler) and thresholds.
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
@@ -160,7 +165,8 @@ The production P0 board is the design of record and the first board planned to b
 - MJF PA12 cup closed on five sides, with two USB-C seal bores in the top wall.
 - MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze), held by two radial M2 screws below the seal.
 - TPU 95A bumpers at both ends and a TPU pad inside the cap; an ePTFE vent patch.
-- No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4 g of 3 W/m·K gap filler. The board gets conformal coat.
+- No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
+- Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. P0: Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, one part, reworkable; 10 cc syringe 65-00-GEL30-0010). Gift packs: Bergquist TGF 3600 or Laird Tflex CR350S (3.6 W/m·K, two part), cured at room temperature only with cells fitted. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
 - Outside size 59.8 × 51.9 × 97.2 mm, about 384–400 g. The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
 
 ## Contradictions between sources
@@ -252,7 +258,10 @@ The four cells are 300 g of the \~387 g modelled pack, so the housing and board 
 ### Testing and certification
 
 - [ ] Bring-up per `docs/production/p0-bringup-and-training.md`: rails, flash, PD EEPROM load, gauge training
-- [ ] Thermal: 100 W full-to-empty logging every sensor, at 10, 25 and 35 °C ambient; tune the derate start and sustain power
+- [ ] Thermal: 100 W full-to-empty logging every sensor, at 10, 25 and 35 °C ambient; tune the derate start and sustain power. Add thermocouples on C4's board-facing stripe (z ≈ 40 mm), C4 at the NTC spot, C3, the USB1 FETs, the inductor and the outer face over the board, and compare with the 10-23 model
+- [ ] Measure the 65E DC resistance (10 s pulse at 50 % and 10 % charge) and update the thermal model's 14 mΩ
+- [ ] Decide the front-cell NTC position (board-facing, just above the filler) and retune the derate thresholds with it
+- [ ] Cut a dummy module after dispensing to check the filler wets both the board and the cans across the zone
 - [ ] Charging: 100, 65 and 30 W chargers, dual-port, solar in sun and shade; measure the 65E resistance curve
 - [ ] Switching: SW1/SW2 ringing with 0 Ω gate links, inductor and SiZ240DT temperatures
 - [ ] Drop: 1 m onto rock on the bumpers, then a leak test
@@ -294,7 +303,7 @@ The ceiling is per charger. With both ports charging, two chargers could togethe
 
 ## Decided: the four loss cuts for P0
 
-Decision (2026-10-23): take all four, with the 9 V gate drive fitted but switchable (default off) so P0 can A/B test it. Together they cut about 1.6 W of the \~12 W the pack makes at 100 W (about 13 %), which buys longer 100 W bursts before the derate starts. Only the inductor change helps much at trail loads.
+Decision (2026-10-23): take all four, with the 9 V gate drive fitted but switchable (default off) so P0 can A/B test it. Together they cut about 1.6 W of the \~12 W the pack made at 100 W with the FEB cells (about 13 %), which buys longer 100 W bursts before the derate starts. With the 65E cells and all four cuts the 10-23 thermal model puts the total at about 6.1 W. Only the inductor change helps much at trail loads.
 
 The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/`), which modelled the EVE cells. The 6500 mAh packs carry nearly the same currents, so the savings carry over. All are estimates, not measurements.
 
