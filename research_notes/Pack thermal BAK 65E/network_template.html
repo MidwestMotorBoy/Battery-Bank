@@ -1,0 +1,292 @@
+<title>Monolith Thermal Circuit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; the schematic gets the full width in its own scroller, controls sit directly above it */
+:root {
+  --paper: #f6f7f4; --panel: #ffffff; --ink: #1d2320; --ink-2: #4c5652; --ink-3: #7b8581; --rule: #d5dad6;
+  --wire: #2b3330; --accent: #c2410c; --accent-soft: #fbe3d6; --cool: #1d6f86; --chip-ink: #1d2320;
+  --t0: #eef1ec; --t1: #fde7c8; --t2: #f9c98f; --t3: #f2a35c; --t4: #e0763a; --t5: #c2410c;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #151917; --panel: #1c2120; --ink: #e7ebe8; --ink-2: #b3bcb8; --ink-3: #85908b; --rule: #343c39;
+  --wire: #c9d1cd; --accent: #f08a4b; --accent-soft: #3a2519; --cool: #6cc0d6; --chip-ink: #1d2320;
+  --t0: #dfe4df; --t1: #fde7c8; --t2: #f9c98f; --t3: #f2a35c; --t4: #e0763a; --t5: #d4541c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #151917; --panel: #1c2120; --ink: #e7ebe8; --ink-2: #b3bcb8; --ink-3: #85908b; --rule: #343c39;
+  --wire: #c9d1cd; --accent: #f08a4b; --accent-soft: #3a2519; --cool: #6cc0d6; --chip-ink: #1d2320;
+  --t0: #dfe4df; --t1: #fde7c8; --t2: #f9c98f; --t3: #f2a35c; --t4: #e0763a; --t5: #d4541c; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+.wrap > * { min-width: 0; }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(28px, 4vw, 38px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 21px; margin: 0 0 8px; text-wrap: balance; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+p { margin: 0; max-width: 70ch; }
+.lede { color: var(--ink-2); font-size: 16px; }
+.analogy { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); }
+.analogy b { color: var(--ink); font-weight: 500; }
+.controls { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-end; }
+.ctl { display: grid; gap: 6px; }
+.ctl label, .ctl .lab { font-size: 12px; font-family: var(--f-mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--panel); flex-wrap: wrap; }
+.seg button { font: 500 14px var(--f-body); color: var(--ink-2); background: transparent; border: 0; padding: 7px 13px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+select { font: 500 14px var(--f-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 7px 10px; max-width: 100%; }
+.sheet { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; }
+#sch { display: block; width: 100%; min-width: 760px; height: auto; }
+.key svg { flex: none; }
+.sheet-foot { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 10px 16px 14px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); }
+.key { display: inline-flex; align-items: center; gap: 7px; }
+.ramp { display: inline-flex; border-radius: 4px; overflow: hidden; }
+.ramp i { width: 18px; height: 12px; display: block; }
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.ro { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; display: grid; gap: 2px; }
+.ro .v { font-family: var(--f-mono); font-size: 22px; font-variant-numeric: tabular-nums; }
+.ro .k { font-size: 13px; color: var(--ink-2); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+.cols > * { min-width: 0; }
+ul.notes { margin: 0; padding-left: 18px; display: grid; gap: 8px; max-width: 70ch; }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { padding: 6px 12px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+th { font: 500 12px var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
+td.num { font-family: var(--f-mono); }
+tr.small td { color: var(--ink-3); }
+tr:last-child td { border-bottom: 0; }
+.chg { color: var(--accent); }
+/* svg */
+.wire { stroke: var(--wire); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.res { stroke: var(--wire); fill: none; stroke-width: 1.6; stroke-linejoin: round; }
+.res.hi { stroke: var(--accent); }
+.rlab { font: 500 12.5px var(--f-mono); fill: var(--ink); }
+.rlab.hi { fill: var(--accent); }
+.wlab { font: 400 11px var(--f-mono); fill: var(--ink-3); }
+.flab { font: 400 11.5px var(--f-mono); fill: var(--cool); }
+.nbox { stroke: var(--wire); stroke-width: 1.4; }
+.nname { font: 600 15px var(--f-display); fill: var(--chip-ink); }
+.nsub { font: 400 11px var(--f-body); fill: var(--chip-ink); }
+.ntemp { font: 500 14px var(--f-mono); fill: var(--chip-ink); }
+.ring { stroke: var(--ink-3); stroke-width: 2.4; fill: none; }
+.ringlab { font: 600 13px var(--f-display); fill: var(--ink-2); letter-spacing: 0.04em; }
+.src { stroke: var(--accent); fill: var(--panel); stroke-width: 1.5; }
+.srcarrow { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+.srclab { font: 500 12px var(--f-mono); fill: var(--accent); }
+.gnd { stroke: var(--wire); stroke-width: 1.5; }
+.amb { font: 500 12.5px var(--f-mono); fill: var(--ink-2); }
+@media (prefers-reduced-motion: no-preference) { .nbox { transition: fill .25s; } }
+</style>
+
+<div class="wrap">
+  <header style="display:grid; gap:10px">
+    <div class="eyebrow">Monolith P0 · cup pack · BAK 65E · lumped from the 3-D model</div>
+    <h1>The pack as a thermal circuit</h1>
+    <p class="lede">Eight nodes stand in for the 3-D model: the four cells, the two USB-C power stages, the pack path (protection FETs, fuse and shunt) and the enclosure skin, with 25 °C still air as ground. Pick an operating point to see each node's temperature and where the heat flows.</p>
+    <div class="analogy"><span><b>K/W</b> ≈ Ω</span><span><b>W</b> of heat ≈ A</span><span><b>°C</b> ≈ V</span><span><b>J/K</b> ≈ F</span></div>
+  </header>
+
+  <div class="controls">
+    <div class="ctl"><span class="lab" id="lab-wrap">Cell bundle</span>
+      <div class="seg" role="group" aria-labelledby="lab-wrap">
+        <button id="btn-base" aria-pressed="true">As specified</button>
+        <button id="btn-wrap" aria-pressed="false">With 70 µm graphite wrap</button>
+      </div></div>
+    <div class="ctl"><label for="op">Operating point (steady state)</label><select id="op"></select></div>
+  </div>
+
+  <div class="sheet">
+    <svg id="sch" viewBox="0 0 1000 770" role="img" aria-label="Thermal circuit schematic of the pack"></svg>
+    <div class="sheet-foot">
+      <span class="key"><svg width="34" height="14" aria-hidden="true"><polyline class="res" points="0,7 6,7 9,2 14,12 19,2 24,12 27,7 34,7"/></svg>thermal resistance, line weight ∝ conductance</span>
+      <span class="key"><svg width="18" height="18" aria-hidden="true"><circle class="src" cx="9" cy="9" r="7.5"/><path class="srcarrow" d="M9 13 V5 M6 8 L9 5 L12 8"/></svg>heat source at this operating point</span>
+      <span class="key" style="color:var(--cool)">0.42 W ↓ heat flowing through a resistance</span>
+      <span class="key">node temperature <span class="ramp" id="ramp"></span><span id="ramp-lab"></span></span>
+    </div>
+  </div>
+
+  <div class="readout" id="readout"></div>
+
+  <div class="cols">
+    <section>
+      <h2>How to read it</h2>
+      <ul class="notes" id="read"></ul>
+    </section>
+    <section>
+      <h2>How it was made</h2>
+      <ul class="notes" id="method"></ul>
+    </section>
+  </div>
+
+  <section>
+    <h2>Every coupling</h2>
+    <p style="color:var(--ink-2); margin-bottom:10px">The schematic draws the paths above 0.02 W/K. Grey rows are the small ones it leaves out; negative values are lumping artefacts, explained under How it was made.</p>
+    <div class="tbl"><table id="tbl"></table></div>
+  </section>
+</div>
+
+<script>
+const D = /*NETWORK*/;
+const NODES = D.nodes;
+const POS = { C2: [150, 170], C1: [460, 170], S2: [850, 170], C3: [150, 470], C4: [460, 470], S1: [850, 470], PP: [655, 320] };
+const BW = 150, BH = 66, PW = 170, PH = 56;
+const RING = { x0: 30, y0: 30, x1: 970, y1: 610 };
+const SUB = { C1: 'front · under USB2', C2: 'back', C3: 'back', C4: 'front · under USB1', S1: 'USB1 stage', S2: 'USB2 stage', PP: 'FETs · fuse · shunt' };
+const TITLE = { C1: 'C1', C2: 'C2', C3: 'C3', C4: 'C4', S1: 'S1', S2: 'S2', PP: 'Pack path', SK: 'Skin' };
+// drawn paths: [a, b, points]; points run from a's side to b's side
+function box(n) { const [x, y] = POS[n]; const w = n === 'PP' ? PW : BW, h = n === 'PP' ? PH : BH; return { x, y, l: x - w/2, r: x + w/2, t: y - h/2, b: y + h/2 }; }
+const B = Object.fromEntries(Object.keys(POS).map(n => [n, box(n)]));
+const PATHS = [
+  ['C2', 'C1', [[B.C2.r, 170], [B.C1.l, 170]]], ['C1', 'S2', [[B.C1.r, 170], [B.S2.l, 170]]],
+  ['C3', 'C4', [[B.C3.r, 470], [B.C4.l, 470]]], ['C4', 'S1', [[B.C4.r, 470], [B.S1.l, 470]]],
+  ['C2', 'C3', [[B.C2.x, B.C2.b], [B.C3.x, B.C3.t]]], ['C1', 'C4', [[B.C1.x, B.C1.b], [B.C4.x, B.C4.t]]], ['S2', 'S1', [[B.S2.x, B.S2.b], [B.S1.x, B.S1.t]]],
+  ['C1', 'PP', [[B.C1.r - 14, B.C1.b], [B.PP.l + 10, B.PP.t]]], ['S2', 'PP', [[B.S2.l + 14, B.S2.b], [B.PP.r - 10, B.PP.t]]],
+  ['C4', 'PP', [[B.C4.r - 14, B.C4.t], [B.PP.l + 10, B.PP.b]]], ['S1', 'PP', [[B.S1.l + 14, B.S1.t], [B.PP.r - 10, B.PP.b]]],
+  ['C2', 'SK', [[B.C2.x, B.C2.t], [B.C2.x, RING.y0]]], ['C1', 'SK', [[B.C1.x, B.C1.t], [B.C1.x, RING.y0]]], ['S2', 'SK', [[B.S2.x, B.S2.t], [B.S2.x, RING.y0]]],
+  ['C3', 'SK', [[B.C3.x, B.C3.b], [B.C3.x, RING.y1]]], ['C4', 'SK', [[B.C4.x, B.C4.b], [B.C4.x, RING.y1]]], ['S1', 'SK', [[B.S1.x, B.S1.b], [B.S1.x, RING.y1]]],
+];
+const AMB_X = 650;
+let state = { v: 'base', op: Object.keys(D.ops_q)[0] };
+try { const s = JSON.parse(localStorage.getItem('tc-state') || 'null'); if (s && D[s.v] && D.ops_q[s.op]) state = s; } catch (e) {}
+
+const ns = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) { const e = document.createElementNS(ns, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+function gOf(v, a, b) { const i = NODES.indexOf(a), j = NODES.indexOf(b); return -D[v].G[i][j]; }
+function temps(v) { const T = D[v].ops[state.op]; const out = {}; NODES.forEach((n, i) => out[n] = T[i]); return out; }
+const RAMP = ['--t0', '--t1', '--t2', '--t3', '--t4', '--t5'], T_LO = 25, T_HI = 65;
+function tcol(t) { const f = Math.max(0, Math.min(0.999, (t - T_LO) / (T_HI - T_LO))); return `var(${RAMP[Math.floor(f * RAMP.length)]})`; }
+function arrow(dx, dy) { const a = Math.atan2(dy, dx) * 180 / Math.PI; const dirs = ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗']; return dirs[((Math.round(a / 45) % 8) + 8) % 8]; }
+
+function resistor(svg, p, q, G, label, was, flow, hi) {
+  const [x1, y1] = p, [x2, y2] = q, dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+  const RL = Math.min(54, L - 24), s = (L - RL) / 2, sw = Math.max(1.3, Math.min(6, 1.2 + G * 28));
+  el('line', { class: 'wire', x1, y1, x2: x1 + ux * s, y2: y1 + uy * s, 'stroke-width': sw }, svg);
+  el('line', { class: 'wire', x1: x2 - ux * s, y1: y2 - uy * s, x2, y2, 'stroke-width': sw }, svg);
+  const pts = []; const n = 6, amp = 7;
+  pts.push([0, 0]); for (let k = 0; k < n; k++) pts.push([(k + 0.5) * RL / n, (k % 2 ? -amp : amp)]); pts.push([RL, 0]);
+  const px = -uy, py = ux;
+  const P = pts.map(([a, b]) => [x1 + ux * (s + a) + px * b, y1 + uy * (s + a) + py * b]);
+  el('polyline', { class: 'res' + (hi ? ' hi' : ''), points: P.map(v => v.join(',')).join(' '), 'stroke-width': Math.max(1.4, sw * 0.75) }, svg);
+  // labels: above and below a horizontal resistor, right of a vertical one, outside the diamond for a diagonal
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, vertical = Math.abs(ux) < 0.3, horizontal = Math.abs(uy) < 0.3;
+  const put = (x, y, a, lines) => lines.forEach(([t, c], k) => t && el('text', { class: c, x, y: y + k * 14, 'text-anchor': a }, svg, t));
+  const R = [label, 'rlab' + (hi ? ' hi' : '')], W = [was, 'wlab'], F = [flow, 'flab'];
+  if (horizontal) { put(mx, my - (was ? 27 : 14), 'middle', [R, W]); put(mx, my + 22, 'middle', [F]); }
+  else if (vertical) put(mx + 14, my - 10, 'start', [R, W, F]);
+  else {
+    let px = -uy, py = ux;                                   // perpendicular, pointed away from the diamond's axis
+    if (Math.sign(px) !== Math.sign(mx - POS.PP[0])) { px = -px; py = -py; }
+    put(mx + px * 20, my + py * 20 - 12, px < 0 ? 'end' : 'start', [R, W, F]);
+  }
+}
+
+function draw() {
+  const svg = document.getElementById('sch'); svg.textContent = '';
+  const v = state.v, T = temps(v), q = D.ops_q[state.op];
+  const heat = { C1: q.cells / 4, C2: q.cells / 4, C3: q.cells / 4, C4: q.cells / 4, S1: q.S1, S2: q.S2, PP: q.PP };
+  // skin ring and ambient
+  el('rect', { class: 'ring', x: RING.x0, y: RING.y0, width: RING.x1 - RING.x0, height: RING.y1 - RING.y0, rx: 18 }, svg);
+  el('rect', { x: 548, y: RING.y0 - 11, width: 220, height: 22, fill: 'var(--panel)' }, svg);
+  el('text', { class: 'ringlab', x: 558, y: RING.y0 + 5 }, svg, `ENCLOSURE SKIN · ${T.SK.toFixed(1)} °C`);
+  const amb = D[v].amb.find(a => a.a === 'SK'), gA = amb ? amb.g : 0;
+  const totalQ = Object.values(heat).reduce((a, b) => a + b, 0);
+  resistor(svg, [AMB_X, RING.y1], [AMB_X, 700], gA, `${(1 / gA).toFixed(1)} K/W`, '', `${totalQ.toFixed(2)} W ↓ to air`, false);
+  for (let k = 0; k < 3; k++) el('line', { class: 'gnd', x1: AMB_X - 18 + k * 6, y1: 700 + k * 6, x2: AMB_X + 18 - k * 6, y2: 700 + k * 6 }, svg);
+  el('text', { class: 'amb', x: AMB_X - 30, y: 712, 'text-anchor': 'end' }, svg, 'still air at 25 °C');
+  // paths
+  for (const [a, b, pts] of PATHS) {
+    const G = gOf(v, a, b), G0 = gOf('base', a, b);
+    const hi = v !== 'base' && Math.abs(G - G0) / Math.abs(G0) > 0.1;
+    const f = G * (T[a] - T[b]); const [p, qq] = pts;
+    const dir = f >= 0 ? [qq[0] - p[0], qq[1] - p[1]] : [p[0] - qq[0], p[1] - qq[1]];
+    const flow = Math.abs(f) >= 0.005 ? `${Math.abs(f).toFixed(2)} W ${arrow(dir[0], dir[1])}` : '';
+    resistor(svg, p, qq, G, `${(1 / G).toFixed(1)} K/W`, hi ? `was ${(1 / G0).toFixed(1)}` : '', flow, hi);
+  }
+  // nodes
+  for (const n of Object.keys(POS)) {
+    const b = B[n], w = b.r - b.l, h = b.b - b.t;
+    el('rect', { class: 'nbox', x: b.l, y: b.t, width: w, height: h, rx: 8, fill: tcol(T[n]) }, svg);
+    el('text', { class: 'nname', x: b.l + 10, y: b.t + 20 }, svg, TITLE[n]);
+    el('text', { class: 'ntemp', x: b.r - 10, y: b.t + 20, 'text-anchor': 'end' }, svg, `${T[n].toFixed(1)} °C`);
+    el('text', { class: 'nsub', x: b.l + 10, y: b.t + 37 }, svg, SUB[n]);
+    el('text', { class: 'nsub', x: b.l + 10, y: b.t + (n === 'PP' ? 50 : 54) }, svg, `C ≈ ${Math.round(D[v].C[n])} J/K`);
+    // heat source: above the box's right end on the top row, below it on the bottom row and on the pack path
+    if (heat[n] > 0.004) {
+      const up = POS[n][1] < 300, cx = n === 'PP' ? b.x : b.r - 28, cy = up ? b.t - 22 : b.b + 22, e = up ? b.t : b.b, d = up ? 1 : -1;
+      el('line', { class: 'srcarrow', x1: cx, y1: cy + d * 9, x2: cx, y2: e }, svg);
+      el('circle', { class: 'src', cx, cy, r: 9 }, svg);
+      el('path', { class: 'srcarrow', d: `M${cx} ${cy - d * 4} V${cy + d * 4} M${cx - 3} ${cy + d * 1} L${cx} ${cy + d * 4} L${cx + 3} ${cy + d * 1}` }, svg);
+      el('text', { class: 'srclab', x: cx + 14, y: cy + 4 }, svg, `${heat[n].toFixed(2)} W`);
+    }
+  }
+  // readout
+  const cells = ['C1', 'C2', 'C3', 'C4'].map(n => T[n]);
+  const stage = Math.max(T.S1, T.S2);
+  const ro = [
+    [`${(Math.max(...cells) - Math.min(...cells)).toFixed(1)} K`, 'spread between the cells'],
+    [`${Math.max(...cells).toFixed(1)} °C`, 'hottest cell (mean of its roll)'],
+    [`${stage.toFixed(1)} °C`, 'hottest power stage (loss-weighted mean)'],
+    [`${totalQ.toFixed(2)} W`, 'heat made at this operating point'],
+  ];
+  document.getElementById('readout').innerHTML = ro.map(([a, b]) => `<div class="ro"><span class="v">${a}</span><span class="k">${b}</span></div>`).join('');
+  try { localStorage.setItem('tc-state', JSON.stringify(state)); } catch (e) {}
+}
+
+function table() {
+  const rows = [];
+  for (let i = 0; i < NODES.length; i++) for (let j = i + 1; j < NODES.length; j++) {
+    const a = NODES[i], b = NODES[j], g0 = gOf('base', a, b), g1 = gOf('wrap', a, b);
+    if (Math.abs(g0) < 1e-4 && Math.abs(g1) < 1e-4) continue;
+    rows.push({ a, b, g0, g1, drawn: PATHS.some(p => (p[0] === a && p[1] === b) || (p[0] === b && p[1] === a)) });
+  }
+  for (const v of ['base', 'wrap']) {}
+  const ambB = D.base.amb.find(a => a.a === 'SK').g, ambW = D.wrap.amb.find(a => a.a === 'SK').g;
+  rows.push({ a: 'SK', b: 'ambient', g0: ambB, g1: ambW, drawn: true });
+  rows.sort((x, y) => (y.drawn - x.drawn) || (Math.abs(y.g0) - Math.abs(x.g0)));
+  const name = n => n === 'ambient' ? 'Ambient' : TITLE[n];
+  const f = g => g > 0 ? (1 / g).toFixed(1) : '–';
+  let h = '<thead><tr><th>Between</th><th>As specified, K/W</th><th>With wrap, K/W</th><th>As specified, W/K</th><th>With wrap, W/K</th></tr></thead><tbody>';
+  for (const r of rows) {
+    const chg = Math.abs(r.g1 - r.g0) / Math.abs(r.g0) > 0.1;
+    h += `<tr class="${r.drawn ? '' : 'small'}"><td>${name(r.a)} – ${name(r.b)}</td><td class="num">${f(r.g0)}</td><td class="num${chg ? ' chg' : ''}">${f(r.g1)}</td><td class="num">${r.g0.toFixed(4)}</td><td class="num${chg ? ' chg' : ''}">${r.g1.toFixed(4)}</td></tr>`;
+  }
+  document.getElementById('tbl').innerHTML = h + '</tbody>';
+}
+
+function notes() {
+  const ck = D.base.check, cw = D.wrap.check;
+  const err = Math.max(...['dis100', 'chg1', 'pass'].flatMap(c => [ck[c].max_err, cw[c].max_err]));
+  const read = [
+    'Heat enters at the sources and has one way out: through the skin and the 3.7 K/W to the air. That last resistor sets the pack\'s average temperature; everything inside sets the differences.',
+    'The board is a stronger path than the cells. Each stage reaches its front cell through the gap filler (about 14.5 K/W), so the front cells soak up the board\'s heat. That is the spread between front and back cells.',
+    'Front to back is the weak link: C1–C2 and C4–C3 are about 11.7 K/W, mostly the 1.5 mm air gap and the carrier webs. The graphite wrap adds a parallel path round the outside of the bundle and halves them (about 5.5 K/W), which is why the cells even out.',
+    'The steady states are what each node would settle at if that load ran forever. The firmware stops that happening at 100 W and while charging: the 100 W burst lasts about 6 minutes and the charge ramp trims current above 40 °C. 40 W sustained is the one that really runs long enough to settle.',
+  ];
+  const method = [
+    'Each node is a weighted group of voxels in the 3-D model: a cell is its jelly roll, a stage is its FETs, inductor, controller and sense resistors weighted by their share of the 100 W losses, the pack path likewise, and the skin is every outer face weighted by its convection.',
+    'Putting 1 W into each group in turn and solving the steady state gives an 8 × 8 matrix of temperature rise per watt. Its inverse is the conductance network drawn here. It is exact for any mix of those heat inputs at steady state.',
+    'Lumping a 3-D field into eight nodes leaves some small negative couplings (C1–C3, C2–C4, the back cells to the board, at most 0.007 W/K). They are not real paths, so they are left out of the drawing and kept in the table.',
+    `Heat capacities: 68 J/K per cell (72 g at 0.95 J/g·K); the stages, pack path and skin were fitted so the circuit, driven with the full model's recorded losses, follows its cell temperatures. It does so within ${err.toFixed(1)} K through the 100 W, charging and pass-through runs, with and without the wrap.`,
+    'Model values for 25 °C still air, with the P0 layout assumed (USB1 stage over C4, USB2 over C1). Code: research_notes/Pack thermal BAK 65E/network.py.',
+  ];
+  document.getElementById('read').innerHTML = read.map(t => `<li>${t}</li>`).join('');
+  document.getElementById('method').innerHTML = method.map(t => `<li>${t}</li>`).join('');
+}
+
+const sel = document.getElementById('op');
+for (const k of Object.keys(D.ops_q)) { const o = document.createElement('option'); o.value = k; o.textContent = k; sel.appendChild(o); }
+sel.value = state.op;
+sel.addEventListener('change', () => { state.op = sel.value; draw(); });
+const bb = document.getElementById('btn-base'), bw = document.getElementById('btn-wrap');
+function setV(v) { state.v = v; bb.setAttribute('aria-pressed', v === 'base'); bw.setAttribute('aria-pressed', v === 'wrap'); draw(); }
+bb.addEventListener('click', () => setV('base')); bw.addEventListener('click', () => setV('wrap'));
+document.getElementById('ramp').innerHTML = RAMP.map(c => `<i style="background:var(${c})"></i>`).join('');
+document.getElementById('ramp-lab').textContent = `${T_LO}–${T_HI} °C`;
+table(); notes(); setV(state.v);
+</script>

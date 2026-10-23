@@ -62,6 +62,7 @@ Cell DC resistance 14 mΩ at 25 °C (BAK gives only ≤ 8 mΩ AC), 1.8× at empt
 ## Files
 
 - `pack3d.py`: geometry, materials, voxel grid, electrical and loss model, firmware policy, cases.
+- `network.py`: lumped thermal circuit (8 nodes) extracted from the 3-D model, with capacities fitted to its transients; `build_network_page.py` and `network_template.html` draw it (report: <https://claude.ai/artifact/EwEruQGBk4FTVFuvoE97Kr>).
 - `fill.py`: gap-filler variants. `sheet.py`: graphite wrap variants. `sens.py`: sensitivity runs. `jobs.py`: runs everything on 4 cores (about 1.5 h).
 - `render.py`: thermal maps and chart series. `summary.py`: summary table.
 - `make_text.py` and `page_template.html` with `build_page.py OUT_DIR`: builds the report.
