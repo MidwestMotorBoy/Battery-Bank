@@ -4305,7 +4305,7 @@
 		)
 		(uuid "729559fd-c1ea-4344-98ba-cad9ebc5c3ca")
 	)
-	(text "PACK SLOTS  (welded 4S FEB 21700G, nickel tails soldered on F.Cu)"
+	(text "PACK SLOTS + WIRES  (welded 4S BAK 65E, tails and wires soldered on F.Cu)"
 		(exclude_from_sim no)
 		(at 22.86 33.02 0)
 		(effects
@@ -4317,7 +4317,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power slot J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin slot J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the slots J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin slot J116 (before F102 and off the power finger): fuse and tab drop are not read as cell voltage.\n4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
+	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin slot J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the slots J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin slot J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -4353,7 +4353,7 @@
 		)
 		(uuid "b9b49452-8949-490e-a301-091056988741")
 	)
-	(text "J108 PACK- / J112 PACK+: power fingers. J115 1N / J116 4P: Kelvin fingers of the same tabs (no current).\nJ109-J111: CELL1-3 tails. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."
+	(text "J108 PACK- / J112 PACK+: 18 AWG power wires in 1.5 mm holes. J115 1N / J116 4P: Kelvin wires from the same pads.\nJ109-J111: CELL1-3 tails. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."
 		(exclude_from_sim no)
 		(at 22.86 40.64 0)
 		(effects
@@ -13926,7 +13926,7 @@
 				)
 			)
 		)
-		(property "Value" "PACK- power slot"
+		(property "Value" "PACK- power wire"
 			(at 36.83 93.21 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13936,7 +13936,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Slot_Tab_4.6x0.6mm"
+		(property "Footprint" "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
 			(at 43.18 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -14230,7 +14230,7 @@
 				)
 			)
 		)
-		(property "Value" "PACK+ power slot"
+		(property "Value" "PACK+ power wire"
 			(at 38.10 52.57 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14240,7 +14240,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Slot_Tab_4.6x0.6mm"
+		(property "Footprint" "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
 			(at 43.18 58.42 0)
 			(hide yes)
 			(show_name no)

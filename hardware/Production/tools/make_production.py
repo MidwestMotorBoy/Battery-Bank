@@ -6,8 +6,8 @@ Copies the DevBoard schematic sheets, symbol/footprint libraries and project fil
   * removes dev-only parts by reference and prunes the wires, labels, junctions, no-connects and power
     symbols left dangling;
   * replaces 0 ohm links and jumpers with a wire between their two pins;
-  * cell holders -> plated slots for the welded pack's nickel tails (PACK+/- power fingers, CELL1-3, and the 1N / 4P
-    Kelvin fingers on their own nets), NTC headers -> 2-pad wire footprints, EV2400 header -> three gauge pogo pads,
+  * cell holders -> plated slots for the welded pack's nickel tails (CELL1-3 and the 1N / 4P Kelvin wires on their own
+    nets) and plated holes for the 18 AWG PACK+/- power wires (2026-10-24), NTC headers -> 2-pad wire footprints, EV2400 header -> three gauge pogo pads,
     SWD header J301 -> Tag-Connect TC2030-NL;
   * keeps a few dev test points as factory test pads (PACK_P, GND, 3V3, VBUS per port).
 
@@ -120,11 +120,11 @@ for _p in ("4", "5"):  # TPD6S300 U405/U505 (tpd6s300.py): pin -> a dev pin on t
 PIN_ACTIONS = {"usb_port.kicad_sch": {
     "SBU1_SNS": {"U401": "GND", "U405": "NC"}, "SBU2_SNS": {"U401": "GND", "U405": "NC"},
     "LIQ_PU": {"U401": "GND"}, "LIQ_PD": {"U401": "GND"}}}
-# Kelvin split (2026-10-21): the PACK tabs end in a power finger and a Kelvin finger, each through its own slot, and
-# these pins move from the power nets to the Kelvin nets (BQ40Z50 SLUSCS4C 9.2.2.1.3, SLUA660 2.3-2.4).
+# Kelvin split (2026-10-21; wires since 2026-10-24): each PACK pad carries a power wire (plated hole) and a Kelvin
+# wire (slot), and these pins move from the power nets to the Kelvin nets (BQ40Z50 SLUSCS4C 9.2.2.1.3, SLUA660 2.3-2.4).
 # CELL_1N: the gauge's low-current ground (VSS star, its strapped pins and decoupling), the BQ294700's VSS and the NTC
 #   returns, joined to the pack only at the 1N tab. The shunt (RS101, SRP filter R107) and the fuse-heater FET Q104
-#   (up to 1.5 A, with its gate resistor R125) stay on CELL_N with the PACK- power finger.
+#   (up to 1.5 A, with its gate resistor R125) stay on CELL_N with the PACK- power wire.
 # CELL_4P: VC4, the BQ294700's V4 / VDD filters and the BAT diode (TI fig. 9-12: D1 on 4P). F102 stays on CELL_P_RAW.
 KELVIN = {
     "CELL_1N": ["U101.9", "U101.33", "U101.16", "U101.17", "U101.23", "U101.24", "U102.6", "U102.9", "C104.2", "C105.2",
@@ -271,16 +271,19 @@ def slot_name(length):
 
 
 SLOTS = {n: "MonolithDev:" + slot_name(v[2]) for n, v in MS.sb_slots().items()}   # slot name -> footprint
+# PACK- / PACK+ power leads (option C wire tails, 2026-10-24): an 18 AWG thin-wall PTFE wire into a plated hole
+WIRE_D, WIRE_RING, WIRE_OD = MS.SB_PWIRE_HOLE, MS.SB_PWIRE_RING, MS.SB_PWIRE_OD
+WIRE_FP = "SolderWire-18AWG_PTFE_1x01_D%gmm_OD%gmm" % (WIRE_D, WIRE_D + 2 * WIRE_RING)
 # new one-pin pads on the gauge sheet: (ref, value, footprint, (old ref, old pin) whose position it takes)
 GAUGE_PADS = [
-    ("J108", "PACK- power slot", SLOTS["PACK-"], ("BT101", "2")),
+    ("J108", "PACK- power wire", "MonolithDev:" + WIRE_FP, ("BT101", "2")),
     ("J109", "CELL1 slot", SLOTS["CELL1"], ("BT101", "1")),
     ("J110", "CELL2 slot", SLOTS["CELL2"], ("BT102", "1")),
     ("J111", "CELL3 slot", SLOTS["CELL3"], ("BT103", "1")),
-    ("J112", "PACK+ power slot", SLOTS["PACK+"], ("BT104", "1")),
+    ("J112", "PACK+ power wire", "MonolithDev:" + WIRE_FP, ("BT104", "1")),
 ]
-SLOT_REFS = {"PACK-": "J108", "CELL1": "J109", "CELL2": "J110", "CELL3": "J111", "PACK+": "J112", "1N": "J115",
-             "4P": "J116"}   # make_board.py --mech places these at sb_slots()
+SLOT_REFS = {"CELL1": "J109", "CELL2": "J110", "CELL3": "J111", "1N": "J115", "4P": "J116"}   # make_board.py --mech
+WIRE_REFS = {"PACK-": "J108", "PACK+": "J112"}   # places these at sb_slots() and sb_pack_holes()
 # the pogo pads get their own spaced row (J103's pins were 2.54 mm apart), tied by a global label or GND symbol
 POGO_AT = {}  # P0: gauge SMBus moved to the GAUGE Tag-Connect J302 on the MCU sheet (2026-10-18)
 
@@ -1093,6 +1096,30 @@ def slot_footprint(length):
         ")", ""])
 
 
+def wire_footprint():
+    """Plated hole for a PACK power wire: WIRE_D finished, WIRE_RING all round, on both faces, no paste (the wire comes
+    from the cell side and is soldered by hand on F.Cu). Fab circle = the wire's insulation."""
+    pad = WIRE_D + 2 * WIRE_RING
+    c = pad / 2 + 0.25
+    return "\n".join([
+        '(footprint "%s"' % WIRE_FP, "\t(version 20241229)", '\t(generator "make_production.py")', '\t(layer "F.Cu")',
+        '\t(descr "Plated hole %g mm, %g mm ring, for an 18 AWG thin-wall PTFE PACK wire (M22759/11-18, %g mm OD at most) '
+        'soldered on F.Cu (mechanical/monolith_shell.py sb_pack_holes)")' % (WIRE_D, WIRE_RING, WIRE_OD),
+        '\t(tags "connector wire 18AWG PTFE battery")',
+        '\t(property "Reference" "REF**" (at 0 -%g 0) (layer "F.SilkS") (hide yes) (effects (font (size 0.6 0.6) '
+        '(thickness 0.1))))' % (c + 0.6),
+        '\t(property "Value" "%s" (at 0 %g 0) (layer "F.Fab") (effects (font (size 0.6 0.6) (thickness 0.1))))'
+        % (WIRE_FP, c + 0.6),
+        "\t(attr through_hole exclude_from_pos_files)",
+        '\t(pad "1" thru_hole circle (at 0 0) (size %g %g) (drill %g) (layers "*.Cu" "*.Mask") (remove_unused_layers no))'
+        % (pad, pad, WIRE_D),
+        '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))'
+        % (c, c, c, c),
+        '\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))' % (WIRE_OD / 2),
+        '\t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.4 0.4) (thickness 0.06))))',
+        ")", ""])
+
+
 def peg_footprint():
     """NPTH for a carrier peg; courtyard on both faces 0.5 mm outside the hole (the peg stands proud of F.Cu and
     the carrier rail bears on B.Cu around it)."""
@@ -1134,6 +1161,8 @@ def main():
         with open(os.path.join(PROD, "MonolithDev.pretty", slot_name(length) + ".kicad_mod"), "w", encoding="utf-8",
                   newline="\n") as f:
             f.write(slot_footprint(length))
+    with open(os.path.join(PROD, "MonolithDev.pretty", WIRE_FP + ".kicad_mod"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(wire_footprint())
     with open(os.path.join(PROD, "MonolithDev.pretty", PEG_FP + ".kicad_mod"), "w", encoding="utf-8", newline="\n") as f:
         f.write(peg_footprint())
     import make_3d_models  # 3D models the DevBoard footprints lack (Production/3dmodels, make_3d_models.py)

@@ -65,6 +65,6 @@ Loads come from the netlist and are given at 3.3 V. The firmware steps that go w
 ## Supersedes
 
 - The rev A5 version of this document (STM32WB1MMC: PB8/PB4/PA6 pins, Stop2, IWDG option bytes, NTC_EN).
-- `monolith-next-actions.md`: "TPS25751 interrupts … using the STM32's internal pull-up (no resistor)". IRQ_N has an external pull-up (R314); keep the internal pull off.
+- `monolith-next-actions.md` (since retired; see `docs/spec.md`): "TPS25751 interrupts … using the STM32's internal pull-up (no resistor)". IRQ_N has an external pull-up (R314); keep the internal pull off.
 - First review, firmware item 12: "otherwise drive it low". Replaced by rule 1.
 - Review 2, firmware item 12: "use Stop2, not Standby, while inhibiting". Replaced by rule 1 and the S-state table (CC2340 Standby keeps GPIO states).

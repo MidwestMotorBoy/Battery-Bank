@@ -8718,15 +8718,15 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_4.6x0.6mm"
+	(footprint "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "28a359eb-e6ce-4b8c-a48c-f9b55f40bc49")
-		(at 113.025 135.4755)
-		(descr "Plated slot 4.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(at 113.025 135.7255)
+		(descr "Plated hole 1.5 mm, 0.4 mm ring, for an 18 AWG thin-wall PTFE PACK wire (M22759/11-18, 1.45 mm OD at most) soldered on F.Cu (mechanical/monolith_shell.py sb_pack_holes)")
+		(tags "connector wire 18AWG PTFE battery")
 		(property "Reference" "J112"
-			(at 0 -1.4 0)
+			(at 0 -2 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "cbff4cd9-1623-434e-be6e-2878af218127")
@@ -8737,8 +8737,8 @@
 				)
 			)
 		)
-		(property "Value" "PACK+ power slot"
-			(at 0 1.4 0)
+		(property "Value" "PACK+ power wire"
+			(at 0 2 0)
 			(layer "F.Fab")
 			(uuid "b5bb158a-d508-4685-bdac-301098956743")
 			(effects
@@ -8776,31 +8776,31 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -2.8 -0.8)
-			(end 2.8 0.8)
+			(start -1.4 -1.4)
+			(end 1.4 1.4)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "e6fad2d4-6474-44f2-a835-e36febefbbd2")
+			(uuid "6bd9d407-f9d9-4a81-b85e-908d2998bcf4")
 		)
-		(fp_rect
-			(start -2.3 -0.3)
-			(end 2.3 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.725 0)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.Fab")
-			(uuid "713e8779-5214-4471-8748-69df58464fbc")
+			(uuid "ea08ae09-0127-47ae-bbee-f04dcfc9a28c")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 0)
 			(layer "F.Fab")
-			(uuid "ccf9ea46-93ee-47bf-873b-3222e3ca8a6a")
+			(uuid "95132ecb-0f53-4d2b-8c5c-02766719efd9")
 			(effects
 				(font
 					(size 0.4 0.4)
@@ -8808,10 +8808,10 @@
 				)
 			)
 		)
-		(pad "1" thru_hole oval
+		(pad "1" thru_hole circle
 			(at 0 0)
-			(size 5.4 1.4)
-			(drill oval 4.6 0.6)
+			(size 2.3 2.3)
+			(drill 1.5)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL_P_RAW")
@@ -47901,15 +47901,15 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_4.6x0.6mm"
+	(footprint "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "dc4bafb0-3be0-4cdc-b1be-843002233e7b")
-		(at 86.975 135.4755)
-		(descr "Plated slot 4.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(at 86.975 135.7255)
+		(descr "Plated hole 1.5 mm, 0.4 mm ring, for an 18 AWG thin-wall PTFE PACK wire (M22759/11-18, 1.45 mm OD at most) soldered on F.Cu (mechanical/monolith_shell.py sb_pack_holes)")
+		(tags "connector wire 18AWG PTFE battery")
 		(property "Reference" "J108"
-			(at 0 -1.4 0)
+			(at 0 -2 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "a02c9786-faf3-4829-8939-bfa0373343a8")
@@ -47920,8 +47920,8 @@
 				)
 			)
 		)
-		(property "Value" "PACK- power slot"
-			(at 0 1.4 0)
+		(property "Value" "PACK- power wire"
+			(at 0 2 0)
 			(layer "F.Fab")
 			(uuid "f73125df-2d14-4748-a373-29ffa0418362")
 			(effects
@@ -47959,31 +47959,31 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -2.8 -0.8)
-			(end 2.8 0.8)
+			(start -1.4 -1.4)
+			(end 1.4 1.4)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "166bcf99-3650-4f7b-811a-6d666e4e45c4")
+			(uuid "90b6c66c-6869-41f7-9843-b0b30b0ba1a5")
 		)
-		(fp_rect
-			(start -2.3 -0.3)
-			(end 2.3 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.725 0)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(fill no)
 			(layer "F.Fab")
-			(uuid "69b1980e-ee7d-4863-bcaa-ebb00a6c4212")
+			(uuid "4231bf2b-368c-4bbf-a8e5-fd3c67dad31f")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 0)
 			(layer "F.Fab")
-			(uuid "a94255b8-69f7-4d2b-b415-62484e2d04fd")
+			(uuid "93a27a91-da19-43ac-ba73-5ff9590c5155")
 			(effects
 				(font
 					(size 0.4 0.4)
@@ -47991,10 +47991,10 @@
 				)
 			)
 		)
-		(pad "1" thru_hole oval
+		(pad "1" thru_hole circle
 			(at 0 0)
-			(size 5.4 1.4)
-			(drill oval 4.6 0.6)
+			(size 2.3 2.3)
+			(drill 1.5)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "CELL_N")
@@ -59233,68 +59233,6 @@
 	)
 	(zone
 		(layer "B.Cu")
-		(uuid "0c38872b-7d39-4981-9f13-626e28047da4")
-		(name "KO_B_tail_PACKN")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 84.375 134.875) (xy 89.575 134.875) (xy 89.575 137.076) (xy 84.375 137.076)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "15a5b526-bd9a-4181-92b4-3f6bbdc90121")
-		(name "KO_B_tail_1N")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 90.175 134.875) (xy 92.375 134.875) (xy 92.375 137.076) (xy 90.175 137.076)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
 		(uuid "21c464b5-62a9-41d6-ae54-e7e86a2fa848")
 		(name "KO_B_tail_CELL1")
 		(hatch edge 0.5)
@@ -59450,37 +59388,6 @@
 	)
 	(zone
 		(layer "B.Cu")
-		(uuid "6b5a1676-ca5c-4f0e-bac6-77bfb62fd4e2")
-		(name "KO_B_tail_4P")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 107.625 134.875) (xy 109.825 134.875) (xy 109.825 137.076) (xy 107.625 137.076)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
 		(uuid "bf25aab5-d57f-42c4-82a6-9c66bfeebf71")
 		(name "KO_B_gap_filler_L")
 		(hatch edge 0.5)
@@ -59507,37 +59414,6 @@
 		(polygon
 			(pts
 				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "e63d46af-9c91-4501-860f-00e4696dd4ea")
-		(name "KO_B_tail_PACKP")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 110.425 134.875) (xy 115.625 134.875) (xy 115.625 137.076) (xy 110.425 137.076)
 			)
 		)
 	)
@@ -59604,4 +59480,128 @@
 		)
 	)
 	(embedded_fonts no)
+	(zone
+		(layers "B.Cu")
+		(uuid "e7111697-0831-4791-aadf-d55f2ecae825")
+		(name "KO_B_wire_PACKN")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 85.75 134.5) (xy 88.2 134.5) (xy 88.2 137.175) (xy 85.75 137.175)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "720aba93-c1f5-42fc-9df3-3b08037b5afd")
+		(name "KO_B_wire_PACKP")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 111.8 134.5) (xy 114.25 134.5) (xy 114.25 137.175) (xy 111.8 137.175)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "9c9275af-9798-4d50-9431-1fd53a0e912a")
+		(name "KO_B_wire_1N")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 90.475 134.675) (xy 92.075 134.675) (xy 92.075 137.175) (xy 90.475 137.175)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "4a62cd40-18d6-4703-a20b-aca599c98d89")
+		(name "KO_B_wire_4P")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 107.925 134.675) (xy 109.525 134.675) (xy 109.525 137.175) (xy 107.925 137.175)
+			)
+		)
+	)
 )
