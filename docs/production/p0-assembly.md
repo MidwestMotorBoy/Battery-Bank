@@ -20,19 +20,19 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 
 | Connection | From | Nickel or wire | Slot (KiCad x, y), length along x × 0.6 mm, or hole |
 |---|---|---|---|
-| PACK− | C1 bottom (can) | 0.2 × 7 nickel pad + 20 AWG PTFE wire | Ø1.3 plated hole at (86.97, 135.73) |
+| PACK− | C1 bottom (can) | 0.2 × 7 nickel pad + 18 AWG PTFE wire | Ø1.5 plated hole at (86.97, 135.73) |
 | 1N (gauge Kelvin) | PACK− pad, 28 AWG PTFE wire | | (91.28, 135.48), 1.6 |
 | CELL2 | C2+ / C3− strip, bottom | 0.15 × 3 tail, along a channel in the carrier's bottom frame, kapton wrapped | (100.00, 135.45), 3.4 |
 | 4P (gauge Kelvin) | PACK+ pad, 28 AWG PTFE wire | | (108.72, 135.48), 1.6 |
-| PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 20 AWG PTFE wire | Ø1.3 plated hole at (113.03, 135.73) |
+| PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 18 AWG PTFE wire | Ø1.5 plated hole at (113.03, 135.73) |
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
 The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`; the cup uses the same board, slots and tails. **FEB 21700G (2026-10-21):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
-- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: a 20 AWG PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so each runs through its own notch in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`), crosses the 2.6 mm gap and goes into the board: the power wire into a Ø1.3 plated hole (`sb_pack_holes()`, layers `PACK_WIRE_HOLES` / `PACK_WIRE_PADS`), the Kelvin wire into its slot. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
-- **Power loss:** about 0.7 mΩ per PACK end (7 mm of pad plus 15 mm of 20 AWG), so about 0.07 W each at 9.4 A.
+- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG thin-wall PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so each runs through its own notch in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`), crosses the 2.6 mm gap and goes into the board: the power wire into a Ø1.5 plated hole (`sb_pack_holes()`, layers `PACK_WIRE_HOLES` / `PACK_WIRE_PADS`), the Kelvin wire into its slot. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
+- **Power loss:** about 0.66 mΩ per PACK end (7 mm of pad plus 15 mm of 18 AWG), so about 0.06 W each at 9.4 A.
 - **Short risk:** keep the solder joint inside the weld window, over the pad. On C4 the bottom is the + cap and the rim is the can (−), so a joint out at the rim could short the cell.
 - **Strain relief:** the CELL2 tail has a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
 - **Behind B.Cu:** the tails run about 1.1 mm behind B.Cu in the areas on `BCU_TAIL_RUNS`. Only low parts (≤ 0.6 mm) there. The four wires cross the gap in the `BCU_WIRE_RUNS` areas: no B.Cu parts at all there.
@@ -40,7 +40,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 **Board changes needed:**
 - Five plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.
-- Two Ø1.3 mm plated holes with a 0.4 mm ring for the PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.3 mm.
+- Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.2 mm and the frame bars by 0.1 mm.
 - Remove the two 18 AWG PACK holes and the five B.Cu spring contacts.
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
@@ -54,7 +54,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
     - 0.2 × 10 mm pure nickel for the three series strips (loss cut 4). The top two are cut long, so they run on as the CELL1 / CELL3 tails, trimmed to a 3 mm tongue.
     - 0.15 mm nickel, cut to 3 mm, for the CELL2 tail.
     - 0.2 × 7 mm pure nickel for the two PACK pads, about 10 mm long.
-- **Wire:** 20 AWG PTFE (about 1.2 mm OD) for the two PACK power leads and 28 AWG PTFE (about 0.6 mm OD) for the two Kelvin leads, silver-plated stranded copper, about 25 mm each.
+- **Wire:** 18 AWG thin-wall PTFE for the two PACK power leads (M22759/11-18 or similar, 19/30 strand, 1.45 mm OD at most: ordinary 600 V hook-up wire is about 1.8 mm and hangs below the carrier frame) and 28 AWG PTFE (about 0.6 mm OD) for the two Kelvin leads, silver-plated stranded copper, about 25 mm each.
     - Source, and how to check it is real nickel: `spot-welding.md`.
 - **Insulation:** kapton tape for the CELL2 tail. No fish paper: the carrier's frames and webs keep the cans apart and off the board.
 - **Printed parts:**

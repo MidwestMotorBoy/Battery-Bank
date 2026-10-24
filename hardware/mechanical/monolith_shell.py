@@ -255,12 +255,12 @@ SB_TAIL_TOP_Z = 72.0                 # CELL1 / CELL3 slots (a 5 mm drop behind t
 SB_SLOT_W, SB_SLOT_CLR, SB_SLOT_RING = 0.6, 0.4, 0.4    # plated slot: width (z), length over the tail (y), annular ring
 SB_KINK = (23.35, 24.55, 1.0)        # strain-relief kink in the bottom tails: x from, x to, depth (+0.35 with the FEB cell)
 SB_WIRE_D = 0.8                      # (legacy)
-# PACK wire tails (option C, 2026-10-24): each PACK power path is a 20 AWG PTFE wire, bench-soldered to a 0.2 x 7 nickel
+# PACK wire tails (option C, 2026-10-24): each PACK power path is an 18 AWG PTFE wire, bench-soldered to a 0.2 x 7 nickel
 # pad that is welded to the cell end inside the weld window. It runs through a notch in the carrier's bottom frame
 # (monolith_cup.py), crosses the gap behind the board and is soldered into a plated hole. The Kelvin side (1N / 4P) is
 # a 28 AWG PTFE wire from the same pad, through its own notch, into the existing Kelvin slot.
-SB_PWIRE_OD, SB_KWIRE_OD = 1.2, 0.6  # 20 AWG / 28 AWG PTFE, outside diameter
-SB_PWIRE_HOLE, SB_PWIRE_RING = 1.3, 0.4   # PACK wire plated hole (finished) and its annular ring
+SB_PWIRE_OD, SB_KWIRE_OD = 1.45, 0.6  # 18 AWG thin-wall PTFE (M22759/11-18, 1.37 max) / 28 AWG PTFE, outside diameter
+SB_PWIRE_HOLE, SB_PWIRE_RING = 1.5, 0.4   # PACK wire plated hole (finished; 19/30 strand ~1.22 mm) and its annular ring
 SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows over the board's bottom edge
 # derived (x across the board, y along the board width, z along the cells)
 sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
@@ -431,8 +431,8 @@ if __name__ == '__main__':
           for n, (y, z, l) in sb_slots().items()) + f"; slot width {SB_SLOT_W}")
     print("PACK wire holes (KiCad x, y, finished dia): " + ", ".join(f"{n} {kicad(y, z)[0]:.2f}, {kicad(y, z)[1]:.2f}, {d}"
           for n, (y, z, d) in sb_pack_holes().items()) + f"; ring {SB_PWIRE_RING}")
-    r = 6.99e-8 * 0.007 / (7 * SB_PACK_T * 1e-6) + 3.33e-2 * 0.015     # ~7 mm of 0.2 x 7 nickel pad + ~15 mm of 20 AWG
-    print(f"PACK pad + 20 AWG wire: {r*1e3:.2f} mOhm, {9.4**2*r:.2f} W at 9.4 A per tab")
+    r = 6.99e-8 * 0.007 / (7 * SB_PACK_T * 1e-6) + 2.09e-2 * 0.015     # ~7 mm of 0.2 x 7 nickel pad + ~15 mm of 18 AWG
+    print(f"PACK pad + 18 AWG wire: {r*1e3:.2f} mOhm, {9.4**2*r:.2f} W at 9.4 A per tab")
     ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
     print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
     # assembly checks (positive = clearance)
