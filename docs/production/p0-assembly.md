@@ -30,7 +30,7 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 | CELL1 | C1+ / C2− strip, top | 28 AWG PTFE wire from the strip's tongue, down behind the board | J109, Ø0.8 at (86.10, 69.48) |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | J111, Ø0.8 at (113.90, 69.48) |
 
-The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanical/monolith_shell.py`. The five sense holes sit where the plated slots for the old nickel tails were and keep those oval pads (4.2 × 1.4 mm for the taps, 2.4 × 1.4 for 1N / 4P), so the board's routing didn't change; only the drill went from an oval slot to Ø0.8. They're on the `SENSE_WIRE_HOLES` / `SENSE_WIRE_PADS` layers of `monolith_side_pcb.dxf`.
+The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanical/monolith_shell.py`. The five sense holes sit where the plated slots for the old nickel tails were, each Ø0.8 in a 1.5 × 1.4 mm pad (2026-10-24: the old 4.2 mm oval pads at J109 / J111 overlapped the USB-C courtyards, and nothing was routed to them yet). They're on the `SENSE_WIRE_HOLES` / `SENSE_WIRE_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
 - **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so both run through one notch per side in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`; two notches left a loose chip of frame between them), cross the 2.6 mm gap and go into the board. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
@@ -47,7 +47,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Posts and sleeves:** the Ø2 peg posts run through the board's Ø2.2 holes to 0.3 mm under the board-face wall, which is now 2.0 mm thick. A small TPU sleeve pushed down each post onto F.Cu holds the board on the rails.
 
 **Board changes (on the `Production` branch):**
-- Five sense holes, Ø0.8 in the old slot pads: J109–J111 (CELL1–CELL3), J115 / J116 (1N / 4P). Done 2026-10-24; DRC still to run.
+- Five sense holes, Ø0.8 in 1.5 × 1.4 mm pads: J109–J111 (CELL1–CELL3), J115 / J116 (1N / 4P). Done 2026-10-24; DRC still to run.
 - Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires (J108, J112). Done 2026-10-24.
 - **R124 and R126 are DNP** (gauge sheet note 16, 2026-10-24). They connect the BQ294700 output and the gauge FUSE pin to Q104's gate. With them off, nothing can blow F102 while the pack is being wired; fit them by hand after the seven voltages read right (step 3.1).
 - Route 1N and 4P as Kelvin nets to the gauge.

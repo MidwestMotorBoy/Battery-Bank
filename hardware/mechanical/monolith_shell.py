@@ -273,8 +273,10 @@ SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows ov
 # - CELL2: the wire is soldered to the middle of the bottom strip on the bench and runs in a channel in the carrier's
 #   bottom frame (monolith_cup.py) out to its hole.
 # - 1N / 4P: unchanged (Kelvin wires from the PACK pads).
-# The five holes sit where the plated slots were and keep the slot pads (sb_slots(): pad = length + 2 x ring by
-# SB_SLOT_W + 2 x ring), so the board's copper doesn't change; only the drill becomes round.
+# The five holes sit where the plated slots were, in 1.5 x 1.4 pads (sb_slots(): pad = SB_SWIRE_PAD_L + 2 x ring by
+# SB_SLOT_W + 2 x ring).
+SB_SWIRE_PAD_L = 0.7                 # sense pad length less 2 x ring: 1.5 x 1.4 pads (2026-10-24, were the 4.2 / 2.4 x 1.4 slot
+                                     # pads; the 4.2 pads' courtyards overlapped the USB-C ones at J109 / J111, nothing routed yet)
 SB_SWIRE_HOLE = 0.8                  # finished hole for a 28 AWG wire (7/36 or 19/40 strand, ~0.38 mm; up to 0.75 mm OD over the PTFE)
 SB_TONGUE_X = 24.0                   # CELL1 / CELL3 tongue end (x): 1.45 past the top frame, 1.3 short of B.Cu
 # derived (x across the board, y along the board width, z along the cells)
@@ -334,15 +336,15 @@ def sb_fingers(name):
 def sb_slots():
     """the five sense-wire holes, {name: (y centre, z centre, pad length along y less 2 x ring)}: the two Kelvin leads and
     the three cell taps, all 28 AWG wires in SB_SWIRE_HOLE holes (2026-10-24; they were plated slots for nickel tails,
-    hence the name and the oval pads). The PACK power paths are wires in plated holes too (sb_pack_holes)"""
+    hence the name). All five pads are 1.5 x 1.4 (SB_SWIRE_PAD_L). The PACK power paths are wires in plated holes too (sb_pack_holes)"""
     out = {}
     zb = sb_z_tail_b - SB_PACK_T / 2
     for n in ('PACK-', 'PACK+'):
         for k, (y0, y1) in sb_fingers(n).items():
-            if k not in ('PACK-', 'PACK+'): out[k] = ((y0 + y1) / 2, zb, y1 - y0 + SB_SLOT_CLR)
-    out['CELL2'] = (0.0, sb_z_tail_b - SB_TAB_T / 2, SB_TAIL_W + SB_SLOT_CLR)
-    out['CELL1'] = (-SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
-    out['CELL3'] = (SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
+            if k not in ('PACK-', 'PACK+'): out[k] = ((y0 + y1) / 2, zb, SB_SWIRE_PAD_L)
+    out['CELL2'] = (0.0, sb_z_tail_b - SB_TAB_T / 2, SB_SWIRE_PAD_L)
+    out['CELL1'] = (-SB_TAIL_Y, SB_TAIL_TOP_Z, SB_SWIRE_PAD_L)
+    out['CELL3'] = (SB_TAIL_Y, SB_TAIL_TOP_Z, SB_SWIRE_PAD_L)
     return out
 def sb_pack_holes():
     """the PACK wire holes, {name: (y centre, z centre, finished diameter)}, on the old power-finger centrelines"""

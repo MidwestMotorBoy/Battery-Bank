@@ -13556,12 +13556,12 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "3ce508f8-3157-459d-aa2a-2cfbff5d25b0")
 		(at 91.275 135.4755)
-		(descr "Plated hole 0.8 mm in a 2.4 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(descr "Plated hole 0.8 mm in a 1.5 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
 		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J115"
 			(at 0 -1.4 0)
@@ -13613,8 +13613,8 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -1.3 -0.8)
-			(end 1.3 0.8)
+			(start -0.85 -0.8)
+			(end 0.85 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -13623,9 +13623,9 @@
 			(layer "F.CrtYd")
 			(uuid "b28fe398-a2b6-4aea-90b5-89d4ca2eacd8")
 		)
-		(fp_rect
-			(start -0.8 -0.3)
-			(end 0.8 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.375 0)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -13647,7 +13647,7 @@
 		)
 		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 2.4 1.4)
+			(size 1.5 1.4)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
@@ -25160,12 +25160,12 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "6706c6c8-d2b4-4d3f-ab3e-4d57fe52b8b8")
 		(at 100 135.4505)
-		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(descr "Plated hole 0.8 mm in a 1.5 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
 		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J110"
 			(at 0 -1.4 0)
@@ -25218,8 +25218,8 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -2.2 -0.8)
-			(end 2.2 0.8)
+			(start -0.85 -0.8)
+			(end 0.85 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -25228,9 +25228,9 @@
 			(layer "F.CrtYd")
 			(uuid "1523678b-1fc2-4512-9917-5c1583455b4b")
 		)
-		(fp_rect
-			(start -1.7 -0.3)
-			(end 1.7 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.375 0)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -25252,7 +25252,7 @@
 		)
 		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 4.2 1.4)
+			(size 1.5 1.4)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
@@ -41741,12 +41741,12 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "c2614329-ca3a-4d21-8a1a-17eb12e918e7")
 		(at 113.9 69.4755)
-		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(descr "Plated hole 0.8 mm in a 1.5 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
 		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J111"
 			(at 0 -1.4 0)
@@ -41799,8 +41799,8 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -2.2 -0.8)
-			(end 2.2 0.8)
+			(start -0.85 -0.8)
+			(end 0.85 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -41809,9 +41809,9 @@
 			(layer "F.CrtYd")
 			(uuid "94c8f101-2072-4b12-9082-05dd781961fa")
 		)
-		(fp_rect
-			(start -1.7 -0.3)
-			(end 1.7 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.375 0)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -41833,7 +41833,7 @@
 		)
 		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 4.2 1.4)
+			(size 1.5 1.4)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
@@ -43833,12 +43833,12 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "cd68b8a2-c2b9-44a9-848e-621634a8fbae")
 		(at 86.1 69.4755)
-		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(descr "Plated hole 0.8 mm in a 1.5 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
 		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J109"
 			(at 0 -1.4 0)
@@ -43891,8 +43891,8 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -2.2 -0.8)
-			(end 2.2 0.8)
+			(start -0.85 -0.8)
+			(end 0.85 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -43901,9 +43901,9 @@
 			(layer "F.CrtYd")
 			(uuid "eedc1f8f-5e67-4b8f-8cc3-5aa71cd551bf")
 		)
-		(fp_rect
-			(start -1.7 -0.3)
-			(end 1.7 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.375 0)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -43925,7 +43925,7 @@
 		)
 		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 4.2 1.4)
+			(size 1.5 1.4)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
@@ -44463,12 +44463,12 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "cf4b072a-f223-4d0b-bc85-ecc8a5365e51")
 		(at 108.725 135.4755)
-		(descr "Plated hole 0.8 mm in a 2.4 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(descr "Plated hole 0.8 mm in a 1.5 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
 		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J116"
 			(at 0 -1.4 0)
@@ -44520,8 +44520,8 @@
 		(attr through_hole exclude_from_pos_files)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -1.3 -0.8)
-			(end 1.3 0.8)
+			(start -0.85 -0.8)
+			(end 0.85 0.8)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -44530,9 +44530,9 @@
 			(layer "F.CrtYd")
 			(uuid "ff6bfcad-4b23-45b9-9857-2175b07a7e42")
 		)
-		(fp_rect
-			(start -0.8 -0.3)
-			(end 0.8 0.3)
+		(fp_circle
+			(center 0 0)
+			(end 0.375 0)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -44554,7 +44554,7 @@
 		)
 		(pad "1" thru_hole oval
 			(at 0 0)
-			(size 2.4 1.4)
+			(size 1.5 1.4)
 			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
