@@ -1,88 +1,69 @@
 # Charge and thermal policy (firmware notes)
 
-Decided 2026-10-21: the pack uses **FEB 21700G (68E) 6500 mAh** cells, 4S1P, 14.4 V nominal, **93.6 Wh**. The goal is energy for trail loads (phones, tablets, headlamps, a watch); 100 W is for brief bursts only. These notes are the design intent for firmware; numbers come from lumped thermal models in `research_notes/Ground-up mechanical concepts/model/` (`feb_limits.py`, `thermal_rundown.py`) and must be re-tuned on P0.
+How firmware applies the charge ramp and the discharge derate. The thresholds themselves live in [`docs/spec.md`](../spec.md) (Ports, charging and power policy) and are changed there; this file explains the structure, so it doesn't repeat the tables. The pack is four BAK N21700CX-65E cells in 4S1P, 91 Wh typical. The numbers come from the 3-D pack model in `research_notes/Pack thermal BAK 65E/` and must be retuned on P0.
 
-> **Superseded in part (2026-10-24):** the cells are now the BAK 65E, and the front-cell NTCs moved onto the cans' hot stripe. The thresholds below were set for NTCs that read up to 8.5 K low. Current values (`docs/spec.md`, `research_notes/Pack thermal BAK 65E/ntc-placement.md`): discharge 100 W to 42 °C, ramp to 40 W at 46 °C, hold to 50 °C, ramp to 0 at 58 °C; charge 4.55 A to 42 °C, ramp to 0 at 44.5 °C; gauge T4 44 °C. The structure of this policy (ramps, hysteresis, layers) is unchanged.
-
-Background: `research_notes/Loss reduction/G_feb_21700g.md` (why this cell), `H_feb_limits_plan.md` (where each limit lives), `summary.md` (loss cuts and the DRV_SUP enable).
+_First written 2026-10-21 for the FEB 21700G cells; rewritten 2026-10-24 for the BAK 65E and the front-cell NTCs on the cans' hot stripe. The FEB version is in the git history._
 
 ## 1. The cell's limits
-From the [diy500amp listing](https://diy500amp.com/products/feb-21700-battery-cell-6500mah-13a-ultra-high-capacity-energy-cell?variant=42624877330503) (read against the hottest cell, which is conservative: the listing says ambient):
 
-| | < 0 °C | 0–5 °C | 5–15 °C | 15–35 °C | 35–45 °C | 45–60 °C | > 60 °C |
-|---|---|---|---|---|---|---|---|
-| Charge, max | none | 0.65 A | 3.25 A | 4.55 A | 4.55 A | none | none |
-| Discharge, max | 6.5 A (to −20 °C) | 13 A | 13 A | 13 A | 6.5 A | 3.25 A | none |
+BAK's datasheet (A/00, `datasheets/bak-n21700cx-65e.pdf`) gives only the outer limits: charge to 4.20 V at 0–45 °C, up to 12.7 A (2C); discharge at −20–60 °C, up to 19.05 A (3C). It has no temperature-stepped charge table (BAK supplies one on request).
 
-Charge to 4.20 V. Discharge floor: the spec says 2.5 V, its cycle test used 2.75 V; use **≥ 2.8 V per cell** for life. Resistance ≤ 25 mΩ (spec); about 30 mΩ DC mid-charge and about 50 mΩ near empty (estimate), so heat rises sharply late in a discharge.
+- Until BAK's table arrives, firmware keeps the charge ramp from the FEB table, capped at **4.55 A** (0.7C).
+- The app's fast-charge toggle stays for future packs, but firmware always clamps it to the cell's datasheet table.
+- Discharge floor: **2.8 V per cell** for life (the datasheet's end voltage is 2.5 V).
+- 100 W at an 11.2 V pack is about 9 A, well inside the 19.05 A rating, so the cell's discharge rating no longer limits output below 60 °C. The comfort ramp and the board ramp do.
 
 ## 2. Principles
+
 - **Linear ramps, not steps.** Every limit is a straight line from full to reduced across a temperature band, so power never jumps and the pack doesn't oscillate.
 - **Ramps stay on or under the cell's table at every temperature.**
-- **Act on the hottest sensor.** In the cup design the board heats the two *front* cells; those are the hottest. Cell sensors must be on the front cells.
+- **Act on the hottest sensor.** In the cup the board heats the two front cells. Their NTCs (TS1 on C1, TS4 on C4) sit on the cans' hot stripe inside the gap-filler zone (`research_notes/Pack thermal BAK 65E/ntc-placement.md`), so they read within about 0.3 K of the hottest can point.
 - **Layers:** hardware ceilings (no firmware) → gauge protections and charge algorithm → this firmware policy. Firmware is the smoothest and lowest layer; the others are backstops.
 - **Lower the PD offer, don't sag the output.** Discharge limits are applied by re-advertising Source Capabilities so sinks renegotiate cleanly.
 
 ## 3. Charging
-**Current vs hottest cell (pack current):**
 
-| Hottest cell | Charge current |
-|---|---|
-| ≤ 0 °C | 0 (gauge UTC also blocks) |
-| 1–4.9 °C | 0.65 A |
-| 5.0 → 6.5 °C | ramp 0.65 → 3.25 A |
-| 6.5–15 °C | 3.25 A |
-| 15.0 → 16.5 °C | ramp 3.25 → 4.55 A |
-| 16.5–40 °C | 4.55 A |
-| 40 → 45 °C | ramp 4.55 → 0 A (gauge OTC at 45 °C) |
+**Loop (once a second):** `ICHG_REG = min(gauge ChargingCurrent(), ramp(hottest cell), 4.55 A)`, written to each BQ25756 through its TPS25751 (`I2Cr`/`I2Cw`). With both ports sinking, split it so the sum stays under the ramp. The ramp is the charge table in the spec.
 
-**Loop (once a second):** `ICHG_REG = min(gauge ChargingCurrent(), ramp(hottest cell), 4.55 A)`, written to each BQ25756 through its TPS25751 (`I2Cr/I2Cw`). With both ports sinking, split it so the sum stays under the ramp.
+**Readback.** R_ICHG is 0 Ω (ICHG pin to PGND, `EN_ICHG_PIN = 0`), so the register is the only charger-level limit. Every second, and before releasing CHG_INH, read back `ICHG_REG`, `EN_ICHG_PIN` and `EN_CHG`. On a mismatch, rewrite the value or inhibit charging.
 
-**Backstops:** R_ICHG 11.5 kΩ (pin ceiling 4.17–4.52 A even if nothing is configured); gauge temperature ranges T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA; gauge OTC 45 °C, UTC 0 °C. BQ25756 JEITA stays **off** (its NTC is on the FET copper, not the cells).
+**Backstops:**
+- The TPS25751 configuration loads `ICHG_REG = 3.25 A` at power-up, before the MCU runs.
+- CHG_INH is pulled up, so a reset, hang or blank MCU stops charging.
+- Gauge JEITA ranges in data flash (spec, Battery management), gauge OCC ≈ 5 A, OTC 45 °C, UTC 0 °C.
+- BQ25756 JEITA stays **off**: its NTC is on the FET copper, not the cells.
 
-**What to expect (model, 88 W offered, empty to full):** ~2.0 h at 25 °C ambient (the board's heat holds the front cells in the 40–45 °C ramp), ~1.5 h at 10 °C, ~1.8 h at 3 °C.
+**Behaviour:**
 - **Self-warming in the cold:** the board's heat warms cold cells up through the 0.65 A and 3.25 A bands into the 4.55 A band within tens of minutes. Don't fight it.
-- **To explore on P0:** when warm, asking for less input (e.g. a 60 W PDO) may finish as fast with less heat, because the cells stay below the 40 °C ramp.
-- **Optional user setting:** a "longevity" charge to 4.10 V (about −10 % capacity, noticeably longer cycle life).
+- **To explore on P0:** when warm, asking for less input (e.g. a 60 W PDO) may finish as fast with less heat, because the cells stay below the charge ramp.
+- **Settings:** max SOC (default 95 %, 60–100 %), a periodic 100 % balancing charge, "charge to 100 % once", trip mode, and an optional "longevity" charge to 4.10 V (about −10 % capacity, noticeably longer cycle life).
+- Dual-port charging, pass-through and solar MPPT are listed in the spec.
 
 ## 4. Discharge: burst, then a sustainable level
-The owner's approach: **don't cap the offer below 100 W; lower where the derate starts instead.** The model supports it, with one refinement: **two numbers matter.**
+
+The owner's approach: **don't cap the offer below 100 W; lower where the derate starts instead.** Two numbers matter:
+
 - **Where the ramp starts** sets how long a burst lasts.
 - **Where the ramp ends (the sustain power)** sets how warm the cells sit for the rest of the discharge.
 
-**Starting policy (tune on P0):**
-| Hottest cell | Allowed output |
-|---|---|
-| ≤ 33 °C | 100 W (full offer) |
-| 33 → 39 °C | ramp 100 → 40 W |
-| 39–45 °C | 40 W, and never above the FEB table (6.5 A above ~35 °C, ≈ 85 W at 14.4 V) |
-| 45 → 55 °C | the FEB table falls to 3.25 A (≈ 40 W); generic ramp to 0 at 55 °C |
-| ≥ 60 °C | 0 (gauge OTD) |
-
-Plus the **board ramp**, lowered to **55 → 70 °C** board copper (from 60 → 75), and the low-pack-voltage limit (less power as the pack empties: the cells' resistance rises ~1.6× near empty).
-
-**What it does (model, 100 W asked, from full):**
-| Policy | Full power at 25 °C | at 10 °C | Hottest cell at 25 °C |
-|---|---|---|---|
-| FEB table only | ~5 min | ~13 min | 46 °C |
-| Ramp from 33 °C to 40 W (recommended start) | ~4 min | ~12 min | 45 °C |
-| Ramp from 30 °C to 35 W | ~3 min | ~10.5 min | 42 °C |
-
-At 35 °C ambient the cells start inside the ramp, so there is no full-power burst: that's intended. At 30 W (typical trail use) nothing derates in any of these: 2.97 h full to empty, cells ≤ 38 °C at 25 °C.
+The current values (100 W to 42 °C, then a ramp to 40 W at 46 °C) and the model results are in the spec. A 44 → 48 °C ramp is worth trying on P0.
 
 **Implementation:**
-- `P_allow = min(100 W, comfort_ramp(hottest cell), FEB_table(hottest cell) × V_pack × 0.9, board_ramp(board TS), low_voltage_limit(V_pack))`.
+- `P_allow = min(100 W, comfort_ramp(hottest cell), board_ramp(charger TS), low_voltage_limit(V_pack))`. The board ramp is 55 → 70 °C on each charger's TS NTC; the low-voltage limit gives less power as the pack empties, because the cells' resistance rises near empty.
 - Re-advertise Source Caps when `P_allow` crosses a 5 W step; go **down** at once, go **up** only after 2 K of cooling and ≥ 10 s (hysteresis, so a laptop isn't renegotiated every second).
-- Two ports share `P_allow`; the port with the higher contract gives way first.
-- Hardware backstops: IBAT_REV 10 A; gauge OCD1 ≈ 12 A, OTD 60 °C.
+- **Port sharing is a user setting.** In USB1 priority (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In Balanced, the port with the larger contract gives way first. The two contracts never add up to more than `P_allow`, even briefly: lower one before raising the other.
+- Hardware backstops: IBAT_REV 10 A; gauge OCD1 ≈ 12 A, OCD2 ≈ 14 A, OTD 60 °C.
 
 ## 5. Sensors and timing
-- Inputs: gauge cell temperatures (front cells; BQ40Z50 TS / TMP1075), gauge die (protection FETs), each charger's TS_ADC (FET copper), pack voltage.
-- Poll once a second (already planned in `docs/devboard/mcu-io-power-states.md`). The board reacts in ~1 min, the cells in ~5–10 min, so 1 s is plenty.
-- Don't poll a charger's ADC while its converter is off (it powers REGN and with it the DRV_SUP LDO enable: see `research_notes/Loss reduction/summary.md`).
+
+- **Inputs:** the gauge's `DAStatus2` (TS1–TS4, FET temperature, die), each charger's `TS_ADC` (FET copper, read through the TPS25751), and pack voltage. There are no TMP1075 board sensors on P0.
+- **Poll once a second** (planned in `docs/devboard/mcu-io-power-states.md`). The board reacts in about 1 min and the cells in 5–10 min, so 1 s is plenty.
+- **Don't poll a charger's ADC while its converter is off.** It powers REGN, and with it the 9 V gate-drive LDO's enable (`research_notes/Loss reduction/summary.md`).
+- **9 V gate drive (fitted, default off):** turn it on only for contracts of 45 W or more. Enable the converter, then `GPsl`; `GPsh` before disabling it, and on charge-done or a fault.
 
 ## 6. Open items
-1. **Ambient vs cell temperature** for the FEB table: ask FEB/the seller or read Mooch / BatteryRealData. If ambient, estimate ambient from the back cells at idle and relax the 35 °C step; bursts at 25 °C roughly double.
-2. **Measure the FEB resistance curve** on P0 (10 s step at several charge levels) and re-fit the models.
-3. **Gauge chemistry ID** for the FEB (likely a GPC characterization run).
-4. **Tune the start temperature and sustain power** on P0 with real loads; the numbers above are a starting point.
+
+1. **BAK's temperature-stepped charge table:** ask BAK, then replace the FEB-derived ramp and revisit the 4.55 A cap.
+2. **Measure the 65E's DC resistance** on P0 (10 s pulse at 50 % and 10 % charge) and refit the model's 14 mΩ.
+3. **Gauge chemistry ID** for the 65E (likely a GPCCHEM run).
+4. **Tune the start temperature and sustain power** on P0 with real loads. Check each front NTC against a thermocouple on the stripe beside it, and shift the thresholds if it reads more than 1 K off.

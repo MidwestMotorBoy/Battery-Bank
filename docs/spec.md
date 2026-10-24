@@ -174,7 +174,7 @@ The production P0 board is the design of record and the first board planned to b
 
 ## Contradictions between sources
 
-Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them all on 10-23. The rest are stale text to clean up. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
+Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them all on 10-23. The rest were stale text; the docs were cleaned up on 2026-10-24 and the superseded ones moved to `docs/archive/`. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
 
 | # | Topic | Older source says | Newer source says | Spec uses |
 | --- | --- | --- | --- | --- |
