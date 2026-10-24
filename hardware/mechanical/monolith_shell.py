@@ -255,6 +255,13 @@ SB_TAIL_TOP_Z = 72.0                 # CELL1 / CELL3 slots (a 5 mm drop behind t
 SB_SLOT_W, SB_SLOT_CLR, SB_SLOT_RING = 0.6, 0.4, 0.4    # plated slot: width (z), length over the tail (y), annular ring
 SB_KINK = (23.35, 24.55, 1.0)        # strain-relief kink in the bottom tails: x from, x to, depth (+0.35 with the FEB cell)
 SB_WIRE_D = 0.8                      # (legacy)
+# PACK wire tails (option C, 2026-10-24): each PACK power path is a 20 AWG PTFE wire, bench-soldered to a 0.2 x 7 nickel
+# pad that is welded to the cell end inside the weld window. It runs through a notch in the carrier's bottom frame
+# (monolith_cup.py), crosses the gap behind the board and is soldered into a plated hole. The Kelvin side (1N / 4P) is
+# a 28 AWG PTFE wire from the same pad, through its own notch, into the existing Kelvin slot.
+SB_PWIRE_OD, SB_KWIRE_OD = 1.2, 0.6  # 20 AWG / 28 AWG PTFE, outside diameter
+SB_PWIRE_HOLE, SB_PWIRE_RING = 1.3, 0.4   # PACK wire plated hole (finished) and its annular ring
+SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows over the board's bottom edge
 # derived (x across the board, y along the board width, z along the cells)
 sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
 sb_ac = sb_pr + CELL_D / 2 + SB_CELL_WALL     # cell-zone half-width (cavity, -x and +-y walls), and the cells' +x face line
@@ -310,22 +317,33 @@ def sb_fingers(name):
     k = '4P' if s > 0 else '1N'
     return {name: tuple(sorted((outer, outer - s * pw))), k: tuple(sorted((inner, inner + s * kw)))}
 def sb_slots():
-    """the seven plated slots, {name: (y centre, z centre, length along y)}"""
+    """the five plated slots, {name: (y centre, z centre, length along y)}: the two Kelvin leads and the three cell taps
+    (the PACK power paths are wires in plated holes, sb_pack_holes)"""
     out = {}
     zb = sb_z_tail_b - SB_PACK_T / 2
     for n in ('PACK-', 'PACK+'):
-        for k, (y0, y1) in sb_fingers(n).items(): out[k] = ((y0 + y1) / 2, zb, y1 - y0 + SB_SLOT_CLR)
+        for k, (y0, y1) in sb_fingers(n).items():
+            if k not in ('PACK-', 'PACK+'): out[k] = ((y0 + y1) / 2, zb, y1 - y0 + SB_SLOT_CLR)
     out['CELL2'] = (0.0, sb_z_tail_b - SB_TAB_T / 2, SB_TAIL_W + SB_SLOT_CLR)
     out['CELL1'] = (-SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
     out['CELL3'] = (SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
+    return out
+def sb_pack_holes():
+    """the PACK wire holes, {name: (y centre, z centre, finished diameter)}, on the old power-finger centrelines"""
+    return {n: (sum(sb_fingers(n)[n]) / 2, SB_PWIRE_Z, SB_PWIRE_HOLE) for n in ('PACK-', 'PACK+')}
+def sb_wire_runs():
+    """where the PACK and Kelvin wires cross the gap behind B.Cu, as (y0, y1, z0, z1) with 0.5 mm margin. No B.Cu parts
+    here: the 1.2 mm power wire leaves no room even for the low parts the nickel tail runs allow."""
+    m, out = 0.5, []
+    for n, (y, z, _) in sb_pack_holes().items(): out.append((y - SB_PWIRE_OD/2 - m, y + SB_PWIRE_OD/2 + m, sb_zb0, z + SB_PWIRE_OD/2 + m))
+    for k in ('1N', '4P'):
+        y, z, _ = sb_slots()[k]; out.append((y - SB_KWIRE_OD/2 - m, y + SB_KWIRE_OD/2 + m, sb_zb0, z + SB_KWIRE_OD/2 + m))
     return out
 def sb_tail_runs():
     """where nickel runs behind B.Cu, as (y0, y1, z0, z1) with 0.5 mm margin: the bottom tails and their kinks, and the
     CELL1 / CELL3 tails down the gap (about 1.1 mm from B.Cu). Only low B.Cu parts here (<= 0.6 mm)."""
     out, m = [], 0.5
     zlo = sb_z_tail_b - SB_PACK_T - SB_KINK[2] - m
-    for n in ('PACK-', 'PACK+'):
-        for y0, y1 in sb_fingers(n).values(): out.append((y0 - m, y1 + m, zlo, sb_z_tail_b + m))
     out.append((-SB_TAIL_W/2 - m, SB_TAIL_W/2 + m, zlo, sb_z_tail_b + m))
     for sy in (-1, 1): out.append((sy*SB_TAIL_Y - SB_TAIL_W/2 - m, sy*SB_TAIL_Y + SB_TAIL_W/2 + m, SB_TAIL_TOP_Z - m, sb_zb1))
     return out
@@ -359,6 +377,9 @@ def write_side_dxf(path):
     for y, z, l in sb_slots().values():                                   # plated slots (finished size) and their pads
         _rect(e, y, z, l, SB_SLOT_W, 'TAB_SLOTS'); _rect(e, y, z, l + 2*SB_SLOT_RING, SB_SLOT_W + 2*SB_SLOT_RING, 'TAB_SLOT_PADS')
     for y0, y1, z0, z1 in sb_tail_runs(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_TAIL_RUNS')   # nickel behind B.Cu
+    for y, z, d in sb_pack_holes().values():                                # PACK wire holes (finished size) and their pads
+        _circ(e, y, z, d/2, 'PACK_WIRE_HOLES'); _circ(e, y, z, d/2 + SB_PWIRE_RING, 'PACK_WIRE_PADS')
+    for y0, y1, z0, z1 in sb_wire_runs(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_WIRE_RUNS')   # wires behind B.Cu: no parts
     for y, z in SB_STANDOFFS: _rect(e, y, z, SB_STANDOFF_D, SB_STANDOFF_D, 'COVER_STANDOFFS')
     _dxf(path, e)
 
@@ -408,8 +429,10 @@ if __name__ == '__main__':
           f"x {sb_xb0:.2f}..{sb_xb1:.2f}; ports at x {sb_port_x:.2f}, y +-{SB_PORT_Y}")
     print("tab slots (KiCad x, y, length along x): " + ", ".join(f"{n} {kicad(y, z)[0]:.2f}, {kicad(y, z)[1]:.2f}, {l:.1f}"
           for n, (y, z, l) in sb_slots().items()) + f"; slot width {SB_SLOT_W}")
-    rho = 6.99e-8; a = SB_FINGER[0] * SB_PACK_T * 1e-6; r = rho * 0.012 / a
-    print(f"PACK power finger + tab, ~12 mm of 0.2 x 4.2 nickel: {r*1e3:.2f} mOhm, {9.4**2*r:.2f} W at 9.4 A per tab")
+    print("PACK wire holes (KiCad x, y, finished dia): " + ", ".join(f"{n} {kicad(y, z)[0]:.2f}, {kicad(y, z)[1]:.2f}, {d}"
+          for n, (y, z, d) in sb_pack_holes().items()) + f"; ring {SB_PWIRE_RING}")
+    r = 6.99e-8 * 0.007 / (7 * SB_PACK_T * 1e-6) + 3.33e-2 * 0.015     # ~7 mm of 0.2 x 7 nickel pad + ~15 mm of 20 AWG
+    print(f"PACK pad + 20 AWG wire: {r*1e3:.2f} mOhm, {9.4**2*r:.2f} W at 9.4 A per tab")
     ys = np.array([0, 2, 4, 6, 8, 15, 18, 21])
     print("inner-face free height vs y: " + ", ".join(f"{y:g}:{d:.1f}" for y, d in zip(ys, side_groove_depth(ys))))
     # assembly checks (positive = clearance)
@@ -456,6 +479,11 @@ if __name__ == '__main__':
         'slots: pads clear of the corner notches (y)': sb_notch_y - max(abs(y) + l/2 + SB_SLOT_RING for y, _, l in sb_slots().values()) - 0.5,
         'slots: pads between each other (y, >= 0.4)': min(abs(a[0] - b[0]) - (a[2] + b[2])/2 - 2*SB_SLOT_RING
                                                        for i, a in enumerate(sb_slots().values()) for b in list(sb_slots().values())[i+1:] if abs(a[1] - b[1]) < 2) - 0.4,
+        'PACK wire holes: pads above the board bottom edge (z, >= 0.1)': min(z - d/2 for _, z, d in sb_pack_holes().values()) - SB_PWIRE_RING - sb_zb0 - 0.1,
+        'PACK wire holes: pads clear of the corner notches (y)': sb_notch_y - max(abs(y) + d/2 for y, _, d in sb_pack_holes().values()) - SB_PWIRE_RING - 0.5,
+        'PACK wire holes: pads clear of the Kelvin slot pads (y, >= 0.4)': min(abs(abs(y) - abs(sb_slots()[k][0])) - d/2 - SB_PWIRE_RING - sb_slots()[k][2]/2 - SB_SLOT_RING
+                                                       for y, _, d in sb_pack_holes().values() for k in ('1N', '4P')) - 0.4,
+        'PACK wire holes below the frame bars (z)': SB_BAR_Z0 - (SB_PWIRE_Z + SB_PWIRE_HOLE/2 + SB_PWIRE_RING) - 0.3,
         'bottom slots below the frame bars (z)': SB_BAR_Z0 - (sb_z_tail_b + SB_SLOT_W/2 + SB_SLOT_RING) - 0.3,
         'bottom slots clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - (SB_VENT_D/2 + 2),
         'top tails outside the frame bars (y)': (SB_TAIL_Y - SB_TAIL_W/2) - SB_BAR_Y[1] - 0.5,
