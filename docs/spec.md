@@ -166,7 +166,7 @@ The production P0 board is the design of record and the first board planned to b
 - MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze), held by two radial M2 screws below the seal.
 - TPU 95A bumpers at both ends and a TPU pad inside the cap; an ePTFE vent patch.
 - No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
-- Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. P0: Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, one part, reworkable; 10 cc syringe 65-00-GEL30-0010). Gift packs: Bergquist TGF 3600 or Laird Tflex CR350S (3.6 W/m·K, two part), cured at room temperature only with cells fitted. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
+- Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. Material (decided 2026-10-24, P0 and gift packs): Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, SG 3.1, about 4.5 g; one part, supplied cured, so no mixing, gun or cure time; peels off for rework; 8 kV/mm, 10¹⁴ Ω·cm, UL94 V-0; 18-month shelf life at 10–32 °C). One 10 cc Luer-Lok syringe (65-00-GEL30-0010, about €51 at Farnell, also Newark and DigiKey) covers five or six packs. Bergquist TGF 3600 (two part, 15 h at 25 °C) was the runner-up but comes in 50 cc cartridges with a 5-month shelf life and needs a 1:1 gun and static mixers. Laird Tflex CR350S is out: its datasheet gives only an oven cure (2 h at 70 °C plus 0.5 h at 100 °C), which the fitted cells can't take. In the model, 1.5 / 3 / 6 W/m·K put the hottest part at 60.0 / 58.5 / 55.7 °C at 100 W with a 5.2 / 6.2 / 5.8 min burst, so more conductivity than this doesn't help. Comparison: `research_notes/Pack thermal BAK 65E/gap-filler-options.md`. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
 - Outside size 59.8 × 51.9 × 97.2 mm, about 384–400 g. The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
 
 ## Contradictions between sources
@@ -242,7 +242,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
 - [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
-- [ ] Bending jig for the nickel tails; gap-filler dispense pattern
+- [ ] Bending jig for the nickel tails; gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
 - [ ] Outside label: 91 Wh, 14.4 V, USB1 / USB2, ratings
 
 ### Mass reduction (400 g accepted; keep working on it)
