@@ -59126,37 +59126,6 @@
 		)
 	)
 	(zone
-		(layers "F.Cu")
-		(uuid "2782ed39-f0fa-42cb-806d-d4dd88f1c54b")
-		(name "KO_F_above_antenna")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 117.4 77.4245) (xy 121.6 77.4245) (xy 121.6 86.4245) (xy 117.4 86.4245)
-			)
-		)
-	)
-	(zone
 		(layers "F.Cu" "B.Cu")
 		(uuid "6a50680a-b645-423b-9a5c-c11a130626eb")
 		(name "KO_top_stop_L")
