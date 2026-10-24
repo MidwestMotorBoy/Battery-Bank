@@ -399,12 +399,12 @@ Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wi
 | Hole | Ref | Net | KiCad (x, y), pad length or Ø |
 |---|---|---|---|
 | PACK− power wire | J108 | CELL_N | (86.975, 135.726), Ø1.5 |
-| 1N Kelvin wire | J115 | CELL_1N (new) | (91.275, 135.476), Ø0.8 in a 2.4 pad |
-| CELL2 sense wire | J110 | CELL2 | (100.000, 135.451), Ø0.8 in a 4.2 pad |
-| 4P Kelvin wire | J116 | CELL_4P (new) | (108.725, 135.476), Ø0.8 in a 2.4 pad |
+| 1N Kelvin wire | J115 | CELL_1N (new) | (91.275, 135.476), Ø0.8 in a 1.5 × 1.4 pad |
+| CELL2 sense wire | J110 | CELL2 | (100.000, 135.451), Ø0.8 in a 1.5 × 1.4 pad |
+| 4P Kelvin wire | J116 | CELL_4P (new) | (108.725, 135.476), Ø0.8 in a 1.5 × 1.4 pad |
 | PACK+ power wire | J112 | CELL_P_RAW | (113.025, 135.726), Ø1.5 |
-| CELL1 sense wire | J109 | CELL1 | (86.100, 69.475), Ø0.8 in a 4.2 pad |
-| CELL3 sense wire | J111 | CELL3 | (113.900, 69.475), Ø0.8 in a 4.2 pad |
+| CELL1 sense wire | J109 | CELL1 | (86.100, 69.475), Ø0.8 in a 1.5 × 1.4 pad |
+| CELL3 sense wire | J111 | CELL3 | (113.900, 69.475), Ø0.8 in a 1.5 × 1.4 pad |
 
 **Kelvin split** (BQ40Z50-R2 SLUSCS4C §9.2.2.1.3, SLUA660 §2.3–2.4):
 - **CELL_1N** is the gauge's low-current ground: U101 VSS and its strapped pins (PRES, DISP, PTC, PTCEN), its decoupling (C104, C105, C115, C116, C118), U102 VSS and its CD cap C117, R117, and the NTC returns. It meets the pack only at the 1N tab, so route it as a star from J115 and keep it off CELL_N copper.

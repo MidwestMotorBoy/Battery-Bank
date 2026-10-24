@@ -264,7 +264,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
 for _sheet, _parts in DOWNSIZE.items():
     SWAP.setdefault(_sheet, {}).update(_parts)
 SLOT_W, SLOT_RING = MS.SB_SLOT_W, MS.SB_SLOT_RING   # sense pad: the old plated slot's width and ring (mechanical/monolith_shell.py)
-SENSE_D = MS.SB_SWIRE_HOLE                           # sense wires (2026-10-24): 28 AWG PTFE wire in a round hole, old slot pad
+SENSE_D = MS.SB_SWIRE_HOLE                           # sense wires (2026-10-24): 28 AWG PTFE wire in a round hole, 1.5 x 1.4 pad
 
 
 def slot_name(length):
@@ -1073,8 +1073,8 @@ APS0730 = """(footprint "L_Coilank_APS0730"
 
 def slot_footprint(length):
     """Sense-wire pad (2026-10-24; was a plated slot for a nickel tail): a round SENSE_D hole for a 28 AWG PTFE wire in
-    the old slot's oval pad (length + 2 x SLOT_RING by SLOT_W + 2 x SLOT_RING along x), on both faces, no paste
-    (soldered by hand on F.Cu). Keeping the pad keeps the routed copper. Courtyard 0.1 mm outside the pad."""
+    an oval pad (length + 2 x SLOT_RING by SLOT_W + 2 x SLOT_RING along x; 1.5 x 1.4 since sb_slots() gives every pad
+    SB_SWIRE_PAD_L), on both faces, no paste (soldered by hand on F.Cu). Courtyard 0.1 mm outside the pad."""
     L = round(length, 2)
     px, py = L + 2 * SLOT_RING, SLOT_W + 2 * SLOT_RING
     cx, cy = px / 2 + 0.1, py / 2 + 0.1

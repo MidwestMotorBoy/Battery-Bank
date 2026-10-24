@@ -14012,7 +14012,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 			(at 43.18 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -14088,7 +14088,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 			(at 43.18 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -14164,7 +14164,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 			(at 43.18 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -15023,7 +15023,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 			(at 60.96 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -15109,7 +15109,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
 			(at 60.96 58.42 0)
 			(hide yes)
 			(show_name no)
