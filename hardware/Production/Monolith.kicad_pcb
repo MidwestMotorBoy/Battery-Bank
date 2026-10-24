@@ -59069,16 +59069,6 @@
 		(layer "Edge.Cuts")
 		(uuid "5c50c070-2709-4d2e-b095-808d12f1731f")
 	)
-	(gr_text "KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. Gap filler zones: solid copper + thermal vias to the power stages. F.Cu: parts <= 3.2 mm (cup wall 0.5 mm above)."
-		(at 100 141.175 0)
-		(layer "Cmts.User")
-		(uuid "0a27d633-53b2-4b0d-b47e-a6e7c97a8b30")
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-		)
-	)
 	(segment
 		(start 106.75 69.1745)
 		(end 106.25 69.1745)
@@ -59103,9 +59093,10 @@
 		(net "/USB Port 1/DPDN_DCP")
 		(uuid "cd9726b5-d9ee-4bd0-b58d-0c55e9c1123f")
 	)
+	(embedded_fonts no)
 	(zone
-		(layer "F.Cu")
-		(uuid "c67e0df0-8b87-4340-8700-65a67eee8dfd")
+		(layers "F.Cu")
+		(uuid "5166b7f0-2df5-4543-b9ed-26021b1a0d7d")
 		(name "KO_F_cup_vent")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59130,20 +59121,14 @@
 		)
 		(polygon
 			(pts
-				(xy 103.5 127.475) (xy 103.433 128.158) (xy 103.234 128.815) (xy 102.91 129.42) (xy 102.475 129.95)
-				(xy 101.945 130.386) (xy 101.339 130.709) (xy 100.683 130.908) (xy 100 130.976) (xy 99.3172 130.908)
-				(xy 98.6606 130.709) (xy 98.0555 130.386) (xy 97.5251 129.95) (xy 97.0899 129.42) (xy 96.7664 128.815)
-				(xy 96.5673 128.158) (xy 96.5 127.475) (xy 96.5673 126.793) (xy 96.7664 126.136) (xy 97.0899 125.531)
-				(xy 97.5251 125.001) (xy 98.0555 124.565) (xy 98.6606 124.242) (xy 99.3172 124.043) (xy 100 123.975)
-				(xy 100.683 124.043) (xy 101.339 124.242) (xy 101.945 124.565) (xy 102.475 125.001) (xy 102.91 125.531)
-				(xy 103.234 126.136) (xy 103.433 126.793)
+				(xy 103.5 127.475) (xy 103.433 128.158) (xy 103.234 128.815) (xy 102.91 129.42) (xy 102.475 129.95) (xy 101.945 130.386) (xy 101.339 130.709) (xy 100.683 130.908) (xy 100 130.976) (xy 99.3172 130.908) (xy 98.6606 130.709) (xy 98.0555 130.386) (xy 97.5251 129.95) (xy 97.0899 129.42) (xy 96.7664 128.815) (xy 96.5673 128.158) (xy 96.5 127.475) (xy 96.5673 126.793) (xy 96.7664 126.136) (xy 97.0899 125.531) (xy 97.5251 125.001) (xy 98.0555 124.565) (xy 98.6606 124.242) (xy 99.3172 124.043) (xy 100 123.975) (xy 100.683 124.043) (xy 101.339 124.242) (xy 101.945 124.565) (xy 102.475 125.001) (xy 102.91 125.531) (xy 103.234 126.136) (xy 103.433 126.793)
 			)
 		)
 	)
 	(zone
-		(layers "F.Cu" "B.Cu")
-		(uuid "572ad569-ea04-41e8-8353-987bd8480440")
-		(name "KO_top_stop_R")
+		(layers "F.Cu")
+		(uuid "2782ed39-f0fa-42cb-806d-d4dd88f1c54b")
+		(name "KO_F_above_antenna")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -59167,13 +59152,13 @@
 		)
 		(polygon
 			(pts
-				(xy 114 62.8245) (xy 121.6 62.8245) (xy 121.6 63.8245) (xy 114 63.8245)
+				(xy 117.4 77.4245) (xy 121.6 77.4245) (xy 121.6 86.4245) (xy 117.4 86.4245)
 			)
 		)
 	)
 	(zone
 		(layers "F.Cu" "B.Cu")
-		(uuid "8af40303-ad42-451d-b4ec-62c68d752b8e")
+		(uuid "6a50680a-b645-423b-9a5c-c11a130626eb")
 		(name "KO_top_stop_L")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59203,9 +59188,9 @@
 		)
 	)
 	(zone
-		(layer "B.Cu")
-		(uuid "003049e5-952f-4b16-a2bd-7157304c6626")
-		(name "KO_B_rail_L_top")
+		(layers "F.Cu" "B.Cu")
+		(uuid "ab9e8e65-32f5-4cfd-b031-c99c39d643db")
+		(name "KO_top_stop_R")
 		(hatch edge 0.5)
 		(connect_pads yes
 			(clearance 0)
@@ -59229,199 +59214,13 @@
 		)
 		(polygon
 			(pts
-				(xy 88.7 62.8245) (xy 93.5 62.8245) (xy 93.5 86.4755) (xy 88.7 86.4755)
+				(xy 114 62.8245) (xy 121.6 62.8245) (xy 121.6 63.8245) (xy 114 63.8245)
 			)
 		)
 	)
 	(zone
-		(layer "B.Cu")
-		(uuid "21c464b5-62a9-41d6-ae54-e7e86a2fa848")
-		(name "KO_B_tail_CELL1")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 84.1 62.8245) (xy 88.1 62.8245) (xy 88.1 69.9755) (xy 84.1 69.9755)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "2c719321-8a18-4067-977d-6207b0b26fdf")
-		(name "KO_B_gap_filler_R")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 107 88.4755) (xy 116 88.4755) (xy 116 114.475) (xy 107 114.475)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "4be3adf0-e3d4-49fd-8ce6-8904285d6046")
-		(name "KO_B_rail_R_bottom")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 106.5 116.475) (xy 111.3 116.475) (xy 111.3 137.175) (xy 106.5 137.175)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "4d1ceee9-cee5-43c4-8836-0664a124aab9")
-		(name "KO_B_tail_CELL2")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 98 134.875) (xy 102 134.875) (xy 102 137.076) (xy 98 137.076)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "53016edc-d54d-4bc3-a311-b3703326c66c")
-		(name "KO_B_rail_R_top")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 106.5 62.8245) (xy 111.3 62.8245) (xy 111.3 86.4755) (xy 106.5 86.4755)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "bf25aab5-d57f-42c4-82a6-9c66bfeebf71")
-		(name "KO_B_gap_filler_L")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "f29460d2-d2a8-45e1-83f0-f84a047c5b75")
+		(layers "B.Cu")
+		(uuid "1980a54e-9aa2-4814-b248-99cc8daf7131")
 		(name "KO_B_rail_L_bottom")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59451,8 +59250,225 @@
 		)
 	)
 	(zone
-		(layer "B.Cu")
-		(uuid "feaea0ea-16dd-4630-81ed-45f9ec67bfa0")
+		(layers "B.Cu")
+		(uuid "cb9958d5-64e5-4b05-9ea4-c7ac5d0d10b9")
+		(name "KO_B_rail_L_top")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 88.7 62.8245) (xy 93.5 62.8245) (xy 93.5 86.4755) (xy 88.7 86.4755)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "5f3145aa-e4c0-479d-bd39-5bbb0284b467")
+		(name "KO_B_rail_R_bottom")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 106.5 116.475) (xy 111.3 116.475) (xy 111.3 137.175) (xy 106.5 137.175)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "21cef622-3cd5-4912-b3a7-eb84ac9ab083")
+		(name "KO_B_rail_R_top")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 106.5 62.8245) (xy 111.3 62.8245) (xy 111.3 86.4755) (xy 106.5 86.4755)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "958d9930-e995-47bf-af28-3f10cb889b8d")
+		(name "KO_B_gap_filler_L")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "1485f342-5430-454b-8243-26c684c9c0ff")
+		(name "KO_B_gap_filler_R")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 107 88.4755) (xy 116 88.4755) (xy 116 114.475) (xy 107 114.475)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "54789547-f9ea-46a3-937e-41f2887d733e")
+		(name "KO_B_tail_CELL2")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 98 134.875) (xy 102 134.875) (xy 102 137.076) (xy 98 137.076)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "da754aed-4219-4225-a9f9-b694d162685b")
+		(name "KO_B_tail_CELL1")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 84.1 62.8245) (xy 88.1 62.8245) (xy 88.1 69.9755) (xy 84.1 69.9755)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "d0cefc3a-997c-479e-baf8-93713b300676")
 		(name "KO_B_tail_CELL3")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59481,10 +59497,9 @@
 			)
 		)
 	)
-	(embedded_fonts no)
 	(zone
 		(layers "B.Cu")
-		(uuid "e7111697-0831-4791-aadf-d55f2ecae825")
+		(uuid "71528be6-b327-4cfc-be8d-f845034fa5b0")
 		(name "KO_B_wire_PACKN")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59509,13 +59524,13 @@
 		)
 		(polygon
 			(pts
-				(xy 85.75 134.5) (xy 88.2 134.5) (xy 88.2 137.175) (xy 85.75 137.175)
+				(xy 85.575 134.326) (xy 88.375 134.326) (xy 88.375 137.175) (xy 85.575 137.175)
 			)
 		)
 	)
 	(zone
 		(layers "B.Cu")
-		(uuid "720aba93-c1f5-42fc-9df3-3b08037b5afd")
+		(uuid "98963cf9-17a6-4bc4-b448-6dd20df5484f")
 		(name "KO_B_wire_PACKP")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59540,13 +59555,13 @@
 		)
 		(polygon
 			(pts
-				(xy 111.8 134.5) (xy 114.25 134.5) (xy 114.25 137.175) (xy 111.8 137.175)
+				(xy 111.625 134.326) (xy 114.425 134.326) (xy 114.425 137.175) (xy 111.625 137.175)
 			)
 		)
 	)
 	(zone
 		(layers "B.Cu")
-		(uuid "9c9275af-9798-4d50-9431-1fd53a0e912a")
+		(uuid "832f0ca6-a4b2-41d8-ae72-5b28b64f9135")
 		(name "KO_B_wire_1N")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59571,13 +59586,13 @@
 		)
 		(polygon
 			(pts
-				(xy 90.475 134.675) (xy 92.075 134.675) (xy 92.075 137.175) (xy 90.475 137.175)
+				(xy 90.4 134.601) (xy 92.15 134.601) (xy 92.15 137.175) (xy 90.4 137.175)
 			)
 		)
 	)
 	(zone
 		(layers "B.Cu")
-		(uuid "4a62cd40-18d6-4703-a20b-aca599c98d89")
+		(uuid "9e62547f-b633-4c69-8389-b719886e2375")
 		(name "KO_B_wire_4P")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59602,13 +59617,13 @@
 		)
 		(polygon
 			(pts
-				(xy 107.925 134.675) (xy 109.525 134.675) (xy 109.525 137.175) (xy 107.925 137.175)
+				(xy 107.85 134.601) (xy 109.6 134.601) (xy 109.6 137.175) (xy 107.85 137.175)
 			)
 		)
 	)
 	(zone
 		(layers "B.Cu")
-		(uuid "2ab6c68a-a746-4c97-bf4a-e7c614a67819")
+		(uuid "9996c780-aa3e-40cc-895a-c3204810b536")
 		(name "KO_B_ntc_C1")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59639,7 +59654,7 @@
 	)
 	(zone
 		(layers "B.Cu")
-		(uuid "5d0b90fd-5a7e-4a16-8dd1-b7298fe10309")
+		(uuid "0818556e-76ad-4f85-837e-df4f1cfa2e46")
 		(name "KO_B_ntc_C4")
 		(hatch edge 0.5)
 		(connect_pads yes
@@ -59665,6 +59680,16 @@
 		(polygon
 			(pts
 				(xy 111.5 72.1255) (xy 116.05 72.1255) (xy 116.05 96.4755) (xy 111.5 96.4755)
+			)
+		)
+	)
+	(gr_text "KO_NOTE B.Cu (faces the cells, hand-soldered): parts <= 2.3 mm tall; up to ~5 mm only in the centre strip x 96-104 or beyond 18 mm from centre. No heat sources on B.Cu. Gap filler zones: solid copper + thermal vias to the power stages. F.Cu: parts <= 3.2 mm (cup wall 0.5 mm above)."
+		(at 100 141.175 0)
+		(layer "Cmts.User")
+		(uuid "ce6a5b06-02cd-4ee6-8eb2-a3367a85e673")
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
 		)
 	)

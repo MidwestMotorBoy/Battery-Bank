@@ -453,7 +453,7 @@ def _top_tongue(sy):
     t, z0, w = S.SB_TAB_T, S.sb_z_tail_t, S.SB_TAIL_W / 2; yc = sy * S.SB_TAIL_Y
     return [_box(S.sb_pr - 0.01, S.SB_TONGUE_X, yc - w, yc + w, z0, z0 + t)]
 
-SENSE_CH = (0.5, 0.9)                         # CELL2 wire channel in the carrier's bottom frame: half-width, depth
+SENSE_CH = (0.5, 0.95)                        # CELL2 wire channel in the carrier's bottom frame: half-width, depth
 def sense_wires():
     """the three 28 AWG cell-tap wires (2026-10-24), square-section stand-ins: CELL2 from under the middle of the bottom
     strip, along the channel in the bottom frame and across the gap; CELL1 / CELL3 from under their tongue ends, down

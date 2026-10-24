@@ -78,7 +78,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
     - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
-    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG thin-wall PTFE wires in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J102, J105–J107: cell NTC wire pads. J102 / J107 (front cells C1 / C4) are placed and locked at |y| 14.7 mm, z 64 / 68 mm (`sb_ntc_pads()`, 2026-10-24).
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
@@ -425,7 +425,7 @@ JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_
 | `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |
 | `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages |
 | `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | CELL2 wire and the CELL1 / CELL3 tongues and wires behind the board (drawn as the old tail runs, which cover them) |
-| `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.5–134.7) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes and slots; the 1.45 mm power wire leaves no room for any part |
+| `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.3–134.6) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes; sized for a 1.8 mm power wire and a 0.75 mm Kelvin wire (2026-10-24), no room for any part |
 | `KO_B_ntc_C1` / `_C4` (x 83.95–88.5 / 111.5–116.05, y 72.13–96.48, from `sb_ntc_runs()`) | B.Cu | parts | the front-cell NTC beads, their foam caps and leads, taped up the can to J102 / J107 |
 
 There is no rule-area type for height, so a note on Cmts.User under the board holds those limits:

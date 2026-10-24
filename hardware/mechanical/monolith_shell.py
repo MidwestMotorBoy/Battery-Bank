@@ -263,7 +263,7 @@ SB_WIRE_D = 0.8                      # (legacy)
 # pad that is welded to the cell end inside the weld window. It runs through a notch in the carrier's bottom frame
 # (monolith_cup.py), crosses the gap behind the board and is soldered into a plated hole. The Kelvin side (1N / 4P) is
 # a 28 AWG PTFE wire from the same pad, through its own notch, into the existing Kelvin slot.
-SB_PWIRE_OD, SB_KWIRE_OD = 1.45, 0.6  # 18 AWG thin-wall PTFE (M22759/11-18, 1.37 max) / 28 AWG PTFE, outside diameter
+SB_PWIRE_OD, SB_KWIRE_OD = 1.8, 0.75  # 18 AWG PTFE (M22759/11-18, 1.78 max at AWC) / 28 AWG Type ET PTFE (M16878/6, 0.74 max)
 SB_PWIRE_HOLE, SB_PWIRE_RING = 1.5, 0.4   # PACK wire plated hole (finished; 19/30 strand ~1.22 mm) and its annular ring
 SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows over the board's bottom edge
 # Sense wires (Logan, 2026-10-24): every sense lead is a 28 AWG PTFE wire too, so no nickel goes into the board.
@@ -275,7 +275,7 @@ SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows ov
 # - 1N / 4P: unchanged (Kelvin wires from the PACK pads).
 # The five holes sit where the plated slots were and keep the slot pads (sb_slots(): pad = length + 2 x ring by
 # SB_SLOT_W + 2 x ring), so the board's copper doesn't change; only the drill becomes round.
-SB_SWIRE_HOLE = 0.8                  # finished hole for a 28 AWG wire (7/36 strand, ~0.38 mm; 0.6 mm OD over the PTFE)
+SB_SWIRE_HOLE = 0.8                  # finished hole for a 28 AWG wire (7/36 or 19/40 strand, ~0.38 mm; up to 0.75 mm OD over the PTFE)
 SB_TONGUE_X = 24.0                   # CELL1 / CELL3 tongue end (x): 1.45 past the top frame, 1.3 short of B.Cu
 # derived (x across the board, y along the board width, z along the cells)
 sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
