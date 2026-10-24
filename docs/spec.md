@@ -11,7 +11,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Item | Current design |
 | --- | --- |
 | Energy | 91 Wh typical, 88.9 Wh minimum (about 93 Wh measured at 1 A), under the 100 Wh carry-on limit |
-| Pack voltage | 14.4 V nominal, 16.8 V full, 11.2 V floor (2.8 V per cell) |
+| Pack voltage | 14.0 V nominal (4 × 3.5 V, BAK datasheet), 16.8 V full, 11.2 V floor (2.8 V per cell) |
 | Ports | 2 × USB-C PD, each bidirectional, 5–20 V, up to 5 A |
 | Output | 100 W while the hottest cell NTC (on the front cells' hot stripe) is at or below 42 °C, then a linear derate to about 40 W sustained |
 | Charging | Up to 4.55 A into the pack, following a temperature ramp. About 1.6 h from 5 % to 95 % on one 100 W charger at 25 °C (modelled) |
@@ -176,7 +176,7 @@ The production P0 board is the design of record and the first board planned to b
 
 ## Contradictions between sources
 
-Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them all on 10-23. The rest are stale text to clean up. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
+Twenty conflicts turned up. The first eight changed what gets built or coded; Logan settled them all on 10-23. The rest were stale text; the docs were cleaned up on 2026-10-24 and the superseded ones moved to `docs/archive/`. "Project notes" means `/mnt/project-files/knowledge/claude/monolith-next-actions.md` (10-16); "repo checklist" means `docs/project/monolith-next-actions.md` as it stood on `master` at a490f98 (now retired).
 
 | # | Topic | Older source says | Newer source says | Spec uses |
 | --- | --- | --- | --- | --- |
@@ -248,7 +248,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
 - [ ] Bending jig for the nickel tails; gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
-- [ ] Outside label: 91 Wh, 14.4 V, USB1 / USB2, ratings
+- [ ] Outside label: 91 Wh, 14.0 V, USB1 / USB2, ratings
 
 ### Mass reduction (400 g accepted; keep working on it)
 

@@ -1,6 +1,8 @@
 # FEB 21700G (68E) 6500 mAh: cell notes
 
-**The pack's cell since 2026-10-21**, replacing the EVE INR21700-58E (see `eve-58e-datasheet-notes.md` for the old cell). Chosen for energy: the bank lives at trail loads (phones, tablets, headlamps), and 100 W is only for brief bursts. The comparison against the 58E and the Tenpower 60XG is in `research_notes/Loss reduction/G_feb_21700g.md`.
+> **Archived 2026-10-24.** The FEB 21700G was the pack's cell from 2026-10-21 to 2026-10-23, when the BAK N21700CX-65E replaced it. The current cell and its limits are in [`docs/spec.md`](../spec.md) (Cells and pack). Firmware still uses the charge ramp from this table until BAK sends its temperature-stepped profile.
+
+**The pack's cell since 2026-10-21**, replacing the EVE INR21700-58E (see [`eve-58e-datasheet-notes.md`](eve-58e-datasheet-notes.md) for the old cell). Chosen for energy: the bank lives at trail loads (phones, tablets, headlamps), and 100 W is only for brief bursts. The comparison against the 58E and the Tenpower 60XG is in `research_notes/Loss reduction/G_feb_21700g.md`.
 
 Source: the [diy500amp listing](https://diy500amp.com/products/feb-21700-battery-cell-6500mah-13a-ultra-high-capacity-energy-cell?variant=42624877330503), which quotes the maker's data sheet; dimensions also from [Batemo](https://www.batemo.com/ja/wp-json/wp/v2/product/136335). No independent test is public yet (Mooch has a Patreon-only update on the "FEB 21700G (68E)"; the listing links BatteryRealData lab tests). Confirm against the maker's sheet before P0.
 

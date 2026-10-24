@@ -1,8 +1,8 @@
 # P0 assembly: one power module, then the cup
 
-How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`; the connections: `hardware/mechanical/monolith_side_tabs.png` (unchanged).
+How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`; the cell taps: `hardware/mechanical/retired/monolith_side_tabs.png` (drawn for the side tray, before the wire PACK tails; the cell-tap slots are the same).
 
-**Status:** a plan. Nothing has been built yet, so expect it to change at the first fit print. Cells: FEB 21700G 6500 mAh (`docs/project/feb-21700g-datasheet-notes.md`).
+**Status:** a plan. Nothing has been built yet, so expect it to change at the first fit print. Cells: BAK N21700CX-65E 6500 mAh (`docs/spec.md`, Cells and pack). Which of the board changes below are already on the `Production` branch is tracked in the spec's P0 checklist.
 
 ![Cup, exploded](../../hardware/mechanical/monolith_cup_exploded.png)
 
@@ -28,10 +28,10 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
-The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`; the cup uses the same board, slots and tails. **FEB 21700G (2026-10-21):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
+The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`; the cup uses the same board, slots and tails. **6500 mAh cells (2026-10-21, for the FEB 21700G; recheck for the BAK 65E):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
-- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG thin-wall PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so each runs through its own notch in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`), crosses the 2.6 mm gap and goes into the board: the power wire into a Ø1.5 plated hole (`sb_pack_holes()`, layers `PACK_WIRE_HOLES` / `PACK_WIRE_PADS`), the Kelvin wire into its slot. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board: 1N (CELL_1N) is the gauge's low-current ground, star-connected at its slot (VSS, BQ294700 VSS, NTC returns), and 4P (CELL_4P) feeds VC4, the BQ294700 V4/VDD and the BAT diode. The shunt and SRP stay on the PACK− power net (TI SLUA660 §2.3–2.4; `hardware/Production/README.md`).
+- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG thin-wall PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so each runs through its own notch in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`), crosses the 2.6 mm gap and goes into the board: the power wire into a Ø1.5 plated hole (`sb_pack_holes()`, layers `PACK_WIRE_HOLES` / `PACK_WIRE_PADS`), the Kelvin wire into its slot. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
 - **Power loss:** about 0.66 mΩ per PACK end (7 mm of pad plus 15 mm of 18 AWG), so about 0.06 W each at 9.4 A.
 - **Short risk:** keep the solder joint inside the weld window, over the pad. On C4 the bottom is the + cap and the rim is the can (−), so a joint out at the rim could short the cell.
 - **Strain relief:** the CELL2 tail has a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
@@ -40,16 +40,16 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 **Board changes needed:**
 - Five plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.
-- Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.2 mm and the frame bars by 0.1 mm. **Done on the `Production` board (2026-10-24):** J108 / J112 at KiCad (86.975, 135.7255) and (113.025, 135.7255), with the `KO_B_wire_*` keep-outs; KiCad DRC still to run.
-- Remove the old 16 AWG PACK holes and the five B.Cu spring contacts.
+- Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.2 mm and the frame bars by 0.1 mm.
+- Remove the five B.Cu spring contacts from the earlier contact plan.
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
-- Four holes for the carrier's board pegs (Ø2.0 pegs at y ±8.6, z 14 and 68; 2.2 mm NPTH, H101–H104).
+- Two holes for the carrier's board pegs (Ø2.0 at y ±8.6, z 14 and 68).
 - The cover standoffs (H101–H104) and the wedge's screw bosses no longer exist: the standoffs can go.
 
 ## Materials and tools
 
-- **Cells:** 4 × FEB 21700G (68E) 6500 mAh, same batch, matched to within 10 mV and to within 1 mΩ on an AC (1 kHz) meter. Measure each cell's diameter: the cup is designed to the 21.85 mm maximum.
+- **Cells:** 4 × BAK N21700CX-65E 6500 mAh, same batch, matched to within 10 mV and to within 1 mΩ on an AC (1 kHz) meter. Measure each cell's diameter: the cup is designed to the 21.85 mm maximum.
 - **Nickel:**
     - 0.2 × 10 mm pure nickel for the three series strips (loss cut 4). The top two are cut long, so they run on as the CELL1 / CELL3 tails, trimmed to a 3 mm tongue.
     - 0.15 mm nickel, cut to 3 mm, for the CELL2 tail.
@@ -84,12 +84,11 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 2. **Front-cell NTCs** (C1 on TS1 / J102, C4 on TS4 / J107; `research_notes/Pack thermal BAK 65E/ntc-placement.md`):
     - Bead on the can's board-facing stripe, inside the filler zone: z 48 mm, 7° outboard of the board-facing line (|y| 12.9 mm, about 1.3 mm outboard of the tangent). Use a drop of thermal paste under it and Kapton tape over it. The cell's wrap insulates it from the can, which sits at that cell's negative.
     - Cap the bead with a closed-cell silicone foam square (about 4 × 5 mm, 1.5 mm thick), so the gel doesn't couple it to the board copper.
-    - Run both leads straight up the can at |y| 12–14.5 mm, taped down, at least 10 mm, beside the carrier rail and not over it. Bend them out to cross the gap at z 64 and 68 mm into the pad pair (J102 / J107, at |y| 14.7 mm). They go through from B.Cu like the tails.
+    - Run both leads straight up the can at |y| 12–14.5 mm, taped down, at least 10 mm, beside the carrier rail and not over it. Bend them out to cross the gap at z 64 and 68 mm into the pad pair. They go through from B.Cu like the tails.
     - Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before.
 3. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
-4. **Board on:** lower it onto the carrier's pegs, threading the three tap tails, the four wires and the front NTC leads through their slots and holes from B.Cu.
-5. **Solder on F.Cu,** USB unplugged: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Then the four front NTC leads. Trim each tail and wire to about 0.5 mm proud.
-    - The order follows the gauge sheet's note 15: with PACK+ on and a tap still floating, a tap can read > 4.35 V, the BQ294700 trips after 1–2 s and F102 blows.
+4. **Board on:** lower it onto the carrier's pegs, threading the five tails, four wires and the front NTC leads through their slots and holes from B.Cu.
+5. **Solder on F.Cu,** PACK− first, then PACK+, then the five sense leads, then the four NTC leads. Trim each tail to about 0.5 mm proud.
     - The BQ40Z50-R2 datasheet (SLUSCS4C §9.2.2.1.3) gives no connection order, only the Kelvin rule for 1N and 4P.
     - The BQ294700 datasheet hasn't been checked yet. Check it before the first build.
 
@@ -117,7 +116,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 3. Press the TPU bumpers on, top (port well) and bottom.
 
 ## Open items
-- **Board:** the five slots and two PACK wire holes, Kelvin routing for 1N / 4P, the `BCU_TAIL_RUNS` keep-outs, the gap-filler zone and thermal vias, the two peg holes, and removing the PACK holes, spring contacts and cover standoffs.
+- **Board:** the five slots and two PACK wire holes, Kelvin routing for 1N / 4P, the `BCU_TAIL_RUNS` keep-outs, the gap-filler zone and thermal vias, the two peg holes, and removing the spring contacts and cover standoffs.
 - **Fit:**
     - The O-ring squeeze in an MJF bore: print a coupon of the cup mouth and cap, and dunk-test it.
     - How hard the module pushes home; the USB-C seal rings entering their bores together.

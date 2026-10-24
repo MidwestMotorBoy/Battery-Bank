@@ -1,6 +1,6 @@
 """Monolith layout comparison: top-cap board vs side board (numpy + PIL; imports the generators).
 Run after monolith_shell.py and monolith_parts.py:  python3 monolith_render.py
--> monolith_layout_compare.png, plus a size / mass table on stdout.
+-> retired/monolith_layout_compare.png (both layouts are retired), plus a size / mass table on stdout.
 Masses: printed parts from STL volume x density; cells 75 g each (FEB 21700G listing; Batemo measures 73.4 g);
 boards estimated at the production thickness (SB_PCB_T) as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
 import numpy as np, struct, os
@@ -17,7 +17,7 @@ def board_g(area_mm2, t=0.8):
     return (area_mm2 * t - cu) / 1000 * FR4_RHO + cu / 1000 * CU_RHO
 
 def load(name):
-    with open(os.path.join(HERE, name + '.stl'), 'rb') as f:
+    with open(os.path.join(S.RETIRED, name + '.stl'), 'rb') as f:
         f.read(80); n = struct.unpack('<I', f.read(4))[0]
         d = np.frombuffer(f.read(50*n), dtype=np.dtype([('n', '<3f4'), ('v', '<9f4'), ('a', '<u2')]))
     return d['v'].reshape(-1, 3, 3).astype(float)
@@ -138,5 +138,5 @@ if __name__ == '__main__':
         t.text((x0, 940 + 22*i), s_, fill=(20, 20, 20), font=f2)
     t.text((30, Hh - 28), "Blue: cells. Green: boards and USB-C envelopes. Light grey: shell (front half cut away). "
            "Dark: TPU bumpers / crush caps (lattice, mass at print fill). Silver: aluminium cover (Al plate on the top-cap layout is not drawn).", fill=(90, 90, 90), font=f2)
-    img.save(os.path.join(HERE, 'monolith_layout_compare.png'))
+    img.save(os.path.join(S.RETIRED, 'monolith_layout_compare.png'))
     print("wrote monolith_layout_compare.png")

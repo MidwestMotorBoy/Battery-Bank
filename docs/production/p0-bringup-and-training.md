@@ -22,7 +22,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 |---|---|
 | J301 (TC2030-NL, "SWD") | CC2340 flash and debug: VCC, SWDIO, NRST, SWCLK, GND |
 | J302 (TC2030-NL, "GAUGE") | 1 SDA, 2 CHG_INH, 3 NRST, 4 nc, 5 GND, 6 SCL |
-| J108 / J112 | Pack − / + (18 AWG thin-wall PTFE wires, Ø1.5 mm plated holes) |
+| J108 / J112 | Pack − / +: Ø1.5 mm plated holes for the 18 AWG PTFE PACK wires |
 | J109–J111 | Cell taps CELL1–CELL3 |
 | J102, J105–J107 | Cell NTCs |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge |
@@ -54,14 +54,14 @@ To keep the MCU off the SMBus while BQStudio is connected:
 Steps:
 
 1. **Basic data flash:**
-    - 4 cells, design capacity 6,500 mAh (FEB 21700G, 6,350 mAh minimum);
+    - 4 cells, design capacity 6,500 mAh (BAK N21700CX-65E, 6,350 mAh minimum);
     - TS1–TS4 enabled;
     - FET temperature sensor configured;
-    - protection thresholds per the design notes and the FEB limits: OTC 45 °C, UTC 0 °C, OTD 60 °C, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell;
-    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24 for the front NTCs on the hot stripe; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/firmware/charge-and-thermal-policy.md`);
+    - protection thresholds per `docs/spec.md` (Battery management and protection): OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell, SCD1 and SCD2 as listed there;
+    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24 for the front NTCs on the hot stripe; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/spec.md`);
     - the cell thermistors that matter are on the front cells (C1 / C4, the pair the board heats), so the hottest cells are seen;
     - COV delay 1 s and Min Blow Fuse Voltage 10,500 mV (second-level protection).
-2. **Chemistry:** select the FEB 21700G chemistry ID if it's in TI's database (unlikely). Otherwise run TI's GPCCHEM flow first: a slow (~C/10) discharge with rests, logged and submitted to TI's GPCCHEM tool.
+2. **Chemistry:** select the BAK 65E chemistry ID if it's in TI's database (unlikely). Otherwise run TI's GPCCHEM flow first: a slow (~C/10) discharge with rests, logged and submitted to TI's GPCCHEM tool.
 3. **Calibration:**
     - voltage (DMM at the taps);
     - current (known DC load on J113/J114 through RS101);
@@ -70,7 +70,7 @@ Steps:
 4. **Learning cycle** (TI's procedure for the BQ40Z50):
     1. Charge to full from the USB charger.
     2. Rest ≥ 2 h.
-    3. Discharge at ~C/5 (≈ 1.2 A) on J113/J114 to the termination voltage.
+    3. Discharge at ~C/5 (≈ 1.3 A) on J113/J114 to the termination voltage.
     4. Rest ≥ 5 h.
     5. Charge to full again.
     6. Confirm the update status shows a completed learning cycle.
@@ -86,7 +86,7 @@ Steps:
 | PD voltage transitions 5 → 20 V with several chargers | Watch VBUS and source resets, with and without firmware SRYR/SRDY sequencing | Firmware sequence required or not |
 | PD contract survives an MCU reset (LaunchPad T4, moved here 2026-10-20) | Laptop on a 20 V contract with the e-marked 5 A cable. Force a watchdog reset; scope RST, EN_5V1 and PP5V (TP403) together | EN_5Vx back high before PP5V falls below 4.75 V (review 4 C-6: 8–80 ms window); the laptop must not see a disconnect |
 | Gauge wakes on USB plug-in | Gauge in SHUTDOWN, plug in a charger | Whether the WAKE pad can go in the next spin |
-| Sleep current | DMM in series with one pack lead | Firmware power states (target ~150 µA) |
+| Sleep current | DMM in series with one pack lead | Firmware power states (estimate ~400 µA with the two TPD6S300s) |
 | USB-side bank stress | CA55 C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
 
 ## 5. Production boards

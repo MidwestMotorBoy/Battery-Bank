@@ -86,7 +86,7 @@ Rules:
 
 ## 3. PD controller EEPROMs (TPS25751, one bundle per port)
 
-The two ports have separate EEPROMs, so use per-port bundles (review 2, M-B3). See also `docs/project/tps25751-eeprom-programming.md`.
+The two ports have separate EEPROMs, so use per-port bundles (review 2, M-B3). See also `docs/firmware/tps25751-eeprom-programming.md`.
 
 - [ ] **Default source PDOs:** USB1 up to 100 W, USB2 20–30 W, so the "80 + 20 W" rule holds without the MCU. If a single bundle is used, 60 W or less per port (review 2, A-1). **Until the B-1 gate-drive test passes, cap 20 V PDOs at 2.5 A** (reverse output is limited to about 57 W by IBAT_REV = 5 A).
 - [ ] PPHV soft-start: setting 0 or 1 (port sheet note 9).

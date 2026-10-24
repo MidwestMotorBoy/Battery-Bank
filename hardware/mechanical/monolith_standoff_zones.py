@@ -153,5 +153,5 @@ if __name__ == '__main__':
     Z = zones(fps); cands = suggest(Z)
     for i, c in enumerate(cands):
         print(f"S{i + 1}: " + (f"KiCad ({c[1]:.2f}, {c[2]:.2f}), over a lane: {c[3]}" if c else "no room"))
-    draw(Z, cands, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'monolith_side_standoff_zones.png'))
+    draw(Z, cands, os.path.join(S.RETIRED, 'monolith_side_standoff_zones.png'))
     print('wrote monolith_side_standoff_zones.png')

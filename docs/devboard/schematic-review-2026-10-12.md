@@ -47,7 +47,7 @@ Fixed in the schematic and board unless marked otherwise. Details are in hardwar
 | m18 GPIO11 mapping | Configuration. |
 | m21 BOM gaps | **Fixed** for the listed parts. Most generic passives still have no LCSC number. |
 | m22 FSW / output C | Not changed: verify at bring-up. |
-| Firmware items 1–11 | Open: TPS25751/gauge configuration and STM32 firmware. The DBfg step is now in docs/project/tps25751-eeprom-programming.md. |
+| Firmware items 1–11 | Open: TPS25751/gauge configuration and STM32 firmware. The DBfg step is now in docs/firmware/tps25751-eeprom-programming.md. |
 | Q3 wake from SHUTDOWN | **Fixed**: SW101 wake button + J104. |
 | Missed by the review: BQ25756 bootstrap diodes | **Fixed** 2026-10-12: TI's BQ25756 schematic checklist marks D2/D3 (DRV_SUP → BTST1/BTST2 Schottky) as required; the review accepted the datasheet pin table, which only names the capacitor. D404/D405 per port, LRB521S-40T1G. |
 | Missed by the review: ESD caps across the FET pair | **Fixed** 2026-10-12: TI fig. 9-2 C1/C2 (two 0.1 µF in series, CELL_P to PACK_P) were missing; only the PACK+/PACK− pair (C107/C108) was drawn. Added C110/C111. |
@@ -246,7 +246,7 @@ Consolidated, with review 2 corrections, in `bringup-config-checklist.md`.
    - Factory defaults found in the TRM (SLUUBK0B): `DA Configuration` = 0x12 (**3S**), `Manufacturing Status Init` = 0x0000 (**FET_EN off**, so a fresh board does not power from its cells; first power comes from USB or the J104 bench header).
    - **Precharge (SUPERSEDED by review 2 A-3: keep Precharge Start Voltage = 2500 mV, set Charging Voltage Low ≤ 2500 mV; see `bringup-config-checklist.md`):** `FET Options[PCHG_COMM]` defaults to 0 = external precharge FET, which this board does not have. Set `Precharge Start Voltage` = `Charging Voltage Low` = 0 mV to disable the gauge precharge (the BQ25756 already precharges at 0.56 A below about 3.0 V/cell) and leave `PCHG_COMM` = 0 so the gauge 0-V charging circuit stays off (decision Q4).
    - Keep `OCD:Recovery Delay` / `OCC:Recovery Delay` short: after an OCD trip DSG stays off until charge current is seen for that delay, and the charge current meanwhile flows through Q102's body diode (decision Q1).
-5. **Dead-battery flag:** after any start where VBUS arrives before 3V3, the MCU must clear the TPS25751 dead-battery flag (DBfg, tps25751 §8.3.2). Until then, LDO_3V3 (EEPROM and I2Cc pull-ups) runs from VBUS. Add this to `docs/project/tps25751-eeprom-programming.md`.
+5. **Dead-battery flag:** after any start where VBUS arrives before 3V3, the MCU must clear the TPS25751 dead-battery flag (DBfg, tps25751 §8.3.2). Until then, LDO_3V3 (EEPROM and I2Cc pull-ups) runs from VBUS. Add this to `docs/firmware/tps25751-eeprom-programming.md`.
 6. **Gating EN_5Vx and charging:** refuse both unless the gauge reports four valid cells and both FETs on.
 7. **TPS62177 sleep mode:** never enter it with a cable attached. It supplies only 15 mA, and the two TPS25751s alone draw 3–6 mA each.
 8. **PB4:** set it push-pull before using sleep mode (README item 9).
