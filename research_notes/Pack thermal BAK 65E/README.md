@@ -18,7 +18,7 @@ A 3-D finite-volume model of the P0 power module (four BAK 65E cells in 4S1P, th
 - At 100 W out the pack makes about 6.1 W of heat: 2.3 W in the cells and 3.8 W on the board. The FEB estimate was about 12 W (6.5 W in the cells). The power stage is now the main heat source.
 - The 100 W burst ends when the hottest cell NTC reaches 33 °C, mostly from the USB1 stage heating C4 through the gap filler. The stage is about 1 K short of the 55 °C board ramp by then.
 - Front cells run about 5 K above the back pair at 100 W. Within a cell, the hot stripe faces the board over the filler.
-- The mid-length NTC facing the pack centre reads up to 8.5 K below the hottest can point at 100 W and 4.5 K while charging.
+- The mid-length NTC facing the pack centre reads up to 8.5 K below the hottest can point at 100 W and 4.5 K while charging. Follow-up (2026-10-24, `ntc-placement.md`): the front NTCs move onto the hot stripe inside the filler zone (7° outboard, z 48), which reads within 0.3 K, and the derate is retuned to 42 → 46 °C.
 
 ## Gap filler
 
@@ -63,6 +63,7 @@ Cell DC resistance 14 mΩ at 25 °C (BAK gives only ≤ 8 mΩ AC), 1.8× at empt
 
 - `pack3d.py`: geometry, materials, voxel grid, electrical and loss model, firmware policy, cases.
 - `network.py`: lumped thermal circuit (8 nodes) extracted from the 3-D model, with capacities fitted to its transients; `build_network_page.py` and `network_template.html` draw it (report: <https://claude.ai/artifact/EwEruQGBk4FTVFuvoE97Kr>).
+- `ntc.py`: front-cell NTC spots (80 probes per cell) and the derate retuned for the chosen spot; results in `renders/ntc.json`, write-up in `ntc-placement.md`.
 - `fill.py`: gap-filler variants. `sheet.py`: graphite wrap variants. `sens.py`: sensitivity runs. `jobs.py`: runs everything on 4 cores (about 1.5 h).
 - `render.py`: thermal maps and chart series. `summary.py`: summary table.
 - `make_text.py` and `page_template.html` with `build_page.py OUT_DIR`: builds the report.

@@ -346,16 +346,18 @@ def port_loss(p_usb, v_usb, v_bus, sink, prm=P0):
 # ---------------- firmware policy (docs/spec.md, Ports, charging and power policy) ----------------
 def lin(t, t0, t1, v0, v1): return float(np.interp(t, [t0, t1], [v0, v1]))
 DERATE = (33.0, 39.0, 40.0)                   # hottest cell: ramp start, ramp end, sustain power (spec 10-21 policy)
+DERATE_HOT = (45.0, 55.0)                     # then sustain power until the first, ramp to 0 at the second
+CHG_HOT = (40.0, 45.0)                        # charge current: 4.55 A until the first, ramp to 0 at the second
 def p_allow_cell(t):
     t0, t1, ps = DERATE
     if t <= t0: return 100.0
     if t <= t1: return lin(t, t0, t1, 100, ps)
-    if t <= 45: return ps
-    if t <= 55: return lin(t, 45, 55, 40, 0)
+    if t <= DERATE_HOT[0]: return ps
+    if t <= DERATE_HOT[1]: return lin(t, DERATE_HOT[0], DERATE_HOT[1], ps, 0)
     return 0.0
 def board_factor(t): return lin(t, 55, 70, 1, 0)
 def i_chg_ramp(t):
-    return float(np.interp(t, [0, 0.01, 5, 6.5, 15, 16.5, 40, 45], [0, 0.65, 0.65, 3.25, 3.25, 4.55, 4.55, 0])) if t > 0 else 0.0
+    return float(np.interp(t, [0, 0.01, 5, 6.5, 15, 16.5, *CHG_HOT], [0, 0.65, 0.65, 3.25, 3.25, 4.55, 4.55, 0])) if t > 0 else 0.0
 I_CHG_MAX, MAX_SOC, USB2_MIN = 4.55, 0.95, 20.0
 
 # ---------------- cases ----------------
@@ -374,17 +376,26 @@ CASES = {
                         soc0=0.20, hours=2.0, dt=20),
 }
 
-def ntc_points(g):
+def can_point(k, ang, z):
+    """a point just inside cell k's can: `ang` degrees round from the board-facing line (+x), positive away from the
+    pack's y centre line (toward the board edge), at height z"""
+    _, cx, cy, _ = CELLS[k]; a = np.radians(ang); r = R_CELL - 0.3
+    return (cx + r*np.cos(a), cy + np.sign(cy)*r*np.sin(a), z)
+
+def vox(g, p): return tuple(int(np.searchsorted(e, v) - 1) for e, v in zip(g.edges, p))
+
+def ntc_points(g, ntc_front=None):
     """voxel index of each cell's NTC (assumed: on the can at mid-length, on the side facing the pack centre)
-    and of an alternative spot on the front cells (board-facing side, just above the gap filler)"""
+    and of an alternative spot on the front cells (board-facing side, just above the gap filler).
+    ntc_front = (angle, z) moves the front cells' NTCs (C1, C4) to that spot (see can_point)"""
     pts, alt = [], []
     zm = 0.5*(Z_C0 + Z_C1)
-    for _, cx, cy, _ in CELLS:
+    for k, (_, cx, cy, _) in enumerate(CELLS):
         u = -np.array([cx, cy]) / np.hypot(cx, cy)
         pts.append((cx + u[0]*(R_CELL - 0.3), cy + u[1]*(R_CELL - 0.3), zm))
+        if ntc_front is not None and k in FRONT: pts[-1] = can_point(k, *ntc_front)
         alt.append((cx + (R_CELL - 0.3), cy, 56.5))
-    def vox(p): return tuple(int(np.searchsorted(e, v) - 1) for e, v in zip(g.edges, p))
-    return [vox(p) for p in pts], [vox(p) for p in alt]
+    return [vox(g, p) for p in pts], [vox(g, p) for p in alt]
 
 def cell_surface_mask(g, k):
     """the outermost ring of cell k's voxels in each z layer (its can surface, for surface max and min)"""
@@ -392,8 +403,10 @@ def cell_surface_mask(g, k):
     v = (g.cellany[..., k] >= 32) & g.dom
     return v & ~binary_erosion(v, structure=np.array([[[0], [1], [0]], [[1], [1], [1]], [[0], [1], [0]]], bool))
 
-def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='centre', hours=None):
-    """ntc_side: 'centre' (assumed placement) or 'board' (front-cell NTCs on the board-facing side, above the filler)"""
+def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='centre', hours=None, ntc_front=None, probes=()):
+    """ntc_side: 'centre' (assumed placement) or 'board' (front-cell NTCs on the board-facing side, above the filler).
+    ntc_front: (angle, z) puts the front cells' NTCs there instead (see can_point); the policy then reads TS1-TS4 only.
+    probes: extra (x, y, z) points whose temperatures are recorded every step (rec_probe)"""
     cs = dict(CASES[name]); cs['hours'] = hours if hours is not None else cs['hours']
     K, ge = g.assemble(h_ext)
     dom = g.dom; N = K.shape[0]
@@ -402,8 +415,10 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     W = {n: g.box_weights(b)[dom] for n, b in boxes.items()}
     cw = g.cellw[dom]; cw = cw / cw.sum(0)
     niw = g.niw[dom]; niw = niw / niw.sum()
-    ntc, ntc_alt = ntc_points(g)
+    ntc, ntc_alt = ntc_points(g, ntc_front)
     ntc_i = [g.idx[v] for v in ntc]; alt_i = [g.idx[v] for v in ntc_alt]
+    probe_i = [g.idx[vox(g, p)] for p in probes]
+    assert min(ntc_i + alt_i + probe_i, default=0) >= 0, 'an NTC or probe point is outside the model'
     cellmask = [np.flatnonzero(((g.cellany[..., k] >= 32))[dom]) for k in range(4)]
     surfmask = [np.flatnonzero(cell_surface_mask(g, k)[dom]) for k in range(4)]
     boardmask = np.flatnonzero(np.isin(g.mat, (BOARD, VIAS))[dom])
@@ -425,7 +440,7 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     keys = ['t', 'soc', 'v_bus', 'i_bat', 'p_out', 'p_in', 'p1', 'p2', 'q_cells', 'q_board', 'q_ni', 'offer', 'i_chg']
     rec = {k: [] for k in keys}
     for k in ('ntc', 'ntc_alt', 'cell_mean', 'cell_max', 'cell_min', 'surf_max', 'surf_min'): rec[k] = []
-    for k in ('board_max', 'part_max', 'ts1', 'ts2', 'skin_max', 'skin_mean'): rec[k] = []
+    for k in ('board_max', 'part_max', 'ts1', 'ts2', 'skin_max', 'skin_mean', 'probe'): rec[k] = []
     snaps = {}; best = dict(cell=-1, board=-1)
     nsteps = int(cs['hours']*3600/dt); t0 = time.time()
     snap_t = [5, 10, 20, 30, 45, 60, 90, 120, 150, 180]
@@ -496,7 +511,7 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
         rec['cell_max'].append([float(T[m].max()) for m in cellmask]); rec['cell_min'].append([float(T[m].min()) for m in cellmask])
         rec['surf_max'].append([float(T[m].max()) for m in surfmask]); rec['surf_min'].append([float(T[m].min()) for m in surfmask])
         rec['board_max'].append(float(T[boardmask].max())); rec['part_max'].append(float(T[partmask].max()))
-        rec['ts1'].append(ts[1]); rec['ts2'].append(ts[2])
+        rec['ts1'].append(ts[1]); rec['ts2'].append(ts[2]); rec['probe'].append(T[probe_i].tolist())
         rec['skin_max'].append(float(T[skin].max())); rec['skin_mean'].append(float(T[skin].mean()))
         cm = max(rec['cell_max'][-1]); bm = rec['part_max'][-1]
         if cm > best['cell']: best['cell'] = cm; snaps['peak_cell'] = th.astype(np.float32); best['t_cell'] = t/60
@@ -517,7 +532,8 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     snaps['end'] = th.astype(np.float32)
     rec = {k: np.array(v) for k, v in rec.items()}
     meta = dict(name=name, title=cs['title'], amb=amb, h_ext=h_ext, dt=dt, t_end=float(rec['t'][-1]),
-                t_peak_cell=best['t_cell'], t_peak_board=best['t_board'], ntc_side=ntc_side, r25=R25)
+                t_peak_cell=best['t_cell'], t_peak_board=best['t_board'], ntc_side=ntc_side, r25=R25,
+                ntc_front=ntc_front, derate=DERATE, derate_hot=DERATE_HOT, chg_hot=CHG_HOT)
     save(g, name + tag, rec, snaps, meta)
     return meta
 
