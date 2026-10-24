@@ -84,7 +84,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 2. **Front-cell NTCs** (C1 on TS1 / J102, C4 on TS4 / J107; `research_notes/Pack thermal BAK 65E/ntc-placement.md`):
     - Bead on the can's board-facing stripe, inside the filler zone: z 48 mm, 7° outboard of the board-facing line (|y| 12.9 mm, about 1.3 mm outboard of the tangent). Use a drop of thermal paste under it and Kapton tape over it. The cell's wrap insulates it from the can, which sits at that cell's negative.
     - Cap the bead with a closed-cell silicone foam square (about 4 × 5 mm, 1.5 mm thick), so the gel doesn't couple it to the board copper.
-    - Run both leads straight up the can at |y| 12–14.5 mm, taped down, at least 10 mm, beside the carrier rail and not over it. Bend them out to cross the gap at z 64 and 68 mm into the pad pair. They go through from B.Cu like the tails.
+    - Run both leads straight up the can at |y| 12–14.5 mm, taped down, at least 10 mm, beside the carrier rail and not over it. Bend them out to cross the gap at z 64 and 68 mm into the pad pair (J102 / J107, at |y| 14.7 mm). They go through from B.Cu like the tails.
     - Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before.
 3. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
 4. **Board on:** lower it onto the carrier's pegs, threading the three tap tails, the four wires and the front NTC leads through their slots and holes from B.Cu.
