@@ -1,6 +1,6 @@
 # Monolith Battery Bank: Current Design Spec
 
-Last updated 2026-10-23. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
+Last updated 2026-10-24. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
 
 ## Overview
 
@@ -13,8 +13,8 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Energy | 91 Wh typical, 88.9 Wh minimum (about 93 Wh measured at 1 A), under the 100 Wh carry-on limit |
 | Pack voltage | 14.4 V nominal, 16.8 V full, 11.2 V floor (2.8 V per cell) |
 | Ports | 2 × USB-C PD, each bidirectional, 5–20 V, up to 5 A |
-| Output | 100 W while the hottest cell is at or below 33 °C, then a linear derate to about 40 W sustained |
-| Charging | Up to 4.55 A into the pack, following a temperature ramp. About 1.5 h from 5 % to 95 % on one 100 W charger at 25 °C (modelled) |
+| Output | 100 W while the hottest cell NTC (on the front cells' hot stripe) is at or below 42 °C, then a linear derate to about 40 W sustained |
+| Charging | Up to 4.55 A into the pack, following a temperature ramp. About 1.6 h from 5 % to 95 % on one 100 W charger at 25 °C (modelled) |
 | Wireless | Bluetooth LE (CC2340R5MODA), custom GATT service, signed OTA updates |
 | Board | One 43.2 × 74.35 mm 6-layer board along one face of the cells |
 | Enclosure | MJF PA12 cup with an O-ring bottom cap and TPU bumpers. No metal, no potting |
@@ -58,7 +58,8 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 | 3. Firmware | MCU cross-checks and the charge/thermal policy | Everything above, with smoother limits |
 
 - **Temperature inputs:** four wired 10k NTCs, one per cell, on TS1–TS4, plus the gauge's FET temperature and die. The policy acts on the hottest cell, which in the cup is a front cell.
-- **JEITA ranges in data flash:** T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA.
+- **Front-cell NTC position (2026-10-24, `research_notes/Pack thermal BAK 65E/ntc-placement.md`):** TS1 (C1, J102) and TS4 (C4, J107) sit on the can's hot stripe, inside the gap-filler zone: 7° outboard of the board-facing line (|y| 12.9 mm) at z 48 mm, under a small closed-cell silicone foam cap so the gel doesn't couple the bead to the board. The leads run up the can, taped down, for at least 10 mm and cross to two THT pads at z 64 and 68 mm. In the model this reads within 0.3 K of the hottest can point. Mid-length facing the pack centre read up to 8.5 K low, and just above the filler (z 56) still 5–6 K low. The back-cell NTCs (TS2, TS3) stay at mid-length facing the pack centre. The gauge's protections and charge ranges must use the hottest of TS1–TS4 (check how the R2 combines them in the TRM).
+- **JEITA ranges in data flash:** T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA. T4 moved from 40 to 44 °C on 2026-10-24 so the gauge's warm current stays under the firmware ramp instead of cutting in with a step. OTC recovery 42 °C.
 - **Ship mode:** gauge SHUTDOWN, pack drains 3–4 µA. Entered from the app, after two weeks idle, or at RSOC ≤ 5 %, never with a cable attached. Wakes when a charger is plugged in (wake-on-USB is unproven; TP113 to TP106 is the manual wake).
 - **Training on P0:** there is no separate training board. BQStudio and the EV2400 clone connect through the J302 "GAUGE" Tag-Connect, with J113/J114 wire pads for the learning-cycle load. The BAK 65E needs a new chemistry ID (likely a GPCCHEM run), then a learning cycle per TI SLUA903, and the golden image goes in the repo.
 - **Considered and not adopted:** BQ41Z50 (not a drop-in, $7.44 vs $1.96, and still needs an external second-level protector). Worth a look for a later spin.
@@ -93,31 +94,32 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 | 5 → 6.5 °C | ramp to 3.25 A |
 | 6.5–15 °C | 3.25 A |
 | 15 → 16.5 °C | ramp to 4.55 A |
-| 16.5–40 °C | 4.55 A |
-| 40 → 45 °C | ramp to 0 |
+| 16.5–42 °C | 4.55 A |
+| 42 → 44.5 °C | ramp to 0 (gauge OTC at 45 °C is the backstop) |
 
 - Stop at the max SOC setting (default 95 %, 60–100 % from the app), with a periodic 100 % balancing charge, a "charge to 100 % once" command and trip mode. An optional "longevity" charge to 4.10 V is proposed.
 - Solar: the Dark Energy 15 W panel is the reference source, including plain 5 V with no PD. BQ25756 VINDPM and MPPT, riding through panel dropouts.
 - Dual-port charging, pass-through (charge setpoint raised by the output load), and loop detection when a cable joins the pack's own two ports.
 
-**Discharge: burst, then sustain.** The PD offer stays at 100 W until the hottest cell reaches 33 °C, then ramps down to 40 W at 39 °C.
+**Discharge: burst, then sustain (retuned 2026-10-24 for the NTC on the hot stripe).** The PD offer stays at 100 W until the hottest cell NTC reaches 42 °C, then ramps down to 40 W at 46 °C. The old 33 → 39 °C ramp was set for an NTC that read up to 8.5 K low; with the NTC moved and the old numbers, the 100 W burst would drop to 1.7 min.
 
-| Hottest cell | Allowed output |
+| Hottest cell NTC | Allowed output |
 | --- | --- |
-| ≤ 33 °C | 100 W |
-| 33 → 39 °C | ramp 100 → 40 W |
-| 39–45 °C | 40 W |
-| 45 → 55 °C | ramp to 0 |
+| ≤ 42 °C | 100 W |
+| 42 → 46 °C | ramp 100 → 40 W |
+| 46–50 °C | 40 W |
+| 50 → 58 °C | ramp to 0 |
 | ≥ 60 °C | 0 (gauge OTD) |
 
 - `P_allow` also takes the board ramp (55 → 70 °C on the charger TS) and a low-pack-voltage limit. It changes the offer by re-advertising Source Capabilities in 5 W steps: down at once, up only after 2 K of cooling and 10 s.
-- Model results with the 65E cells and P0 parts (2026-10-23, `research_notes/Pack thermal BAK 65E/`, [interactive report](https://claude.ai/artifact/48csm6CzS7dAmMu56cYMhL)), at 25 °C in still air:
-  - 100 W from one port: about 6 min of full power, then 40 W; empty at about 111 min. Hottest can 42.5 °C, hottest board part 58.5 °C, outer face over the board 48 °C. Split 65 + 35 W over both ports: about 8 min.
-  - 60 W: full power for about 30 min, then 40 W. 30 W: nothing derates and the pack lasts about 3 h, cans at or below 37 °C.
-  - Charging from one 100 W charger: about 89 min from 5 % to 95 %, trimmed by the 40 °C ramp after about 33 min; hottest can 44.6 °C. Two 45 W chargers: about 85 min.
-  - Pass-through (100 W in on USB1, 30 W out on USB2) is the hottest case: board part 62 °C, can 48 °C, outer face 54 °C, charging trimmed after 6 min.
+- Model results with the 65E cells, P0 parts, the NTC on the hot stripe and the 10-24 thresholds (`research_notes/Pack thermal BAK 65E/ntc-placement.md`), at 25 °C in still air:
+  - 100 W from one port: about 6.8 min of full power (the 55 °C board ramp ends it), then 40 W; 46.9 Wh in the first 40 min, against 40.8 Wh with the 10-23 policy. Hottest can 45.9 °C, hottest board part 59.5 °C, outer face over the board 48.7 °C. Empty at about 93 min with the same 89 Wh. At 35 °C ambient: 1.3 min of full power, 33.2 Wh in 40 min, hottest can 50.3 °C.
+  - A 44 → 48 °C ramp gives another 2 Wh in 40 min for a 47.6 °C can and a 50 °C outer face: worth trying on P0.
+  - Charging from one 100 W charger: about 93 min from 5 % to 95 %, trimmed by the 42 °C ramp after about 25 min; hottest can 42.9 °C. With the old NTC the charge took 89 min, but the stripe reached 44.6 °C while the NTC read 41 °C.
+  - Pass-through (100 W in on USB1, 30 W out on USB2): board part 60 °C, can 44.3 °C, outer face 50 °C; 64 % charged after 2 h. With the old NTC it reached 83 %, but only by running the stripe at 48 °C, above BAK's 45 °C charge limit.
+  - Not rerun with the new policy (10-23 runs): split 65 + 35 W, about 8 min of full power; 60 W, full power for about 30 min, then 40 W; 30 W, nothing derates and the pack lasts about 3 h, cans at or below 37 °C; two 45 W chargers, about 85 min.
 - Heat at 100 W out is about 6.1 W: 2.3 W in the cells and 3.8 W on the board (the FEB-cell estimate was about 12 W, 6.5 W in the cells). The power stage is now the main heat source; it heats the front cell under it through the gap filler, so a front-cell NTC ends the burst, with the stage about 1 K short of the 55 °C board ramp.
-- The NTCs read low. At mid-length facing the pack centre, the hottest NTC reads up to 8.5 K under the hottest can point (the stripe facing the board) at 100 W and 4.5 K while charging. The 33 °C derate start is now the binding limit, far below BAK's 60 °C. In the model a 40 → 44 °C cell ramp kept the cans under 48 °C and delivered 20 % more energy in the first 40 minutes. Retune both together once P0 is measured: NTC position (board-facing side, just above the filler) and thresholds.
+- Check the thresholds on P0 against a thermocouple on the stripe beside each front NTC. If the NTC reads more than 1 K off, shift the thresholds by the offset.
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
@@ -161,6 +163,7 @@ The production P0 board is the design of record and the first board planned to b
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
 - [ ] Check JLC's minimum plated slot width (0.6 mm slots) and SiZ240DT stock
+- [ ] Front-cell NTCs (2026-10-24): J107 pads at KiCad (113.4, 77.47) and (113.4, 73.47), J102 at (86.6, 77.47) and (86.6, 73.47), both turned so the 4 mm pitch runs along KiCad y. Add B.Cu keep-outs `KO_B_ntc_C4` (x 111.8–115.0, y 72.5–95.5) and `KO_B_ntc_C1` (x 85.0–88.2, y 72.5–95.5) for the bead and lead run. Move C421 out of `KO_B_ntc_C4`: it is a 2.8 mm part where B.Cu allows 2.3 mm, and the board README already puts the USB-side tantalums in the centre strip
 
 **Enclosure: the cup (adopted 2026-10-21).** The cells, carrier and board are built and tested on the bench as one power module, which slides into the cup from the bottom until the USB-C faces seat in the top wall.
 
@@ -168,7 +171,7 @@ The production P0 board is the design of record and the first board planned to b
 - MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze), held by two radial M2 screws below the seal.
 - TPU 95A bumpers at both ends and a TPU pad inside the cap; an ePTFE vent patch.
 - No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
-- Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. P0: Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, one part, reworkable; 10 cc syringe 65-00-GEL30-0010). Gift packs: Bergquist TGF 3600 or Laird Tflex CR350S (3.6 W/m·K, two part), cured at room temperature only with cells fitted. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
+- Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. Material (decided 2026-10-24, P0 and gift packs): Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, SG 3.1, about 4.5 g; one part, supplied cured, so no mixing, gun or cure time; peels off for rework; 8 kV/mm, 10¹⁴ Ω·cm, UL94 V-0; 18-month shelf life at 10–32 °C). One 10 cc Luer-Lok syringe (65-00-GEL30-0010, about €51 at Farnell, also Newark and DigiKey) covers five or six packs. Bergquist TGF 3600 (two part, 15 h at 25 °C) was the runner-up but comes in 50 cc cartridges with a 5-month shelf life and needs a 1:1 gun and static mixers. Laird Tflex CR350S is out: its datasheet gives only an oven cure (2 h at 70 °C plus 0.5 h at 100 °C), which the fitted cells can't take. In the model, 1.5 / 3 / 6 W/m·K put the hottest part at 60.0 / 58.5 / 55.7 °C at 100 W with a 5.2 / 6.2 / 5.8 min burst, so more conductivity than this doesn't help. Comparison: `research_notes/Pack thermal BAK 65E/gap-filler-options.md`. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
 - Outside size 59.8 × 51.9 × 97.2 mm, about 384–400 g. The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
 
 ## Contradictions between sources
@@ -244,7 +247,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
 - [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
-- [ ] Bending jig for the nickel tails; gap-filler dispense pattern
+- [ ] Bending jig for the nickel tails; gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
 - [ ] Outside label: 91 Wh, 14.4 V, USB1 / USB2, ratings
 
 ### Mass reduction (400 g accepted; keep working on it)
@@ -260,9 +263,9 @@ The four cells are 300 g of the \~387 g modelled pack, so the housing and board 
 ### Testing and certification
 
 - [ ] Bring-up per `docs/production/p0-bringup-and-training.md`: rails, flash, PD EEPROM load, gauge training
-- [ ] Thermal: 100 W full-to-empty logging every sensor, at 10, 25 and 35 °C ambient; tune the derate start and sustain power. Add thermocouples on C4's board-facing stripe (z ≈ 40 mm), C4 at the NTC spot, C3, the USB1 FETs, the inductor and the outer face over the board, and compare with the 10-23 model
+- [ ] Thermal: 100 W full-to-empty logging every sensor, at 10, 25 and 35 °C ambient; tune the derate start and sustain power (start at 42 → 46 °C; try 44 → 48 °C). Add thermocouples on C4's board-facing stripe (z ≈ 40 mm), beside each front NTC, C3, the USB1 FETs, the inductor and the outer face over the board, and compare with the 10-24 model
 - [ ] Measure the 65E DC resistance (10 s pulse at 50 % and 10 % charge) and update the thermal model's 14 mΩ
-- [ ] Decide the front-cell NTC position (board-facing, just above the filler) and retune the derate thresholds with it
+- [ ] Front NTC bias: fit one front NTC with the foam cap and one without, and compare each with the stripe thermocouple through a 100 W run and a charge
 - [ ] Cut a dummy module after dispensing to check the filler wets both the board and the cans across the zone
 - [ ] Charging: 100, 65 and 30 W chargers, dual-port, solar in sun and shade; measure the 65E resistance curve
 - [ ] Switching: SW1/SW2 ringing with 0 Ω gate links, inductor and SiZ240DT temperatures
