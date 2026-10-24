@@ -154,7 +154,9 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); replace the PACK− / PACK+ power slots with Ø1.5 plated holes at KiCad (86.97, 135.73) and (113.03, 135.73) and add the `BCU_WIRE_RUNS` keep-outs (option C); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five bottom slots already sit at the 6500 mAh positions
+- [ ] Run KiCad DRC on the `Production` board after the wire-hole change (so far only a script check: outline, 0.25 mm edge rule, ring, courtyards of the placed parts, B.Cu parts in the wire runs)
+- [ ] Recheck the bottom tab slots for the 65E (0.05 mm longer than the FEB); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces

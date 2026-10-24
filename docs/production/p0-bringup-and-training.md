@@ -22,7 +22,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 |---|---|
 | J301 (TC2030-NL, "SWD") | CC2340 flash and debug: VCC, SWDIO, NRST, SWCLK, GND |
 | J302 (TC2030-NL, "GAUGE") | 1 SDA, 2 CHG_INH, 3 NRST, 4 nc, 5 GND, 6 SCL |
-| J108 / J112 | Pack − / + (16 AWG) |
+| J108 / J112 | Pack − / + (18 AWG thin-wall PTFE wires, Ø1.5 mm plated holes) |
 | J109–J111 | Cell taps CELL1–CELL3 |
 | J102, J105–J107 | Cell NTCs |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge |

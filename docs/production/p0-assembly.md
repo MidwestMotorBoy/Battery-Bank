@@ -40,8 +40,8 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 **Board changes needed:**
 - Five plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.
-- Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.2 mm and the frame bars by 0.1 mm.
-- Remove the two 18 AWG PACK holes and the five B.Cu spring contacts.
+- Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.2 mm and the frame bars by 0.1 mm. **Done on the `Production` board (2026-10-24):** J108 / J112 at KiCad (86.975, 135.7255) and (113.025, 135.7255), with the `KO_B_wire_*` keep-outs; KiCad DRC still to run.
+- Remove the old 16 AWG PACK holes and the five B.Cu spring contacts.
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
 - Four holes for the carrier's board pegs (Ø2.0 pegs at y ±8.6, z 14 and 68; 2.2 mm NPTH, H101–H104).

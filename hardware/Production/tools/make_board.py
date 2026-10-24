@@ -15,7 +15,8 @@ F.Cu faces the cup wall (outer face), B.Cu faces the cells. The outline leaves g
 board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
-     ... make_board.py --mech        (only places the tail slots and carrier peg holes, after Update PCB from Schematic)
+     ... make_board.py --mech        (only places the tail slots, PACK wire holes and carrier peg holes, after Update PCB
+                                      from Schematic)
      ... make_board.py --keepouts    (redraws the KO_* mechanical keep-out rule areas from mechanical/monolith_shell.py)
 Enclosure (2026-10-21): the cup (mechanical/monolith_cup.py). The board rides on the PA12 carrier's rails and pegs, F.Cu
 faces the cup wall (0.5 mm over the tallest part), B.Cu faces the cells, and a gap filler joins B.Cu to the two front
@@ -189,14 +190,15 @@ def place_ports(path):
 
 
 def place_mech(path):
-    """Put the seven tail slots (J108-J112, J115, J116) at sb_slots() and the four carrier peg holes (H101-H104) at
-    CUP_PEGS, from mechanical/monolith_shell.py: F.Cu, 0 deg, locked. Only moves those footprints; run after Update PCB
+    """Put the five slots (J109-J111, J115, J116) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes() and
+    the four carrier peg holes (H101-H104) at CUP_PEGS, from mechanical/monolith_shell.py: F.Cu, 0 deg, locked. Only moves those footprints; run after Update PCB
     from Schematic, with the board closed in KiCad (or reload it afterwards)."""
     import pcbnew
     lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
     if os.path.exists(lock):
         sys.exit("%s is open in KiCad (lock file %s): save and close the PCB editor first" % (path, lock))
     want = {MP.SLOT_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_slots().items()}
+    want.update({MP.WIRE_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_pack_holes().items()})
     want.update({ref: M.kicad(y, z) for ref, (y, z) in zip(MP.PEGS, M.CUP_PEGS)})
     b = pcbnew.LoadBoard(path)
     missing = [r for r in want if b.FindFootprintByReference(r) is None]
@@ -252,10 +254,12 @@ def keepout_list():
     for side, sy in (("L", -1), ("R", 1)):
         y0, y1 = sorted((sy * M.CUP_FILL_Y[0], sy * M.CUP_FILL_Y[1]))
         out.append(("KO_B_gap_filler_" + side, ["B.Cu"], yz(y0, y1, *M.CUP_FILL_Z), {"footprints"}))
-    # B.Cu: nickel tails behind the board (bottom fingers and kinks, CELL1 / CELL3 down the gap)
-    names = ["PACK-", "1N", "PACK+", "4P", "CELL2", "CELL1", "CELL3"]   # sb_tail_runs() order
-    for n, (y0, y1, z0, z1) in zip(names, M.sb_tail_runs()):
-        out.append(("KO_B_tail_" + n.replace("+", "P").replace("-", "N"), ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
+    # B.Cu: nickel tails behind the board (the CELL2 tail and its kink, CELL1 / CELL3 down the gap)
+    for n, (y0, y1, z0, z1) in zip(["CELL2", "CELL1", "CELL3"], M.sb_tail_runs()):   # sb_tail_runs() order
+        out.append(("KO_B_tail_" + n, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
+    # B.Cu: the PACK power and Kelvin wires cross the gap to their holes and slots (BCU_WIRE_RUNS): no parts at all
+    for n, (y0, y1, z0, z1) in zip(["PACK-", "PACK+", "1N", "4P"], M.sb_wire_runs()):   # sb_wire_runs() order
+        out.append(("KO_B_wire_" + n.replace("+", "P").replace("-", "N"), ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     return out
 
 
