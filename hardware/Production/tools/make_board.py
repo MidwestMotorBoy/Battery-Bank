@@ -241,11 +241,7 @@ def keepout_list():
     r = M.SB_VENT_D / 2 + 2
     out.append(("KO_F_cup_vent", ["F.Cu"], [(cx + r * math.cos(a * math.pi / 16), cy + r * math.sin(a * math.pi / 16))
                                             for a in range(32)], {"footprints"}))
-    # F.Cu: nothing above the module's antenna end (the module footprint already clears copper on every layer)
-    s = M.SB_ANT_SIDE
-    xa = sorted((CX + s * (HALF_W - 3.2 - 1.0), CX + s * HALF_W))
-    ya = (k(0, M.sb_ant_zc + M.SB_ANT_MOD[0] / 2)[1] - 1.0, k(0, M.sb_ant_zc - M.SB_ANT_MOD[0] / 2)[1] + 1.0)
-    out.append(("KO_F_above_antenna", ["F.Cu"], rect(xa[0], ya[0], xa[1], ya[1]), {"footprints"}))
+    # (no KO_F_above_antenna: Logan removed it from the board on 2026-10-23)
     # both faces: the top edge bears on the top wall's inside face beyond |x| = SB_STOP_Y0
     for side, (x0, x1) in (("L", (CX - HALF_W, CX - M.SB_STOP_Y0)), ("R", (CX + M.SB_STOP_Y0, CX + HALF_W))):
         out.append(("KO_top_stop_" + side, ["F.Cu", "B.Cu"], rect(x0, Y_TOP, x1, Y_TOP + 1.0), {"footprints"}))
