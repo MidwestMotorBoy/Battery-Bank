@@ -18,7 +18,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Wireless | Bluetooth LE (CC2340R5MODA), custom GATT service, signed OTA updates |
 | Board | One 43.2 × 74.35 mm 6-layer board along one face of the cells |
 | Enclosure | MJF PA12 cup with an O-ring bottom cap and TPU bumpers. No metal, no potting |
-| Size and mass | 59.8 × 51.9 × 97.2 mm, about 384–400 g (modelled) |
+| Size and mass | 61.9 × 53.8 × 98.5 mm, about 389 g (modelled, after the 2026-10-24 review fixes) |
 | Cost (estimate) | About $105 per board at 5 boards, about $165 per finished pack with the 65E cells |
 
 ## System architecture
@@ -41,7 +41,7 @@ The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 
 | Cycle life | ≥ 80 % at 501 cycles (0.5C charge / 1C discharge, 4.2–2.5 V) |
 | Price | $9.25–9.75 each, bare, no protection. Sold out at both US sellers on 10-23 |
 
-- **Interconnect:** spot-welded pure nickel, with an AWithZ P20B (`docs/production/spot-welding.md`). Series strips 0.2 × 10 mm; the three cell taps are nickel tails through plated slots. **PACK− / PACK+ are wire tails (option C, 2026-10-24):** a 0.2 × 7 mm nickel pad welded to the cell, with an 18 AWG thin-wall PTFE power wire (Logan, 2026-10-24) and a 28 AWG PTFE Kelvin wire soldered to it on the bench. The power wire goes into a Ø1.5 mm plated hole, the Kelvin wire into its slot, through notches in the carrier's bottom frame. Everything is soldered on F.Cu. No springs or connectors.
+- **Interconnect:** spot-welded pure nickel, with an AWithZ P20B (`docs/production/spot-welding.md`). Series strips 0.2 × 10 mm. **Every lead to the board is a wire (2026-10-24).** PACK− / PACK+ (option C): a 0.2 × 7 mm nickel pad welded to the cell, with an 18 AWG thin-wall PTFE power wire into a Ø1.5 mm plated hole. **Sense leads (Logan, 2026-10-24):** the three cell taps (J109–J111) and the two Kelvin leads (J115 / J116) are 28 AWG PTFE wires into Ø0.8 mm plated holes that keep the old slot pads, so the copper is unchanged. CELL1 and CELL3 wires solder to a short flat tongue on the top strips; the CELL2 wire solders to the middle of the bottom strip and runs in a 1.0 × 0.9 mm channel in the carrier's bottom frame. All wires are soldered to the nickel on the bench, then to F.Cu. No springs or connectors.
 - **Matching:** all four from one batch, within 10 mV and 1 mΩ (AC 1 kHz). Measure each diameter; the cup is designed to 21.85 mm.
 - **Carrier:** an MJF PA12 carrier holds the cells at 23.25 mm pitch, with webs between the front and back pairs. The board's heat goes into the two front cells, so those run hottest.
 - **Short circuit:** about 220–270 A from the cells' DC resistance (estimated at 12–16 mΩ, since BAK gives no DC figure), and up to about 370 A from the datasheet's ≤ 8 mΩ AC figure, which is closer to how a cell behaves in the first 100 µs of a short. It was 150–200 A with the FEB. This is why the protection FETs change to the BSC007N04LS6 (see Battery management and protection).
@@ -156,23 +156,27 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five bottom slots already sit at the 6500 mAh positions
+- [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five sense holes already sit at the 6500 mAh positions
 - [ ] Run KiCad DRC on the `Production` board after the wire-hole change (so far only a script check: outline, 0.25 mm edge rule, ring, courtyards of the placed parts, B.Cu parts in the wire runs)
-- [ ] Recheck the bottom tab slots for the 65E (0.05 mm longer than the FEB); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [ ] Run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
-- [ ] Check JLC's minimum plated slot width (0.6 mm slots) and SiZ240DT stock
+- [ ] Check SiZ240DT stock
+- [x] Sense wires (2026-10-24): J109–J111, J115, J116 are now Ø0.8 mm round plated holes in the old oval pads (footprints `SolderWire-28AWG_PTFE_*`), so no plated slots are needed. R124 / R126 are DNP from JLC, so neither U102 nor the gauge FUSE pin can fire F102 through Q104 while the pack is wired up; fit them by hand once all seven pack voltages read right at the pads (gauge note 16). Mark them DNP in the JLC BOM. DRC still to run in KiCad
 - [x] Front-cell NTCs (2026-10-24, on the `Production` branch): J107 pads at KiCad (114.7, 77.48) and (114.7, 73.48), J102 at (85.3, 77.48) and (85.3, 73.48), turned 90° so the 4 mm pitch runs along KiCad y, locked. That is |y| 14.7 mm, 1.3 mm outboard of the note's 13.4: at 13.4, J107's pad overlapped the GND pad of C406 (port 1 VBUS cap). The leads still run up the can at |y| 12–14.5 and bend out 0.2 mm to the pads. B.Cu keep-outs `KO_B_ntc_C1` (x 83.95–88.5) and `KO_B_ntc_C4` (x 111.5–116.05), both y 72.13–96.48, from `sb_ntc_runs()`. C421 moved to B.Cu (101.6, 88.0), 90°, in the centre strip behind port 1's AC_SNS_N bank (C424 / C427). DRC still to run in KiCad
 
 **Enclosure: the cup (adopted 2026-10-21).** The cells, carrier and board are built and tested on the bench as one power module, which slides into the cup from the bottom until the USB-C faces seat in the top wall.
 
 - MJF PA12 cup closed on five sides, with two USB-C seal bores in the top wall.
-- MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze), held by two radial M2 screws below the seal.
-- TPU 95A bumpers at both ends and a TPU pad inside the cap; an ePTFE vent patch.
+- MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze). Since the 2026-10-24 review the cap has a 1.5 mm outer collar that holds the cup's mouth round against the O-ring, with crush ribs, and two radial M2 thread-forming screws through the collar into blind pilots below the seal. Four overtravel posts stop the cap on the frame so the screws can't over-squeeze the pad.
+- Cup walls 1.2 mm, 2.0 mm on the board face, 1.85 mm top wall. The USB-C seal bores are the connector's rev A4 ring (10.35 × 4.57 mm) minus 0.15 mm a side, with a 0.3 mm lead-in.
+- The board's four peg posts run to 0.3 mm under the board-face wall, with TPU sleeves, so a drop on that face loads the carrier, not the inductors.
+- Fish-paper insulator rings on all four + ends, and foam preload rings under the cells so they can't float axially. The board rails are four clip-on blocks fitted after the cells.
+- TPU 95A bumpers at both ends and a TPU pad on the cap (1.2 mm proud for preload); an ePTFE vent patch. Review and fix list: `docs/production/p0-assembly.md` and [the review](https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF).
 - No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
 - Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. Material (decided 2026-10-24, P0 and gift packs): Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, SG 3.1, about 4.5 g; one part, supplied cured, so no mixing, gun or cure time; peels off for rework; 8 kV/mm, 10¹⁴ Ω·cm, UL94 V-0; 18-month shelf life at 10–32 °C). One 10 cc Luer-Lok syringe (65-00-GEL30-0010, about €51 at Farnell, also Newark and DigiKey) covers five or six packs. Bergquist TGF 3600 (two part, 15 h at 25 °C) was the runner-up but comes in 50 cc cartridges with a 5-month shelf life and needs a 1:1 gun and static mixers. Laird Tflex CR350S is out: its datasheet gives only an oven cure (2 h at 70 °C plus 0.5 h at 100 °C), which the fitted cells can't take. In the model, 1.5 / 3 / 6 W/m·K put the hottest part at 60.0 / 58.5 / 55.7 °C at 100 W with a 5.2 / 6.2 / 5.8 min burst, so more conductivity than this doesn't help. Comparison: `research_notes/Pack thermal BAK 65E/gap-filler-options.md`. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
-- Outside size 59.8 × 51.9 × 97.2 mm, about 384–400 g. The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
+- Outside size 61.9 × 53.8 × 98.5 mm, about 389 g modelled (cells 300 g, board 12.7 g, cup 26.9 g, cap 10.1 g, bumpers 19.1 g, carrier and rails 10.2 g, filler 4.5 g). The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
 
 ## Contradictions between sources
 
@@ -194,11 +198,11 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 12 | Port protection | Project notes: TPD4S201 with liquid detection | P0 10-18: TPD6S300, liquid detection removed | TPD6S300 |
 | 13 | Charger FETs and inductor | Project notes, dev board: 4 × PGQ04N070, XAL7030-222 | P0: 2 × SiZ240DT, APS0730M2R2F; loss study proposes XGL7030-332 at 500 kHz | P0 parts |
 | 14 | Idle current | Project notes: \~230 µA. P0 low-profile section: "\~150 µA budget" | P0 README: TPD6S300s add \~175 µA | \~400 µA |
-| 15 | Pack wiring on P0 | `p0-bringup-and-training.md`: 16 AWG wire pads J108/J112 | `p0-assembly.md`: nickel tails through plated slots | Slots for the cell taps; PACK± are 18 AWG wires in Ø1.5 plated holes (10-24) |
+| 15 | Pack wiring on P0 | `p0-bringup-and-training.md`: 16 AWG wire pads J108/J112 | `p0-assembly.md`: nickel tails through plated slots | All wires (10-24): PACK± 18 AWG in Ø1.5 plated holes; cell taps and Kelvin 28 AWG in Ø0.8 plated holes |
 | 16 | Production board size | Project notes, repo checklist: \~44 × 44 mm double-sided board at the top cap, 0.8 mm, 4 layers | P0: 43.2 × 74.35 mm side board, 1.6 mm, 6 layers | P0 |
 | 17 | Checklist docs | Repo checklist: 10-11 base with STM32WB pin map, ProtoFlow, 10-18 header | Project notes: 10-16 rewrite for the CC2340. Both predate the FEB cells and the cup | This spec |
 | 18 | MCU in older notes | EEPROM programming notes: STM32WB, separate IRQ pins | CC2340, one IRQ\_N line | CC2340 (method unchanged) |
-| 19 | Mass | Early plan: \~345 g | FEB notes: \~384 g; README: \~400 g with the board | 384–400 g |
+| 19 | Mass | Early plan: \~345 g | FEB notes: \~384 g; README: \~400 g with the board | About 389 g modelled (10-24) |
 | 20 | Learning-cycle load | P0 README: "\~C/5 ≈ 1.2 A" (58E math) | C/5 of 6.5 Ah = 1.3 A | 1.3 A |
 
 ## To do: areas not yet specified or built
@@ -245,16 +249,17 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 ### Enclosure
 
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
+- [ ] Three coupons before the full print: the cap collar on a mouth section (O-ring squeeze and screw hold), a clip-on rail block, and a USB-C bore with the connector's ring
+- [ ] Drop series on the fit print: board face, top, bottom, a corner
 - [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
-- [ ] Bending jig for the nickel tails; gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
+- [ ] Gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
 - [ ] Outside label: 91 Wh, 14.0 V, USB1 / USB2, ratings
 
 ### Mass reduction (400 g accepted; keep working on it)
 
-The four cells are 300 g of the \~387 g modelled pack, so the housing and board have about 87 g between them to work on.
+The four cells are 300 g of the \~389 g modelled pack, so the housing and board have about 89 g between them to work on.
 
-- [ ] Get a part-by-part mass table from the cup model (cup, cap, carrier, bumpers, gap filler, board, nickel)
 - [ ] Trim the TPU bumpers and carrier webs against the 1 m drop requirement once the first drop test gives real numbers
 - [ ] Check cup and cap wall thickness against the IP67 dunk and drop results
 - [ ] Weigh the P0 board populated and replace the modelled figure
@@ -350,7 +355,7 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 ### 4. Thicker nickel strips and wire PACK tails (option C, 2026-10-24)
 
 - **What:** series strips go from 0.15 × 7 mm to 0.2 × 10 mm pure nickel. The PACK tails become a nickel pad welded at the cell end, with an 18 AWG power wire and a 28 AWG Kelvin wire soldered to it on the bench (in place of the copper tails the 10-21 study proposed). Each PACK end is about 0.66 mΩ (0.06 W at 9.4 A). The interconnect drops from about 8.5 mΩ to about 4.6 mΩ. The savings in the table are scaled from the study by resistance (3.9 of 4.4 mΩ).
-- **Cost:** about $5 of strip and wire, under 1 g. Board: the two PACK power slots become Ø1.5 mm plated holes at z 5.75 (`sb_pack_holes()`), with `BCU_WIRE_RUNS` keep-outs. Carrier: four notches through the bottom frame (`wire_notches()`).
+- **Cost:** about $5 of strip and wire, under 1 g. Board: the two PACK power slots become Ø1.5 mm plated holes at z 5.75 (`sb_pack_holes()`), with `BCU_WIRE_RUNS` keep-outs. Carrier: one wire notch per side through the bottom frame (`wire_notches()`; two per side until the 2026-10-24 review merged them).
 - **Risks:** the welder has to weld 0.2 mm reliably (the AWithZ P20B is rated to 0.3 mm); buy from a source that sells real nickel, since nickel-plated steel is 2–3× worse. The solder joint must stay inside the weld window, at least 3 mm from the weld spots. The notches thin the bottom frame, and the wires span only the 2.6 mm gap to the board, so they add little flex.
 - **Check:** 4-wire joint resistance on a test coupon before welding the real pack (`docs/production/spot-welding.md`). Check the notched frame on the first carrier fit print.
 - **Verdict:** yes. It can be decided any time before welding.
