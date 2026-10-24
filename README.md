@@ -44,7 +44,7 @@ In progress. Nothing has been built, assembled or bench-tested yet; every number
 - Fit print of the cup, cap and carrier, and an O-ring dunk coupon; drop and 100 W thermal tests; label ratings.
 - iPhone app (SwiftUI + CoreBluetooth).
 
-Open decisions and the working checklist are in `docs/project/monolith-next-actions.md`.
+The current design, open decisions and the working checklist are in [`docs/spec.md`](docs/spec.md), the single source of truth for the project.
 
 ## Hardware
 

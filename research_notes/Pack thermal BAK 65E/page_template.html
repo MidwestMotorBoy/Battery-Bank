@@ -1,0 +1,293 @@
+<title>Monolith Pack Thermals</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single reading column for the findings, widening to full width for the case viewer and its maps. */
+:root {
+  --paper: #fbfaf7; --panel: #f3f1ec; --ink: #1d1a17; --ink-2: #57524b; --ink-3: #8a847b; --rule: #e2ded6;
+  --heat: #c4481b; --heat-soft: #fbe3d4; --ok: #2f7d4f; --warn: #a86a00;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #191715; --panel: #23201d; --ink: #eeeae4; --ink-2: #c2bcb2; --ink-3: #8f897f; --rule: #37332e;
+  --heat: #f08a5d; --heat-soft: #3a2419; --ok: #5cbf86; --warn: #e0a83a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #191715; --panel: #23201d; --ink: #eeeae4; --ink-2: #c2bcb2; --ink-3: #8f897f; --rule: #37332e;
+  --heat: #f08a5d; --heat-soft: #3a2419; --ok: #5cbf86; --warn: #e0a83a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--f-body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 44px; }
+.wrap > * { min-width: 0; }
+.col { max-width: 760px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 26px; font-weight: 600; margin-bottom: 12px; }
+h3 { font-size: 18px; font-weight: 600; }
+p { margin: 0 0 12px; }
+.eyebrow { font: 600 12px/1 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--heat); margin-bottom: 12px; }
+.lede { font-size: 18px; color: var(--ink-2); margin-top: 14px; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 12px; margin-top: 22px; }
+.tile { background: var(--panel); border-radius: 6px; padding: 14px 16px; display: grid; gap: 4px; }
+.tile .v { font: 600 28px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.tile .v small { font-size: 15px; color: var(--ink-2); font-weight: 400; }
+.tile .k { font-size: 14px; color: var(--ink-2); }
+ul.find { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.tablebox { overflow-x: auto; border-top: 2px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; min-width: 200px; }
+th { font: 600 12px/1.3 var(--f-body); color: var(--ink-2); vertical-align: bottom; }
+td { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+td:first-child { font-family: var(--f-body); }
+td.hot { color: var(--heat); font-weight: 600; }
+tr.base td { background: var(--heat-soft); }
+.note { font-size: 13.5px; color: var(--ink-3); margin-top: 8px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 18px; }
+.seg button { font: 600 14px/1 var(--f-body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+.seg button:hover { border-color: var(--ink-3); color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.seg.small { margin: 22px 0 0; }
+.seg.small button { font-size: 13px; padding: 6px 11px; }
+.seg button:focus-visible { outline: 2px solid var(--heat); outline-offset: 2px; }
+.casehead { display: grid; gap: 6px; margin-bottom: 14px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14.5px; color: var(--ink-2); }
+.facts b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.charts { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 18px; }
+@media (max-width: 860px) { .charts { grid-template-columns: 1fr; } }
+.chart { min-width: 0; }
+.chart h3 { font-size: 15px; margin-bottom: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12.5px; color: var(--ink-2); margin-bottom: 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.dash { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px) !important; }
+svg.plot { width: 100%; height: auto; display: block; overflow: visible; }
+svg.plot text { fill: var(--ink-3); font: 11px var(--f-mono); }
+svg.plot .grid { stroke: var(--rule); stroke-width: 1; }
+svg.plot .ref { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 3; }
+svg.plot .cross { stroke: var(--ink-3); stroke-width: 1; }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--paper); font: 12px/1.45 var(--f-mono); padding: 7px 9px; border-radius: 4px; z-index: 5; white-space: nowrap; }
+.tip b { color: var(--paper); }
+figure { margin: 22px 0 0; }
+figure img { width: 100%; border-radius: 4px; border: 1px solid var(--rule); background: #fcfcfb; }
+figcaption { font-size: 14px; color: var(--ink-2); margin-top: 6px; max-width: 900px; }
+.kv { display: grid; grid-template-columns: minmax(150px, 230px) 1fr; gap: 0; border-top: 2px solid var(--ink); }
+.kv > div { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); font-size: 15px; min-width: 0; }
+.kv > div:nth-child(odd) { font-weight: 600; }
+@media (max-width: 600px) { .kv { grid-template-columns: 1fr; } .kv > div:nth-child(odd) { border-bottom: 0; padding-bottom: 0; } }
+code { font: 13.5px var(--f-mono); background: var(--panel); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+.scale { display: flex; align-items: center; gap: 10px; font: 12px var(--f-mono); color: var(--ink-2); margin-top: 10px; }
+.scale .bar { height: 10px; width: 220px; max-width: 50vw; border-radius: 2px; background: linear-gradient(90deg, #fff6ee, #fbd5b8, #f4a77c, #eb6834, #c4481b, #8f2f0e, #4e1704); }
+</style>
+
+<div class="wrap">
+<header class="col">
+  <div class="eyebrow">Monolith · 4S1P BAK N21700CX-65E · P0 board in the MJF cup</div>
+  <h1>Pack thermals with the BAK 65E cells</h1>
+  <p class="lede" id="lede"></p>
+  <div class="tiles" id="tiles"></div>
+</header>
+
+<section class="col">
+  <h2>What the model says</h2>
+  <ul class="find" id="findings"></ul>
+</section>
+
+<section>
+  <h2>All load cases at 25 °C, still air</h2>
+  <div class="tablebox"><table id="sumtable"></table></div>
+  <p class="note">"Hottest can" is the hottest point on any can surface. "NTC" is what the firmware reads (assumed spot: mid-length, on the side facing the pack centre). "Within one cell" is the largest hot-to-cold difference inside a single cell, can and core included. Board parts are the hottest power part's own voxel (copper and package), not a junction temperature.</p>
+</section>
+
+<section id="cases">
+  <h2>Load cases in detail</h2>
+  <div class="seg" id="seg" role="group" aria-label="Load case"></div>
+  <div class="casehead"><h3 id="ctitle"></h3><div class="facts" id="cfacts"></div></div>
+  <div class="charts">
+    <div class="chart"><h3>Temperatures</h3><div class="legend" id="lg-t"></div><svg class="plot" id="pl-t" viewBox="0 0 560 300"></svg></div>
+    <div class="chart"><h3>Power at the USB ports</h3><div class="legend" id="lg-p"></div><svg class="plot" id="pl-p" viewBox="0 0 340 300"></svg></div>
+    <div class="chart"><h3>Heat made inside the pack</h3><div class="legend" id="lg-q"></div><svg class="plot" id="pl-q" viewBox="0 0 340 300"></svg></div>
+  </div>
+  <div class="seg small" id="moment" role="group" aria-label="Moment shown in the maps">
+    <button type="button" data-m="peak_board" aria-pressed="true">When the board is hottest</button>
+    <button type="button" data-m="peak_cell" aria-pressed="false">When the cells are hottest</button>
+  </div>
+  <figure><img id="img-pack" alt="" loading="lazy"><figcaption id="cap-pack"></figcaption>
+    <div class="scale"><span>25 °C</span><span class="bar"></span><span>60 °C</span><span>(same scale for every case; darker is hotter)</span></div></figure>
+  <figure><img id="img-cells" alt="" loading="lazy"><figcaption id="cap-cells"></figcaption></figure>
+</section>
+
+<section id="filler">
+  <h2>Gap filler: what to use and where</h2>
+  <div class="col" id="filltext"></div>
+  <div class="tablebox"><table id="filltable"></table></div>
+  <p class="note" id="fillnote"></p>
+</section>
+
+<section>
+  <h2>How sure is this?</h2>
+  <div class="col"><p id="senstext"></p></div>
+  <div class="tablebox"><table id="senstable"></table></div>
+</section>
+
+<section class="col">
+  <h2>Assumptions</h2>
+  <div class="kv" id="assume"></div>
+</section>
+
+<section class="col">
+  <h2>What to check on P0</h2>
+  <ul class="find" id="checks"></ul>
+</section>
+
+<section class="col">
+  <h2>How it was modelled</h2>
+  <div id="method"></div>
+</section>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const SERIES = /*SERIES*/;
+const SUMMARY = /*SUMMARY*/;
+const FILL = /*FILL*/;
+const SENS = /*SENS*/;
+let MOMENT = 'peak_board', CURRENT = 'dis100';
+const TEXT = /*TEXT*/;
+const ORDER = ['idle', 'dis30', 'dis60', 'dis100', 'dis100x2', 'chg1', 'chg2', 'pass'];
+const SHORT = { idle: 'Idle', dis30: '30 W', dis60: '60 W', dis100: '100 W', dis100x2: '100 W, two ports', chg1: 'Charging', chg2: 'Charging, two ports', pass: 'Pass-through' };
+const f1 = v => (v == null ? '–' : v.toFixed(1)), f0 = v => (v == null ? '–' : v.toFixed(0));
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const $ = id => document.getElementById(id);
+
+$('lede').innerHTML = TEXT.lede;
+$('tiles').innerHTML = TEXT.tiles.map(t => `<div class="tile"><div class="v">${t.v}</div><div class="k">${t.k}</div></div>`).join('');
+$('findings').innerHTML = TEXT.findings.map(s => `<li>${s}</li>`).join('');
+$('checks').innerHTML = TEXT.checks.map(s => `<li>${s}</li>`).join('');
+$('assume').innerHTML = TEXT.assumptions.map(([k, v]) => `<div>${k}</div><div>${v}</div>`).join('');
+$('method').innerHTML = TEXT.method.map(p => `<p>${p}</p>`).join('');
+
+// summary table
+(function () {
+  const cols = [
+    ['Case', s => s.title],
+    ['Duration', s => s.steady ? 'steady' : `${f0(s.t_end)} min`],
+    ['Full power for', s => s.asked ? (s.min_full >= s.t_end - 0.5 ? 'whole run' : `${f1(s.min_full)} min`) : '–'],
+    ['Heat at start: cells / board (W)', s => s.steady ? '0.006' : `${s.q_cells_0.toFixed(2)} / ${s.q_board_0.toFixed(2)}`],
+    ['Hottest can (°C)', s => s.steady ? '25.0' : f1(s.surf_max), true],
+    ['NTC peak (°C)', s => s.steady ? '25.0' : f1(s.ntc_max)],
+    ['Hottest board part (°C)', s => s.steady ? '25.0' : f1(s.part_max), true],
+    ['Cell to cell (K)', s => s.steady ? '0.0' : f1(s.spread_max)],
+    ['Within one cell (K)', s => s.steady ? '0.0' : f1(s.within_max)],
+    ['Outer skin (°C)', s => s.steady ? '25.0' : f1(s.skin_max)],
+  ];
+  let h = '<thead><tr>' + cols.map(c => `<th>${c[0]}</th>`).join('') + '</tr></thead><tbody>';
+  for (const n of ORDER) { const s = SUMMARY[n]; if (!s) continue;
+    h += '<tr>' + cols.map(c => `<td${c[2] ? ' class="hot"' : ''}>${c[1](s)}</td>`).join('') + '</tr>'; }
+  $('sumtable').innerHTML = h + '</tbody>';
+})();
+
+// charts: one y-scale per chart, crosshair + tooltip
+const tip = $('tip');
+function chart(svg, lg, t, lines, opts) {
+  const W = +svg.viewBox.baseVal.width, H = +svg.viewBox.baseVal.height, L = 40, R = 10, T = 10, B = 30;
+  const xs = t, x0 = 0, x1 = Math.max(1, xs[xs.length - 1]);
+  let lo = opts.lo ?? Infinity, hi = -Infinity;
+  for (const l of lines) for (const v of l.y) { if (v < lo) lo = v; if (v > hi) hi = v; }
+  if (opts.lo != null) lo = opts.lo; const span = hi - lo || 1; const step = niceStep(span / 5);
+  lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step; if (hi === lo) hi = lo + step;
+  const X = v => L + (v - x0) / (x1 - x0) * (W - L - R), Y = v => H - B - (v - lo) / (hi - lo) * (H - T - B);
+  let s = '';
+  for (let v = lo; v <= hi + 1e-9; v += step) s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${+v.toFixed(2)}</text>`;
+  const xstep = niceStep(x1 / 5);
+  for (let v = 0; v <= x1 + 1e-9; v += xstep) s += `<text x="${X(v)}" y="${H - B + 16}" text-anchor="middle">${v}</text>`;
+  s += `<text x="${W - R}" y="${H - 2}" text-anchor="end">minutes</text>`;
+  for (const r of opts.refs || []) if (r.v > lo && r.v < hi) s += `<line class="ref" x1="${L}" x2="${W - R}" y1="${Y(r.v)}" y2="${Y(r.v)}"/><text x="${W - R}" y="${Y(r.v) - 4}" text-anchor="end">${r.label}</text>`;
+  for (const l of lines) {
+    const d = l.y.map((v, i) => `${i ? 'L' : 'M'}${X(xs[i]).toFixed(1)},${Y(v).toFixed(1)}`).join('');
+    s += `<path d="${d}" fill="none" stroke="${css(l.c)}" stroke-width="2" ${l.dash ? 'stroke-dasharray="5 3"' : ''} stroke-linejoin="round"/>`;
+  }
+  s += `<line class="cross" id="${svg.id}-x" y1="${T}" y2="${H - B}" visibility="hidden"/>`;
+  s += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent"/>`;
+  svg.innerHTML = s;
+  lg.innerHTML = lines.map(l => `<span><i class="${l.dash ? 'dash' : ''}" style="background:${css(l.c)};color:${css(l.c)}"></i>${l.name}</span>`).join('');
+  const cross = svg.querySelector('.cross');
+  const move = ev => {
+    const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const tv = x0 + (p.x - L) / (W - L - R) * (x1 - x0);
+    let i = 0; while (i < xs.length - 1 && xs[i] < tv) i++;
+    cross.setAttribute('x1', X(xs[i])); cross.setAttribute('x2', X(xs[i])); cross.setAttribute('visibility', 'visible');
+    tip.innerHTML = `<b>${xs[i].toFixed(1)} min</b><br>` + lines.map(l => `${l.name}: ${l.y[i].toFixed(opts.dp ?? 1)} ${opts.unit}`).join('<br>');
+    tip.hidden = false; const r = tip.getBoundingClientRect();
+    let tx = ev.clientX + 14; if (tx + r.width > innerWidth - 8) tx = ev.clientX - r.width - 14;
+    tip.style.left = tx + 'px'; tip.style.top = Math.max(8, ev.clientY - r.height - 10) + 'px';
+  };
+  svg.onpointermove = move; svg.onpointerdown = move;
+  svg.onpointerleave = () => { tip.hidden = true; cross.setAttribute('visibility', 'hidden'); };
+}
+function niceStep(x) { const p = Math.pow(10, Math.floor(Math.log10(x))); const m = x / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; }
+const col = (a, k) => a.map(r => r[k]);
+const rowmax = a => a.map(r => Math.max(...r)), rowmin = a => a.map(r => Math.min(...r));
+
+function show(n) {
+  for (const b of $('seg').children) b.setAttribute('aria-pressed', b.dataset.n === n);
+  const s = SUMMARY[n], d = SERIES[n], tx = TEXT.cases[n];
+  $('ctitle').textContent = s.title;
+  $('cfacts').innerHTML = tx.facts;
+  const has = d && d.t;
+  for (const id of ['pl-t', 'pl-p', 'pl-q']) $(id).parentElement.hidden = !has;
+  if (has) {
+    chart($('pl-t'), $('lg-t'), d.t, [
+      { name: 'Hottest can surface', y: rowmax(d.surf_max), c: '--s2' },
+      { name: 'Hottest NTC (firmware input)', y: rowmax(d.ntc), c: '--s1', dash: true },
+      { name: 'Hottest board part', y: d.part_max, c: '--s4' },
+      { name: 'Coolest cell (mean)', y: rowmin(d.cell_mean), c: '--s3' },
+      { name: 'Outer skin, hottest', y: d.skin_max, c: '--s5' },
+    ], { unit: '°C', refs: tx.refs || [] });
+    const pl = [];
+    if (d.p_out.some(v => v > 0)) pl.push({ name: 'Out of the pack', y: d.p_out, c: '--s1' });
+    if (d.p_in.some(v => v > 0)) pl.push({ name: 'From the charger', y: d.p_in, c: '--s2' });
+    chart($('pl-p'), $('lg-p'), d.t, pl, { unit: 'W', lo: 0 });
+    chart($('pl-q'), $('lg-q'), d.t, [
+      { name: 'Cells', y: d.q_cells, c: '--s2' }, { name: 'Board', y: d.q_board, c: '--s4' }], { unit: 'W', lo: 0, dp: 2 });
+  }
+  CURRENT = n;
+  $('moment').hidden = n === 'idle';
+  for (const b of $('moment').children) b.setAttribute('aria-pressed', b.dataset.m === MOMENT);
+  const sfx = n === 'idle' ? '' : '_' + MOMENT;
+  $('img-pack').src = `${n}${sfx}_pack.png`; $('img-pack').alt = `Thermal maps of the pack for ${s.title}`;
+  $('img-cells').src = `${n}${sfx}_cells.png`; $('img-cells').alt = `Board map and unrolled can surfaces for ${s.title}`;
+  $('cap-pack').innerHTML = tx.cap_pack; $('cap-cells').innerHTML = tx.cap_cells;
+  try { localStorage.setItem('case', n); } catch (e) {}
+}
+$('moment').onclick = e => { const b = e.target.closest('button'); if (b) { MOMENT = b.dataset.m; show(CURRENT); } };
+// gap filler and sensitivity tables
+(function () {
+  $('filltext').innerHTML = TEXT.filler.map(p => `<p>${p}</p>`).join('');
+  const c = [['Option', r => r.label], ['Filler', r => r.cc ? `${r.cc.toFixed(1)} cc, ${r.grams.toFixed(1)} g` : 'none'],
+    ['100 W: full power for', r => `${f1(r.min_full)} min`], ['Energy out in 40 min', r => `${f1(r.wh_40)} Wh`],
+    ['Hottest board part, 100 W', r => `${f1(r.part)} °C`, 1], ['Hottest can, 100 W', r => `${f1(r.surf)} °C`],
+    ['Within one cell, 100 W', r => `${f1(r.within)} K`], ['Hottest board part, charging', r => `${f1(r.chg_part)} °C`, 1],
+    ['Charged after 60 min', r => `${(r.chg_soc_60 * 100).toFixed(0)} %`]];
+  $('filltable').innerHTML = '<thead><tr>' + c.map(x => `<th>${x[0]}</th>`).join('') + '</tr></thead><tbody>' +
+    FILL.map(r => `<tr${r.variant === 'base' ? ' class="base"' : ''}>` + c.map(x => `<td${x[2] ? ' class="hot"' : ''}>${x[1](r)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+  $('fillnote').innerHTML = TEXT.fillnote;
+  $('senstext').innerHTML = TEXT.sens;
+  const sc = [['Change from the baseline', r => r.label], ['Full 100 W for', r => `${f1(r.min_full)} min`], ['Energy out in 40 min', r => `${f1(r.wh_40)} Wh`],
+    ['Hottest can', r => `${f1(r.surf)} °C`, 1], ['NTC peak', r => `${f1(r.ntc)} °C`], ['Hottest board part', r => `${f1(r.part)} °C`, 1], ['Outer skin', r => `${f1(r.skin)} °C`]];
+  $('senstable').innerHTML = '<thead><tr>' + sc.map(x => `<th>${x[0]}</th>`).join('') + '</tr></thead><tbody>' +
+    SENS.map((r, i) => `<tr${i === 0 ? ' class="base"' : ''}>` + sc.map(x => `<td${x[2] ? ' class="hot"' : ''}>${x[1](r)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+})();
+$('seg').innerHTML = ORDER.filter(n => SUMMARY[n]).map(n => `<button type="button" data-n="${n}" aria-pressed="false">${SHORT[n]}</button>`).join('');
+$('seg').onclick = e => { const b = e.target.closest('button'); if (b) { show(b.dataset.n); if (location.hash !== '#' + b.dataset.n) history.replaceState(null, '', '#' + b.dataset.n); } };
+let first = 'dis100';
+const h = location.hash.slice(1); if (SUMMARY[h]) first = h; else { try { const c = localStorage.getItem('case'); if (SUMMARY[c]) first = c; } catch (e) {} }
+show(first);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => show(document.querySelector('#seg [aria-pressed="true"]').dataset.n));
+</script>

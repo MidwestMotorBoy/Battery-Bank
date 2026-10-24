@@ -1,0 +1,423 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PACK Tail Options</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one full-width plate per option, section view beside the end view, facts underneath; a comparison table closes the page. */
+:root {
+  --bg: #f3f4f2; --paper: #ffffff; --fg: #1c2321; --muted: #5b6662; --line: #c9cfcc;
+  --accent: #2f6f62;
+  --cell: #8fa3b8; --cap: #5f7690; --kapton: #d9a441; --frame: #c4c0b8; --board: #3f7d5a; --cu-layer: #c98a3c;
+  --ni: #9aa1a6; --ni-edge: #5d656b; --cu: #c87533; --cu-edge: #8a4a1c; --solder: #b9c0c6; --nugget: #2b3236;
+  --wire: #f0ede6; --wire-edge: #6d6a62; --kel: #7a5aa6; --hatch: #8d958f; --bad: #b2412e; --ok: #2f6f62; --warn: #a8741a;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141917; --paper: #1c2220; --fg: #e4e9e6; --muted: #9aa6a1; --line: #34403b; --accent: #6cc0aa;
+  --cell: #4f6278; --cap: #7b93ad; --kapton: #c99234; --frame: #5a5751; --board: #2f6b4b; --cu-layer: #c98a3c;
+  --ni: #b4bbc0; --ni-edge: #dfe4e7; --cu: #d98742; --cu-edge: #f0b07a; --solder: #cfd5da; --nugget: #0d1012;
+  --wire: #e9e5dc; --wire-edge: #b9b4a8; --kel: #a88ad6; --hatch: #6f7873; --bad: #e0705c; --ok: #6cc0aa; --warn: #d9a441;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141917; --paper: #1c2220; --fg: #e4e9e6; --muted: #9aa6a1; --line: #34403b; --accent: #6cc0aa;
+  --cell: #4f6278; --cap: #7b93ad; --kapton: #c99234; --frame: #5a5751; --board: #2f6b4b; --cu-layer: #c98a3c;
+  --ni: #b4bbc0; --ni-edge: #dfe4e7; --cu: #d98742; --cu-edge: #f0b07a; --solder: #cfd5da; --nugget: #0d1012;
+  --wire: #e9e5dc; --wire-edge: #b9b4a8; --kel: #a88ad6; --hatch: #6f7873; --bad: #e0705c; --ok: #6cc0aa; --warn: #d9a441;
+  color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+main { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; }
+h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-family: var(--font-display); font-size: 21px; margin: 0; text-wrap: balance; }
+.lead { max-width: 68ch; color: var(--muted); margin: 8px 0 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 14px; height: 10px; border-radius: 2px; border: 1px solid var(--line); display: inline-block; }
+.plate { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 16px; }
+.plate-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px; }
+.pill { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+.views { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.view { min-width: 0; }
+.view .cap { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.scroll { overflow-x: auto; }
+.scroll svg { display: block; width: 100%; min-width: 480px; height: auto; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 20px; margin: 0; }
+.facts div { min-width: 0; }
+.facts dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-size: 14px; }
+.note { font-size: 14px; color: var(--muted); max-width: 90ch; margin: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td:first-child { font-weight: 600; }
+.tablewrap { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; }
+svg text { font-family: var(--font-mono); fill: var(--fg); }
+@media (max-width: 820px) { .views { grid-template-columns: 1fr; } .facts { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">Monolith P0 · PACK+ on C4, bottom end · to scale</div>
+    <h1>Three ways to get PACK current from the cell to the board</h1>
+    <p class="lead">Each plate shows the same corner of the pack, drawn from <code>monolith_shell.py</code> and <code>monolith_cup.py</code>. The tab is welded to C4's + cap, has to pass under the carrier's bottom frame, crosses a 2.6 mm gap, and enters the board at its bottom edge. PACK− on C1 is the mirror image.</p>
+  </header>
+
+  <div class="legend" aria-label="Colour key">
+    <span><i class="sw" style="background:var(--cell)"></i>Cell C4</span>
+    <span><i class="sw" style="background:var(--cap)"></i>+ cap (size approx.)</span>
+    <span><i class="sw" style="background:var(--kapton)"></i>Insulator over the − rim</span>
+    <span><i class="sw" style="background:var(--frame)"></i>PA12 carrier frame</span>
+    <span><i class="sw" style="background:var(--board)"></i>Board (1.6 mm)</span>
+    <span><i class="sw" style="background:var(--ni)"></i>Pure nickel 0.2 mm</span>
+    <span><i class="sw" style="background:var(--cu)"></i>Copper 0.2 mm</span>
+    <span><i class="sw" style="background:var(--wire)"></i>Wire insulation</span>
+    <span><i class="sw" style="background:var(--kel)"></i>Kelvin sense lead</span>
+    <span><i class="sw" style="background:var(--solder)"></i>Solder</span>
+    <span><i class="sw" style="background:var(--nugget)"></i>Weld nugget</span>
+  </div>
+
+  <section class="plate" id="opt-a">
+    <div class="plate-head"><h2>A · Plain nickel tab</h2><span class="pill ok">Recommended</span></div>
+    <div class="views">
+      <div class="view"><div class="cap">Section through the power finger (side view, board on the right)</div><div class="scroll" data-side="A"></div></div>
+      <div class="view"><div class="cap">Looking up at C4's bottom end (frame drawn see-through)</div><div class="scroll" data-top="A"></div></div>
+    </div>
+    <dl class="facts">
+      <div><dt>Parts per tab</dt><dd>1: 0.2 × 7 mm nickel, slit at the board end</dd></div>
+      <div><dt>Bench steps per tab</dt><dd>5: cut, slit, weld, bend kink, solder</dd></div>
+      <div><dt>Board / carrier change</dt><dd>None</dd></div>
+      <div><dt>Loss, both tabs</dt><dd>3.2 mΩ · 0.28 W at 100 W · 0.05 W at 40 W</dd></div>
+    </dl>
+    <p class="note">What the assembly doc already describes. One material and one weld recipe. The 1 mm kink in the 2.6 mm gap takes up cell-length tolerance.</p>
+  </section>
+
+  <section class="plate" id="opt-b">
+    <div class="plate-head"><h2>B · Bimetal: copper tail soldered to a nickel pad</h2><span class="pill warn">Works, fiddly</span></div>
+    <div class="views">
+      <div class="view"><div class="cap">Section through the power finger</div><div class="scroll" data-side="B"></div></div>
+      <div class="view"><div class="cap">Looking up at C4's bottom end</div><div class="scroll" data-top="B"></div></div>
+    </div>
+    <dl class="facts">
+      <div><dt>Parts per tab</dt><dd>2: nickel pad, nickel-plated copper tail</dd></div>
+      <div><dt>Bench steps per tab</dt><dd>8: cut ×2, slit, solder lap, joggle, weld, kink, solder</dd></div>
+      <div><dt>Board / carrier change</dt><dd>None</dd></div>
+      <div><dt>Loss, both tabs</dt><dd>≈1.0 mΩ · 0.09 W at 100 W · 0.01 W at 40 W</dd></div>
+    </dl>
+    <p class="note">The lap has to sit inside the 14 mm weld window, because the gap under the frame only fits one 0.2 mm layer. That means a 0.2 mm joggle in the copper, and weld spots kept at least 3 mm from the solder.</p>
+  </section>
+
+  <section class="plate" id="opt-c">
+    <div class="plate-head"><h2>C · Wire: 20 AWG power lead plus a 28 AWG Kelvin lead</h2><span class="pill bad">Needs board and carrier changes</span></div>
+    <div class="views">
+      <div class="view"><div class="cap">Section through the power wire</div><div class="scroll" data-side="C"></div></div>
+      <div class="view"><div class="cap">Looking up at C4's bottom end</div><div class="scroll" data-top="C"></div></div>
+    </div>
+    <dl class="facts">
+      <div><dt>Parts per tab</dt><dd>3: nickel pad, 20 AWG PTFE wire, 28 AWG sense wire</dd></div>
+      <div><dt>Bench steps per tab</dt><dd>9: cut, strip and tin ×2, solder ×2, weld, route, solder ×2</dd></div>
+      <div><dt>Board / carrier change</dt><dd>New Ø1.3 plated hole per PACK; two notches cut through the 1.6 mm bottom frame</dd></div>
+      <div><dt>Loss, both tabs</dt><dd>≈1.5 mΩ · 0.13 W at 100 W · 0.02 W at 40 W</dd></div>
+    </dl>
+    <p class="note">No wire fits the 0.25 mm gap under the frame, so the frame has to be notched right through for each lead. The hole centre is pushed up to 5.75 mm so its ring clears the board edge. Moving the solder joint out to the cell edge would avoid the notches, but it would leave under 1 mm of wire before the board, so you'd lose the flex that makes wire worth having.</p>
+  </section>
+
+  <section style="display:grid; gap:10px">
+    <h2>Side by side</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Option</th><th>Parts / tab</th><th>Steps / tab</th><th>Board change</th><th>Carrier change</th><th>Loss at 100 W</th><th>Loss at 40 W</th><th>Main risk</th></tr></thead>
+        <tbody>
+          <tr><td>A Plain nickel</td><td>1</td><td>5</td><td>None</td><td>None</td><td>0.28 W</td><td>0.05 W</td><td>Stiffest tab; relies on the kink</td></tr>
+          <tr><td>B Bimetal Cu/Ni</td><td>2</td><td>8</td><td>None</td><td>None</td><td>0.09 W</td><td>0.01 W</td><td>Solder lap close to the weld spots</td></tr>
+          <tr><td>C Wire</td><td>3</td><td>9</td><td>2 new holes</td><td>4 frame notches</td><td>0.13 W</td><td>0.02 W</td><td>Notched frame; wire spans only the 2.6 mm gap</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Losses count the conductor metal only (nickel 6.99, copper 1.72 µΩ·cm; welds and slot joints left out). The 40 W column is the sustained rating at about 3.8 A. The + cap and rim radii are approximate until a 65E is measured.</p>
+  </section>
+
+  <section class="plate" id="routing">
+    <div class="plate-head"><h2>Option A routed: all seven connections</h2><span class="pill ok">Plain nickel</span></div>
+    <p class="note">Each cell junction reaches the gauge through a thin nickel tail. The tails carry only sense and balancing current (milliamps), so their size is set by handling, not resistance. The two PACK tabs carry the load current; their narrow Kelvin fingers are the gauge's sense points for the pack's two ends.</p>
+    <div class="scroll"><div data-chain></div></div>
+    <div class="views">
+      <div class="view"><div class="cap">Bottom end, seen from below (board on the right)</div><div class="scroll" data-end="bottom"></div></div>
+      <div class="view"><div class="cap">Top end, seen from above (board on the right)</div><div class="scroll" data-end="top"></div></div>
+    </div>
+    <div class="views">
+      <div class="view"><div class="cap">Back of the board (B.Cu), seen from the cells: where each tail lands</div><div class="scroll" data-board></div></div>
+      <div class="view" style="display:grid; gap:10px; align-content:start">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Tap</th><th>Node</th><th>From</th><th>Route</th><th>Board</th></tr></thead>
+            <tbody>
+              <tr><td>PACK−</td><td>C1 −</td><td>0.2 × 7 tab, C1 bottom</td><td>Under the frame, 1 mm kink, power finger 4.2 mm</td><td>Slot, bottom edge</td></tr>
+              <tr><td>1N</td><td>C1 −</td><td>Same tab, Kelvin finger 1.2 mm</td><td>Split off the tab near the board</td><td>Slot → VC0</td></tr>
+              <tr><td>CELL1</td><td>C1+ / C2−</td><td>Top strip, cut long, 3 mm tongue</td><td>Past C1, outside the frame bar, drops 5 mm behind the board</td><td>Slot at z 72 → VC1</td></tr>
+              <tr><td>CELL2</td><td>C2+ / C3−</td><td>0.15 × 3 tail welded to the bottom strip on the bench</td><td>Channel in the bottom frame, between C1 and C4, kapton-wrapped, 1 mm kink</td><td>Slot, bottom centre → VC2</td></tr>
+              <tr><td>CELL3</td><td>C3+ / C4−</td><td>Top strip, cut long, 3 mm tongue</td><td>Mirror of CELL1</td><td>Slot at z 72 → VC3</td></tr>
+              <tr><td>4P</td><td>C4 +</td><td>PACK+ tab, Kelvin finger 1.2 mm</td><td>Split off the tab near the board</td><td>Slot → VC4</td></tr>
+              <tr><td>PACK+</td><td>C4 +</td><td>0.2 × 7 tab, C4 bottom</td><td>Mirror of PACK−</td><td>Slot, bottom edge</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Assembly order from <code>p0-bringup-and-training.md</code>: solder PACK− first, then CELL1 to CELL3 bottom-up, then PACK+. A floating tap can trip the secondary protector and blow F102.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  // Geometry (mm), from monolith_shell.py / monolith_cup.py. x toward the board, y along the board width, z along the cells.
+  var C = 11.625, R = 10.925, CAP_R = 4.5, RIM_R = 8.5, WIN_R = 7.0;
+  var CELL_Z = 6.3, FR_Z0 = 4.25, FR_Z1 = 5.85, FR_X1 = 22.7;
+  var BCU = 25.3, FCU = 26.9, BOARD_Z0 = 4.3;
+  var TAB_Y0 = 8.125, TAB_Y1 = 15.125, PWR = [10.925, 15.125], KEL = [8.125, 9.325];
+  var SLOT_P = [10.725, 15.325], SLOT_K = [7.925, 9.525];
+  var KINK = [23.35, 24.55], SPLIT_X = 22.9;
+  var SEC_Y = 13.025;            // section plane: the power finger / power wire centreline
+  var SX0 = 3, SX1 = 29.8, SZ0 = 3.2, SZ1 = 9.3;
+  var TY0 = 6.0, TY1 = 17.2;
+
+  function chord(r) { var d = SEC_Y - C; return r > Math.abs(d) ? Math.sqrt(r * r - d * d) : 0; }
+  function sz(z) { return SZ1 - z; }                 // side view: z up
+  function ty(y) { return TY1 - y; }        // top view: +y up
+  function rectS(x0, x1, z0, z1, fill, extra) { return '<rect x="' + x0 + '" y="' + sz(z1) + '" width="' + (x1 - x0) + '" height="' + (z1 - z0) + '" fill="' + fill + '" ' + (extra || '') + '/>'; }
+  function rectT(x0, x1, y0, y1, fill, extra) { return '<rect x="' + x0 + '" y="' + ty(y1) + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="' + fill + '" ' + (extra || '') + '/>'; }
+  function pathS(pts, w, color, extra) { return '<polyline points="' + pts.map(function (p) { return p[0] + ',' + sz(p[1]); }).join(' ') + '" fill="none" stroke="' + color + '" stroke-width="' + w + '" stroke-linejoin="round" ' + (extra || '') + '/>'; }
+  function label(x, y, t, anchor, size) { return '<text x="' + x + '" y="' + y + '" font-size="' + (size || 0.42) + '" text-anchor="' + (anchor || 'start') + '">' + t + '</text>'; }
+  function lead(x1, y1, x2, y2) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="var(--muted)" stroke-width="0.03"/>'; }
+  var defs = '<defs><pattern id="hatch" width="0.5" height="0.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="0.5" height="0.5" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="0.5" stroke="var(--hatch)" stroke-width="0.12"/></pattern></defs>';
+
+  function side(opt) {
+    var s = '', cx0 = C - chord(R), cx1 = C + chord(R), kx = chord(CAP_R), rx = chord(RIM_R), wx = chord(WIN_R);
+    s += rectS(Math.max(SX0, cx0), cx1, CELL_Z, SZ1, 'var(--cell)');
+    s += rectS(C - kx, C + kx, CELL_Z - 0.2, CELL_Z, 'var(--cap)');
+    s += rectS(Math.max(SX0, cx0), C - rx, CELL_Z - 0.2, CELL_Z, 'var(--kapton)');
+    s += rectS(C + rx, cx1, CELL_Z - 0.2, CELL_Z, 'var(--kapton)');
+    s += rectS(SX0, C - wx, FR_Z0, FR_Z1, 'var(--frame)');
+    if (opt === 'C') s += rectS(C + wx, FR_X1, FR_Z0, FR_Z1, 'none', 'stroke="var(--frame)" stroke-width="0.06" stroke-dasharray="0.2 0.15"');
+    else s += rectS(C + wx, FR_X1, FR_Z0, FR_Z1, 'var(--frame)');
+    s += rectS(23.0, BCU, 6.6, SZ1, 'url(#hatch)', 'stroke="var(--hatch)" stroke-width="0.03"');
+    s += rectS(BCU - 0.6, BCU, 4.4, 6.6, 'none', 'stroke="var(--hatch)" stroke-width="0.04" stroke-dasharray="0.15 0.12"');
+    var gap = opt === 'C' ? [5.1, 6.4] : [5.7, 6.3];
+    s += rectS(BCU, FCU, BOARD_Z0, gap[0], 'var(--board)');
+    s += rectS(BCU, FCU, gap[1], SZ1, 'var(--board)');
+    s += rectS(BCU - 0.05, BCU, BOARD_Z0, SZ1, 'var(--cu-layer)') + rectS(FCU, FCU + 0.05, BOARD_Z0, SZ1, 'var(--cu-layer)');
+    s += rectS(BCU, FCU, gap[0] - 0.04, gap[0], 'var(--cu-layer)') + rectS(BCU, FCU, gap[1], gap[1] + 0.04, 'var(--cu-layer)');
+    var nug = function (x) { return '<ellipse cx="' + x + '" cy="' + sz(6.05) + '" rx="0.45" ry="0.11" fill="var(--nugget)"/>'; };
+    if (opt === 'A') {
+      s += pathS([[C - 4.3, 6.0], [KINK[0], 6.0], [(KINK[0] + KINK[1]) / 2, 5.0], [KINK[1], 6.0], [27.4, 6.0]], 0.2, 'var(--ni)');
+      s += '<ellipse cx="27.1" cy="' + sz(6.0) + '" rx="0.32" ry="0.5" fill="var(--solder)"/>' + nug(C - 1.5) + nug(C + 1.5);
+      s += lead(23.95, sz(5.0) + 0.1, 23.6, sz(4.1)) + label(23.6, sz(4.1) + 0.45, 'kink', 'end');
+    } else if (opt === 'B') {
+      s += pathS([[C - 4.3, 6.0], [16.6, 6.0]], 0.2, 'var(--ni)');
+      s += rectS(13.5, 16.6, 5.86, 5.9, 'var(--solder)');
+      s += pathS([[13.5, 5.76], [17.3, 5.76], [17.9, 6.0], [KINK[0], 6.0], [(KINK[0] + KINK[1]) / 2, 5.0], [KINK[1], 6.0], [27.4, 6.0]], 0.2, 'var(--cu)');
+      s += '<ellipse cx="27.1" cy="' + sz(6.0) + '" rx="0.32" ry="0.5" fill="var(--solder)"/>' + nug(C - 3) + nug(C - 1);
+      s += lead(15, sz(5.7), 14.2, sz(4.4)) + label(14.2, sz(4.4) + 0.45, 'solder lap', 'end');
+      s += lead(17.6, sz(5.8), 18.2, sz(4.4)) + label(18.2, sz(4.4) + 0.45, 'joggle', 'start');
+    } else {
+      s += pathS([[C - 4.3, 6.0], [16.6, 6.0]], 0.2, 'var(--ni)');
+      s += rectS(13.5, 16.6, 5.0, 5.9, 'var(--solder)', 'rx="0.3"');
+      s += pathS([[13.5, 5.45], [16.6, 5.45]], 0.7, 'var(--cu)');
+      s += pathS([[16.6, 5.3], [24.4, 5.3], [25.0, 5.75], [25.3, 5.75]], 1.2, 'var(--wire-edge)');
+      s += pathS([[16.65, 5.3], [24.4, 5.3], [25.0, 5.75], [25.3, 5.75]], 1.08, 'var(--wire)');
+      s += pathS([[25.3, 5.75], [27.4, 5.75]], 0.9, 'var(--cu)');
+      s += '<ellipse cx="27.15" cy="' + sz(5.75) + '" rx="0.35" ry="0.75" fill="var(--solder)"/>' + nug(C - 3) + nug(C - 1);
+      s += lead(20.6, sz(4.4), 20.6, sz(3.95)) + label(20.6, sz(3.95) + 0.45, 'frame cut through', 'middle');
+      s += lead(26.1, sz(5.1), 26.6, sz(4.15)) + label(26.6, sz(4.15) + 0.45, 'Ø1.3 hole', 'start', 0.38);
+    }
+    s += label(1.3 + SX0, sz(8.3), 'C4 (+ end down)');
+    s += label(SX0 + 0.2, sz(4.6), 'frame');
+    s += label(23.0 + 1.15, sz(8.5), 'B.Cu', 'middle', 0.36) + label(23.0 + 1.15, sz(8.5) + 0.45, 'parts', 'middle', 0.36);
+    s += label(FCU + 0.85, sz(8.3), 'board', 'start', 0.38);
+    var dimZ = sz(7.2);
+    s += '<line x1="' + cx1 + '" y1="' + dimZ + '" x2="' + BCU + '" y2="' + dimZ + '" stroke="var(--fg)" stroke-width="0.03" marker-start="url(#ar)" marker-end="url(#ar)"/>';
+    s += '<rect x="' + (cx1 + 0.15) + '" y="' + (dimZ - 0.62) + '" width="' + (BCU - cx1 - 0.3) + '" height="0.5" fill="var(--paper)" opacity="0.85"/>' + label((cx1 + BCU) / 2, dimZ - 0.2, '2.6 mm', 'middle', 0.36);
+    var mk = '<defs><marker id="ar" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 z" fill="var(--fg)"/></marker></defs>';
+    return '<svg viewBox="' + SX0 + ' 0 ' + (SX1 - SX0) + ' ' + (SZ1 - SZ0) + '" role="img" aria-label="Option ' + opt + ' side section">' + defs + mk + '<rect x="' + SX0 + '" y="0" width="' + (SX1 - SX0) + '" height="' + (SZ1 - SZ0) + '" fill="var(--paper)"/>' + s + '</svg>';
+  }
+
+  function top(opt) {
+    var s = '', cy = ty(C);
+    s += '<clipPath id="clip' + opt + '"><rect x="' + SX0 + '" y="0" width="' + (SX1 - SX0) + '" height="' + (TY1 - TY0) + '"/></clipPath><g clip-path="url(#clip' + opt + ')">';
+    s += '<circle cx="' + C + '" cy="' + cy + '" r="' + R + '" fill="var(--cell)"/>';
+    s += '<circle cx="' + C + '" cy="' + cy + '" r="' + ((R + RIM_R) / 2) + '" fill="none" stroke="var(--kapton)" stroke-width="' + (R - RIM_R) + '"/>';
+    s += '<circle cx="' + C + '" cy="' + cy + '" r="' + CAP_R + '" fill="var(--cap)"/>';
+    s += rectT(23.0, BCU, TY0, TY1, 'url(#hatch)', 'stroke="var(--hatch)" stroke-width="0.03"');
+    [[SLOT_P[0] - 0.3, SLOT_P[1] + 0.3], [SLOT_K[0] - 0.3, SLOT_K[1] + 0.3]].forEach(function (k) { s += rectT(23.0, BCU, k[0], k[1], 'var(--paper)', 'stroke="var(--hatch)" stroke-width="0.04" stroke-dasharray="0.15 0.12"'); });
+    s += rectT(BCU, FCU, TY0, TY1, 'var(--board)');
+    if (opt === 'C') {
+      s += rectT(BCU, FCU, SEC_Y - 0.65, SEC_Y + 0.65, 'var(--paper)', 'stroke="var(--cu-layer)" stroke-width="0.06"');
+      s += rectT(BCU, FCU, SLOT_K[0], SLOT_K[1], 'var(--paper)', 'stroke="var(--cu-layer)" stroke-width="0.06"');
+    } else {
+      s += rectT(BCU, FCU, SLOT_P[0], SLOT_P[1], 'var(--paper)', 'stroke="var(--cu-layer)" stroke-width="0.06"');
+      s += rectT(BCU, FCU, SLOT_K[0], SLOT_K[1], 'var(--paper)', 'stroke="var(--cu-layer)" stroke-width="0.06"');
+    }
+    var nug = function (x, y) { return '<circle cx="' + x + '" cy="' + ty(y) + '" r="0.42" fill="var(--nugget)"/>'; };
+    var fingers = function (fill, edge) {
+      return rectT(SPLIT_X, 27.4, PWR[0], PWR[1], fill, 'stroke="' + edge + '" stroke-width="0.05"') + rectT(SPLIT_X, 27.4, KEL[0], KEL[1], fill, 'stroke="' + edge + '" stroke-width="0.05"');
+    };
+    if (opt === 'A') {
+      s += rectT(C - 4.3, SPLIT_X, TAB_Y0, TAB_Y1, 'var(--ni)', 'stroke="var(--ni-edge)" stroke-width="0.05"') + fingers('var(--ni)', 'var(--ni-edge)');
+      s += nug(C - 1.5, C - 1.5) + nug(C + 1.5, C - 1.5) + nug(C - 1.5, C + 1.5) + nug(C + 1.5, C + 1.5);
+    } else if (opt === 'B') {
+      s += rectT(C - 4.3, 16.6, TAB_Y0, TAB_Y1, 'var(--ni)', 'stroke="var(--ni-edge)" stroke-width="0.05"');
+      s += rectT(13.5, SPLIT_X, TAB_Y0, TAB_Y1, 'var(--cu)', 'stroke="var(--cu-edge)" stroke-width="0.05" opacity="0.92"') + fingers('var(--cu)', 'var(--cu-edge)');
+      s += rectT(13.5, 16.6, TAB_Y0, TAB_Y1, 'none', 'stroke="var(--ni-edge)" stroke-width="0.05" stroke-dasharray="0.2 0.15"');
+      s += nug(C - 3, C - 1.5) + nug(C - 1, C - 1.5) + nug(C - 3, C + 1.5) + nug(C - 1, C + 1.5);
+    } else {
+      s += rectT(C - 4.3, 16.6, TAB_Y0, TAB_Y1, 'var(--ni)', 'stroke="var(--ni-edge)" stroke-width="0.05"');
+      [[SEC_Y - 0.8, SEC_Y + 0.8], [8.725 - 0.55, 8.725 + 0.55]].forEach(function (k) { s += rectT(C + chord(WIN_R) + (C - SEC_Y === 0 ? 0 : 0) , FR_X1, k[0], k[1], 'var(--paper)', 'stroke="var(--frame)" stroke-width="0.08" stroke-dasharray="0.2 0.12" opacity="0.9"'); });
+      s += rectT(13.5, 16.6, SEC_Y - 0.6, SEC_Y + 0.6, 'var(--solder)', 'rx="0.3"');
+      s += rectT(16.6, BCU, SEC_Y - 0.6, SEC_Y + 0.6, 'var(--wire)', 'stroke="var(--wire-edge)" stroke-width="0.05"');
+      s += rectT(BCU, 27.4, SEC_Y - 0.45, SEC_Y + 0.45, 'var(--cu)');
+      s += rectT(15.0, 15.9, 8.4, 9.05, 'var(--solder)', 'rx="0.2"');
+      s += rectT(15.9, BCU, 8.725 - 0.3, 8.725 + 0.3, 'var(--kel)');
+      s += rectT(BCU, 27.4, 8.725 - 0.16, 8.725 + 0.16, 'var(--cu)');
+      s += nug(C - 3, C - 1.5) + nug(C - 1, C - 1.5) + nug(C - 3, C + 1.5) + nug(C - 1, C + 1.5);
+    }
+    // carrier frame, see-through, with its 14 mm weld window
+    var fr = 'M' + SX0 + ',0 H' + FR_X1 + ' V' + (TY1 - TY0) + ' H' + SX0 + ' Z M' + (C + WIN_R) + ',' + cy + ' A' + WIN_R + ',' + WIN_R + ' 0 1,0 ' + (C - WIN_R) + ',' + cy + ' A' + WIN_R + ',' + WIN_R + ' 0 1,0 ' + (C + WIN_R) + ',' + cy + ' Z';
+    s += '<path d="' + fr + '" fill="var(--frame)" fill-rule="evenodd" opacity="0.38"/>';
+    s += '<circle cx="' + C + '" cy="' + cy + '" r="' + WIN_R + '" fill="none" stroke="var(--frame)" stroke-width="0.07" stroke-dasharray="0.25 0.15"/>';
+    s += '</g>';
+    s += label(SX0 + 0.25, 0.65, 'weld window Ø14', 'start', 0.4);
+    s += label(FCU + 0.85, ty(SLOT_P[1]) - 0.25, opt === 'C' ? 'hole' : 'PACK+ slot', 'start', 0.36) + label(FCU + 0.85, ty(SLOT_K[0]) + 0.6, '4P', 'start', 0.36);
+    if (opt === 'C') s += label(20.6, ty(SEC_Y + 0.8) - 0.2, 'notch', 'middle', 0.36) + label(20.6, ty(8.725 - 0.55) + 0.55, 'notch', 'middle', 0.36);
+    return '<svg viewBox="' + SX0 + ' 0 ' + (SX1 - SX0) + ' ' + (TY1 - TY0) + '" role="img" aria-label="Option ' + opt + ' end view">' + defs + '<rect x="' + SX0 + '" y="0" width="' + (SX1 - SX0) + '" height="' + (TY1 - TY0) + '" fill="var(--paper)"/>' + s + '</svg>';
+  }
+
+  document.querySelectorAll('[data-side]').forEach(function (el) { el.innerHTML = side(el.getAttribute('data-side')); });
+  document.querySelectorAll('[data-top]').forEach(function (el) { el.innerHTML = top(el.getAttribute('data-top')); });
+})();
+</script>
+
+<script>
+(function () {
+  // Whole-pack routing, option A. Same frame as monolith_shell.py: x toward the board, y along the board width, z along the cells.
+  var P = 11.625, R = 10.925, WIN = 7.0;
+  var BCU = 25.3, FCU = 26.9, BW = 21.6;
+  var VX0 = -23.5, VX1 = 35.5, VY = 23.2;
+  var CELLS = { C1: [P, -P], C2: [-P, -P], C3: [-P, P], C4: [P, P] };
+  var POL = { bottom: { C1: '−', C2: '+', C3: '−', C4: '+' }, top: { C1: '+', C2: '−', C3: '+', C4: '−' } };
+  var SLOTS_B = [['PACK−', -13.025, 4.6], ['1N', -8.725, 1.6], ['CELL2', 0, 3.4], ['4P', 8.725, 1.6], ['PACK+', 13.025, 4.6]];
+  function Y(y) { return VY - y; }
+  function rect(x0, x1, y0, y1, fill, extra) { return '<rect x="' + x0 + '" y="' + Y(y1) + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="' + fill + '" ' + (extra || '') + '/>'; }
+  function txt(x, y, t, a, s, extra) { return '<text x="' + x + '" y="' + y + '" font-size="' + (s || 1.25) + '" text-anchor="' + (a || 'start') + '" ' + (extra || '') + '>' + t + '</text>'; }
+  function dot(x, y) { return '<circle cx="' + x + '" cy="' + Y(y) + '" r="0.5" fill="var(--nugget)"/>'; }
+  var hatchDef = '<defs><pattern id="hatchR" width="1" height="1" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1" height="1" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="1" stroke="var(--hatch)" stroke-width="0.25"/></pattern>' +
+    '<pattern id="kap" width="1.2" height="1.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="1.2" height="1.2" fill="none"/><line x1="0" y1="0" x2="0" y2="1.2" stroke="var(--kapton)" stroke-width="0.5"/></pattern></defs>';
+
+  function endView(end) {
+    var s = '';
+    // carrier frame with its weld windows (see-through)
+    var fr = 'M' + VX0 + ',' + Y(23) + ' H22.7 V' + Y(-23) + ' H' + VX0 + ' Z';
+    Object.keys(CELLS).forEach(function (k) { var c = CELLS[k]; fr += ' M' + (c[0] + WIN) + ',' + Y(c[1]) + ' a' + WIN + ',' + WIN + ' 0 1,0 ' + (-2 * WIN) + ',0 a' + WIN + ',' + WIN + ' 0 1,0 ' + (2 * WIN) + ',0 Z'; });
+    Object.keys(CELLS).forEach(function (k) { var c = CELLS[k]; s += '<circle cx="' + c[0] + '" cy="' + Y(c[1]) + '" r="' + R + '" fill="var(--cell)"/>'; });
+    // board + ports or slots
+    s += rect(23.0, BCU, -BW, BW, 'url(#hatchR)', 'stroke="var(--hatch)" stroke-width="0.08"');
+    s += rect(BCU, FCU, -BW, BW, 'var(--board)');
+    if (end === 'top') {
+      [-6.5, 6.5].forEach(function (y) { s += rect(FCU, FCU + 3.3, y - 4.47, y + 4.47, 'var(--ni-edge)', 'rx="1.2" opacity="0.55"'); });
+      s += txt(FCU + 3.7, Y(0) + 0.45, 'USB-C', 'start', 1.1);
+      [-1, 1].forEach(function (sgn) { s += rect(22.7, BCU, sgn > 0 ? 6.5 : -11.3, sgn > 0 ? 11.3 : -6.5, 'var(--frame)', 'stroke="var(--hatch)" stroke-width="0.08"'); });
+      s += txt(24.0, Y(-9) + 0.4, 'bar', 'middle', 0.9) + txt(24.0, Y(9) + 0.4, 'bar', 'middle', 0.9);
+    } else {
+      SLOTS_B.forEach(function (sl) { s += rect(BCU, FCU, sl[1] - sl[2] / 2, sl[1] + sl[2] / 2, 'var(--paper)', 'stroke="var(--cu-layer)" stroke-width="0.15"'); });
+    }
+    var ni = 'var(--ni)', ne = 'stroke="var(--ni-edge)" stroke-width="0.12"';
+    if (end === 'bottom') {
+      s += rect(-P - 5, -P + 5, -P - 4, P + 4, ni, ne);                                  // C2+ -> C3- strip
+      s += dot(-P - 1.5, -P) + dot(-P + 1.5, -P) + dot(-P - 1.5, P) + dot(-P + 1.5, P);
+      s += rect(-P, 22.9, -1.5, 1.5, ni, ne) + rect(22.9, 27.6, -1.5, 1.5, ni, ne);       // CELL2 tail
+      s += rect(-0.5, 22.7, -1.5, 1.5, 'url(#kap)');
+      s += '<circle cx="' + (-P + 2.5) + '" cy="' + Y(0) + '" r="0.5" fill="var(--nugget)"/><circle cx="' + (-P + 2.5) + '" cy="' + Y(0) + '" r="0.95" fill="none" stroke="var(--accent)" stroke-width="0.2"/>';
+      [[-1, 'PACK−', '1N'], [1, 'PACK+', '4P']].forEach(function (t) {
+        var c = t[0] * P, o = t[0];
+        s += rect(P - 4.3, 22.9, c - 3.5, c + 3.5, ni, ne);
+        s += rect(22.9, 27.6, o > 0 ? c - 0.7 : c - 3.5, o > 0 ? c + 3.5 : c + 0.7, ni, ne);   // power finger, outer side
+        s += rect(22.9, 27.6, o > 0 ? c - 3.5 : c + 2.3, o > 0 ? c - 2.3 : c + 3.5, ni, ne);   // Kelvin finger, inner side
+        s += dot(P - 1.5, c - 1.5) + dot(P + 1.5, c - 1.5) + dot(P - 1.5, c + 1.5) + dot(P + 1.5, c + 1.5);
+      });
+      s += '<line x1="23.35" y1="' + Y(-17.5) + '" x2="23.35" y2="' + Y(17.5) + '" stroke="var(--muted)" stroke-width="0.08" stroke-dasharray="0.5 0.4"/>';
+      SLOTS_B.forEach(function (sl) { s += txt(FCU + 0.9, Y(sl[1]) + 0.45, sl[0], 'start', 1.15, 'font-weight="600"'); });
+      s += txt(-P, Y(0) + 3.0, 'pre-weld', 'middle', 1.0) + txt(-P, Y(0) + 4.2, 'on bench', 'middle', 1.0);
+      s += txt(6.0, Y(0) - 1.1, 'kapton', 'middle', 1.0);
+      s += txt(23.35, Y(-17.5) + 1.4, 'kinks', 'middle', 0.95);
+    } else {
+      [[-1, 'CELL1'], [1, 'CELL3']].forEach(function (t) {
+        var c = t[0] * P, ty = t[0] * 13.9;
+        s += rect(-P - 4, P + 5, c - 5, c + 5, ni, ne);                                     // series strip
+        s += rect(P + 5, BCU - 0.6, ty - 1.5, ty + 1.5, ni, ne);                            // runs on as a 3 mm tongue
+        s += dot(-P - 1.5, c - 1.5) + dot(-P + 1.5, c - 1.5) + dot(-P - 1.5, c + 1.5) + dot(-P + 1.5, c + 1.5);
+        s += dot(P - 1.5, c - 1.5) + dot(P + 1.5, c - 1.5) + dot(P - 1.5, c + 1.5) + dot(P + 1.5, c + 1.5);
+        s += '<circle cx="' + (BCU - 1.3) + '" cy="' + Y(ty) + '" r="0.75" fill="none" stroke="var(--accent)" stroke-width="0.22"/>';
+        s += txt(FCU + 0.9, Y(ty) + (t[0] < 0 ? 3.3 : -2.5), t[1], 'start', 1.15, 'font-weight="600"');
+      });
+      s += txt(12, Y(-21.2) + 0.4, 'tongue turns down behind the board (◯)', 'middle', 1.0);
+    }
+    s += '<path d="' + fr + '" fill="var(--frame)" fill-rule="evenodd" opacity="0.3"/>';
+    Object.keys(CELLS).forEach(function (k) { var c = CELLS[k];
+      s += txt(c[0] + (c[0] > 0 ? -6.2 : 6.2), Y(c[1]) + (c[1] > 0 ? -6.6 : 7.6), k + ' ' + POL[end][k], 'middle', 1.3, 'font-weight="600"'); });
+    return '<svg viewBox="' + VX0 + ' 0 ' + (VX1 - VX0) + ' ' + (2 * VY) + '" role="img" aria-label="' + end + ' end routing">' + hatchDef + '<rect x="' + VX0 + '" y="0" width="' + (VX1 - VX0) + '" height="' + (2 * VY) + '" fill="var(--paper)"/>' + s + '</svg>';
+  }
+
+  function boardView() {
+    // y horizontal (−y on the left), z up. Board 43.2 wide, z 4.3–78.65, bottom corners notched at |y| > 16.6, z < 9.1.
+    var X0 = -26, X1 = 33, Z0 = -0.5, Z1 = 81.5, H = Z1 - Z0;
+    function zz(z) { return Z1 - z; }
+    function r(y0, y1, z0, z1, fill, extra) { return '<rect x="' + y0 + '" y="' + zz(z1) + '" width="' + (y1 - y0) + '" height="' + (z1 - z0) + '" fill="' + fill + '" ' + (extra || '') + '/>'; }
+    var s = '';
+    s += '<path d="M-16.6,' + zz(4.3) + ' H16.6 V' + zz(9.1) + ' H21.6 V' + zz(78.65) + ' H-21.6 V' + zz(9.1) + ' H-16.6 Z" fill="var(--board)"/>';
+    [-1, 1].forEach(function (sg) { s += r(sg > 0 ? 6.5 : -11.3, sg > 0 ? 11.3 : -6.5, 7.3, 78.65, 'var(--frame)', 'opacity="0.85"'); });
+    [-1, 1].forEach(function (sg) { s += r(sg > 0 ? 7 : -16, sg > 0 ? 16 : -7, 27, 53, 'none', 'stroke="var(--kapton)" stroke-width="0.3" stroke-dasharray="1 0.6"'); });
+    s += r(11.6, 21.6, 56.05, 63.05, 'var(--ni-edge)', 'opacity="0.5"');
+    [[-15.625, -10.425, 4.4, 6.6], [-9.825, -7.625, 4.4, 6.6], [10.425, 15.625, 4.4, 6.6], [7.625, 9.825, 4.4, 6.6], [-2, 2, 4.4, 6.6], [-15.9, -11.9, 71.5, 78.65], [11.9, 15.9, 71.5, 78.65]].forEach(function (k) {
+      s += r(k[0], k[1], k[2], k[3], 'none', 'stroke="var(--paper)" stroke-width="0.25" stroke-dasharray="0.8 0.5"'); });
+    // tails
+    SLOTS_B.forEach(function (sl) { s += r(sl[1] - sl[2] / 2 + 0.2, sl[1] + sl[2] / 2 - 0.2, 5.7, 6.3, 'var(--ni)', 'stroke="var(--ni-edge)" stroke-width="0.12"'); });
+    [-13.9, 13.9].forEach(function (y) { s += r(y - 1.5, y + 1.5, 72, 78.65, 'var(--ni)', 'stroke="var(--ni-edge)" stroke-width="0.12"') + r(y - 1.5, y + 1.5, 71.7, 72.3, 'var(--ni-edge)'); });
+    function t(x, z, str, a, sz, extra) { return '<text x="' + x + '" y="' + zz(z) + '" font-size="' + (sz || 1.5) + '" text-anchor="' + (a || 'middle') + '" ' + (extra || '') + '>' + str + '</text>'; }
+    s += t(-13.025, 1.6, 'PACK−', 'middle', 1.25, 'font-weight="600"') + t(-8.2, 3.3, '1N', 'middle', 1.2) + t(0, 1.6, 'CELL2', 'middle', 1.25, 'font-weight="600"') + t(8.2, 3.3, '4P', 'middle', 1.2) + t(13.025, 1.6, 'PACK+', 'middle', 1.25, 'font-weight="600"');
+    s += t(-13.9, 79.6, 'CELL1', 'middle', 1.25, 'font-weight="600"') + t(13.9, 79.6, 'CELL3', 'middle', 1.25, 'font-weight="600"');
+    s += t(-8.9, 45, 'frame bar', 'middle', 1.05, 'transform="rotate(-90 -8.9 ' + zz(45) + ')"') + t(8.9, 45, 'frame bar', 'middle', 1.05, 'transform="rotate(-90 8.9 ' + zz(45) + ')"');
+    s += t(16.6, 40, 'gap', 'middle', 1.0) + t(16.6, 38.5, 'filler', 'middle', 1.0) + t(-16.6, 40, 'gap', 'middle', 1.0) + t(-16.6, 38.5, 'filler', 'middle', 1.0);
+    s += t(16.6, 59.1, 'BLE', 'middle', 1.1);
+    s += t(23.0, 75.0, '5 mm drop', 'start', 1.1) + t(23.0, 73.4, 'into slot', 'start', 1.1) + t(23.0, 6.0, 'tails enter', 'start', 1.1) + t(23.0, 4.4, 'end-on', 'start', 1.1);
+    s += t(23.0, 30, 'dashed:', 'start', 1.05) + t(23.0, 28.5, 'tail-run', 'start', 1.05) + t(23.0, 27.0, 'keep-outs', 'start', 1.05);
+    return '<svg viewBox="' + X0 + ' 0 ' + (X1 - X0) + ' ' + H + '" role="img" aria-label="Board back face with tail landings" style="min-width:360px">' + '<rect x="' + X0 + '" y="0" width="' + (X1 - X0) + '" height="' + H + '" fill="var(--paper)"/>' + s + '</svg>';
+  }
+
+  function chain() {
+    var s = '', xs = [6, 30, 54, 78, 102], names = ['PACK− / 1N', 'CELL1', 'CELL2', 'CELL3', 'PACK+ / 4P'];
+    var pins = ['VC0', 'VC1', 'VC2', 'VC3', 'VC4'], how = ['C1 bottom tab', 'top strip C1–C2', 'bottom strip C2–C3', 'top strip C3–C4', 'C4 bottom tab'];
+    s += '<line x1="6" y1="8" x2="102" y2="8" stroke="var(--fg)" stroke-width="0.35"/>';
+    ['C1', 'C2', 'C3', 'C4'].forEach(function (c, i) { var x = 18 + 24 * i;
+      s += '<rect x="' + (x - 6) + '" y="5.2" width="12" height="5.6" rx="1" fill="var(--cell)"/>';
+      s += '<text x="' + x + '" y="8.75" font-size="2" text-anchor="middle" font-weight="600">' + c + '</text>';
+      s += '<text x="' + (x - 4.8) + '" y="4.4" font-size="1.7" text-anchor="middle">−</text><text x="' + (x + 4.8) + '" y="4.4" font-size="1.7" text-anchor="middle">+</text>'; });
+    xs.forEach(function (x, i) {
+      s += '<circle cx="' + x + '" cy="8" r="0.9" fill="var(--accent)"/>';
+      s += '<line x1="' + x + '" y1="8.9" x2="' + x + '" y2="14" stroke="var(--accent)" stroke-width="0.3"/>';
+      s += '<text x="' + x + '" y="16.4" font-size="1.75" text-anchor="middle" font-weight="600">' + names[i] + '</text>';
+      s += '<text x="' + x + '" y="18.8" font-size="1.5" text-anchor="middle" fill="var(--muted)" style="fill:var(--muted)">' + how[i] + '</text>';
+      s += '<text x="' + x + '" y="21.2" font-size="1.5" text-anchor="middle">gauge ' + pins[i] + '</text>';
+    });
+    return '<svg viewBox="-6 0 120 23" role="img" aria-label="Series chain and gauge taps" style="min-width:560px">' + '<rect x="-6" y="0" width="120" height="23" fill="var(--paper)"/>' + s + '</svg>';
+  }
+
+  document.querySelectorAll('[data-end]').forEach(function (el) { el.innerHTML = endView(el.getAttribute('data-end')); });
+  document.querySelectorAll('[data-board]').forEach(function (el) { el.innerHTML = boardView(); });
+  document.querySelectorAll('[data-chain]').forEach(function (el) { el.innerHTML = chain(); });
+})();
+</script>

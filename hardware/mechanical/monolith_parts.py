@@ -419,9 +419,12 @@ def _top_tail(sy):
     return [_box(S.sb_pr - 0.01, TAIL_DOWN_X + t, yc - w, yc + w, z0, z0 + t),
             _box(TAIL_DOWN_X, TAIL_DOWN_X + t, yc - w, yc + w, zs - t / 2, z0),
             _box(TAIL_DOWN_X, SLOT_OUT, yc - w, yc + w, zs - t / 2, zs + t / 2)]
-def nickel_strips(which='all'):
-    """series strips, the two split PACK tabs and the three sense tails; bought nickel, not printed.
-    which: 'all', 'strips' (series strips only) or 'tails' (PACK tabs and sense tails only)"""
+PACK_PAD_L = 10.0                             # PACK pad length along x, from 3.5 mm inside the cell centre
+def nickel_strips(which='all', pack='wire'):
+    """series strips, the two PACK ends and the three sense tails; bought nickel, not printed.
+    which: 'all', 'strips' (series strips only) or 'tails' (PACK ends and sense tails only).
+    pack: 'wire' (option C, 2026-10-24: a nickel pad on each PACK end, the wires are pack_wires()) or 'tab' (the split
+    nickel tabs of the retired side tray)"""
     t, hw, pr = S.SB_TAB_T, S.SB_TAB_W / 2, S.sb_pr
     zt0, zb1 = S.sb_z_tail_t, S.sb_z_tail_b
     B = []
@@ -431,11 +434,27 @@ def nickel_strips(which='all'):
               _box(-pr - hw, -pr + hw, -pr, pr, zb1 - t, zb1)]         # C2+ -> C3-  (CELL2), bottom
     if which in ('all', 'tails'):
         T = S.SB_PACK_T
-        for n, yc in S.sb_tab_y.items():                           # PACK tabs: whole to the board side, then split
-            B.append(_box(pr - hw, aS, yc - hw, yc + hw, zb1 - T, zb1))
+        for n, yc in S.sb_tab_y.items():
+            if pack == 'wire':                                     # PACK pads, inside the weld window
+                B.append(_box(pr - S.SB_TAB_W / 2, pr - S.SB_TAB_W / 2 + PACK_PAD_L, yc - hw, yc + hw, zb1 - T, zb1))
+                continue
+            B.append(_box(pr - hw, aS, yc - hw, yc + hw, zb1 - T, zb1))   # PACK tabs: whole to the board side, then split
             for y0, y1 in S.sb_fingers(n).values(): B += _bottom_tail(aS - 0.01, y0, y1, T)
         B += _bottom_tail(-pr + hw - 0.01, -S.SB_TAIL_W / 2, S.SB_TAIL_W / 2, t)    # CELL2
         B += _top_tail(-1) + _top_tail(1)                                            # CELL1, CELL3
+    return np.vstack(B)
+
+def pack_wires():
+    """PACK wire tails (option C): the 18 AWG power and 28 AWG Kelvin wires, soldered under each PACK pad, along their
+    frame notches, across the gap behind the board and through it (square-section stand-ins for the round wires)"""
+    pz0 = S.sb_z_tail_b - S.SB_PACK_T; xs = S.sb_pr + 1.0; xb = S.sb_ac + 0.6; B = []
+    for n in ('PACK-', 'PACK+'):
+        yh, zh, _ = S.sb_pack_holes()[n]; k = '4P' if yh > 0 else '1N'; yk, zk, _ = S.sb_slots()[k]
+        for y, zc, od, cu in ((yh, zh, S.SB_PWIRE_OD, 1.2), (yk, zk, S.SB_KWIRE_OD, 0.32)):
+            r = od / 2
+            B += [_box(xs, xb, y - r, y + r, pz0 - od, pz0),                          # under the pad, along the notch
+                  _box(xb - r, S.sb_xb0, y - r, y + r, pz0 - od, max(pz0, zc + r)),   # up across the gap
+                  _box(S.sb_xb0, S.sb_xb1 + 0.8, y - cu / 2, y + cu / 2, zc - cu / 2, zc + cu / 2)]   # conductor through
     return np.vstack(B)
 
 # ---- cell frame (TPU, rides with the module): ring carrier under the cells, top frame with the bars ----

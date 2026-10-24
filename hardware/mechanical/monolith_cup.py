@@ -41,6 +41,8 @@ FR_T0, FR_T1 = S.sb_z_cell1 + S.TAB_T, Z_TOP0                       # carrier to
 WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = S.CUP_RAIL_GAP          # board rails stop here so the filler reaches the cell tangents
+WIRE_NOTCH_CLR = 0.2               # PACK / Kelvin wire notches through the bottom frame: clearance each side of the wire
+RAIL_RELIEF_Y = 7.6                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK and Kelvin wires pass
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
@@ -106,9 +108,20 @@ def carrier():
          pz(rect(-1.5, 1.5, PR + CR - 5.2, PR + CR), FR_B0, FR_T1), pz(rect(-1.5, 1.5, -PR - CR, -PR - CR + 5.2), FR_B0, FR_T1)]
     for s in (-1, 1):
         r = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*S.SB_BAR_Y[1])))
-        m += [pz(r, FR_B0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
+        keep = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))   # stub that ties the rail to the frame
+        m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [cylx(y, z, S.CUP_PEG_D / 2, S.sb_xb0 - 0.5, S.sb_xb1 + S.CUP_PEG_PROUD) for y, z in S.CUP_PEGS]   # board pegs
-    return U(*m, webs())
+    return U(*m, webs()) - U(*wire_notches())
+def wire_notches():
+    """PACK wire tails: a notch right through the bottom frame for each power and Kelvin wire, from inside the C1 / C4 weld
+    window out past the frame, since no wire fits the gap between the frame and the cell end"""
+    out = []
+    for n in ('PACK-', 'PACK+'):
+        yc = S.sb_pack_holes()[n][0]; k = '4P' if yc > 0 else '1N'
+        for y, od in ((yc, S.SB_PWIRE_OD), (S.sb_slots()[k][0], S.SB_KWIRE_OD)):
+            h = od/2 + WIRE_NOTCH_CLR
+            out.append(pz(rect(PR + 3.0, S.sb_xb0, y - h, y + h), FR_B0 - 0.1, FR_B1 + 0.1))
+    return out
 def filler():
     blk = MF.cube((S.sb_xb0 - 19.0, 37.0, FILL_Z[1] - FILL_Z[0])).translate((19.0, -18.5, FILL_Z[0]))
     cells = U(*[pz(circ(x, y, CR), FILL_Z[0] - 1, FILL_Z[1] + 1) for x, y in CELLS])
@@ -134,6 +147,7 @@ def assembly():
     for x, y in CELLS: A.append(('cell', mv(cell, (x, y, S.sb_z_cell0)), C['cell']))
     A += [('carrier', tris(carrier()), C['carrier']), ('filler', tris(filler()), C['filler']),
           ('nickel', P.nickel_strips('strips'), C['nickel']), ('tails', P.nickel_strips('tails'), C['tail']),
+          ('tails_wire', P.pack_wires(), C['wire']),
           ('board', P.side_board_dummy(), C['board']), ('ble', P.ble_module(), C['ble']),
           ('pad', tris(pad()), C['pad']), ('oring', tris(oring()), C['oring']), ('cap', tris(cap()), C['cap']),
           ('screw', tris(screws()), C['screw']), ('vent', tris(cylx(VENT_Y, VENT_Z, 5.5, X_IN + WALL, X_IN + WALL + 0.3)), C['vent'])]
@@ -144,7 +158,7 @@ def assembly():
 def group(k): return k.split('_')[0]
 PARTS = [(1, 'Cell carrier: frames, spines, split rails, pegs, front-back webs', 'MJF PA12', 'carrier'),
          (2, 'Cells C1-C4, welded 4S', 'FEB 21700G 6500 mAh', 'cell'),
-         (3, 'Nickel series strips (3)', 'nickel 0.15', 'nickel'), (4, 'Nickel tongues: PACK+/- (power + Kelvin), CELL1-3', 'nickel 0.15 / 0.2', 'tails'),
+         (3, 'Nickel series strips (3)', 'nickel 0.2 x 10', 'nickel'), (4, 'CELL1-3 tails; PACK pads, 18 / 28 AWG wires', 'nickel; PTFE wire', 'tails'),
          (5, 'Gap filler, board to the front cells (dispensed)', '~3 W/mK, 2.6 g/cm3', 'filler'),
          (6, 'Board 1.6 mm, thermal vias under the power stages', 'FR4, 6 layers', 'board'),
          (7, 'Cup: 5 closed sides, USB-C seal bores in the top wall', 'MJF PA12, 1.2 mm', 'cup'),
@@ -179,6 +193,11 @@ def checks():
         'O-ring groove inside the skirt (z)': min(GROOVE_Z[0] - Z_MOUTH, Z_SKIRT1 - GROOVE_Z[1]) - 1.0,
         'screws below the O-ring (outside the seal, z)': (GROOVE_Z[0] - 0.3) - (SCREW_Z + 1.0),
         'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
+        'board rails clear of the PACK pads (y, rail stub to the pad edge)': min(abs(y0) for n in ('PACK-', 'PACK+')
+                                                       for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
+        'wire notches: frame left between the power and Kelvin notches (y, >= 1.0)': min(abs(S.sb_pack_holes()[n][0]) - S.SB_PWIRE_OD/2 for n in ('PACK-', 'PACK+'))
+                                                       - (abs(S.sb_slots()['4P'][0]) + S.SB_KWIRE_OD/2) - 2*WIRE_NOTCH_CLR - 1.0,
+        'board rails clear of the PACK pads (z, rail above the pads)': S.SB_BAR_Z0 - (S.sb_z_tail_b + 0.5),
         'gap filler below the BLE module (z)': (S.sb_ant_zc - S.SB_ANT_MOD[0]/2) - FILL_Z[1] - 1.0,
         'webs: room between front and back cells (gap - 2 x clearance)': (2*PR - 2*CR) - 2*WEB_CLR,
         'bore corner radius >= 2 x O-ring cord': R_FRONT - 2*ORING_CS,
@@ -188,7 +207,7 @@ def checks():
 SS, INK, MUTED, RULE, ACCENT = RR.SS, RR.INK, RR.MUTED, RR.RULE, RR.ACCENT
 LEG = [('PA12 cup', C['cup']), ('PA12 cap', C['cap']), ('PA12 carrier', C['carrier']), ('cells', C['cell']), ('board', C['board']),
        ('BLE module', C['ble']), ('gap filler', C['filler']), ('O-ring', C['oring']), ('screw', C['screw']),
-       ('TPU pad / bumper slab', C['pad']), ('TPU bumper band', C['bump']), ('nickel strip', C['nickel']), ('nickel tongue', C['tail'])]
+       ('TPU pad / bumper slab', C['pad']), ('TPU bumper band', C['bump']), ('nickel strip', C['nickel']), ('nickel tail / pad', C['tail']), ('PACK wire', C['wire'])]
 def save(sh, name): sh.img.resize((sh.W, sh.H), Image.LANCZOS).save(os.path.join(HERE, name)); print('wrote', name)
 def balloons(sh, pid, gid, BAL, dist=70):
     for g_ in dict.fromkeys(gid):
