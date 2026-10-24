@@ -41,7 +41,7 @@ The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 
 | Cycle life | ≥ 80 % at 501 cycles (0.5C charge / 1C discharge, 4.2–2.5 V) |
 | Price | $9.25–9.75 each, bare, no protection. Sold out at both US sellers on 10-23 |
 
-- **Interconnect:** spot-welded pure nickel, with an AWithZ P20B (`docs/production/spot-welding.md`). Series strips 0.2 × 10 mm; the three cell taps are nickel tails through plated slots. **PACK− / PACK+ are wire tails (option C, 2026-10-24):** a 0.2 × 7 mm nickel pad welded to the cell, with a 20 AWG PTFE power wire and a 28 AWG PTFE Kelvin wire soldered to it on the bench. The power wire goes into a Ø1.3 mm plated hole, the Kelvin wire into its slot, through notches in the carrier's bottom frame. Everything is soldered on F.Cu. No springs or connectors.
+- **Interconnect:** spot-welded pure nickel, with an AWithZ P20B (`docs/production/spot-welding.md`). Series strips 0.2 × 10 mm; the three cell taps are nickel tails through plated slots. **PACK− / PACK+ are wire tails (option C, 2026-10-24):** a 0.2 × 7 mm nickel pad welded to the cell, with an 18 AWG thin-wall PTFE power wire (Logan, 2026-10-24) and a 28 AWG PTFE Kelvin wire soldered to it on the bench. The power wire goes into a Ø1.5 mm plated hole, the Kelvin wire into its slot, through notches in the carrier's bottom frame. Everything is soldered on F.Cu. No springs or connectors.
 - **Matching:** all four from one batch, within 10 mV and 1 mΩ (AC 1 kHz). Measure each diameter; the cup is designed to 21.85 mm.
 - **Carrier:** an MJF PA12 carrier holds the cells at 23.25 mm pitch, with webs between the front and back pairs. The board's heat goes into the two front cells, so those run hottest.
 - **Short circuit:** about 220–270 A from the cells' DC resistance (estimated at 12–16 mΩ, since BAK gives no DC figure), and up to about 370 A from the datasheet's ≤ 8 mΩ AC figure, which is closer to how a cell behaves in the first 100 µs of a short. It was 150–200 A with the FEB. This is why the protection FETs change to the BSC007N04LS6 (see Battery management and protection).
@@ -154,7 +154,7 @@ The production P0 board is the design of record and the first board planned to b
 
 **P0 board changes still to apply:**
 
-- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); replace the PACK− / PACK+ power slots with Ø1.3 plated holes at KiCad (86.97, 135.73) and (113.03, 135.73) and add the `BCU_WIRE_RUNS` keep-outs (option C); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [ ] Move the five bottom tab slots 0.30 mm for the 6500 mAh cells and recheck them for the 65E (0.05 mm longer than the FEB); replace the PACK− / PACK+ power slots with Ø1.5 plated holes at KiCad (86.97, 135.73) and (113.03, 135.73) and add the `BCU_WIRE_RUNS` keep-outs (option C); run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
@@ -189,7 +189,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 12 | Port protection | Project notes: TPD4S201 with liquid detection | P0 10-18: TPD6S300, liquid detection removed | TPD6S300 |
 | 13 | Charger FETs and inductor | Project notes, dev board: 4 × PGQ04N070, XAL7030-222 | P0: 2 × SiZ240DT, APS0730M2R2F; loss study proposes XGL7030-332 at 500 kHz | P0 parts |
 | 14 | Idle current | Project notes: \~230 µA. P0 low-profile section: "\~150 µA budget" | P0 README: TPD6S300s add \~175 µA | \~400 µA |
-| 15 | Pack wiring on P0 | `p0-bringup-and-training.md`: 16 AWG wire pads J108/J112 | `p0-assembly.md`: nickel tails through plated slots | Slots for the cell taps; PACK± are 20 AWG wires in Ø1.3 plated holes (10-24) |
+| 15 | Pack wiring on P0 | `p0-bringup-and-training.md`: 16 AWG wire pads J108/J112 | `p0-assembly.md`: nickel tails through plated slots | Slots for the cell taps; PACK± are 18 AWG wires in Ø1.5 plated holes (10-24) |
 | 16 | Production board size | Project notes, repo checklist: \~44 × 44 mm double-sided board at the top cap, 0.8 mm, 4 layers | P0: 43.2 × 74.35 mm side board, 1.6 mm, 6 layers | P0 |
 | 17 | Checklist docs | Repo checklist: 10-11 base with STM32WB pin map, ProtoFlow, 10-18 header | Project notes: 10-16 rewrite for the CC2340. Both predate the FEB cells and the cup | This spec |
 | 18 | MCU in older notes | EEPROM programming notes: STM32WB, separate IRQ pins | CC2340, one IRQ\_N line | CC2340 (method unchanged) |
@@ -285,7 +285,7 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Cells | BAK N21700CX-65E replaces the FEB 21700G | 91 Wh typical (88.9 Wh minimum). Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 | Spot welder (10-23) | AWithZ P20B; the kWeld plus kCap is dropped | Mains powered, rated 0.3 mm nickel; handheld pens weld through the carrier windows (`docs/production/spot-welding.md`) |
-| PACK tails (10-24) | Wire tails (option C) | Two Ø1.3 plated holes on the board, four carrier frame notches, wires soldered to the nickel pads on the bench. Options compared in `docs/production/pack-tail-options.html` |
+| PACK tails (10-24) | Wire tails (option C), 18 AWG power wires | Two Ø1.5 plated holes on the board, four carrier frame notches, wires soldered to the nickel pads on the bench. Options compared in `docs/production/pack-tail-options.html` |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
 
@@ -314,8 +314,8 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 | 1. Protection FETs → XRS120N04D | 0.03 W | 0.45 W | 0.77 W | 0.18 W | +$0.14 | Part fields only |
 | 2. 9 V gate drive per port | 0 | 0.38–0.43 W | 0.72 W | 0.22 W | +$2–4 | \~25 mm² per port, new parts |
 | 3. XGL7030-332 inductor + 500 kHz | 0.16 W | 0.49 W | 0.76 W | 0.26 W | +$3.2 | Same footprint; one resistor change |
-| 4. Thicker nickel strips, wire PACK tails | 0.02 W | 0.21 W | 0.37 W | 0.11 W | \~$5 | Two Ø1.3 plated holes replace the power slots; carrier frame notches |
-| **Total** | **\~0.2 W** | **\~1.55 W** | **\~2.6 W** | **\~0.75 W** |  |  |
+| 4. Thicker nickel strips, wire PACK tails | 0.02 W | 0.23 W | 0.41 W | 0.12 W | \~$5 | Two Ø1.5 plated holes replace the power slots; carrier frame notches |
+| **Total** | **\~0.2 W** | **\~1.6 W** | **\~2.65 W** | **\~0.8 W** |  |  |
 
 ### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D (BSC007N04LS6 since 10-23)
 
@@ -344,8 +344,8 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 
 ### 4. Thicker nickel strips and wire PACK tails (option C, 2026-10-24)
 
-- **What:** series strips go from 0.15 × 7 mm to 0.2 × 10 mm pure nickel. The PACK tails become a nickel pad welded at the cell end, with a 20 AWG power wire and a 28 AWG Kelvin wire soldered to it on the bench (in place of the copper tails the 10-21 study proposed). The interconnect drops from about 8.5 mΩ to about 5.0 mΩ. The savings in the table are scaled from the study by resistance (3.5 of 4.4 mΩ).
-- **Cost:** about $5 of strip and wire, under 1 g. Board: the two PACK power slots become Ø1.3 mm plated holes at z 5.75 (`sb_pack_holes()`), with `BCU_WIRE_RUNS` keep-outs. Carrier: four notches through the bottom frame (`wire_notches()`).
+- **What:** series strips go from 0.15 × 7 mm to 0.2 × 10 mm pure nickel. The PACK tails become a nickel pad welded at the cell end, with an 18 AWG power wire and a 28 AWG Kelvin wire soldered to it on the bench (in place of the copper tails the 10-21 study proposed). Each PACK end is about 0.66 mΩ (0.06 W at 9.4 A). The interconnect drops from about 8.5 mΩ to about 4.6 mΩ. The savings in the table are scaled from the study by resistance (3.9 of 4.4 mΩ).
+- **Cost:** about $5 of strip and wire, under 1 g. Board: the two PACK power slots become Ø1.5 mm plated holes at z 5.75 (`sb_pack_holes()`), with `BCU_WIRE_RUNS` keep-outs. Carrier: four notches through the bottom frame (`wire_notches()`).
 - **Risks:** the welder has to weld 0.2 mm reliably (the AWithZ P20B is rated to 0.3 mm); buy from a source that sells real nickel, since nickel-plated steel is 2–3× worse. The solder joint must stay inside the weld window, at least 3 mm from the weld spots. The notches thin the bottom frame, and the wires span only the 2.6 mm gap to the board, so they add little flex.
 - **Check:** 4-wire joint resistance on a test coupon before welding the real pack (`docs/production/spot-welding.md`). Check the notched frame on the first carrier fit print.
 - **Verdict:** yes. It can be decided any time before welding.

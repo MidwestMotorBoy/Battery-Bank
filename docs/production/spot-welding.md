@@ -15,7 +15,7 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 | --- | --- | --- | --- |
 | Series strips; the CELL1 / CELL3 tails cut from them | Pure nickel, 99.6 % | 0.2 × 10 mm | diy500amp, Pure Nickel Strip Roll, 5 m |
 | PACK− / PACK+ pads (the wires are soldered to them on the bench) | Pure nickel | 0.2 × 7 mm, cut from the 10 mm roll (or the 0.2 × 8 roll) | Same listing |
-| PACK power leads / Kelvin leads | Silver-plated copper, PTFE insulated | 20 AWG (about 1.2 mm OD) / 28 AWG (about 0.6 mm OD) | Any PTFE hook-up wire supplier |
+| PACK power leads / Kelvin leads | Silver-plated copper, PTFE insulated | 18 AWG thin-wall, M22759/11-18 or similar (1.45 mm OD at most) / 28 AWG (about 0.6 mm OD) | Any PTFE hook-up wire supplier |
 | CELL2 sense tail | Pure nickel | 0.15 mm, slit to 3 mm | Same listing, 0.15 × 10 mm |
 
 **Check the nickel is real** before welding anything. Nickel-plated steel looks identical and has 2–3 times the resistance. Four-wire 100 mm of the 0.2 × 10 strip at 5 A from the bench supply: pure nickel reads about 3.5 mΩ (17 mV). Also leave a scrap in salt water overnight: plated steel rusts at the cut edges.
