@@ -58,9 +58,9 @@ T['filler'] = [
     f"and opens to about 3.8 mm at the zone edges, so it has to be a gel or a cure-in-place filler, not a pad. A pad cannot follow the curved can.",
     f"<b>Product for P0: Parker Chomerics THERM-A-GAP GEL 30</b> (3.5 W/m·K, specific gravity 3.1, one part, supplied fully cured). It needs no mixing or "
     f"curing, a 10 cc syringe (65-00-GEL30-0010) covers about six packs, and it peels off cleanly if the module has to come apart during bring-up. "
-    f"For gift packs a two-part cure-in-place filler holds its shape better through drops: <b>Bergquist TGF 3600</b> (3.6 W/m·K, 3.0 g/cc, 1:1, "
-    f"15 h at room temperature, Shore 00 35) or <b>Laird Tflex CR350S</b> (3.6 W/m·K). Cure them at room temperature only, never 100 °C, with cells fitted. "
-    f"Both come in 50 cc cartridges at the smallest, which is far more than a few packs need.",
+    f"GEL 30 is also the pick for the gift packs (decided 2026-10-24). The two-part <b>Bergquist TGF 3600</b> (3.6 W/m·K, 3.0 g/cc, 1:1, "
+    f"15 h at room temperature, Shore 00 35) was the runner-up, but its 50 cc cartridge is far more than a few packs need. "
+    f"<b>Laird Tflex CR350S</b> needs an oven cure (70 °C, then 100 °C), which the fitted cells can't take.",
     f"<b>What it does:</b> it is a board-protection part. It keeps the hottest power part {f(FL['none']['part'] - B['part'])} K cooler at 100 W and "
     f"{f(FL['none']['chg_part'] - B['chg_part'])} K cooler while charging. Without it, the board ramp ends the 100 W burst after {f(FL['none']['min_full'], 0)} min. "
     f"The catch is that its heat goes into C1 and C4, where the cell NTCs see it. Under today's 33 °C cell ramp that costs about "

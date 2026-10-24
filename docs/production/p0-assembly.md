@@ -62,7 +62,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
     - the cell carrier (MJF PA12): two frames, spines, split rails, board pegs and the front-back webs;
     - the TPU pad (inside the cap) and the two TPU bumpers.
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 screws, an ePTFE vent patch.
-- **Thermal:** dispensed gap filler, ~3 W/m·K (about 4 g between the board and the two front cells).
+- **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron (a chisel tip and plenty of heat, for nickel into a plated slot), a multimeter, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), and a hand pump with a gauge for the leak test.
 
@@ -81,7 +81,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 ### 2. Gap filler and board on, on the bench
 1. **Form the tails:** the 1 mm kink in the CELL2 tail, and the drop and 90° turn in the CELL1 / CELL3 tails, so each ends pointing +x at its slot. A printed bending jig makes them repeatable.
-2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it.
+2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
 3. **Board on:** lower it onto the carrier's pegs, threading the five tails and four wires through their slots and holes from B.Cu.
 4. **Solder on F.Cu,** PACK− first, then PACK+, then the five sense leads. Trim each tail to about 0.5 mm proud.
     - The BQ40Z50-R2 datasheet (SLUSCS4C §9.2.2.1.3) gives no connection order, only the Kelvin rule for 1N and 4P.
