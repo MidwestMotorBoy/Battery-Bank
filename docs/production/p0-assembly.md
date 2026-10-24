@@ -18,30 +18,32 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 
 ## Connections
 
-| Connection | From | Nickel | Slot (KiCad x, y), length along x × 0.6 mm |
+| Connection | From | Nickel or wire | Slot (KiCad x, y), length along x × 0.6 mm, or hole |
 |---|---|---|---|
-| PACK− | C1 bottom (can) | 0.2 × 7 tab, power finger 4.2 mm | (86.97, 135.48), 4.6 |
-| 1N (gauge Kelvin) | same tab, Kelvin finger 1.2 mm | | (91.28, 135.48), 1.6 |
+| PACK− | C1 bottom (can) | 0.2 × 7 nickel pad + 20 AWG PTFE wire | Ø1.3 plated hole at (86.97, 135.73) |
+| 1N (gauge Kelvin) | PACK− pad, 28 AWG PTFE wire | | (91.28, 135.48), 1.6 |
 | CELL2 | C2+ / C3− strip, bottom | 0.15 × 3 tail, along a channel in the carrier's bottom frame, kapton wrapped | (100.00, 135.45), 3.4 |
-| 4P (gauge Kelvin) | PACK+ tab, Kelvin finger 1.2 mm | | (108.72, 135.48), 1.6 |
-| PACK+ | C4 bottom (+ cap) | 0.2 × 7 tab, power finger 4.2 mm | (113.03, 135.48), 4.6 |
+| 4P (gauge Kelvin) | PACK+ pad, 28 AWG PTFE wire | | (108.72, 135.48), 1.6 |
+| PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 20 AWG PTFE wire | Ø1.3 plated hole at (113.03, 135.73) |
 | CELL1 | C1+ / C2− strip, top | the strip runs on as a 3 mm tail, down behind the board | (86.10, 69.48), 3.4 |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | (113.90, 69.48), 3.4 |
 
 The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`; the cup uses the same board, slots and tails. **FEB 21700G (2026-10-21):** the five bottom slots moved 0.30 mm toward the board's bottom edge (the cells sit 0.3 mm lower), and the PACK / Kelvin pairs 0.18 mm outward (wider cell pitch); the CELL1 / CELL3 slots and the board outline are unchanged. They're on the `TAB_SLOTS` and `TAB_SLOT_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
-- **The PACK tabs split near the board.** The power finger takes the current; the Kelvin finger carries none, so it gives the gauge a true sense at the tab. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
-- **Power loss:** about 1 mΩ per PACK tab (12 mm of 0.2 × 4.2 nickel), so about 0.09 W each at 9.4 A.
-- **Strain relief:** the bottom tails have a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
-- **Behind B.Cu:** the tails run about 1.1 mm behind B.Cu in the areas on `BCU_TAIL_RUNS`. Only low parts (≤ 0.6 mm) there.
+- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: a 20 AWG PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so each runs through its own notch in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`), crosses the 2.6 mm gap and goes into the board: the power wire into a Ø1.3 plated hole (`sb_pack_holes()`, layers `PACK_WIRE_HOLES` / `PACK_WIRE_PADS`), the Kelvin wire into its slot. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
+- **Power loss:** about 0.7 mΩ per PACK end (7 mm of pad plus 15 mm of 20 AWG), so about 0.07 W each at 9.4 A.
+- **Short risk:** keep the solder joint inside the weld window, over the pad. On C4 the bottom is the + cap and the rim is the can (−), so a joint out at the rim could short the cell.
+- **Strain relief:** the CELL2 tail has a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
+- **Behind B.Cu:** the tails run about 1.1 mm behind B.Cu in the areas on `BCU_TAIL_RUNS`. Only low parts (≤ 0.6 mm) there. The four wires cross the gap in the `BCU_WIRE_RUNS` areas: no B.Cu parts at all there.
 - **Carrier rails (fixed 2026-10-24):** the board rails ran down to the bottom frame across the PACK tabs' path, so the Kelvin fingers and the edge of each power finger went through them. Below z 7.3 the rails now keep only a stub at |y| ≤ 7.6 mm (`RAIL_RELIEF_Y` in `monolith_cup.py`), and two checks cover it.
 
 **Board changes needed:**
-- Seven plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.
+- Five plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.
+- Two Ø1.3 mm plated holes with a 0.4 mm ring for the PACK wires, replacing the two power-finger slots. Their centres sit at z 5.75, so each ring clears the board's bottom edge by 0.3 mm.
 - Remove the two 18 AWG PACK holes and the five B.Cu spring contacts.
 - Route 1N and 4P as Kelvin nets to the gauge.
-- Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
+- Keep-outs: the carrier rails (`BCU_FRAME_BARS`, now split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
 - Two holes for the carrier's board pegs (Ø2.0 at y ±8.6, z 14 and 68).
 - The cover standoffs (H101–H104) and the wedge's screw bosses no longer exist: the standoffs can go.
 
@@ -49,10 +51,11 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 - **Cells:** 4 × FEB 21700G (68E) 6500 mAh, same batch, matched to within 10 mV and to within 1 mΩ on an AC (1 kHz) meter. Measure each cell's diameter: the cup is designed to the 21.85 mm maximum.
 - **Nickel:**
-    - 0.15 × 7 mm pure nickel for the three series strips. The top two are cut long, so they run on as the CELL1 / CELL3 tails.
+    - 0.2 × 10 mm pure nickel for the three series strips (loss cut 4). The top two are cut long, so they run on as the CELL1 / CELL3 tails, trimmed to a 3 mm tongue.
     - 0.15 mm nickel, cut to 3 mm, for the CELL2 tail.
-    - 0.2 × 7 mm pure nickel for the PACK tabs, slit at one end into the power and Kelvin fingers.
-    - You'll need a spot welder that handles 0.2 mm.
+    - 0.2 × 7 mm pure nickel for the two PACK pads, about 10 mm long.
+- **Wire:** 20 AWG PTFE (about 1.2 mm OD) for the two PACK power leads and 28 AWG PTFE (about 0.6 mm OD) for the two Kelvin leads, silver-plated stranded copper, about 25 mm each.
+    - Source, and how to check it is real nickel: `spot-welding.md`.
 - **Insulation:** kapton tape for the CELL2 tail. No fish paper: the carrier's frames and webs keep the cans apart and off the board.
 - **Printed parts:**
     - the cup and the bottom cap (MJF PA12);
@@ -61,23 +64,26 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 screws, an ePTFE vent patch.
 - **Thermal:** dispensed gap filler, ~3 W/m·K (about 4 g between the board and the two front cells).
 - **Other:** conformal coat.
-- **Tools:** soldering iron (a chisel tip and plenty of heat, for nickel into a plated slot), a multimeter, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), and a hand pump with a gauge for the leak test.
+- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron (a chisel tip and plenty of heat, for nickel into a plated slot), a multimeter, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), and a hand pump with a gauge for the leak test.
 
 ## Steps
 
 ### 1. Cells into the carrier and welded, on the bench
 1. **Check the cells.** Measure each cell's voltage, AC resistance and diameter; reject outliers.
 2. **Cells into the carrier**, loaded sideways: the front pair (C1, C4) from the board side, the back pair (C2, C3) from the back. The webs hold the front and back pairs apart. Positions per `SB_CELLS` in the model: C1 and C3 + up, C2 and C4 + down.
-3. **Weld:**
-    - Series strips, through the frame windows: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
-    - The CELL2 tail onto the middle of the bottom strip, along the channel in the bottom frame. Wrap it in kapton.
-    - The PACK− tab on the C1 bottom and the PACK+ tab on the C4 bottom, fingers toward the board side.
+3. **Qualify the weld first** on two spare cells (`spot-welding.md`), at the settings you'll use.
+4. **Prepare the PACK pads on the bench,** with no cell present: strip and tin each wire, lay it on the pad's outer face about 3 mm from the board-side end, and solder it. The power wire goes on the outer side (toward the PACK hole), the Kelvin wire on the inner side.
+5. **Weld:**
+    - Before the bottom strip goes in, weld the CELL2 tail onto its middle on the bench. That spot sits under the frame, where the pens can't reach once the strip is in.
+    - Series strips, slid into the gap between the cell ends and the frame, welded through the frame windows: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
+    - Lay the CELL2 tail along the channel in the bottom frame. Wrap it in kapton.
+    - The PACK pads, with their wires already soldered on: PACK− on the C1 bottom, PACK+ on the C4 bottom. Keep every weld spot at least 3 mm from the solder, and lay each wire in its frame notch.
 
 ### 2. Gap filler and board on, on the bench
-1. **Form the tails:** the 1 mm kink in the bottom tails, and the drop and 90° turn in the CELL1 / CELL3 tails, so each ends pointing +x at its slot. A printed bending jig makes them repeatable.
+1. **Form the tails:** the 1 mm kink in the CELL2 tail, and the drop and 90° turn in the CELL1 / CELL3 tails, so each ends pointing +x at its slot. A printed bending jig makes them repeatable.
 2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it.
-3. **Board on:** lower it onto the carrier's pegs, threading the seven tails through their slots from B.Cu.
-4. **Solder on F.Cu,** PACK− first, then PACK+, then the five sense tails. Trim each tail to about 0.5 mm proud.
+3. **Board on:** lower it onto the carrier's pegs, threading the five tails and four wires through their slots and holes from B.Cu.
+4. **Solder on F.Cu,** PACK− first, then PACK+, then the five sense leads. Trim each tail to about 0.5 mm proud.
     - The BQ40Z50-R2 datasheet (SLUSCS4C §9.2.2.1.3) gives no connection order, only the Kelvin rule for 1N and 4P.
     - The BQ294700 datasheet hasn't been checked yet. Check it before the first build.
 
@@ -105,12 +111,13 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 3. Press the TPU bumpers on, top (port well) and bottom.
 
 ## Open items
-- **Board:** the seven slots, Kelvin routing for 1N / 4P, the `BCU_TAIL_RUNS` keep-outs, the gap-filler zone and thermal vias, the two peg holes, and removing the PACK holes, spring contacts and cover standoffs.
+- **Board:** the five slots and two PACK wire holes, Kelvin routing for 1N / 4P, the `BCU_TAIL_RUNS` keep-outs, the gap-filler zone and thermal vias, the two peg holes, and removing the PACK holes, spring contacts and cover standoffs.
 - **Fit:**
     - The O-ring squeeze in an MJF bore: print a coupon of the cup mouth and cap, and dunk-test it.
     - How hard the module pushes home; the USB-C seal rings entering their bores together.
     - Tail lengths and the bending jig.
-    - Whether the nickel kinks are enough strain relief in the vibration test. Measure each PACK joint's resistance before and after the vibration and drop tests.
+    - Whether the frame notches leave the bottom frame stiff enough, and how the wires are held in them (a dab of adhesive?).
+    - Whether the kinks and wires are enough strain relief in the vibration test. Measure each PACK joint's resistance before and after the vibration and drop tests.
 - **Label:** the aluminium cover carried it; for the cup, emboss it in the PA12 or add a small label plate.
 - **Service:** the board can't come off the cells without desoldering seven tails, and the cap is screwed. A bad cell means rework at the bench.
 - **Connection order:** check the BQ294700 datasheet.
