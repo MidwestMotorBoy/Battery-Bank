@@ -1,6 +1,6 @@
 # P0 assembly: one power module, then the cup
 
-How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`; the connections are in the table below (the old nickel-tail drawing, `hardware/mechanical/retired/monolith_side_tabs.png`, is history).
+How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`, and a picture sheet for each step below (`hardware/mechanical/assembly_steps/`); the connections are in the table below (the old nickel-tail drawing, `hardware/mechanical/retired/monolith_side_tabs.png`, is history).
 
 **Status:** a plan. Nothing has been built yet, so expect it to change at the first fit print. Cells: BAK N21700CX-65E 6500 mAh (`docs/spec.md`, Cells and pack). Which of the board changes below are already on the `Production` branch is tracked in the spec's P0 checklist.
 
@@ -69,7 +69,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
     - in TPU: the pad (inside the cap, 15 % gyroid), the four post sleeves, and the two bumpers.
-- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 thread-forming screws for plastic (about 7 mm long), an ePTFE vent patch rated IP67, silicone grease.
+- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), an ePTFE vent patch rated IP67, silicone grease.
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), a current-limited bench supply and a cell simulator for step 0, and a hand pump with a gauge for the leak test.
@@ -77,13 +77,21 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 
 ## Steps
 
+Each step has a sheet of pictures, numbered to match the sub-steps below. Each panel draws what's already built in muted colours and the parts that step adds in full colour, pulled out along the way they go on. They're rendered from the same model as the STLs by `hardware/mechanical/monolith_cup_assembly_steps.py`, so re-run it after a geometry change. The NTCs, gel bead and solder joints aren't modelled; they're shown as callouts.
+
 ### 0. The bare board, before it meets the cells
+
+![Step 0](../../hardware/mechanical/assembly_steps/step0.png)
+
 1. **Inspect** the hand-fitted B.Cu parts (19, including the CC2340 module) under a loupe, and check that R124 and R126 are not fitted.
 2. **Power it from the cell simulator** through the seven holes. Check the current draw, then 3V3 at TP301.
 3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks on the SMBus pogo pads (wake it from USB or TP113 per `p0-bringup-and-training.md`).
 4. If anything is wrong, fix it now: once the board is on the pack it can't come off without desoldering seven wires, and it is bedded in gel.
 
 ### 1. Cells into the carrier and welded, on the bench
+
+![Step 1](../../hardware/mechanical/assembly_steps/step1.png)
+
 1. **Check the cells.** Measure each cell's voltage, AC resistance, diameter and length; reject outliers. Measure a + cap's diameter and height above the shoulder.
 2. **Insulator rings** on the four + ends (they are the + ends at C1 and C3 top, C2 and C4 bottom).
 3. **Prepare the strips and pads on the bench,** with no cell present (strip and tin each wire, solder it, let it cool):
@@ -101,6 +109,9 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 8. **Rail blocks on:** slide the four blocks' tongues into the frame key slots, posts pointing +x.
 
 ### 2. Gap filler and board on, on the bench
+
+![Step 2](../../hardware/mechanical/assembly_steps/step2.png)
+
 1. **Front-cell NTCs** (C1 on TS1 / J102, C4 on TS4 / J107; `research_notes/Pack thermal BAK 65E/ntc-placement.md`):
     - Bead on the can's board-facing stripe, inside the filler zone: z 48 mm, 7° outboard of the board-facing line (|y| 12.9 mm, about 1.3 mm outboard of the tangent). Use a drop of thermal paste under it and Kapton tape over it. The cell's wrap insulates it from the can, which sits at that cell's negative; check the wrap is whole there, and put a layer of Kapton under the bead on C4 (its can is at CELL3).
     - Cap the bead with a closed-cell silicone foam square (about 4 × 5 mm, 1.5 mm thick), so the gel doesn't couple it to the board copper.
@@ -111,22 +122,34 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 4. **Solder on F.Cu,** USB unplugged, in the gauge sheet's note-15 order: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Then the four front NTC leads. Trim each wire about 0.5 mm proud. With R124 / R126 off, a wire touching its barrel out of order can't blow F102, but keep to the order anyway.
 
 ### 3. Test the module, on the bench
+
+![Step 3](../../hardware/mechanical/assembly_steps/step3.png)
+
 1. **Check the seven voltages** at the pads against PACK−: each step should be one cell (2.5–4.2 V). Only then **fit R124 and R126** (5.1 kΩ 0402, F.Cu).
 2. **Program and set up:** load the BQ40Z50 golden file and run gauge training on the SMBus pogo pads (`p0-bringup-and-training.md`).
 3. **Function test:** charge and discharge on each port, the 100 W thermal run (thermocouples on a front and a back cell), the gauge readings, and BLE.
 4. **Conformal coat**, last. Keep the coat off the antenna end, the pogo pads, the gap-filler zone and the USB-C seal rings (mask the rings).
 
 ### 4. Module into the cup
+
+![Step 4](../../hardware/mechanical/assembly_steps/step4.png)
+
 1. Port end first, push the module up into the cup from the bottom. The carrier's frames guide it to ±0.2 mm; the bores' lead-ins take the USB-C seal rings in. Keep it square so both rings enter together.
 2. Push home until the carrier's top frame bears on the top wall. The board's top edge then sits 0.1 mm under the top wall, as a backstop for the rings.
 
 ### 5. Cap
+
+![Step 5](../../hardware/mechanical/assembly_steps/step5.png)
+
 1. Measure the cap: the gap from the cup rim to the carrier frame's underside, with calipers, against the pad's printed height. The pad should be about 1.2 mm proud; shim or trim it if not.
 2. O-ring into the skirt groove, lightly greased with silicone grease that is safe on silicone rubber (a PTFE-based or silicone-compatible grease, not a silicone oil grease, which swells it).
 3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The collar's crush ribs go over the outside of the cup's mouth; the pad preloads the core against the top wall.
 4. Drive the two M2 thread-forming screws through the collar and the cup wall into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.
 
 ### 6. Leak test, vent, bumpers
+
+![Step 6](../../hardware/mechanical/assembly_steps/step6.png)
+
 1. **Leak test** through the bare vent hole, at most +10 kPa until the posts are proven: hold 5 min on a gauge, then dunk while pressurised and look for bubbles. A −5 kPa vacuum-decay test also works (or −10 kPa with the board face held on a flat plate).
 2. Stick the ePTFE vent patch over the hole.
 3. Press the TPU bumpers on, top (port well) and bottom (over the collar, pockets over the screw heads).
