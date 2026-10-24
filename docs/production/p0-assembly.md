@@ -48,10 +48,10 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 
 - **Cells:** 4 × FEB 21700G (68E) 6500 mAh, same batch, matched to within 10 mV and to within 1 mΩ on an AC (1 kHz) meter. Measure each cell's diameter: the cup is designed to the 21.85 mm maximum.
 - **Nickel:**
-    - 0.15 × 7 mm pure nickel for the three series strips. The top two are cut long, so they run on as the CELL1 / CELL3 tails.
+    - 0.2 × 10 mm pure nickel for the three series strips (loss cut 4). The top two are cut long, so they run on as the CELL1 / CELL3 tails, trimmed to a 3 mm tongue.
     - 0.15 mm nickel, cut to 3 mm, for the CELL2 tail.
-    - 0.2 × 7 mm pure nickel for the PACK tabs, slit at one end into the power and Kelvin fingers.
-    - You'll need a spot welder that handles 0.2 mm.
+    - 0.2 × 7 mm pure nickel for the PACK tabs, slit at one end into the power and Kelvin fingers (plain nickel, decided 2026-10-24).
+    - Source, and how to check it is real nickel: `spot-welding.md`.
 - **Insulation:** kapton tape for the CELL2 tail. No fish paper: the carrier's frames and webs keep the cans apart and off the board.
 - **Printed parts:**
     - the cup and the bottom cap (MJF PA12);
@@ -60,16 +60,18 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 screws, an ePTFE vent patch.
 - **Thermal:** dispensed gap filler, ~3 W/m·K (about 4 g between the board and the two front cells).
 - **Other:** conformal coat.
-- **Tools:** soldering iron (a chisel tip and plenty of heat, for nickel into a plated slot), a multimeter, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), and a hand pump with a gauge for the leak test.
+- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron (a chisel tip and plenty of heat, for nickel into a plated slot), a multimeter, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), and a hand pump with a gauge for the leak test.
 
 ## Steps
 
 ### 1. Cells into the carrier and welded, on the bench
 1. **Check the cells.** Measure each cell's voltage, AC resistance and diameter; reject outliers.
 2. **Cells into the carrier**, loaded sideways: the front pair (C1, C4) from the board side, the back pair (C2, C3) from the back. The webs hold the front and back pairs apart. Positions per `SB_CELLS` in the model: C1 and C3 + up, C2 and C4 + down.
-3. **Weld:**
-    - Series strips, through the frame windows: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
-    - The CELL2 tail onto the middle of the bottom strip, along the channel in the bottom frame. Wrap it in kapton.
+3. **Qualify the weld first** on two spare cells (`spot-welding.md`), at the settings you'll use.
+4. **Weld:**
+    - Before the bottom strip goes in, weld the CELL2 tail onto its middle on the bench. That spot sits under the frame, where the pens can't reach once the strip is in.
+    - Series strips, slid into the gap between the cell ends and the frame, welded through the frame windows: C1+→C2− top, C2+→C3− bottom, C3+→C4− top. Leave the two top strips long on the board side; they are the CELL1 and CELL3 tails.
+    - Lay the CELL2 tail along the channel in the bottom frame. Wrap it in kapton.
     - The PACK− tab on the C1 bottom and the PACK+ tab on the C4 bottom, fingers toward the board side.
 
 ### 2. Gap filler and board on, on the bench

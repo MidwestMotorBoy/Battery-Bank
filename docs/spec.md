@@ -41,7 +41,7 @@ The pack is four BAK N21700CX-65E 6500 mAh cells in 4S1P, adopted on 2026-10-23 
 | Cycle life | ≥ 80 % at 501 cycles (0.5C charge / 1C discharge, 4.2–2.5 V) |
 | Price | $9.25–9.75 each, bare, no protection. Sold out at both US sellers on 10-23 |
 
-- **Interconnect:** spot-welded pure nickel, kWeld plus kCap. Series strips 0.15 × 7 mm; PACK tabs 0.2 × 7 mm split into a power finger and a Kelvin finger. Every connection is a nickel tail through a plated slot in the board, soldered on F.Cu. No wires, springs or connectors.
+- **Interconnect:** spot-welded pure nickel, with an AWithZ P20B (`docs/production/spot-welding.md`). Series strips 0.2 × 10 mm; PACK tabs 0.2 × 7 mm plain nickel, split into a power finger and a Kelvin finger. Every connection is a nickel tail through a plated slot in the board, soldered on F.Cu. No wires, springs or connectors.
 - **Matching:** all four from one batch, within 10 mV and 1 mΩ (AC 1 kHz). Measure each diameter; the cup is designed to 21.85 mm.
 - **Carrier:** an MJF PA12 carrier holds the cells at 23.25 mm pitch, with webs between the front and back pairs. The board's heat goes into the two front cells, so those run hottest.
 - **Short circuit:** about 220–270 A from the cells' DC resistance (estimated at 12–16 mΩ, since BAK gives no DC figure), and up to about 370 A from the datasheet's ≤ 8 mΩ AC figure, which is closer to how a cell behaves in the first 100 µs of a short. It was 150–200 A with the FEB. This is why the protection FETs change to the BSC007N04LS6 (see Battery management and protection).
@@ -284,6 +284,8 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Cell data | BAK's datasheet (A/00, 2025-04-10) found on 10-23; ask BAK for its temperature-stepped charge profile and keep the FEB ramp until then | No design change |
 | Cells | BAK N21700CX-65E replaces the FEB 21700G | 91 Wh typical (88.9 Wh minimum). Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
+| Spot welder (10-23) | AWithZ P20B; the kWeld plus kCap is dropped | Mains powered, rated 0.3 mm nickel; handheld pens weld through the carrier windows (`docs/production/spot-welding.md`) |
+| PACK tails (10-24) | Plain 0.2 × 7 mm nickel tabs, as in `p0-assembly.md` | No copper tails, no board or carrier change. Options compared in `docs/production/pack-tail-options.html` |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
 
@@ -312,8 +314,8 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 | 1. Protection FETs → XRS120N04D | 0.03 W | 0.45 W | 0.77 W | 0.18 W | +$0.14 | Part fields only |
 | 2. 9 V gate drive per port | 0 | 0.38–0.43 W | 0.72 W | 0.22 W | +$2–4 | \~25 mm² per port, new parts |
 | 3. XGL7030-332 inductor + 500 kHz | 0.16 W | 0.49 W | 0.76 W | 0.26 W | +$3.2 | Same footprint; one resistor change |
-| 4. Thicker nickel, copper PACK tails | 0.02 W | 0.26 W | 0.47 W | 0.14 W | \~$3 | None |
-| **Total** | **\~0.2 W** | **\~1.6 W** | **\~2.7 W** | **\~0.8 W** |  |  |
+| 4. Thicker nickel series strips (PACK tabs stay nickel) | 0.01 W | 0.11 W | 0.19 W | 0.06 W | \~$3 | None |
+| **Total** | **\~0.2 W** | **\~1.45 W** | **\~2.4 W** | **\~0.7 W** |  |  |
 
 ### 1. Protection FETs: AGM404AP1 → XNRUSEMI XRS120N04D (BSC007N04LS6 since 10-23)
 
@@ -340,10 +342,10 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 - **Check on P0:** fit the APS0730 on one port and the XGL on the other; compare temperatures and scope the inductor current at the worst case.
 - **Verdict:** yes. It is the only cut that helps at 30 W, and it fixes an existing datasheet violation.
 
-### 4. Thicker nickel and copper PACK tails
+### 4. Thicker nickel series strips (copper PACK tails dropped 2026-10-24)
 
-- **What:** series strips go from 0.15 × 7 mm to 0.2 × 10 mm pure nickel. The PACK tails become 0.2 mm copper with a small nickel pad welded at the cell end. The interconnect drops from about 8.5 mΩ to 4.1 mΩ. Copper also solders into the plated slots better than nickel.
+- **What:** series strips go from 0.15 × 7 mm to 0.2 × 10 mm pure nickel, which takes the interconnect from about 8.5 mΩ to 6.7 mΩ. The PACK tabs stay 0.2 × 7 mm plain nickel. The copper tails in the 10-21 study (to about 4.1 mΩ) were dropped on 2026-10-24: they meant a bench-soldered copper/nickel lap per tab for about 0.04 W at the 40 W sustained rating. The savings in the table are scaled from the study by resistance (1.8 of 4.4 mΩ).
 - **Cost:** about $3 of strip, under 1 g, no board change.
-- **Risks:** the welder has to weld 0.2 mm reliably (the kWeld is specced for it); buy from a source that sells real nickel, since nickel-plated steel is 2–3× worse.
-- **Check:** 4-wire joint resistance on a test coupon before welding the real pack.
+- **Risks:** the welder has to weld 0.2 mm reliably (the AWithZ P20B is rated to 0.3 mm); buy from a source that sells real nickel, since nickel-plated steel is 2–3× worse.
+- **Check:** 4-wire joint resistance on a test coupon before welding the real pack (`docs/production/spot-welding.md`).
 - **Verdict:** yes. It can be decided any time before welding.
