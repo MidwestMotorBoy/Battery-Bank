@@ -4288,7 +4288,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 63.50 151.89 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4298,7 +4298,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Peg_NPTH_D2.2mm"
+		(property "Footprint" "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 			(at 64.47 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -4383,7 +4383,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 78.74 159.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4393,7 +4393,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Peg_NPTH_D2.2mm"
+		(property "Footprint" "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 			(at 79.7 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -4478,7 +4478,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 93.98 151.89 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4488,7 +4488,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Peg_NPTH_D2.2mm"
+		(property "Footprint" "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 			(at 94.95 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -4573,7 +4573,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 109.22 159.96 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4583,7 +4583,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:Peg_NPTH_D2.2mm"
+		(property "Footprint" "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 			(at 110.19 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -4647,7 +4647,7 @@
 			)
 		)
 	)
-	(text "CARRIER PEG HOLES  (4x 2.2 mm NPTH for the cup carrier's 2 mm pegs; positions from mechanical/monolith_shell.py CUP_PEGS, placed by make_board.py --mech)"
+	(text "CARRIER PEG SLOTS  (4x 2.6 x 2.2 mm NPTH for the cup carrier's 2 mm pegs; positions from mechanical/monolith_shell.py CUP_PEGS, placed by make_board.py --mech)"
 		(exclude_from_sim no)
 		(at 40.64 142.24 0)
 		(effects

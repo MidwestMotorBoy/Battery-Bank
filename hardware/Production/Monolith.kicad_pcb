@@ -29159,13 +29159,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+	(footprint "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "78321227-d1f8-4372-bff6-82d53c70d36a")
 		(at 108.6 73.4755)
-		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
-		(tags "peg hole npth")
+		(descr "NPTH 2.6 x 2.2 mm slot for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg slot npth")
 		(property "Reference" "H104"
 			(at 0 -2.2 0)
 			(layer "F.SilkS")
@@ -29178,7 +29178,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 0 2.2 0)
 			(layer "F.Fab")
 			(uuid "bf425a74-ea67-4530-a98c-c00837217756")
@@ -29240,9 +29240,9 @@
 		(sheetfile "power.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -29251,9 +29251,9 @@
 			(layer "F.SilkS")
 			(uuid "3d333602-6fdc-46b6-8db8-7ef5abef1f12")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -29262,9 +29262,9 @@
 			(layer "B.CrtYd")
 			(uuid "07ebec6a-5867-48fc-830e-c6194d439f8c")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -29273,10 +29273,10 @@
 			(layer "F.CrtYd")
 			(uuid "ba2f9e4a-9027-47ec-a153-1d329ff35d1d")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 2.2 2.2)
-			(drill 2.2)
+			(size 2.6 2.2)
+			(drill oval 2.6 2.2)
 			(layers "*.Cu" "*.Mask")
 			(uuid "3a99c54d-eeab-4fbb-9051-1686d0f6c25c")
 		)
@@ -33886,13 +33886,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+	(footprint "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "91c5e20a-9ff9-475b-8f34-78d612a6307d")
 		(at 91.4 73.4755)
-		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
-		(tags "peg hole npth")
+		(descr "NPTH 2.6 x 2.2 mm slot for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg slot npth")
 		(property "Reference" "H102"
 			(at 0 -2.2 0)
 			(layer "F.SilkS")
@@ -33905,7 +33905,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 0 2.2 0)
 			(layer "F.Fab")
 			(uuid "52bbe2f2-f561-4627-972d-56774046245a")
@@ -33967,9 +33967,9 @@
 		(sheetfile "power.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -33978,9 +33978,9 @@
 			(layer "F.SilkS")
 			(uuid "c300a38c-2422-49c7-a537-074102466e26")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -33989,9 +33989,9 @@
 			(layer "B.CrtYd")
 			(uuid "ae27d4af-4e26-4b17-9970-3176d3779e3b")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -34000,10 +34000,10 @@
 			(layer "F.CrtYd")
 			(uuid "f6cdc37f-09d5-4a91-b4f1-e10bd92bc0df")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 2.2 2.2)
-			(drill 2.2)
+			(size 2.6 2.2)
+			(drill oval 2.6 2.2)
 			(layers "*.Cu" "*.Mask")
 			(uuid "a3420fbd-286b-4758-ae59-da55b5dd404f")
 		)
@@ -42732,13 +42732,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+	(footprint "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "c71b3298-f5d7-4f84-8a4f-77a723e6d8fd")
 		(at 108.6 127.4755)
-		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
-		(tags "peg hole npth")
+		(descr "NPTH 2.6 x 2.2 mm slot for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg slot npth")
 		(property "Reference" "H103"
 			(at 0 -2.2 0)
 			(layer "F.SilkS")
@@ -42751,7 +42751,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 0 2.2 0)
 			(layer "F.Fab")
 			(uuid "3400c283-43c7-4fab-8a13-f9b525ad1027")
@@ -42813,9 +42813,9 @@
 		(sheetfile "power.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -42824,9 +42824,9 @@
 			(layer "F.SilkS")
 			(uuid "457cbae5-8eb9-461d-a809-42e7c945b1ad")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -42835,9 +42835,9 @@
 			(layer "B.CrtYd")
 			(uuid "2d8ac1ab-2884-4ab6-b73a-6c91b5d679c5")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -42846,10 +42846,10 @@
 			(layer "F.CrtYd")
 			(uuid "42af1434-0fa7-47d1-9825-a3c5f988f1b7")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 2.2 2.2)
-			(drill 2.2)
+			(size 2.6 2.2)
+			(drill oval 2.6 2.2)
 			(layers "*.Cu" "*.Mask")
 			(uuid "b9c54a8b-e64c-4fd0-9889-0ada4541ab28")
 		)
@@ -45228,13 +45228,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Peg_NPTH_D2.2mm"
+	(footprint "MonolithDev:Peg_NPTH_Slot2.6x2.2mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "d67b1131-a9af-47d8-bbb8-da9c96a41a27")
 		(at 91.4 127.4755)
-		(descr "NPTH 2.2 mm for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
-		(tags "peg hole npth")
+		(descr "NPTH 2.6 x 2.2 mm slot for a 2 mm PA12 carrier peg (mechanical/monolith_cup.py)")
+		(tags "peg slot npth")
 		(property "Reference" "H101"
 			(at 0 -2.2 0)
 			(layer "F.SilkS")
@@ -45247,7 +45247,7 @@
 				)
 			)
 		)
-		(property "Value" "Peg hole 2.2 NPTH"
+		(property "Value" "Peg slot 2.6x2.2 NPTH"
 			(at 0 2.2 0)
 			(layer "F.Fab")
 			(uuid "6cc9e8b9-c3a5-4683-8579-624b3e87186c")
@@ -45309,9 +45309,9 @@
 		(sheetfile "power.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -45320,9 +45320,9 @@
 			(layer "F.SilkS")
 			(uuid "77dcbdb3-fa39-4aa9-87bd-7bc095a8af1e")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -45331,9 +45331,9 @@
 			(layer "B.CrtYd")
 			(uuid "ba98dad3-e37a-4fc4-a3bd-b20d54afc17e")
 		)
-		(fp_circle
-			(center 0 0)
-			(end 1.6 0)
+		(fp_rect
+			(start -1.8 -1.6)
+			(end 1.8 1.6)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -45342,10 +45342,10 @@
 			(layer "F.CrtYd")
 			(uuid "a38ebc95-b050-409b-978d-8c04729b4ac2")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 2.2 2.2)
-			(drill 2.2)
+			(size 2.6 2.2)
+			(drill oval 2.6 2.2)
 			(layers "*.Cu" "*.Mask")
 			(uuid "5718f646-0364-478d-a8f6-c44c72103873")
 		)
