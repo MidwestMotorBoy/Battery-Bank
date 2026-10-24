@@ -13556,13 +13556,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_1.6x0.6mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "3ce508f8-3157-459d-aa2a-2cfbff5d25b0")
 		(at 91.275 135.4755)
-		(descr "Plated slot 1.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(descr "Plated hole 0.8 mm in a 2.4 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J115"
 			(at 0 -1.4 0)
 			(layer "F.SilkS")
@@ -13575,7 +13575,7 @@
 				)
 			)
 		)
-		(property "Value" "1N Kelvin slot"
+		(property "Value" "1N Kelvin wire"
 			(at 0 1.4 0)
 			(layer "F.Fab")
 			(uuid "3ca59856-dcfb-428e-8ff9-acf9ba70fdd0")
@@ -13648,7 +13648,7 @@
 		(pad "1" thru_hole oval
 			(at 0 0)
 			(size 2.4 1.4)
-			(drill oval 1.6 0.6)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL_1N")
@@ -25160,13 +25160,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "6706c6c8-d2b4-4d3f-ab3e-4d57fe52b8b8")
 		(at 100 135.4505)
-		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J110"
 			(at 0 -1.4 0)
 			(layer "F.SilkS")
@@ -25179,7 +25179,7 @@
 				)
 			)
 		)
-		(property "Value" "CELL2 slot"
+		(property "Value" "CELL2 sense wire"
 			(at 0 1.4 0)
 			(layer "F.Fab")
 			(uuid "c0e95776-2c8b-4c23-a372-416207c3e62d")
@@ -25253,7 +25253,7 @@
 		(pad "1" thru_hole oval
 			(at 0 0)
 			(size 4.2 1.4)
-			(drill oval 3.4 0.6)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL2")
@@ -41741,13 +41741,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "c2614329-ca3a-4d21-8a1a-17eb12e918e7")
 		(at 113.9 69.4755)
-		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J111"
 			(at 0 -1.4 0)
 			(layer "F.SilkS")
@@ -41760,7 +41760,7 @@
 				)
 			)
 		)
-		(property "Value" "CELL3 slot"
+		(property "Value" "CELL3 sense wire"
 			(at 0 1.4 0)
 			(layer "F.Fab")
 			(uuid "38f50b73-a8cb-4a31-aab6-a45b7b1dbe47")
@@ -41834,7 +41834,7 @@
 		(pad "1" thru_hole oval
 			(at 0 0)
 			(size 4.2 1.4)
-			(drill oval 3.4 0.6)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL3")
@@ -43833,13 +43833,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_3.4x0.6mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad4.2x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "cd68b8a2-c2b9-44a9-848e-621634a8fbae")
 		(at 86.1 69.4755)
-		(descr "Plated slot 3.4 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(descr "Plated hole 0.8 mm in a 4.2 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J109"
 			(at 0 -1.4 0)
 			(layer "F.SilkS")
@@ -43852,7 +43852,7 @@
 				)
 			)
 		)
-		(property "Value" "CELL1 slot"
+		(property "Value" "CELL1 sense wire"
 			(at 0 1.4 0)
 			(layer "F.Fab")
 			(uuid "fbd685c7-187e-49fc-8d9b-ddb7b7e8b157")
@@ -43926,7 +43926,7 @@
 		(pad "1" thru_hole oval
 			(at 0 0)
 			(size 4.2 1.4)
-			(drill oval 3.4 0.6)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL1")
@@ -44463,13 +44463,13 @@
 			)
 		)
 	)
-	(footprint "MonolithDev:Slot_Tab_1.6x0.6mm"
+	(footprint "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad2.4x1.4mm"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "cf4b072a-f223-4d0b-bc85-ecc8a5365e51")
 		(at 108.725 135.4755)
-		(descr "Plated slot 1.6 x 0.6 mm, 0.4 mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
-		(tags "slot nickel tab battery")
+		(descr "Plated hole 0.8 mm in a 2.4 x 1.4 mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu (mechanical/monolith_shell.py sb_slots)")
+		(tags "connector wire 28AWG PTFE battery sense")
 		(property "Reference" "J116"
 			(at 0 -1.4 0)
 			(layer "F.SilkS")
@@ -44482,7 +44482,7 @@
 				)
 			)
 		)
-		(property "Value" "4P Kelvin slot"
+		(property "Value" "4P Kelvin wire"
 			(at 0 1.4 0)
 			(layer "F.Fab")
 			(uuid "82886742-64d9-43d2-b162-070dab206d86")
@@ -44555,7 +44555,7 @@
 		(pad "1" thru_hole oval
 			(at 0 0)
 			(size 2.4 1.4)
-			(drill oval 1.6 0.6)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/Cells and Gauge/CELL_4P")
@@ -46580,7 +46580,7 @@
 				(pins "1" "2")
 			)
 		)
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.153641 -0.38)
@@ -53841,7 +53841,7 @@
 				(pins "1" "2")
 			)
 		)
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.153641 -0.38)

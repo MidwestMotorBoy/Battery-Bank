@@ -263,23 +263,24 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
 }
 for _sheet, _parts in DOWNSIZE.items():
     SWAP.setdefault(_sheet, {}).update(_parts)
-SLOT_W, SLOT_RING = MS.SB_SLOT_W, MS.SB_SLOT_RING   # plated slot width and annular ring (mechanical/monolith_shell.py)
+SLOT_W, SLOT_RING = MS.SB_SLOT_W, MS.SB_SLOT_RING   # sense pad: the old plated slot's width and ring (mechanical/monolith_shell.py)
+SENSE_D = MS.SB_SWIRE_HOLE                           # sense wires (2026-10-24): 28 AWG PTFE wire in a round hole, old slot pad
 
 
 def slot_name(length):
-    return "Slot_Tab_%gx%gmm" % (round(length, 2), SLOT_W)
+    return "SolderWire-28AWG_PTFE_1x01_D%gmm_Pad%gx%gmm" % (SENSE_D, round(length, 2) + 2 * SLOT_RING, SLOT_W + 2 * SLOT_RING)
 
 
-SLOTS = {n: "MonolithDev:" + slot_name(v[2]) for n, v in MS.sb_slots().items()}   # slot name -> footprint
+SLOTS = {n: "MonolithDev:" + slot_name(v[2]) for n, v in MS.sb_slots().items()}   # sense lead name -> footprint
 # PACK- / PACK+ power leads (option C wire tails, 2026-10-24): an 18 AWG thin-wall PTFE wire into a plated hole
 WIRE_D, WIRE_RING, WIRE_OD = MS.SB_PWIRE_HOLE, MS.SB_PWIRE_RING, MS.SB_PWIRE_OD
 WIRE_FP = "SolderWire-18AWG_PTFE_1x01_D%gmm_OD%gmm" % (WIRE_D, WIRE_D + 2 * WIRE_RING)
 # new one-pin pads on the gauge sheet: (ref, value, footprint, (old ref, old pin) whose position it takes)
 GAUGE_PADS = [
     ("J108", "PACK- power wire", "MonolithDev:" + WIRE_FP, ("BT101", "2")),
-    ("J109", "CELL1 slot", SLOTS["CELL1"], ("BT101", "1")),
-    ("J110", "CELL2 slot", SLOTS["CELL2"], ("BT102", "1")),
-    ("J111", "CELL3 slot", SLOTS["CELL3"], ("BT103", "1")),
+    ("J109", "CELL1 sense wire", SLOTS["CELL1"], ("BT101", "1")),
+    ("J110", "CELL2 sense wire", SLOTS["CELL2"], ("BT102", "1")),
+    ("J111", "CELL3 sense wire", SLOTS["CELL3"], ("BT103", "1")),
     ("J112", "PACK+ power wire", "MonolithDev:" + WIRE_FP, ("BT104", "1")),
 ]
 SLOT_REFS = {"CELL1": "J109", "CELL2": "J110", "CELL3": "J111", "1N": "J115", "4P": "J116"}   # make_board.py --mech
@@ -830,7 +831,7 @@ def add_kelvin(s):
     add = ""
     for ref, (net, at) in KELVIN_AT.items():
         slot = "1N" if net == "CELL_1N" else "4P"
-        add += "\n\t" + clone(tmpl, ref, "%s Kelvin slot" % slot, SLOTS[slot], at, "TP106")
+        add += "\n\t" + clone(tmpl, ref, "%s Kelvin wire" % slot, SLOTS[slot], at, "TP106")
         add += label_text(net, at)
     # CELL_1N feeds the gauge's VSS pins: a PWR_FLAG on a stub to the left of J115, as #FLG101 sits beside J108
     flg = syms["#FLG101"]
@@ -1071,28 +1072,27 @@ APS0730 = """(footprint "L_Coilank_APS0730"
 
 
 def slot_footprint(length):
-    """Plated slot for a nickel tail: oval drill length x SLOT_W along x, pad SLOT_RING bigger all round, on both
-    faces, no paste (soldered by hand on F.Cu). Courtyard 0.1 mm outside the pad: the PACK and Kelvin pads of one
-    tab sit only 0.4 mm apart (monolith_shell.py SB_FINGER)."""
+    """Sense-wire pad (2026-10-24; was a plated slot for a nickel tail): a round SENSE_D hole for a 28 AWG PTFE wire in
+    the old slot's oval pad (length + 2 x SLOT_RING by SLOT_W + 2 x SLOT_RING along x), on both faces, no paste
+    (soldered by hand on F.Cu). Keeping the pad keeps the routed copper. Courtyard 0.1 mm outside the pad."""
     L = round(length, 2)
     px, py = L + 2 * SLOT_RING, SLOT_W + 2 * SLOT_RING
     cx, cy = px / 2 + 0.1, py / 2 + 0.1
     return "\n".join([
         '(footprint "%s"' % slot_name(L), "\t(version 20241229)", '\t(generator "make_production.py")', '\t(layer "F.Cu")',
-        '\t(descr "Plated slot %g x %g mm, %g mm ring, for a nickel tail soldered on F.Cu (mechanical/monolith_shell.py '
-        'sb_slots)")' % (L, SLOT_W, SLOT_RING),
-        '\t(tags "slot nickel tab battery")',
+        '\t(descr "Plated hole %g mm in a %g x %g mm pad, for a 28 AWG PTFE sense wire soldered on F.Cu '
+        '(mechanical/monolith_shell.py sb_slots)")' % (SENSE_D, px, py),
+        '\t(tags "connector wire 28AWG PTFE battery sense")',
         '\t(property "Reference" "REF**" (at 0 -%g 0) (layer "F.SilkS") (hide yes) (effects (font (size 0.6 0.6) '
         '(thickness 0.1))))' % (cy + 0.6),
         '\t(property "Value" "%s" (at 0 %g 0) (layer "F.Fab") (effects (font (size 0.6 0.6) (thickness 0.1))))'
         % (slot_name(L), cy + 0.6),
         "\t(attr through_hole exclude_from_pos_files)",
-        '\t(pad "1" thru_hole oval (at 0 0) (size %g %g) (drill oval %g %g) (layers "*.Cu" "*.Mask") '
-        '(remove_unused_layers no))' % (px, py, L, SLOT_W),
+        '\t(pad "1" thru_hole oval (at 0 0) (size %g %g) (drill %g) (layers "*.Cu" "*.Mask") '
+        '(remove_unused_layers no))' % (px, py, SENSE_D),
         '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))'
         % (cx, cy, cx, cy),
-        '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))'
-        % (L / 2, SLOT_W / 2, L / 2, SLOT_W / 2),
+        '\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))' % (MS.SB_KWIRE_OD / 2),
         '\t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.4 0.4) (thickness 0.06))))',
         ")", ""])
 

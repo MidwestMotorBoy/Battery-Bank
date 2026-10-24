@@ -78,8 +78,8 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
     - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
-    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG thin-wall PTFE wires in Ø1.5 mm plated holes (since 2026-10-24, *Pack slots* below);
-    - J109–J111: CELL1–CELL3 tap pads (`SolderWire-0.15sqmm`);
+    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG thin-wall PTFE wires in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J102, J105–J107: cell NTC wire pads. J102 / J107 (front cells C1 / C4) are placed and locked at |y| 14.7 mm, z 64 / 68 mm (`sb_ntc_pads()`, 2026-10-24).
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
@@ -390,21 +390,21 @@ The board has **no screw holes**. In the cup it rides on the PA12 carrier (`mech
 - **Schematic:** H101–H104 on the 3V3 Rail sheet, now `Mechanical:MountingHole` (no pins, no net, not in the BOM) with the generated footprint `MonolithDev:Peg_NPTH_D2.2mm` (2.2 mm NPTH, courtyard 0.5 mm round it on both faces). Same references as the old Würth standoffs, so Update PCB swaps the footprints in place.
 - **Positions:** `CUP_PEGS` in `mechanical/monolith_shell.py`. In KiCad, H101 (91.40, 127.48), H102 (91.40, 73.48), H103 (108.60, 127.48), H104 (108.60, 73.48).
     - H104 lands on U405 and C452 as placed today: move them.
-- **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --mech`. It moves only the peg holes and the seven tail slots to their positions and locks them.
+- **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --mech`. It moves only the peg holes and the seven pack wire holes to their positions and locks them.
 
-## Pack slots, PACK wire holes and the 1N / 4P Kelvin nets (2026-10-21; wire holes 2026-10-24)
+## Pack wire holes and the 1N / 4P Kelvin nets (2026-10-21; all wires 2026-10-24)
 
-The pack connects through **five plated slots** for the CELL1–CELL3 nickel tails and the two 28 AWG Kelvin wires, and **two plated holes** for the 18 AWG PACK power wires (option C wire tails, `docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the slots from `sb_slots()` as `MonolithDev:Slot_Tab_<L>x0.6mm` (a 0.6 mm wide oval drill with a 0.4 mm ring, no paste), the holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven.
+Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wires** (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PTFE PACK power wires** in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
 
-| Slot or hole | Ref | Net | KiCad (x, y), length or Ø |
+| Hole | Ref | Net | KiCad (x, y), pad length or Ø |
 |---|---|---|---|
 | PACK− power wire | J108 | CELL_N | (86.975, 135.726), Ø1.5 |
-| 1N Kelvin wire | J115 | CELL_1N (new) | (91.275, 135.476), 1.6 |
-| CELL2 | J110 | CELL2 | (100.000, 135.451), 3.4 |
-| 4P Kelvin wire | J116 | CELL_4P (new) | (108.725, 135.476), 1.6 |
+| 1N Kelvin wire | J115 | CELL_1N (new) | (91.275, 135.476), Ø0.8 in a 2.4 pad |
+| CELL2 sense wire | J110 | CELL2 | (100.000, 135.451), Ø0.8 in a 4.2 pad |
+| 4P Kelvin wire | J116 | CELL_4P (new) | (108.725, 135.476), Ø0.8 in a 2.4 pad |
 | PACK+ power wire | J112 | CELL_P_RAW | (113.025, 135.726), Ø1.5 |
-| CELL1 | J109 | CELL1 | (86.100, 69.475), 3.4 |
-| CELL3 | J111 | CELL3 | (113.900, 69.475), 3.4 |
+| CELL1 sense wire | J109 | CELL1 | (86.100, 69.475), Ø0.8 in a 4.2 pad |
+| CELL3 sense wire | J111 | CELL3 | (113.900, 69.475), Ø0.8 in a 4.2 pad |
 
 **Kelvin split** (BQ40Z50-R2 SLUSCS4C §9.2.2.1.3, SLUA660 §2.3–2.4):
 - **CELL_1N** is the gauge's low-current ground: U101 VSS and its strapped pins (PRES, DISP, PTC, PTCEN), its decoupling (C104, C105, C115, C116, C118), U102 VSS and its CD cap C117, R117, and the NTC returns. It meets the pack only at the 1N tab, so route it as a star from J115 and keep it off CELL_N copper.
@@ -424,7 +424,7 @@ JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_
 | `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
 | `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |
 | `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages |
-| `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | nickel tails and their kinks behind the board |
+| `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | CELL2 wire and the CELL1 / CELL3 tongues and wires behind the board (drawn as the old tail runs, which cover them) |
 | `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.5–134.7) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes and slots; the 1.45 mm power wire leaves no room for any part |
 | `KO_B_ntc_C1` / `_C4` (x 83.95–88.5 / 111.5–116.05, y 72.13–96.48, from `sb_ntc_runs()`) | B.Cu | parts | the front-cell NTC beads, their foam caps and leads, taped up the can to J102 / J107 |
 
@@ -466,4 +466,4 @@ The side tray and its aluminium cover are retired; the enclosure is now **the cu
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Place the board.** Run Update PCB from Schematic, then `make_board.py --mech` and `--keepouts` (board closed), so the locked slots, peg holes and keep-outs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
+3. **Place the board.** Run Update PCB from Schematic, then `make_board.py --mech` and `--keepouts` (board closed), so the locked wire holes, peg holes and keep-outs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
