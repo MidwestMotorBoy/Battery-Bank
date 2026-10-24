@@ -9885,13 +9885,14 @@
 		)
 	)
 	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "2ef4ebe5-4ca2-423c-be8d-dc09ce74011d")
-		(at 196.247 46.422)
+		(at 114.7 77.4755 90)
 		(descr "Soldered wire connection, for 2 times 0.15 mm² wires, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
 		(tags "connector wire 0.15sqmm")
 		(property "Reference" "J107"
-			(at 2 -2.05 0)
+			(at 2 -2.05 90)
 			(layer "F.SilkS")
 			(uuid "b89692c9-7dfc-4f8f-9349-adeda1af15ef")
 			(effects
@@ -9902,7 +9903,7 @@
 			)
 		)
 		(property "Value" "Cell 4 NTC wires"
-			(at 2 2.05 0)
+			(at 2 2.05 90)
 			(layer "F.Fab")
 			(uuid "a908f811-c426-41dd-a545-9bd5d56177e9")
 			(effects
@@ -9913,7 +9914,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "fef773a7-474a-4086-88a2-e23ddc09fc09")
@@ -9924,7 +9925,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "79c85e13-6552-4548-8362-e01a6700cd23")
@@ -9935,7 +9936,7 @@
 			)
 		)
 		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -9948,7 +9949,7 @@
 			)
 		)
 		(property "MPN" "PZ254V-11-02P"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -9961,7 +9962,7 @@
 			)
 		)
 		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -10030,7 +10031,7 @@
 			(uuid "3b68cd0a-b48d-4f32-892b-dea74c391461")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2 0 90)
+			(at 2 0 180)
 			(layer "F.Fab")
 			(uuid "f6a6b321-a52e-4238-9f2a-082021861fcc")
 			(effects
@@ -10041,7 +10042,7 @@
 			)
 		)
 		(pad "1" thru_hole roundrect
-			(at 0 0)
+			(at 0 0 90)
 			(size 1.7 1.7)
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
@@ -10053,7 +10054,7 @@
 			(uuid "64bc7bcc-468f-4f46-af22-e940d4055ee2")
 		)
 		(pad "2" thru_hole circle
-			(at 4 0)
+			(at 4 0 90)
 			(size 1.7 1.7)
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
@@ -27631,13 +27632,14 @@
 		)
 	)
 	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "7138147c-193d-471f-ae10-8c8c5e171f8a")
-		(at 196.247 35.172)
+		(at 85.3 77.4755 90)
 		(descr "Soldered wire connection, for 2 times 0.15 mm² wires, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
 		(tags "connector wire 0.15sqmm")
 		(property "Reference" "J102"
-			(at 2 -2.05 0)
+			(at 2 -2.05 90)
 			(layer "F.SilkS")
 			(uuid "bad110d7-f055-4150-bafe-edde50962816")
 			(effects
@@ -27648,7 +27650,7 @@
 			)
 		)
 		(property "Value" "Cell 1 NTC wires"
-			(at 2 2.05 0)
+			(at 2 2.05 90)
 			(layer "F.Fab")
 			(uuid "8ea95b33-b168-4791-89c1-2c09c15956e4")
 			(effects
@@ -27659,7 +27661,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b866e729-7fc9-4676-875d-15a78e08770c")
@@ -27670,7 +27672,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 0 0 0)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "9f6d3ff6-4ccd-4c6e-8e28-9cdabe700581")
@@ -27681,7 +27683,7 @@
 			)
 		)
 		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -27694,7 +27696,7 @@
 			)
 		)
 		(property "MPN" "PZ254V-11-02P"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -27707,7 +27709,7 @@
 			)
 		)
 		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
-			(at 0 0 0)
+			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -27776,7 +27778,7 @@
 			(uuid "8a474ac6-ed68-46bf-8e27-b36ba0f8df47")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2 0 90)
+			(at 2 0 180)
 			(layer "F.Fab")
 			(uuid "cd32463d-04ec-47ae-ad1a-080fecd848b5")
 			(effects
@@ -27787,7 +27789,7 @@
 			)
 		)
 		(pad "1" thru_hole roundrect
-			(at 0 0)
+			(at 0 0 90)
 			(size 1.7 1.7)
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
@@ -27799,7 +27801,7 @@
 			(uuid "e7cac59f-dfb6-4186-8f56-f61128932a52")
 		)
 		(pad "2" thru_hole circle
-			(at 4 0)
+			(at 4 0 90)
 			(size 1.7 1.7)
 			(drill 0.7)
 			(layers "*.Cu" "*.Mask")
@@ -57380,7 +57382,7 @@
 	(footprint "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D"
 		(layer "B.Cu")
 		(uuid "80406f64-7a91-4eee-941f-2d58f9f76cec")
-		(at 113.8174 82.0166 90)
+		(at 101.6 88 90)
 		(descr "Tantalum Capacitor SMD Kemet-D (7343-31 Metric), IPC-7352 nominal, (Body size from: http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf)")
 		(tags "capacitor tantalum")
 		(property "Reference" "C421"
@@ -59601,6 +59603,68 @@
 		(polygon
 			(pts
 				(xy 107.925 134.675) (xy 109.525 134.675) (xy 109.525 137.175) (xy 107.925 137.175)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "2ab6c68a-a746-4c97-bf4a-e7c614a67819")
+		(name "KO_B_ntc_C1")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 83.95 72.1255) (xy 88.5 72.1255) (xy 88.5 96.4755) (xy 83.95 96.4755)
+			)
+		)
+	)
+	(zone
+		(layers "B.Cu")
+		(uuid "5d0b90fd-5a7e-4a16-8dd1-b7298fe10309")
+		(name "KO_B_ntc_C4")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 111.5 72.1255) (xy 116.05 72.1255) (xy 116.05 96.4755) (xy 111.5 96.4755)
 			)
 		)
 	)

@@ -35,7 +35,7 @@ A wrong plug is harmless: if the SWD cable goes onto J302, the probe drives only
 ## 1. Assembly
 
 1. **Pack:** with USB unplugged, solder PACK− (J108), then CELL1–CELL3 (J109–J111) bottom-up, then PACK+ (J112). A floating tap can trip U102, which blows F102 (gauge sheet note 15).
-2. **NTCs:** fit the four cell NTCs (insulated, taped at cell mid-height).
+2. **NTCs:** the front-cell NTCs (TS1, TS4) go on the cans' hot stripe inside the filler zone during module assembly (`p0-assembly.md` §2, `research_notes/Pack thermal BAK 65E/ntc-placement.md`). The back-cell NTCs (TS2, TS3) are taped at mid-height, facing the pack centre. Insulated sensors only.
 3. **Cell check:** measure each cell at the tap pads before going further.
 
 ## 2. First power
@@ -58,7 +58,7 @@ Steps:
     - TS1–TS4 enabled;
     - FET temperature sensor configured;
     - protection thresholds per the design notes and the FEB limits: OTC 45 °C, UTC 0 °C, OTD 60 °C, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell;
-    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 40 / T5 45 °C with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/firmware/charge-and-thermal-policy.md`);
+    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24 for the front NTCs on the hot stripe; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/firmware/charge-and-thermal-policy.md`);
     - the cell thermistors that matter are on the front cells (C1 / C4, the pair the board heats), so the hottest cells are seen;
     - COV delay 1 s and Min Blow Fuse Voltage 10,500 mV (second-level protection).
 2. **Chemistry:** select the FEB 21700G chemistry ID if it's in TI's database (unlikely). Otherwise run TI's GPCCHEM flow first: a slow (~C/10) discharge with rests, logged and submitted to TI's GPCCHEM tool.

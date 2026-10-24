@@ -2,6 +2,8 @@
 
 Decided 2026-10-21: the pack uses **FEB 21700G (68E) 6500 mAh** cells, 4S1P, 14.4 V nominal, **93.6 Wh**. The goal is energy for trail loads (phones, tablets, headlamps, a watch); 100 W is for brief bursts only. These notes are the design intent for firmware; numbers come from lumped thermal models in `research_notes/Ground-up mechanical concepts/model/` (`feb_limits.py`, `thermal_rundown.py`) and must be re-tuned on P0.
 
+> **Superseded in part (2026-10-24):** the cells are now the BAK 65E, and the front-cell NTCs moved onto the cans' hot stripe. The thresholds below were set for NTCs that read up to 8.5 K low. Current values (`docs/spec.md`, `research_notes/Pack thermal BAK 65E/ntc-placement.md`): discharge 100 W to 42 °C, ramp to 40 W at 46 °C, hold to 50 °C, ramp to 0 at 58 °C; charge 4.55 A to 42 °C, ramp to 0 at 44.5 °C; gauge T4 44 °C. The structure of this policy (ramps, hysteresis, layers) is unchanged.
+
 Background: `research_notes/Loss reduction/G_feb_21700g.md` (why this cell), `H_feb_limits_plan.md` (where each limit lives), `summary.md` (loss cuts and the DRV_SUP enable).
 
 ## 1. The cell's limits

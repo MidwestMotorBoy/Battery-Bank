@@ -15,7 +15,7 @@ F.Cu faces the cup wall (outer face), B.Cu faces the cells. The outline leaves g
 board with the vent, not this board.)
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
-     ... make_board.py --mech        (only places the tail slots, PACK wire holes and carrier peg holes, after Update PCB
+     ... make_board.py --mech        (only places the tail slots, PACK wire holes, NTC pads and carrier peg holes, after Update PCB
                                       from Schematic)
      ... make_board.py --keepouts    (redraws the KO_* mechanical keep-out rule areas from mechanical/monolith_shell.py)
 Enclosure (2026-10-21): the cup (mechanical/monolith_cup.py). The board rides on the PA12 carrier's rails and pegs, F.Cu
@@ -190,8 +190,9 @@ def place_ports(path):
 
 
 def place_mech(path):
-    """Put the five slots (J109-J111, J115, J116) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes() and
-    the four carrier peg holes (H101-H104) at CUP_PEGS, from mechanical/monolith_shell.py: F.Cu, 0 deg, locked. Only moves those footprints; run after Update PCB
+    """Put the five slots (J109-J111, J115, J116) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes(),
+    the front-cell NTC lead pads (J102, J107) at sb_ntc_pads() and the four carrier peg holes (H101-H104) at CUP_PEGS,
+    from mechanical/monolith_shell.py: F.Cu, 0 deg (NTC pads 90 deg), locked. Only moves those footprints; run after Update PCB
     from Schematic, with the board closed in KiCad (or reload it afterwards)."""
     import pcbnew
     lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
@@ -200,6 +201,8 @@ def place_mech(path):
     want = {MP.SLOT_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_slots().items()}
     want.update({MP.WIRE_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_pack_holes().items()})
     want.update({ref: M.kicad(y, z) for ref, (y, z) in zip(MP.PEGS, M.CUP_PEGS)})
+    want.update({MP.NTC_REFS[c]: M.kicad(y, z1) for c, (y, z1, _) in M.sb_ntc_pads().items()})
+    turn = {ref: 90 for ref in MP.NTC_REFS.values()}   # pad 2 (local +x) points up the board, to z + 4 mm
     b = pcbnew.LoadBoard(path)
     missing = [r for r in want if b.FindFootprintByReference(r) is None]
     if missing:
@@ -209,10 +212,10 @@ def place_mech(path):
         f = b.FindFootprintByReference(ref)
         if f.IsFlipped():
             f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
-        f.SetOrientationDegrees(0)
+        f.SetOrientationDegrees(turn.get(ref, 0))
         f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
         f.SetLocked(True)
-        print("%s at (%.3f, %.3f), F.Cu, locked" % (ref, x, y))
+        print("%s at (%.3f, %.3f) %d deg, F.Cu, locked" % (ref, x, y, turn.get(ref, 0)))
     pro = path[:-len(".kicad_pcb")] + ".kicad_pro"   # KiCad 10's SaveBoard rewrites the project file: keep ours
     keep = open(pro, "rb").read()
     pcbnew.SaveBoard(path, b)
@@ -260,6 +263,9 @@ def keepout_list():
     # B.Cu: the PACK power and Kelvin wires cross the gap to their holes and slots (BCU_WIRE_RUNS): no parts at all
     for n, (y0, y1, z0, z1) in zip(["PACK-", "PACK+", "1N", "4P"], M.sb_wire_runs()):   # sb_wire_runs() order
         out.append(("KO_B_wire_" + n.replace("+", "P").replace("-", "N"), ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
+    # B.Cu: the front-cell NTC beads, foam caps and leads, up the can to their pads (sb_ntc_runs()): no parts
+    for c, (y0, y1, z0, z1) in zip(["C1", "C4"], M.sb_ntc_runs()):
+        out.append(("KO_B_ntc_" + c, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     return out
 
 

@@ -80,7 +80,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 - **Pack wires:**
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG thin-wall PTFE wires in Ø1.5 mm plated holes (since 2026-10-24, *Pack slots* below);
     - J109–J111: CELL1–CELL3 tap pads (`SolderWire-0.15sqmm`);
-    - J102, J105–J107: cell NTC wire pads.
+    - J102, J105–J107: cell NTC wire pads. J102 / J107 (front cells C1 / C4) are placed and locked at |y| 14.7 mm, z 64 / 68 mm (`sb_ntc_pads()`, 2026-10-24).
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
@@ -426,6 +426,7 @@ JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_
 | `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages |
 | `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | nickel tails and their kinks behind the board |
 | `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.5–134.7) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes and slots; the 1.45 mm power wire leaves no room for any part |
+| `KO_B_ntc_C1` / `_C4` (x 83.95–88.5 / 111.5–116.05, y 72.13–96.48, from `sb_ntc_runs()`) | B.Cu | parts | the front-cell NTC beads, their foam caps and leads, taped up the can to J102 / J107 |
 
 There is no rule-area type for height, so a note on Cmts.User under the board holds those limits:
 - **F.Cu:** parts up to 3.2 mm; the cup wall sits 0.5 mm above.
@@ -434,7 +435,7 @@ There is no rule-area type for height, so a note on Cmts.User under the board ho
 **Hand-soldered B.Cu parts (19):**
 - **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
 - **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
-- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports.
+- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
 
 Fit all 19 before the first power-up: the chargers need both bulk banks.
 
