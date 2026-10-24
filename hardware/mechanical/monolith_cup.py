@@ -77,7 +77,7 @@ SLEEVE = (2.0, 0.85, 1.0)          # TPU retaining sleeve pushed down each post 
 INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure the BAK + cap first), thickness
 FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 0.4), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
-CH_W, CH_D = 1.0, 0.9               # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
+CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 BUMP_WALL_BOT = 1.0                 # bottom band over the cap's collar (the PA12 collar under it is the edge protection's backbone)
@@ -341,7 +341,9 @@ def checks():
         'key slots clear of the weld windows (frame left >= 1.0)': min(np.hypot(PR + CR - KEY_DEPTH - KEY_CLR - PR, max(PR - (y1 + KEY_CLR), 0))
                                                        for y0, y1 in KEY_Y.values()) - WIN_R - 1.0,
         'wire notch: power wire inside the frame edge (y)': (PR + CR) - (max(pk_y) + S.SB_PWIRE_OD/2 + WIRE_NOTCH_CLR),
-        'CELL2 channel: wire 0.6 sits below the frame face (z)': CH_D - S.SB_KWIRE_OD - 0.2,
+        'CELL2 channel: wire sits below the frame face (z)': CH_D - S.SB_KWIRE_OD - 0.2 + 1e-9,
+        'wire notch: power wire under the PACK pad clears the pad relief (z, >= 0.5)':
+            (S.sb_z_tail_b - S.SB_PACK_T - S.SB_PWIRE_OD) - (FR_B0 - PAD_RELIEF) - 0.5,
         'CELL2 channel clear of the C1 / C4 rims (y)': (PR - CR) - CH_W/2,
         'CELL2 channel: frame left under it (z, >= 0.6)': (FR_B1 - FR_B0) - CH_D - 0.6,
         'foam pockets: frame left under them (z, >= 0.8)': (FR_B1 - FR_B0) - FOAM_POCKET - 0.8,
