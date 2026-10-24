@@ -35,6 +35,7 @@ The positions come from `sb_slots()` in `hardware/mechanical/monolith_shell.py`;
 - **Power loss:** about 1 mΩ per PACK tab (12 mm of 0.2 × 4.2 nickel), so about 0.09 W each at 9.4 A.
 - **Strain relief:** the bottom tails have a 1 mm kink in the gap behind the board, and the top tails drop 5 mm behind it before turning into their slots. In the cup the board rides on the carrier, so the kinks only absorb tolerance and heat growth.
 - **Behind B.Cu:** the tails run about 1.1 mm behind B.Cu in the areas on `BCU_TAIL_RUNS`. Only low parts (≤ 0.6 mm) there.
+- **Carrier rails (fixed 2026-10-24):** the board rails ran down to the bottom frame across the PACK tabs' path, so the Kelvin fingers and the edge of each power finger went through them. Below z 7.3 the rails now keep only a stub at |y| ≤ 7.6 mm (`RAIL_RELIEF_Y` in `monolith_cup.py`), and two checks cover it.
 
 **Board changes needed:**
 - Seven plated slots, 0.6 mm wide, 0.4 mm annular ring, at the positions above. Check JLC's minimum plated slot width when ordering.

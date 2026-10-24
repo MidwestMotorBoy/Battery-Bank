@@ -41,6 +41,7 @@ FR_T0, FR_T1 = S.sb_z_cell1 + S.TAB_T, Z_TOP0                       # carrier to
 WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = (27.0, 53.0)              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = (25.0, 55.0)            # board rails stop here so the filler reaches the cell tangents
+RAIL_RELIEF_Y = 7.6                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK tabs and Kelvin fingers pass
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
@@ -106,7 +107,8 @@ def carrier():
          pz(rect(-1.5, 1.5, PR + CR - 5.2, PR + CR), FR_B0, FR_T1), pz(rect(-1.5, 1.5, -PR - CR, -PR - CR + 5.2), FR_B0, FR_T1)]
     for s in (-1, 1):
         r = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*S.SB_BAR_Y[1])))
-        m += [pz(r, FR_B0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
+        keep = rect(PR + CR + 0.15, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))   # stub that ties the rail to the frame
+        m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [cylx(s*8.6, z, 1.0, S.sb_xb0 - 0.5, S.sb_xb1 + 0.6) for s in (-1, 1) for z in (14.0, 68.0)]   # board pegs
     return U(*m, webs())
 def filler():
@@ -178,6 +180,9 @@ def checks():
         'O-ring groove inside the skirt (z)': min(GROOVE_Z[0] - Z_MOUTH, Z_SKIRT1 - GROOVE_Z[1]) - 1.0,
         'screws below the O-ring (outside the seal, z)': (GROOVE_Z[0] - 0.3) - (SCREW_Z + 1.0),
         'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
+        'board rails clear of the PACK tabs (y, rail stub to the Kelvin fingers)': min(abs(y0) for n in ('PACK-', 'PACK+')
+                                                       for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
+        'board rails clear of the PACK tabs (z, rail above the tabs)': S.SB_BAR_Z0 - (S.sb_z_tail_b + 0.5),
         'gap filler below the BLE module (z)': (S.sb_ant_zc - S.SB_ANT_MOD[0]/2) - FILL_Z[1] - 1.0,
         'webs: room between front and back cells (gap - 2 x clearance)': (2*PR - 2*CR) - 2*WEB_CLR,
         'bore corner radius >= 2 x O-ring cord': R_FRONT - 2*ORING_CS,
