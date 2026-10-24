@@ -1,5 +1,7 @@
 # EVE INR21700-58E — Datasheet Notes
 
+> **Archived 2026-10-24.** The EVE INR21700-58E was dropped on 2026-10-21 for the FEB 21700G, which was itself replaced by the BAK N21700CX-65E on 2026-10-23. The current cell is in [`docs/spec.md`](../spec.md) (Cells and pack). Kept for the history of the cell choice.
+
 **Source:** EVE Energy product specification PBRI-INR21700/58E-D06-01, Version B (2025-03-11)
 **Download (PDF, 874 kB):** https://www.nkon.nl/en/amfile/file/download/file/806/product/5882/
 (Linked from NKON's product page: https://www.nkon.nl/en/eve-inr21700-58e-5700mah-16-8a.html)

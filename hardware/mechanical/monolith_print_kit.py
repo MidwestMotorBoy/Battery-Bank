@@ -1,7 +1,7 @@
 """Monolith home-print kit: the side-board pack as FDM parts, dummy cells and a dummy board, for fit checks,
 assembly practice and the dummy-mass drop test. Imports the generators; needs numpy, scipy, trimesh, manifold3d, pillow.
-Run: python monolith_print_kit.py  -> print_kit/*.stl (each one in its print orientation, on the bed at z = 0),
-print_kit/kit_plate.png. Parts keep the production dimensions (MJF tolerances), so print the fit coupons first."""
+Run: python monolith_print_kit.py  -> retired/print_kit/*.stl (each one in its print orientation, on the bed at z = 0),
+retired/print_kit/kit_plate.png. Parts keep the production dimensions (MJF tolerances), so print the fit coupons first."""
 import os, numpy as np, trimesh
 from PIL import Image, ImageDraw, ImageFont
 import monolith_shell as S, monolith_parts as P
@@ -9,7 +9,7 @@ from monolith_render import camera, CELL_G
 import monolith_render as R
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, 'print_kit')
+OUT = os.path.join(S.RETIRED, 'print_kit')
 
 # ---------------- new-part parameters (mm) ----------------
 CELL_WALL, CELL_FLOOR = 1.6, 1.6     # dummy cell: printed can
@@ -157,4 +157,4 @@ if __name__ == '__main__':
     cav = np.pi*(S.CELL_D/2 - CELL_WALL)**2*(S.CELL_L - CELL_CAP_T - CELL_NUB_H - CELL_FLOOR)/1000
     print(f"dummy cell: printed ~{printed:.1f} g solid PLA; add ~{CELL_G - printed:.0f} g ballast to match {CELL_G:.0f} g; "
           f"cavity {cav:.1f} cm3 (steel BBs ~4.7 g/cm3 poured -> {cav*4.7:.0f} g max)")
-    plate_png(K, os.path.join(OUT, 'kit_plate.png')); print('wrote print_kit/kit_plate.png')
+    plate_png(K, os.path.join(OUT, 'kit_plate.png')); print('wrote retired/print_kit/kit_plate.png')

@@ -270,7 +270,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "MONOLITH PRODUCTION BOARD - SHEET INDEX\n2.  Cells and Gauge:  welded 4S pack slots (nickel tails, 1N/4P Kelvin), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)\n3.  3V3 Rail:  TPS62177 always-on 3V3\n4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (cell 1 negative at the PACK- power wire; gauge VSS is the CELL_1N label)\nSpec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."
+	(text "MONOLITH PRODUCTION BOARD - SHEET INDEX\n2.  Cells and Gauge:  welded 4S pack wires (28 AWG sense, 1N/4P Kelvin, 18 AWG PACK), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)\n3.  3V3 Rail:  TPS62177 always-on 3V3\n4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)\n5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port\nRails (power symbols): PACK_P, 3V3, GND, CELL_N (cell 1 negative at the PACK- power wire; gauge VSS is the CELL_1N label)\nSpec and open items: Production/README.md.  Derived from the dev board rev A8 (DevBoard/, history in DevBoard/README.md)."
 		(exclude_from_sim no)
 		(at 30.48 205.74 0)
 		(effects

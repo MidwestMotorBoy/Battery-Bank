@@ -29,7 +29,7 @@ TEXTS = {
     ROOT: {
         "MONOLITH DEV BOARD - SHEET INDEX": T(
             "MONOLITH PRODUCTION BOARD - SHEET INDEX",
-            "2.  Cells and Gauge:  welded 4S pack slots (nickel tails, 1N/4P Kelvin), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
+            "2.  Cells and Gauge:  welded 4S pack wires (28 AWG sense, 1N/4P Kelvin, 18 AWG PACK), BQ40Z50-R2 gauge, protection FETs, BQ294700 + F102 second-level protection, gauge SMBus on the GAUGE Tag-Connect (MCU sheet)",
             "3.  3V3 Rail:  TPS62177 always-on 3V3",
             "4.  MCU:  CC2340R5MODA, Tag-Connect TC2030-NL pads: SWD (J301) and GAUGE (J302)",
             "5.  USB Port 1  /  6.  USB Port 2  (one sheet file):  TPS25751D + TPD6S300 + BQ25756 + TPS62933 per port",
@@ -57,14 +57,14 @@ TEXTS = {
         "CELL STACK (4S)": "PACK SLOTS + WIRES  (welded 4S BAK 65E, tails and wires soldered on F.Cu)",
         "Holders BT101-BT104 OR welded pack": T(
             "J108 PACK- / J112 PACK+: 18 AWG power wires in 1.5 mm holes. J115 1N / J116 4P: Kelvin wires from the same pads.",
-            "J109-J111: CELL1-3 tails. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."),
+            "J109-J111: CELL1-3 28 AWG sense wires. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."),
         "NOTES": T(
             "NOTES",
             "1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only",
-            "   at the 1N Kelvin slot J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.",
+            "   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.",
             "2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).",
-            "3. VC taps are separate thin traces from the slots J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,",
-            "    the 4P Kelvin slot J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.",
+            "3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,",
+            "    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.",
             "4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only",
             "    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.",
             "5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).",
@@ -82,7 +82,9 @@ TEXTS = {
             "14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;",
             "    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.",
             "15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read",
-            "    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."),
+            "    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.",
+            "16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while",
+            "    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."),
     },
     "power.kicad_sch": {
         "SLEEP-CURRENT MEASUREMENT": None,
@@ -193,7 +195,7 @@ MOVE_TEXT = {"usb_port.kicad_sch": {"Charger battery side joins PACK_P here": (4
                                    "NOTES  (this sheet is used twice": (299.72, 406.4)},
              "gauge.kicad_sch": {"PROTECTION FETs": (106.68, 19.05)}}
 SHEET_NAMES = {"Sleep Current and 3V3": "3V3 Rail", "MCU and Sensors": "MCU"}
-COMMENT1 = {"gauge.kicad_sch": "Welded 4S pack slots, BQ40Z50-R2 gauge/protector, protection FETs",
+COMMENT1 = {"gauge.kicad_sch": "Welded 4S pack wires, BQ40Z50-R2 gauge/protector, protection FETs",
             "power.kicad_sch": "TPS62177 3V3 always-on rail",
             "mcu.kicad_sch": "CC2340R5MODA, TC2030-NL SWD pads"}
 SHOW_VALUE = ["J108", "J109", "J110", "J111", "J112", "J115", "J116", "TP110", "TP111", "TP112"]

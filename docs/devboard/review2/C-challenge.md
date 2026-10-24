@@ -21,7 +21,7 @@ Verdict summary:
 
 ### Q1 (A-1): what do the TPS25751s offer before the MCU writes anything, and what does the gauge do with defaults?
 - **No configuration in the repo.**
-  - docs/project/tps25751-eeprom-programming.md describes only the mechanics: memory map, PBMx/FLxx/GAID flow and the region-update procedure. It contains no source-PDO content.
+  - docs/firmware/tps25751-eeprom-programming.md describes only the mechanics: memory map, PBMx/FLxx/GAID flow and the region-update procedure. It contains no source-PDO content.
   - The only written limit is first-review firmware item 3 / #3: the MCU lowers USB1's offer when USB2 attaches.
   - So today nothing in the bundle plan limits the source PDOs. A is right that the limit lives only in MCU firmware.
 - **"MCU dead → both ports source 100 W" is very unlikely as stated.**
