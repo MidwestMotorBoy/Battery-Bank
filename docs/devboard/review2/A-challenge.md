@@ -41,7 +41,7 @@ Datasheet figures were rendered with PyMuPDF and read off the plots.
 **Verdict:** keep MINOR, with B's numbers corrected as above. Swap to LRB520S-40T1G (C132124) and measure D404 temperature at bring-up.
 
 ### Q7 / B-4 vs B: UPHOLD MINOR, and add the two-port case
-- **EVE limit:** eve-inr21700-58e §3.4 / §7.2 (and docs/project/eve-58e-datasheet-notes.md) say "Maximum Charge 5.6A(1C) … (not for cycle life)", charge temperature 0–45 °C ambient. No higher continuous charge rating exists, so 5.6 A is the absolute charge maximum.
+- **EVE limit:** eve-inr21700-58e §3.4 / §7.2 (and docs/archive/eve-58e-datasheet-notes.md) say "Maximum Charge 5.6A(1C) … (not for cycle life)", charge temperature 0–45 °C ambient. No higher continuous charge rating exists, so 5.6 A is the absolute charge maximum.
 - **Ceiling math, re-derived:**
   - I = KICHG / R_ICHG × (5 mΩ / RBAT).
   - KICHG max 52 A·kΩ (bq25756 §5.5), 9.1 k −1 %, RBAT −1 %: 52 / 9.009 / 0.99 = 5.83 A. That is 4 % over EVE's maximum.

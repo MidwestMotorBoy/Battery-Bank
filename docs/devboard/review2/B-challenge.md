@@ -19,7 +19,7 @@ New sources for this round:
 - TRM SLVUCR8B §3.2.17, Table 3-19: the TX_SOURCE_CAPS (0x32) reset value is Number Valid PDOs = 1, PDO1 = 0x2601912C on PP5V.
 - Decoded: bits 19:10 = 0x64 → 100 × 50 mV = 5 V; bits 9:0 = 0x12C → 300 × 10 mA = 3 A.
 - The register is "Initialized by Application Customization", so after boot it holds whatever the EEPROM bundle says.
-- There is no bundle in the repo. docs/project/tps25751-eeprom-programming.md describes only the load and update mechanics, and no PDO list exists anywhere.
+- There is no bundle in the repo. docs/firmware/tps25751-eeprom-programming.md describes only the load and update mechanics, and no PDO list exists anywhere.
 - With a blank EEPROM, SafeMode waits for a host and nothing is sourced.
 - So the per-port wattage with no MCU is purely a bundle decision. Nothing today already limits it.
 
@@ -190,4 +190,4 @@ New sources for this round:
 ### M-B3 [NOTE] Per-port bundles are possible and simplify the power-sharing rule
 - Each TPS25751 has its own EEPROM (U402/U502, both at 0x50 on separate I2Cc buses).
 - So the two ports may carry different bundles, e.g. USB1 100 W and USB2 30 W.
-- docs/project/tps25751-eeprom-programming.md assumes one Low Region binary for both. Note the option there.
+- docs/firmware/tps25751-eeprom-programming.md assumes one Low Region binary for both. Note the option there.

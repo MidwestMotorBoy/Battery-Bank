@@ -1,15 +1,15 @@
 # TPS25751 EEPROM programming — firmware reference
-_From TI app notes SLVAFL1 (EEPROM Update Over I2C, Oct 2024) and SLVAFV8A (EC loads a patch bundle, Jul 2025). Written 2026-10-11._
+_From TI app notes SLVAFL1 (EEPROM Update Over I2C, Oct 2024) and SLVAFV8A (EC loads a patch bundle, Jul 2025). Written 2026-10-11 for the STM32WB; hardware section updated 2026-10-24 for the CC2340 and P0. The method is unchanged._
 
 ## Hardware this assumes (Monolith)
-- Two TPS25751s on the STM32WB's single I2C bus (I2Ct): USB1 at 0x20, USB2 at 0x21 (ADCIN straps, SafeMode). Gauge BQ40Z50-R2 at 0x0B on the same bus.
+- Two TPS25751Ds on the CC2340R5MODA's single I2C bus (I2Ct; I2C0 on DIO6 / DIO8): USB1 at 0x20, USB2 at 0x21 (ADCIN straps, SafeMode). Gauge BQ40Z50-R2 at 0x0B on the same bus.
 - Each TPS25751 has its own EEPROM (ST M24512-DFMC6TG) at 0x50 on its own controller bus (I2Cc), shared with its BQ25756.
-- Each TPS25751's I2Ct_IRQ goes to its own STM32WB GPIO (needed for Ready-for-Patch and CMD1-complete interrupts).
-- STM32WB is flashed over SWD pogo pads before potting.
+- Both TPS25751 I2Ct_IRQ outputs and the gauge BTP are wire-ORed onto one IRQ_N line (DIO11). On an interrupt, read INT_EVENT on both controllers to see which one asserted it (Ready-for-Patch and CMD1-complete).
+- The CC2340 is flashed over SWD on the J301 Tag-Connect. The pack is not potted; once it is sealed in the cup, updates come over Bluetooth.
 
 ## Two image files from TI's USBCPD Application Customization Tool (web GUI)
 - **Full Flash binary**: the complete EEPROM image, region pointers and both regions. Must be written the very first time so the region headers are correct. Up to 32 KB.
-- **Low Region binary**: just the patch bundle (config + FW patch). Used for loading over I2Ct (PBM) and for later EEPROM updates. TI's example is 0x2C80 = 11,392 bytes. Export as a C array and compile it into the STM32WB firmware.
+- **Low Region binary**: just the patch bundle (config + FW patch). Used for loading over I2Ct (PBM) and for later EEPROM updates. TI's example is 0x2C80 = 11,392 bytes. Export as a C array and compile it into the MCU firmware.
 
 ## EEPROM memory map (fixed by TI)
 | Address | Contents |
@@ -66,8 +66,8 @@ Update the region the controller did NOT boot from (read BOOT_STATUS 0x2D: if re
 - WriteRegionPointer(p, v): FLad(pointer address 0x0000 or 0x0400) → FLwd(4-byte v) → FLrd(pointer address) and confirm it reads v.
 - A power cut at any step leaves at least one valid region.
 
-## Monolith boot flow (STM32WB firmware)
-For each TPS25751 at every STM32WB boot:
+## Monolith boot flow (MCU firmware)
+For each TPS25751 at every MCU boot:
 1. Read MODE (0x03). "APP " → read its patch version; if the firmware carries a newer bundle, run UpdateRegionOfEeprom, then GAID.
 2. "PTCH" with ReadyForPatch → read BOOT_STATUS (0x2D) for the reason, load the Low Region binary by PBM (→ APP), then repair the EEPROM:
    - Blank EEPROM (first power-up): write the Full Flash image from 0x0000 with FLad/FLwd (or write both regions plus both pointers from the Low Region binary), verify with FLvy, then GAID.
@@ -78,5 +78,5 @@ For each TPS25751 at every STM32WB boot:
 
 ## Known limits
 - SafeMode can't charge from USB until a configuration runs. On a fresh board, power the first boot from a bench supply on the pack pads.
-- Double fault: pack fully dead AND an EEPROM corrupt means no USB recovery, since the STM32WB can't run to repair it. Very unlikely given the two-region scheme; accepted.
-- Bluetooth firmware updates can carry a new Low Region binary, so PD configuration can change after potting.
+- Double fault: pack fully dead AND an EEPROM corrupt means no USB recovery, since the MCU can't run to repair it. Very unlikely given the two-region scheme; accepted.
+- Bluetooth firmware updates can carry a new Low Region binary, so PD configuration can change after the pack is sealed.

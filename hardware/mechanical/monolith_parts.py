@@ -1,7 +1,7 @@
 """Monolith test-print parts (numpy + scipy only).
 Run: python3 monolith_parts.py  -> STL files next to this script.
 Every part is a stack of flat layers; each layer is described by a 2D inside-test."""
-import numpy as np, struct
+import numpy as np, struct, os
 from scipy.spatial import Delaunay, cKDTree
 import monolith_shell as S
 
@@ -172,7 +172,7 @@ def check(V):
 def write_stl(path, V):
     n = np.cross(V[:,1]-V[:,0], V[:,2]-V[:,0]); n /= np.linalg.norm(n, axis=1)[:,None]
     with open(path, 'wb') as f:
-        f.write(path.encode()[:80].ljust(80, b' ')); f.write(struct.pack('<I', len(V)))
+        f.write(os.path.basename(path).encode()[:80].ljust(80, b' ')); f.write(struct.pack('<I', len(V)))
         for t, nn in zip(V, n): f.write(struct.pack('<12fH', *nn, *t.ravel(), 0))
 
 # ---------------- parts ----------------
@@ -578,7 +578,7 @@ if __name__ == '__main__':
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'     # top | side | all
     todo = (PARTS if which in ('top', 'all') else []) + (SIDE_PARTS if which in ('side', 'all') else [])
     for name, fn, rho, qty in todo:
-        V = fn(); bad, vol = check(V); write_stl(name + '.stl', V)
+        V = fn(); bad, vol = check(V); write_stl(os.path.join(S.RETIRED, name + '.stl'), V)
         lo, hi = V.reshape(-1, 3).min(0), V.reshape(-1, 3).max(0)
         g = cap_mass(name.endswith('top')) if rho is None else vol/1000*rho
         print(f"{name:30s} x{qty} tris {len(V):6d} open-edges {bad} size {np.round(hi-lo,2)} vol {vol/1000:5.2f} cm3 ~{g:4.1f} g")

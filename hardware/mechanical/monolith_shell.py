@@ -1,7 +1,10 @@
 """Monolith 4S1P 21700 shell - parametric generator (numpy only).
-Run: python3 monolith_shell.py   -> monolith_shell.stl, monolith_bottom_pcb.dxf
+Run: python3 monolith_shell.py   -> monolith_side_pcb.dxf (the current board outline), plus the retired
+top-cap tube (monolith_shell.stl, monolith_bottom_pcb.dxf) and tray cover (monolith_side_cover.dxf) in retired/
 All dimensions in mm. Z = 0 is the bottom rim of the tube."""
-import numpy as np, struct
+import numpy as np, struct, os
+
+RETIRED = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retired')   # outputs of the top-cap tube and side tray (2026-10-24)
 
 # ---------------- parameters ----------------
 CELL_D      = 21.85   # FEB 21700G (68E) 6500 mAh: 21.65 +-0.2 mm, so design to the 21.85 maximum (measure yours)
@@ -403,8 +406,8 @@ def side_groove_depth(y):
     return np.where(dy < r, sb_xb0 - (sb_pr + np.sqrt(np.maximum(r*r - dy*dy, 0))), sb_xb0 - sb_pr)
 
 if __name__ == '__main__':
-    write_stl('monolith_shell.stl'); write_dxf('monolith_bottom_pcb.dxf')
-    write_side_dxf('monolith_side_pcb.dxf'); write_cover_dxf('monolith_side_cover.dxf')
+    write_stl(os.path.join(RETIRED, 'monolith_shell.stl')); write_dxf(os.path.join(RETIRED, 'monolith_bottom_pcb.dxf'))
+    write_side_dxf('monolith_side_pcb.dxf'); write_cover_dxf(os.path.join(RETIRED, 'monolith_side_cover.dxf'))
     # checks
     from collections import Counter
     key = lambda p: tuple(p)

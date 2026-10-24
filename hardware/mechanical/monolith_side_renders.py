@@ -1,5 +1,5 @@
 """Monolith side-tray drop-protection renders (numpy + scipy + PIL; builds the meshes from monolith_parts).
-Run: python monolith_side_renders.py [v1_dir]
+Run: python monolith_side_renders.py [v1_dir]   (the side tray is retired: outputs go to retired/)
 -> monolith_side_exploded.png  (assembled view, exploded view with numbered balloons, parts list)
    monolith_side_sections.png  (A-A across the cells, B-B along C1/C2, with dimensions)
    monolith_side_parts.png     (cap zones, tray floor, pads; mass, drop and print-setting tables)
@@ -209,7 +209,7 @@ class Sheet:
         self.g.ellipse([(x-r)*SS, (y-r)*SS, (x+r)*SS, (y+r)*SS], fill='white', outline=ACCENT, width=int(2*SS))
         self.text(x, y + 0.5, str(n), 14, True, fill=ACCENT, anchor='mm')
     def save(self, name):
-        self.img.resize((self.W, self.H), Image.LANCZOS).save(os.path.join(HERE, name))
+        self.img.resize((self.W, self.H), Image.LANCZOS).save(os.path.join(S.RETIRED, name))
 
 def proj(R, origin, px):
     ox, oy = origin

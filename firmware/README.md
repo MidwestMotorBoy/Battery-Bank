@@ -1,6 +1,6 @@
-# MonolithDev MCU firmware
+# Monolith MCU firmware
 
-Firmware for U301 on the dev board, a TI CC2340R5MODA (BLE, 512 KB flash / 64 KB RAM). Until the dev board exists it runs on the **LP-EM-CC2340R53 LaunchPad**, which has the same memory. The plan for that phase is [`../docs/devboard/launchpad-cc2340-plan.md`](../docs/devboard/launchpad-cc2340-plan.md).
+Firmware for U301, a TI CC2340R5MODA (BLE, 512 KB flash / 64 KB RAM), on the production P0 board. Until P0 exists it runs on the **LP-EM-CC2340R53 LaunchPad**, which has the same memory. The plan for that phase is [`../docs/devboard/launchpad-cc2340-plan.md`](../docs/devboard/launchpad-cc2340-plan.md). The dev board was skipped on 2026-10-18 and never built; its `devboard` target stays because its pin map is P0's plus the LED and UART, and a `boards/p0.syscfg` is still to write (`docs/spec.md`, Firmware). Design notes: [`../docs/firmware/`](../docs/firmware/).
 
 **Status (2026-10-15):** tools installed on this machine (CCS 21.0.1, LPF3 SDK 9.23.00.27, UniFlash 9.7.0). The skeleton builds with no warnings: about 10 KB flash and 10.6 KB RAM, 8 KB of it heap. It has not run on hardware yet.
 
@@ -60,7 +60,7 @@ The output goes to `build/launchpad/batterybank_launchpad.out`, with a `.hex` an
 gmake flash
 ```
 
-**Dev board (U301 CC2340R5MODA):** same probe, same `.ccxml`, J102 → cable → J301. Power the board from a current-limited bench supply on J104 first (`docs/devboard/bringup-config-checklist.md` §1); the probe must not be the only thing holding up 3V3.
+**Dev board (U301 CC2340R5MODA; never built, kept as the template for P0):** same probe, same `.ccxml`, J102 → cable → J301. Power the board from a current-limited bench supply on J104 first (`docs/devboard/bringup-config-checklist.md` §1); the probe must not be the only thing holding up 3V3.
 
 ```bash
 gmake BOARD=devboard
