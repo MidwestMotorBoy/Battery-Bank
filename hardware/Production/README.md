@@ -383,11 +383,11 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 ## Board mounting: carrier pegs (2026-10-21; the cover standoffs are retired)
 
 The board has **no screw holes**. In the cup it rides on the PA12 carrier (`mechanical/monolith_cup.py`):
-- **four pegs** (Ø2.0 mm) on the carrier rails pass through four NPTH holes and stand 0.6 mm proud of F.Cu;
+- **four pegs** (Ø2.0 mm) on the carrier rails pass through four NPTH slots and stand 0.6 mm proud of F.Cu;
 - the rails bear on B.Cu along the front cells' tangents;
 - the top edge stops on the top wall, and the USB-C bodies sit in their seal bores.
 
-- **Schematic:** H101–H104 on the 3V3 Rail sheet, now `Mechanical:MountingHole` (no pins, no net, not in the BOM) with the generated footprint `MonolithDev:Peg_NPTH_D2.2mm` (2.2 mm NPTH, courtyard 0.5 mm round it on both faces). Same references as the old Würth standoffs, so Update PCB swaps the footprints in place.
+- **Schematic:** H101–H104 on the 3V3 Rail sheet, now `Mechanical:MountingHole` (no pins, no net, not in the BOM) with the generated footprint `MonolithDev:Peg_NPTH_Slot2.6x2.2mm` (2.6 × 2.2 mm NPTH slot, long along KiCad x; courtyard 0.5 mm round it on both faces). Until 2026-10-24 these were Ø2.2 holes; the slot gives ±0.3 mm float across the board so the USB-C seal bores centre the ports, and keeps ±0.1 mm along it. Same references as the old Würth standoffs, so Update PCB swaps the footprints in place.
 - **Positions:** `CUP_PEGS` in `mechanical/monolith_shell.py`. In KiCad, H101 (91.40, 127.48), H102 (91.40, 73.48), H103 (108.60, 127.48), H104 (108.60, 73.48).
     - H104 lands on U405 and C452 as placed today: move them.
 - **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --mech`. It moves only the peg holes and the seven pack wire holes to their positions and locks them.
@@ -458,7 +458,7 @@ The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 
 The side tray and its aluminium cover are retired; the enclosure is now **the cup** (`hardware/mechanical/monolith_cup.py`, `docs/production/p0-assembly.md`). Same board outline, slots and tails. Board changes it needs: the schematic side and the keep-outs are in the tools (2026-10-22); the board picks them up with Update PCB from Schematic, `make_board.py --mech` and `--keepouts`. Still by hand: the gap-filler copper and vias, and moving the power stages over it.
 - **Gap-filler zone on B.Cu:** |y| 7–16 mm, z 27–53 mm (shell coordinates): no parts, solid copper, a dense thermal-via array from the power stages on F.Cu. This replaces the cover as the heat path.
 - **Carrier rails split:** the B.Cu rail keep-outs stay at |y| 6.5–11.3 mm but stop between z 25 and 55 mm.
-- **Four peg holes** (2.2 mm NPTH for Ø2.0 pegs) at y ±8.6 mm, z 14 and 68 mm: H101–H104.
+- **Four peg slots** (2.6 × 2.2 mm NPTH for Ø2.0 pegs: ±0.3 mm float in y, ±0.1 in z) at y ±8.6 mm, z 14 and 68 mm: H101–H104.
 - **Cover standoffs are gone** (H101–H104 are the peg holes now), and the bottom corner notches no longer clear any bosses (harmless, left as they are).
 - **F.Cu height:** the cup's board-face wall sits 0.5 mm over the tallest part (3.2 mm limit unchanged).
 

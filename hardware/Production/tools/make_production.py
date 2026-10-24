@@ -881,8 +881,8 @@ def add_shared_bulk(s):
 PEGS = ["H101", "H102", "H103", "H104"]  # carrier peg holes, in MS.CUP_PEGS order; make_board.py --mech places them
 PEG_AT = (63.5, 154.94)                   # power sheet, under the shared bulk (outside layout_production's moves)
 MECH_SYM = r"C:\Program Files\KiCad\10.0\share\kicad\symbols\Mechanical.kicad_sym"
-PEG_FP = "Peg_NPTH_D%gmm" % MS.CUP_PEG_HOLE_D
-PEG_PROPS = {"Value": "Peg hole %g NPTH" % MS.CUP_PEG_HOLE_D, "Footprint": "MonolithDev:" + PEG_FP,
+PEG_FP = "Peg_NPTH_Slot%gx%gmm" % MS.CUP_PEG_SLOT
+PEG_PROPS = {"Value": "Peg slot %gx%g NPTH" % MS.CUP_PEG_SLOT, "Footprint": "MonolithDev:" + PEG_FP,
              "Datasheet": "", "Description": "NPTH for a %g mm PA12 carrier peg (mechanical/monolith_shell.py CUP_PEGS)"
              % MS.CUP_PEG_D, "LCSC": "", "MPN": ""}
 
@@ -914,9 +914,9 @@ def add_pegs(s):
         add += "\n\t" + blk
     head = next((a, b) for a, b in top_blocks(s, "text") if "3.3 V ALWAYS-ON RAIL" in s[a:b])
     t = new_uuids(s[head[0]:head[1]])
-    t = re.sub(r'\(text "[^"]*"', '(text "CARRIER PEG HOLES  (4x %g mm NPTH for the cup carrier\'s %g mm pegs; positions '
+    t = re.sub(r'\(text "[^"]*"', '(text "CARRIER PEG SLOTS  (4x %g x %g mm NPTH for the cup carrier\'s %g mm pegs; positions '
                'from mechanical/monolith_shell.py CUP_PEGS, placed by make_board.py --mech)"'
-               % (MS.CUP_PEG_HOLE_D, MS.CUP_PEG_D), t, count=1)
+               % (MS.CUP_PEG_SLOT + (MS.CUP_PEG_D,)), t, count=1)
     t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 40.64 142.24", t, count=1)
     add += "\n\t" + t
     return insert_top(s, add)
@@ -1122,24 +1122,26 @@ def wire_footprint():
 
 
 def peg_footprint():
-    """NPTH for a carrier peg; courtyard on both faces 0.5 mm outside the hole (the peg stands proud of F.Cu and
-    the carrier rail bears on B.Cu around it)."""
-    d = MS.CUP_PEG_HOLE_D
-    r = d / 2 + 0.5
-    crt = "".join('\n\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.05) (type solid)) (fill no) (layer "%s"))'
-                  % (r, lay) for lay in ("F.CrtYd", "B.CrtYd"))
+    """NPTH slot for a carrier peg, long along KiCad x (shell y) so the board floats across the USB-C seal bores' width
+    and stays located in z; courtyard on both faces 0.5 mm outside the slot (the peg stands proud of F.Cu and the
+    carrier rail bears on B.Cu around it)."""
+    w, h = MS.CUP_PEG_SLOT
+    cx, cy = w / 2 + 0.5, h / 2 + 0.5
+    crt = "".join('\n\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.05) (type solid)) (fill no) (layer "%s"))'
+                  % (cx, cy, cx, cy, lay) for lay in ("F.CrtYd", "B.CrtYd"))
     return "\n".join([
         '(footprint "%s"' % PEG_FP, "\t(version 20241229)", '\t(generator "make_production.py")', '\t(layer "F.Cu")',
-        '\t(descr "NPTH %g mm for a %g mm PA12 carrier peg (mechanical/monolith_cup.py)")' % (d, MS.CUP_PEG_D),
-        '\t(tags "peg hole npth")',
+        '\t(descr "NPTH %g x %g mm slot for a %g mm PA12 carrier peg (mechanical/monolith_cup.py)")' % (w, h, MS.CUP_PEG_D),
+        '\t(tags "peg slot npth")',
         '\t(property "Reference" "REF**" (at 0 -%g 0) (layer "F.SilkS") (hide yes) (effects (font (size 0.6 0.6) '
-        '(thickness 0.1))))' % (r + 0.6),
+        '(thickness 0.1))))' % (cy + 0.6),
         '\t(property "Value" "%s" (at 0 %g 0) (layer "F.Fab") (effects (font (size 0.6 0.6) (thickness 0.1))))'
-        % (PEG_FP, r + 0.6),
+        % (PEG_FP, cy + 0.6),
         "\t(attr exclude_from_pos_files exclude_from_bom)",
-        '\t(pad "" np_thru_hole circle (at 0 0) (size %g %g) (drill %g) (layers "*.Cu" "*.Mask"))' % (d, d, d)]
+        '\t(pad "" np_thru_hole oval (at 0 0) (size %g %g) (drill oval %g %g) (layers "*.Cu" "*.Mask"))' % (w, h, w, h)]
         + [crt.lstrip("\n"),
-           '\t(fp_circle (center 0 0) (end %g 0) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))' % r,
+           '\t(fp_rect (start -%g -%g) (end %g %g) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))'
+           % (cx, cy, cx, cy),
            ")", ""])
 
 

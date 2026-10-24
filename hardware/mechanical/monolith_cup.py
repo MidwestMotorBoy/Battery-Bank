@@ -70,7 +70,8 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
 POST_GAP = 0.3                     # peg posts stop this far under the board-face wall at nominal
-SLEEVE = (2.0, 0.85, 1.0)          # TPU retaining sleeve pushed down each post onto F.Cu: outer r, bore r, height
+SLEEVE = (2.0, 0.85, 1.0)          # TPU retaining sleeve pushed down each post onto F.Cu: outer r, bore r, height (pushed
+                                    # down to touch, not clamp, so the board can still float in the board's peg slots)
 # Cells (#3, #6). An insulator ring on every + end (C1 / C3 top, C2 / C4 bottom) under the nickel, so a strip pushed
 # into a frame window lands on paper, not on the cell's own - shoulder; a foam ring in a pocket in the bottom frame
 # pushes each cell up onto the top frame, so the cells can't float on the welds.
@@ -313,6 +314,9 @@ def checks():
         'board-face wall at 25 kPa (simply supported bound) stays off the parts (x)': (X_IN - (S.sb_xb1 + S.SB_OUT_H)) - wall_deflection(WALL_BF, 25) - 0.05,
         'peg posts under the board-face wall (x, gap 0.1-0.5)': min(X_IN - POST_GAP - (S.sb_xb1 + 0.1), POST_GAP - 0.1, 0.5 - POST_GAP),
         'retaining sleeves under the board-face wall (x)': X_IN - (S.sb_xb1 + SLEEVE[2]) - 0.5,
+        'peg-slot float lets the seal bores centre the ports (y, float >= bore lead-in)': (S.CUP_PEG_SLOT[0] - S.CUP_PEG_D)/2 - USB_LEAD + 1e-9,
+        'peg slots keep the seal rings in the top wall (z, ring 0.35 in - float >= 0.2)': (TOP_T - 1.5) - (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D)/2 - 0.2 + 1e-9,
+        'retaining sleeves cover the peg slots at full float (y, >= 0.3)': SLEEVE[0] - (S.CUP_PEG_SLOT[0] - S.CUP_PEG_D)/2 - S.CUP_PEG_SLOT[0]/2 - 0.3 + 1e-9,
         'USB-C ring ends inside the top wall (z, ring band 1.5, >= 0.3)': TOP_T - 1.5 - 0.3 + 1e-9,
         'board top edge is a backstop under the top wall (z, 0.05-0.2)': min(Z_TOP0 - S.sb_zb1 - 0.05, 0.2 - (Z_TOP0 - S.sb_zb1)),
         'USB-C seal squeeze per side (0.12-0.18)': min(USB_SQ - 0.12, 0.18 - USB_SQ),
