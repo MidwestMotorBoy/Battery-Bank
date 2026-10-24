@@ -1,6 +1,6 @@
 # P0 assembly: one power module, then the cup
 
-How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`; the connections: `hardware/mechanical/monolith_side_tabs.png` (unchanged).
+How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`; the cell taps: `hardware/mechanical/retired/monolith_side_tabs.png` (drawn for the side tray, before the wire PACK tails; the cell-tap slots are the same).
 
 **Status:** a plan. Nothing has been built yet, so expect it to change at the first fit print. Cells: BAK N21700CX-65E 6500 mAh (`docs/spec.md`, Cells and pack). Which of the board changes below are already on the `Production` branch is tracked in the spec's P0 checklist.
 

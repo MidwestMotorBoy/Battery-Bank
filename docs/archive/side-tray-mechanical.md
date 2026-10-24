@@ -1,25 +1,25 @@
 # Side tray and the earlier layouts (retired)
 
-> **Archived 2026-10-24** from `docs/mechanical-design.md`. The side tray with its aluminium cover was the enclosure from 2026-10-18 until the cup replaced it on 2026-10-21; the top-cap tube came before it. The current enclosure is in [`docs/mechanical-design.md`](../mechanical-design.md) and [`docs/spec.md`](../spec.md) (Boards and enclosure). Cell figures below are the EVE 58E and FEB 21700G of the time, not the BAK 65E. The models and their outputs are still in `hardware/mechanical/`.
+> **Archived 2026-10-24** from `docs/mechanical-design.md`. The side tray with its aluminium cover was the enclosure from 2026-10-18 until the cup replaced it on 2026-10-21; the top-cap tube came before it. The current enclosure is in [`docs/mechanical-design.md`](../mechanical-design.md) and [`docs/spec.md`](../spec.md) (Boards and enclosure). Cell figures below are the EVE 58E and FEB 21700G of the time, not the BAK 65E. The scripts are still in `hardware/mechanical/` (the cup imports them); their tray and top-cap outputs (STL, DXF, STEP, renders, the print kit) moved to `hardware/mechanical/retired/` on 2026-10-24, and the scripts now write there.
 
 ## Renders
 
 <table>
 <tr>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_exploded.png"><img src="../../hardware/mechanical/monolith_side_exploded.png" alt="Assembled and exploded views with a numbered parts list"></a><br><b>Exploded view and parts list.</b> Everything goes in through the open side, then the caps go on.</td>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_sections.png"><img src="../../hardware/mechanical/monolith_side_sections.png" alt="Sections A-A and B-B"></a><br><b>Sections.</b> A-A passes through the BLE module on B.Cu, and B-B along C1 and C2: crush caps, pads, vent cut-outs, board stops.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_exploded.png"><img src="../../hardware/mechanical/retired/monolith_side_exploded.png" alt="Assembled and exploded views with a numbered parts list"></a><br><b>Exploded view and parts list.</b> Everything goes in through the open side, then the caps go on.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_sections.png"><img src="../../hardware/mechanical/retired/monolith_side_sections.png" alt="Sections A-A and B-B"></a><br><b>Sections.</b> A-A passes through the BLE module on B.Cu, and B-B along C1 and C2: crush caps, pads, vent cut-outs, board stops.</td>
 </tr>
 <tr>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_tabs.png"><img src="../../hardware/mechanical/monolith_side_tabs.png" alt="Nickel tails and board slot positions"></a><br><b>Pack connections.</b> Seven nickel tails (PACK± split into power and Kelvin fingers, CELL1–3) go through plated slots in the board; KiCad positions are given.</td>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_cover_preview.png"><img src="../../hardware/mechanical/monolith_side_cover_preview.png" alt="Laser-marked aluminium cover"></a><br><b>Cover.</b> 1.0 mm anodized 5052 with a laser-marked label, our own carry-on badge and a topo-map trail graphic.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_tabs.png"><img src="../../hardware/mechanical/retired/monolith_side_tabs.png" alt="Nickel tails and board slot positions"></a><br><b>Pack connections.</b> Seven nickel tails (PACK± split into power and Kelvin fingers, CELL1–3) go through plated slots in the board; KiCad positions are given.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_cover_preview.png"><img src="../../hardware/mechanical/retired/monolith_side_cover_preview.png" alt="Laser-marked aluminium cover"></a><br><b>Cover.</b> 1.0 mm anodized 5052 with a laser-marked label, our own carry-on badge and a topo-map trail graphic.</td>
 </tr>
 <tr>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_parts.png"><img src="../../hardware/mechanical/monolith_side_parts.png" alt="Caps, tray and pads with mass, drop and print tables"></a><br><b>Parts, mass and drop estimate.</b> Cap print zones, the tray, the cell frame and wedge, and the print settings.</td>
-<td width="50%"><a href="../../hardware/mechanical/monolith_layout_compare.png"><img src="../../hardware/mechanical/monolith_layout_compare.png" alt="Top-cap layout against the side-board layout"></a><br><b>Layout comparison.</b> The original top-cap tube against the side-board tray.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_parts.png"><img src="../../hardware/mechanical/retired/monolith_side_parts.png" alt="Caps, tray and pads with mass, drop and print tables"></a><br><b>Parts, mass and drop estimate.</b> Cap print zones, the tray, the cell frame and wedge, and the print settings.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_layout_compare.png"><img src="../../hardware/mechanical/retired/monolith_layout_compare.png" alt="Top-cap layout against the side-board layout"></a><br><b>Layout comparison.</b> The original top-cap tube against the side-board tray.</td>
 </tr>
 <tr>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_assembly.png"><img src="../../hardware/mechanical/monolith_side_assembly.png" alt="Assembly in six steps"></a><br><b>Assembly.</b> Cells, frame and board are built and tested on the bench as one module; it drops into the tray, lifts into the ports, and a wedge locks it. See <a href="../production/p0-assembly.md">p0-assembly.md</a>.</td>
-<td width="50%"><a href="../../hardware/mechanical/monolith_side_standoffs.png"><img src="../../hardware/mechanical/monolith_side_standoffs.png" alt="Cover standoffs explained"></a><br><b>Cover standoffs.</b> Four steel spacers on the board carry crush loads off the parts. The two real screws are shown alongside.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_assembly.png"><img src="../../hardware/mechanical/retired/monolith_side_assembly.png" alt="Assembly in six steps"></a><br><b>Assembly.</b> Cells, frame and board are built and tested on the bench as one module; it drops into the tray, lifts into the ports, and a wedge locks it. See <a href="../production/p0-assembly.md">p0-assembly.md</a>.</td>
+<td width="50%"><a href="../../hardware/mechanical/retired/monolith_side_standoffs.png"><img src="../../hardware/mechanical/retired/monolith_side_standoffs.png" alt="Cover standoffs explained"></a><br><b>Cover standoffs.</b> Four steel spacers on the board carry crush loads off the parts. The two real screws are shown alongside.</td>
 </tr>
 </table>
 
@@ -81,7 +81,7 @@
 
 ## Scripts for the retired layouts
 
-- **Home-print kit:** `monolith_print_kit.py` writes `hardware/mechanical/print_kit/`. It holds FDM print-pose STLs of the side tray, fit coupons, the TPU caps with their modifiers, ballastable dummy cells, a dummy board and a cover stand-in. Settings, ballast and assembly are in `print_kit/README.md`. It also needs trimesh and manifold3d.
+- **Home-print kit:** `monolith_print_kit.py` writes `hardware/mechanical/retired/print_kit/`. It holds FDM print-pose STLs of the side tray, fit coupons, the TPU caps with their modifiers, ballastable dummy cells, a dummy board and a cover stand-in. Settings, ballast and assembly are in `retired/print_kit/README.md`. It also needs trimesh and manifold3d.
 - `monolith_render.py` renders both layouts side by side to `monolith_layout_compare.png` and prints a size and mass table. It needs numpy, scipy and Pillow.
 - `monolith_side_renders.py` renders the side tray's drop design:
     - `monolith_side_exploded.png`: assembled and exploded views;

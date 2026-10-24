@@ -10,7 +10,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 
 | | |
 |---|---|
-| **Energy** | 91 Wh typical, 88.9 Wh minimum (4S1P, 6.5 Ah, BAK N21700CX-65E cells), under the 100 Wh carry-on limit |
+| **Energy** | 91 Wh typical, 88.9 Wh minimum (4S1P, 14.0 V, 6.5 Ah, BAK N21700CX-65E cells), under the 100 Wh carry-on limit |
 | **Ports** | 2 × USB-C, each bidirectional PD 5–20 V up to 5 A; 100 W total as a burst, then a linear thermal derate to a sustained ~40 W ([policy](docs/firmware/charge-and-thermal-policy.md)) |
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), Infineon BSC007N04LS6 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
@@ -55,7 +55,7 @@ The KiCad 10 sources are in `hardware/`, with the production board as the design
 |---|---|---|
 | **Production P0** | [`hardware/Production/`](hardware/Production/) | First board to be built. The live board is on the `Production` branch; `master`'s copy lags behind it. The dev-board schematic with the bench-only parts removed, JLC extended/0201 passives, SiZ240DT half-bridge FETs, low-profile bulk capacitors, Tag-Connect SWD and gauge-training pads. Generated and checked by the scripts in `tools/`. [README](hardware/Production/README.md) has every change with its reasoning. |
 | **Dev board** | [`hardware/DevBoard/`](hardware/DevBoard/) | Bench version with cell holders, test points, jumpers and a sleep-current measurement section. Routed and fab-ready, not ordered. [README](hardware/DevBoard/README.md) is the change log (items 1–50) and board rules. |
-| **Mechanical** | [`hardware/mechanical/`](hardware/mechanical/) | Python-generated enclosure (the cup: `monolith_cup.py`; the retired side tray is still there) as STL/STEP/DXF, plus the renders. Notes in [`docs/mechanical-design.md`](docs/mechanical-design.md). |
+| **Mechanical** | [`hardware/mechanical/`](hardware/mechanical/) | Python-generated enclosure (the cup: `monolith_cup.py`; outputs of the retired tube and side tray are in `retired/`) as STL/STEP/DXF, plus the renders. Notes in [`docs/mechanical-design.md`](docs/mechanical-design.md). |
 
 **Schematics (PDF)**
 
@@ -101,7 +101,7 @@ Datasheets and app notes the design was checked against are in `datasheets/` (in
 ├── hardware/
 │   ├── Production/        KiCad 10 project "Monolith" (P0): schematic, board, library, generator scripts
 │   ├── DevBoard/          KiCad 10 project "MonolithDev": schematic, routed board, library, fab/, tools/, 3dmodels/
-│   └── mechanical/        Enclosure models (Python → STL/STEP/DXF) and renders
+│   └── mechanical/        Enclosure models (Python → STL/STEP/DXF) and renders; retired/ holds the old layouts
 ├── firmware/              CC2340 firmware: Makefile, boards/*.syscfg, app/, tools.mak.example
 ├── docs/
 │   ├── hardware/          Schematic PDFs and board plots exported from KiCad
