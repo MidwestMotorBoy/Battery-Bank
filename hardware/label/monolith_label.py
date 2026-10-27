@@ -32,6 +32,7 @@ LAP, BLEED = 5.0, 2.0                # seam overlap, print bleed
 BL = '--bl' in sys.argv              # Borderlands look: hand-inked brush outlines that swell and taper (heavier on the shadow
                                      # side), tapered hatching, lit edges and shadow faces (light from the upper left), ink grit
 NAME = 'monolith_label_bl' if BL else 'monolith_label'
+V = {}                               # look variations (label_variants.py): ink, grit, stars, moon, halftone, scuff
 OW = 1.15 if BL else 1.0             # outer outline weight (the brush swells to about 1.45x at its fattest)
 TUCK = K.LABEL_TUCK                  # edge under each bumper; label heights and the vent hole come from monolith_cup
 VENT_HOLE_D = 2 * K.VENT_HOLE_R
@@ -143,7 +144,7 @@ def ink(p, sw, closed=False, period=False, unit=1.0, raw=False):
     period: a long line across the seam, broken at the same places every wrap period so both ends of the label match"""
     p = [tuple(map(float, v)) for v in p]
     if len(p) < 2: return ''
-    w = sw * 1.45
+    w = sw * 1.45 * V.get('ink', 1.0)
     if closed: p = p + [p[0]]
     q = _resample(p, 0.2 * unit)
     if len(q) < 2: return ''
@@ -226,8 +227,9 @@ def hatch_ink(p, step=1.0, ang=45, sw=0.25, maxlen=5.0):
             ya = y1 + 0.3; yt = y1 - min(k * (y1 - y0), maxlen * rng.uniform(0.6, 1.0) * math.sin(math.radians(ang)))
             d += taper((c - ya / t, ya), (c - yt / t + rng.uniform(-0.15, 0.15), yt), sw * 2.3, rng)
     if d: add(f'<g clip-path="url(#{cid})"><path d="{d}" fill="{INK}"/></g>')
-def grit(p, n, rng, dash=(0.3, 1.0), w=0.22, ang=(15, 40), clip_d=None):
+def grit(p, n, rng, dash=(0.3, 1.0), w=0.22, ang=(15, 40), clip_d=None, colour=INK):
     """ink grit inside polygon p (or the path clip_d): specks and short tapered scratches"""
+    n = int(n * V.get('grit', 1.0))
     _clip[0] += 1; cid = f'g{_clip[0]}'
     add(f'<clipPath id="{cid}">' + (f'<path d="{clip_d}"/>' if clip_d else f'<polygon points="{pts(p)}"/>') + '</clipPath>')
     xs, ys = [q[0] for q in p], [q[1] for q in p]
@@ -239,7 +241,7 @@ def grit(p, n, rng, dash=(0.3, 1.0), w=0.22, ang=(15, 40), clip_d=None):
         else:
             L, a = rng.uniform(*dash), math.radians(rng.uniform(*ang))
             d += taper((x, y), (x + L * math.cos(a), y + L * math.sin(a)), w, rng)
-    add(f'<g clip-path="url(#{cid})" fill="{INK}"><path d="{d}"/>{dots}</g>')
+    add(f'<g clip-path="url(#{cid})" fill="{colour}"><path d="{d}"/>{dots}</g>')
 
 # ---------------- outlined text ----------------
 class Font:
@@ -542,6 +544,7 @@ def caption(x0, y0, x1, y1, shadow=0.8):
     p = [(x0, y0 + 0.3), (x1 - 0.2, y0), (x1, y1 - 0.3), (x0 + 0.25, y1)]
     poly([(a + shadow, b + shadow) for a, b in p], INK, 0)
     _crisp[0] = False; poly(p, C['cream'], 0.35 if BL else 0.5); _crisp[0] = True
+    if V.get('scuff'): grit(p, 60, _rng(x0, y0, 3), dash=(0.4, 1.4), w=0.25, colour=C.get('scuff', '#c9b48a'))
 
 def facets(ridge, sh, ybot, hatched=None, hi=None, depth=None, hi_w=1.1, smooth=0):
     """cel shadow on the slopes of a ridge line that fall away to the right (light from the left all round, so it repeats
@@ -584,6 +587,26 @@ def scene():
     add(f'<rect x="{X0}" y="{Y0}" width="{X1 - X0}" height="{Y1 - Y0}" fill="{C["sky2"]}"/>')
     add(f'<rect x="{X0}" y="{Y0}" width="{X1 - X0}" height="{28 - Y0}" fill="{C["sky1"]}"/>')
     add(f'<rect x="{X0}" y="{Y0}" width="{X1 - X0}" height="{10.5 - Y0}" fill="{C["sky0"]}"/>')
+    if V.get('halftone'):                                        # comic dots fading down from each band edge
+        for yb_, col in ((10.5, C['sky0']), (28.0, C['sky1'])):
+            n = round(PER / 0.85); dx = PER / n; dots = ''
+            for r in range(6):
+                rad = 0.42 * (1 - r / 6); y = yb_ + 0.45 + r * 0.8
+                for k in range(-4, n + 12):
+                    dots += f'<circle cx="{k * dx + (dx / 2 if r % 2 else 0):.2f}" cy="{y:.2f}" r="{rad:.2f}"/>'
+            add(f'<g fill="{col}">{dots}</g>')
+    if V.get('stars'):                                           # sparkles and dots, periodic so the seam matches
+        d, dots = '', ''
+        for m in range(V['stars']):
+            r = _rng(m, 77); x = m * PER / V['stars'] + r.uniform(-1, 1); y = r.uniform(1.0, V.get('star_y', 24)); a = r.uniform(0.25, 0.75)
+            for xx in (x - PER, x, x + PER):
+                if not X0 < xx < X1: continue
+                if r.random() < 0.35:
+                    d += (f'M{xx:.2f} {y - 2.2 * a:.2f}L{xx + 0.35 * a:.2f} {y - 0.35 * a:.2f}L{xx + 2.2 * a:.2f} {y:.2f}L{xx + 0.35 * a:.2f} {y + 0.35 * a:.2f}'
+                          f'L{xx:.2f} {y + 2.2 * a:.2f}L{xx - 0.35 * a:.2f} {y + 0.35 * a:.2f}L{xx - 2.2 * a:.2f} {y:.2f}L{xx - 0.35 * a:.2f} {y - 0.35 * a:.2f}Z')
+                else:
+                    dots += f'<circle cx="{xx:.2f}" cy="{y:.2f}" r="{0.25 * a + 0.08:.2f}"/>'
+        add(f'<g fill="{C.get("star", "#f6eccb")}"><path d="{d}"/>{dots}</g>')
     # clouds over the forest
     for cx, cy, s in ((8, 9, 1.0), (176, 7.5, 0.8), (22, 15.5, 0.6)): rep(cloud, cx, cy, s)
     # far range, periodic, with snow on the high points; it falls away either side of the board face so the sun
@@ -618,8 +641,8 @@ def scene():
             if BL:
                 poly([(x, y), (x + 1.4, y + 1.1), (x + 2.8, y + 2.4), (x + 1.6, y + 2.0), (x + 0.9, y + 2.9), (x + 0.5, y + 1.4)], C['snow_sh'], 0)
                 poly(cap, 'none', 0.3)
-    # sun over the board face: the vent hole is its core
-    for i in range(16):
+    # sun over the board face: the vent hole is its core (or a moon)
+    for i in range(0 if V.get('moon') else 16):
         a0 = 2 * math.pi * i / 16; a1 = a0 + 2 * math.pi / 32
         if math.sin((a0 + a1) / 2) > 0.2: continue                 # under the hills anyway
         r0, r1 = VENT_HOLE_D / 2 + 2.6, VENT_HOLE_D / 2 + (7.0 if i % 2 == 0 else 4.5)
@@ -639,6 +662,9 @@ def scene():
             f'A{r * 1.35:.3f} {r * 1.35:.3f} 0 0 0 {VX + r * math.cos(a0):.3f} {VY + r * math.sin(a0):.3f}Z" fill="{C["sun_sh"]}"/>')
         ink([(VX + rs * math.cos(a), VY + rs * math.sin(a)) for a in np.linspace(0, 2 * math.pi, 120, endpoint=False)], 0.45 * OW, closed=True)
     add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 1.2:.3f}" fill="none" stroke="{C["sun_ray"]}" stroke-width="0.4"/>')
+    if V.get('moon'):                                            # craters on the rim
+        for a, rr in ((-150, 0.55), (-115, 0.35), (-60, 0.45), (-25, 0.3)):
+            add(f'<circle cx="{VX + (rs - 1.3) * math.cos(math.radians(a)):.3f}" cy="{VY + (rs - 1.3) * math.sin(math.radians(a)):.3f}" r="{rr}" fill="{C["sun_sh"]}"/>')
     b0, b1 = SIDE_B
     # canyon country on side B: a spire, a mitten butte and an arch, standing on talus slopes
     for k, (outline, holes, shade, cap_y, strata, talus_y) in enumerate(CANYON): rock(b0, outline, holes, shade, cap_y, strata, talus_y, 20 + k)
