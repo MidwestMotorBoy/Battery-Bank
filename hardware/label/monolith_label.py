@@ -157,19 +157,20 @@ def bear(x, yb, s=1.0):
     round ears, heavy legs with pale claws, a lit back and grizzled tips on the hump"""
     g = f'<g transform="translate({x:.3f} {yb:.3f}) scale({s:.4f})">'
     w = lambda v: v / s                                            # stroke widths stay in mm
-    body = ('M2.4 0 C2.2 -0.7 1.9 -1.5 1.3 -2.4 C0.5 -3.5 0.3 -5.1 1.0 -6.0 C1.6 -6.8 2.6 -6.9 3.6 -7.1 '
-            'C5.0 -7.4 6.6 -8.6 8.4 -8.9 C9.7 -9.1 10.8 -8.6 11.4 -8.0 C12.0 -8.5 12.8 -8.7 13.5 -8.4 '
-            'C14.2 -8.1 14.5 -7.4 15.0 -7.0 C15.6 -6.7 16.3 -6.6 16.6 -6.2 C16.9 -5.8 16.7 -5.2 16.1 -5.1 '
-            'C15.3 -4.9 14.4 -4.7 13.6 -4.5 C12.9 -4.3 12.5 -3.8 12.6 -3.2 C12.7 -2.1 12.9 -1.1 13.3 -0.6 '
+    body = ('M2.4 0 C2.2 -0.7 1.9 -1.5 1.3 -2.4 C0.5 -3.5 0.3 -5.1 1.0 -6.0 C1.6 -6.8 2.6 -7.0 3.6 -7.0 '
+            'C4.8 -7.0 6.0 -6.7 7.0 -6.9 C8.0 -7.1 8.6 -8.7 9.6 -9.6 C10.3 -10.2 11.1 -10.1 11.6 -9.4 '      # dip, then the hump
+            'C12.0 -8.8 12.2 -8.2 12.7 -7.9 C13.3 -7.7 13.9 -7.6 14.4 -7.2 C15.0 -6.8 15.9 -6.7 16.4 -6.3 '  # head below the hump
+            'C16.8 -6.0 16.7 -5.3 16.1 -5.2 C15.3 -5.0 14.4 -4.8 13.7 -4.6 C13.0 -4.4 12.6 -3.9 12.7 -3.3 '
+            'C12.8 -2.1 12.9 -1.1 13.3 -0.6 '
             'C13.8 -0.4 14.0 -0.2 13.8 0 L11.3 0 C11.3 -0.8 11.1 -1.8 10.7 -2.7 C9.4 -3.0 7.2 -2.8 5.8 -2.9 '
             'C5.1 -2.4 4.7 -1.4 4.5 -0.5 C4.7 -0.3 4.8 -0.1 4.6 0 Z')
     far = ('M9.3 -3.2 C9.5 -2.0 9.3 -1.0 9.0 -0.3 C9.0 -0.1 9.1 0 9.3 0 L10.9 0 C10.8 -1.0 11.0 -2.0 11.3 -3.3 Z '
            'M4.8 -3.3 C5.1 -2.1 5.2 -1.0 5.0 -0.3 C5.0 -0.1 5.1 0 5.3 0 L6.9 0 C6.6 -1.0 6.6 -2.1 6.9 -3.1 Z')
     add(g)
     add(f'<path d="{far}" fill="{C["bear_sh"]}" stroke="{INK}" stroke-width="{w(0.4):.3f}" stroke-linejoin="round"/>')
-    add(f'<circle cx="11.95" cy="-8.4" r="0.6" fill="{C["bear_sh"]}" stroke="{INK}" stroke-width="{w(0.35):.3f}"/>')   # far ear
-    add(f'<circle cx="12.6" cy="-8.55" r="0.72" fill="{C["bear"]}" stroke="{INK}" stroke-width="{w(0.35):.3f}"/>')     # near ear
-    add(f'<circle cx="12.65" cy="-8.5" r="0.36" fill="{C["bear_sh"]}"/>')
+    add(f'<circle cx="12.75" cy="-8.25" r="0.55" fill="{C["bear_sh"]}" stroke="{INK}" stroke-width="{w(0.35):.3f}"/>')  # far ear
+    add(f'<circle cx="13.35" cy="-8.05" r="0.66" fill="{C["bear"]}" stroke="{INK}" stroke-width="{w(0.35):.3f}"/>')     # near ear
+    add(f'<circle cx="13.4" cy="-8.0" r="0.33" fill="{C["bear_sh"]}"/>')
     _clip[0] += 1; cid = f'b{_clip[0]}'
     add(f'<clipPath id="{cid}"><path d="{body}"/></clipPath>')
     add(f'<path d="{body}" fill="{C["bear"]}"/>')
@@ -178,18 +179,19 @@ def bear(x, yb, s=1.0):
     add(f'<path d="M0 -3.4 C3 -3.9 8 -4.0 13 -3.6 L16 -3.6 L16 1 L0 1 Z" fill="{C["bear_sh"]}"/>')
     hl = ''.join(f'M{k:.2f} 0.5L{k + 2.2:.2f} -3.6' for k in np.arange(-2, 16, 0.95))
     add(f'<path d="{hl}" stroke="{INK}" stroke-width="{w(0.25):.3f}" fill="none"/>')
-    add(f'<ellipse cx="15.8" cy="-5.8" rx="1.5" ry="0.95" fill="#b9814b"/>')                       # pale muzzle
-    add(f'<path d="M3.4 -6.75 C5.0 -7.05 6.6 -8.25 8.4 -8.55 C9.7 -8.75 10.6 -8.35 11.1 -7.85" fill="none" stroke="#c58a52" '
-        f'stroke-width="{w(0.5):.3f}" stroke-linecap="round"/>')                                       # light along the back
-    add(f'<path d="M6.0 -8.0q0.5 0.6 1.1 0.4M7.5 -8.4q0.5 0.6 1.1 0.4M9.0 -8.5q0.5 0.6 1.1 0.4" fill="none" stroke="#d9a46c" '
-        f'stroke-width="{w(0.3):.3f}" stroke-linecap="round"/>')                                       # grizzled hump
+    add(f'<ellipse cx="16.0" cy="-5.85" rx="1.4" ry="0.9" fill="#b9814b"/>')                       # pale muzzle
+    add(f'<path d="M3.4 -6.65 C4.8 -6.65 6.0 -6.35 7.0 -6.55 C8.0 -6.75 8.6 -8.3 9.6 -9.2 C10.3 -9.8 11.0 -9.7 11.4 -9.1" '
+        f'fill="none" stroke="#c58a52" stroke-width="{w(0.5):.3f}" stroke-linecap="round"/>')         # light along the back
+    add(f'<path d="M8.9 -8.3q0.4 0.6 1.0 0.5M9.9 -9.2q0.4 0.6 1.0 0.5M10.8 -9.0q0.3 0.6 0.9 0.6M9.6 -7.6q0.4 0.6 1.0 0.5" '
+        f'fill="none" stroke="#d9a46c" stroke-width="{w(0.3):.3f}" stroke-linecap="round"/>')          # grizzled tips on the hump
     add('</g>')
     add(f'<path d="{body}" fill="none" stroke="{INK}" stroke-width="{w(0.55):.3f}" stroke-linejoin="round"/>')
-    fur = 'M12.3 -3.6l-0.5 0.4M1.2 -4.6l0.5 0.3M4.6 -7.0l0.6 0.2M11.6 -7.6C12.4 -6.6 12.6 -5.6 12.9 -4.6'
+    fur = ('M12.4 -3.6l-0.5 0.4M1.2 -4.6l0.5 0.3M4.6 -6.9l0.6 0.2M12.3 -8.3C12.7 -7.2 12.8 -5.8 13.0 -4.7'   # neck under the hump
+           'M8.7 -7.2C9.7 -6.4 10.4 -5.0 10.6 -3.4')                                                    # shoulder
     add(f'<path d="{fur}" fill="none" stroke="{INK}" stroke-width="{w(0.25):.3f}" stroke-linecap="round" stroke-linejoin="round"/>')
-    add(f'<path d="M14.9 -5.15 C15.4 -5.3 15.8 -5.25 16.2 -5.15" fill="none" stroke="{INK}" stroke-width="{w(0.25):.3f}"/>')  # mouth
-    add(f'<circle cx="14.45" cy="-7.0" r="0.3" fill="{INK}"/><circle cx="14.53" cy="-7.08" r="0.1" fill="{C["cream"]}"/>')
-    add(f'<ellipse cx="16.5" cy="-5.95" rx="0.42" ry="0.34" fill="{INK}"/>')                     # nose
+    add(f'<path d="M15.0 -5.25 C15.5 -5.4 15.9 -5.35 16.3 -5.25" fill="none" stroke="{INK}" stroke-width="{w(0.25):.3f}"/>')  # mouth
+    add(f'<circle cx="14.75" cy="-6.75" r="0.3" fill="{INK}"/><circle cx="14.83" cy="-6.83" r="0.1" fill="{C["cream"]}"/>')
+    add(f'<ellipse cx="16.55" cy="-6.0" rx="0.42" ry="0.34" fill="{INK}"/>')                     # nose
     claws = ''.join(f'M{cx + k * 0.42:.2f} -0.05 q0.3 -0.05 0.38 -0.4' for cx in (12.6, 3.7) for k in range(3))
     add(f'<path d="{claws}" fill="none" stroke="{C["cream"]}" stroke-width="{w(0.25):.3f}" stroke-linecap="round"/>')
     add('</g>')
