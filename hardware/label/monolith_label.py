@@ -6,6 +6,8 @@ Run: python monolith_label.py      (numpy, fonttools, manifold3d, cairosvg, pypd
 -> out/monolith_label_print.pdf    send this: artwork with 2 mm bleed, all text as outlines, page = art + bleed exactly,
                                    TrimBox = the cut size, die line as a CutContour spot-colour stroke (overprint)
    out/monolith_label_print.svg    the artwork alone
+   out/monolith_label_trim.pdf     the artwork cut to size (R2 corners), no bleed or die line, for shops that make their
+                                   own cut path from the artwork's outline (CarStickers)
    out/monolith_label_cut.svg      die line: outline (R2 corners) + vent hole, on the same page as the print file
    out/monolith_label_proof.png    art + die line + face folds, for checking
 Label coordinates: mm, x along the wrap left to right as seen from outside with the ports up, y down from the label's
@@ -463,6 +465,8 @@ def build():
     with open(os.path.join(OUT, 'monolith_label_cut_art.svg'), 'w') as f:
         f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'] +
                     [f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="#00ff00"/>'], W, H))
+    with open(os.path.join(OUT, 'monolith_label_trim.svg'), 'w') as f:      # cut to size, transparent outside the R2 outline
+        f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'], W, H))
     return pw, ph
 
 def rasterize(pw, ph, dpmm=24):
@@ -474,6 +478,7 @@ def rasterize(pw, ph, dpmm=24):
     pdf = os.path.join(OUT, 'monolith_label_print.pdf')
     cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_print.svg'), write_to=pdf)
     add_cut_contour(pdf, pw, ph)
+    cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_trim.svg'), write_to=os.path.join(OUT, 'monolith_label_trim.pdf'))
 
 def add_cut_contour(pdf, pw, ph, r=2.0):
     """put the die line in the print PDF as a stroke in the CutContour spot colour (100 % magenta alternate, overprint),
