@@ -225,10 +225,10 @@ def hatch_ink(p, step=1.0, ang=45, sw=0.25, maxlen=5.0):
             ya = y1 + 0.3; yt = y1 - min(k * (y1 - y0), maxlen * rng.uniform(0.6, 1.0) * math.sin(math.radians(ang)))
             d += taper((c - ya / t, ya), (c - yt / t + rng.uniform(-0.15, 0.15), yt), sw * 2.3, rng)
     if d: add(f'<g clip-path="url(#{cid})"><path d="{d}" fill="{INK}"/></g>')
-def grit(p, n, rng, dash=(0.3, 1.0), w=0.22, ang=(15, 40)):
-    """ink grit inside polygon p: specks and short tapered scratches"""
+def grit(p, n, rng, dash=(0.3, 1.0), w=0.22, ang=(15, 40), clip_d=None):
+    """ink grit inside polygon p (or the path clip_d): specks and short tapered scratches"""
     _clip[0] += 1; cid = f'g{_clip[0]}'
-    add(f'<clipPath id="{cid}"><polygon points="{pts(p)}"/></clipPath>')
+    add(f'<clipPath id="{cid}">' + (f'<path d="{clip_d}"/>' if clip_d else f'<polygon points="{pts(p)}"/>') + '</clipPath>')
     xs, ys = [q[0] for q in p], [q[1] for q in p]
     d, dots = '', ''
     for _ in range(n):
@@ -398,7 +398,9 @@ def rock(x0, outline, holes, shade, cap_y, strata, talus_y, seed):
     rng = np.random.default_rng(seed)
     sh = lambda p: [(x0 + x, y) for x, y in p]
     ring = lambda p: 'M' + ' L'.join(f'{x:.3f} {y:.3f}' for x, y in sh(p)) + 'Z'
-    d = ring(outline) + ''.join(ring(h) for h in holes)
+    area = lambda p: sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(p, p[1:] + p[:1]))
+    holes = [h if area(h) * area(outline) < 0 else h[::-1] for h in holes]   # wound against the outline, so the hole
+    d = ring(outline) + ''.join(ring(h) for h in holes)                      # stays open under nonzero clipping too
     _clip[0] += 1; cid = f'r{_clip[0]}'
     add(f'<clipPath id="{cid}"><path d="{d}" clip-rule="evenodd"/></clipPath>')
     path(d, C['mesa_hi'] if BL else C['mesa'], 0, extra=' fill-rule="evenodd"')
@@ -425,7 +427,7 @@ def rock(x0, outline, holes, shade, cap_y, strata, talus_y, seed):
         for _ in range(rng.integers(2, 4)):
             poly(blob(cx + rng.uniform(-1.2, 1.2), cy + rng.uniform(-0.5, 0.5), rng.uniform(0.3, 0.9), rng), '#e39258', 0.25)
     if BL:                                           # pits and scratches, thicker in the shadow
-        grit(sh(outline), int((xb - xa) * 3.2), rng, dash=(0.3, 0.9), ang=(70, 100))
+        grit(sh(outline), int((xb - xa) * 3.2), rng, dash=(0.3, 0.9), ang=(70, 100), clip_d=d)
         grit(sh(shade), int((xb - xa) * 2.0), rng, dash=(0.4, 1.4), ang=(60, 80), w=0.3)
     add('</g>')
     path(d, 'none', 0.55 * OW)
@@ -735,12 +737,12 @@ def panels():
     text('MONOLITH Mk1 · 2026', BOLD, 1.8, cxA, y, 'c', fit=wA, fill='#5a4d3c')
     # side B: warning caption
     b0, b1 = SIDE_B; x0, x1 = b0 + 2.0, b1 - 2.0
-    caption(x0, VIS0 + 2.0, x1 - 0.8, VIS0 + 27.0)
+    caption(x0, VIS0 + 2.0, x1 - 0.8, VIS0 + 21.2)
     cxB = (x0 + x1 - 0.8) / 2; wB = x1 - x0 - 3.6
     text('WARNING', XB, 2.6, cxB, VIS0 + 6.4, 'c', fill=C['red'], track=0.2)
-    for i, ln in enumerate(('Do not crush, puncture or burn.', 'Keep below 60 °C.', 'Stop using if swollen,', 'hot or smelling.')):
+    for i, ln in enumerate(('Do not crush, puncture or burn.', 'Keep below 60 °C.')):
         text(ln, SEMI, 2.1, cxB, VIS0 + 9.9 + i * 2.9, 'c', fit=wB)
-    iy = VIS0 + 22.0                                  # recycle it, don't bin it: the two marks instead of words
+    iy = VIS0 + 16.2                                  # recycle it, don't bin it: the two marks instead of words
     bin_icon(cxB - 4.4, iy, 5.6)
     recycle_icon(cxB + 2.6, iy - 0.9, 3.6)
     text('Li-ion', BOLD, 1.6, cxB + 2.6, iy + 3.0, 'c')
