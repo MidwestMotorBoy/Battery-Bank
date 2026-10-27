@@ -11,7 +11,7 @@ fish paper, EVA hold-downs, crush caps) are not used.
 Needs numpy, pillow, manifold3d (the mechanical venv).
 Run: python monolith_cup.py [all|stl|exploded|sections|compare]
 -> monolith_cup_*.stl, monolith_cup_exploded.png, monolith_cup_sections.png, monolith_cup_vs_tray.png"""
-import os, sys, struct, numpy as np
+import os, sys, struct, math, numpy as np
 import manifold3d as M3
 from PIL import Image
 import monolith_shell as S, monolith_parts as P, monolith_side_renders as RR
@@ -84,7 +84,10 @@ BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 BUMP_WALL_BOT = 1.0                 # bottom band over the cap's collar (the PA12 collar under it is the edge protection's backbone)
 # Wrap label (label plan 2026-10-27, art in hardware/label/): printed vinyl round the whole cup, its top and bottom edges
 # TUCKed under the bumpers. The bottom bumper grows a lip over the label's lower edge; the top band is relieved over it.
-LABEL_T, LABEL_CLR, LABEL_TUCK = 0.15, 0.2, 3.0    # vinyl + laminate; lip clearance over it; edge under each bumper
+LABEL_T, LABEL_TUCK, LABEL_GAP = 0.15, 3.0, 0.6   # vinyl + laminate; edge under each bumper; bottom edge over the collar top
+LABEL_RELIEF = 0.45                 # bumper inside over the label, off the cup (clears the two-layer seam with TPU tolerance)
+LEAD_IN = (0.6, 30.0)               # chamfer where a bumper meets the label edge: depth, angle off the axis
+RELIEF_UP = 1.5                     # top band relief runs this far past the label's top edge (label placed high)
 LABEL_Z = (0.0, 0.0)                # set below, once the cup heights are known
 LIP_WALL, LIP_FLOOR = 1.0, 0.8      # bottom-bumper lip over the label: wall, and the ledge joining it to the collar band
 VENT_HOLE_R = 6.25                  # label hole for the 11 mm vent
@@ -92,7 +95,8 @@ PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # raised on the top bu
                                     # thermal model's port labels)
 DIGIT_H, DIGIT_RAISE, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
-LABEL_Z = (Z_MOUTH + COLLAR_H + 0.3, Z_TOP1 - BUMP_BAND + LABEL_TUCK)   # label edges on the cup: 0.3 over the collar, 3 under the top
+LABEL_Z = (Z_MOUTH + COLLAR_H + LABEL_GAP, Z_TOP1 - BUMP_BAND + LABEL_TUCK)   # label edges on the cup
+LIP_TOP, RELIEF_TOP = LABEL_Z[0] + LABEL_TUCK, LABEL_Z[1] + RELIEF_UP          # bottom lip top; top band relief top
 
 # ---------------- manifold helpers ----------------
 def rect(u0, u1, v0, v1): return CS.square((u1 - u0, v1 - v0)).translate((u0, v0))
@@ -257,7 +261,8 @@ def bumper(top):
     base = cs_out if top else cs_col1                     # the bottom bumper goes over the cap's collar
     out = base.offset(BUMP_WALL if top else BUMP_WALL_BOT, ROUND); ring = CS.batch_boolean([out, base], M3.OpType.Subtract)
     if top:
-        band = pz(ring, Z_TOP1 - BUMP_BAND, Z_TOP1) - pz(cs_out.offset(LABEL_T + 0.05, ROUND), Z_TOP1 - BUMP_BAND - 1, LABEL_Z[1])
+        zb = Z_TOP1 - BUMP_BAND                           # relieved over the label, with a lead-in at the bottom edge
+        band = pz(ring, zb, Z_TOP1) - pz(cs_out.offset(LABEL_RELIEF, ROUND), zb - 1, RELIEF_TOP) - lead_in(zb, +1)
         slab = pz(out, Z_TOP1, Z_TOP1 + BUMP_T_TOP) - pz(rrect(PORT_X - 4.5, PORT_X + 4.5, -14.0, 14.0, 2.0), Z_TOP1 - 0.1, Z_TOP1 + BUMP_T_TOP + 1)
         zt = Z_TOP1 + BUMP_T_TOP                          # port numbers, raised beside the port well
         slab = slab + U(*[pz(text_cs(d, DIGIT_H, PORT_X - 4.5 - 3.6, py), zt - 0.01, zt + DIGIT_RAISE) for py, d in PORT_DIGITS])
@@ -266,13 +271,20 @@ def bumper(top):
         band = pz(ring, z0, zc); slab = pz(out, z0 - BUMP_T_BOT, z0)
         e = YI + WALL + COLLAR_CLR + COLLAR_T             # pockets over the screw heads
         band = band - cyly(SCREW_X, SCREW_Z, 2.3, -(e + 3), -(e - 0.1)) - cyly(SCREW_X, SCREW_Z, 2.3, e - 0.1, e + 3)
-        lip_in = cs_out.offset(LABEL_T + LABEL_CLR, ROUND)   # the lip over the label's lower edge
+        lip_in = cs_out.offset(LABEL_RELIEF, ROUND)       # the lip over the label's lower edge, lead-in at its top
         floor = pz(CS.batch_boolean([out, lip_in], M3.OpType.Subtract), zc - 0.01, zc + LIP_FLOOR)
-        lip = pz(CS.batch_boolean([lip_in.offset(LIP_WALL, ROUND), lip_in], M3.OpType.Subtract), zc + LIP_FLOOR - 0.01, LABEL_Z[0] + LABEL_TUCK)
+        lip = pz(CS.batch_boolean([lip_in.offset(LIP_WALL, ROUND), lip_in], M3.OpType.Subtract), zc + LIP_FLOOR - 0.01, LIP_TOP) - lead_in(LIP_TOP, -1)
         band = U(band, floor, lip)
         zb = z0 - BUMP_T_BOT                              # rating debossed in the base, reads from below
-        slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, 3.0, 0.0, mirror=True), zb - 1, zb + BASE_TEXT_D)
+        bx0, by0, bx1, by1 = out.bounds()
+        slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
     return band, slab
+def lead_in(z, sense):
+    """conical chamfer on a bumper's inner edge at height z, opening downwards (sense +1) or upwards (-1); cs_out is convex,
+    so the hull of the two end sections is the exact chamfer"""
+    d, a = LEAD_IN; h = d / math.tan(math.radians(a))
+    wide, narrow = cs_out.offset(LABEL_RELIEF + d, ROUND), cs_out.offset(LABEL_RELIEF, ROUND)
+    return M3.Manifold.batch_hull([pz(wide, z - sense * 0.01 - 0.005, z - sense * 0.01 + 0.005), pz(narrow, z + sense * h - 0.005, z + sense * h + 0.005)])
 def label():
     """the wrap label as fitted: a 0.15 mm shell on the cup between LABEL_Z, with the vent hole"""
     m = pz(CS.batch_boolean([cs_out.offset(LABEL_T, ROUND), cs_out], M3.OpType.Subtract), *LABEL_Z)
@@ -311,8 +323,8 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, collar, skirt, posts', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'), (16, 'Pressure vent (after the leak test)', 'ePTFE', 'vent'),
-         (17, 'Bottom bumper, 4 mm, over the collar, lip over the label', 'TPU 95A', 'bumpb'), (18, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
-         (19, 'Wrap label round the cup, edges under the bumpers', 'printed vinyl + laminate', 'label')]
+         (17, 'Bottom bumper, collar + label lip', 'TPU 95A', 'bumpb'), (18, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
+         (19, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label')]
 NUM = {k: n for n, _, _, k in PARTS}
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9, vent=1.0,
            insul=1.1, foam=0.3, sleeve=1.2, label=1.35)
@@ -370,11 +382,14 @@ def checks():
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
         'collar covers the O-ring band (z)': (Z_MOUTH + COLLAR_H) - (GROOVE_Z[1] + 0.5),
-        'label: bottom edge clear of the collar top (z, >= 0.2)': LABEL_Z[0] - (Z_MOUTH + COLLAR_H) - 0.2 + 1e-9,
-        'label: both edges >= 2.5 under the bumpers (z)': min(LABEL_Z[1] - (Z_TOP1 - BUMP_BAND), LABEL_TUCK) - 2.5,
-        'label: bottom lip and top band clear the vinyl (radial, >= 0.05)': min(LABEL_CLR, 0.05) - 0.05 + 1e-9,
+        'label: placement slack down to the collar top (z, >= 0.5)': LABEL_Z[0] - (Z_MOUTH + COLLAR_H) - 0.5,
+        'label: placement slack up, inside the top band relief (z, >= 1.0)': RELIEF_TOP - LABEL_Z[1] - 1.0,
+        'label: both edges covered >= 1.5 past the lead-ins (z)': min(LABEL_Z[1] - (Z_TOP1 - BUMP_BAND),
+                                                       LIP_TOP - LABEL_Z[0]) - LEAD_IN[0] / math.tan(math.radians(LEAD_IN[1])) - 1.5,
+        'label: bumpers clear the two-layer seam (radial, >= 0.1)': LABEL_RELIEF - 2 * LABEL_T - 0.1 + 1e-9,
+        'label: top band wall left at the lead-in (radial, >= 0.8)': BUMP_WALL - LABEL_RELIEF - LEAD_IN[0] - 0.8 + 1e-9,
         'label: vent hole clears the 11 mm vent disc (radial, >= 0.5)': VENT_HOLE_R - 5.5 - 0.5 + 1e-9,
-        'label: vent hole between the bumpers (z)': min((VENT_Z - VENT_HOLE_R) - (LABEL_Z[0] + LABEL_TUCK), (Z_TOP1 - BUMP_BAND) - (VENT_Z + VENT_HOLE_R)),
+        'label: vent hole between the bumpers (z)': min((VENT_Z - VENT_HOLE_R) - LIP_TOP, (Z_TOP1 - BUMP_BAND) - (VENT_Z + VENT_HOLE_R)),
         'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
         'board rails clear of the PACK pads (y, rail stub to the pad edge)': min(abs(y0) for n in ('PACK-', 'PACK+')
                                                        for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
@@ -400,7 +415,7 @@ def checks():
 SS, INK, MUTED, RULE, ACCENT = RR.SS, RR.INK, RR.MUTED, RR.RULE, RR.ACCENT
 LEG = [('PA12 cup', C['cup']), ('PA12 cap', C['cap']), ('PA12 carrier', C['carrier']), ('cells', C['cell']), ('board', C['board']),
        ('BLE module', C['ble']), ('gap filler', C['filler']), ('O-ring', C['oring']), ('screw', C['screw']),
-       ('TPU pad / bumper slab', C['pad']), ('TPU bumper band', C['bump']), ('nickel strip', C['nickel']), ('nickel tail / pad', C['tail']), ('PACK wire', C['wire'])]
+       ('TPU pad / bumper slab', C['pad']), ('TPU bumper band', C['bump']), ('nickel strip', C['nickel']), ('nickel tail / pad', C['tail']), ('PACK wire', C['wire']), ('vinyl label', C['label'])]
 def save(sh, name): sh.img.resize((sh.W, sh.H), Image.LANCZOS).save(os.path.join(HERE, name)); print('wrote', name)
 def balloons(sh, pid, gid, BAL, dist=70):
     for g_ in dict.fromkeys(gid):
@@ -420,14 +435,14 @@ def sheet_exploded(A, m):
     R = camera((1.0, -1.1, 0.65)); o1 = (250, 660); pxs = 5.0
     sh.render([(V, c) for _, V, c in A], R, o1, pxs); pj = RR.proj(R, o1, pxs)
     sh.callouts([(pj((PORT_X, 9, Z_TOP1 + BUMP_T_TOP)), 'Port well through the top bumper'),
-                 (pj((X_OUT, -8, 50)), 'Board face: plain 2.0 mm PA12,\nno cover, no seam'),
+                 (pj((X_OUT, -8, 50)), 'Board face: 2.0 mm PA12 under the\nwrap label (seam on the back)'),
                  (pj((X_OUT, 0, VENT_Z)), 'ePTFE vent, fitted last:\nits hole is the leak-test port'),
                  (pj((X_OUT + 2, -YI, Z_MOUTH - CAP_T - BUMP_T_BOT + 1)), '4 mm bottom bumper over the cap and its collar\n(the pad inside adds the rest of the stroke)')],
                 475, 'r', 150)
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(cell=(0, 0, -75), carrier=(0, 0, -75), nickel=(0, 0, -75), tails=(0, 0, -75), board=(16, 0, -75), ble=(16, 0, -75),
               filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152), vent=(14, 0, 25),
-              rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), sleeve=(22, 0, -75))
+              rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), sleeve=(22, 0, -75), label=(0, 0, 25))
     ex, gid = [], []
     for k, V, c in A:
         g_ = group(k); dd = EX.get(g_, (0, 0, -182) if g_ == 'bumpb' else (0, 0, 50))
@@ -442,7 +457,7 @@ def sheet_exploded(A, m):
     y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [36, 344, 200, 70], 13, bold_last=True, rh=26)
     for i, s in enumerate(('Board mass is estimated (FR4 + 6-layer copper); parts on it are not included.',
                            'TPU pad 15 % and bumper slabs 30 % gyroid; bumper bands solid. Cells 75 g each (datasheet max).',
-                           'Not drawn: the label (open item), thermal vias in the board. Pad drawn as installed (printed 1.2 mm taller).')):
+                           'Label drawn on the cup; board thermal vias not drawn. Pad drawn as installed (printed 1.2 mm taller).')):
         sh.text(x0, y + 14 + 24*i, s, 13, fill=MUTED)
     sh.line([(40, 1330), (2660, 1330)], RULE, 1.5); sh.legend(LEG, 40, 1350, 14)
     save(sh, 'monolith_cup_exploded.png')
