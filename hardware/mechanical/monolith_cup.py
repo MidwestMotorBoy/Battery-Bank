@@ -82,7 +82,17 @@ CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom fra
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
 BUMP_WALL_BOT = 1.0                 # bottom band over the cap's collar (the PA12 collar under it is the edge protection's backbone)
+# Wrap label (label plan 2026-10-27, art in hardware/label/): printed vinyl round the whole cup, its top and bottom edges
+# TUCKed under the bumpers. The bottom bumper grows a lip over the label's lower edge; the top band is relieved over it.
+LABEL_T, LABEL_CLR, LABEL_TUCK = 0.15, 0.2, 3.0    # vinyl + laminate; lip clearance over it; edge under each bumper
+LABEL_Z = (0.0, 0.0)                # set below, once the cup heights are known
+LIP_WALL, LIP_FLOOR = 1.0, 0.8      # bottom-bumper lip over the label: wall, and the ledge joining it to the collar band
+VENT_HOLE_R = 6.25                  # label hole for the 11 mm vent
+PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # raised on the top bumper beside each port (USB1 at +y, as in the
+                                    # thermal model's port labels)
+DIGIT_H, DIGIT_RAISE, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
+LABEL_Z = (Z_MOUTH + COLLAR_H + 0.3, Z_TOP1 - BUMP_BAND + LABEL_TUCK)   # label edges on the cup: 0.3 over the collar, 3 under the top
 
 # ---------------- manifold helpers ----------------
 def rect(u0, u1, v0, v1): return CS.square((u1 - u0, v1 - v0)).translate((u0, v0))
@@ -90,6 +100,15 @@ def rrect(u0, u1, v0, v1, r): return rect(u0 + r, u1 - r, v0 + r, v1 - r).offset
 def circ(u, v, r): return CS.circle(r).translate((u, v))
 def stad(u, v, L, W): return rrect(u - L/2, u + L/2, v - W/2, v + W/2, min(L, W)/2 - 1e-3)
 def hull(*cs): return CS.batch_hull(list(cs))
+def text_cs(txt, h, x, y, mirror=False):
+    """outlined text (DejaVu Sans Bold) as a cross-section, cap height h, centred on (x, y); mirror for a bottom face"""
+    from matplotlib.textpath import TextPath
+    from matplotlib.font_manager import FontProperties
+    fp = FontProperties(family='DejaVu Sans', weight='bold')
+    k = h / TextPath((0, 0), 'H', size=1.0, prop=fp).get_extents().height
+    tp = TextPath((0, 0), txt, size=k, prop=fp); e = tp.get_extents()
+    polys = [np.c_[(-1 if mirror else 1) * (p[:, 0] - (e.x0 + e.x1) / 2), p[:, 1] - (e.y0 + e.y1) / 2] for p in tp.to_polygons() if len(p) > 2]
+    return CS(polys, M3.FillRule.EvenOdd).translate((x, y))
 def pz(cs, z0, z1): return MF.extrude(cs, z1 - z0).translate((0, 0, z0))                                   # section (x, y)
 def px_(cs, x0, x1): return MF.extrude(cs, x1 - x0).transform([[0, 0, 1, x0], [1, 0, 0, 0], [0, 1, 0, 0]])  # section (y, z)
 def cylx(y, z, r, x0, x1): return px_(circ(y, z, r), x0, x1)
@@ -238,19 +257,31 @@ def bumper(top):
     base = cs_out if top else cs_col1                     # the bottom bumper goes over the cap's collar
     out = base.offset(BUMP_WALL if top else BUMP_WALL_BOT, ROUND); ring = CS.batch_boolean([out, base], M3.OpType.Subtract)
     if top:
-        band = pz(ring, Z_TOP1 - BUMP_BAND, Z_TOP1)
+        band = pz(ring, Z_TOP1 - BUMP_BAND, Z_TOP1) - pz(cs_out.offset(LABEL_T + 0.05, ROUND), Z_TOP1 - BUMP_BAND - 1, LABEL_Z[1])
         slab = pz(out, Z_TOP1, Z_TOP1 + BUMP_T_TOP) - pz(rrect(PORT_X - 4.5, PORT_X + 4.5, -14.0, 14.0, 2.0), Z_TOP1 - 0.1, Z_TOP1 + BUMP_T_TOP + 1)
+        zt = Z_TOP1 + BUMP_T_TOP                          # port numbers, raised beside the port well
+        slab = slab + U(*[pz(text_cs(d, DIGIT_H, PORT_X - 4.5 - 3.6, py), zt - 0.01, zt + DIGIT_RAISE) for py, d in PORT_DIGITS])
     else:
-        z0 = Z_MOUTH - CAP_T
-        band = pz(ring, z0, z0 + BUMP_BAND); slab = pz(out, z0 - BUMP_T_BOT, z0)
+        z0, zc = Z_MOUTH - CAP_T, Z_MOUTH + COLLAR_H
+        band = pz(ring, z0, zc); slab = pz(out, z0 - BUMP_T_BOT, z0)
         e = YI + WALL + COLLAR_CLR + COLLAR_T             # pockets over the screw heads
         band = band - cyly(SCREW_X, SCREW_Z, 2.3, -(e + 3), -(e - 0.1)) - cyly(SCREW_X, SCREW_Z, 2.3, e - 0.1, e + 3)
+        lip_in = cs_out.offset(LABEL_T + LABEL_CLR, ROUND)   # the lip over the label's lower edge
+        floor = pz(CS.batch_boolean([out, lip_in], M3.OpType.Subtract), zc - 0.01, zc + LIP_FLOOR)
+        lip = pz(CS.batch_boolean([lip_in.offset(LIP_WALL, ROUND), lip_in], M3.OpType.Subtract), zc + LIP_FLOOR - 0.01, LABEL_Z[0] + LABEL_TUCK)
+        band = U(band, floor, lip)
+        zb = z0 - BUMP_T_BOT                              # rating debossed in the base, reads from below
+        slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, 3.0, 0.0, mirror=True), zb - 1, zb + BASE_TEXT_D)
     return band, slab
+def label():
+    """the wrap label as fitted: a 0.15 mm shell on the cup between LABEL_Z, with the vent hole"""
+    m = pz(CS.batch_boolean([cs_out.offset(LABEL_T, ROUND), cs_out], M3.OpType.Subtract), *LABEL_Z)
+    return m - cylx(VENT_Y, VENT_Z, VENT_HOLE_R, X_OUT - 1, X_OUT + 1)
 
 # ---------------- assembly and masses ----------------
 C = dict(RR.C, cup=(214, 214, 208), cap=(170, 186, 200), carrier=(196, 190, 150), filler=(232, 150, 200), oring=(200, 60, 60),
          screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80), vent=(240, 240, 240),
-         rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50))
+         rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50), label=(96, 160, 196))
 def assembly():
     A = [('cup', tris(cup()), C['cup'])]
     cell = P.cell_solid()
@@ -261,7 +292,8 @@ def assembly():
           ('insul', tris(insul_rings()), C['insul']), ('foam', tris(foam()), C['foam']), ('sleeve', tris(sleeves()), C['sleeve']),
           ('board', P.side_board_dummy(), C['board']), ('ble', P.ble_module(), C['ble']),
           ('pad', tris(pad()), C['pad']), ('oring', tris(oring()), C['oring']), ('cap', tris(cap()), C['cap']),
-          ('screw', tris(screws()), C['screw']), ('vent', tris(cylx(VENT_Y, VENT_Z, 5.5, X_OUT, X_OUT + 0.3)), C['vent'])]
+          ('screw', tris(screws()), C['screw']), ('vent', tris(cylx(VENT_Y, VENT_Z, 5.5, X_OUT, X_OUT + 0.3)), C['vent']),
+          ('label', tris(label()), C['label'])]
     for top in (False, True):
         b, s = bumper(top); k = 'bumpt' if top else 'bumpb'
         A += [(k + '_band', tris(b), C['bump']), (k + '_slab', tris(s), C['bslab'])]
@@ -279,10 +311,11 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, collar, skirt, posts', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'), (16, 'Pressure vent (after the leak test)', 'ePTFE', 'vent'),
-         (17, 'Bottom bumper, 4 mm, over the collar', 'TPU 95A', 'bumpb'), (18, 'Top bumper, port well', 'TPU 95A', 'bumpt')]
+         (17, 'Bottom bumper, 4 mm, over the collar, lip over the label', 'TPU 95A', 'bumpb'), (18, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
+         (19, 'Wrap label round the cup, edges under the bumpers', 'printed vinyl + laminate', 'label')]
 NUM = {k: n for n, _, _, k in PARTS}
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9, vent=1.0,
-           insul=1.1, foam=0.3, sleeve=1.2)
+           insul=1.1, foam=0.3, sleeve=1.2, label=1.35)
 def masses(A):
     m = {}
     for k, V, _ in A:
@@ -337,6 +370,11 @@ def checks():
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
         'collar covers the O-ring band (z)': (Z_MOUTH + COLLAR_H) - (GROOVE_Z[1] + 0.5),
+        'label: bottom edge clear of the collar top (z, >= 0.2)': LABEL_Z[0] - (Z_MOUTH + COLLAR_H) - 0.2 + 1e-9,
+        'label: both edges >= 2.5 under the bumpers (z)': min(LABEL_Z[1] - (Z_TOP1 - BUMP_BAND), LABEL_TUCK) - 2.5,
+        'label: bottom lip and top band clear the vinyl (radial, >= 0.05)': min(LABEL_CLR, 0.05) - 0.05 + 1e-9,
+        'label: vent hole clears the 11 mm vent disc (radial, >= 0.5)': VENT_HOLE_R - 5.5 - 0.5 + 1e-9,
+        'label: vent hole between the bumpers (z)': min((VENT_Z - VENT_HOLE_R) - (LABEL_Z[0] + LABEL_TUCK), (Z_TOP1 - BUMP_BAND) - (VENT_Z + VENT_HOLE_R)),
         'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
         'board rails clear of the PACK pads (y, rail stub to the pad edge)': min(abs(y0) for n in ('PACK-', 'PACK+')
                                                        for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
