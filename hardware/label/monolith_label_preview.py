@@ -104,7 +104,7 @@ def render(cam, tex, ss=2):
     return img.resize((W0, H0), Image.LANCZOS)
 
 def main():
-    tex = Image.open(os.path.join(OUT, 'monolith_label_cut_art.png')).convert('RGB')
+    tex = Image.open(os.path.join(OUT, LB.NAME + '_cut_art.png')).convert('RGB')
     arr = np.array(tex); g = (arr[..., 1] > 200) & (arr[..., 0] < 60) & (arr[..., 2] < 60); arr[g] = VENT
     tex = Image.fromarray(arr)
     views = [(-40, 18, 'board face + side A'), (50, 18, 'board face + side B'), (180, 18, 'back + seam')]
@@ -115,7 +115,7 @@ def main():
     except OSError: font = ImageFont.load_default()
     for k, (t, (_, _, name)) in enumerate(zip(tiles, views)):
         sheet.paste(t, (k * w, 0)); tw = d.textlength(name, font=font); d.text((k * w + (w - tw) / 2, h + 12), name, fill=(60, 56, 50), font=font)
-    sheet.save(os.path.join(OUT, 'monolith_label_on_cup.png'))
+    sheet.save(os.path.join(OUT, LB.NAME + '_on_cup.png'))
 
 if __name__ == '__main__':
     main()

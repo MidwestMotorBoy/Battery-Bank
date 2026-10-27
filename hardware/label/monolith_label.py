@@ -12,6 +12,8 @@ Run: python monolith_label.py      (numpy, fonttools, manifold3d, cairosvg, pypd
                                    own cut path from the artwork's outline (CarStickers)
    out/monolith_label_cut.svg      die line: outline (R2 corners) + vent hole, on the same page as the print file
    out/monolith_label_proof.png    art + die line + face folds, for checking
+Run: python monolith_label.py --cel   the hard cel-shaded version (lit edges, shadow facets, heavier outlines), written
+                                   as out/monolith_label_cel_*
 Label coordinates: mm, x along the wrap left to right as seen from outside with the ports up, y down from the label's
 top edge. The fonts are OFL (fonts/)."""
 import os, sys, math, numpy as np
@@ -26,6 +28,9 @@ sys.path.insert(0, os.path.join(HERE, '..', 'mechanical'))
 # ---------------- layout from the cup model ----------------
 import monolith_cup as K
 LAP, BLEED = 5.0, 2.0                # seam overlap, print bleed
+CEL = '--cel' in sys.argv            # hard cel shading: every shape gets a lit edge and a shadow tone, light from the upper left
+NAME = 'monolith_label_cel' if CEL else 'monolith_label'
+OW = 1.4 if CEL else 1.0             # outer outline weight
 TUCK = K.LABEL_TUCK                  # edge under each bumper; label heights and the vent hole come from monolith_cup
 VENT_HOLE_D = 2 * K.VENT_HOLE_R
 
@@ -62,7 +67,9 @@ C = dict(sky0='#5fa3c0', sky1='#93c9cf', sky2='#f2d39a', cloud='#fbf3df', cloud_
          mesa='#dd7b3d', mesa_sh='#a2432a', mesa_top='#eda461', sand='#e2b06e', sand_sh='#c88c4f',
          hill='#7fa24c', hill_sh='#5b7f37', pine='#3e7343', pine_sh='#26502f', trunk='#5c3a22',
          bear='#80502a', bear_sh='#5a3519', sun='#f7c844', sun_ray='#f09a3a', cream='#f4ead0', banner='#efe2bf',
-         word='#f6d061', word_sh='#b5372a', red='#b8322a', check='#3f8f4a')
+         word='#f6d061', word_sh='#b5372a', red='#b8322a', check='#3f8f4a',
+         far_hi='#9fb2c3', hill_hi='#a2c462', pine_hi='#5d9a59', pine_hi_dk='#356640', mesa_hi='#f09d5c',
+         sun_sh='#e6a234', ray_sh='#d0702c', word_hi='#fbeaa8', scrub_sh='#66763a')
 
 # ---------------- svg helpers ----------------
 out = []
@@ -104,7 +111,7 @@ class Font:
         return d
 BANG, XB, BOLD, SEMI = Font('Bangers-Regular.ttf'), Font('BarlowCondensed-ExtraBold.ttf'), Font('BarlowCondensed-Bold.ttf'), Font('BarlowCondensed-SemiBold.ttf')
 DC = '⎓'
-def text(s, font, cap, x, y, anchor='l', fill=INK, track=0.0, stroke=None, sw=0.0, fit=None):
+def text(s, font, cap, x, y, anchor='l', fill=INK, track=0.0, stroke=None, sw=0.0, fit=None, hi=None):
     """text as outlines; '⎓' is drawn as the DC symbol; fit = max width (shrinks cap to fit)"""
     parts = s.split(DC); dcw = cap * 1.05
     wid = lambda c: sum(font.width(p, c, track) for p in parts) + (len(parts) - 1) * (c * 1.05 + 2 * c * 0.18)
@@ -123,11 +130,25 @@ def text(s, font, cap, x, y, anchor='l', fill=INK, track=0.0, stroke=None, sw=0.
     if stroke and sw:                                  # outline under the fill: a stroked copy first, then the fill
         add(f'<path d="{d}" fill="{stroke}" stroke="{stroke}" stroke-width="{sw}" stroke-linejoin="round"/>')
     add(f'<path d="{d}" fill="{fill}"/>')
+    if hi:                                             # cel: a hard lit band across the tops of the letters
+        _clip[0] += 1; cid = f't{_clip[0]}'
+        add(f'<clipPath id="{cid}"><path d="{d}"/></clipPath>')
+        add(f'<rect x="{x - w - 1:.3f}" y="{y - cap * 1.3:.3f}" width="{3 * w + 2:.3f}" height="{cap * 0.62:.3f}" fill="{hi}" clip-path="url(#{cid})"/>')
     return w
 
 # ---------------- scene pieces ----------------
 def cloud(x, y, s):
     lobes = [(-3.2, 0.6, 2.0), (-1.2, -0.6, 2.6), (1.4, -0.2, 2.3), (3.4, 0.7, 1.7)]
+    if CEL:                                          # one outline round the whole cloud, shadowed underside, lit tops
+        _clip[0] += 1; cid = f'c{_clip[0]}'
+        circ = lambda f, dx=0.0, dy=0.0, k=1.0, extra='': ''.join(
+            f'<circle cx="{x + (a + dx) * s:.2f}" cy="{y + (b + dy) * s:.2f}" r="{r * k * s:.2f}" fill="{f}"{extra}/>' for a, b, r in lobes)
+        bot = y + 2.3 * s
+        add(f'<clipPath id="{cid}"><rect x="{x - 8 * s:.2f}" y="{y - 6 * s:.2f}" width="{16 * s:.2f}" height="{bot - y + 6 * s:.2f}"/></clipPath>')
+        add(f'<g clip-path="url(#{cid})">' + circ(INK, extra=f' stroke="{INK}" stroke-width="{0.7 * OW:.2f}"') + circ(C['cloud_sh'])
+            + circ(C['cloud'], -0.35, -0.55, 0.92) + '</g>')
+        path(f'M{x - 5.2 * s:.2f} {bot:.2f}H{x + 5.1 * s:.2f}', sw=0.35 * OW)
+        return
     for dx, dy, r in lobes:
         add(f'<circle cx="{x + dx * s:.2f}" cy="{y + dy * s:.2f}" r="{r * s:.2f}" fill="{C["cloud"]}" stroke="{INK}" stroke-width="0.35"/>')
     add(f'<rect x="{x - 3.6 * s:.2f}" y="{y + 0.4 * s:.2f}" width="{7.4 * s:.2f}" height="{1.9 * s:.2f}" fill="{C["cloud"]}"/>')
@@ -146,10 +167,17 @@ def pine(x, yb, h, w, dark=False):
                 (x - hw * 0.5, ybot - h * 0.04), (x - hw, ybot)]
         poly(tier, g, 0)
         poly([(x, ytop), (x + hw, ybot), (x + hw * 0.45, ybot - h * 0.04), (x + hw * 0.1, ybot)], sh, 0)
-        poly(tier, 'none', 0.3)
+        if CEL:                                      # lit sliver down the left edge
+            poly([(x, ytop), (x - hw, ybot), (x - hw * 0.62, ybot - h * 0.05), (x - hw * 0.12, ytop + (ybot - ytop) * 0.4)],
+                 C['pine_hi_dk'] if dark else C['pine_hi'], 0)
+        poly(tier, 'none', 0.3 * OW)
 
 def scrub(x, yb, s):
     for dx, r in ((-1.0, 1.1), (0.2, 1.5), (1.4, 1.0)):
+        if CEL:
+            add(f'<circle cx="{x + dx * s:.2f}" cy="{yb - r * s * 0.8:.2f}" r="{r * s:.2f}" fill="{C["scrub_sh"]}" stroke="{INK}" stroke-width="0.32"/>')
+            add(f'<circle cx="{x + (dx - 0.25 * r) * s:.2f}" cy="{yb - r * s * 1.05:.2f}" r="{r * s * 0.68:.2f}" fill="#8a9a52"/>')
+            continue
         add(f'<circle cx="{x + dx * s:.2f}" cy="{yb - r * s * 0.8:.2f}" r="{r * s:.2f}" fill="#8a9a52" stroke="{INK}" stroke-width="0.28"/>')
 
 def bear(x, yb, s=1.0):
@@ -185,7 +213,7 @@ def bear(x, yb, s=1.0):
     add(f'<path d="M8.9 -8.3q0.4 0.6 1.0 0.5M9.9 -9.2q0.4 0.6 1.0 0.5M10.8 -9.0q0.3 0.6 0.9 0.6M9.6 -7.6q0.4 0.6 1.0 0.5" '
         f'fill="none" stroke="#d9a46c" stroke-width="{w(0.3):.3f}" stroke-linecap="round"/>')          # grizzled tips on the hump
     add('</g>')
-    add(f'<path d="{body}" fill="none" stroke="{INK}" stroke-width="{w(0.55):.3f}" stroke-linejoin="round"/>')
+    add(f'<path d="{body}" fill="none" stroke="{INK}" stroke-width="{w(0.55 * OW):.3f}" stroke-linejoin="round"/>')
     fur = ('M12.4 -3.6l-0.5 0.4M1.2 -4.6l0.5 0.3M4.6 -6.9l0.6 0.2M12.3 -8.3C12.7 -7.2 12.8 -5.8 13.0 -4.7'   # neck under the hump
            'M8.7 -7.2C9.7 -6.4 10.4 -5.0 10.6 -3.4')                                                    # shoulder
     add(f'<path d="{fur}" fill="none" stroke="{INK}" stroke-width="{w(0.25):.3f}" stroke-linecap="round" stroke-linejoin="round"/>')
@@ -209,8 +237,10 @@ def rock(x0, outline, holes, shade, cap_y, strata, talus_y, seed):
     d = ring(outline) + ''.join(ring(h) for h in holes)
     _clip[0] += 1; cid = f'r{_clip[0]}'
     add(f'<clipPath id="{cid}"><path d="{d}" clip-rule="evenodd"/></clipPath>')
-    path(d, C['mesa'], 0, extra=' fill-rule="evenodd"')
+    path(d, C['mesa_hi'] if CEL else C['mesa'], 0, extra=' fill-rule="evenodd"')
     add(f'<g clip-path="url(#{cid})">')
+    if CEL:                                          # the shape again, nudged down-right: leaves a lit edge on every face
+        add(f'<g transform="translate(0.8 0.5)">'); path(d, C['mesa'], 0, extra=' fill-rule="evenodd"'); add('</g>')
     xs = [x0 + x for x, _ in outline]; xa, xb = min(xs) - 1, max(xs) + 1
     add(f'<rect x="{xa:.2f}" y="{talus_y:.2f}" width="{xb - xa:.2f}" height="20" fill="#c96a35"/>')
     poly(sh(shade), C['mesa_sh'], 0); hatch(sh(shade), step=1.0, ang=70, sw=0.25)
@@ -231,7 +261,7 @@ def rock(x0, outline, holes, shade, cap_y, strata, talus_y, seed):
         for _ in range(rng.integers(2, 4)):
             poly(blob(cx + rng.uniform(-1.2, 1.2), cy + rng.uniform(-0.5, 0.5), rng.uniform(0.3, 0.9), rng), '#e39258', 0.25)
     add('</g>')
-    path(d, 'none', 0.55)
+    path(d, 'none', 0.55 * OW)
 
 # side B formations, x from the side B fold: (outline, holes, shadow, cap rock bottom, ledge lines, talus top)
 CANYON = [
@@ -288,7 +318,10 @@ def artifact(x, yb, fw=4.9, fh=11.5, dx=1.6, dy=-1.1, tilt=8.0):
     x0m, x1m = x - 3.8, x + fw + dx + 4.4
     mound = [(x0m + t * (x1m - x0m), yb + 2.6 - 3.6 * math.sin(math.pi * t) ** 0.7) for t in np.linspace(0, 1, 25)]
     poly(mound + [(x1m, yb + 6), (x0m, yb + 6)], C['hill'], 0)
-    path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[2:-2]), sw=0.5)
+    if CEL:
+        poly(mound[13:] + [(a + 0.8, b + 2.4) for a, b in reversed(mound[13:])], C['hill_sh'], 0)
+        poly(mound[2:12] + [(a, b + 0.7 * math.sin(math.pi * k / 9)) for k, (a, b) in reversed(list(enumerate(mound[2:12])))], C['hill_hi'], 0)
+    path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[2:-2]), sw=0.5 * OW)
     for k in range(5):
         poly(blob(x - 1.6 + k * 2.2 + rng.uniform(-0.3, 0.3), yb + 0.4 + rng.uniform(-0.2, 0.6), rng.uniform(0.35, 0.6), rng), '#8a5a35', 0.25)
 
@@ -339,6 +372,40 @@ def caption(x0, y0, x1, y1, shadow=0.8):
     poly([(a + shadow, b + shadow) for a, b in p], INK, 0)
     poly(p, C['cream'], 0.5)
 
+def facets(ridge, sh, ybot, hatched=None, hi=None, depth=None, hi_w=1.1, smooth=0):
+    """cel shadow on the slopes of a ridge line that fall away to the right (light from the left all round, so it repeats
+    at the seam); hi: a lit band under the slopes that face the light. depth: shadow band depth (None = down to ybot);
+    smooth: half-window (samples) for finding the slopes, so small bumps don't break up a big facet"""
+    ry = [y for _, y in ridge]
+    sy = [sum(ry[max(0, n - smooth):n + smooth + 1]) / len(ry[max(0, n - smooth):n + smooth + 1]) for n in range(len(ry))]
+    def flush(run, down):
+        if len(run) < 2 or run[-1][0] - run[0][0] <= 1.0: return
+        if down:                                                    # a facet: down the slope, back up a slanted edge
+            if depth is None and CEL:                               # a face: peak spine and valley edge meet at an apex
+                (xp, yp), (xv, yv) = run[0], run[-1]
+                ya = min(ybot, (xv - xp + 0.25 * yp - 0.05 * yv) / 0.2)
+                sp = run + [(xv + 0.05 * (ya - yv), ya), (xp + 0.25 * (ya - yp), ya)]
+            elif depth is None:
+                (xp, yp), (xv, yv) = run[0], run[-1]
+                sp = run + [(xv + 0.2 * (ybot - yv), ybot), (xp + 0.45 * (ybot - yp), ybot)]
+            else:
+                sp = run + [(a + 0.35 * depth, b + depth) for a, b in reversed(run)]
+            poly(sp, sh, 0)
+            if hatched: hatch(sp, step=hatched[0], ang=hatched[1], sw=0.25)
+        elif hi:                                                    # lit band, pointed at both ends
+            n = len(run)
+            band = run + [(a, b + hi_w * min(1.0, 4 * min(k, n - 1 - k) / (n - 1))) for k, (a, b) in reversed(list(enumerate(run)))]
+            poly(band, hi, 0)
+    run, mode = [], None
+    for n in range(len(ridge) - 1):
+        dy = sy[n + 1] - sy[n]
+        m = True if dy > 0.05 else False if dy < -0.05 else None
+        if m != mode:
+            if run: flush(run + [ridge[n]], mode)
+            run, mode = [], m
+        if m is not None: run.append(ridge[n])
+    if run: flush(run + [ridge[-1]], mode)
+
 # ---------------- the scene ----------------
 def scene():
     X0, X1, Y0, Y1 = -BLEED, W + BLEED, -BLEED, H + BLEED
@@ -355,19 +422,8 @@ def scene():
     sun_d = lambda x: min(abs(x - VX), abs(x - VX + PER), abs(x - VX - PER))
     ridge = [(x, wave(x, 33.5, terms) + (32 * (0.5 + 0.5 * math.cos(math.pi * sun_d(x) / 30)) if sun_d(x) < 30 else 0)) for x in xs]
     poly(ridge + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)], C['far'], 0)
-    # cel shadow on the slopes that fall away to the right (light from the left all round, so it repeats at the seam)
-    run = []
-    for n in range(len(ridge)):
-        down = n + 1 < len(ridge) and ridge[n + 1][1] - ridge[n][1] > 0.05
-        if down: run.append(ridge[n])
-        elif run:
-            run.append(ridge[n]); x0r, x1r = run[0][0], run[-1][0]
-            if x1r - x0r > 1.0:                                     # a facet: down the slope, back up a slanted edge
-                (xp, yp), (xv, yv) = run[0], run[-1]
-                sp = run + [(xv + 0.2 * (Y1 + 1 - yv), Y1 + 1), (xp + 0.45 * (Y1 + 1 - yp), Y1 + 1)]
-                poly(sp, C['far_sh'], 0); hatch(sp, step=1.4, ang=35, sw=0.25)
-            run = []
-    path('M' + ' L'.join(f'{x:.2f} {y:.2f}' for x, y in ridge), sw=0.3)
+    facets(ridge, C['far_sh'], Y1 + 1, hatched=(1.4, 35), hi=C['far_hi'] if CEL else None, smooth=12 if CEL else 0)
+    path('M' + ' L'.join(f'{x:.2f} {y:.2f}' for x, y in ridge), sw=0.3 * OW)
     ys = [y for _, y in ridge]
     for n in range(6, len(ridge) - 6):
         x, y = ridge[n]
@@ -375,6 +431,9 @@ def scene():
             cap = [(x - 2.6, y + 2.2), (x - 1.3, y + 1.0), (x, y), (x + 1.4, y + 1.1), (x + 2.8, y + 2.4), (x + 1.6, y + 2.0),
                    (x + 0.9, y + 2.9), (x + 0.1, y + 2.0), (x - 0.9, y + 2.9), (x - 1.6, y + 2.0)]
             poly(cap, C['snow'], 0.3)
+            if CEL:
+                poly([(x, y), (x + 1.4, y + 1.1), (x + 2.8, y + 2.4), (x + 1.6, y + 2.0), (x + 0.9, y + 2.9), (x + 0.5, y + 1.4)], C['snow_sh'], 0)
+                poly(cap, 'none', 0.3)
     # sun over the board face: the vent hole is its core
     for i in range(16):
         a0 = 2 * math.pi * i / 16; a1 = a0 + 2 * math.pi / 32
@@ -382,7 +441,17 @@ def scene():
         r0, r1 = VENT_HOLE_D / 2 + 2.6, VENT_HOLE_D / 2 + (7.0 if i % 2 == 0 else 4.5)
         poly([(VX + r0 * math.cos(a0), VY + r0 * math.sin(a0)), (VX + r1 * math.cos((a0 + a1) / 2), VY + r1 * math.sin((a0 + a1) / 2)),
               (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], C['sun_ray'], 0.3)
-    add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 2.6:.3f}" fill="{C["sun"]}" stroke="{INK}" stroke-width="0.45"/>')
+        if CEL:                                                    # shadow half of each ray
+            am = (a0 + a1) / 2
+            poly([(VX + r0 * math.cos(am), VY + r0 * math.sin(am)), (VX + r1 * math.cos(am), VY + r1 * math.sin(am)),
+                  (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], C['ray_sh'], 0)
+            poly([(VX + r0 * math.cos(a0), VY + r0 * math.sin(a0)), (VX + r1 * math.cos(am), VY + r1 * math.sin(am)),
+                  (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], 'none', 0.3)
+    add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 2.6:.3f}" fill="{C["sun"]}" stroke="{INK}" stroke-width="{0.45 * OW:.2f}"/>')
+    if CEL:                                                        # shadowed lower right of the disc
+        r = VENT_HOLE_D / 2 + 2.6 - 0.15 * OW; a0, a1 = math.radians(-30), math.radians(120)
+        add(f'<path d="M{VX + r * math.cos(a0):.3f} {VY + r * math.sin(a0):.3f}A{r:.3f} {r:.3f} 0 0 1 {VX + r * math.cos(a1):.3f} {VY + r * math.sin(a1):.3f}'
+            f'A{r * 1.35:.3f} {r * 1.35:.3f} 0 0 0 {VX + r * math.cos(a0):.3f} {VY + r * math.sin(a0):.3f}Z" fill="{C["sun_sh"]}"/>')
     add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 1.2:.3f}" fill="none" stroke="{C["sun_ray"]}" stroke-width="0.4"/>')
     b0, b1 = SIDE_B
     # canyon country on side B: a spire, a mitten butte and an arch, standing on talus slopes
@@ -402,7 +471,8 @@ def scene():
         if e > 0: y += (max(y, 63.5) - y) * min(1.0, e)
         hills.append((x, y))
     hill_poly = hills + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)]
-    poly(hill_poly, C['hill'], 0.5)
+    poly(hill_poly, C['hill'], 0.5 * OW)
+    if CEL: facets(hills, C['hill_sh'], Y1 + 1, hi=C['hill_hi'], depth=3.2, hi_w=0.9)
     hatch([(x, y + 4) for x, y in hills] + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)], step=1.3, ang=25, sw=0.25)
     # the ancient alien artifact sunk in the hill right of the sun; birds in the open sky left of it
     artifact(*MONO)
@@ -422,7 +492,12 @@ def scene():
     # grizzly on the arc between side B and the back, in front of the trees
     mound = [(b1 - 4 + t, 64.9 - 2.6 * math.sin(math.pi * t / 32)) for t in np.arange(0, 32.01, 1.0)]
     poly(mound + [(b1 + 28, H + 2), (b1 - 4, H + 2)], C['hill'], 0)
-    path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[3:-3]), sw=0.5)
+    if CEL:
+        poly(mound[17:] + [(a + 1.0, b + 3.0) for a, b in reversed(mound[17:])], C['hill_sh'], 0)
+        poly(mound[2:16] + [(a, b + 0.8 * math.sin(math.pi * k / 13)) for k, (a, b) in reversed(list(enumerate(mound[2:16])))], C['hill_hi'], 0)
+    path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[3:-3]), sw=0.5 * OW)
+    if CEL:                                                        # the bear's shadow on the grass
+        add(f'<ellipse cx="{b1 + 1.0 + 9.5 * 1.3:.2f}" cy="65.4" rx="{8.6 * 1.3:.2f}" ry="0.75" fill="{C["hill_sh"]}"/>')
     bear(b1 + 1.0, 65.3, 1.3)
     # a few pines in front of the bear's meadow edge
     for x, h in ((b1 + 27.5, 15), (b1 + 30.0, 19)): rep(pine, x, 70.5, h, h * 0.42, False)
@@ -433,7 +508,7 @@ def panels():
     wy = 14.6                                         # wordmark: stacked red shadow, heavy outline
     text('MONOLITH', BANG, 9.0, cx + 1.2, wy + 1.2, 'c', fill=C['word_sh'], track=0.1, fit=inner, stroke=INK, sw=1.4)
     for o in (0.9, 0.6, 0.3): text('MONOLITH', BANG, 9.0, cx + o, wy + o, 'c', fill=C['word_sh'], track=0.1, fit=inner)
-    text('MONOLITH', BANG, 9.0, cx, wy, 'c', fill=C['word'], track=0.1, fit=inner, stroke=INK, sw=0.8)
+    text('MONOLITH', BANG, 9.0, cx, wy, 'c', fill=C['word'], track=0.1, fit=inner, stroke=INK, sw=0.8, hi=C['word_hi'] if CEL else None)
     by0, by1 = 17.4, 26.6
     rib = [(xa + 2.0, by0), (xb - 2.0, by0 + 0.4), (xb - 2.4, by1), (xa + 2.3, by1 - 0.3)]
     poly([(xa + 0.6, by0 + 1.5), (xa + 2.0, by0 + 1.0), (xa + 2.3, by1 - 0.3), (xa + 0.6, by1 + 0.4), (xa + 1.5, (by0 + by1) / 2 + 0.8)], '#cdbb8e', 0.35)
@@ -488,31 +563,31 @@ def build():
     art = list(out)
     os.makedirs(OUT, exist_ok=True)
     pw, ph = W + 2 * BLEED, H + 2 * BLEED
-    with open(os.path.join(OUT, 'monolith_label_print.svg'), 'w') as f: f.write(svg(art, pw, ph, -BLEED, -BLEED))
-    with open(os.path.join(OUT, 'monolith_label_cut.svg'), 'w') as f: f.write(svg(cut_lines(), pw, ph, -BLEED, -BLEED))
+    with open(os.path.join(OUT, NAME + '_print.svg'), 'w') as f: f.write(svg(art, pw, ph, -BLEED, -BLEED))
+    with open(os.path.join(OUT, NAME + '_cut.svg'), 'w') as f: f.write(svg(cut_lines(), pw, ph, -BLEED, -BLEED))
     hole = [f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="#ffffff"/>']
-    with open(os.path.join(OUT, 'monolith_label_proof.svg'), 'w') as f: f.write(svg(art + hole + cut_lines(sw=0.25) + folds(), pw, ph, -BLEED, -BLEED))
+    with open(os.path.join(OUT, NAME + '_proof.svg'), 'w') as f: f.write(svg(art + hole + cut_lines(sw=0.25) + folds(), pw, ph, -BLEED, -BLEED))
     # the cut-to-size art, hole knocked out, for the cup preview
     clip = (f'<clipPath id="cut"><rect x="0" y="0" width="{W:.3f}" height="{H:.3f}" rx="2"/></clipPath>')
-    with open(os.path.join(OUT, 'monolith_label_cut_art.svg'), 'w') as f:
+    with open(os.path.join(OUT, NAME + '_cut_art.svg'), 'w') as f:
         f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'] +
                     [f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="#00ff00"/>'], W, H))
-    with open(os.path.join(OUT, 'monolith_label_trim.svg'), 'w') as f:      # cut to size, transparent outside the R2 outline
+    with open(os.path.join(OUT, NAME + '_trim.svg'), 'w') as f:      # cut to size, transparent outside the R2 outline
         f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'], W, H))
     return pw, ph
 
 def rasterize(pw, ph, dpmm=24):
     """PNGs and the print PDF through cairosvg (exact page size: Chromium rounds PDF pages to 1/100 in)"""
     import cairosvg
-    for name, w, h in (('monolith_label_proof', pw, ph), ('monolith_label_cut_art', W, H)):
+    for name, w, h in ((NAME + '_proof', pw, ph), (NAME + '_cut_art', W, H)):
         cairosvg.svg2png(url=os.path.join(OUT, name + '.svg'), write_to=os.path.join(OUT, name + '.png'),
                          output_width=round(w * dpmm), output_height=round(h * dpmm), background_color='white')
     base = os.path.join(OUT, '_print_base.pdf')
-    cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_print.svg'), write_to=base)
-    add_cut_contour(base, os.path.join(OUT, 'monolith_label_print.pdf'), pw, ph)
-    add_cut_contour(base, os.path.join(OUT, 'monolith_label_stickerapp.pdf'), pw, ph, spot='die cut', hole=False, width=1.0, layer='die cut')
+    cairosvg.svg2pdf(url=os.path.join(OUT, NAME + '_print.svg'), write_to=base)
+    add_cut_contour(base, os.path.join(OUT, NAME + '_print.pdf'), pw, ph)
+    add_cut_contour(base, os.path.join(OUT, NAME + '_stickerapp.pdf'), pw, ph, spot='die cut', hole=False, width=1.0, layer='die cut')
     os.remove(base)
-    cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_trim.svg'), write_to=os.path.join(OUT, 'monolith_label_trim.pdf'))
+    cairosvg.svg2pdf(url=os.path.join(OUT, NAME + '_trim.svg'), write_to=os.path.join(OUT, NAME + '_trim.pdf'))
 
 def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width=0.5, layer=None):
     """copy the print PDF with the die line added as a stroke in a spot colour (100 % magenta alternate, overprint, width
