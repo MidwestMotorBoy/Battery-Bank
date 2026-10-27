@@ -2,7 +2,8 @@
 Each bear is built from overlapping shapes (ellipses, limbs = hulls of two circles, fur points) unioned into one
 silhouette; the layer renderer gives it a lit upper-left rim, a hatched lower-right shadow and a hand-inked outline.
 Run: python bear_options.py   -> out/bear_options.png  (numbered sheet, each option on the real label background)
-                                  out/bear_options_angular.png  (variations of option 9, the angular bear)"""
+                                  out/bear_options_angular.png  (variations of option 9, the angular bear)
+                                  out/bear_options_family.png   (variations of 9i, angular mother and cub)"""
 import os, sys, math
 sys.argv = [sys.argv[0], '--bl']
 import numpy as np
@@ -416,6 +417,66 @@ ANGULAR = [('Bold planes', angular(walker_geo, face_walker, spacing=3.4, simp=0.
            ('Sitting', angular(sitting_geo, face_sitting, dx=3.0, spacing=2.0, simp=0.35)),
            ('Mother and cub', opt_mother_cub_angular)]
 
+# ---------------- angular mother and cub variations (of 9i) ----------------
+def cub_rear_geo():
+    far = U(LIMB((3.8, -5.0), (5.0, -5.7), 0.45, 0.38), E(5.3, -5.85, 0.42, 0.36), LIMB((3.8, -1.6), (4.1, -0.4), 0.7, 0.5),
+            E(4.4, -0.3, 0.7, 0.3), E(3.4, -7.05, 0.4))
+    near = U(E(3.0, -1.9, 1.6, 1.35), E(3.4, -3.9, 1.35, 2.0, -12), E(4.2, -6.15, 1.15, 1.05),
+             LIMB((4.9, -6.35), (5.85, -6.65), 0.5, 0.36), E(3.9, -7.15, 0.45), LIMB((4.0, -4.6), (5.2, -4.0), 0.55, 0.45),
+             E(5.45, -3.95, 0.45, 0.4), LIMB((2.8, -1.6), (2.6, -0.4), 0.8, 0.55), E(2.95, -0.3, 0.75, 0.3))
+    return far, near
+def cub_sit_geo():
+    far = U(E(3.4, -6.05, 0.4), LIMB((3.6, -3.0), (3.8, -0.4), 0.5, 0.45), E(4.1, -0.28, 0.55, 0.26))
+    near = U(E(2.5, -1.45, 1.85, 1.4), E(3.3, -3.0, 1.3, 1.9, -15), E(4.1, -5.1, 1.1, 1.0),
+             LIMB((4.8, -5.0), (5.75, -4.8), 0.5, 0.36), E(3.8, -6.05, 0.45),
+             LIMB((4.0, -3.0), (4.4, -0.4), 0.55, 0.48), E(4.75, -0.28, 0.6, 0.28))
+    return far, near
+def cub_sniff_geo():
+    far = U(LIMB((4.4, -2.0), (4.5, -0.6), 0.65, 0.5), E(4.8, -0.35, 0.65, 0.32), LIMB((2.6, -2.0), (2.8, -0.6), 0.7, 0.5),
+            E(3.1, -0.35, 0.65, 0.32), E(5.3, -3.6, 0.4))
+    near = U(E(3.2, -3.0, 2.5, 1.75, 6), E(6.0, -2.6, 1.2, 1.1, 30), LIMB((6.5, -2.0), (7.25, -1.0), 0.55, 0.38),
+             E(5.7, -3.7, 0.48), LIMB((5.0, -2.4), (5.3, -0.6), 0.75, 0.6), E(5.6, -0.35, 0.75, 0.35),
+             LIMB((1.8, -2.4), (1.6, -0.6), 0.85, 0.6), E(1.9, -0.35, 0.75, 0.35))
+    return far, near
+def _aface(nose, eye, r=0.3):
+    def f(b):
+        (u, v), (a, c) = nose, eye
+        b.blob(P([(u - r, v - 0.8 * r), (u + r, v - 0.6 * r), (u + 0.8 * r, v + 0.7 * r), (u - 0.9 * r, v + 0.5 * r)]))
+        b.blob(P([(a - 1.3 * r, c - 0.4 * r), (a + 1.4 * r, c - 0.15 * r), (a + 0.1 * r, c + 1.4 * r)]))
+        b.blob(E(a - 0.05 * r, c + 0.1 * r, 0.25 * r), CREAM)
+    return f
+face_cub_walk, face_cub_rear = _aface((7.85, -3.75), (6.45, -4.6)), _aface((5.95, -6.7), (4.65, -6.45))
+face_cub_sit, face_cub_sniff = _aface((5.85, -4.85), (4.55, -5.4)), _aface((7.3, -0.95), (6.4, -2.85))
+
+def family(*members, mom={}, cub={}):
+    """angular bears drawn back to front: (geo, face, dx, dy, k, is_cub)"""
+    def draw(x, yb, s):
+        for geo, face, dx, dy, k, is_cub in members:
+            b = Bear(x + dx, yb + dy, k); far, near = geo()
+            kw = dict(spacing=1.3, simp=0.2, zk=1.4, sw=0.34) if is_cub else dict(spacing=2.2, simp=0.45)
+            kw.update(cub if is_cub else mom)
+            lowpoly(b, far, tones=TONES_FAR, sw=0.25 if is_cub else 0.3, seed=2, hatch_dark=False, spacing=kw['spacing'], simp=kw['simp'])
+            lowpoly(b, near, **kw)
+            face(b)
+    return draw
+
+MOM = (walker_geo, face_walker)
+FAMILY = [
+    ('Cub following', family((*MOM, 6.0, 0, 0.82, False), (cub_geo, face_cub_walk, -2.8, 0, 1.1, True))),
+    ('Cub leading', family((*MOM, -1.5, 0, 0.82, False), (cub_geo, face_cub_walk, 15.0, 0, 1.0, True))),
+    ('Cub riding on her back', family((*MOM, 2.0, 0, 0.9, False), (cub_sit_geo, face_cub_sit, 5.6, -7.7, 0.95, True))),
+    ('Two cubs', family((*MOM, 7.0, 0, 0.78, False), (cub_geo, face_cub_walk, -3.6, 0, 0.85, True),
+                        (cub_sit_geo, face_cub_sit, 2.0, 0, 0.85, True))),
+    ('Mom roaring, cub behind', family((roar_geo, face_roar, 4.5, 0, 0.85, False), (cub_sit_geo, face_cub_sit, -1.6, 0, 1.0, True))),
+    ('Foraging together', family((forager_geo, face_forager, 5.0, 0, 0.82, False), (cub_sniff_geo, face_cub_sniff, -3.0, 0, 1.0, True))),
+    ('Playful cub rearing up', family((*MOM, 6.5, 0, 0.8, False), (cub_rear_geo, face_cub_rear, -1.0, 0, 1.05, True))),
+    ('Resting together', family((sitting_geo, face_sitting, 1.0, 0, 0.95, False), (cub_sit_geo, face_cub_sit, 15.2, 0, 1.0, True))),
+    ('Cub following, bold planes', family((*MOM, 6.0, 0, 0.82, False), (cub_geo, face_cub_walk, -2.8, 0, 1.1, True),
+                                          mom=dict(spacing=3.4, simp=0.8, cuts=(0.8, 0.5, 0.25)), cub=dict(spacing=2.0, simp=0.35, cuts=(0.8, 0.5, 0.25)))),
+    ('Cub following, two-tone', family((*MOM, 6.0, 0, 0.82, False), (cub_geo, face_cub_walk, -2.8, 0, 1.1, True),
+                                       mom=dict(spacing=2.6, simp=0.7, cuts=(0.7, 0.7, -1), hatch_dark=False),
+                                       cub=dict(spacing=1.6, simp=0.3, cuts=(0.7, 0.7, -1), hatch_dark=False)))]
+
 OPTIONS = [('Walker', opt_walker), ('Rearing roar', opt_rearing), ('Head-on', opt_headon), ('Sitting', opt_sitting),
            ('Forager', opt_forager), ('Roar on all fours', opt_roar), ('Mother and cub', opt_mother_cub),
            ('Shadow bear', opt_shadow), ('Angular', opt_angular), ('Peeking over the hill', opt_peeker)]
@@ -439,7 +500,7 @@ def sheet(dpmm=16, only=None, options=None, name='bear_options.png', prefix=''):
     dr = ImageDraw.Draw(img)
     for k, (n, lbl, t) in enumerate(tiles):
         cx, cy = pad + (k % cols) * (tw + pad), pad + (k // cols) * (th + head + pad)
-        dr.text((cx, cy + 6), (f'{prefix}{"abcdefghij"[n - 1]}. ' if prefix else f'{n}. ') + lbl, fill='#17120f', font=font)
+        dr.text((cx, cy + 6), (f'{prefix}{n}. ' if prefix.endswith('-') else f'{prefix}{"abcdefghij"[n - 1]}. ' if prefix else f'{n}. ') + lbl, fill='#17120f', font=font)
         img.paste(t, (cx, cy + head))
     img.save(os.path.join(M.OUT, name))
     return img
@@ -447,3 +508,4 @@ def sheet(dpmm=16, only=None, options=None, name='bear_options.png', prefix=''):
 if __name__ == '__main__':
     sheet()
     sheet(options=ANGULAR, name='bear_options_angular.png', prefix='9')
+    sheet(options=FAMILY, name='bear_options_family.png', prefix='9i-')
