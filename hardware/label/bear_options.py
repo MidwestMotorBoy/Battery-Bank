@@ -3,9 +3,10 @@ Each bear is built from overlapping shapes (ellipses, limbs = hulls of two circl
 silhouette; the layer renderer gives it a lit upper-left rim, a hatched lower-right shadow and a hand-inked outline.
 Run: python bear_options.py   -> out/bear_options.png  (numbered sheet, each option on the real label background)
                                   out/bear_options_angular.png  (variations of option 9, the angular bear)
-                                  out/bear_options_family.png   (variations of 9i, angular mother and cub)"""
+                                  out/bear_options_family.png   (variations of 9i, angular mother and cub)
+The --bl label uses PICK (option 9i-7, Logan 2026-10-27) for its bear."""
 import os, sys, math
-sys.argv = [sys.argv[0], '--bl']
+if __name__ == '__main__': sys.argv = [sys.argv[0], '--bl']
 import numpy as np
 import monolith_label as M
 from manifold3d import CrossSection as CS, FillRule
@@ -476,6 +477,8 @@ FAMILY = [
     ('Cub following, two-tone', family((*MOM, 6.0, 0, 0.82, False), (cub_geo, face_cub_walk, -2.8, 0, 1.1, True),
                                        mom=dict(spacing=2.6, simp=0.7, cuts=(0.7, 0.7, -1), hatch_dark=False),
                                        cub=dict(spacing=1.6, simp=0.3, cuts=(0.7, 0.7, -1), hatch_dark=False)))]
+
+PICK = FAMILY[6][1]                                              # 9i-7: playful cub rearing up beside its mother
 
 OPTIONS = [('Walker', opt_walker), ('Rearing roar', opt_rearing), ('Head-on', opt_headon), ('Sitting', opt_sitting),
            ('Forager', opt_forager), ('Roar on all fours', opt_roar), ('Mother and cub', opt_mother_cub),

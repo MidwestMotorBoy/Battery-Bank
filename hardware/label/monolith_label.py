@@ -12,8 +12,9 @@ Run: python monolith_label.py      (numpy, fonttools, manifold3d, cairosvg, pypd
                                    own cut path from the artwork's outline (CarStickers)
    out/monolith_label_cut.svg      die line: outline (R2 corners) + vent hole, on the same page as the print file
    out/monolith_label_proof.png    art + die line + face folds, for checking
-Run: python monolith_label.py --bl    the Borderlands-style version (brush inking, tapered hatching, cel tones, grit),
-                                   written as out/monolith_label_bl_*  (also needs svgpathtools)
+Run: python monolith_label.py --bl    the Borderlands-style version (brush inking, tapered hatching, cel tones, grit,
+                                   the angular mother bear and cub from bear_options.py), written as
+                                   out/monolith_label_bl_*  (also needs svgpathtools, scipy)
 Label coordinates: mm, x along the wrap left to right as seen from outside with the ports up, y down from the label's
 top edge. The fonts are OFL (fonts/)."""
 import os, sys, math, zlib, numpy as np
@@ -698,7 +699,12 @@ def scene():
     path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[3:-3]), sw=0.5 * OW)
     if BL:                                                        # the bear's shadow on the grass
         add(f'<ellipse cx="{b1 + 1.0 + 8.6 * 1.26:.2f}" cy="65.4" rx="{8.8 * 1.26:.2f}" ry="0.75" fill="{C["hill_sh"]}"/>')
-    (BEAR[0] or bear)(b1 + 1.0, 65.3, 1.26)
+    if BEAR[0] is None and BL:                                    # the Borderlands label: angular mother bear and cub
+        sys.modules.setdefault('monolith_label', sys.modules[__name__])   # (bear_options draws through this module)
+        import bear_options
+        bear_options.PICK(b1 + 1.0, 65.3, 1.0)
+    else:
+        (BEAR[0] or bear)(b1 + 1.0, 65.3, 1.26)
     # a few pines in front of the bear's meadow edge
     for x, h in ((b1 + 27.5, 15), (b1 + 30.0, 19)): rep(pine, x, 70.5, h, h * 0.42, False)
 
