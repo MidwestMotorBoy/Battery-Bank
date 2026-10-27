@@ -448,6 +448,7 @@ CANYON = [
      [(36.5, 38), (41, 38), (47, 62), (38.6, 62), (37.8, 50), (37.2, 43)], 40.6, [46.0, 49.6], 53.4),
 ]
 
+BEAR = [None]                                 # bear_options.py swaps in other bears here
 MONO = (107.0, 60.4)                          # the ancient artifact on the board face: front-left foot of the pack, sunk in the hill
 GLOW = '#56c94c'
 
@@ -697,7 +698,7 @@ def scene():
     path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[3:-3]), sw=0.5 * OW)
     if BL:                                                        # the bear's shadow on the grass
         add(f'<ellipse cx="{b1 + 1.0 + 8.6 * 1.26:.2f}" cy="65.4" rx="{8.8 * 1.26:.2f}" ry="0.75" fill="{C["hill_sh"]}"/>')
-    bear(b1 + 1.0, 65.3, 1.26)
+    (BEAR[0] or bear)(b1 + 1.0, 65.3, 1.26)
     # a few pines in front of the bear's meadow edge
     for x, h in ((b1 + 27.5, 15), (b1 + 30.0, 19)): rep(pine, x, 70.5, h, h * 0.42, False)
 
