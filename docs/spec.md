@@ -1,6 +1,6 @@
 # Monolith Battery Bank: Current Design Spec
 
-Last updated 2026-10-24. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
+Last updated 2026-10-27. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
 
 ## Overview
 
@@ -84,6 +84,13 @@ Each USB-C port is an identical, self-contained power stage, so either port can 
 | Bulk caps | USB side 4 × 22 µF + 2 × CA55 47 µF polymer tantalum; PACK\_P 3 × 22 µF per port + 6 shared | All parts ≤ 3.1 mm tall |
 
 The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP).
+
+**Power-stage review (2026-10-27): keep the P0 parts.** Logan asked whether a different IC set or GaN would package better at the system level ([report](https://claude.ai/artifact/1BiHmf1qpk2iYvnEFZNc6p)). Answer: no, and Logan approved keeping everything as it is.
+
+- **Why mass doesn't move:** the board outline is set by the cell face, so freeing area doesn't shrink the board, carrier or cup. The F.Cu height zone (3.2 mm, set by the inductor) could drop to about 2.5 mm at best, because the 1210 bulk caps are about 2.5 mm tall: about 0.5 g and 3.5 cc. Any IC swap saves at most about 1 g per port. Each port is 95 parts and 739 mm² of courtyard (69 % of the board's part area, `Production` at 6fa088e).
+- **Considered and not adopted:** BQ25798 (a TPS25751-supported charger with integrated FETs, about −125 mm² per port, but OTG tops out at 3.32 A, about 60–65 W per port); MP2760 (integrated FETs, but not a TPS25751-supported charger, so firmware would retune it on every PD contract); Infineon PMG1-B1 and Richtek RT7885 (PD + buck-boost + MCU in one chip, but still four external FETs plus external VBUS FETs, and a second firmware project per port); IP2366/IP2368 and SC8815-class power-bank SoCs; BQ25758 (a converter, not a charger).
+- **GaN, not adopted:** the BQ25756 can't drive GaN (silicon dead time, unclamped bootstrap, 600 kHz ceiling, and the ~6 V GaN gate limit rules out the 9 V drive). A GaN stage built on another controller (Richtek RT6190 with EPC 40 V FETs) would save about 0.2–0.4 W at 100 W over silicon with the 9 V drive and the leg-B split, at the cost of a new power stage and new charger control firmware.
+- **Port protection stays the TPD6S300.** Dropping it for ESD diodes was checked and rejected: TI's own TPS25751 EVM protects CC with a TPD4S201, and the TPS25751's CC pins are only ±1 kV HBM. The 3 µA TPD2S300 would save about 170 µA of idle current (about 1 % of charge over the two weeks before ship mode), but its 0.4 mm-pitch WCSP needs a 0.15 mm via in the centre ball, which is why it was replaced on 10-18. The U405 / H104 peg clash is fixed by moving parts (`hardware/Production/README.md`), not by a part change.
 
 **Charging (decided 2026-10-21).** Firmware writes `ICHG = min(gauge ChargingCurrent, ramp(hottest cell), 4.55 A)` once a second, split across both chargers if both ports are sinking.
 
