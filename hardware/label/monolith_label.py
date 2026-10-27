@@ -5,6 +5,8 @@ back face, art running unbroken across the seam (the overlap repeats the first L
 Run: python monolith_label.py      (numpy, fonttools, manifold3d, cairosvg, pypdf)
 -> out/monolith_label_print.pdf    send this: artwork with 2 mm bleed, all text as outlines, page = art + bleed exactly,
                                    TrimBox = the cut size, die line as a CutContour spot-colour stroke (overprint)
+   out/monolith_label_stickerapp.pdf  the same for StickerApp: cut line = outer outline only, spot colour "die cut",
+                                   1 pt, on its own layer (their custom-cutline rules)
    out/monolith_label_print.svg    the artwork alone
    out/monolith_label_trim.pdf     the artwork cut to size (R2 corners), no bleed or die line, for shops that make their
                                    own cut path from the artwork's outline (CarStickers)
@@ -503,17 +505,20 @@ def rasterize(pw, ph, dpmm=24):
     for name, w, h in (('monolith_label_proof', pw, ph), ('monolith_label_cut_art', W, H)):
         cairosvg.svg2png(url=os.path.join(OUT, name + '.svg'), write_to=os.path.join(OUT, name + '.png'),
                          output_width=round(w * dpmm), output_height=round(h * dpmm), background_color='white')
-    pdf = os.path.join(OUT, 'monolith_label_print.pdf')
-    cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_print.svg'), write_to=pdf)
-    add_cut_contour(pdf, pw, ph)
+    base = os.path.join(OUT, '_print_base.pdf')
+    cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_print.svg'), write_to=base)
+    add_cut_contour(base, os.path.join(OUT, 'monolith_label_print.pdf'), pw, ph)
+    add_cut_contour(base, os.path.join(OUT, 'monolith_label_stickerapp.pdf'), pw, ph, spot='die cut', hole=False, width=1.0, layer='die cut')
+    os.remove(base)
     cairosvg.svg2pdf(url=os.path.join(OUT, 'monolith_label_trim.svg'), write_to=os.path.join(OUT, 'monolith_label_trim.pdf'))
 
-def add_cut_contour(pdf, pw, ph, r=2.0):
-    """put the die line in the print PDF as a stroke in the CutContour spot colour (100 % magenta alternate, overprint),
-    and set TrimBox = cut size, BleedBox = page"""
+def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width=0.5, layer=None):
+    """copy the print PDF with the die line added as a stroke in a spot colour (100 % magenta alternate, overprint, width
+    in pt), optionally on its own layer, and TrimBox = cut size, BleedBox = page"""
     import pypdf
-    from pypdf.generic import NameObject, ArrayObject, DictionaryObject, FloatObject, NumberObject, BooleanObject, DecodedStreamObject, RectangleObject
-    pt = 72 / 25.4; rd = pypdf.PdfReader(pdf); wr = pypdf.PdfWriter(); pg = wr.add_page(rd.pages[0])
+    from pypdf.generic import (NameObject, ArrayObject, DictionaryObject, FloatObject, NumberObject, BooleanObject, DecodedStreamObject,
+                               RectangleObject, TextStringObject)
+    pt = 72 / 25.4; rd = pypdf.PdfReader(src); wr = pypdf.PdfWriter(); pg = wr.add_page(rd.pages[0])
     mw, mh = float(pg.mediabox.width), float(pg.mediabox.height)
     assert abs(mw - pw * pt) < 0.05 and abs(mh - ph * pt) < 0.05, ('PDF page size', mw / pt, mh / pt, pw, ph)
     X = lambda x: (x + BLEED) * pt; Y = lambda y: mh - (y + BLEED) * pt          # label mm (y down) -> PDF pt
@@ -527,21 +532,28 @@ def add_cut_contour(pdf, pw, ph, r=2.0):
     outline = (f'{X(r):.3f} {Y(0):.3f} m {X(W - r):.3f} {Y(0):.3f} l {arc(W - r, r, r, -90)} {X(W):.3f} {Y(H - r):.3f} l {arc(W - r, H - r, r, 0)} '
                f'{X(r):.3f} {Y(H):.3f} l {arc(r, H - r, r, 90)} {X(0):.3f} {Y(r):.3f} l {arc(r, r, r, 180)} h')
     vr = VENT_HOLE_D / 2
-    hole = f'{X(VX + vr):.3f} {Y(VY):.3f} m ' + ' '.join(arc(VX, VY, vr, a) for a in (0, 90, 180, 270)) + ' h'
+    circle = f'{X(VX + vr):.3f} {Y(VY):.3f} m ' + ' '.join(arc(VX, VY, vr, a) for a in (0, 90, 180, 270)) + ' h'
     fn = DictionaryObject({NameObject('/FunctionType'): NumberObject(2), NameObject('/Domain'): ArrayObject([FloatObject(0), FloatObject(1)]),
                            NameObject('/C0'): ArrayObject([FloatObject(0)] * 4), NameObject('/N'): FloatObject(1),
                            NameObject('/C1'): ArrayObject([FloatObject(0), FloatObject(1), FloatObject(0), FloatObject(0)])})
     res = pg['/Resources']
     res.setdefault(NameObject('/ColorSpace'), DictionaryObject())[NameObject('/CSCut')] = \
-        ArrayObject([NameObject('/Separation'), NameObject('/CutContour'), NameObject('/DeviceCMYK'), wr._add_object(fn)])
+        ArrayObject([NameObject('/Separation'), NameObject('/' + spot), NameObject('/DeviceCMYK'), wr._add_object(fn)])
     res.setdefault(NameObject('/ExtGState'), DictionaryObject())[NameObject('/GSCut')] = DictionaryObject(
         {NameObject('/OP'): BooleanObject(True), NameObject('/op'): BooleanObject(True), NameObject('/OPM'): NumberObject(1)})
     pre, post = DecodedStreamObject(), DecodedStreamObject()
-    pre.set_data(b'q\n'); post.set_data(f'Q\nq /GSCut gs /CSCut CS 1 SCN 0.5 w\n{outline} S\n{hole} S\nQ\n'.encode())
+    cut = f'q /GSCut gs /CSCut CS 1 SCN {width:g} w\n{outline} S\n' + (f'{circle} S\n' if hole else '') + 'Q\n'
+    if layer:                                                       # optional content group = a layer in Illustrator / Acrobat
+        ocg = wr._add_object(DictionaryObject({NameObject('/Type'): NameObject('/OCG'), NameObject('/Name'): TextStringObject(layer)}))
+        res.setdefault(NameObject('/Properties'), DictionaryObject())[NameObject('/OCcut')] = ocg
+        wr._root_object[NameObject('/OCProperties')] = DictionaryObject({NameObject('/OCGs'): ArrayObject([ocg]),
+            NameObject('/D'): DictionaryObject({NameObject('/ON'): ArrayObject([ocg]), NameObject('/Order'): ArrayObject([ocg])})})
+        cut = f'/OC /OCcut BDC\n{cut}EMC\n'
+    pre.set_data(b'q\n'); post.set_data(f'Q\n{cut}'.encode())
     old = pg['/Contents']; old = list(old) if isinstance(old, ArrayObject) else [old]
     pg[NameObject('/Contents')] = ArrayObject([wr._add_object(pre)] + [c.indirect_reference or wr._add_object(c) if hasattr(c, 'indirect_reference') else c for c in old] + [wr._add_object(post)])
     pg.trimbox = RectangleObject([X(0), Y(H), X(W), Y(0)]); pg.bleedbox = RectangleObject([0, 0, mw, mh])
-    with open(pdf, 'wb') as f: wr.write(f)
+    with open(dst, 'wb') as f: wr.write(f)
 
 if __name__ == '__main__':
     print(f'wrap {W:.2f} x {H:.2f} mm (perimeter {PER:.2f} + {LAP} lap), vent at ({VX:.2f}, {VY:.2f}), flats {[(round(a, 2), round(b, 2)) for a, b in L["flats"]]}')
