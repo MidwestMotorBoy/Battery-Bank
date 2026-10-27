@@ -75,6 +75,11 @@ C = dict(sky0='#5fa3c0', sky1='#93c9cf', sky2='#f2d39a', cloud='#fbf3df', cloud_
          sun_sh='#e6a234', ray_sh='#d0702c', word_hi='#fbeaa8', scrub_sh='#66763a')
 if BL:                               # deeper, dustier shadows
     C.update(far_sh='#566a7c', hill_sh='#4d7231', pine_sh='#1f4429', mesa_sh='#8e3622', bear_sh='#4a2b14')
+    # Logan's pick (2026-10-27, variant 8-1): the vivid palette with heavy ink
+    C.update(sky0='#2b8cc4', sky1='#68c2d8', sky2='#ffd47a', hill='#6bb03a', hill_sh='#478a2a', hill_hi='#94cc54',
+             pine='#2f8443', pine_sh='#1b5a2b', pine_hi='#47a057', mesa='#ec6a2c', mesa_sh='#a8381c', mesa_hi='#f59050',
+             far='#7d94b0', far_sh='#5c7290')
+    V.update(ink=1.35, grit=1.6)
 
 # ---------------- svg helpers ----------------
 out = []
