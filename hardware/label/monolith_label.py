@@ -292,6 +292,30 @@ def birds(pts_):
     for bx, by, r in pts_:
         path(f'M{bx - r:.2f} {by - r * 0.35:.2f}q{r * 0.5:.2f} {-r * 0.45:.2f} {r:.2f} {r * 0.35:.2f}q{r * 0.5:.2f} {-r * 0.8:.2f} {r:.2f} {-r * 0.35:.2f}', sw=0.35)
 
+def bin_icon(cx, cy, h):
+    """crossed-out wheelie bin (EN 50419: don't put in household waste), with the bar under it, h tall, centred on (cx, cy)"""
+    k = h / 12.4; T = lambda u, v: (cx + u * k, cy + v * k)
+    poly([T(-2.4, -4.0), T(2.4, -4.0), T(2.0, 3.4), T(-2.0, 3.4)], C['cream'], 0.32)                  # body
+    poly([T(-3.1, -4.7), T(3.1, -4.7), T(3.1, -4.0), T(-3.1, -4.0)], INK, 0)                           # lid
+    poly([T(-1.0, -5.3), T(1.0, -5.3), T(1.0, -4.7), T(-1.0, -4.7)], INK, 0)                           # handle
+    wx, wy = T(1.7, 3.9); add(f'<circle cx="{wx:.3f}" cy="{wy:.3f}" r="{0.85 * k:.3f}" fill="{C["cream"]}" stroke="{INK}" stroke-width="0.3"/>')
+    for a, b in ((T(-3.6, -5.8), T(3.6, 5.0)), (T(3.6, -5.8), T(-3.6, 5.0))):                          # the cross
+        path(f'M{a[0]:.3f} {a[1]:.3f}L{b[0]:.3f} {b[1]:.3f}', sw=0.4)
+    poly([T(-3.6, 5.7), T(3.6, 5.7), T(3.6, 6.9), T(-3.6, 6.9)], INK, 0)                               # bar
+
+def recycle_icon(cx, cy, h):
+    """three chasing arrows round a triangle (recycle), "Li-ion" under it; h = arrows height, centred on (cx, cy)"""
+    r = h * 0.62                                                     # triangle corner radius
+    cn = [(cx + r * math.cos(math.radians(a)), cy + 0.12 * h + r * math.sin(math.radians(a))) for a in (-90, 30, 150)]
+    for i in range(3):
+        (ax, ay), (bx, by) = cn[i], cn[(i + 1) % 3]
+        ux, uy = bx - ax, by - ay; L = math.hypot(ux, uy); ux, uy = ux / L, uy / L
+        s0, s1 = 0.2 * L, 0.72 * L                                   # band along the side, gap at each corner
+        x0, y0, x1, y1 = ax + ux * s0, ay + uy * s0, ax + ux * s1, ay + uy * s1
+        path(f'M{x0:.3f} {y0:.3f}L{x1:.3f} {y1:.3f}', sw=0.16 * h)
+        hw, hl = 0.17 * h, 0.24 * h; nx, ny = -uy, ux                # arrowhead
+        poly([(x1 + nx * hw, y1 + ny * hw), (x1 + ux * hl, y1 + uy * hl), (x1 - nx * hw, y1 - ny * hw)], INK, 0)
+
 def plane_icon(cx, cy, r, ring=True):
     """carry-on mark: airliner and a check, in a circle"""
     add(f'<circle cx="{cx:.3f}" cy="{cy:.3f}" r="{r:.3f}" fill="{C["cream"]}" stroke="{INK}" stroke-width="{max(0.3, r * 0.08):.3f}"/>')
@@ -433,11 +457,15 @@ def panels():
     text('MONOLITH Mk1 · 2026', BOLD, 1.8, cxA, y, 'c', fit=wA, fill='#5a4d3c')
     # side B: warning caption
     b0, b1 = SIDE_B; x0, x1 = b0 + 2.0, b1 - 2.0
-    caption(x0, VIS0 + 2.0, x1 - 0.8, VIS0 + 23.4)
+    caption(x0, VIS0 + 2.0, x1 - 0.8, VIS0 + 27.0)
     cxB = (x0 + x1 - 0.8) / 2; wB = x1 - x0 - 3.6
     text('WARNING', XB, 2.6, cxB, VIS0 + 6.4, 'c', fill=C['red'], track=0.2)
-    for i, ln in enumerate(('Do not crush, puncture or burn.', 'Keep below 60 °C.', 'Stop using if swollen,', 'hot or smelling.', "Recycle, don't bin.")):
+    for i, ln in enumerate(('Do not crush, puncture or burn.', 'Keep below 60 °C.', 'Stop using if swollen,', 'hot or smelling.')):
         text(ln, SEMI, 2.1, cxB, VIS0 + 9.9 + i * 2.9, 'c', fit=wB)
+    iy = VIS0 + 22.0                                  # recycle it, don't bin it: the two marks instead of words
+    bin_icon(cxB - 4.4, iy, 5.6)
+    recycle_icon(cxB + 2.6, iy - 0.9, 3.6)
+    text('Li-ion', BOLD, 1.6, cxB + 2.6, iy + 3.0, 'c')
 
 # ---------------- files ----------------
 def svg(body, w, h, x0=0.0, y0=0.0):
