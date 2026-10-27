@@ -145,27 +145,135 @@ def scrub(x, yb, s):
     for dx, r in ((-1.0, 1.1), (0.2, 1.5), (1.4, 1.0)):
         add(f'<circle cx="{x + dx * s:.2f}" cy="{yb - r * s * 0.8:.2f}" r="{r * s:.2f}" fill="#8a9a52" stroke="{INK}" stroke-width="0.28"/>')
 
-def bear(x, yb, s=1.0, flip=False):
-    """walking grizzly, 14 mm long at s = 1, feet on yb"""
-    body = [(0.8, 0), (0.6, -2.4), (0.1, -4.2), (0.6, -5.9), (2.0, -6.9), (4.6, -7.3), (7.0, -8.1), (9.2, -7.5), (10.4, -6.7),
-            (11.0, -7.0), (11.2, -7.7), (11.9, -7.2), (12.7, -6.7), (13.6, -5.8), (14.1, -5.1), (13.7, -4.6), (12.5, -4.4),
-            (11.5, -4.6), (11.6, -3.0), (11.8, 0), (10.4, 0), (10.2, -2.2), (9.8, -2.4), (10.0, 0), (8.6, 0), (8.4, -2.6),
-            (5.0, -2.8), (5.0, 0), (3.4, 0), (3.3, -2.6), (2.6, -2.7), (2.6, 0)]
-    belly = [(0.6, -2.4), (0.1, -4.2), (0.8, -3.4), (3.0, -3.3), (8.6, -3.3), (11.5, -4.6), (11.6, -3.0), (11.8, 0), (10.4, 0),
-             (10.2, -2.2), (9.8, -2.4), (10.0, 0), (8.6, 0), (8.4, -2.6), (5.0, -2.8), (5.0, 0), (3.4, 0), (3.3, -2.6),
-             (2.6, -2.7), (2.6, 0), (0.8, 0)]
-    T = (lambda p: (x + (14.1 - p[0] if flip else p[0]) * s, yb + p[1] * s))
-    poly([T(p) for p in body], C['bear'], 0)
-    poly([T(p) for p in belly], C['bear_sh'], 0)
-    hatch([T(p) for p in belly], step=0.6, ang=60, sw=0.12)
-    poly([T(p) for p in body], 'none', 0.38)
-    path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in map(T, [(5.6, -7.0), (7.0, -7.5), (8.6, -7.1)])), sw=0.2)   # hump fur
-    ex, ey = T((12.6, -5.9)); add(f'<circle cx="{ex:.2f}" cy="{ey:.2f}" r="{0.28 * s:.2f}" fill="{INK}"/>')
-    nx, ny = T((13.95, -5.05)); add(f'<circle cx="{nx:.2f}" cy="{ny:.2f}" r="{0.3 * s:.2f}" fill="{INK}"/>')
-    for fx in (11.0, 9.3, 4.2, 1.7):
-        cx, cy = T((fx, 0))
-        path(f'M{cx - 0.4 * s:.2f} {cy:.2f}l{0.25 * s:.2f} {-0.35 * s:.2f}M{cx:.2f} {cy:.2f}l{0.25 * s:.2f} {-0.35 * s:.2f}M{cx + 0.4 * s:.2f} {cy:.2f}l{0.25 * s:.2f} {-0.35 * s:.2f}',
-             stroke=C['cream'], sw=0.14)
+def bear(x, yb, s=1.0):
+    """walking grizzly facing right, about 16 mm nose to tail at s = 1, feet on yb: shoulder hump, dished face,
+    round ears, heavy legs with pale claws, grizzled tips on the hump"""
+    g = f'<g transform="translate({x:.3f} {yb:.3f}) scale({s:.4f})">'
+    w = lambda v: v / s                                            # stroke widths stay in mm
+    body = ('M2.4 0 C2.2 -0.7 1.9 -1.5 1.3 -2.4 C0.5 -3.5 0.3 -5.1 1.0 -6.0 C1.6 -6.8 2.6 -6.9 3.6 -7.1 '
+            'C5.0 -7.4 6.6 -8.6 8.4 -8.9 C9.7 -9.1 10.8 -8.6 11.4 -8.0 C12.0 -8.5 12.8 -8.7 13.5 -8.4 '
+            'C14.2 -8.1 14.5 -7.4 15.0 -7.0 C15.6 -6.7 16.3 -6.6 16.6 -6.2 C16.9 -5.8 16.7 -5.2 16.1 -5.1 '
+            'C15.3 -4.9 14.4 -4.7 13.6 -4.5 C12.9 -4.3 12.5 -3.8 12.6 -3.2 C12.7 -2.1 12.9 -1.1 13.3 -0.6 '
+            'C13.8 -0.4 14.0 -0.2 13.8 0 L11.3 0 C11.3 -0.8 11.1 -1.8 10.7 -2.7 C9.4 -3.0 7.2 -2.8 5.8 -2.9 '
+            'C5.1 -2.4 4.7 -1.4 4.5 -0.5 C4.7 -0.3 4.8 -0.1 4.6 0 Z')
+    far = ('M9.3 -3.2 C9.5 -2.0 9.3 -1.0 9.0 -0.3 C9.0 -0.1 9.1 0 9.3 0 L10.9 0 C10.8 -1.0 11.0 -2.0 11.3 -3.3 Z '
+           'M4.8 -3.3 C5.1 -2.1 5.2 -1.0 5.0 -0.3 C5.0 -0.1 5.1 0 5.3 0 L6.9 0 C6.6 -1.0 6.6 -2.1 6.9 -3.1 Z')
+    add(g)
+    add(f'<path d="{far}" fill="{C["bear_sh"]}" stroke="{INK}" stroke-width="{w(0.3):.3f}" stroke-linejoin="round"/>')
+    add(f'<circle cx="12.6" cy="-8.55" r="0.72" fill="{C["bear"]}" stroke="{INK}" stroke-width="{w(0.3):.3f}"/>')   # ear
+    add(f'<circle cx="12.65" cy="-8.5" r="0.36" fill="{C["bear_sh"]}"/>')
+    _clip[0] += 1; cid = f'b{_clip[0]}'
+    add(f'<clipPath id="{cid}"><path d="{body}"/></clipPath>')
+    add(f'<path d="{body}" fill="{C["bear"]}"/>')
+    add(f'<g clip-path="url(#{cid})">')
+    # shadow under the belly and down the legs, then hatching
+    sh = 'M0 -3.4 C3 -3.9 8 -4.0 13 -3.6 L16 -3.6 L16 1 L0 1 Z'
+    add(f'<path d="{sh}" fill="{C["bear_sh"]}"/>')
+    hl = ''.join(f'M{k:.2f} 0.5L{k + 2.2:.2f} -3.6' for k in np.arange(-2, 16, 0.55))
+    add(f'<path d="{hl}" stroke="{INK}" stroke-width="{w(0.12):.3f}" fill="none"/>')
+    add(f'<ellipse cx="15.8" cy="-5.8" rx="1.5" ry="0.95" fill="#b9814b"/>')                       # pale muzzle
+    add(f'<path d="M5.2 -7.7 C7 -9.4 10 -9.6 11.6 -7.9 C10.2 -8.3 7.4 -8.2 5.2 -7.7Z" fill="#b9814b"/>')  # grizzled hump
+    add('</g>')
+    add(f'<path d="{body}" fill="none" stroke="{INK}" stroke-width="{w(0.4):.3f}" stroke-linejoin="round"/>')
+    fur = 'M6.0 -7.9l0.5 0.5l0.3 -0.6l0.5 0.5l0.4 -0.7l0.5 0.5l0.4 -0.6M12.3 -3.6l-0.5 0.4M1.2 -4.6l0.5 0.3M4.6 -7.0l0.6 0.2M11.6 -7.6C12.4 -6.6 12.6 -5.6 12.9 -4.6'
+    add(f'<path d="{fur}" fill="none" stroke="{INK}" stroke-width="{w(0.18):.3f}" stroke-linecap="round" stroke-linejoin="round"/>')
+    add(f'<path d="M14.9 -5.15 C15.4 -5.3 15.8 -5.25 16.2 -5.15" fill="none" stroke="{INK}" stroke-width="{w(0.16):.3f}"/>')  # mouth
+    add(f'<circle cx="14.45" cy="-7.0" r="0.3" fill="{INK}"/><circle cx="14.53" cy="-7.08" r="0.1" fill="{C["cream"]}"/>')
+    add(f'<ellipse cx="16.5" cy="-5.95" rx="0.42" ry="0.34" fill="{INK}"/>')                     # nose
+    claws = ''.join(f'M{cx + k * 0.42:.2f} -0.05 q0.3 -0.05 0.38 -0.4' for cx in (12.6, 3.7) for k in range(3))
+    add(f'<path d="{claws}" fill="none" stroke="{C["cream"]}" stroke-width="{w(0.14):.3f}" stroke-linecap="round"/>')
+    add('</g>')
+
+def rock(x0, outline, holes, shade, cap_y, strata, talus_y):
+    """sandstone formation (x relative to x0): flat fill, shadowed right side, pale cap rock, ledges, talus at the foot"""
+    sh = lambda p: [(x0 + x, y) for x, y in p]
+    ring = lambda p: 'M' + ' L'.join(f'{x:.3f} {y:.3f}' for x, y in sh(p)) + 'Z'
+    d = ring(outline) + ''.join(ring(h) for h in holes)
+    _clip[0] += 1; cid = f'r{_clip[0]}'
+    add(f'<clipPath id="{cid}"><path d="{d}" clip-rule="evenodd"/></clipPath>')
+    path(d, C['mesa'], 0, extra=' fill-rule="evenodd"')
+    add(f'<g clip-path="url(#{cid})">')
+    xs = [x0 + x for x, _ in outline]; xa, xb = min(xs) - 1, max(xs) + 1
+    add(f'<rect x="{xa:.2f}" y="{talus_y:.2f}" width="{xb - xa:.2f}" height="20" fill="#c96a35"/>')
+    poly(sh(shade), C['mesa_sh'], 0); hatch(sh(shade), step=0.75, ang=70, sw=0.15)
+    add(f'<rect x="{xa:.2f}" y="0" width="{xb - xa:.2f}" height="{cap_y:.2f}" fill="{C["mesa_top"]}"/>')
+    path(f'M{xa:.2f} {cap_y:.2f}' + ''.join(f'L{x:.2f} {cap_y + 0.25 * math.sin(x * 2.1):.2f}' for x in np.arange(xa, xb, 0.8)), sw=0.25)
+    for y in strata:
+        path(f'M{xa:.2f} {y:.2f}' + ''.join(f'L{x:.2f} {y + 0.3 * math.sin(x * 1.3 + y):.2f}' for x in np.arange(xa, xb, 0.8)), sw=0.2)
+    path(f'M{xa:.2f} {talus_y:.2f}' + ''.join(f'L{x:.2f} {talus_y + 0.4 * math.sin(x * 1.7):.2f}' for x in np.arange(xa, xb, 0.8)), sw=0.3)
+    for x in np.arange(xa + 1.5, xb - 1, 2.6):                     # boulders on the talus
+        y = talus_y + 2.5 + 1.8 * (math.sin(x * 3.7) + 1)
+        add(f'<ellipse cx="{x:.2f}" cy="{y:.2f}" rx="0.55" ry="0.4" fill="#e39258" stroke="{INK}" stroke-width="0.18"/>')
+    add('</g>')
+    path(d, 'none', 0.45)
+
+# side B formations, x from the side B fold: (outline, holes, shadow, cap rock bottom, ledge lines, talus top)
+CANYON = [
+    ([(13.5, 62), (15.4, 57.5), (16.3, 52), (16.6, 47.5), (16.3, 44.4), (16.9, 42.9), (16.3, 42.0), (17.1, 40.8), (18.7, 40.5),
+      (19.8, 41.4), (19.1, 42.8), (19.6, 44.4), (19.5, 48), (20.1, 53), (21.6, 58), (23.5, 62)], [],
+     [(18.4, 40), (21, 40), (24, 62), (19.2, 62), (18.8, 52), (18.6, 44)], 42.2, [46.5, 50.5], 54.0),
+    ([(-7.0, 62), (-3.6, 57.6), (-1.6, 53.8), (-0.6, 50.8), (-0.3, 45.5), (0.2, 40.5), (0.6, 36.6), (1.0, 34.9), (1.8, 34.3),
+      (2.6, 34.9), (2.9, 37.2), (3.0, 40.6), (3.3, 41.8), (3.6, 40.8), (3.8, 36.0), (4.1, 32.6), (4.7, 31.7), (7.0, 31.4),
+      (9.2, 31.9), (10.1, 32.4), (10.4, 36.0), (10.6, 41.5), (11.3, 45.6), (12.4, 46.3), (12.9, 49.8), (15.0, 54.4), (18.8, 58.6),
+      (22.5, 62)], [],
+     [(7.4, 31), (11, 31), (11.6, 46), (13.4, 47), (23, 62), (9.6, 62), (8.6, 48), (8.2, 38)], 33.6, [37.2, 40.9, 44.6], 50.2),
+    ([(21.5, 62), (23.8, 57.2), (24.7, 52.0), (25.0, 46.2), (25.4, 41.2), (26.1, 39.7), (29.0, 39.1), (32.5, 39.5), (35.5, 38.9),
+      (38.3, 39.6), (39.2, 41.2), (39.6, 46.2), (40.3, 51.2), (42.6, 57.0), (46.5, 62)],
+     [[(29.3, 62), (29.4, 53.0), (30.4, 48.1), (32.2, 46.0), (34.2, 46.5), (35.4, 49.2), (35.9, 54.0), (36.1, 62)]],
+     [(36.5, 38), (41, 38), (47, 62), (38.6, 62), (37.6, 50), (37.0, 43)], 41.0, [43.6, 46.3], 53.4),
+]
+
+MONO = (105.2, 60.2)                          # alien Monolith on the board face: front-left foot of the pack
+GLOW, GLOW_PALE = '#56c94c', '#c6f3a4'
+
+def sparkle(x, y, r, fill=GLOW_PALE):
+    k = r * 0.28
+    poly([(x, y - r), (x + k, y - k), (x + r, y), (x + k, y + k), (x, y + r), (x - k, y + k), (x - r, y), (x - k, y - k)], fill, 0.2)
+
+def alien_monolith(x, yb, fw=5.2, fh=10.6, dx=1.8, dy=-1.3):
+    """the pack as a black monolith in 3/4 view: bumpers, the two USB-C ports on top, a green bolt and an alien glow"""
+    for g, op in ((1.1, 0.8),):
+        add(f'<rect x="{x - g:.2f}" y="{yb - fh + dy - g:.2f}" width="{fw + dx + 2 * g:.2f}" height="{fh - dy + 2 * g:.2f}" rx="{g + 0.6:.2f}" '
+            f'fill="none" stroke="{GLOW}" stroke-width="0.35" stroke-dasharray="1.2 0.8" opacity="{op}"/>')
+    add(f'<ellipse cx="{x + (fw + dx) / 2:.2f}" cy="{yb + 0.2:.2f}" rx="{(fw + dx) / 2 + 1.5:.2f}" ry="0.8" fill="{C["hill_sh"]}"/>')
+    side = [(x + fw, yb), (x + fw + dx, yb + dy), (x + fw + dx, yb - fh + dy), (x + fw, yb - fh)]
+    top = [(x, yb - fh), (x + fw, yb - fh), (x + fw + dx, yb - fh + dy), (x + dx, yb - fh + dy)]
+    poly(side, '#2a2a2f', 0.4)
+    poly(top, '#55555c', 0.4)
+    for t in (0.3, 0.7):                                       # the ports
+        px, py = x + fw * t + dx * 0.5, yb - fh + dy * 0.5
+        add(f'<rect x="{px - 0.75:.2f}" y="{py - 0.22:.2f}" width="1.5" height="0.44" rx="0.22" fill="#0b0b0c" stroke="{GLOW}" stroke-width="0.12"/>')
+    poly([(x, yb), (x + fw, yb), (x + fw, yb - fh), (x, yb - fh)], '#1b1b1f', 0.45)
+    for y0, h in ((yb - fh, 1.5), (yb - 1.4, 1.4)):            # TPU bumpers
+        poly([(x, y0 + h), (x + fw, y0 + h), (x + fw, y0), (x, y0)], '#34343a', 0.3)
+    poly([(x + fw, yb - 1.4), (x + fw + dx, yb - 1.4 + dy), (x + fw + dx, yb + dy), (x + fw, yb)], '#3a3a40', 0.3)
+    poly([(x + fw, yb - fh + 1.5), (x + fw + dx, yb - fh + 1.5 + dy), (x + fw + dx, yb - fh + dy), (x + fw, yb - fh)], '#3a3a40', 0.3)
+    cx, cy = x + fw / 2, yb - fh / 2 - 0.1
+    add(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="1.75" fill="none" stroke="{GLOW}" stroke-width="0.3"/>')
+    poly([(cx + 0.35, cy - 1.3), (cx - 0.75, cy + 0.2), (cx - 0.05, cy + 0.2), (cx - 0.35, cy + 1.3), (cx + 0.75, cy - 0.2), (cx + 0.05, cy - 0.2)], GLOW, 0)
+    path(f'M{x + 0.35:.2f} {yb - 1.8:.2f}V{yb - fh + 1.9:.2f}', stroke=GLOW, sw=0.25)
+    for sx, sy, r in ((x - 3.2, yb - fh + 1.0, 0.9), (x + fw + dx + 2.6, yb - fh * 0.55, 0.75), (x - 2.4, yb - 3.2, 0.6)):
+        sparkle(sx, sy, r)
+
+def ufo(cx, cy, bx, by):
+    """flying saucer with a little green pilot, tractor beam down to (bx, by)"""
+    beam = [(cx - 1.9, cy + 1.6), (cx + 1.9, cy + 1.6), (bx + 4.3, by), (bx - 4.3, by)]
+    poly(beam, GLOW_PALE, 0, extra=' opacity="0.7"')
+    for a, b in ((beam[0], beam[3]), (beam[1], beam[2])):
+        path(f'M{a[0]:.2f} {a[1]:.2f}L{b[0]:.2f} {b[1]:.2f}', stroke=GLOW, sw=0.3, extra=' stroke-dasharray="1 0.7"')
+    for k in range(1, 4):
+        t = k / 4; yy = cy + 1.6 + (by - cy - 1.6) * t; hw = 1.9 + (4.3 - 1.9) * t
+        path(f'M{cx + (bx - cx) * t - hw * 0.8:.2f} {yy:.2f}h{hw * 1.6:.2f}', stroke=GLOW, sw=0.2, extra=' opacity="0.8"')
+    add(f'<path d="M{cx - 2.7:.2f} {cy:.2f}A2.7 2.6 0 0 1 {cx + 2.7:.2f} {cy:.2f}Z" fill="#a8e3ea" stroke="{INK}" stroke-width="0.35"/>')
+    add(f'<ellipse cx="{cx + 0.1:.2f}" cy="{cy - 1.0:.2f}" rx="0.9" ry="1.05" fill="{GLOW}" stroke="{INK}" stroke-width="0.2"/>')
+    for ex in (-0.35, 0.45):
+        add(f'<ellipse cx="{cx + ex:.2f}" cy="{cy - 1.1:.2f}" rx="0.28" ry="0.42" fill="{INK}" transform="rotate({-25 if ex < 0 else 25} {cx + ex:.2f} {cy - 1.1:.2f})"/>')
+    path(f'M{cx - 1.3:.2f} {cy - 1.9:.2f}A1.4 1.6 0 0 1 {cx - 0.3:.2f} {cy - 2.35:.2f}', stroke='#ffffff', sw=0.3)
+    add(f'<ellipse cx="{cx:.2f}" cy="{cy + 0.9:.2f}" rx="3.4" ry="1.0" fill="#6f7a86" stroke="{INK}" stroke-width="0.35"/>')
+    add(f'<ellipse cx="{cx:.2f}" cy="{cy:.2f}" rx="6.4" ry="1.55" fill="#b9c2cb" stroke="{INK}" stroke-width="0.45"/>')
+    path(f'M{cx - 5.6:.2f} {cy - 0.2:.2f}Q{cx:.2f} {cy - 1.3:.2f} {cx + 5.6:.2f} {cy - 0.2:.2f}', stroke='#e8edf1', sw=0.3)
+    for k in range(-2, 3):
+        add(f'<circle cx="{cx + k * 2.3:.2f}" cy="{cy + 0.45 - 0.08 * abs(k):.2f}" r="0.42" fill="{C["sun"]}" stroke="{INK}" stroke-width="0.18"/>')
 
 def plane_icon(cx, cy, r, ring=True):
     """carry-on mark: airliner and a check, in a circle"""
@@ -196,10 +304,12 @@ def scene():
     for yb in (13, 24): path(f'M{X0} {yb}H{X1}', stroke='#ffffff', sw=0.25, extra=' stroke-dasharray="6 3 1.5 3" opacity="0.55"')
     # clouds over the forest
     for cx, cy, s in ((8, 9, 1.0), (176, 7.5, 0.8), (22, 15.5, 0.6)): rep(cloud, cx, cy, s)
-    # far range, periodic, with snow on the high points
+    # far range, periodic, with snow on the high points; it falls away either side of the board face so the sun
+    # rises in open sky
     terms = [(4.0, 3, 1.0), (2.5, 7, 2.0), (1.3, 13, 0.4), (0.7, 29, 1.3)]
     xs = np.arange(X0 - 1, X1 + 1.01, 0.5)
-    ridge = [(x, wave(x, 33.5, terms)) for x in xs]
+    sun_d = lambda x: min(abs(x - VX), abs(x - VX + PER), abs(x - VX - PER))
+    ridge = [(x, wave(x, 33.5, terms) + (32 * (0.5 + 0.5 * math.cos(math.pi * sun_d(x) / 30)) if sun_d(x) < 30 else 0)) for x in xs]
     poly(ridge + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)], C['far'], 0.35)
     ys = [y for _, y in ridge]
     for n in range(2, len(ridge) - 2):
@@ -209,7 +319,7 @@ def scene():
                    (x + 0.9, y + 2.9), (x + 0.1, y + 2.0), (x - 0.9, y + 2.9), (x - 1.6, y + 2.0)]
             poly(cap, C['snow'], 0.3)
     hatch([(x, y + 3.5) for x, y in ridge] + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)], step=1.3, ang=35, sw=0.12)
-    # sun in the board-face notch: the vent hole is its core
+    # sun over the board face: the vent hole is its core
     for i in range(16):
         a0 = 2 * math.pi * i / 16; a1 = a0 + 2 * math.pi / 32
         r0, r1 = VENT_HOLE_D / 2 + 2.6, VENT_HOLE_D / 2 + (9.5 if i % 2 == 0 else 6.5)
@@ -217,38 +327,10 @@ def scene():
               (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], C['sun_ray'], 0.3)
     add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 2.6:.3f}" fill="{C["sun"]}" stroke="{INK}" stroke-width="0.45"/>')
     add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 1.2:.3f}" fill="none" stroke="{INK}" stroke-width="0.2" stroke-dasharray="0.8 0.8"/>')
-    # the two granite peaks either side of the board-face notch, snow-capped
-    xa, xb = BOARD
-    lpk, rpk = (xa - 6.0, 21.0), (xb + 5.0, 18.5)
-    left = [(SIDE_A[0] - 6, 52), (SIDE_A[0] + 8, 41), (SIDE_A[1] - 14, 33), (lpk[0] - 4.5, 25.5), lpk, (lpk[0] + 3.0, 25.0),
-            (xa + 4.0, 34.0), (xa + 8.5, 44.0), (VX - 10.5, 52.0), (VX - 9.0, H + 2), (SIDE_A[0] - 6, H + 2)]
-    right = [(VX + 9.0, H + 2), (VX + 10.5, 51.5), (xb - 8.0, 41.0), (xb - 3.5, 30.0), (rpk[0] - 2.5, 22.0), rpk, (rpk[0] + 4.0, 24.0),
-             (SIDE_B[0] + 9.0, 31.0), (SIDE_B[0] + 18.0, 38.0), (SIDE_B[1] + 2, 47), (SIDE_B[1] + 2, H + 2)]
-    for pk, pg, shade in ((lpk, left, [lpk, (lpk[0] + 3.0, 25.0), (xa + 4.0, 34.0), (xa + 8.5, 44.0), (VX - 10.5, 52.0), (VX - 9.0, H + 2), (lpk[0] + 2.0, H + 2), (lpk[0] + 1.5, 44), (lpk[0] - 0.5, 31)]),
-                          (rpk, right, [rpk, (rpk[0] + 4.0, 24.0), (SIDE_B[0] + 9.0, 31.0), (SIDE_B[0] + 18.0, 38.0), (SIDE_B[1] + 2, 47), (SIDE_B[1] + 2, H + 2), (rpk[0] + 1, H + 2), (rpk[0] - 0.5, 33)])):
-        poly(pg, C['rock'], 0)
-        poly(shade, C['rock_sh'], 0); hatch(shade, step=0.8, ang=50, sw=0.15)
-        poly(pg, 'none', 0.45)
-        sx, sy = pk
-        snow = [(sx, sy), (sx + 3.4, sy + 3.8), (sx + 2.2, sy + 3.5), (sx + 1.6, sy + 5.2), (sx + 0.4, sy + 3.9), (sx - 0.8, sy + 5.6),
-                (sx - 1.9, sy + 3.8), (sx - 3.0, sy + 4.6), (sx - 4.0, sy + 4.0)]
-        poly(snow, C['snow'], 0.35)
-        poly([(sx, sy), (sx + 3.4, sy + 3.8), (sx + 2.2, sy + 3.5), (sx + 1.6, sy + 5.2), (sx + 0.4, sy + 3.9)], C['snow_sh'], 0.25)
-        for k in range(3): path(f'M{sx - 1.5 + k * 1.6:.2f} {sy + 8 + k * 2.5:.2f}l{1.2:.2f} {3.5:.2f}', sw=0.25)   # rock cracks
-    # canyon mesas on side B, in front of the right peak
     b0, b1 = SIDE_B
-    for (m0, m1, top, base) in ((b0 - 6, b0 + 17, 38.0, 62.0), (b1 - 15, b1 + 8, 40.5, 63.0), (b0 + 8, b0 + 31, 33.0, 64.0)):
-        mesa = [(m0 - 2.5, base), (m0 + 1.0, base - 6), (m0 + 2.6, top + 7), (m0 + 3.0, top + 2.5), (m0 + 3.6, top + 1.2), (m0 + 4.2, top),
-                (m0 + 9, top - 0.6), (m1 - 3.5, top), (m1 - 2.6, top + 1.5), (m1 - 2.0, top + 6), (m1 - 1.2, top + 8.5), (m1 + 1.5, base - 5), (m1 + 4.0, base)]
-        poly(mesa, C['mesa'], 0)
-        poly([(m1 - 6.5, top), (m1 - 3.5, top), (m1 - 2.6, top + 1.5), (m1 - 2.0, top + 6), (m1 - 1.2, top + 8.5), (m1 + 1.5, base - 5), (m1 + 4.0, base), (m1 - 5, base), (m1 - 6.8, top + 8)], C['mesa_sh'], 0)
-        hatch([(m1 - 6.5, top), (m1 - 3.5, top), (m1 - 2.6, top + 1.5), (m1 - 2.0, top + 6), (m1 - 1.2, top + 8.5), (m1 + 1.5, base - 5), (m1 + 4.0, base), (m1 - 5, base), (m1 - 6.8, top + 8)], step=0.75, ang=70, sw=0.15)
-        poly([(m0 + 4.2, top), (m0 + 9, top - 0.6), (m1 - 3.5, top), (m1 - 3.8, top + 1.1), (m0 + 4.0, top + 1.1)], C['mesa_top'], 0)
-        poly([(m0 - 2.5, base), (m0 + 1.0, base - 6), (m0 + 4, base - 3.5), (m0 + 6, base)], '#c96a35', 0.3)
-        for k, yy in enumerate(np.arange(top + 4, base - 2, 3.2)):
-            path(f'M{m0 + 2.6 + k * 0.35:.2f} {yy:.2f}h{(m1 - m0) * (0.45 + 0.1 * (k % 2)):.2f}', sw=0.2)
-        poly(mesa, 'none', 0.45)
-    # desert floor under the mesas
+    # canyon country on side B: a spire, a mitten butte and an arch, standing on talus slopes
+    for outline, holes, shade, cap_y, strata, talus_y in CANYON: rock(b0, outline, holes, shade, cap_y, strata, talus_y)
+    # desert floor under the rocks
     floor = [(b0 - 6, 60), (b0 + 6, 58.5), (b1 - 6, 59.5), (b1 + 4, 61), (b1 + 4, H + 2), (b0 - 6, H + 2)]
     poly(floor, C['sand'], 0.35)
     for x in np.arange(b0 - 2, b1 + 2, 4.7): scrub(x, 63.5 + 1.2 * math.sin(x), 0.55)
@@ -257,20 +339,23 @@ def scene():
     hills = []
     for x in xs:
         y = wave(x, 54.0, hterms)
-        d = min(abs(x - VX), abs(x - VX + PER), abs(x - VX - PER))
+        d = sun_d(x)
         if d < 22: y += (22 - d) / 22 * 13          # valley under the sun
         if b0 - 4 < x < b1 + 4: y = max(y, 63.5)    # stays below the desert floor
         hills.append((x, y))
     hill_poly = hills + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)]
     poly(hill_poly, C['hill'], 0.4)
     hatch([(x, y + 4) for x, y in hills] + [(X1 + 1, Y1 + 1), (X0 - 1, Y1 + 1)], step=1.1, ang=25, sw=0.14)
+    # the alien Monolith on the hill right of the sun, a saucer beaming it
+    alien_monolith(*MONO)
+    ufo(MONO[0] + 3.3, 33.5, MONO[0] + 3.3, MONO[1] - 12.2)
     # pine forest: tall at the back and seam, a treeline under side A, sparse on the board face, none in the desert
     rng = np.random.default_rng(7)
     trees = []
     for x in np.arange(0, PER, 2.4):
         if b0 - 3 < x < b1 + 1: continue
         d = abs(x - VX)
-        if d < 7: continue
+        if d < 7 or MONO[0] - 3 < x < MONO[0] + 9: continue
         back = x < SIDE_A[0] - 1 or x > b1 + 1
         h = (rng.uniform(17, 26) if back else rng.uniform(9, 14)) * (0.7 if d < 16 else 1.0)
         yb = rng.uniform(66.5, 70.5)
@@ -280,12 +365,12 @@ def scene():
     mound = [(b1 - 4 + t, 66.2 - 2.4 * math.sin(math.pi * t / 30)) for t in np.arange(0, 30.01, 1.0)]
     poly(mound + [(b1 + 26, H + 2), (b1 - 4, H + 2)], C['hill'], 0)
     path('M' + ' L'.join(f'{a:.2f} {b:.2f}' for a, b in mound[3:-3]), sw=0.35)
-    bear(b1 + 5.0, 66.6, 1.0)
+    bear(b1 + 2.0, 66.8, 1.1)
     # a few pines in front of the bear's meadow edge
-    for x, h in ((b1 + 21.5, 15), (b1 + 24.5, 19)): rep(pine, x, 70.5, h, h * 0.42, False)
+    for x, h in ((b1 + 23.5, 15), (b1 + 26.0, 19)): rep(pine, x, 70.5, h, h * 0.42, False)
 
 def panels():
-    # board face: wordmark, tagline banner, small carry-on icon
+    # board face: wordmark and tagline banner
     xa, xb = BOARD; cx = (xa + xb) / 2; inner = xb - xa - 4.0
     text('MONOLITH', BANG, 8.2, cx + 0.6, 14.0 + 0.6, 'c', fill=C['word_sh'], track=0.25, fit=inner, stroke=INK, sw=0.9)
     text('MONOLITH', BANG, 8.2, cx, 14.0, 'c', fill=C['word'], track=0.25, fit=inner, stroke=INK, sw=0.55)
@@ -296,10 +381,9 @@ def panels():
     poly(rib, C['banner'], 0.45)
     for i, s in enumerate(('ULTRALIGHT ENERGY', 'DESIGNED FOR BACKPACKERS', 'BY BACKPACKERS')):
         text(s, BOLD if i else XB, 1.75 if i else 2.0, cx, by0 + 2.85 + i * 2.8, 'c', track=0.08, fit=inner - 2)
-    plane_icon(xa + 4.6, 47.0, 3.0, ring=False)
     # side A: carry-on mark and the ratings caption
     a0, a1 = SIDE_A; x0, x1 = a0 + 2.0, a1 - 2.0
-    caption(x0, VIS0 + 2.0, x1 - 0.8, 50.0)
+    caption(x0, VIS0 + 2.0, x1 - 0.8, 48.8)
     ix, iy, ir = x0 + 6.4, VIS0 + 8.6, 5.4
     plane_icon(ix, iy, ir)
     tx = ix + ir + 1.4
@@ -308,9 +392,8 @@ def panels():
     text('UNDER 100 Wh', BOLD, 1.9, tx + 5.0, iy + 3.0, fit=x1 - 1.6 - (tx + 5.0))
     path(f'M{x0 + 1.5:.2f} {iy + ir + 1.6:.2f}H{x1 - 2.3:.2f}', sw=0.3)
     cxA = (x0 + x1 - 0.8) / 2; wA = x1 - x0 - 3.6
-    y = iy + ir + 4.8
-    text('SPARE LITHIUM-ION BATTERY', XB, 2.0, cxA, y, 'c', fit=wA); y += 2.9
-    text('KEEP IN CABIN · NEVER IN CHECKED BAGS', BOLD, 1.6, cxA, y, 'c', fit=wA, fill=C['red']); y += 8.2
+    y = iy + ir + 5.0
+    text('LITHIUM-ION BATTERY', XB, 2.2, cxA, y, 'c', fit=wA); y += 9.6
     text('91 Wh', XB, 7.0, cxA, y, 'c', stroke=INK, sw=0.0); y += 3.6
     text('Li-ion 14.0 V ' + DC + ' 6.5 Ah  ·  4S1P', BOLD, 2.1, cxA, y, 'c', fit=wA); y += 3.0
     text('USB-C 1 / 2  ·  PD 5–20 V ' + DC + ' 5 A', SEMI, 1.75, cxA, y, 'c', fit=wA); y += 2.5
