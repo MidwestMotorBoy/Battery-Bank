@@ -403,10 +403,11 @@ def cell_surface_mask(g, k):
     v = (g.cellany[..., k] >= 32) & g.dom
     return v & ~binary_erosion(v, structure=np.array([[[0], [1], [0]], [[1], [1], [1]], [[0], [1], [0]]], bool))
 
-def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='centre', hours=None, ntc_front=None, probes=()):
+def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='centre', hours=None, ntc_front=None, probes=(), th0=None, soc0=None):
     """ntc_side: 'centre' (assumed placement) or 'board' (front-cell NTCs on the board-facing side, above the filler).
     ntc_front: (angle, z) puts the front cells' NTCs there instead (see can_point); the policy then reads TS1-TS4 only.
-    probes: extra (x, y, z) points whose temperatures are recorded every step (rec_probe)"""
+    probes: extra (x, y, z) points whose temperatures are recorded every step (rec_probe).
+    th0, soc0: start from this temperature rise (an earlier run's 'end' snapshot) and charge state instead of cold"""
     cs = dict(CASES[name]); cs['hours'] = hours if hours is not None else cs['hours']
     K, ge = g.assemble(h_ext)
     dom = g.dom; N = K.shape[0]
@@ -435,7 +436,8 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
         save(g, name, rec, snaps, meta); return meta
     dt = cs['dt']; A = (sp.diags(Cv/dt) + K).tocsr()
     ml = pyamg.smoothed_aggregation_solver(A, symmetry='symmetric', max_coarse=500)
-    th = np.zeros(N); soc = cs['soc0']; ports = cs['ports']
+    th = np.zeros(N) if th0 is None else np.asarray(th0, float).copy()
+    soc = cs['soc0'] if soc0 is None else soc0; ports = cs['ports']
     offer = 100.0; t_cut = 1e9; t_last = -1e9
     keys = ['t', 'soc', 'v_bus', 'i_bat', 'p_out', 'p_in', 'p1', 'p2', 'q_cells', 'q_board', 'q_ni', 'offer', 'i_chg']
     rec = {k: [] for k in keys}

@@ -4292,6 +4292,279 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:Thermistor_NTC"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TH"
+				(at -4.445 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Thermistor_NTC"
+				(at 3.175 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "thermistor NTC resistor sensor RTD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_* RV_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_0_1"
+				(arc
+					(start -3.175 2.413)
+					(mid -3.0506 2.3165)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.048 2.794)
+					(mid -2.9736 2.9736)
+					(end -2.794 3.048)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 3.048)
+					(mid -2.6144 2.9736)
+					(end -2.54 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 2.54)
+					(mid -2.9736 2.6144)
+					(end -3.048 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 1.905)
+					(mid -2.9736 1.9794)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.54 2.159)
+					(mid -2.6144 1.9794)
+					(end -2.794 1.905)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.159 2.794)
+					(mid -2.434 2.5608)
+					(end -2.794 2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 2.159) (xy -2.54 2.794)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -3.683) (xy -2.54 -1.397) (xy -2.794 -2.159) (xy -2.286 -2.159) (xy -2.54 -1.397) (xy -2.54 -1.651)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.54) (xy -1.778 1.524) (xy 1.778 -1.524) (xy 1.778 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -1.397) (xy -1.778 -3.683) (xy -2.032 -2.921) (xy -1.524 -2.921) (xy -1.778 -3.683)
+						(xy -1.778 -3.429)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(text "LOW-SIDE CURRENT SENSE"
 		(exclude_from_sim no)
@@ -4317,7 +4590,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.\n16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while\n    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."
+	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1 / TS4 (front cells C1 / C4): SMD 0402 NTCs TH101 / TH104 on B.Cu in the gap-filler zones (smd-ntc.md).\n   TS2 / TS3 (back cells): wired 10k NTCs on J105 / J106, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.\n16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while\n    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -5695,12 +5968,12 @@
 		(uuid "63c0403e-8b74-4a80-a91b-d56e1879e041")
 	)
 	(label "CELL_1N"
-		(at 81.28 68.58 180)
+		(at 88.9 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "654842b1-1d81-4a77-9fa6-45a6db74176c")
 	)
@@ -5755,12 +6028,12 @@
 		(uuid "7e46c80c-e702-40be-9e16-d357f659299a")
 	)
 	(label "CELL_1N"
-		(at 81.28 91.44 180)
+		(at 88.9 88.9 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "7f6cb36a-d867-4e7d-b3e5-bad9c2934f40")
 	)
@@ -6985,18 +7258,18 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 86.36 88.9 0)
+		(lib_id "Device:Thermistor_NTC")
+		(at 85.09 88.90 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files no)
+		(in_pos_files yes)
 		(dnp no)
 		(uuid "18c15035-c6f3-419e-bc2a-c83df9c4b16a")
-		(property "Reference" "J107"
-			(at 86.36 94.49 0)
+		(property "Reference" "TH104"
+			(at 85.09 85.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7005,8 +7278,8 @@
 				)
 			)
 		)
-		(property "Value" "Cell 4 NTC wires"
-			(at 86.36 96.46 0)
+		(property "Value" "10k B3435"
+			(at 85.09 91.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7015,8 +7288,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
-			(at 86.36 88.9 0)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7027,7 +7300,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 86.36 88.9 0)
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7037,8 +7310,8 @@
 				)
 			)
 		)
-		(property "Description" ""
-			(at 86.36 88.9 0)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7048,8 +7321,8 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 86.36 88.9 0)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C4 (BT104), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C4 (BT104) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS4 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7059,8 +7332,8 @@
 				)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 86.36 88.9 0)
+		(property "LCSC" "C77131"
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7070,8 +7343,8 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash"
-			(at 86.36 88.9 0)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 85.09 88.90 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7090,7 +7363,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J107")
+					(reference "TH104")
 					(unit 1)
 				)
 			)
@@ -12844,18 +13117,18 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 86.36 66.04 0)
+		(lib_id "Device:Thermistor_NTC")
+		(at 85.09 66.04 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files no)
+		(in_pos_files yes)
 		(dnp no)
 		(uuid "b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
-		(property "Reference" "J102"
-			(at 86.36 61.02 0)
+		(property "Reference" "TH101"
+			(at 85.09 62.23 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12864,8 +13137,8 @@
 				)
 			)
 		)
-		(property "Value" "Cell 1 NTC wires"
-			(at 86.36 62.99 0)
+		(property "Value" "10k B3435"
+			(at 85.09 68.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12874,8 +13147,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
-			(at 86.36 66.04 0)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12886,7 +13159,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 86.36 66.04 0)
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12896,8 +13169,8 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 86.36 66.04 0)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12907,8 +13180,8 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 86.36 66.04 0)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C1 (BT101), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C1 (BT101) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS1 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12918,8 +13191,8 @@
 				)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 86.36 66.04 0)
+		(property "LCSC" "C77131"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12929,8 +13202,8 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
-			(at 86.36 66.04 0)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12949,7 +13222,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J102")
+					(reference "TH101")
 					(unit 1)
 				)
 			)

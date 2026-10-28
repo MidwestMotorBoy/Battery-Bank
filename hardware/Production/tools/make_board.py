@@ -191,8 +191,8 @@ def place_ports(path):
 
 def place_mech(path):
     """Put the five slots (J109-J111, J115, J116) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes(),
-    the front-cell NTC lead pads (J102, J107) at sb_ntc_pads() and the four carrier peg holes (H101-H104) at CUP_PEGS,
-    from mechanical/monolith_shell.py: F.Cu, 0 deg (NTC pads 90 deg), locked. Only moves those footprints; run after Update PCB
+    the front-cell SMD NTCs (TH101, TH104) at sb_ntc_smd() and the four carrier peg holes (H101-H104) at CUP_PEGS,
+    from mechanical/monolith_shell.py: F.Cu, 0 deg (NTCs on B.Cu, 90 deg), locked. Only moves those footprints; run after Update PCB
     from Schematic, with the board closed in KiCad (or reload it afterwards)."""
     import pcbnew
     lock = os.path.join(os.path.dirname(path), "~" + os.path.basename(path) + ".lck")
@@ -201,8 +201,9 @@ def place_mech(path):
     want = {MP.SLOT_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_slots().items()}
     want.update({MP.WIRE_REFS[n]: M.kicad(y, z) for n, (y, z, _) in M.sb_pack_holes().items()})
     want.update({ref: M.kicad(y, z) for ref, (y, z) in zip(MP.PEGS, M.CUP_PEGS)})
-    want.update({MP.NTC_REFS[c]: M.kicad(y, z1) for c, (y, z1, _) in M.sb_ntc_pads().items()})
-    turn = {ref: 90 for ref in MP.NTC_REFS.values()}   # pad 2 (local +x) points up the board, to z + 4 mm
+    want.update({MP.NTC_REFS[c]: M.kicad(y, z) for c, (y, z) in M.sb_ntc_smd().items()})
+    turn = {ref: 90 for ref in MP.NTC_REFS.values()}   # the 0402's pads one above the other, along KiCad y
+    bcu = set(MP.NTC_REFS.values())
     b = pcbnew.LoadBoard(path)
     missing = [r for r in want if b.FindFootprintByReference(r) is None]
     if missing:
@@ -210,12 +211,12 @@ def place_mech(path):
                  "footprints anywhere, save, close the PCB editor, then run this again. Board not written." % ", ".join(missing))
     for ref, (x, y) in want.items():
         f = b.FindFootprintByReference(ref)
-        if f.IsFlipped():
+        if f.IsFlipped() != (ref in bcu):
             f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
         f.SetOrientationDegrees(turn.get(ref, 0))
         f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
         f.SetLocked(True)
-        print("%s at (%.3f, %.3f) %d deg, F.Cu, locked" % (ref, x, y, turn.get(ref, 0)))
+        print("%s at (%.3f, %.3f) %d deg, %s, locked" % (ref, x, y, turn.get(ref, 0), "B.Cu" if ref in bcu else "F.Cu"))
     pro = path[:-len(".kicad_pcb")] + ".kicad_pro"   # KiCad 10's SaveBoard rewrites the project file: keep ours
     keep = open(pro, "rb").read()
     pcbnew.SaveBoard(path, b)
@@ -250,18 +251,25 @@ def keepout_list():
         name = "KO_B_rail_%s_%s" % ("L" if y0 < 0 else "R", "bottom" if z1 <= M.CUP_RAIL_GAP[0] else "top")
         out.append((name, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     # B.Cu: the gap filler from the board to the two front cells (solid copper and thermal vias there, no parts)
-    for side, sy in (("L", -1), ("R", 1)):
+    # except a notch at the zone's outer edge round each front-cell SMD NTC (sb_ntc_smd()), which sits under the gel
+    ntc = M.sb_ntc_smd()
+    for side, sy, c in (("L", -1, "C1"), ("R", 1, "C4")):
         y0, y1 = sorted((sy * M.CUP_FILL_Y[0], sy * M.CUP_FILL_Y[1]))
-        out.append(("KO_B_gap_filler_" + side, ["B.Cu"], yz(y0, y1, *M.CUP_FILL_Z), {"footprints"}))
+        poly = yz(y0, y1, *M.CUP_FILL_Z)                    # x0 y0, x1 y0, x1 y1, x0 y1 (KiCad, y down)
+        (xa, ya), (xb, _), (_, yb) = poly[0], poly[1], poly[2]
+        _, cy = k(*ntc[c])
+        d, h = M.SB_NTC_NOTCH
+        if sy > 0:   # notch in the right edge, x = xb
+            poly = [(xa, ya), (xb, ya), (xb, cy - h), (xb - d, cy - h), (xb - d, cy + h), (xb, cy + h), (xb, yb), (xa, yb)]
+        else:        # notch in the left edge, x = xa
+            poly = [(xa, ya), (xb, ya), (xb, yb), (xa, yb), (xa, cy + h), (xa + d, cy + h), (xa + d, cy - h), (xa, cy - h)]
+        out.append(("KO_B_gap_filler_" + side, ["B.Cu"], poly, {"footprints"}))
     # B.Cu: nickel tails behind the board (the CELL2 tail and its kink, CELL1 / CELL3 down the gap)
     for n, (y0, y1, z0, z1) in zip(["CELL2", "CELL1", "CELL3"], M.sb_tail_runs()):   # sb_tail_runs() order
         out.append(("KO_B_tail_" + n, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     # B.Cu: the PACK power and Kelvin wires cross the gap to their holes and slots (BCU_WIRE_RUNS): no parts at all
     for n, (y0, y1, z0, z1) in zip(["PACK-", "PACK+", "1N", "4P"], M.sb_wire_runs()):   # sb_wire_runs() order
         out.append(("KO_B_wire_" + n.replace("+", "P").replace("-", "N"), ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
-    # B.Cu: the front-cell NTC beads, foam caps and leads, up the can to their pads (sb_ntc_runs()): no parts
-    for c, (y0, y1, z0, z1) in zip(["C1", "C4"], M.sb_ntc_runs()):
-        out.append(("KO_B_ntc_" + c, ["B.Cu"], yz(y0, y1, z0, z1), {"footprints"}))
     return out
 
 

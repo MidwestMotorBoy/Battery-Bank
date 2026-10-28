@@ -166,12 +166,11 @@ def step1(P):
 def step2(P):
     mod = L(P, 'carrier', 'foam', 'strip_bot', 'w_cell2', 'cells', 'insul', 'strip_top', 'tongues', 'w_top', 'pads', 'tails_wire', 'w_kelvin', 'rails')
     st = Step(2, '2   Gap filler and board on, on the bench',
-              'NTCs on the front cells, about 4.5 g of GEL 30 on the two front cells, then the board down onto the posts with every '
+              'About 4.5 g of GEL 30 on the two front cells, then the board down onto the posts with every '
               'wire through its hole, sleeves on, and the seven wires soldered from F.Cu in order.', 3)
-    st.panel('2.1 / 2.2  Front NTCs, then the gap filler', mod, L(P, 'filler'), (1.0, -0.55, 0.35),
-             notes=[((22.5, -12.9, 48.0), 'C1 NTC bead: z 48, 7 deg outboard,\nfoam cap; leads up the can to J102'),
-                    ((22.5, 12.9, 48.0), 'C4 NTC (Kapton under it) to J107'),
-                    ((24.0, -11.5, 40.0), 'About 2.3 g GEL 30 per zone,\na little proud (|y| 7-16, z 27-53)')],
+    st.panel('2.1 / 2.2  Gap filler on the front cells', mod, L(P, 'filler'), (1.0, -0.55, 0.35),
+             notes=[((24.0, -11.5, 40.0), 'About 2.3 g GEL 30 per zone,\na little proud (|y| 7-16, z 27-53)'),
+                    ((24.0, -15.5, 29.0), 'Cover the zone\'s bottom corner too:\nthe C1 / C4 NTCs (TH101 / TH104)\nsit there on B.Cu')],
              side_notes=['Weigh it: tare the module on the scale.', 'No cure. Rework: peel, IPA, fresh gel.'])
     sl, ph = S.sb_slots(), S.sb_pack_holes()
     st.panel('2.3  Board onto the posts, then the sleeves', mod + L(P, 'filler'),
@@ -179,13 +178,11 @@ def step2(P):
              arrows=[((62, 0, 80), (50, 0, 80)), ((70, 8.6, 14), (60, 8.6, 14))],
              notes=[((22 + 26.9, -8.6, 68.0), 'Peg slots 2.6 x 2.2: the board\nfloats across, located along'),
                     ((40 + 27.4, 8.6, 14.0), 'TPU sleeve down each post\nuntil it touches F.Cu (no clamp)'),
-                    ((22 + 26.9, -13.0, 6.0), 'Guide the seven pack wires and\nfour NTC leads into their holes')])
+                    ((22 + 26.9, -13.0, 6.0), 'Guide the seven pack wires\ninto their holes')])
     order = [(ph['PACK-'], '1  PACK-'), (sl['1N'], '2  1N'), (sl['CELL1'], '3  CELL1'), (sl['CELL2'], '4  CELL2'),
              (sl['CELL3'], '5  CELL3'), (sl['4P'], '6  4P'), (ph['PACK+'], '7  PACK+')]
-    ntc = S.sb_ntc_pads()
     st.panel('2.4  Solder on F.Cu, in this order', mod + L(P, 'filler', 'ble'), L(P, 'board', 'sleeve'), FACE,
-             notes=[(hole_xyz(p[0], p[1]), t) for p, t in order]
-                   + [(hole_xyz(ntc['C1'][0], ntc['C1'][1]), '8  C1 NTC leads (J102)'), (hole_xyz(ntc['C4'][0], ntc['C4'][1]), '9  C4 NTC leads (J107)')],
+             notes=[(hole_xyz(p[0], p[1]), t) for p, t in order],
              side_notes=['USB unplugged. Trim each wire', 'about 0.5 mm proud.'])
     st.save()
 

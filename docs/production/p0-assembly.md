@@ -112,14 +112,10 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 ![Step 2](../../hardware/mechanical/assembly_steps/step2.png)
 
-1. **Front-cell NTCs** (C1 on TS1 / J102, C4 on TS4 / J107; `research_notes/Pack thermal BAK 65E/ntc-placement.md`):
-    - Bead on the can's board-facing stripe, inside the filler zone: z 48 mm, 7° outboard of the board-facing line (|y| 12.9 mm, about 1.3 mm outboard of the tangent). Use a drop of thermal paste under it and Kapton tape over it. The cell's wrap insulates it from the can, which sits at that cell's negative; check the wrap is whole there, and put a layer of Kapton under the bead on C4 (its can is at CELL3).
-    - Cap the bead with a closed-cell silicone foam square (about 4 × 5 mm, 1.5 mm thick), so the gel doesn't couple it to the board copper.
-    - Run both leads straight up the can at |y| 12–14.5 mm, taped down, at least 10 mm, beside the rail block and not over it. Bend them out to cross the gap at z 64 and 68 mm into the pad pair (J102 / J107, at |y| 14.7 mm).
-    - Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before.
-2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
-3. **Board on:** lower it onto the peg posts, guiding the seven pack wires and the four front NTC leads into their holes from B.Cu. Push the four TPU sleeves down the posts onto F.Cu.
-4. **Solder on F.Cu,** USB unplugged, in the gauge sheet's note-15 order: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Then the four front NTC leads. Trim each wire about 0.5 mm proud. With R124 / R126 off, a wire touching its barrel out of order can't blow F102, but keep to the order anyway.
+1. **NTCs:** the front cells' NTCs (TH101 on C1 / TS1, TH104 on C4 / TS4) are SMD parts on B.Cu since 2026-10-28, so there is nothing to fit on C1 and C4 (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before.
+2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Take it right into the zone's bottom outer corner (|y| 14–16 mm, z 27–31 mm): TH101 / TH104 sit there and read the cell through the gel. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
+3. **Board on:** lower it onto the peg posts, guiding the seven pack wires into their holes from B.Cu. Push the four TPU sleeves down the posts onto F.Cu.
+4. **Solder on F.Cu,** USB unplugged, in the gauge sheet's note-15 order: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Trim each wire about 0.5 mm proud. With R124 / R126 off, a wire touching its barrel out of order can't blow F102, but keep to the order anyway.
 
 ### 3. Test the module, on the bench
 

@@ -303,7 +303,7 @@ GAUGE_PADS = [
 ]
 SLOT_REFS = {"CELL1": "J109", "CELL2": "J110", "CELL3": "J111", "1N": "J115", "4P": "J116"}   # make_board.py --mech
 WIRE_REFS = {"PACK-": "J108", "PACK+": "J112"}   # places these at sb_slots() and sb_pack_holes()
-NTC_REFS = {"C1": "J102", "C4": "J107"}       # and the front-cell NTC lead pads at sb_ntc_pads(), turned 90 deg
+NTC_REFS = {"C1": "TH101", "C4": "TH104"}     # and the front-cell SMD NTCs at sb_ntc_smd(), on B.Cu, 90 deg
 # the pogo pads get their own spaced row (J103's pins were 2.54 mm apart), tied by a global label or GND symbol
 POGO_AT = {}  # P0: gauge SMBus moved to the GAUGE Tag-Connect J302 on the MCU sheet (2026-10-18)
 

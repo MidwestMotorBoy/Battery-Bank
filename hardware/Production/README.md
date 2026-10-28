@@ -80,7 +80,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 - **Pack wires:**
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
-    - J102, J105–J107: cell NTC wire pads. J102 / J107 (front cells C1 / C4) are placed and locked at |y| 14.7 mm, z 64 / 68 mm (`sb_ntc_pads()`, 2026-10-24).
+    - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
@@ -443,10 +443,9 @@ JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_
 | `KO_F_above_antenna` (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | nothing metal over the BLE module's antenna end. The module footprint already keeps copper off every layer there |
 | `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
 | `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |
-| `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages |
+| `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48, notched 1.1 × 2.2 mm at the outer edge round TH101 / TH104) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages; the two front-cell NTCs sit in the notches, under the gel |
 | `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | CELL2 wire and the CELL1 / CELL3 tongues and wires behind the board (drawn as the old tail runs, which cover them) |
 | `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.3–134.6) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes; sized for a 1.8 mm power wire and a 0.75 mm Kelvin wire (2026-10-24), no room for any part |
-| `KO_B_ntc_C1` / `_C4` (x 83.95–88.5 / 111.5–116.05, y 72.13–96.48, from `sb_ntc_runs()`) | B.Cu | parts | the front-cell NTC beads, their foam caps and leads, taped up the can to J102 / J107 |
 
 There is no rule-area type for height, so a note on Cmts.User under the board holds those limits:
 - **F.Cu:** parts up to 3.2 mm; the cup wall sits 0.5 mm above.
