@@ -69,6 +69,9 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
+KEY_RIB = (0.25, 0.5, 0.4)         # crush rib on each side face of a tongue (2026-10-28): height (0.15 into the slot wall past
+                                   # the clearance), width (z), lead-in length at the tip. Holds the blocks in on the bench
+                                   # until the board is soldered; the cup captures them after that
 POST_GAP = 0.3                     # peg posts stop this far under the board-face wall at nominal
 SLEEVE = (2.0, 0.85, 1.0)          # TPU retaining sleeve pushed down each post onto F.Cu: outer r, bore r, height (pushed
                                     # down to touch, not clamp, so the board can still float in the board's peg slots)
@@ -194,6 +197,20 @@ def key_slots(clr=KEY_CLR):
             y0, y1 = KEY_Y[end]
             out.append(pz(rect(xe - KEY_DEPTH - clr, RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0 - (1 if clr else 0), z1 + (1 if clr else 0)))
     return out
+def key_ribs():
+    """the crush ribs on the rail blocks' tongues: one on each side face (y), along x, ramped up over KEY_RIB[2] from the
+    tip so the tongue starts into its slot before the ribs bite"""
+    out, xe = [], PR + CR; h, w, lead = KEY_RIB
+    x0 = xe - KEY_DEPTH + 0.1
+    for s in (-1, 1):
+        for end, (z0, z1) in (('bottom', (FR_B0, FR_B1)), ('top', (FR_T0, FR_T1))):
+            for yf, d in ((s*KEY_Y[end][0], -s), (s*KEY_Y[end][1], s)):   # inner and outer face, rib grows away from the tongue
+                yb = yf - d*0.05                                                  # root 0.05 inside the tongue
+                pts = [(x0, yb), (x0 + lead, yf + d*h), (xe, yf + d*h), (xe, yb)]
+                if sum(xa*yb - xb*ya for (xa, ya), (xb, yb) in zip(pts, pts[1:] + pts[:1])) < 0: pts = pts[::-1]   # CCW
+                zm = (z0 + z1) / 2
+                out.append(pz(CS([pts]), zm - w/2, zm + w/2))
+    return out
 def carrier():
     """one-piece PA12 cell carrier: the two frames, the spines and the front-back webs. The board rails are separate
     clip-on blocks (rails()) so the front cells can go in from the board side."""
@@ -212,7 +229,7 @@ def rails():
         keep = rect(RAIL_X0, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))
         m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [cylx(y, z, S.CUP_PEG_D / 2, S.sb_xb0 - 0.5, X_IN - POST_GAP) for y, z in S.CUP_PEGS]
-    return U(*m, *key_slots(0.0))
+    return U(*m, *key_slots(0.0), *key_ribs())
 def sleeves():
     return U(*[cylx(y, z, SLEEVE[0], S.sb_xb1, S.sb_xb1 + SLEEVE[2]) - cylx(y, z, SLEEVE[1], S.sb_xb1 - 1, S.sb_xb1 + SLEEVE[2] + 1)
                for y, z in S.CUP_PEGS])
@@ -352,6 +369,8 @@ def checks():
     return {
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
         'board rails: four bodies (clip-on blocks)': 4 - len(rails().decompose()) + 0.0,
+        'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
+        'crush ribs fit the thin top frame (z, >= 0.2 each side)': (FR_T1 - FR_T0 - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
         'cap is one body': 1 - len(cap().decompose()) + 0.0,
         'board fits the bore (y, per side)': YI - S.sb_board_w/2 - 0.3,
         'tallest part under the board-face wall (x)': X_IN - (S.sb_xb1 + S.SB_OUT_H) - 0.3,

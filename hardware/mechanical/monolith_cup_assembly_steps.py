@@ -159,7 +159,7 @@ def step1(P):
     st.panel('1.8  Rail blocks on', done, L(P, 'rails', o=(14, 0, 0)), ISO,
              arrows=[((48, -9, 72), (36, -9, 72)), ((48, -9, 12), (36, -9, 12))],
              notes=[((14 + 30.3, 9.0, 68.0), 'Peg posts point +x\n(toward the board)'),
-                    ((14 + 20.5, -9.0, 60.0), 'Tongue slides into the key\nslot in the frame face'),
+                    ((14 + 20.5, -9.0, 60.0), 'Tongue presses into the key\nslot; crush ribs hold it'),
                     ((14 + 25.0, -9.0, 35.0), 'No rail over the gap-filler\nzone (z 25-55)')])
     st.save()
 
