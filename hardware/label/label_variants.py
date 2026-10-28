@@ -38,7 +38,7 @@ VARIANTS = [
     ('Current', {}, {}),
     ('Golden hour', dict(sky0='#d9714a', sky1='#f0a35c', sky2='#f8d48a', far='#8a7f9a', far_sh='#675c7a', far_hi='#a596b0',
                          snow_sh='#d6b9a8', hill='#86a24a', hill_hi='#b0c062', cloud='#fbe2c4', cloud_sh='#e2b394'), {}),
-    ('Night, moon over the vent', NIGHT, dict(moon=True, stars=70)),
+    ('Night, moon over the board face', NIGHT, dict(moon=True, stars=70)),
     ('Dusty wasteland', dict(sky0='#a9a27a', sky1='#cbbf8e', sky2='#e6d4a0', far='#8a8576', far_sh='#686457', far_hi='#a19c8b',
                              hill='#8e9a4e', hill_sh='#6a763a', hill_hi='#a8b266', pine='#4a7046', pine_sh='#2b4a2e',
                              mesa='#cf7a44', mesa_sh='#8c4026'), dict(grit=1.8)),
@@ -60,8 +60,7 @@ def render(colours, flags, dpmm=12):
         M.C.update(colours); M.V.update(flags)
         M.out.clear(); M._clip[0] = 0; M.scene(); M.panels()
         pw, ph = M.W + 2 * M.BLEED, M.H + 2 * M.BLEED
-        hole = [f'<circle cx="{M.VX:.3f}" cy="{M.VY:.3f}" r="{M.VENT_HOLE_D / 2:.3f}" fill="#ffffff"/>']
-        svg = M.svg(list(M.out) + hole + M.cut_lines(sw=0.25), pw, ph, -M.BLEED, -M.BLEED)
+        svg = M.svg(list(M.out) + M.cut_lines(sw=0.25), pw, ph, -M.BLEED, -M.BLEED)
         return cairosvg.svg2png(bytestring=svg.encode(), output_width=round(pw * dpmm), output_height=round(ph * dpmm),
                                 background_color='white')
     finally:

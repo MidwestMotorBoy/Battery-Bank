@@ -22,7 +22,6 @@ Enclosure (2026-10-21): the cup (mechanical/monolith_cup.py). The board rides on
 faces the cup wall (0.5 mm over the tallest part), B.Cu faces the cells, and a gap filler joins B.Cu to the two front
 cells over the power stages. The aluminium cover, its standoffs and the side tray are retired.
 """
-import math
 import os
 import shutil
 import sys
@@ -237,11 +236,7 @@ def keepout_list():
         (xa, ya), (xb, yb) = k(y0, z1), k(y1, z0)
         return rect(xa, ya, xb, yb)
     out = []
-    # F.Cu: nothing under the ePTFE vent in the cup's board-side wall (its bare hole is the leak-test port)
-    cx, cy = k(*M.CUP_VENT)
-    r = M.SB_VENT_D / 2 + 2
-    out.append(("KO_F_cup_vent", ["F.Cu"], [(cx + r * math.cos(a * math.pi / 16), cy + r * math.sin(a * math.pi / 16))
-                                            for a in range(32)], {"footprints"}))
+    # (no KO_F_cup_vent: the cup has no vent since 2026-10-28)
     # (no KO_F_above_antenna: Logan removed it from the board on 2026-10-23)
     # both faces: the top edge bears on the top wall's inside face beyond |x| = SB_STOP_Y0
     for side, (x0, x1) in (("L", (CX - HALF_W, CX - M.SB_STOP_Y0)), ("R", (CX + M.SB_STOP_Y0, CX + HALF_W))):

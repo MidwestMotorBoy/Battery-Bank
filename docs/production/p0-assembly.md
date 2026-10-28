@@ -69,10 +69,10 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
     - in TPU: the pad (inside the cap, 15 % gyroid), the four post sleeves, and the two bumpers.
-- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), an ePTFE vent patch rated IP67, silicone grease.
+- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
-- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), a current-limited bench supply and a cell simulator for step 0, and a hand pump with a gauge for the leak test.
+- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
 - **Cell simulator** (for step 0): a bench supply at 14.0–14.8 V, current-limited to 100 mA, and a ladder of four equal resistors (1 kΩ) across it, with pins that drop into the seven holes: PACK− and 1N on the supply's −, the three taps on the ladder's joints, 4P and PACK+ on its +.
 
 ## Steps
@@ -142,12 +142,12 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The collar's crush ribs go over the outside of the cup's mouth; the pad preloads the core against the top wall.
 4. Drive the two M2 thread-forming screws through the collar and the cup wall into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.
 
-### 6. Leak test, vent, bumpers
+### 6. Leak test, bumpers
 
 ![Step 6](../../hardware/mechanical/assembly_steps/step6.png)
 
-1. **Leak test** through the bare vent hole, at most +10 kPa until the posts are proven: hold 5 min on a gauge, then dunk while pressurised and look for bubbles. A −5 kPa vacuum-decay test also works (or −10 kPa with the board face held on a flat plate).
-2. Stick the ePTFE vent patch over the hole.
+1. **Leak test** in a vacuum jar. There is no vent, so the closed pack keeps its own air and a vacuum round it loads the seals the way altitude does. Brush leak-detection fluid or soapy water over the collar edge, both screw heads and both USB-C ports, stand the pack in the dry jar and pull **−20 kPa** (about an airliner cabin). Watch for 5 min: a bubble or foam that keeps growing at a joint is a leak. Let the air back in slowly and wipe the pack dry. Don't submerge the pack for this test: if a seal leaks, the jar's water is pulled in when the air goes back in.
+2. **First pack only:** take the empty fit print (cup, cap, O-ring and screws, no core) to **−50 kPa** (a warm pack at 4300 m) for 10 min. Measure across both side flats before and after, and look for cracks round the screw holes. If the flats take a set, thicken the side walls before building more.
 3. Press the TPU bumpers on, top (port well) and bottom (over the collar, pockets over the screw heads).
 
 ## Working on the live pack

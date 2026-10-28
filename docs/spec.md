@@ -186,7 +186,7 @@ The production P0 board is the design of record and the first board planned to b
 - Cup walls 1.2 mm, 2.0 mm on the board face, 1.85 mm top wall. The USB-C seal bores are the connector's rev A4 ring (10.35 × 4.57 mm) minus 0.15 mm a side, with a 0.3 mm lead-in.
 - The board's four peg posts run to 0.3 mm under the board-face wall, with TPU sleeves, so a drop on that face loads the carrier, not the inductors.
 - Fish-paper insulator rings on all four + ends, and foam preload rings under the cells so they can't float axially. The board rails are four clip-on blocks fitted after the cells.
-- TPU 95A bumpers at both ends and a TPU pad on the cap (1.2 mm proud for preload); an ePTFE vent patch. Review and fix list: `docs/production/p0-assembly.md` and [the review](https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF).
+- TPU 95A bumpers at both ends and a TPU pad on the cap (1.2 mm proud for preload). No vent (removed 2026-10-28): the cup keeps the air it was closed with, so at a warm 4300 m it pushes out by about 50 kPa (side flats about 25–31 MPa and a 1–2 mm bulge, about 120 N on the cap screws; `sealed_pressure()` in `monolith_cup.py`). The leak test is a vacuum-jar bubble test. Review and fix list: `docs/production/p0-assembly.md` and [the review](https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF).
 - No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
 - Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. Material (decided 2026-10-24, P0 and gift packs): Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, SG 3.1, about 4.5 g; one part, supplied cured, so no mixing, gun or cure time; peels off for rework; 8 kV/mm, 10¹⁴ Ω·cm, UL94 V-0; 18-month shelf life at 10–32 °C). One 10 cc Luer-Lok syringe (65-00-GEL30-0010, about €51 at Farnell, also Newark and DigiKey) covers five or six packs. Bergquist TGF 3600 (two part, 15 h at 25 °C) was the runner-up but comes in 50 cc cartridges with a 5-month shelf life and needs a 1:1 gun and static mixers. Laird Tflex CR350S is out: its datasheet gives only an oven cure (2 h at 70 °C plus 0.5 h at 100 °C), which the fitted cells can't take. In the model, 1.5 / 3 / 6 W/m·K put the hottest part at 60.0 / 58.5 / 55.7 °C at 100 W with a 5.2 / 6.2 / 5.8 min burst, so more conductivity than this doesn't help. Comparison: `research_notes/Pack thermal BAK 65E/gap-filler-options.md`. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
 - Outside size 61.9 × 53.8 × 98.5 mm, about 389 g modelled (cells 300 g, board 12.7 g, cup 26.9 g, cap 10.1 g, bumpers 19.1 g, carrier and rails 10.2 g, filler 4.5 g). The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
@@ -264,8 +264,8 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
 - [ ] Three coupons before the full print: the cap collar on a mouth section (O-ring squeeze and screw hold), a clip-on rail block, and a USB-C bore with the connector's ring
 - [ ] Drop series on the fit print: board face, top, bottom, a corner
-- [ ] O-ring dunk coupon and hand-pump leak test (vent fitted after the leak test)
-- [ ] IP67: a 1 m / 30 min dunk of the sealed pack, plus an IP67-rated vent
+- [ ] O-ring dunk coupon and vacuum-jar leak test (soap film on the joints, −20 kPa; the empty fit print to −50 kPa, side flats measured before and after)
+- [ ] IP67: a 1 m / 30 min dunk of the sealed pack
 - [ ] Gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
 - [ ] Outside label: 91 Wh, 14.0 V, USB1 / USB2, ratings
 
@@ -301,7 +301,7 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Port sharing | A user setting in the app | Two modes: **USB1 priority** (USB2 keeps a guaranteed minimum, 10–30 W, default 20 W) and **Balanced** (the port with the larger contract gives way first). Default: USB1 priority, to match the port labels. Needs a GATT setting and firmware support for both |
 | Fast-charge toggle | Kept in the app and GATT for future packs | Firmware always clamps to the cell's datasheet table. With the BAK 65E (12.7 A max, 2C) the toggle has real headroom, but it stays clamped to BAK's datasheet table once that is in hand |
 | Max SOC default | 95 %, settable 60–100 % | No change |
-| Waterproofing | **IP67**: dust-tight, 1 m immersion for 30 min | The O-ring, both USB-C seals and the vent must pass a 1 m / 30 min dunk. The ePTFE vent must be an IP67-rated part |
+| Waterproofing | **IP67**: dust-tight, 1 m immersion for 30 min | The O-ring and both USB-C seals must pass a 1 m / 30 min dunk. No vent since 2026-10-28, so the seals also carry the altitude pressure |
 | Scope | Personal use and gifts to friends | No formal UL, IEC or FCC certification. Hand-deliver gifts: shipping a lithium pack by carrier needs UN38.3. Run a documented safety test set on each pack before gifting it |
 | Mass | About 400 g is fine; keep reducing | Mass reduction added to the to-do list |
 | Cell data | BAK's datasheet (A/00, 2025-04-10) found on 10-23; ask BAK for its temperature-stepped charge profile and keep the FEB ramp until then | No design change |
@@ -309,6 +309,7 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 | Spot welder (10-23) | AWithZ P20B; the kWeld plus kCap is dropped | Mains powered, rated 0.3 mm nickel; handheld pens weld through the carrier windows (`docs/production/spot-welding.md`) |
 | PACK tails (10-24) | Wire tails (option C), 18 AWG power wires | Two Ø1.5 plated holes on the board, four carrier frame notches, wires soldered to the nickel pads on the bench. Options compared in `docs/production/pack-tail-options.html` |
+| Vent (10-28) | Removed from the cup and the board | No ePTFE patch or hole in the board-face wall, no `KO_F_cup_vent` on F.Cu, no label hole (the sun stays, solid). The cup is sealed for good: the seals and walls carry the altitude pressure (about +50 kPa at a warm 4300 m), and the leak test is a vacuum-jar bubble test |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
 

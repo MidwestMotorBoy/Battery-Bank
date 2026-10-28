@@ -10,7 +10,6 @@ import monolith_cup as K
 
 OUT = LB.OUT
 BUMPER = (46, 46, 44)                     # black TPU
-VENT = (236, 236, 230)
 LIGHT = np.array([0.35, -0.55, 0.75]); LIGHT /= np.linalg.norm(LIGHT)
 
 def ring(cs): return np.array(cs.to_polygons()[0], float)
@@ -105,8 +104,6 @@ def render(cam, tex, ss=2):
 
 def main():
     tex = Image.open(os.path.join(OUT, LB.NAME + '_cut_art.png')).convert('RGB')
-    arr = np.array(tex); g = (arr[..., 1] > 200) & (arr[..., 0] < 60) & (arr[..., 2] < 60); arr[g] = VENT
-    tex = Image.fromarray(arr)
     views = [(-40, 18, 'board face + side A'), (50, 18, 'board face + side B'), (180, 18, 'back + seam')]
     tiles = [render(Cam(az, el), tex) for az, el, _ in views]
     w, h = tiles[0].size
