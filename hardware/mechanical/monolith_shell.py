@@ -367,24 +367,13 @@ def sb_tail_runs():
     out.append((-SB_TAIL_W/2 - m, SB_TAIL_W/2 + m, zlo, sb_z_tail_b + m))
     for sy in (-1, 1): out.append((sy*SB_TAIL_Y - SB_TAIL_W/2 - m, sy*SB_TAIL_Y + SB_TAIL_W/2 + m, SB_TAIL_TOP_Z - m, sb_zb1))
     return out
-# Front-cell NTCs (C1 on TS1, C4 on TS4), 2026-10-24: research_notes/Pack thermal BAK 65E/ntc-placement.md
-SB_NTC_BEAD = (12.9, 48.0)           # bead centre (|y|, z): on the hot stripe, 7° outboard of the board-facing line, in the filler
-SB_NTC_CAP_Z = 5.0                   # closed-cell foam cap over the bead (4 x 5 mm), its length along z
-SB_NTC_LEAD_Y = (12.0, 14.5)         # leads taped up the can in this |y| band, beside the carrier rail
-SB_NTC_PAD_Y, SB_NTC_PAD_Z, SB_NTC_PAD_D = 14.7, (64.0, 68.0), 1.7   # lead pads: |y| (13.4 in the note; 14.7 clears
-                                     # port 1's C406 on F.Cu), z of pads 1 and 2 (4 mm pitch), pad size (0.7 drill)
-def sb_ntc_pads():
-    """the front-cell NTC lead pads, {cell: (y, z of pad 1, z of pad 2)}: C1 on the PACK- side, C4 on the PACK+ side"""
-    return {c: (s * SB_NTC_PAD_Y,) + SB_NTC_PAD_Z for c, s in (('C1', -1), ('C4', 1))}
-def sb_ntc_runs():
-    """where the front-cell NTC bead, its foam cap and its leads sit behind B.Cu, up to the lead pads, as
-    (y0, y1, z0, z1) with 0.5 mm margin, C1 then C4. No B.Cu parts here."""
-    m, out = 0.5, []
-    for s in (-1, 1):
-        y0, y1 = SB_NTC_LEAD_Y[0] - m, SB_NTC_PAD_Y + SB_NTC_PAD_D / 2 + m
-        out.append((min(s * y0, s * y1), max(s * y0, s * y1), SB_NTC_BEAD[1] - SB_NTC_CAP_Z / 2 - m,
-                    max(SB_NTC_PAD_Z) + SB_NTC_PAD_D / 2 + m))
-    return out
+# Front-cell NTCs (C1 on TS1, C4 on TS4), 2026-10-28: SMD 0402s on B.Cu at the cool end of the gap-filler zone, under the gel
+# (research_notes/Pack thermal BAK 65E/smd-ntc.md; they replaced the wired beads of 2026-10-24 and their J102 / J107 pads)
+SB_NTC_SMD = (15.5, 29.0)            # (|y|, z): outboard of port 1's BQ25756, 2 mm in from the filler zone's outer edge
+SB_NTC_NOTCH = (1.1, 1.1)            # notch in KO_B_gap_filler_* round each NTC: depth in from the zone's outer edge, half-height
+def sb_ntc_smd():
+    """the front-cell SMD NTCs on B.Cu, {cell: (y, z)}: C1 (TH101) on the PACK- side, C4 (TH104) on the PACK+ side"""
+    return {c: (s * SB_NTC_SMD[0], SB_NTC_SMD[1]) for c, s in (('C1', -1), ('C4', 1))}
 SB_TAP_HOLES = {n: (y, z) for n, (y, z, _) in sb_slots().items() if n.startswith('CELL')}   # (legacy name for make_board.py)
 SB_TAB_PAD_H = 5.0                             # (legacy: the old PACK strip pads; Production/tools/make_board.py still reads it)
 sb_z_mid = (sb_zb0 + sb_zb1) / 2

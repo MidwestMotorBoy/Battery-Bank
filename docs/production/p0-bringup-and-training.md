@@ -25,7 +25,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 | J108 / J112 | Pack − / +: Ø1.5 mm plated holes for the 18 AWG PTFE PACK wires |
 | J109–J111 | Cell taps CELL1–CELL3: Ø0.8 mm plated holes for 28 AWG PTFE sense wires |
 | J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG PTFE wires |
-| J102, J105–J107 | Cell NTCs |
+| J105 / J106 | Back-cell NTC wires (C2 / C3). The front-cell NTCs are TH101 / TH104 on the board |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge |
 | TP113 (WAKE) + TP106 (PACK_P) | Gauge wake: bridge the two pads with tweezers. TP113 is CELL_P through R118 4.7 kΩ. |
 | TP109, TP301 | GND, 3V3 |
@@ -38,7 +38,7 @@ A wrong plug is harmless: if the SWD cable goes onto J302, the probe drives only
 1. **Bare board first** (`p0-assembly.md` step 0): check R124 and R126 are not fitted, power the board from the cell simulator through the seven holes, flash it and check the gauge talks, before it meets the cells.
 2. **Pack:** with USB unplugged, solder PACK− (J108), then 1N (J115) and CELL1–CELL3 (J109–J111) bottom-up, then 4P (J116), then PACK+ (J112). A floating tap can trip U102, which blows F102 once R124 / R126 are fitted (gauge sheet notes 15 and 16).
 3. **Fit R124 and R126** (5.1 kΩ 0402, F.Cu) only after all seven voltages read right at the pads: each step one cell, 2.5–4.2 V.
-4. **NTCs:** the front-cell NTCs (TS1, TS4) go on the cans' hot stripe inside the filler zone during module assembly (`p0-assembly.md` §2, `research_notes/Pack thermal BAK 65E/ntc-placement.md`). The back-cell NTCs (TS2, TS3) are taped at mid-height, facing the pack centre. Insulated sensors only.
+4. **NTCs:** the front-cell NTCs (TS1, TS4) are TH101 / TH104 on the board, under the gap filler (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). The back-cell NTCs (TS2, TS3) are taped at mid-height, facing the pack centre. Insulated sensors only.
 5. **Cell check:** measure each cell at the tap pads before going further.
 
 ## 2. First power
@@ -61,7 +61,7 @@ Steps:
     - TS1–TS4 enabled;
     - FET temperature sensor configured;
     - protection thresholds per `docs/spec.md` (Battery management and protection): OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell, SCD1 and SCD2 as listed there;
-    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24 for the front NTCs on the hot stripe; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/spec.md`);
+    - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24; unchanged by the 10-28 move of the front NTCs onto the board; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/spec.md`);
     - the cell thermistors that matter are on the front cells (C1 / C4, the pair the board heats), so the hottest cells are seen;
     - COV delay 1 s and Min Blow Fuse Voltage 10,500 mV (second-level protection).
 2. **Chemistry:** select the BAK 65E chemistry ID if it's in TI's database (unlikely). Otherwise run TI's GPCCHEM flow first: a slow (~C/10) discharge with rests, logged and submitted to TI's GPCCHEM tool.

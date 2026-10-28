@@ -25,10 +25,23 @@ def p0_src_boxes():
         b[f'ic{p}'] = [bx(17.36, 45.83, 2.5, 3.0, 27.7)]
         b[f'sense{p}'] = [bx(11.23, 60.83, 2.5, 1.3, 27.5), bx(14.3, 54.5, 1.6, 0.8, 27.5)]
     return b
+# SMD_LAYOUT=p0b: the same after Logan's 10-27 "Layout in progress" commit (ed56285): Q401 / Q402 at (9.6, 41.7) / (14.1, 41.6),
+# L401 at (11.8, 48.9), U403 at (11.4, 31.0) turned 90 deg, RBAT R427 at (18.2, 36.5). R424 (AC sense) is still off the board:
+# put beside L401 at (9.0, 54.5). Port 2 is still off the board and stays mirrored onto C1.
+def p0b_src_boxes():
+    b = _orig_src_boxes()
+    for p in (1, 2):
+        s = 1 if p == 1 else -1
+        def bx(y, z, hy, hz, x1=27.8): y = s*y; return (26.9, x1, y - hy, y + hy, z - hz, z + hz)
+        b[f'fet{p}'] = [bx(9.56, 41.66, 1.65, 1.65), bx(14.08, 41.62, 1.65, 1.65)]
+        b[f'ind{p}'] = [bx(11.81, 48.86, 3.5, 3.5, 30.0)]
+        b[f'ic{p}'] = [bx(11.44, 30.97, 3.0, 2.5, 27.7)]
+        b[f'sense{p}'] = [bx(18.17, 36.48, 0.8, 1.6, 27.5), bx(9.0, 54.5, 1.0, 0.65, 27.5)]
+    return b
 _orig_src_boxes = P.src_boxes
-if LAYOUT == 'p0':
-    P.src_boxes = p0_src_boxes
-    P.OUT_DIR = os.path.join(P.HERE, 'results', 'p0layout')
+if LAYOUT in ('p0', 'p0b'):
+    P.src_boxes = p0_src_boxes if LAYOUT == 'p0' else p0b_src_boxes
+    P.OUT_DIR = os.path.join(P.HERE, 'results', 'p0layout' if LAYOUT == 'p0' else 'p0b')
 
 X_BCU, X_FCU = 25.8, 26.4                 # board voxels: the B.Cu half (board is x 25.3-26.9) and the F.Cu half
 SPOTS = {                                  # name: (x, |y|, z) on the board, mirrored onto C1 (-y) and C4 (+y)
@@ -42,6 +55,10 @@ SPOTS = {                                  # name: (x, |y|, z) on the board, mir
     'low28':   (X_BCU, 12.9, 28.5),        # B.Cu at the bottom end of the filler zone, on the stripe line
     'low33':   (X_BCU, 12.9, 33.0),
     'low38':   (X_BCU, 12.9, 38.0),
+    'out29':   (X_BCU, 15.5, 29.0),        # filler zone bottom, outboard of U403 in the p0b layout
+    'in29':    (X_BCU, 7.5, 29.0),         # filler zone bottom, inboard of U403
+    'z26':     (X_BCU, 12.9, 26.0),        # just below the filler zone
+    'z20':     (X_BCU, 13.5, 20.0),
     'stripe_f': (X_FCU, 12.9, 48.0),       # F.Cu side of the stripe spot
 }
 def spot_points():
@@ -60,6 +77,7 @@ POLICIES = {    # name: (DERATE, DERATE_HOT, CHG_HOT) on the hottest TS reading,
     's48':  ((48.0, 52.0, 40.0), (56.0, 62.0), (48.0, 50.5)),   # +6 K
     's50':  ((50.0, 54.0, 40.0), (58.0, 62.0), (50.0, 52.5)),   # +8 K
     's43':  ((43.0, 47.0, 40.0), (51.0, 59.0), (43.0, 45.5)),   # +1 K
+    'd44':  ((44.0, 48.0, 40.0), (52.0, 59.0), (42.0, 44.5)),   # discharge ramp +2 K, charge ramp as p42c
 }
 
 def probe_job(case):
@@ -148,6 +166,13 @@ if __name__ == '__main__':
         N.pool_run(probe_job, ['dis100', 'chg1', 'pass', 'dis30'])
         N.pool_run(policy_job, [(c, p, 'low28', 25.0) for p in ('p42c', 's43') for c in ('dis100', 'chg1', 'pass')])
         N.pool_run(seq_job, [('s43', 'low28')])
+    if 'p0c' in what:         # the p0b layout's best spot, today's thresholds
+        N.pool_run(lambda_free_job, [('policy', ('dis100', 'p42c', 'out29', 25.0)), ('policy', ('chg1', 'p42c', 'out29', 25.0)),
+                                     ('policy', ('pass', 'p42c', 'out29', 25.0)), ('seq', ('p42c', 'out29'))])
+    if 'p0d' in what:
+        N.pool_run(lambda_free_job, [('policy', ('dis100', 'd44', 'out29', 25.0)), ('seq', ('d44', 'out29')),
+                                     ('policy', ('dis60', 'd44', 'out29', 25.0)), ('policy', ('dis60', 'p42c', 'wired', 25.0))])
+    if 'probes4' in what: N.pool_run(probe_job, ['dis100', 'chg1', 'pass', 'dis30'])
     if 'p0b' in what:         # the recommended spot (z 33) with today's thresholds
         N.pool_run(lambda_free_job, [('policy', ('dis100', 'p42c', 'low33', 25.0)), ('policy', ('chg1', 'p42c', 'low33', 25.0)),
                                      ('policy', ('pass', 'p42c', 'low33', 25.0)), ('seq', ('p42c', 'low33'))])

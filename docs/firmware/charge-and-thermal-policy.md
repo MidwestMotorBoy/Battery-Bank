@@ -2,7 +2,7 @@
 
 How firmware applies the charge ramp and the discharge derate. The thresholds themselves live in [`docs/spec.md`](../spec.md) (Ports, charging and power policy) and are changed there; this file explains the structure, so it doesn't repeat the tables. The pack is four BAK N21700CX-65E cells in 4S1P, 91 Wh typical. The numbers come from the 3-D pack model in `research_notes/Pack thermal BAK 65E/` and must be retuned on P0.
 
-_First written 2026-10-21 for the FEB 21700G cells; rewritten 2026-10-24 for the BAK 65E and the front-cell NTCs on the cans' hot stripe. The FEB version is in the git history._
+_First written 2026-10-21 for the FEB 21700G cells; rewritten 2026-10-24 for the BAK 65E and the front-cell NTCs on the cans' hot stripe; 2026-10-28, front-cell NTCs moved onto the board. The FEB version is in the git history._
 
 ## 1. The cell's limits
 
@@ -17,7 +17,7 @@ BAK's datasheet (A/00, `datasheets/bak-n21700cx-65e.pdf`) gives only the outer l
 
 - **Linear ramps, not steps.** Every limit is a straight line from full to reduced across a temperature band, so power never jumps and the pack doesn't oscillate.
 - **Ramps stay on or under the cell's table at every temperature.**
-- **Act on the hottest sensor.** In the cup the board heats the two front cells. Their NTCs (TS1 on C1, TS4 on C4) sit on the cans' hot stripe inside the gap-filler zone (`research_notes/Pack thermal BAK 65E/ntc-placement.md`), so they read within about 0.3 K of the hottest can point.
+- **Act on the hottest sensor.** In the cup the board heats the two front cells. Their NTCs (TS1 on C1, TS4 on C4) are SMD parts on the board in a corner of the gap-filler zone (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They read 0.6–3.8 K above the hottest can point in the model and never below it, which is why the discharge ramp starts at 44 °C, not 42.
 - **Layers:** hardware ceilings (no firmware) → gauge protections and charge algorithm → this firmware policy. Firmware is the smoothest and lowest layer; the others are backstops.
 - **Lower the PD offer, don't sag the output.** Discharge limits are applied by re-advertising Source Capabilities so sinks renegotiate cleanly.
 
@@ -66,4 +66,4 @@ The current values (100 W to 42 °C, then a ramp to 40 W at 46 °C) and the mode
 1. **BAK's temperature-stepped charge table:** ask BAK, then replace the FEB-derived ramp and revisit the 4.55 A cap.
 2. **Measure the 65E's DC resistance** on P0 (10 s pulse at 50 % and 10 % charge) and refit the model's 14 mΩ.
 3. **Gauge chemistry ID** for the 65E (likely a GPCCHEM run).
-4. **Tune the start temperature and sustain power** on P0 with real loads. Check each front NTC against a thermocouple on the stripe beside it, and shift the thresholds if it reads more than 1 K off.
+4. **Tune the start temperature and sustain power** on P0 with real loads. Check TS1 / TS4 against thermocouples on the front cans' stripe, and move the discharge ramp if they read more than 1 K differently from the model's offsets.

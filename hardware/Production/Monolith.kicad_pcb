@@ -10844,97 +10844,104 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
+	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(locked yes)
-		(layer "F.Cu")
-		(uuid "2ef4ebe5-4ca2-423c-be8d-dc09ce74011d")
-		(at 114.7 77.4755 90)
-		(descr "Soldered wire connection, for 2 times 0.15 mm² wires, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
-		(tags "connector wire 0.15sqmm")
-		(property "Reference" "J107"
-			(at 2 -2.05 90)
-			(layer "F.SilkS")
-			(uuid "b89692c9-7dfc-4f8f-9349-adeda1af15ef")
+		(layer "B.Cu")
+		(uuid "66e9dd3e-586b-4207-ad24-98dd02c790a7")
+		(at 115.5 112.4755 90)
+		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "TH104"
+			(at 0 1.17 0)
+			(layer "B.SilkS")
+			(uuid "b2a8cee1-d2ff-4562-a611-302275696126")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Value" "Cell 4 NTC wires"
-			(at 2 2.05 90)
-			(layer "F.Fab")
-			(uuid "a908f811-c426-41dd-a545-9bd5d56177e9")
+		(property "Value" "10k B3435"
+			(at 0 -1.17 0)
+			(layer "B.Fab")
+			(uuid "25a76807-7f36-4525-b297-394d8ee84bc0")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 90)
-			(layer "F.Fab")
+			(at 0 0 0)
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "fef773a7-474a-4086-88a2-e23ddc09fc09")
+			(uuid "6fd9ccf2-728d-45eb-b37b-3a556a449d29")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Description" ""
-			(at 0 0 90)
-			(layer "F.Fab")
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 0 0 0)
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "79c85e13-6552-4548-8362-e01a6700cd23")
+			(uuid "5f04f4c0-d969-43a3-9683-36dca5924a91")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 0 0 90)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C4 (BT104), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C4 (BT104) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS4 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "59eec61d-6a3f-4c82-b236-0b33d3493829")
+			(uuid "c744f977-187a-4647-96cb-6f9a34b62b71")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 0 0 90)
+		(property "LCSC" "C77131"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "b7c7239a-9582-4dd0-aafc-ff122835c8d5")
+			(uuid "b06e4cd5-f584-42c8-aeb7-f4c406477d9e")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash"
-			(at 0 0 90)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "5c242075-a7d5-43bb-b0f2-aaa55d202eeb")
+			(uuid "cff80b71-4133-433e-ae0f-8d2306c13c16")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property ki_fp_filters "Connector*:*_1x??_*")
+		(property ki_fp_filters "R_*")
 		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/18c15035-c6f3-419e-bc2a-c83df9c4b16a")
 		(sheetname "/Cells and Gauge/")
 		(sheetfile "gauge.kicad_sch")
@@ -10944,88 +10951,82 @@
 				(pins "1" "2")
 			)
 		)
-		(attr exclude_from_pos_files)
+		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.153641 0.38)
+			(end 0.153641 0.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "B.SilkS")
+			(uuid "8469d1e7-e363-4acf-ad7b-55f71323eaca")
+		)
+		(fp_line
+			(start -0.153641 -0.38)
+			(end 0.153641 -0.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "B.SilkS")
+			(uuid "f67f312e-6fd2-492e-9e96-58dd6c607262")
+		)
 		(fp_rect
-			(start 2.5 -1.35)
-			(end 5.5 1.35)
+			(start -0.93 0.47)
+			(end 0.93 -0.47)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
-			(layer "F.CrtYd")
-			(uuid "d4bfda56-03b3-4df6-b08a-34538e093575")
+			(layer "B.CrtYd")
+			(uuid "f5064261-126f-4719-883c-b2d7d67fb607")
 		)
 		(fp_rect
-			(start -1.5 -1.35)
-			(end 1.5 1.35)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "93b81ba4-ea6f-416a-88d3-fd54cf666e64")
-		)
-		(fp_circle
-			(center 4 0)
-			(end 4.75 0)
+			(start -0.525 0.27)
+			(end 0.525 -0.27)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(fill no)
-			(layer "F.Fab")
-			(uuid "3b68cd0a-b48d-4f32-892b-dea74c391461")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0.75 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "dc681504-2e9f-4b60-bce0-e0e0da5af607")
+			(layer "B.Fab")
+			(uuid "97ef13ea-0fda-439c-9db3-aab7abec8c51")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2 0 180)
-			(layer "F.Fab")
-			(uuid "f6a6b321-a52e-4238-9f2a-082021861fcc")
+			(at 0 0 0)
+			(layer "B.Fab")
+			(uuid "ef60ef5c-8874-41d5-8aa9-921444736080")
 			(effects
 				(font
-					(size 0.68 0.68)
-					(thickness 0.1)
+					(size 0.26 0.26)
+					(thickness 0.04)
 				)
+				(justify mirror)
 			)
 		)
-		(pad "1" thru_hole roundrect
-			(at 0 0 90)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.147059)
+		(pad "1" smd roundrect
+			(at -0.51 0 90)
+			(size 0.54 0.64)
+			(layers "B.Cu" "B.Mask" "B.Paste")
+			(roundrect_rratio 0.25)
 			(net "/Cells and Gauge/TS4")
-			(pinfunction "Pin_1_1")
 			(pintype "passive")
-			(uuid "64bc7bcc-468f-4f46-af22-e940d4055ee2")
+			(uuid "5214ac10-a727-4d6c-ab10-9217220ff882")
 		)
-		(pad "2" thru_hole circle
-			(at 4 0 90)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
+		(pad "2" smd roundrect
+			(at 0.51 0 90)
+			(size 0.54 0.64)
+			(layers "B.Cu" "B.Mask" "B.Paste")
+			(roundrect_rratio 0.25)
 			(net "/Cells and Gauge/CELL_1N")
-			(pinfunction "Pin_2_2")
 			(pintype "passive")
-			(uuid "bf28c52c-3a0e-4f36-859b-d1ca5b0168f1")
+			(uuid "9f6667ca-fa36-4130-addf-3bb746530be4")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -29606,97 +29607,104 @@
 			)
 		)
 	)
-	(footprint "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
+	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(locked yes)
-		(layer "F.Cu")
-		(uuid "7138147c-193d-471f-ae10-8c8c5e171f8a")
-		(at 85.3 77.4755 90)
-		(descr "Soldered wire connection, for 2 times 0.15 mm² wires, basic insulation, conductor diameter 0.5mm, outer diameter 1.5mm, size source Multi-Contact FLEXI-E 0.15 (https://www.staubli.com/content/dam/ecs/catalogs-brochures/TM/CAB-Main-11014119-en.pdf#page=9), bend radius 3 times outer diameter")
-		(tags "connector wire 0.15sqmm")
-		(property "Reference" "J102"
-			(at 2 -2.05 90)
-			(layer "F.SilkS")
-			(uuid "bad110d7-f055-4150-bafe-edde50962816")
+		(layer "B.Cu")
+		(uuid "8ce8e81b-d049-4582-823f-6cfac5d3d71c")
+		(at 84.5 112.4755 90)
+		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "TH101"
+			(at 0 1.17 0)
+			(layer "B.SilkS")
+			(uuid "976c1201-53fc-4cc3-8247-5afb369470f6")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Value" "Cell 1 NTC wires"
-			(at 2 2.05 90)
-			(layer "F.Fab")
-			(uuid "8ea95b33-b168-4791-89c1-2c09c15956e4")
+		(property "Value" "10k B3435"
+			(at 0 -1.17 0)
+			(layer "B.Fab")
+			(uuid "7179abe1-dea3-4b67-998b-84e8a54c1192")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 90)
-			(layer "F.Fab")
+			(at 0 0 0)
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "b866e729-7fc9-4676-875d-15a78e08770c")
+			(uuid "6bd8f288-6f3a-4e07-8ef4-3b5fe2c6c9d6")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 0 0 90)
-			(layer "F.Fab")
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 0 0 0)
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "9f6d3ff6-4ccd-4c6e-8e28-9cdabe700581")
+			(uuid "5d7c69b1-fe24-46ce-99a2-477acb643fc5")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 0 0 90)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C1 (BT101), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C1 (BT101) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS1 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "2e22bee9-6205-4c27-a98f-d692aa37b1c0")
+			(uuid "7020f4ab-0742-4d02-915a-d7228883e9c8")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 0 0 90)
+		(property "LCSC" "C77131"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "471002fd-a0cf-43ff-b2f0-5fa4b3d08cc4")
+			(uuid "4ef6f96f-9bda-4730-b470-e2e9fe642d44")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
-			(at 0 0 90)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 0 0 0)
 			(unlocked yes)
-			(layer "F.Fab")
+			(layer "B.Fab")
 			(hide yes)
-			(uuid "c7c62c30-fa45-4345-bf09-d19d50aa8323")
+			(uuid "e2aefd9b-2010-4576-811d-bf184ada750c")
 			(effects
 				(font
 					(size 1 1)
 					(thickness 0.15)
 				)
+				(justify mirror)
 			)
 		)
-		(property ki_fp_filters "Connector*:*_1x??_*")
+		(property ki_fp_filters "R_*")
 		(path "/5f8e2264-136e-4c01-877f-88ca3aa05650/b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
 		(sheetname "/Cells and Gauge/")
 		(sheetfile "gauge.kicad_sch")
@@ -29706,88 +29714,82 @@
 				(pins "1" "2")
 			)
 		)
-		(attr exclude_from_pos_files)
+		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.153641 0.38)
+			(end 0.153641 0.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "B.SilkS")
+			(uuid "499f5664-928c-49e5-9c2f-b5b3c5dab457")
+		)
+		(fp_line
+			(start -0.153641 -0.38)
+			(end 0.153641 -0.38)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "B.SilkS")
+			(uuid "df0121ae-9b67-436c-bbd6-771e80e94796")
+		)
 		(fp_rect
-			(start 2.5 -1.35)
-			(end 5.5 1.35)
+			(start -0.93 0.47)
+			(end 0.93 -0.47)
 			(stroke
 				(width 0.05)
 				(type solid)
 			)
 			(fill no)
-			(layer "F.CrtYd")
-			(uuid "9e64f93e-37b1-4982-9f79-ef30139f7f2b")
+			(layer "B.CrtYd")
+			(uuid "dbe9e90a-a3bc-4777-8d99-bf3a0d594a3d")
 		)
 		(fp_rect
-			(start -1.5 -1.35)
-			(end 1.5 1.35)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "64f00e15-9ee9-4422-acbe-f90d84bef5f1")
-		)
-		(fp_circle
-			(center 4 0)
-			(end 4.75 0)
+			(start -0.525 0.27)
+			(end 0.525 -0.27)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(fill no)
-			(layer "F.Fab")
-			(uuid "8a474ac6-ed68-46bf-8e27-b36ba0f8df47")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0.75 0)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "cd68dfed-038c-46e7-b0b9-b75218faf915")
+			(layer "B.Fab")
+			(uuid "03309181-238a-4d28-b974-93133d14cd5e")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2 0 180)
-			(layer "F.Fab")
-			(uuid "cd32463d-04ec-47ae-ad1a-080fecd848b5")
+			(at 0 0 0)
+			(layer "B.Fab")
+			(uuid "d0a8ce24-03cd-4ba7-8410-11499ae9e5a4")
 			(effects
 				(font
-					(size 0.68 0.68)
-					(thickness 0.1)
+					(size 0.26 0.26)
+					(thickness 0.04)
 				)
+				(justify mirror)
 			)
 		)
-		(pad "1" thru_hole roundrect
-			(at 0 0 90)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.147059)
+		(pad "1" smd roundrect
+			(at -0.51 0 90)
+			(size 0.54 0.64)
+			(layers "B.Cu" "B.Mask" "B.Paste")
+			(roundrect_rratio 0.25)
 			(net "/Cells and Gauge/TS1")
-			(pinfunction "Pin_1_1")
 			(pintype "passive")
-			(uuid "e7cac59f-dfb6-4186-8f56-f61128932a52")
+			(uuid "58f06953-2347-4cba-9c5c-a9caeec7eeaa")
 		)
-		(pad "2" thru_hole circle
-			(at 4 0 90)
-			(size 1.7 1.7)
-			(drill 0.7)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
+		(pad "2" smd roundrect
+			(at 0.51 0 90)
+			(size 0.54 0.64)
+			(layers "B.Cu" "B.Mask" "B.Paste")
+			(roundrect_rratio 0.25)
 			(net "/Cells and Gauge/CELL_1N")
-			(pinfunction "Pin_2_2")
 			(pintype "passive")
-			(uuid "6356db86-c243-4b5d-8bd5-2f360d459687")
+			(uuid "49b427d3-fd42-4e91-b381-2b43de6db1ee")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/3dmodels/SolderWire-0.15sqmm_1x02_P4mm_standin.step"
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -64381,37 +64383,6 @@
 	)
 	(zone
 		(layer "B.Cu")
-		(uuid "0818556e-76ad-4f85-837e-df4f1cfa2e46")
-		(name "KO_B_ntc_C4")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 111.5 72.1255) (xy 116.05 72.1255) (xy 116.05 96.4755) (xy 111.5 96.4755)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
 		(uuid "1485f342-5430-454b-8243-26c684c9c0ff")
 		(name "KO_B_gap_filler_R")
 		(hatch edge 0.5)
@@ -64437,7 +64408,7 @@
 		)
 		(polygon
 			(pts
-				(xy 107 88.4755) (xy 116 88.4755) (xy 116 114.475) (xy 107 114.475)
+				(xy 107 88.4755) (xy 116 88.4755) (xy 116 111.3755) (xy 114.9 111.3755) (xy 114.9 113.5755) (xy 116 113.5755) (xy 116 114.475) (xy 107 114.475)
 			)
 		)
 	)
@@ -64654,7 +64625,7 @@
 		)
 		(polygon
 			(pts
-				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475)
+				(xy 84 88.4755) (xy 93 88.4755) (xy 93 114.475) (xy 84 114.475) (xy 84 113.5755) (xy 85.1 113.5755) (xy 85.1 111.3755) (xy 84 111.3755)
 			)
 		)
 	)
@@ -64686,37 +64657,6 @@
 		(polygon
 			(pts
 				(xy 111.625 134.326) (xy 114.425 134.326) (xy 114.425 137.175) (xy 111.625 137.175)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "9996c780-aa3e-40cc-895a-c3204810b536")
-		(name "KO_B_ntc_C1")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 83.95 72.1255) (xy 88.5 72.1255) (xy 88.5 96.4755) (xy 83.95 96.4755)
 			)
 		)
 	)
