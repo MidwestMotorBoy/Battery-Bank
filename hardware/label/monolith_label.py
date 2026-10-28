@@ -10,7 +10,7 @@ Run: python monolith_label.py      (numpy, fonttools, manifold3d, cairosvg, pypd
    out/monolith_label_print.svg    the artwork alone
    out/monolith_label_trim.pdf     the artwork cut to size (R2 corners), no bleed or die line, for shops that make their
                                    own cut path from the artwork's outline (CarStickers)
-   out/monolith_label_cut.svg      die line: outline (R2 corners) + vent hole, on the same page as the print file
+   out/monolith_label_cut.svg      die line: the outline (R2 corners), on the same page as the print file
    out/monolith_label_proof.png    art + die line + face folds, for checking
 Run: python monolith_label.py --bl    the Borderlands-style version (brush inking, tapered hatching, cel tones, grit,
                                    the angular mother bear and cub from bear_options.py), written as
@@ -34,8 +34,9 @@ BL = '--bl' in sys.argv              # Borderlands look: hand-inked brush outlin
 NAME = 'monolith_label_bl' if BL else 'monolith_label'
 V = {}                               # look variations (label_variants.py): ink, grit, stars, moon, halftone, scuff
 OW = 1.15 if BL else 1.0             # outer outline weight (the brush swells to about 1.45x at its fattest)
-TUCK = K.LABEL_TUCK                  # edge under each bumper; label heights and the vent hole come from monolith_cup
-VENT_HOLE_D = 2 * K.VENT_HOLE_R
+TUCK = K.LABEL_TUCK                  # edge under each bumper; label heights come from monolith_cup
+SUN_Y, SUN_Z = 0.0, 14.0             # sun on the board face (cup y, z). It was drawn round the vent hole, and stays where it
+SUN_CORE_D = 12.5                    # was with the same disc now that the vent is gone (2026-10-28): no hole in the label
 
 def wrap_layout():
     # the vinyl's mid-thickness, not the cup surface: wrapping the film round the corners and arcs adds pi * LABEL_T
@@ -50,15 +51,15 @@ def wrap_layout():
         if seg[j] > 2: flats.append((((s[j] - seam) % per), ((s[j] - seam) % per) + seg[j]))
     flats.sort()
     z_bot, z_top = K.LABEL_Z                                      # label edges on the cup
-    # vent: board-face centre (y = VENT_Y) at VENT_Z
+    # sun: board-face centre (y = SUN_Y) at SUN_Z
     jb = [j for j in range(len(P)) if seg[j] > 2 and abs(P[j, 0] - P[(j + 1) % len(P), 0]) < 1e-4 and P[j, 0] > 0][0]
-    vx = (s[jb] + (K.VENT_Y - P[jb, 1]) - seam) % per
+    vx = (s[jb] + (SUN_Y - P[jb, 1]) - seam) % per
     return dict(per=per, seam=seam, flats=flats, z_bot=z_bot, z_top=z_top, H=z_top - z_bot, W=per + LAP,
-                vent=(vx, z_top - K.VENT_Z), poly=P, s=s[:-1])
+                sun=(vx, z_top - SUN_Z), poly=P, s=s[:-1])
 
 L = wrap_layout()
 PER, W, H = L['per'], L['W'], L['H']
-VX, VY = L['vent']
+VX, VY = L['sun']
 FLATS = [f for f in L['flats'] if f[1] - f[0] > 30 and f[1] < PER]   # side A, board face, side B (the back flat wraps)
 SIDE_A, BOARD, SIDE_B = FLATS
 VIS0, VIS1 = TUCK, H - TUCK                                       # visible band between the bumpers (label y)
@@ -646,11 +647,11 @@ def scene():
             if BL:
                 poly([(x, y), (x + 1.4, y + 1.1), (x + 2.8, y + 2.4), (x + 1.6, y + 2.0), (x + 0.9, y + 2.9), (x + 0.5, y + 1.4)], C['snow_sh'], 0)
                 poly(cap, 'none', 0.3)
-    # sun over the board face: the vent hole is its core (or a moon)
+    # sun over the board face (or a moon)
     for i in range(0 if V.get('moon') else 16):
         a0 = 2 * math.pi * i / 16; a1 = a0 + 2 * math.pi / 32
         if math.sin((a0 + a1) / 2) > 0.2: continue                 # under the hills anyway
-        r0, r1 = VENT_HOLE_D / 2 + 2.6, VENT_HOLE_D / 2 + (7.0 if i % 2 == 0 else 4.5)
+        r0, r1 = SUN_CORE_D / 2 + 2.6, SUN_CORE_D / 2 + (7.0 if i % 2 == 0 else 4.5)
         poly([(VX + r0 * math.cos(a0), VY + r0 * math.sin(a0)), (VX + r1 * math.cos((a0 + a1) / 2), VY + r1 * math.sin((a0 + a1) / 2)),
               (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], C['sun_ray'], 0.3)
         if BL:                                                    # shadow half of each ray
@@ -659,14 +660,14 @@ def scene():
                   (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], C['ray_sh'], 0)
             poly([(VX + r0 * math.cos(a0), VY + r0 * math.sin(a0)), (VX + r1 * math.cos(am), VY + r1 * math.sin(am)),
                   (VX + r0 * math.cos(a1), VY + r0 * math.sin(a1))], 'none', 0.3)
-    rs = VENT_HOLE_D / 2 + 2.6
+    rs = SUN_CORE_D / 2 + 2.6
     add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{rs:.3f}" fill="{C["sun"]}" stroke="{INK if not BL else "none"}" stroke-width="{0.45 * OW:.2f}"/>')
     if BL:                                                        # shadowed lower right of the disc
-        r = VENT_HOLE_D / 2 + 2.6 - 0.15 * OW; a0, a1 = math.radians(-30), math.radians(120)
+        r = SUN_CORE_D / 2 + 2.6 - 0.15 * OW; a0, a1 = math.radians(-30), math.radians(120)
         add(f'<path d="M{VX + r * math.cos(a0):.3f} {VY + r * math.sin(a0):.3f}A{r:.3f} {r:.3f} 0 0 1 {VX + r * math.cos(a1):.3f} {VY + r * math.sin(a1):.3f}'
             f'A{r * 1.35:.3f} {r * 1.35:.3f} 0 0 0 {VX + r * math.cos(a0):.3f} {VY + r * math.sin(a0):.3f}Z" fill="{C["sun_sh"]}"/>')
         ink([(VX + rs * math.cos(a), VY + rs * math.sin(a)) for a in np.linspace(0, 2 * math.pi, 120, endpoint=False)], 0.45 * OW, closed=True)
-    add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2 + 1.2:.3f}" fill="none" stroke="{C["sun_ray"]}" stroke-width="0.4"/>')
+    add(f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{SUN_CORE_D / 2 + 1.2:.3f}" fill="none" stroke="{C["sun_ray"]}" stroke-width="0.4"/>')
     if V.get('moon'):                                            # craters on the rim
         for a, rr in ((-150, 0.55), (-115, 0.35), (-60, 0.45), (-25, 0.3)):
             add(f'<circle cx="{VX + (rs - 1.3) * math.cos(math.radians(a)):.3f}" cy="{VY + (rs - 1.3) * math.sin(math.radians(a)):.3f}" r="{rr}" fill="{C["sun_sh"]}"/>')
@@ -791,8 +792,7 @@ def svg(body, w, h, x0=0.0, y0=0.0):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:.3f}mm" height="{h:.3f}mm" viewBox="{x0:.3f} {y0:.3f} {w:.3f} {h:.3f}">\n'
             + '\n'.join(body) + '\n</svg>\n')
 def cut_lines(stroke='#ec008c', sw=0.15):
-    return [f'<rect x="0" y="0" width="{W:.3f}" height="{H:.3f}" rx="2" ry="2" fill="none" stroke="{stroke}" stroke-width="{sw}"/>',
-            f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="none" stroke="{stroke}" stroke-width="{sw}"/>']
+    return [f'<rect x="0" y="0" width="{W:.3f}" height="{H:.3f}" rx="2" ry="2" fill="none" stroke="{stroke}" stroke-width="{sw}"/>']
 def folds():
     xs = sorted({round(v % PER, 3) for f in L['flats'] for v in f} | {PER})
     return [f'<path d="M{x:.3f} 0V{H:.3f}" stroke="#00a0e0" stroke-width="0.12" stroke-dasharray="1 1"/>' for x in xs] + \
@@ -805,13 +805,11 @@ def build():
     pw, ph = W + 2 * BLEED, H + 2 * BLEED
     with open(os.path.join(OUT, NAME + '_print.svg'), 'w') as f: f.write(svg(art, pw, ph, -BLEED, -BLEED))
     with open(os.path.join(OUT, NAME + '_cut.svg'), 'w') as f: f.write(svg(cut_lines(), pw, ph, -BLEED, -BLEED))
-    hole = [f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="#ffffff"/>']
-    with open(os.path.join(OUT, NAME + '_proof.svg'), 'w') as f: f.write(svg(art + hole + cut_lines(sw=0.25) + folds(), pw, ph, -BLEED, -BLEED))
-    # the cut-to-size art, hole knocked out, for the cup preview
+    with open(os.path.join(OUT, NAME + '_proof.svg'), 'w') as f: f.write(svg(art + cut_lines(sw=0.25) + folds(), pw, ph, -BLEED, -BLEED))
+    # the cut-to-size art, for the cup preview
     clip = (f'<clipPath id="cut"><rect x="0" y="0" width="{W:.3f}" height="{H:.3f}" rx="2"/></clipPath>')
     with open(os.path.join(OUT, NAME + '_cut_art.svg'), 'w') as f:
-        f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'] +
-                    [f'<circle cx="{VX:.3f}" cy="{VY:.3f}" r="{VENT_HOLE_D / 2:.3f}" fill="#00ff00"/>'], W, H))
+        f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'], W, H))
     with open(os.path.join(OUT, NAME + '_trim.svg'), 'w') as f:      # cut to size, transparent outside the R2 outline
         f.write(svg([clip, '<g clip-path="url(#cut)">'] + art + ['</g>'], W, H))
     return pw, ph
@@ -825,11 +823,11 @@ def rasterize(pw, ph, dpmm=24):
     base = os.path.join(OUT, '_print_base.pdf')
     cairosvg.svg2pdf(url=os.path.join(OUT, NAME + '_print.svg'), write_to=base)
     add_cut_contour(base, os.path.join(OUT, NAME + '_print.pdf'), pw, ph)
-    add_cut_contour(base, os.path.join(OUT, NAME + '_stickerapp.pdf'), pw, ph, spot='die cut', hole=False, width=1.0, layer='die cut')
+    add_cut_contour(base, os.path.join(OUT, NAME + '_stickerapp.pdf'), pw, ph, spot='die cut', width=1.0, layer='die cut')
     os.remove(base)
     cairosvg.svg2pdf(url=os.path.join(OUT, NAME + '_trim.svg'), write_to=os.path.join(OUT, NAME + '_trim.pdf'))
 
-def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width=0.5, layer=None):
+def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', width=0.5, layer=None):
     """copy the print PDF with the die line added as a stroke in a spot colour (100 % magenta alternate, overprint, width
     in pt), optionally on its own layer, and TrimBox = cut size, BleedBox = page"""
     import pypdf
@@ -848,8 +846,6 @@ def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width
         return f'{X(c1[0]):.3f} {Y(c1[1]):.3f} {X(c2[0]):.3f} {Y(c2[1]):.3f} {X(x3):.3f} {Y(y3):.3f} c'
     outline = (f'{X(r):.3f} {Y(0):.3f} m {X(W - r):.3f} {Y(0):.3f} l {arc(W - r, r, r, -90)} {X(W):.3f} {Y(H - r):.3f} l {arc(W - r, H - r, r, 0)} '
                f'{X(r):.3f} {Y(H):.3f} l {arc(r, H - r, r, 90)} {X(0):.3f} {Y(r):.3f} l {arc(r, r, r, 180)} h')
-    vr = VENT_HOLE_D / 2
-    circle = f'{X(VX + vr):.3f} {Y(VY):.3f} m ' + ' '.join(arc(VX, VY, vr, a) for a in (0, 90, 180, 270)) + ' h'
     fn = DictionaryObject({NameObject('/FunctionType'): NumberObject(2), NameObject('/Domain'): ArrayObject([FloatObject(0), FloatObject(1)]),
                            NameObject('/C0'): ArrayObject([FloatObject(0)] * 4), NameObject('/N'): FloatObject(1),
                            NameObject('/C1'): ArrayObject([FloatObject(0), FloatObject(1), FloatObject(0), FloatObject(0)])})
@@ -859,7 +855,7 @@ def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width
     res.setdefault(NameObject('/ExtGState'), DictionaryObject())[NameObject('/GSCut')] = DictionaryObject(
         {NameObject('/OP'): BooleanObject(True), NameObject('/op'): BooleanObject(True), NameObject('/OPM'): NumberObject(1)})
     pre, post = DecodedStreamObject(), DecodedStreamObject()
-    cut = f'q /GSCut gs /CSCut CS 1 SCN {width:g} w\n{outline} S\n' + (f'{circle} S\n' if hole else '') + 'Q\n'
+    cut = f'q /GSCut gs /CSCut CS 1 SCN {width:g} w\n{outline} S\nQ\n'
     if layer:                                                       # optional content group = a layer in Illustrator / Acrobat
         ocg = wr._add_object(DictionaryObject({NameObject('/Type'): NameObject('/OCG'), NameObject('/Name'): TextStringObject(layer)}))
         res.setdefault(NameObject('/Properties'), DictionaryObject())[NameObject('/OCcut')] = ocg
@@ -873,5 +869,5 @@ def add_cut_contour(src, dst, pw, ph, r=2.0, spot='CutContour', hole=True, width
     with open(dst, 'wb') as f: wr.write(f)
 
 if __name__ == '__main__':
-    print(f'wrap {W:.2f} x {H:.2f} mm (perimeter {PER:.2f} + {LAP} lap), vent at ({VX:.2f}, {VY:.2f}), flats {[(round(a, 2), round(b, 2)) for a, b in L["flats"]]}')
+    print(f'wrap {W:.2f} x {H:.2f} mm (perimeter {PER:.2f} + {LAP} lap), sun at ({VX:.2f}, {VY:.2f}), flats {[(round(a, 2), round(b, 2)) for a, b in L["flats"]]}')
     pw, ph = build(); rasterize(pw, ph)

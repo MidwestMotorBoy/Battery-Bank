@@ -240,13 +240,14 @@ def step5(P):
 
 def step6(P):
     built = L(P, 'cup', 'cap', 'screw')
-    st = Step(6, '6   Leak test, vent, bumpers',
-              'Pressure-test through the bare vent hole, then stick the vent on and press the bumpers on.', 2)
-    st.panel('6.1 / 6.2  Leak test, then the vent', built, L(P, 'vent', o=(14, 0, 0)), (1.0, -0.7, 0.3),
-             arrows=[((K.X_OUT + 24, 0, K.VENT_Z), (K.X_OUT + 16, 0, K.VENT_Z))],
-             notes=[((K.X_OUT, 0, K.VENT_Z + 3), 'Vent hole = leak-test port:\n<= +10 kPa, hold 5 min, then dunk'),
-                    ((K.X_OUT + 14, 0, K.VENT_Z - 4), 'ePTFE vent patch over it')])
-    st.panel('6.3  Bumpers on', built + L(P, 'vent'),
+    st = Step(6, '6   Leak test, bumpers',
+              'No vent: the pack is sealed for good. Soap the joints, pull a vacuum round the pack in a jar, then press the bumpers on.', 2)
+    st.panel('6.1  Vacuum-jar bubble test', L(P, 'cup'), L(P, 'cap', 'screw'), (1.0, -0.7, 0.3),
+             notes=[((K.X_OUT, -K.YI, K.Z_MOUTH + 3), 'Soap film on the collar edge\nand the two screw heads'),
+                    ((S.sb_port_x, S.SB_PORT_Y, K.Z_TOP1), 'Soap film on both USB-C ports'),
+                    ((K.X_OUT, 0, 40), 'Pull -20 kPa, watch 5 min:\ngrowing bubbles = a leak')],
+             side_notes=['Fit print first, to -50 kPa (a warm pack at 4300 m):', 'side flats measured before and after.'])
+    st.panel('6.2  Bumpers on', built,
              L(P, 'bumpt_band', 'bumpt_slab', o=(0, 0, 22)) + L(P, 'bumpb_band', 'bumpb_slab', o=(0, 0, -22)), (1.0, -1.1, 0.35),
              arrows=[((0, -30, 115), (0, -30, 100)), ((0, -30, -40), (0, -30, -25))],
              notes=[((S.sb_port_x, S.SB_PORT_Y, 88.6 + 22), 'Top bumper: port well\nover the USB-C'),

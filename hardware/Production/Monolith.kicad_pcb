@@ -64267,43 +64267,6 @@
 		(uuid "cd9726b5-d9ee-4bd0-b58d-0c55e9c1123f")
 	)
 	(zone
-		(layer "F.Cu")
-		(uuid "5166b7f0-2df5-4543-b9ed-26021b1a0d7d")
-		(name "KO_F_cup_vent")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints not_allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 103.5 127.475) (xy 103.433 128.158) (xy 103.234 128.815) (xy 102.91 129.42) (xy 102.475 129.95)
-				(xy 101.945 130.386) (xy 101.339 130.709) (xy 100.683 130.908) (xy 100 130.976) (xy 99.3172 130.908)
-				(xy 98.6606 130.709) (xy 98.0555 130.386) (xy 97.5251 129.95) (xy 97.0899 129.42) (xy 96.7664 128.815)
-				(xy 96.5673 128.158) (xy 96.5 127.475) (xy 96.5673 126.793) (xy 96.7664 126.136) (xy 97.0899 125.531)
-				(xy 97.5251 125.001) (xy 98.0555 124.565) (xy 98.6606 124.242) (xy 99.3172 124.043) (xy 100 123.975)
-				(xy 100.683 124.043) (xy 101.339 124.242) (xy 101.945 124.565) (xy 102.475 125.001) (xy 102.91 125.531)
-				(xy 103.234 126.136) (xy 103.433 126.793)
-			)
-		)
-	)
-	(zone
 		(layers "F.Cu" "B.Cu")
 		(uuid "6a50680a-b645-423b-9a5c-c11a130626eb")
 		(name "KO_top_stop_L")

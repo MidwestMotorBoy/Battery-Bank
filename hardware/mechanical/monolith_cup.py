@@ -57,7 +57,6 @@ OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, 
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
 PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (15 % gyroid): ~15-80 N of preload on the core
 PAD_RELIEF = 1.5                   # pad pocketed this deep under the C1 / C4 windows and the wire notches (PACK pads, wires)
-VENT_Y, VENT_Z = S.CUP_VENT          # ePTFE vent on the board-side face (its bare hole is the leak-test port)
 WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = S.CUP_RAIL_GAP          # board rails stop here so the filler reaches the cell tangents
@@ -93,7 +92,6 @@ LEAD_IN = (0.6, 30.0)               # chamfer where a bumper meets the label edg
 RELIEF_UP = 1.5                     # top band relief runs this far past the label's top edge (label placed high)
 LABEL_Z = (0.0, 0.0)                # set below, once the cup heights are known
 LIP_WALL, LIP_FLOOR = 1.0, 0.8      # bottom-bumper lip over the label: wall, and the ledge joining it to the collar band
-VENT_HOLE_R = 6.25                  # label hole for the 11 mm vent
 PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # raised on the top bumper beside each port (USB1 at +y, as in the
                                     # thermal model's port labels)
 DIGIT_H, DIGIT_RAISE, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
@@ -145,7 +143,6 @@ def cup():
         bw, bh = S.USB_RING_W - 2*USB_SQ, S.USB_RING_H - 2*USB_SQ
         m = m - MF.extrude(stad(PORT_X, py, bh, bw), 4).translate((0, 0, Z_TOP0 - 1))
         m = m - pz(stad(PORT_X, py, bh + 2*USB_LEAD, bw + 2*USB_LEAD), Z_TOP0 - 1, Z_TOP0 + USB_LEAD)
-    m = m - cylx(VENT_Y, VENT_Z, 1.5, X_IN - 0.5, X_OUT + 0.5)
     return m - cyly(SCREW_X, SCREW_Z, SCREW_HOLE_R, -(YI + WALL + 0.5), YI + WALL + 0.5)
 def crush_ribs():
     """crush ribs on the collar's inside, three per flat, CRUSH into the cup's outside"""
@@ -303,13 +300,12 @@ def lead_in(z, sense):
     wide, narrow = cs_out.offset(LABEL_RELIEF + d, ROUND), cs_out.offset(LABEL_RELIEF, ROUND)
     return M3.Manifold.batch_hull([pz(wide, z - sense * 0.01 - 0.005, z - sense * 0.01 + 0.005), pz(narrow, z + sense * h - 0.005, z + sense * h + 0.005)])
 def label():
-    """the wrap label as fitted: a 0.15 mm shell on the cup between LABEL_Z, with the vent hole"""
-    m = pz(CS.batch_boolean([cs_out.offset(LABEL_T, ROUND), cs_out], M3.OpType.Subtract), *LABEL_Z)
-    return m - cylx(VENT_Y, VENT_Z, VENT_HOLE_R, X_OUT - 1, X_OUT + 1)
+    """the wrap label as fitted: a 0.15 mm shell on the cup between LABEL_Z"""
+    return pz(CS.batch_boolean([cs_out.offset(LABEL_T, ROUND), cs_out], M3.OpType.Subtract), *LABEL_Z)
 
 # ---------------- assembly and masses ----------------
 C = dict(RR.C, cup=(214, 214, 208), cap=(170, 186, 200), carrier=(196, 190, 150), filler=(232, 150, 200), oring=(200, 60, 60),
-         screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80), vent=(240, 240, 240),
+         screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80),
          rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50), label=(96, 160, 196))
 def assembly():
     A = [('cup', tris(cup()), C['cup'])]
@@ -321,7 +317,7 @@ def assembly():
           ('insul', tris(insul_rings()), C['insul']), ('foam', tris(foam()), C['foam']), ('sleeve', tris(sleeves()), C['sleeve']),
           ('board', P.side_board_dummy(), C['board']), ('ble', P.ble_module(), C['ble']),
           ('pad', tris(pad()), C['pad']), ('oring', tris(oring()), C['oring']), ('cap', tris(cap()), C['cap']),
-          ('screw', tris(screws()), C['screw']), ('vent', tris(cylx(VENT_Y, VENT_Z, 5.5, X_OUT, X_OUT + 0.3)), C['vent']),
+          ('screw', tris(screws()), C['screw']),
           ('label', tris(label()), C['label'])]
     for top in (False, True):
         b, s = bumper(top); k = 'bumpt' if top else 'bumpb'
@@ -339,11 +335,11 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', 'MJF PA12, 1.2 / 1.8', 'cup'),
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, collar, skirt, posts', 'MJF PA12', 'cap'),
-         (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'), (16, 'Pressure vent (after the leak test)', 'ePTFE', 'vent'),
-         (17, 'Bottom bumper, collar + label lip', 'TPU 95A', 'bumpb'), (18, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
-         (19, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label')]
+         (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
+         (16, 'Bottom bumper, collar + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
+         (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label')]
 NUM = {k: n for n, _, _, k in PARTS}
-RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9, vent=1.0,
+RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9,
            insul=1.1, foam=0.3, sleeve=1.2, label=1.35)
 def masses(A):
     m = {}
@@ -360,6 +356,20 @@ def wall_deflection(t, p_kpa, a=37.5, b=80.0):
     """centre deflection (mm) of a flat a x b wall panel of thickness t under p_kpa, simply supported (Roark, b/a ~2:
     alpha 0.1106), E 1700 MPa for MJF PA12: the upper bound the review used"""
     return 0.1106 * p_kpa * 1e-3 * a**4 / (1700 * t**3)
+def sealed_pressure(p_kpa):
+    """no vent (removed 2026-10-28): the cup keeps the air it was closed with, so at altitude it pushes out by p_kpa
+    (~25 kPa in an airliner, ~40 kPa at 4300 m, ~50 kPa there with the pack warm). Flat walls simply supported (Roark,
+    b/a ~2: beta 0.61, linear, so the deflection is an upper bound), and the cap's push carried by the two M2 screws
+    shearing the ligament under their holes in the cup wall (two planes). PA12 MJF: ~48 MPa tensile, creeps above ~15."""
+    q = p_kpa * 1e-3
+    a_side = X_IN - R_FRONT + PR                        # side flat: the back cell's tangent to the board-face corner
+    a_face = 2 * (YI - R_FRONT)
+    F = cs_in.area() * q
+    return {'side flat 1.2 mm: stress (MPa)': 0.61 * q * a_side**2 / WALL**2,
+            'side flat 1.2 mm: centre bulge, linear bound (mm)': wall_deflection(WALL, p_kpa, a_side),
+            'board face 2.0 mm: stress (MPa)': 0.61 * q * a_face**2 / WALL_BF**2,
+            'cap push (N)': F,
+            'screw ligament shear (MPa)': F / 2 / (2 * (SCREW_Z - SCREW_HOLE_R - Z_MOUTH) * WALL)}
 def checks():
     """assembly checks (positive = clearance), in the style of monolith_shell. The 2026-10-24 review fixes add: one-piece
     parts, screw edge distance and blind pilots, the axial stack (skirt gap, overtravel posts, pad preload), the USB-C
@@ -407,8 +417,6 @@ def checks():
                                                        LIP_TOP - LABEL_Z[0]) - LEAD_IN[0] / math.tan(math.radians(LEAD_IN[1])) - 1.5,
         'label: bumpers clear the two-layer seam (radial, >= 0.1)': LABEL_RELIEF - 2 * LABEL_T - 0.1 + 1e-9,
         'label: top band wall left at the lead-in (radial, >= 0.8)': BUMP_WALL - LABEL_RELIEF - LEAD_IN[0] - 0.8 + 1e-9,
-        'label: vent hole clears the 11 mm vent disc (radial, >= 0.5)': VENT_HOLE_R - 5.5 - 0.5 + 1e-9,
-        'label: vent hole between the bumpers (z)': min((VENT_Z - VENT_HOLE_R) - LIP_TOP, (Z_TOP1 - BUMP_BAND) - (VENT_Z + VENT_HOLE_R)),
         'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
         'board rails clear of the PACK pads (y, rail stub to the pad edge)': min(abs(y0) for n in ('PACK-', 'PACK+')
                                                        for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
@@ -455,12 +463,11 @@ def sheet_exploded(A, m):
     sh.render([(V, c) for _, V, c in A], R, o1, pxs); pj = RR.proj(R, o1, pxs)
     sh.callouts([(pj((PORT_X, 9, Z_TOP1 + BUMP_T_TOP)), 'Port well through the top bumper'),
                  (pj((X_OUT, -8, 50)), 'Board face: 2.0 mm PA12 under the\nwrap label (seam on the back)'),
-                 (pj((X_OUT, 0, VENT_Z)), 'ePTFE vent, fitted last:\nits hole is the leak-test port'),
                  (pj((X_OUT + 2, -YI, Z_MOUTH - CAP_T - BUMP_T_BOT + 1)), '4 mm bottom bumper over the cap and its collar\n(the pad inside adds the rest of the stroke)')],
                 475, 'r', 150)
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(cell=(0, 0, -75), carrier=(0, 0, -75), nickel=(0, 0, -75), tails=(0, 0, -75), board=(16, 0, -75), ble=(16, 0, -75),
-              filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152), vent=(14, 0, 25),
+              filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152),
               rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), sleeve=(22, 0, -75), label=(0, 0, 25))
     ex, gid = [], []
     for k, V, c in A:
@@ -469,7 +476,7 @@ def sheet_exploded(A, m):
     R2 = camera((0.5, -1.25, 0.32)); o2 = (1180, 690); px2 = 3.0
     pid = sh.render(ex, R2, o2, px2)
     balloons(sh, pid, gid, dict(cup=160, carrier=150, cell=200, nickel=330, tails=10, filler=20, board=0, pad=200, oring=0,
-                                cap=200, screw=340, vent=0, bumpb=200, bumpt=170, rails=30, insul=120, foam=230, sleeve=20))
+                                cap=200, screw=340, bumpb=200, bumpt=170, rails=30, insul=120, foam=230, sleeve=20))
     x0 = 2010; sh.panel_title(x0, 128, 'Parts', 650)
     rows = [[str(n), name, mat, f'{m.get(k, 0):.1f}' if m.get(k, 0) >= 0.05 else '<0.1'] for n, name, mat, k in PARTS]
     rows.append(['', 'Pack total', '', f'{total:.1f}'])
@@ -548,14 +555,14 @@ def sheet_compare(A, m):
     rows_w = [('Cells, board, nickel', ('cell', 'board', 'nickel', 'tails'), ('cell', 'board', 'nickel', 'tails')),
               ('Tray / cup (+ wedge)', ('shell', 'wedge'), ('cup',)), ('Cover / cap (+ standoffs)', ('cover', 'stand'), ('cap',)),
               ('Cell holder (+ pad)', ('cage', 'frame', 'holder'), ('carrier', 'pad')), ('Bumpers / crush caps', ('capb', 'capt'), ('bumpb', 'bumpt')),
-              ('Seal + fasteners', ('unmodelled',), ('oring', 'screw', 'vent')), ('Thermal interface', ('gappad',), ('filler',)),
+              ('Seal + fasteners', ('unmodelled',), ('oring', 'screw')), ('Thermal interface', ('gappad',), ('filler',)),
               ('Insulation sheet + hold-downs', ('insul', 'rings', 'hold'), ())]
     rows = [[n, f'{cat(mt, a):.1f}', f'{cat(m, b):.1f}', f'{cat(m, b) - cat(mt, a):+.1f}'] for n, a, b in rows_w]
     rows.append(['Pack total', f'{tt:.1f}', f'{tc:.1f}', f'{tc - tt:+.1f}'])
     sh.panel_title(40, 760, 'Weight by function (g)', 1240)
     sh.table(40, 810, ['', '>Tray', '>Cup', '>Cup - tray'], rows, [440, 200, 200, 220], 15, bold_last=True, rh=36)
     rows2 = [['Outside (mm)', f'{wt:.1f} x {dt:.1f} x {Lt:.1f}', f'{su[0]:.1f} x {su[1]:.1f} x {su[2]:.1f}'],
-             ['Seal joints', 'bead round the cover, 2 port rings, vent', '1 radial O-ring, 2 port rings, vent'],
+             ['Seal joints', 'bead round the cover, 2 port rings, vent', '1 radial O-ring, 2 port rings, no vent'],
              ['Core install', 'drop in, lift 2.5 mm, wedge', 'push in from the bottom, cap on'],
              ['Heat path for bursts', 'board -> 1 mm Al cover', 'board -> vias + filler -> cells, webs'],
              ['100 W from full (model)', '~5 min at 100 W', '~9 min (~10 with the P0 loss cuts)'],
@@ -572,6 +579,8 @@ if __name__ == '__main__':
     A = assembly(); m = masses(A)
     for k, v in checks().items(): print(f"  {'ok ' if v >= 0 else 'BAD'} {v:6.2f}  {k}")
     for n, name, mat, k in PARTS: print(f'{n:3d} {name:58s} {m.get(k, 0):7.1f} g')
+    for p_kpa in (25, 50):
+        print(f'  sealed, +{p_kpa} kPa inside: ' + ', '.join(f'{k} {v:.1f}' for k, v in sealed_pressure(p_kpa).items()))
     print('total', round(sum(m.values()), 1), 'g   size (x, y, z)', np.round(size(A), 1))
     if which in ('all', 'stl'):
         for k in ('cup', 'cap', 'carrier', 'rails', 'sleeve', 'foam', 'pad', 'oring', 'filler', 'bumpb_band', 'bumpb_slab', 'bumpt_band', 'bumpt_slab'):

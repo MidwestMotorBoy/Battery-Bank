@@ -437,9 +437,10 @@ Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wi
 
 JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `mechanical/monolith_shell.py` (the cup's values are the `CUP_*` constants there), and re-running it replaces the old `KO_*` areas. It edits the board file as text (KiCad 10's python can't build zone outlines), so run it with the board closed in KiCad.
 
+The cup has had no vent since 2026-10-28, so `KO_F_cup_vent` (a Ø7 mm F.Cu circle at 100, 127.5) is gone and parts may go there.
+
 | Rule area | Layer | Not allowed | Why |
 |---|---|---|---|
-| `KO_F_cup_vent` (Ø7 mm at 100, 127.5) | F.Cu | parts | under the ePTFE vent in the cup's board-side wall |
 | `KO_F_above_antenna` (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | nothing metal over the BLE module's antenna end. The module footprint already keeps copper off every layer there |
 | `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
 | `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |

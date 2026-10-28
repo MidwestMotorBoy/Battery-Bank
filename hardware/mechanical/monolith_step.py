@@ -158,9 +158,8 @@ def part_list():
          ('13_oring', 'oring', [('oring', mf(K.oring()))]),
          ('14_cap', 'cap', [('cap', mf(K.cap()))]),
          ('15_screws_M2', 'screw', [('screw', mf(K.screws()))]),
-         ('16_vent', 'vent', [('vent', mf(K.cylx(K.VENT_Y, K.VENT_Z, 5.5, K.X_OUT, K.X_OUT + 0.3)))]),
-         ('17_bumper_bottom', 'bumpb', bumper_parts(False)),
-         ('18_bumper_top', 'bumpt', bumper_parts(True))]
+         ('16_bumper_bottom', 'bumpb', bumper_parts(False)),
+         ('17_bumper_top', 'bumpt', bumper_parts(True))]
     return [(f, D.get(k, k), k, b) for f, k, b in L]
 COLOUR = dict(K.C, bumpb=K.C['bump'], bumpt=K.C['bump'], tails=K.C['tail'], pwire=K.C['wire'], swire=K.C['wire'])
 

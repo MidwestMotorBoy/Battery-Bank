@@ -388,7 +388,7 @@ CUP_PEG_SLOT = (2.6, 2.2)            # its NPTH slot in the board, (y, z) (2026-
                                      # the USB-C seal bores, not the pegs, centre the ports across their width; +-0.1 in z, so
                                      # a cable push can't slide the board and pull the seal rings down out of the top wall
 CUP_PEG_PROUD = 0.6                  # peg tip above F.Cu
-CUP_VENT = (0.0, 14.0)               # ePTFE vent in the cup's board-side wall, (y, z)
+# (no vent in the cup since 2026-10-28: Logan removed it; it was an ePTFE patch at y 0, z 14 on the board face)
 cup_fr_b0 = sb_z_tail_b - SB_PACK_T - 0.05 - 1.6     # carrier bottom frame, underside (monolith_cup.py FR_B0)
 def cup_rails():
     """the carrier rails pressing on B.Cu, as (y0, y1, z0, z1): two per side, split at CUP_RAIL_GAP"""
