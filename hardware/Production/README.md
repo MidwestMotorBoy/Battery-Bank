@@ -85,6 +85,26 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
 
+## Loss cuts 1–3 (adopted 2026-10-23, drawn 2026-10-28)
+
+The board-side loss cuts from `docs/spec.md` (*Decided: the four loss cuts*). Port 1 references; port 2 is 5xx.
+
+| Cut | Parts | Change |
+|---|---|---|
+| 1. Protection FETs | Q101, Q102 | AGM404AP1 (3.3 × 3.3) → Infineon BSC007N04LS6 (LCSC C534274), 0.70 mΩ, TDSON-8 FL 5 × 6. Footprint `Infineon_PG-TDSON-8_6.15x5.15mm_D5-8`: KiCad's PG-TDSON-8 with the drain leads numbered 5–8 to match the symbol (`tdson_footprint()`). Check it against the datasheet's footprint drawing before fab |
+| 2. 9 V gate drive | U406, C457, C458, R452–R455, D410, D411, Q409 | See below |
+| 3. Inductor + 500 kHz | L401, R412 | Coilcraft XGL7030-332MEC 3.3 µH on the APS0730 pads (consigned); R412 40.2k → 49.9k (598 → ~500 kHz). R412's LCSC code (0201WMF4992TEE) is still to look up |
+
+**9 V gate drive, per port** (`add_gate_drive()`, symbol in `tools/tps7a4101.py`), in the free area right of the BQ25756 controller block:
+
+- U406 TPS7A4101DGNR (LCSC C111739, HVSSOP-8 PowerPAD) runs from PACK_P. C457 1 µF 50 V in, C458 22 µF 25 V 0805 out (the LDO needs ≥ 4.7 µF; about 8 µF is left at 9.6 V). R452 40.2k / R453 5.6k set 1.173 × (1 + 40.2/5.6) ≈ 9.6 V.
+- D411 (LRB520S-40) ORs it onto DRV_SUP at about 9.3 V. D410 (LRB520S-40) replaces R420 (10 Ω REGN → DRV_SUP), so with U406 off DRV_SUP is REGN − VF, TI's standard drive, and a dead pack still charges. The output diode is needed because the TPS7A41's OUT may not sit more than 0.3 V above IN.
+- EN: R454 (100k) from REGN, pulled low by Q409 (AO3400A) unless TPS25751 GPIO6 (net DRV9_OFF) is low. R455 (100k) pulls Q409's gate up to the port's LDO_3V3, so GPIO6 Hi-Z (reset, no configuration) or high means 9 V off. GPIO6 leaves the unused-GPIO GND rail (`free_gpio6()`); its wire crosses the rail without a junction.
+- Firmware: GPIO6 as an output with initial value high; `GPsl` turns the 9 V on, `GPsh` off. On only while that converter switches, for contracts ≥ 45 W and with PACK_P ≥ 10 V (the TPS7A41's EN may not sit more than 0.3 V above IN either). With REGN down, EN is low, so DRV_SUP is never driven while the BQ25756 is off (bq25756.pdf 6.3.3.2).
+- C411 4.7 µF 10 V 0402 → 4.7 µF 25 V 0805 (CL21A475KAQNNNE, C1779).
+
+The committed sheets were updated by calling these functions (`edit_symbols`, `add_gate_drive`, `tdson_footprint`, tidy's notes) on the existing files, because KiCad can't be installed in the cloud session that made the change; a full `make_production.py` run produces the same result. Connectivity was checked by a script that compares every pin's net before and after (only the intended changes); **ERC, check_netlist.py and Update PCB from Schematic are still to run in KiCad.**
+
 ## Passive downsizing (2026-10-17)
 
 Production may use JLC extended parts and 0201 parts. 0201 is used only where both of a part's nets stay at or below 5.5 V. The swaps are in `DOWNSIZE` in `tools/make_production.py`, and each part was checked for rating and JLC stock the same day.
