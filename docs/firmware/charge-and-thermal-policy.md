@@ -59,7 +59,7 @@ The current values (100 W to 42 °C, then a ramp to 40 W at 46 °C) and the mode
 - **Inputs:** the gauge's `DAStatus2` (TS1–TS4, FET temperature, die), each charger's `TS_ADC` (FET copper, read through the TPS25751), and pack voltage. There are no TMP1075 board sensors on P0.
 - **Poll once a second** (planned in `docs/devboard/mcu-io-power-states.md`). The board reacts in about 1 min and the cells in 5–10 min, so 1 s is plenty.
 - **Don't poll a charger's ADC while its converter is off.** It powers REGN, and with it the 9 V gate-drive LDO's enable (`research_notes/Loss reduction/summary.md`).
-- **9 V gate drive (fitted, default off):** turn it on only for contracts of 45 W or more. Enable the converter, then `GPsl`; `GPsh` before disabling it, and on charge-done or a fault.
+- **9 V gate drive (fitted, default off):** turn it on only for contracts of 45 W or more and with PACK_P at 10 V or more (the LDO's EN may not sit above its input). Configure TPS25751 GPIO6 as an output with initial value high (9 V off). Enable the converter, then `GPsl`; `GPsh` before disabling it, and on charge-done or a fault.
 
 ## 6. Open items
 

@@ -7417,7 +7417,7 @@
 				)
 			)
 		)
-		(property "Value" "AGM404AP1"
+		(property "Value" "BSC007N04LS6"
 			(at 175.26 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7427,7 +7427,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7438,7 +7438,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C41349455.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C534274.pdf"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7449,7 +7449,7 @@
 				)
 			)
 		)
-		(property "Description" "40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3"
+		(property "Description" "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7471,7 +7471,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C41349455"
+		(property "LCSC" "C534274"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7482,7 +7482,7 @@
 				)
 			)
 		)
-		(property "MPN" "AGM404AP1 (AGMSEMI)"
+		(property "MPN" "BSC007N04LS6ATMA1 (Infineon)"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10097,7 +10097,7 @@
 				)
 			)
 		)
-		(property "Value" "AGM404AP1"
+		(property "Value" "BSC007N04LS6"
 			(at 228.60 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10107,7 +10107,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10118,7 +10118,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C41349455.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C534274.pdf"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10129,7 +10129,7 @@
 				)
 			)
 		)
-		(property "Description" "40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3"
+		(property "Description" "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10151,7 +10151,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C41349455"
+		(property "LCSC" "C534274"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10162,7 +10162,7 @@
 				)
 			)
 		)
-		(property "MPN" "AGM404AP1 (AGMSEMI)"
+		(property "MPN" "BSC007N04LS6ATMA1 (Infineon)"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)

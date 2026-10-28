@@ -74,9 +74,9 @@ Each USB-C port is an identical, self-contained power stage, so either port can 
 | Function | Part | Notes |
 | --- | --- | --- |
 | PD controller | TPS25751D | I2C 0x20 (USB1) / 0x21 (USB2), SafeMode dead-battery strap, own 512 Kbit EEPROM. It is the I2C master for its charger; the MCU reaches the BQ25756 through `I2Cr`/`I2Cw` |
-| Buck-boost charger | BQ25756 | 600 kHz, ICHG pin 0 Ω to PGND with EN\_ICHG\_PIN = 0 (charge limit set by ICHG\_REG only), DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
+| Buck-boost charger | BQ25756 | 500 kHz (R412 49.9k), ICHG pin 0 Ω to PGND with EN\_ICHG\_PIN = 0 (charge limit set by ICHG\_REG only), DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
 | Power FETs | 2 × Vishay SiZ240DT | 40 V half-bridge per leg. LCSC had only 2 in stock on 10-19; supply them to JLC yourself |
-| Inductor | Coilank APS0730M2R2F, 2.2 µH | 3.1 mm tall. Runs hotter than the Coilcraft option; measure it |
+| Inductor | Coilcraft XGL7030-332MEC, 3.3 µH (loss cut 3) | 3.1 mm, on the APS0730 pads; consigned (not at JLC). P0 A/B against the APS0730M2R2F |
 | Sense resistors | 5 mΩ RAC (0805) and RBAT (1206) | TI fixes RBAT at 5 mΩ |
 | 5 V source rail | TPS62933 | Feeds PP5V and VCONN; enabled per port (EN\_5V1/2) |
 | Port protection | TPD6S300 on CC, TVS2200 on VBUS | No liquid detection on P0 |
@@ -130,7 +130,7 @@ The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP)
 
 **Port sharing (decided 2026-10-23): a user setting.** Both ports share `P_allow`. In **USB1 priority** mode (the default), USB2 keeps a guaranteed minimum (10–30 W, default 20 W) and USB1 gets the rest. In **Balanced** mode, the port with the larger contract gives way first. Either way, the two contracts never add up to more than `P_allow`, even briefly: lower one contract before raising the other.
 
-**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): BSC007N04LS6 protection FETs in 5 × 6 (was XRS120N04D, then BSZ018N04LS6); a 9 V gate-drive LDO (TPS7A4101) per port, enabled by TPS25751 GPIO6 via `GPsl`/`GPsh` and ANDed with REGN; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
+**Loss cuts (adopted 2026-10-23; see Decided: the four loss cuts)** (about −1.6 W at 100 W; the gate drive is fitted but off by default): BSC007N04LS6 protection FETs in 5 × 6 (was XRS120N04D, then BSZ018N04LS6); a 9 V gate-drive LDO (TPS7A4101, U406/U506) per port, enabled by TPS25751 GPIO6 low (`GPsl` on, `GPsh` off) and only while REGN is up; Coilcraft XGL7030-332 at 500 kHz; thicker nickel (0.2 × 10 mm).
 
 ## MCU, sensing and Bluetooth
 
@@ -165,7 +165,8 @@ The production P0 board is the design of record and the first board planned to b
 
 - [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five sense holes already sit at the 6500 mAh positions
 - [ ] Run KiCad DRC on the `Production` board after the wire-hole change (so far only a script check: outline, 0.25 mm edge rule, ring, courtyards of the placed parts, B.Cu parts in the wire runs)
-- [ ] Run Update PCB from Schematic (R413/R513 = 0 Ω); apply the four loss cuts (BSC007N04LS6 protection FETs on a new 5 × 6 TDSON-8 FL footprint, gate-drive LDOs, XGL7030-332 with R412/R512 = 49.9k)
+- [x] Loss cuts 1–3 in the schematic (2026-10-28): Q101/Q102 BSC007N04LS6 on `MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8`, the 9 V gate drive per port (U406, D410 in place of R420, D411, Q409, R452–R455, C457, C458; GPIO6 freed from the GND rail), L401/L501 XGL7030-332, R412/R512 49.9k, C411/C511 4.7 µF 25 V 0805. Checked by a script connectivity diff only (no KiCad in the cloud)
+- [ ] Run ERC, then Update PCB from Schematic, and place and route the new parts: about 25 mm² per port for the gate drive, Q101/Q102 grow from 3.3 × 3.3 to 5 × 6 (R413/R513 = 0 Ω is still to change in the schematic too). Check the TDSON footprint against the BSC007N04LS6 datasheet's footprint drawing, and look up an LCSC code for R412/R512 (0201WMF4992TEE)
 - [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
@@ -203,7 +204,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 10 | Enclosure | Memory, project notes: FR4 walls with printed end caps, top-cap board, aluminium heatsink plate | 10-18 side tray + aluminium cover; 10-21 the cup | Cup |
 | 11 | Potting | GATT §8, EEPROM notes, repo checklist: potted pack | Mechanical design 10-18: no potting | No potting |
 | 12 | Port protection | Project notes: TPD4S201 with liquid detection | P0 10-18: TPD6S300, liquid detection removed | TPD6S300 |
-| 13 | Charger FETs and inductor | Project notes, dev board: 4 × PGQ04N070, XAL7030-222 | P0: 2 × SiZ240DT, APS0730M2R2F; loss study proposes XGL7030-332 at 500 kHz | P0 parts |
+| 13 | Charger FETs and inductor | Project notes, dev board: 4 × PGQ04N070, XAL7030-222 | P0: 2 × SiZ240DT, XGL7030-332 at 500 kHz (loss cut 3, in the schematic 2026-10-28) | P0 parts |
 | 14 | Idle current | Project notes: \~230 µA. P0 low-profile section: "\~150 µA budget" | P0 README: TPD6S300s add \~175 µA | \~400 µA |
 | 15 | Pack wiring on P0 | `p0-bringup-and-training.md`: 16 AWG wire pads J108/J112 | `p0-assembly.md`: nickel tails through plated slots | All wires (10-24): PACK± 18 AWG in Ø1.5 plated holes; cell taps and Kelvin 28 AWG in Ø0.8 plated holes |
 | 16 | Production board size | Project notes, repo checklist: \~44 × 44 mm double-sided board at the top cap, 0.8 mm, 4 layers | P0: 43.2 × 74.35 mm side board, 1.6 mm, 6 layers | P0 |
@@ -224,10 +225,10 @@ Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with 
 - [ ] Move to FreeRTOS with the BLE5 stack; supervision loop on an RTC wake, watchdog that can't be stopped
 - [ ] Gauge driver: SBS reads, `DAStatus2`, Lifetime Data via `ManufacturerBlockAccess()`
 - [ ] TPS25751 driver: 4CC commands, `I2Cr`/`I2Cw` passthrough to the BQ25756, `GPsh`/`GPsl`, IRQ\_N decode and event masks
-- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 0, GPIO6 output for the gate-drive LDO if GPIO6 is the chosen enable); EEPROM self-programming and repair on every boot
+- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 0, GPIO6 = DRV9\_OFF: output, initial value high, so the 9 V gate drive starts off); EEPROM self-programming and repair on every boot
 - [ ] Charge loop per the 10-21 policy; read back ICHG\_REG, EN\_ICHG\_PIN and EN\_CHG every second and before releasing CHG\_INH, rewriting the value or inhibiting charge on a mismatch; dual-port split; solar MPPT and dropout ride-through; pass-through; max SOC hold and recharge point; balancing charge; loop detection
 - [ ] Discharge `P_allow` with Source Capability re-advertising, hysteresis, and both port-sharing modes (USB1 priority, Balanced)
-- [ ] Gate-drive LDO sequencing (if adopted): enable converter, then `GPsl`; `GPsh` before disable or on charge-done/fault
+- [ ] Gate-drive LDO sequencing: enable converter, then `GPsl` (only with PACK\_P ≥ 10 V and a contract ≥ 45 W); `GPsh` before disable or on charge-done/fault
 - [ ] Ship mode entry and exit rules; settings in flash with CRC and safe defaults
 - [ ] MCUboot: signed images, swap-with-revert, self-confirm checks, key generation and backup
 - [ ] Measure idle current against the \~400 µA estimate and tune advertising
@@ -346,7 +347,8 @@ The numbers come from the 2026-10-21 loss study (`research_notes/Loss reduction/
 
 - **What:** the BQ25756 drives its FET gates from its internal \~5 V REGN rail, and the SiZ240DTs have noticeably higher resistance at 5 V than at 9–10 V. A TPS7A4101 LDO per port, fed from the pack bus, supplies 9 V instead. A Schottky from REGN keeps the old \~5 V drive whenever the LDO is off, so dead-battery wake-up still works. C411/C511 move to 25 V 0805 parts.
 - **The rule that shapes it:** TI requires DRV\_SUP to be off whenever the converter is off, and REGN alone isn't proof of that because the ADC can wake REGN. So the LDO enable is an AND of REGN and a control signal, and firmware only turns it on for contracts of 45 W or more.
-- **Which control signal:** the study used each TPS25751's GPIO6 (commands `GPsl`/`GPsh`) because the CC2340 had no spare pins. P0 has since freed DIO12, DIO18 and DIO20, so two MCU pins could drive it directly, which is simpler to sequence. Either way, GPIO6 is tied to GND on P0 today and would need freeing if used.
+- **Which control signal:** the study used each TPS25751's GPIO6 (commands `GPsl`/`GPsh`) because the CC2340 had no spare pins. P0 has since freed DIO12, DIO18 and DIO20, so two MCU pins could drive it directly, which is simpler to sequence. The schematic (2026-10-28) uses GPIO6, as adopted: it stays on the USB sheet, with no new traces across the board.
+- **Schematic (2026-10-28, `hardware/Production/usb_port.kicad_sch`, port 1 refs):** U406 TPS7A4101DGNR (LCSC C111739) from PACK\_P with C457 1 µF 50 V in and C458 22 µF 25 V out; R452 40.2k / R453 5.6k set about 9.6 V, and D411 (LRB520S-40) ORs it onto DRV\_SUP at about 9.3 V. D410 (LRB520S-40) replaces R420 from REGN, so DRV\_SUP is REGN − VF whenever U406 is off. EN comes from REGN through R454 (100k) and Q409 (AO3400A) holds it low unless GPIO6 (net DRV9\_OFF, R455 100k pull-up to LDO\_3V3) is low: GPIO6 Hi-Z or high means 9 V off, `GPsl` on, `GPsh` off. The output diode is there because the TPS7A41 allows OUT and EN only 0.3 V above IN; firmware enables it only with PACK\_P ≥ 10 V. C411/C511 are 4.7 µF 25 V 0805.
 - **Risks:** faster switching edges mean more ringing (the 0 Ω gate links can become 2.2–4.7 Ω without a respin); a short window after the charger stops on its own where 9 V stays on until firmware reacts (worth asking TI); more parts on a crowded board; firmware sequencing to get right.
 - **Check on P0:** a free A/B test: toggle the enable at 100 W and read the efficiency change directly.
 - **Verdict:** fit it, default off. If firmware isn't ready, the board behaves exactly as today.

@@ -24,6 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from schlib import anchors, new_uuids, on_segment, sheet_pins, symbols, top_blocks, wires  # noqa: E402
 import siz240dt  # noqa: E402
 import tpd6s300  # noqa: E402
+import tps7a4101  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROD = os.path.normpath(os.path.join(HERE, ".."))
@@ -136,7 +137,7 @@ KELVIN_FROM = {"CELL_1N": "CELL_N", "CELL_4P": "CELL_P_RAW"}   # the power net e
 KELVIN_AT = {"J115": ("CELL_1N", (55.88, 96.52)), "J116": ("CELL_4P", (55.88, 58.42))}
 # check_netlist: pins that deliberately change net (port 1 refs; port 2 follows). "GND", None (left unconnected) or
 # "new NAME" (a net that is new on production)
-NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND", ("U401", "37"): "GND",
+NET_MOVES = {("U401", "26"): "GND", ("U401", "27"): "GND", ("U401", "36"): "GND", ("U401", "37"): "new DRV9_OFF",
              ("J401", "A8"): None, ("J401", "B8"): None,
              **{tuple(rp.split(".")): "new " + net for net, rps in KELVIN.items() for rp in rps}}
 TC2030_AT = (297.18, 106.68)  # under the SWD heading on the MCU sheet (was the DEBUG HEADERS area)
@@ -195,7 +196,12 @@ R413_NOTES = ("ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over
               "TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 "
               "so a watchdog expiry stops charging instead of falling back to this pin")
 # sheet text changed in place: (old, new), each must occur once (the sheet notes are tidy_production.py's)
-TEXT_EDITS = {"usb_port.kicad_sch": [("ICHG 5.5 A max, ILIM", "ICHG 4.4 A max (FEB cell), ILIM")]}
+TEXT_EDITS = {"usb_port.kicad_sch": [("ICHG 5.5 A max, ILIM", "ICHG 4.4 A max (FEB cell), ILIM"),
+                                     ("CONTROLLER  (600 kHz,", "CONTROLLER  (500 kHz,")]}
+# Q101/Q102 BSC007N04LS6 land pattern: KiCad's PG-TDSON-8 (SuperSO8) with the four drain leads numbered 5-8 to match
+# the AGM404AP1 symbol (KiCad numbers them all 5). Check it against the datasheet's footprint drawing before fab.
+TDSON_FP = "Infineon_PG-TDSON-8_6.15x5.15mm_D5-8"
+KICAD_TDSON = r"C:\Program Files\KiCad\10.0\share\kicad\footprints\Package_SON.pretty\Infineon_PG-TDSON-8_6.15x5.15mm.kicad_mod"
 R0201, R0402, C0201, C0402 = ("Resistor_SMD:R_0201_0603Metric", "Resistor_SMD:R_0402_1005Metric",
                               "Capacitor_SMD:C_0201_0603Metric", "Capacitor_SMD:C_0402_1005Metric")
 SOD882 = P("Diode_SMD:D_SOD-882", "C549279", "BAT54L,315 (Nexperia)")
@@ -209,6 +215,11 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R116": P(R0201, "C270366", "0201WMF1000TEE"),
         "RS101": P("Resistor_SMD:R_1206_3216Metric", "C154629", "LR1206-21R001F4 (Ralec, 75 ppm)", "1m 1% 1W"),
         "D101": SOD882,
+        # loss cut 1 (2026-10-23, 65E short circuit): 0.70 mOhm 5 x 6 OptiMOS 6, spec/protection-fet-options.md
+        **{q: (None, {"Value": "BSC007N04LS6", "Footprint": "MonolithDev:" + TDSON_FP, "LCSC": "C534274",
+                      "MPN": "BSC007N04LS6ATMA1 (Infineon)", "Datasheet": "https://www.lcsc.com/datasheet/C534274.pdf",
+                      "Description": "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"})
+           for q in ("Q101", "Q102")},
         "U102": (None, {"Notes": "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) "
                                  "after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS "
                                  "(CELL_1N, the Kelvin ground at the 1N tab)."}),
@@ -226,13 +237,14 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R403": P(R0201, "C270350", "0201WMF3301TEE"),
         "R404": P(R0201, "C473048", "0201WMF1002TEE"),
         "R410": P(R0402, "C25893", "0402WGF4022TCE"),
-        "R412": P(R0201, "C423536", "0201WMF4022TEE"),
+        # loss cut 3 (2026-10-23): 598 -> ~500 kHz with the XGL7030-332 (bq25756.pdf eq. 3). LCSC code still to look up
+        "R412": (None, {**P(R0201, "", "0201WMF4992TEE", "49.9k 1%")[1],
+                        "Notes": "FSW ~500 kHz (loss cut 3, with L401 XGL7030-332); the oscillator is +/-15 %, so 1 % is plenty"}),
         "R413": (None, {**P(R0402, "C93752", "0402WGF1182TCE", "11.8k 1%")[1], "Notes": R413_NOTES}),  # was 9.1k C25926
         "R414": P(R0402, "C25891", "0402WGF3601TCE"),
         "R415": P(R0402, "C25871", "0402WGF1801TCE"),
         "R416": P(R0402, "C25908", "0402WGF5601TCE"),
         "R417": P(R0201, "C270345", "0201WMF4702TEE"),
-        "R420": P(R0402, "C25077", "0402WGF100JTCE"),
         # P0 hedges (no dev board, 2026-10-18): gate links fitted at 0R, snubbers DNP; tune on P0 without a respin
         **{r: P(R0402, "C17168", "0402WGF0000TCE", "0R") for r in ("R444", "R445", "R446", "R447")},
         "R450": P(R0402, "C270612", "0402WGF330KTCE", "3R3"),
@@ -247,7 +259,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         **{r: P(R0201, "C270364", "0201WMF1003TEE") for r in ("R441", "R442", "R443")},
         "C408": P(C0201, "C307380", "CL03A104KO3NNNC", "0.1u 16V"),
         "C410": P(C0402, "C23733", "CL05A475MP5NRNC", "4.7u 10V"),
-        "C411": P(C0402, "C23733", "CL05A475MP5NRNC", "4.7u 10V"),
+        "C411": P("Capacitor_SMD:C_0805_2012Metric", "C1779", "CL21A475KAQNNNE", "4.7u 25V"),  # DRV_SUP up to ~9.6 V
         "C414": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C417": P(C0402, "C92361", "CL05A474KA5NNNC"),
         "C439": P(C0402, "C7419416", "FCC0402B333K500AT"),
@@ -258,7 +270,13 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         # 10x10 -> 7.8x7.6x3.1 mm: 13.7 mOhm max, Irms 13 A (40 C rise), Isat 17 A at a 40 % drop. Worst case (20 V 5 A
         # reverse from a 10 V pack) ~10.7 A rms, ~12.4 A peak: ~1.6 W DCR loss, L near 1.7 uH at the peak (L/RSNS
         # 0.34 uH/mOhm, inside TI's 0.05-1.26 stability range). Measure inductor temperature on the dev board.
-        "L401": P("MonolithDev:L_Coilank_APS0730", "C49261221", "APS0730M2R2F (Coilank)"),
+        # Loss cut 3 (2026-10-23): Coilcraft XGL7030-332MEC on the APS0730 pads (they cover its terminals; same 3.1 mm
+        # height). Stays >= 2.2 uH (the BQ25756 minimum) to 13 A; the APS0730 sags to ~1.7 uH. Not stocked at JLC:
+        # consigned like the SiZ240DT.
+        "L401": (None, {**P("MonolithDev:L_Coilank_APS0730", "", "XGL7030-332MEC (Coilcraft)", "3.3u")[1],
+                        "Notes": "Coilcraft XGL7030-332MEC, 3.3 uH, 10.4/12.5 mOhm typ/max, >= 2.2 uH at 13 A; with R412 "
+                                 "49.9k (~500 kHz). Consigned (not at JLC). Fits the APS0730 land pattern. Loss cut 3, "
+                                 "docs/spec.md"}),
     },
 }
 for _sheet, _parts in DOWNSIZE.items():
@@ -946,6 +964,184 @@ def add_usb_bulk(s, templates):
     return insert_top(s, add)
 
 
+# 9 V gate drive per port (loss cut 2, adopted 2026-10-23; drawn 2026-10-28). Port 1 refs, port 2 = 5xx.
+# U406 TPS7A4101 runs from PACK_P and sets ~9.6 V (40.2k / 5.6k on FB); D411 ORs it onto DRV_SUP. D410 replaces R420
+# (10 R REGN -> DRV_SUP): with the LDO off, DRV_SUP is REGN - VF, the TI-standard drive, so a dead pack still charges.
+# EN = REGN through R454, pulled low by Q409 unless GPIO6 is low: GPIO6 Hi-Z (reset, no configuration) or high keeps
+# the 9 V off; 'GPsl' turns it on, 'GPsh' off. With REGN down EN is low, so DRV_SUP is never driven while the BQ25756
+# is off (bq25756.pdf 6.3.3.2). R455 holds Q409 on from the TPS25751's own LDO_3V3.
+GATE_DRIVE_AT = (495.3, 190.5)   # usb sheet: U406, in the free area right of the BQ25756 controller block
+LDO_SYM = "MonolithDev:TPS7A4101"
+GD_PARTS = {  # ref: (template ref, lib_id, (x, y), rotation, props, pin numbers)
+    "U406": ("C411", LDO_SYM, GATE_DRIVE_AT, 0, {
+        "Value": tps7a4101.VALUE, "Footprint": tps7a4101.FOOTPRINT, "LCSC": tps7a4101.LCSC, "MPN": tps7a4101.MPN,
+        "Datasheet": tps7a4101.DATASHEET, "Description": tps7a4101.DESCRIPTION,
+        "Notes": "9 V DRV_SUP (loss cut 2): ~9.6 V out (VREF 1.173 x (1 + 40.2k/5.6k)), DRV_SUP ~9.3 V through D411. "
+                 "<= 34 mA, <= 0.25 W at 16.8 V: PowerPAD to the GND pour. EN must not exceed IN + 0.3 V: firmware enables "
+                 "it only with PACK_P >= 10 V"}, ("1", "2", "3", "4", "5", "6", "7", "8", "9")),
+    "C457": ("C411", "Device:C", (477.52, 189.23), 0, {
+        "Value": "1u 50V", "Footprint": "Capacitor_SMD:C_0603_1608Metric", "LCSC": "C15849", "MPN": "CL10A105KB8NNNC",
+        "Notes": "U406 input (>= 1 uF), at the IN pin"}, ("1", "2")),
+    "C458": ("C411", "Device:C", (520.7, 189.23), 0, {
+        "Value": "22u 25V", "Footprint": "Capacitor_SMD:C_0805_2012Metric", "LCSC": "C45783", "MPN": "CL21A226MAQNNNE",
+        "Notes": "U406 output: >= 4.7 uF needed, about 8 uF left at 9.6 V"}, ("1", "2")),
+    "R452": ("R412", "Device:R", (510.54, 189.23), 0, {
+        "Value": "40.2k 1%", "Footprint": R0402, "LCSC": "C25893", "MPN": "0402WGF4022TCE", "Notes": "U406 FB top"},
+        ("1", "2")),
+    "R453": ("R412", "Device:R", (510.54, 196.85), 0, {
+        "Value": "5.6k 1%", "Footprint": R0402, "LCSC": "C25908", "MPN": "0402WGF5601TCE", "Notes": "U406 FB bottom"},
+        ("1", "2")),
+    "D411": ("D404", "Device:D_Schottky", (529.59, 185.42), 180, {
+        "Notes": "U406 OUT -> DRV_SUP: keeps REGN off the LDO output (OUT-to-IN abs max 0.3 V)"}, ("1", "2")),
+    "R454": ("R412", "Device:R", (486.41, 208.28), 90, {
+        "Value": "100k", "Footprint": R0201, "LCSC": "C270364", "MPN": "0201WMF1003TEE",
+        "Notes": "U406 EN from REGN: the 9 V can only be on while REGN is"}, ("1", "2")),
+    "Q409": ("C411", "Transistor_FET:Q_NMOS_GSD", (480.06, 215.9), 0, {
+        "Value": "AO3400A", "Footprint": "Package_TO_SOT_SMD:SOT-23", "LCSC": "C20917", "MPN": "AO3400A (AOS)",
+        "Datasheet": "", "Description": "N-MOSFET, logic level",
+        "Notes": "Holds U406 EN low unless TPS25751 GPIO6 drives DRV9_OFF low ('GPsl')"}, ("1", "2", "3")),
+    "R455": ("R412", "Device:R", (469.9, 212.09), 0, {
+        "Value": "100k", "Footprint": R0201, "LCSC": "C270364", "MPN": "0201WMF1003TEE",
+        "Notes": "Q409 gate to LDO_3V3: 9 V off while GPIO6 is Hi-Z (reset, no configuration)"}, ("1", "2")),
+}
+REGN_DIODE = ("R420", "D410")   # 10 R REGN -> DRV_SUP becomes a Schottky (anode REGN, cathode DRV_SUP)
+DIODE_PROPS = {"Value": "LRB520S-40T1G", "Footprint": "Diode_SMD:D_SOD-523", "LCSC": "C132124",
+               "MPN": "LRB520S-40T1G", "Datasheet": "", "Description": "Schottky diode"}
+GD_HEADING = "9 V GATE DRIVE (DRV_SUP): fitted, off by default (loss cut 2)"
+BS_N = chr(92) + "n"
+GD_NOTE = BS_N.join([
+    "U406 TPS7A4101 from PACK_P sets ~9.6 V (R452/R453); D411 ORs it onto DRV_SUP (~9.3 V).",
+    "D410 (was R420 10R) feeds REGN - VF while U406 is off: TI's standard drive, so a dead pack",
+    "still charges. EN = REGN via R454, held low by Q409 unless TPS25751 GPIO6 (DRV9_OFF) is low:",
+    "GPIO6 Hi-Z or high = off. Configure GPIO6 as an output, initial high; 'GPsl' on, 'GPsh' off.",
+    "Firmware: on only while this converter switches, for contracts >= 45 W and PACK_P >= 10 V",
+    "(EN <= IN + 0.3 V); off first on any fault or INT (bq25756.pdf 6.3.3.2: DRV_SUP off whenever",
+    "the converter is). SiZ240DT: ~30 % lower RDS(on) at 9 V. If SW1/SW2 ring, fit 2.2-4.7R in R444-R447."])
+
+
+# check_netlist: the gate-drive parts' nets, port 1 refs (a dev-board pin on that net, or "new NAME"), and the part
+# they replace
+_GND, _PACK, _REGN, _DRV = ("TP109", "1"), ("R418", "1"), ("U403", "24"), ("U403", "23")
+GD_NETS = {"U406": {"8": _PACK, "5": "new DRV9_EN", "1": "new DRV9_OUT", "2": "new DRV9_FB", "4": _GND, "9": _GND,
+                    "3": None, "6": None, "7": None},
+           "C457": {"1": _PACK, "2": _GND}, "C458": {"1": "new DRV9_OUT", "2": _GND},
+           "R452": {"1": "new DRV9_OUT", "2": "new DRV9_FB"}, "R453": {"1": "new DRV9_FB", "2": _GND},
+           "D411": {"2": "new DRV9_OUT", "1": _DRV}, "D410": {"2": _REGN, "1": _DRV},
+           "R454": {"1": "new DRV9_EN", "2": _REGN}, "Q409": {"3": "new DRV9_EN", "2": _GND, "1": "new DRV9_OFF"},
+           "R455": {"1": ("U401", "1"), "2": "new DRV9_OFF"}}
+GD_GONE = ["R420"]
+
+
+def _place(s, tmpl_ref, ref, lib_id, at, rot, props, pins):
+    """A new symbol block from a placed 4xx part (so it carries both ports' instance paths)."""
+    y = next(y for y in symbols(s) if y["ref"] == tmpl_ref)
+    blk = new_uuids(s[y["a"]:y["b"]])
+    x0, y0 = map(float, re.search(r"\n\t\t\(at ([-\d.]+) ([-\d.]+)", blk).groups())
+    blk = re.sub(r"\(at ([-\d.]+) ([-\d.]+)", lambda m: "(at %g %g" % (
+        round(float(m.group(1)) - x0 + at[0], 2), round(float(m.group(2)) - y0 + at[1], 2)), blk)
+    blk = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s %d)" % (m.group(1), m.group(2), rot),
+                 blk, count=1)
+    blk = re.sub(r"\n\t\t\(mirror \w\)", "", blk)
+    blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "%s")' % lib_id, blk, count=1)
+    blk = set_prop(blk, "Reference", ref)
+    for k, v in props.items():
+        assert '(property "%s" ' % k in blk, (tmpl_ref, k)
+        blk = set_prop(blk, k, v)
+    a = blk.index('\n\t\t(pin "')
+    b = blk.index("\n\t\t(instances")
+    blk = blk[:a] + "".join('\n\t\t(pin "%s"\n\t\t\t(uuid "%s")\n\t\t)' % (p, uid()) for p in pins) + blk[b:]
+    port2 = tmpl_ref[:-3] + "5" + tmpl_ref[-2:]
+    blk = blk.replace('(reference "%s")' % tmpl_ref, '(reference "%s")' % ref)
+    return blk.replace('(reference "%s")' % port2, '(reference "%s")' % (ref[:-3] + "5" + ref[-2:]))
+
+
+def _junction(p):
+    return '\n\t(junction\n\t\t(at %g %g)\n\t\t(diameter 0)\n\t\t(color 0 0 0 0)\n\t\t(uuid "%s")\n\t)' % (p[0], p[1], uid())
+
+
+def add_gate_drive(s, templates):
+    """Loss cut 2: per-port 9 V DRV_SUP (GD_PARTS), R420 -> D410, and TPS25751 GPIO6 freed from the GND rail as the
+    active-low enable DRV9_OFF."""
+    for name, sym in ((LDO_SYM, tps7a4101.lib_symbol()), ("Transistor_FET:Q_NMOS_GSD", q_nmos_symbol())):
+        if '(symbol "%s"' % name not in s:
+            i = s.index("\n\t(lib_symbols") + len("\n\t(lib_symbols")
+            s = s[:i] + "\n" + sym + s[i:]
+    # R420 -> D410 in place (same pins: rotated 180, pin 2 = anode on REGN, pin 1 = cathode on DRV_SUP)
+    old, new = REGN_DIODE
+    y = next(y for y in symbols(s) if y["ref"] == old)
+    blk = s[y["a"]:y["b"]]
+    blk = re.sub(r'\(lib_id "[^"]+"\)', '(lib_id "Device:D_Schottky")', blk, count=1)
+    blk = re.sub(r"\n\t\t\(at ([-\d.]+) ([-\d.]+) [-\d.]+\)", lambda m: "\n\t\t(at %s %s 180)" % m.groups(), blk, count=1)
+    blk = set_prop(blk, "Reference", new)
+    for k, v in DIODE_PROPS.items():
+        blk = set_prop(blk, k, v)
+    blk = set_prop(blk, "Notes", "REGN -> DRV_SUP (was R420 10 R): the gate drive whenever U406 is off, incl. dead-pack charging")
+    blk = blk.replace('(reference "%s")' % old, '(reference "%s")' % new)
+    blk = blk.replace('(reference "%s")' % (old[:-3] + "5" + old[-2:]), '(reference "%s")' % (new[:-3] + "5" + new[-2:]))
+    s = s[:y["a"]] + blk + s[y["b"]:]
+    add = ""
+    for ref, (tmpl, lib, at, rot, props, pins) in GD_PARTS.items():
+        if lib == "Device:D_Schottky":
+            props = {**DIODE_PROPS, **props}
+        add += "\n\t" + _place(s, tmpl, ref, lib, at, rot, props, pins)
+    s = insert_top(s, add)
+    P = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in GD_PARTS}
+    u, q = P["U406"], P["Q409"]
+    assert u["8"] == (485.14, 185.42) and u["5"] == (485.14, 193.04) and u["4"] == u["9"] == (495.3, 200.66), u
+    assert q["3"] == (482.6, 210.82) and q["2"] == (482.6, 220.98) and q["1"] == (474.98, 215.9), q
+    gnd, pack = templates["GND"], power_template(s, "PACK_P")
+    en = (482.6, 208.28)          # EN node: R454, Q409 drain
+    gate = P["R455"]["2"]         # (469.9, 215.9) on the gate line
+    add = clone_power(pack, P["C457"]["1"]) + wire_text(P["C457"]["1"], u["8"])
+    add += "".join(clone_power(gnd, p) for p in (P["C457"]["2"], u["4"], P["R453"]["2"], P["C458"]["2"], q["2"]))
+    add += wire_text(u["1"], P["R452"]["1"]) + wire_text(P["R452"]["1"], P["C458"]["1"])
+    add += wire_text(P["C458"]["1"], P["D411"]["2"]) + _junction(P["R452"]["1"]) + _junction(P["C458"]["1"])
+    add += wire_text(u["2"], P["R452"]["2"]) + _junction(P["R452"]["2"])
+    add += label_text("DRV_SUP", P["D411"]["1"])
+    add += wire_text(u["5"], (en[0], u["5"][1])) + wire_text((en[0], u["5"][1]), en) + wire_text(en, q["3"])
+    assert P["R454"]["1"] == en, P["R454"]
+    add += _junction(en) + label_text("REGN", P["R454"]["2"])
+    add += wire_text(q["1"], gate) + wire_text(gate, (gate[0] - 5.08, gate[1])) + _junction(gate)
+    add += label_text("DRV9_OFF", (gate[0] - 5.08, gate[1]), 180) + label_text("LDO_3V3", P["R455"]["1"], 180)
+    t = next((a, b) for a, b in top_blocks(s, "text") if "BQ25756 CONTROLLER" in s[a:b])
+    t = new_uuids(s[t[0]:t[1]])
+    t = re.sub(r'\(text "[^"]*"', '(text "%s"' % GD_HEADING, t, count=1)
+    t = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 459.74 172.72", t, count=1)
+    add += "\n\t" + t
+    n = next((a, b) for a, b in top_blocks(s, "text") if "Charger battery side joins PACK_P" in s[a:b])  # a plain note
+    n = new_uuids(s[n[0]:n[1]])
+    n = re.sub(r'\(text "[^"]*"', '(text "%s"' % GD_NOTE, n, count=1)
+    n = re.sub(r"\(at [-\d.]+ [-\d.]+", "(at 459.74 246.38", n, count=1)
+    add += "\n\t" + n
+    s = insert_top(s, add)
+    return free_gpio6(s)
+
+
+def free_gpio6(s):
+    """U401 GPIO6 (pin 37) leaves the unused-GPIO GND rail (pin_actions) for DRV9_OFF. The rail's two segments meeting
+    at GPIO6's row become one, so the new wire to the label crosses it without a connection."""
+    g6 = {y["ref"]: y for y in symbols(s)}["U401"]["pins"]["37"]
+    ws = wires(s)
+    stub = next(w for w in ws if g6 in w["p"])
+    corner = next(q for q in stub["p"] if q != g6)
+    rail = [w for w in ws if corner in w["p"] and w is not stub]
+    assert len(rail) == 2 and all(p[0] == corner[0] for w in rail for p in w["p"]), rail
+    ends = sorted({p for w in rail for p in w["p"] if p != corner}, key=lambda p: p[1])
+    spans = [(w["a"], w["b"]) for w in [stub] + rail]
+    spans += [(x["a"], x["b"]) for x in anchors(s, "junction") if x["p"] == corner]
+    label_at = (round(corner[0] - 5.08, 2), g6[1])
+    add = wire_text(ends[0], ends[1]) + wire_text(g6, label_at) + label_text("DRV9_OFF", label_at, 180)
+    return insert_top(cut(s, spans), add)
+
+
+def q_nmos_symbol():
+    """Transistor_FET:Q_NMOS_GSD as embedded on the dev gauge sheet (Q103)."""
+    from schlib import block_end
+    g = open(os.path.join(DEV, "gauge.kicad_sch"), encoding="utf-8").read()
+    a = g.index('\n\t\t(symbol "Transistor_FET:Q_NMOS_GSD"') + 1
+    return g[a:block_end(g, a + 2)]
+
+
 TITLE = {
     ROOT: "Monolith production board - top level",
     "gauge.kicad_sch": "Monolith production board - cells and gauge",
@@ -1039,6 +1235,7 @@ def process(sheet, src):
         s = swap_fets(s)
         s = add_tpd6s300(s, old, templates)
         s = add_usb_bulk(s, templates)
+        s = add_gate_drive(s, templates)
     s = title_block(s, sheet)
     # pins that were connected before and are now open get a no-connect flag
     now = attached(s)
@@ -1069,6 +1266,22 @@ APS0730 = """(footprint "L_Coilank_APS0730"
 \t(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.8 0.8) (thickness 0.12))))
 )
 """
+
+
+def tdson_footprint(src=None):
+    """TDSON_FP from KiCad's Infineon_PG-TDSON-8_6.15x5.15mm: drain leads renumbered 5-8 (bottom to top, SO-8 order);
+    the drain pad stays 5."""
+    t = open(src or KICAD_TDSON, encoding="utf-8").read()
+    old = "Infineon_PG-TDSON-8_6.15x5.15mm"
+    t = t.replace('(footprint "%s"' % old, '(footprint "%s"' % TDSON_FP, 1).replace('"%s"' % old, '"%s"' % TDSON_FP)
+    t = re.sub(r'\(descr "', '(descr "Q101/Q102 BSC007N04LS6 (TDSON-8 FL): drain leads numbered 5-8 (make_production.py). ', t,
+               count=1)
+    leads = sorted(((float(m.group(2)), m.start(1), m.end(1)) for m in
+                    re.finditer(r'\(pad "(5)" smd roundrect\s*\(at [-\d.]+ ([-\d.]+)\)', t)), reverse=True)
+    assert len(leads) == 4, leads
+    for (y, a, b), num in sorted(zip(leads, "5678"), key=lambda v: -v[0][1]):
+        t = t[:a] + num + t[b:]
+    return t
 
 
 def slot_footprint(length):
@@ -1160,6 +1373,8 @@ def main():
     with open(os.path.join(PROD, "MonolithDev.pretty", tpd6s300.FP_NAME + ".kicad_mod"), "w", encoding="utf-8",
               newline="\n") as f:
         f.write(tpd6s300.footprint())
+    with open(os.path.join(PROD, "MonolithDev.pretty", TDSON_FP + ".kicad_mod"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(tdson_footprint())
     for length in sorted({v[2] for v in MS.sb_slots().values()}):
         with open(os.path.join(PROD, "MonolithDev.pretty", slot_name(length) + ".kicad_mod"), "w", encoding="utf-8",
                   newline="\n") as f:
@@ -1176,6 +1391,8 @@ def main():
         t = t.rstrip()[:-1].rstrip() + "\n" + siz240dt.library_entry() + "\n)\n"
     if '(symbol "TPD6S300"' not in t:
         t = t.rstrip()[:-1].rstrip() + "\n" + tpd6s300.library_entry() + "\n)\n"
+    if '(symbol "TPS7A4101"' not in t:
+        t = t.rstrip()[:-1].rstrip() + "\n" + tps7a4101.library_entry() + "\n)\n"
     open(lib, "w", encoding="utf-8", newline="\n").write(t)
     pro = open(os.path.join(DEV, "MonolithDev.kicad_pro"), encoding="utf-8").read()
     pro = pro.replace('"MonolithDev.kicad_pro"', '"Monolith.kicad_pro"').replace('"MonolithDev.kicad_sch"', '"Monolith.kicad_sch"')

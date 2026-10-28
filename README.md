@@ -71,7 +71,7 @@ The KiCad 10 sources are in `hardware/`, with the production board as the design
 **Per port**
 
 - TPS25751D USB-C PD controller, configured from its own M24512 EEPROM (patch-bundle programming notes in `docs/firmware/tps25751-eeprom-programming.md`).
-- BQ25756 bidirectional buck-boost, 5 mΩ sense resistors, two SiZ240DT 40 V half-bridges (dev board: four PGQ04N070 singles); gate resistors fitted as 0 Ω links with DNP RC snubbers so ringing can be fixed without a respin. Adopted loss cuts, still to apply in the schematic: Coilcraft XGL7030-332 3.3 µH at 500 kHz (today 2.2 µH at 600 kHz) and a 9 V gate-drive LDO, fitted but off by default.
+- BQ25756 bidirectional buck-boost, 5 mΩ sense resistors, two SiZ240DT 40 V half-bridges (dev board: four PGQ04N070 singles); gate resistors fitted as 0 Ω links with DNP RC snubbers so ringing can be fixed without a respin. Adopted loss cuts, in the P0 schematic since 2026-10-28 (the board still needs Update PCB from Schematic): Coilcraft XGL7030-332 3.3 µH at 500 kHz (was 2.2 µH at 600 kHz) and a 9 V gate-drive LDO per port, fitted but off by default.
 - TPS62933 5 V buck for the port's 5 V source rail; TPD6S300 CC protection (24 V short-to-VBUS, IEC ESD); TVS2200 flat clamp on VBUS.
 - Shou Han IP68 right-angle USB-C receptacle, 5 A / 20 V.
 
