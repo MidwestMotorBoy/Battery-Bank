@@ -44,3 +44,7 @@ docs/devboard/review4/scratch-*/
 
 # STEP export output (hardware/mechanical/monolith_step.py)
 hardware/mechanical/step/
+
+# Retired enclosure outputs (removed 2026-10-29; monolith_shell.py / monolith_parts.py still write them here)
+hardware/mechanical/retired/*
+!hardware/mechanical/retired/README.md

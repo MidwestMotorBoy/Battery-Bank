@@ -1,6 +1,6 @@
-"""Monolith layout comparison: top-cap board vs side board (numpy + PIL; imports the generators).
-Run after monolith_shell.py and monolith_parts.py:  python3 monolith_render.py
--> retired/monolith_layout_compare.png (both layouts are retired), plus a size / mass table on stdout.
+"""Mesh and mass helpers (numpy + PIL): camera, draw, vol, board_g, CELL_G, used by monolith_cup.py,
+monolith_cup_assembly_steps.py and monolith_side_renders.py. The top-cap vs side-tray comparison render that used to
+run from here (retired/monolith_layout_compare.png) was removed on 2026-10-29; it is in git history (Production 5cf521e).
 Masses: printed parts from STL volume x density; cells 75 g each (FEB 21700G listing; Batemo measures 73.4 g);
 boards estimated at the production thickness (SB_PCB_T) as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
 import numpy as np, struct, os
@@ -85,58 +85,3 @@ def font(sz):
         try: return ImageFont.truetype(f, sz)
         except OSError: pass
     return ImageFont.load_default()
-
-if __name__ == '__main__':
-    top, (tz0, tz1) = top_assembly(); side, (sz0, sz1) = side_assembly()
-    rho = dict(shell=1.18, cap=1.20, bump=1.21, plate=2.70)
-    def g(asm, key, r): return sum(vol(V) for n, V, *_ in asm if n == key) * r
-    top_board_a = 45.5**2 - (4 - np.pi)*9.35**2          # production outline, Production/README.md
-    rows = {
-        'top cap (today)': dict(
-            w=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), d=2*S.a_out + 2*(P.BUMP_WALL - P.BUMP_SQUEEZE), l=tz1 - tz0,
-            shell=g(top, 'shell', rho['shell']), cap=g(top, 'top cap', rho['cap']), bump=g(top, 'bumper', rho['bump']),
-            board=board_g(top_board_a, S.SB_PCB_T), extra=g(top, 'bottom pcb', FR4_RHO),
-            plate=P.PLATE_L*P.PLATE_W*P.PLATE_T/1000*rho['plate'], area=top_board_a),
-        'side board': dict(
-            w=S.sb_x_out + S.a_sb + 2*S.SB_CAP_PROUD, d=2*(S.a_sb + S.SB_CAP_PROUD), l=sz1 - sz0,
-            shell=g(side, 'shell', rho['shell']), cap=0.0, bump=P.cap_mass(False) + P.cap_mass(True),
-            board=board_g(S.sb_board_area, S.SB_PCB_T), extra=0.0,
-            plate=g(side, 'cover', rho['plate']), area=S.sb_board_area)}
-    lines = []
-    hdr = f"{'':18s}{'outside (mm)':>22s}{'box cm3':>9s}{'board mm2/side':>16s}{'shell':>7s}{'cap/lid':>8s}{'bumpers':>8s}{'end pcb':>8s}{'Al':>9s}{'board':>7s}{'cells':>7s}{'total g':>9s}"
-    print(hdr); lines.append(hdr)
-    for k, r in rows.items():
-        tot = r['shell'] + r['cap'] + r['bump'] + r['extra'] + r['plate'] + r['board'] + 4*CELL_G
-        r['tot'] = tot; r['box'] = r['w']*r['d']*r['l']/1000
-        s = (f"{k:18s}{r['w']:7.1f} x{r['d']:5.1f} x{r['l']:6.1f}{r['box']:9.0f}{r['area']:16.0f}{r['shell']:7.1f}{r['cap']:8.1f}"
-             f"{r['bump']:8.1f}{r['extra']:8.1f}{r['plate']:9.1f}{r['board']:7.1f}{4*CELL_G:7.0f}{tot:9.1f}")
-        print(s); lines.append(s)
-
-    # ---------------- picture: iso cutaway + end view for each layout ----------------
-    W, Hh = 2040, 1060
-    img = Image.new('RGB', (W, Hh), (255, 255, 255)); t = ImageDraw.Draw(img)
-    f1, f2 = font(22), font(15)
-    iso = camera((1.0, -1.25, 0.85)); end = camera((0, 0, 1), up=(0, 1, 0))
-    for col, (title, asm, z0, z1, key, zt) in enumerate((('Top-cap board (today\'s model, 40.5 mm board)', top, tz0, tz1, 'top cap (today)', None),
-                                                        ('Side board, one-piece tray, TPU crush caps', side, sz0, sz1, 'side board', S.sb_z_top_in))):
-        x0 = 30 + col*700; r = rows[key]
-        t.text((x0, 18), title, fill=(20, 20, 20), font=f1)
-        draw(img, panel_parts(asm, True), iso, (x0 + 260, 560))
-        draw(img, panel_parts(asm, False, zt), end, (x0 + 470, 760))
-        t.text((x0 + 380, 900), "end view from the port end, top removed", fill=(90, 90, 90), font=f2)
-        for i, s in enumerate((f"outside {r['w']:.1f} x {r['d']:.1f} x {r['l']:.1f} mm (with bumpers), box {r['box']:.0f} cm3",
-                               f"board area {r['area']:.0f} mm2 per side",
-                               f"enclosure + board {r['tot'] - 4*CELL_G:.1f} g, pack {r['tot']:.0f} g")):
-            t.text((x0, 940 + 22*i), s, fill=(20, 20, 20), font=f2)
-    x0 = 1430
-    t.text((x0, 18), 'Tray with the cover off', fill=(20, 20, 20), font=f1)
-    tray = [(V, c) for n, V, c, *_ in side if n in ('shell', 'side board')]
-    draw(img, tray, camera((1.0, -0.55, 0.45)), (x0 + 230, 520))
-    for i, s_ in enumerate(("Opening on the board side only. Top-wall lip holds",
-                            "the cover's top edge; two M2 inserts in the bottom",
-                            "corner pillars. Board slides +z to seat the ports.")):
-        t.text((x0, 940 + 22*i), s_, fill=(20, 20, 20), font=f2)
-    t.text((30, Hh - 28), "Blue: cells. Green: boards and USB-C envelopes. Light grey: shell (front half cut away). "
-           "Dark: TPU bumpers / crush caps (lattice, mass at print fill). Silver: aluminium cover (Al plate on the top-cap layout is not drawn).", fill=(90, 90, 90), font=f2)
-    img.save(os.path.join(S.RETIRED, 'monolith_layout_compare.png'))
-    print("wrote monolith_layout_compare.png")

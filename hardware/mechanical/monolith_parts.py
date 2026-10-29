@@ -1,5 +1,6 @@
 """Monolith test-print parts (numpy + scipy only).
-Run: python3 monolith_parts.py [top|side|all]  -> retired/*.stl (the top-cap tube and side-tray parts, both retired).
+Run: python3 monolith_parts.py [top|side|all]  -> retired/*.stl (the top-cap tube and side-tray parts, both retired;
+git-ignored since 2026-10-29).
 monolith_cup.py, monolith_step.py and the render scripts import its mesh helpers.
 Every part is a stack of flat layers; each layer is described by a 2D inside-test."""
 import numpy as np, struct, os

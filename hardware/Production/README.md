@@ -7,7 +7,7 @@ KiCad 10 project `Monolith`: the P0 board, the design of record. The live board 
 The current design is in `docs/spec.md`, which wins where this file disagrees; its *P0 board changes still to apply* list is the to-do list. The sections below are a dated design log. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-10-29:
 
 - **Cells:** four BAK N21700CX-65E (6500 mAh) in 4S1P, 14.0 V nominal, 91 Wh (since 2026-10-23; the FEB 21700G section below is history).
-- **Enclosure:** the MJF PA12 cup, with no vent since 2026-10-28 (the side tray, its aluminium cover and the top-cap tube are retired; their outputs are in `hardware/mechanical/retired/`).
+- **Enclosure:** the MJF PA12 cup, with no vent since 2026-10-28 (the side tray, its aluminium cover and the top-cap tube are retired; their outputs were removed on 2026-10-29 and are in git history at `5cf521e`).
 - **Loss cuts:** Q101/Q102 BSC007N04LS6, a 9 V gate drive per port (U406/U506), L401/L501 XGL7030-332 at 500 kHz.
 - **Front-cell NTCs:** SMD TH101 / TH104 on B.Cu (since 2026-10-28; they replace the J102 / J107 wire pads).
 - **Charge ceiling:** R413/R513 are to become 0 Ω (decided 2026-10-23, register-only limit); the schematic still has 11.8k.
@@ -205,7 +205,7 @@ Parts: 256.
 
 **Outline:** since 2026-10-18, the side board of the one-piece tray. The details are in *Side outline and 1.6 mm board* below. The 40.5 mm and then 45.5 mm top-cap outlines that came before it are kept below as history.
 
-- `hardware/mechanical/retired/monolith_bottom_pcb.dxf` is the old 43.3 mm bottom end board with the 8 mm vent, not this board.
+- `monolith_bottom_pcb.dxf` (removed 2026-10-29, in git at `5cf521e`) was the old 43.3 mm bottom end board with the 8 mm vent, not this board.
 
 **Stack-up:** 6 layers, **1.6 mm** (2026-10-18, for cost; it was 0.8 mm), 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. No net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
 
