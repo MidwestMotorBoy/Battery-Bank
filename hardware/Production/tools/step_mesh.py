@@ -33,6 +33,29 @@ class Mesh:
             (ax, ay), (bx, by) = ring[k], ring[(k + 1) % n]
             self.add(rgb, [(ax, ay, z0), (bx, by, z0), (bx, by, z1), (ax, ay, z1)])
 
+    def frustum(self, rgb, x, y, r0, r1, z0, z1, n=16):
+        """A cylinder whose radius runs from r0 at z0 to r1 at z1 (a solder fillet, a cone with r1 = 0)."""
+        a = [(math.cos(2 * math.pi * k / n), math.sin(2 * math.pi * k / n)) for k in range(n)]
+        self.add(rgb, [(x + r0 * c, y + r0 * s, z0) for c, s in reversed(a)])
+        if r1 > 0:
+            self.add(rgb, [(x + r1 * c, y + r1 * s, z1) for c, s in a])
+        for k in range(n):
+            (ac, as_), (bc, bs) = a[k], a[(k + 1) % n]
+            self.add(rgb, [(x + r0 * ac, y + r0 * as_, z0), (x + r0 * bc, y + r0 * bs, z0),
+                           (x + r1 * bc, y + r1 * bs, z1), (x + r1 * ac, y + r1 * as_, z1)])
+
+    def tube(self, rgb, x, y, r_out, r_in, z0, z1, n=24):
+        """A ring (sleeve, washer) from quads: outer and inner walls, annular top and bottom."""
+        a = [(math.cos(2 * math.pi * k / n), math.sin(2 * math.pi * k / n)) for k in range(n)]
+        for k in range(n):
+            (ac, as_), (bc, bs) = a[k], a[(k + 1) % n]
+            oa, ob = (x + r_out * ac, y + r_out * as_), (x + r_out * bc, y + r_out * bs)
+            ia, ib = (x + r_in * ac, y + r_in * as_), (x + r_in * bc, y + r_in * bs)
+            self.add(rgb, [oa + (z0,), ob + (z0,), ob + (z1,), oa + (z1,)])    # outer wall, normal outward
+            self.add(rgb, [ib + (z0,), ia + (z0,), ia + (z1,), ib + (z1,)])    # bore, normal toward the axis
+            self.add(rgb, [oa + (z1,), ob + (z1,), ib + (z1,), ia + (z1,)])    # top
+            self.add(rgb, [ia + (z0,), ib + (z0,), ob + (z0,), oa + (z0,)])    # bottom
+
     def merge(self, other, rot_z=0.0, dx=0.0, dy=0.0, dz=0.0):
         a = math.radians(rot_z)
         ca, sa = math.cos(a), math.sin(a)
