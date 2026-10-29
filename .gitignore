@@ -42,3 +42,6 @@ Thumbs.db
 # Local agent settings and reviewers' scratch work
 **/.claude/settings.local.json
 docs/devboard/review4/scratch-*/
+
+# STEP export output (hardware/mechanical/monolith_step.py)
+hardware/mechanical/step/

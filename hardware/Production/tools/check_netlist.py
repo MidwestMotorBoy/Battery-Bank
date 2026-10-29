@@ -38,6 +38,7 @@ new = netlist(os.path.join(mp.PROD, mp.ROOT))
 gone, links = set(), set()
 for sh, refs in mp.REMOVE.items():
     gone |= both_ports(refs, sh)
+gone |= both_ports(mp.GD_GONE, "usb_port.kicad_sch")   # R420 -> D410 (9 V gate drive)
 for sh, refs in mp.LINKS.items():
     links |= both_ports(refs, sh)
 
@@ -67,11 +68,26 @@ for (r, p), (orf, op) in mp.siz240dt.PIN_REMAP.items():  # leg FETs merged into 
 for ref, _, _, (oref, opin) in mp.GAUGE_PADS:
     expect[(ref, "1")] = find(old[(oref, opin)])
 for (ref, pin), to in mp.NET_MOVES.items():
-    for r in (ref, ref[:-3] + "5" + ref[-2:]):  # port 1 and port 2
-        expect[(r, pin)] = find(old[("TP109", "1")]) if to == "GND" else "unconnected %s.%s" % (r, pin)
+    for port, r in enumerate(sorted(both_ports([ref], "usb_port.kicad_sch"))):  # a port-1 ref brings its port-2 twin
+        if to == "GND":
+            expect[(r, pin)] = find(old[("TP109", "1")])
+        elif to and ref[-3] == "4":
+            expect[(r, pin)] = "%s port %d" % (to, port + 1)   # "new NAME": a net new on production, one per port
+        else:
+            expect[(r, pin)] = to or "unconnected %s.%s" % (r, pin)
 for ref, pins in mp.NEW_PARTS.items():
     for p, src in pins.items():
         expect[(ref, p)] = src if isinstance(src, str) else find(old[src])
+for ref, pins in mp.GD_NETS.items():   # 9 V gate drive, both ports
+    for p, src in pins.items():
+        for port, r in enumerate(sorted(both_ports([ref], "usb_port.kicad_sch"))):
+            if src is None:
+                expect[(r, p)] = "unconnected %s.%s" % (r, p)
+            elif isinstance(src, str):
+                expect[(r, p)] = "%s port %d" % (src, port + 1)
+            else:
+                expect[(r, p)] = find(old[(src[0][:-3] + "45"[port] + src[0][-2:], src[1])] if src[0][-3] == "4"
+                                      else old[src])
 for p, (oref, opin) in {"1": ("J301", "1"), "2": ("J301", "2"), "3": ("J301", "10"), "4": ("J301", "4"), "5": ("J301", "3")}.items():
     expect[("J301", p)] = find(old[(oref, opin)])
 

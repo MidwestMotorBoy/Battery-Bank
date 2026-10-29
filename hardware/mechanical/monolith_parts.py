@@ -440,8 +440,39 @@ def nickel_strips(which='all', pack='wire'):
                 continue
             B.append(_box(pr - hw, aS, yc - hw, yc + hw, zb1 - T, zb1))   # PACK tabs: whole to the board side, then split
             for y0, y1 in S.sb_fingers(n).values(): B += _bottom_tail(aS - 0.01, y0, y1, T)
+        if pack == 'wire':                                         # sense wires (2026-10-24): CELL1 / CELL3 tongues only
+            B += _top_tongue(-1) + _top_tongue(1)
+            return np.vstack(B)
         B += _bottom_tail(-pr + hw - 0.01, -S.SB_TAIL_W / 2, S.SB_TAIL_W / 2, t)    # CELL2
         B += _top_tail(-1) + _top_tail(1)                                            # CELL1, CELL3
+    return np.vstack(B)
+
+def _top_tongue(sy):
+    """the top series strip running on past the cell as a flat tongue, out past the carrier's top frame (the CELL1 /
+    CELL3 sense wire is soldered under its end)"""
+    t, z0, w = S.SB_TAB_T, S.sb_z_tail_t, S.SB_TAIL_W / 2; yc = sy * S.SB_TAIL_Y
+    return [_box(S.sb_pr - 0.01, S.SB_TONGUE_X, yc - w, yc + w, z0, z0 + t)]
+
+SENSE_CH = (0.5, 0.95)                        # CELL2 wire channel in the carrier's bottom frame: half-width, depth
+def sense_wires():
+    """the three 28 AWG cell-tap wires (2026-10-24), square-section stand-ins: CELL2 from under the middle of the bottom
+    strip, along the channel in the bottom frame and across the gap; CELL1 / CELL3 from under their tongue ends, down
+    the gap behind the board. Each ends in its hole (sb_slots), conductor through to F.Cu."""
+    od, cu, B = S.SB_KWIRE_OD, 0.32, []
+    r = od / 2
+    xb = S.sb_xb0 - 0.9                                   # where the wires turn into the board
+    y2, z2, _ = S.sb_slots()['CELL2']
+    zf = S.cup_fr_b0 + 1.6                                # bottom frame, cell-side face
+    zc = zf - SENSE_CH[1] + 0.05                          # wire bottom, in the channel
+    B += [_box(-S.sb_pr - 1.0, xb, y2 - r, y2 + r, zc, zc + od),                       # along the channel, out past the frame
+          _box(xb, xb + od, y2 - r, y2 + r, zc, z2 + r),                               # up to the hole
+          _box(xb, S.sb_xb1 + 0.8, y2 - cu / 2, y2 + cu / 2, z2 - cu / 2, z2 + cu / 2)]   # conductor through
+    for n in ('CELL1', 'CELL3'):
+        y, z, _ = S.sb_slots()[n]; zt = S.sb_z_tail_t
+        x0 = S.SB_TONGUE_X - 1.5                          # solder lap under the tongue end
+        B += [_box(x0, xb + od, y - r, y + r, zt - od, zt),                            # under the tongue end
+              _box(xb, xb + od, y - r, y + r, z - r, zt - od),                         # down the gap
+              _box(xb, S.sb_xb1 + 0.8, y - cu / 2, y + cu / 2, z - cu / 2, z + cu / 2)]
     return np.vstack(B)
 
 def pack_wires():

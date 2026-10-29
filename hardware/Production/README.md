@@ -78,12 +78,32 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
     - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
-    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 16 AWG pads (`SolderWire-1.5sqmm`, Ø1.7 mm hole);
-    - J109–J111: CELL1–CELL3 tap pads (`SolderWire-0.15sqmm`);
-    - J102, J105–J107: cell NTC wire pads.
+    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
+
+## Loss cuts 1–3 (adopted 2026-10-23, drawn 2026-10-28)
+
+The board-side loss cuts from `docs/spec.md` (*Decided: the four loss cuts*). Port 1 references; port 2 is 5xx.
+
+| Cut | Parts | Change |
+|---|---|---|
+| 1. Protection FETs | Q101, Q102 | AGM404AP1 (3.3 × 3.3) → Infineon BSC007N04LS6 (LCSC C534274), 0.70 mΩ, TDSON-8 FL 5 × 6. Footprint `Infineon_PG-TDSON-8_6.15x5.15mm_D5-8`: KiCad's PG-TDSON-8 with the drain leads numbered 5–8 to match the symbol (`tdson_footprint()`). Check it against the datasheet's footprint drawing before fab |
+| 2. 9 V gate drive | U406, C457, C458, R452–R455, D410, D411, Q409 | See below |
+| 3. Inductor + 500 kHz | L401, R412 | Coilcraft XGL7030-332MEC 3.3 µH on the APS0730 pads (consigned); R412 40.2k → 49.9k (598 → ~500 kHz). R412's LCSC code (0201WMF4992TEE) is still to look up |
+
+**9 V gate drive, per port** (`add_gate_drive()`, symbol in `tools/tps7a4101.py`), in the free area right of the BQ25756 controller block:
+
+- U406 TPS7A4101DGNR (LCSC C111739, HVSSOP-8 PowerPAD) runs from PACK_P. C457 1 µF 50 V in, C458 22 µF 25 V 0805 out (the LDO needs ≥ 4.7 µF; about 8 µF is left at 9.6 V). R452 40.2k / R453 5.6k set 1.173 × (1 + 40.2/5.6) ≈ 9.6 V.
+- D411 (LRB520S-40) ORs it onto DRV_SUP at about 9.3 V. D410 (LRB520S-40) replaces R420 (10 Ω REGN → DRV_SUP), so with U406 off DRV_SUP is REGN − VF, TI's standard drive, and a dead pack still charges. The output diode is needed because the TPS7A41's OUT may not sit more than 0.3 V above IN.
+- EN: R454 (100k) from REGN, pulled low by Q409 (AO3400A) unless TPS25751 GPIO6 (net DRV9_OFF) is low. R455 (100k) pulls Q409's gate up to the port's LDO_3V3, so GPIO6 Hi-Z (reset, no configuration) or high means 9 V off. GPIO6 leaves the unused-GPIO GND rail (`free_gpio6()`); its wire crosses the rail without a junction.
+- Firmware: GPIO6 as an output with initial value high; `GPsl` turns the 9 V on, `GPsh` off. On only while that converter switches, for contracts ≥ 45 W and with PACK_P ≥ 10 V (the TPS7A41's EN may not sit more than 0.3 V above IN either). With REGN down, EN is low, so DRV_SUP is never driven while the BQ25756 is off (bq25756.pdf 6.3.3.2).
+- C411 4.7 µF 10 V 0402 → 4.7 µF 25 V 0805 (CL21A475KAQNNNE, C1779).
+
+The committed sheets were updated by calling these functions (`edit_symbols`, `add_gate_drive`, `tdson_footprint`, tidy's notes) on the existing files, because KiCad can't be installed in the cloud session that made the change; a full `make_production.py` run produces the same result. Connectivity was checked by a script that compares every pin's net before and after (only the intended changes); **ERC, check_netlist.py and Update PCB from Schematic are still to run in KiCad.**
 
 ## Passive downsizing (2026-10-17)
 
@@ -380,56 +400,67 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 
 **PCB:** run Update PCB from Schematic. The board needs new footprints for C421/C521 (7343 D), C431/C434/C444 and C531/C534/C544 (1210), and C208 (1210), plus seven new parts: C209–C213 and C456/C556 (7343 D).
 
-## Cover standoffs, no screw holes (2026-10-20)
+## Board mounting: carrier pegs (2026-10-21; the cover standoffs are retired)
 
-The board has **no screw holes**. It is held by:
-- the top wall stop and the two USB-C bodies in their wall holes;
-- the PA12 wedge under its bottom edge (it replaced the shim, 2026-10-21);
-- the aluminium cover pressing down through the gap pad.
+The board has **no screw holes**. In the cup it rides on the PA12 carrier (`mechanical/monolith_cup.py`):
+- **four pegs** (Ø2.0 mm) on the carrier rails pass through four NPTH slots and stand 0.6 mm proud of F.Cu;
+- the rails bear on B.Cu along the front cells' tangents;
+- the top edge stops on the top wall, and the USB-C bodies sit in their seal bores.
 
-The two M2 cover screws go into heat-set inserts in two bosses on the PA12 wedge (2026-10-21; they were tray pillars). The bosses sit in the board's corner notches, beside the board, not through it.
+- **Schematic:** H101–H104 on the 3V3 Rail sheet, now `Mechanical:MountingHole` (no pins, no net, not in the BOM) with the generated footprint `MonolithDev:Peg_NPTH_Slot2.6x2.2mm` (2.6 × 2.2 mm NPTH slot, long along KiCad x; courtyard 0.5 mm round it on both faces). Until 2026-10-24 these were Ø2.2 holes; the slot gives ±0.3 mm float across the board so the USB-C seal bores centre the ports, and keeps ±0.1 mm along it. Same references as the old Würth standoffs, so Update PCB swaps the footprints in place.
+- **Positions:** `CUP_PEGS` in `mechanical/monolith_shell.py`. In KiCad, H101 (91.40, 127.48), H102 (91.40, 73.48), H103 (108.60, 127.48), H104 (108.60, 73.48).
+    - H104 lands on U405 and C452 as placed today: move them.
+- **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --mech`. It moves only the peg holes and the seven pack wire holes to their positions and locks them.
 
-What does mount on the board is **four SMT standoffs** on F.Cu, `COVER_STANDOFFS` on `mechanical/monolith_side_pcb.dxf`.
+## Pack wire holes and the 1N / 4P Kelvin nets (2026-10-21; all wires 2026-10-24)
 
-- **Job:** they hold the cover 0.2 mm off the parts, so a drop or squeeze loads the steel standoffs rather than the inductors, the gap pad and the USB-C bodies.
-- **Part:** Würth WA-SMSI 9774035243R (LCSC C5266183, 134 in stock on 2026-10-20). M2 internal thread, 4.35 mm body, 3.5 mm tall, reflowed with the rest of F.Cu.
-- **Footprint:** KiCad's `Mounting_Wuerth:Mounting_Wuerth_WA-SMSI-M2_H3.5mm_9774035243`, a pad ring plus a 3 mm unplated hole and a 5.8 mm courtyard.
-- **Net:** the pad ring has no net. The cover only touches the standoffs when it flexes, so they can't serve as a ground bond.
-- **Schematic:** H101–H104, on the 3V3 Rail sheet, so they reach the JLC BOM and placement file.
-- **Positions:** from `mechanical/monolith_shell.py` `SB_STANDOFFS` (single source for the tray and the board). In KiCad, H101 (85.0, 113.5), H102 (115.0, 113.5), H103 (85.0, 93.5) and H104 (115.0, 93.5), all 6.6 mm in from the side edges.
-    - The upper pair moved from tray z 56 to z 48. At z 56 it sat on the port-1 BQ25756 and on the lower end of the BLE module (right edge, z 56–63).
-    - A new mechanical check keeps the standoffs at least 5 mm from the module (0.9 mm of margin now).
-- **Placing them:** run Update PCB from Schematic, close or save the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --standoffs`. It moves only H101–H104 to these positions and locks them.
-    - A dry run on the current placement shows H104's courtyard 0.4 mm into U403's, so move U403 up by 0.5 mm.
-- **Still to update:** the mechanical renders (`monolith_parts.py`, `monolith_print_kit.py`) still show the old standoff spots until they are re-run in the mechanical venv.
+Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wires** (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PTFE PACK power wires** in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
 
-## Mechanical keep-outs on the board (2026-10-21)
+| Hole | Ref | Net | KiCad (x, y), pad length or Ø |
+|---|---|---|---|
+| PACK− power wire | J108 | CELL_N | (86.975, 135.726), Ø1.5 |
+| 1N Kelvin wire | J115 | CELL_1N (new) | (91.275, 135.476), Ø0.8 in a 1.5 × 1.4 pad |
+| CELL2 sense wire | J110 | CELL2 | (100.000, 135.451), Ø0.8 in a 1.5 × 1.4 pad |
+| 4P Kelvin wire | J116 | CELL_4P (new) | (108.725, 135.476), Ø0.8 in a 1.5 × 1.4 pad |
+| PACK+ power wire | J112 | CELL_P_RAW | (113.025, 135.726), Ø1.5 |
+| CELL1 sense wire | J109 | CELL1 | (86.100, 69.475), Ø0.8 in a 1.5 × 1.4 pad |
+| CELL3 sense wire | J111 | CELL3 | (113.900, 69.475), Ø0.8 in a 1.5 × 1.4 pad |
 
-JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `mechanical/monolith_shell.py`, and re-running it replaces the old `KO_*` areas. Run it with the board closed in KiCad.
+**Kelvin split** (BQ40Z50-R2 SLUSCS4C §9.2.2.1.3, SLUA660 §2.3–2.4):
+- **CELL_1N** is the gauge's low-current ground: U101 VSS and its strapped pins (PRES, DISP, PTC, PTCEN), its decoupling (C104, C105, C115, C116, C118), U102 VSS and its CD cap C117, R117, and the NTC returns. It meets the pack only at the 1N tab, so route it as a star from J115 and keep it off CELL_N copper.
+- **CELL_N** keeps the current: the PACK− power wire J108, the shunt RS101 (with SRP's R107 at its pad), and the fuse-heater FET Q104 with its gate resistor R125.
+- **CELL_4P** is the sense top: VC4 (R104), the U102 V4 and VDD filters (R119, R123) and the BAT diode D101 (TI fig. 9-12). F102 stays on CELL_P_RAW with the PACK+ power wire J112.
+- **Solder order** (gauge note 15): PACK−, then 1N and the taps bottom-up, then 4P, and PACK+ last.
+- `check_netlist.py` lists these pins as deliberate moves (`KELVIN` / `NET_MOVES` in `make_production.py`).
+
+## Mechanical keep-outs on the board (cup, 2026-10-21)
+
+JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `mechanical/monolith_shell.py` (the cup's values are the `CUP_*` constants there), and re-running it replaces the old `KO_*` areas. It edits the board file as text (KiCad 10's python can't build zone outlines), so run it with the board closed in KiCad.
+
+The cup has had no vent since 2026-10-28, so `KO_F_cup_vent` (a Ø7 mm F.Cu circle at 100, 127.5) is gone and parts may go there.
 
 | Rule area | Layer | Not allowed | Why |
 |---|---|---|---|
-| `KO_F_cover_vent` (Ø7 mm at 100, 129.5) | F.Cu | parts | under the cover's ePTFE vent: no tall parts or gap pad |
 | `KO_F_above_antenna` (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | nothing metal over the BLE module's antenna end. The module footprint already keeps copper off every layer there |
 | `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
-| `KO_B_EVA_lane_1..3` (x 86.1–92.1 and 107.9–113.9; split round the module) | B.Cu | parts | EVA strips pressed onto the board along the cell tangents, where free height is lowest |
-| `KO_B_PACKN_strip` / `KO_B_PACKP_strip` (x 85.1–93.1 and 106.9–114.9, bottom 5 mm) | B.Cu | parts, tracks | the PACK nickel strips lie on B.Cu and wrap the bottom edge onto the F.Cu pads. A pour of the strip's own net is fine |
-| `KO_B_tap_wires_top` (x 96.5–103.5, top edge to y 73) and `KO_B_tap_wire_CELL2` | B.Cu | parts | cell sense wires behind the board, from the tap holes to the EVA slots and the floor channel |
+| `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |
+| `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48, notched 1.1 × 2.2 mm at the outer edge round TH101 / TH104) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages; the two front-cell NTCs sit in the notches, under the gel |
+| `KO_B_tail_CELL1` / `_CELL2` / `_CELL3` (from `sb_tail_runs()`) | B.Cu | parts | CELL2 wire and the CELL1 / CELL3 tongues and wires behind the board (drawn as the old tail runs, which cover them) |
+| `KO_B_wire_PACKN` / `_PACKP` / `_1N` / `_4P` (from `sb_wire_runs()`, bottom edge to y 134.3–134.6) | B.Cu | parts | the PACK power and Kelvin wires cross the gap to their holes; sized for a 1.8 mm power wire and a 0.75 mm Kelvin wire (2026-10-24), no room for any part |
 
 There is no rule-area type for height, so a note on Cmts.User under the board holds those limits:
-- **F.Cu:** parts up to 3.2 mm, set by the cover gap pad.
+- **F.Cu:** parts up to 3.2 mm; the cup wall sits 0.5 mm above.
 - **B.Cu:** parts up to 2.3 mm in most places. Up to about 5 mm only in the centre strip (x 96–104) or more than 18 mm from the centre line. No heat sources.
 
 **Hand-soldered B.Cu parts (19):**
 - **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
 - **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
-- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports.
+- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
 
 Fit all 19 before the first power-up: the chargers need both bulk banks.
 
-**DRC on the 2026-10-21 placement:**
-- Port 1's stage sits over the antenna area: U403, Q402, C434, R446 and R447 are in `KO_F_above_antenna`.
-- L401 is on B.Cu in EVA lane 3. It belongs on F.Cu with the FETs.
+**DRC with the cup keep-outs (scratch run, 2026-10-22):**
+- Port 1's stage sits over the antenna area: Q402, R446 and R447 are in `KO_F_above_antenna`. The power stages belong over the gap-filler zones.
 
 ## FEB 21700G cells (2026-10-21)
 
@@ -437,22 +468,22 @@ The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 
 
 - **R413/R513 (ICHG) 9.1k → 11.8k 1 %** (UNI-ROYAL 0402WGF1182TCE, LCSC C93752; `tools/make_production.py` updated). The hardware charge ceiling becomes 48–52 A·kΩ / 11.8 kΩ = 4.07–4.45 A per port, under the FEB's 4.55 A maximum (the 9.1k allowed up to 5.83 A). Check C93752 stock before ordering; 12k (C25752, 4.0–4.33 A) is the fallback.
 - **Board outline unchanged** (43.20 × 74.35 mm). The mechanical model holds the board's guide line at the 58E-era value, and the extra 0.3 mm of cell length comes out of the floor zone.
-- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. **Not yet applied to `Monolith.kicad_pcb`:** re-run `tools/make_board.py` (or move the slots by hand) once the in-progress layout is merged.
+- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. On the board: Update PCB from Schematic, then `tools/make_board.py --mech` places all seven (see *Pack slots and the 1N / 4P Kelvin nets*).
 - **Footprint values:** run Update PCB from Schematic so R413/R513 carry 11.8k.
 - **Gauge:** design capacity 6,500 mAh, new temperature ranges and protections, and a new chemistry ID (`docs/production/p0-bringup-and-training.md`).
 - **Heat:** about 12 W at 100 W out (cells ~6.5 W of it). Firmware keeps the 100 W offer but starts a linear derate at ~33 °C on the hottest cell, down to ~40 W.
 
 ## Enclosure: the cup (2026-10-21)
 
-The side tray and its aluminium cover are retired; the enclosure is now **the cup** (`hardware/mechanical/monolith_cup.py`, `docs/production/p0-assembly.md`). Same board outline, slots and tails. Board changes it needs (not yet applied to `Monolith.kicad_pcb`):
+The side tray and its aluminium cover are retired; the enclosure is now **the cup** (`hardware/mechanical/monolith_cup.py`, `docs/production/p0-assembly.md`). Same board outline, slots and tails. Board changes it needs: the schematic side and the keep-outs are in the tools (2026-10-22); the board picks them up with Update PCB from Schematic, `make_board.py --mech` and `--keepouts`. Still by hand: the gap-filler copper and vias, and moving the power stages over it.
 - **Gap-filler zone on B.Cu:** |y| 7–16 mm, z 27–53 mm (shell coordinates): no parts, solid copper, a dense thermal-via array from the power stages on F.Cu. This replaces the cover as the heat path.
-- **Carrier rails split:** the B.Cu frame-bar keep-outs stay at |y| 6.5–11.3 mm but stop between z 25 and 55 mm.
-- **Two peg holes** (Ø2.0 mm) for the carrier at y ±8.6 mm, z 14 and 68 mm.
-- **Cover standoffs H101–H104 can go** (nothing to bear on), and the bottom corner notches no longer clear any bosses (harmless, left as they are).
+- **Carrier rails split:** the B.Cu rail keep-outs stay at |y| 6.5–11.3 mm but stop between z 25 and 55 mm.
+- **Four peg slots** (2.6 × 2.2 mm NPTH for Ø2.0 pegs: ±0.3 mm float in y, ±0.1 in z) at y ±8.6 mm, z 14 and 68 mm: H101–H104.
+- **Cover standoffs are gone** (H101–H104 are the peg holes now), and the bottom corner notches no longer clear any bosses (harmless, left as they are).
 - **F.Cu height:** the cup's board-face wall sits 0.5 mm over the tallest part (3.2 mm limit unchanged).
 
 ## Next
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Place the board** on the side outline. Run Update PCB from Schematic and then `make_board.py --standoffs` first, so the four locked cover standoffs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
+3. **Place the board.** Run Update PCB from Schematic, then `make_board.py --mech` and `--keepouts` (board closed), so the locked wire holes, peg holes and keep-outs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.

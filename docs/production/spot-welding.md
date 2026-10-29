@@ -13,10 +13,9 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 
 | Use | Material | Size | Source (2026-10-23) |
 | --- | --- | --- | --- |
-| Series strips; the CELL1 / CELL3 tails cut from them | Pure nickel, 99.6 % | 0.2 × 10 mm | diy500amp, Pure Nickel Strip Roll, 5 m |
+| Series strips; the top two keep a 3 mm tongue for the CELL1 / CELL3 wires | Pure nickel, 99.6 % | 0.2 × 10 mm | diy500amp, Pure Nickel Strip Roll, 5 m |
 | PACK− / PACK+ pads (the wires are soldered to them on the bench) | Pure nickel | 0.2 × 7 mm, cut from the 10 mm roll (or the 0.2 × 8 roll) | Same listing |
-| PACK power leads / Kelvin leads | Silver-plated copper, PTFE insulated | 18 AWG thin-wall, M22759/11-18 or similar (1.45 mm OD at most) / 28 AWG (about 0.6 mm OD) | Any PTFE hook-up wire supplier |
-| CELL2 sense tail | Pure nickel | 0.15 mm, slit to 3 mm | Same listing, 0.15 × 10 mm |
+| PACK power leads / Kelvin and sense leads | Silver-plated copper, PTFE insulated | 18 AWG, M22759/11-18 (1.8 mm OD at most) / 28 AWG thin-wall Type ET, M16878/6-BCE or -BCB (0.75 mm OD at most) | Any PTFE hook-up wire supplier |
 
 **Check the nickel is real** before welding anything. Nickel-plated steel looks identical and has 2–3 times the resistance. Four-wire 100 mm of the 0.2 × 10 strip at 5 A from the bench supply: pure nickel reads about 3.5 mΩ (17 mV). Also leave a scrap in salt water overnight: plated steel rusts at the cut edges.
 
@@ -35,8 +34,9 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 ## Welding inside the carrier
 
 - The cells load sideways into the carrier first. Each strip then slides into the 0.4–0.45 mm gap between the cell ends and the end frame, and is welded through the windows.
-- **CELL2 tail:** the middle of the bottom strip (C2+ / C3−) sits under the frame, not under a window, so the pens can't reach it there. Weld the CELL2 tail to the bottom strip on the bench first, then slide the strip in with the tail attached.
-- Once the first strip is on, the cells are live. Keep the pens from bridging two cells, and tape every loose tail end.
+- **Sense wires (2026-10-24):** all three cell taps are 28 AWG PTFE wires, soldered to the nickel on the bench before it goes near a cell, so no solder iron touches a cell. CELL2 solders to the middle of the bottom strip (C2+ / C3−), which sits under the frame, not under a window, and its wire lies in the channel in the bottom frame. CELL1 and CELL3 solder under the tongue ends of the top strips, outside the frame. Those joints are 8 mm or more from the nearest weld spot.
+- **Before the first weld:** fish-paper rings on the four + ends (C1 and C3 top, C2 and C4 bottom) and the foam preload rings in the bottom frame's pockets (`p0-assembly.md`, step 1). Keep the pens on the + cap inside the ring; a weld through the fish paper chars it.
+- Once the first strip is on, the cells are live. Keep the pens from bridging two cells, and cap every loose wire end.
 - To confirm on the first carrier fit print: that a 0.2 × 10 mm strip slides into the frame gap, and that the pens sit flat through a 1.6 mm deep, 14 mm window.
 
 The comparison of the PACK tail options (plain nickel, bimetal copper, wire) is drawn to scale in `pack-tail-options.html` in this folder. This branch takes option C, the wire tails: solder the wires to the PACK pads before the pads are welded, and keep every weld spot at least 3 mm from the solder.

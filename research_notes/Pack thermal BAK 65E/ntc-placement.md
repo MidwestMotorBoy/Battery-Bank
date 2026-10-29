@@ -38,7 +38,7 @@ Shell frame to KiCad: KiCad x = 100 + y, KiCad y = 141.47 − z (from the PACK h
 | Wire pads, 2 × Ø0.5 THT, 4 mm pitch along z | KiCad (113.4, 77.47) and (113.4, 73.47) | (86.6, 77.47) and (86.6, 73.47) |
 | New B.Cu keep-out `KO_B_ntc_C4` / `_C1` | x 111.8–115.0, y 72.5–95.5 | x 85.0–88.2, y 72.5–95.5 |
 
-- The pads sit 2.5 mm below the CELL1 / CELL3 slots (z 72) and outboard of port 1's parts; F.Cu is clear there on the 10-24 `Production` board.
+- The pads sit 2.5 mm below the CELL1 / CELL3 slots (z 72). **As placed (2026-10-24):** at |y| 13.4 J107's pad overlapped the GND pad of C406 (port 1's VBUS cap, F.Cu), so both pad pairs went to |y| 14.7 (KiCad x 114.7 / 85.3) and the keep-outs to x 111.5–116.05 / 83.95–88.5, y 72.13–96.48 (`monolith_shell.py` `sb_ntc_pads()`, `sb_ntc_runs()`). The leads still run at |y| 12–14.5 and bend out 0.2 mm to the pads.
 - **Conflict:** C421 (47 µF 35 V, Kemet D, B.Cu) sits at KiCad (113.8, 82.0), on the C4 lead run. It also breaks the B.Cu height rule there (2.8 mm part, 2.3 mm limit, about 3.0 mm of real gap at |y| 13.8). The board README already puts the USB-side tantalums in the centre strip near the ports; C421 has to move either way.
 - The back-cell NTCs (TS2, TS3 on J105, J106) stay where they were. The back cells run about 5 K cooler and never set the limit.
 

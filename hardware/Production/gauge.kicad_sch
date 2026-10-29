@@ -9,7 +9,7 @@
 		(date "2026-10-17")
 		(rev "P0")
 		(company "Monolith 100 W battery bank - production")
-		(comment 1 "Welded 4S pack pads, BQ40Z50-R2 gauge/protector, protection FETs")
+		(comment 1 "Welded 4S pack wires, BQ40Z50-R2 gauge/protector, protection FETs")
 		(comment 2 "Spec + open items: Production/README.md")
 		(comment 3 "P0: dev board rev A8 stripped by Production/tools/make_production.py; not reviewed")
 	)
@@ -1850,6 +1850,279 @@
 				)
 			)
 			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:Thermistor_NTC"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TH"
+				(at -4.445 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Thermistor_NTC"
+				(at 3.175 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "thermistor NTC resistor sensor RTD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_* RV_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_0_1"
+				(arc
+					(start -3.175 2.413)
+					(mid -3.0506 2.3165)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.048 2.794)
+					(mid -2.9736 2.9736)
+					(end -2.794 3.048)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 3.048)
+					(mid -2.6144 2.9736)
+					(end -2.54 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 2.54)
+					(mid -2.9736 2.6144)
+					(end -3.048 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 1.905)
+					(mid -2.9736 1.9794)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.54 2.159)
+					(mid -2.6144 1.9794)
+					(end -2.794 1.905)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.159 2.794)
+					(mid -2.434 2.5608)
+					(end -2.794 2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 2.159) (xy -2.54 2.794)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -3.683) (xy -2.54 -1.397) (xy -2.794 -2.159) (xy -2.286 -2.159) (xy -2.54 -1.397) (xy -2.54 -1.651)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.54) (xy -1.778 1.524) (xy 1.778 -1.524) (xy 1.778 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -1.397) (xy -1.778 -3.683) (xy -2.032 -2.921) (xy -1.524 -2.921) (xy -1.778 -3.683)
+						(xy -1.778 -3.429)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
@@ -4305,9 +4578,9 @@
 		)
 		(uuid "729559fd-c1ea-4344-98ba-cad9ebc5c3ca")
 	)
-	(text "PACK WIRES  (welded 4S EVE INR21700-58E)"
+	(text "PACK SLOTS + WIRES  (welded 4S BAK 65E, tails and wires soldered on F.Cu)"
 		(exclude_from_sim no)
-		(at 22.86 33.02 0)
+		(at 12.7 24.384 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -4317,7 +4590,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = gauge VSS (cell 1 negative). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the tap pads J109-J111 and from the J108/J112 pads;\n    VC4 from CELL_P_RAW (before F102) so fuse drop is not read as cell voltage.\n4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_P_RAW (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Connect the pack with USB unplugged, PACK- first, then the taps bottom-up, then PACK+: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV."
+	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1 / TS4 (front cells C1 / C4): SMD 0402 NTCs TH101 / TH104 on B.Cu in the gap-filler zones (smd-ntc.md).\n   TS2 / TS3 (back cells): wired 10k NTCs on J105 / J106, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.\n16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while\n    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -4353,7 +4626,7 @@
 		)
 		(uuid "b9b49452-8949-490e-a301-091056988741")
 	)
-	(text "J108 PACK- and J112 PACK+: 16 AWG leads in 1.7 mm plated holes. J109-J111: cell tap wires.\nConnect with USB unplugged, in order: PACK-, CELL1, CELL2, CELL3, PACK+ (note 15)."
+	(text "J108 PACK- / J112 PACK+: 18 AWG power wires in 1.5 mm holes. J115 1N / J116 4P: Kelvin wires from the same pads.\nJ109-J111: CELL1-3 28 AWG sense wires. USB unplugged, in order: PACK-, 1N, CELL1, CELL2, CELL3, 4P, PACK+ (note 15)."
 		(exclude_from_sim no)
 		(at 22.86 40.64 0)
 		(effects
@@ -4388,6 +4661,17 @@
 			(justify left bottom)
 		)
 		(uuid "f052ed49-c341-4407-8cb8-42e938f959fb")
+	)
+	(text "Training: J113/J114 = learning-cycle load wires (20 AWG).\nWAKE: bridge TP113 to TP106 (PACK_P)."
+		(exclude_from_sim no)
+		(at 71.12 181.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f52119b6-df18-48ac-8cb2-3dfb70e3b7f4")
 	)
 	(text "GAUGE SMBus (0x0B): access via J302 on the MCU sheet"
 		(exclude_from_sim no)
@@ -4735,6 +5019,16 @@
 	)
 	(wire
 		(pts
+			(xy 215.9 44.45) (xy 215.9 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "33c5de81-bdcb-4235-8a31-635cf416b517")
+	)
+	(wire
+		(pts
 			(xy 182.88 153.67) (xy 203.2 153.67)
 		)
 		(stroke
@@ -4742,6 +5036,16 @@
 			(type default)
 		)
 		(uuid "34f47aa4-7c2f-40af-86a8-b005a517f7cf")
+	)
+	(wire
+		(pts
+			(xy 222.25 44.45) (xy 215.9 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "381736c6-6126-4037-a196-f3d7a8e3b5c8")
 	)
 	(wire
 		(pts
@@ -4905,6 +5209,16 @@
 	)
 	(wire
 		(pts
+			(xy 168.91 44.45) (xy 162.56 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73b56e4a-148d-42ba-a2f7-261c13bb7017")
+	)
+	(wire
+		(pts
 			(xy 375.92 104.14) (xy 375.92 114.3)
 		)
 		(stroke
@@ -4975,6 +5289,16 @@
 	)
 	(wire
 		(pts
+			(xy 241.3 50.8) (xy 215.9 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "91be21aa-dd99-4280-aee3-921e30851907")
+	)
+	(wire
+		(pts
 			(xy 186.69 170.18) (xy 186.69 156.21)
 		)
 		(stroke
@@ -5002,6 +5326,16 @@
 			(type default)
 		)
 		(uuid "9547e57d-0fee-41a0-8406-6138d7f8c321")
+	)
+	(wire
+		(pts
+			(xy 215.9 44.45) (xy 209.55 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96ffcf57-12c2-488c-bf58-3d3802ecc6f0")
 	)
 	(wire
 		(pts
@@ -5062,6 +5396,16 @@
 			(type default)
 		)
 		(uuid "abdda893-c311-404b-b59d-32f8890eff2e")
+	)
+	(wire
+		(pts
+			(xy 50.8 96.52) (xy 55.88 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad7137ea-846c-4e39-b3e6-618c9d0f921c")
 	)
 	(wire
 		(pts
@@ -5142,6 +5486,16 @@
 			(type default)
 		)
 		(uuid "ba90ef0c-a1f3-423b-a722-765486ad9f0b")
+	)
+	(wire
+		(pts
+			(xy 162.56 44.45) (xy 156.21 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "baac4f6d-5f1f-4a05-ad66-0ef5e6f1d60e")
 	)
 	(wire
 		(pts
@@ -5295,6 +5649,16 @@
 	)
 	(wire
 		(pts
+			(xy 215.9 50.8) (xy 215.9 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef9ac034-833d-4d07-9298-476b1460ec6e")
+	)
+	(wire
+		(pts
 			(xy 91.44 139.7) (xy 91.44 144.78)
 		)
 		(stroke
@@ -5383,6 +5747,16 @@
 		)
 		(uuid "1a2049e7-40a4-4847-ac37-5999276cf8bf")
 	)
+	(label "CELL_4P"
+		(at 55.88 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1a68dca6-9630-45d7-999e-18bed8d49794")
+	)
 	(label "FET_MID"
 		(at 148.59 138.43 180)
 		(effects
@@ -5392,6 +5766,36 @@
 			(justify right bottom)
 		)
 		(uuid "1db28735-1291-48e0-a14b-ea140f3a786c")
+	)
+	(label "CELL_1N"
+		(at 176.53 140.97 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1ddeab91-4e11-4d0d-8a05-b76ff18bded6")
+	)
+	(label "CELL_1N"
+		(at 170.18 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1e9bb5a5-b6f6-4cb1-b28b-63ec842cc5d1")
+	)
+	(label "CELL_1N"
+		(at 55.88 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2bfa61e3-2df8-4176-86ca-53e7dff825a1")
 	)
 	(label "DSG_G"
 		(at 215.9 57.15 90)
@@ -5413,6 +5817,26 @@
 		)
 		(uuid "302e109b-d59a-4ae4-8b5b-87f1f3aeaa73")
 	)
+	(label "CELL_1N"
+		(at 198.12 189.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3557c1e3-46a9-488b-83ad-24ffe977ef07")
+	)
+	(label "CELL_1N"
+		(at 81.28 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3d65f18d-e2d2-4d36-9011-79d662b919d1")
+	)
 	(label "TS3"
 		(at 203.2 179.07 180)
 		(effects
@@ -5423,7 +5847,17 @@
 		)
 		(uuid "3d759e2e-e5b1-41e4-bf61-1c960d3171e1")
 	)
-	(label "CELL_P_RAW"
+	(label "CELL_1N"
+		(at 332.74 194.31 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "42fd9b65-b0b5-4c1c-aa52-bdd54f95999a")
+	)
+	(label "CELL_4P"
 		(at 270.51 96.52 180)
 		(effects
 			(font
@@ -5433,7 +5867,17 @@
 		)
 		(uuid "46e4f994-9887-4b19-a82c-727e2d352cbd")
 	)
-	(label "CELL_P_RAW"
+	(label "CELL_1N"
+		(at 233.68 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a54fd59-a565-4daf-848d-74333d62366f")
+	)
+	(label "CELL_4P"
 		(at 335.28 96.52 0)
 		(effects
 			(font
@@ -5442,6 +5886,16 @@
 			(justify left bottom)
 		)
 		(uuid "4bdc21dc-337a-4531-9976-8d0fc486bc26")
+	)
+	(label "CELL_1N"
+		(at 284.48 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4faf1444-d30c-44c8-a5b3-a8c0f43a6aa8")
 	)
 	(label "CELL3"
 		(at 156.21 154.94 180)
@@ -5503,6 +5957,26 @@
 		)
 		(uuid "61afac23-943d-4c69-8797-6782ab190f0c")
 	)
+	(label "WAKE"
+		(at 106.68 168.91 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "63c0403e-8b74-4a80-a91b-d56e1879e041")
+	)
+	(label "CELL_1N"
+		(at 88.9 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "654842b1-1d81-4a77-9fa6-45a6db74176c")
+	)
 	(label "PACK_CMID"
 		(at 251.46 95.25 180)
 		(effects
@@ -5533,6 +6007,16 @@
 		)
 		(uuid "7619ffa9-8c60-4072-a8a9-e192c41a36a1")
 	)
+	(label "CELL_1N"
+		(at 321.31 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7d6548ad-cc91-44dc-956b-c10b4cfdf3a9")
+	)
 	(label "GAUGE_FUSE"
 		(at 355.6 127 0)
 		(effects
@@ -5542,6 +6026,16 @@
 			(justify left bottom)
 		)
 		(uuid "7e46c80c-e702-40be-9e16-d357f659299a")
+	)
+	(label "CELL_1N"
+		(at 88.9 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7f6cb36a-d867-4e7d-b3e5-bad9c2934f40")
 	)
 	(label "CELL1"
 		(at 270.51 119.38 180)
@@ -5583,6 +6077,16 @@
 		)
 		(uuid "90150973-48a0-4f1f-906f-899421ce45fd")
 	)
+	(label "CELL_1N"
+		(at 81.28 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "90b80896-3af6-4c3e-80aa-818b1ebef936")
+	)
 	(label "FET_MID"
 		(at 181.61 44.45 0)
 		(effects
@@ -5613,7 +6117,7 @@
 		)
 		(uuid "a1cbaef5-35d2-4552-96f9-e017d0593ef7")
 	)
-	(label "CELL_P_RAW"
+	(label "CELL_4P"
 		(at 156.21 147.32 180)
 		(effects
 			(font
@@ -5693,6 +6197,16 @@
 		)
 		(uuid "bf3cc9ba-b83c-4882-bc29-e97db3f197ab")
 	)
+	(label "CELL_1N"
+		(at 198.12 143.51 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c08a1fc4-47a9-48b9-a034-6237b673320a")
+	)
 	(label "CELL_P"
 		(at 162.56 64.77 270)
 		(effects
@@ -5702,6 +6216,16 @@
 			(justify right bottom)
 		)
 		(uuid "cafd52e2-2fa3-418e-b841-2a9355cd9f7b")
+	)
+	(label "CELL_1N"
+		(at 228.6 189.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cb003df9-8b58-46b3-bd84-b9fd9647e498")
 	)
 	(label "CELL3"
 		(at 270.51 104.14 180)
@@ -5763,6 +6287,26 @@
 		)
 		(uuid "e161033f-90a1-4040-af9d-8434e39476b4")
 	)
+	(label "WAKE"
+		(at 116.84 170.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e2c5fb0e-7ec9-4a25-8389-098f973dc5ac")
+	)
+	(label "CELL_P"
+		(at 106.68 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e2ce98a0-14d5-4173-adf0-730335cc122f")
+	)
 	(label "CELL_P_RAW"
 		(at 38.1 58.42 0)
 		(effects
@@ -5793,7 +6337,17 @@
 		)
 		(uuid "f5131988-0e24-40d4-b70d-cd7dfd162293")
 	)
-	(label "CELL_P_RAW"
+	(label "CELL_1N"
+		(at 332.74 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f6d031aa-6ca4-4e45-8c26-3c16c85f1c72")
+	)
+	(label "CELL_4P"
 		(at 175.26 135.89 180)
 		(effects
 			(font
@@ -6013,7 +6567,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 43.18 174.50 0)
+			(at 43.18 174.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6090,7 +6644,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 320.04 92.20 0)
+			(at 320.04 92.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6145,6 +6699,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 91.44 170.18 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "081df17d-947d-4be9-9db9-49b0beb6a549")
+		(property "Reference" "J114"
+			(at 91.44 164.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOAD GND"
+			(at 96.62 167.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm"
+			(at 96.52 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 96.52 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 91.44 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6fa48e13-33c6-4255-94fd-c95725980c51")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 332.74 123.19 0)
 		(unit 1)
@@ -6156,7 +6787,7 @@
 		(dnp no)
 		(uuid "0a7ab9be-f8e2-4621-adc2-150eaa469cba")
 		(property "Reference" "C118"
-			(at 332.74 115.48 0)
+			(at 332.74 128.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6166,7 +6797,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 332.74 117.45 0)
+			(at 332.74 130.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6240,83 +6871,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "C118")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 332.74 194.31 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "0ab57cf0-333d-4fdc-a85b-2d06082717bf")
-		(property "Reference" "#PWR123"
-			(at 332.74 191.77 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 332.74 198.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 332.74 194.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 194.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 332.74 194.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b714a17e-2435-4e89-a180-c2db1d3554c9")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR123")
 					(unit 1)
 				)
 			)
@@ -6418,83 +6972,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "C113")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 81.28 76.2 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "113978c4-d12a-48b1-87f9-287a7806eb14")
-		(property "Reference" "#PWR131"
-			(at 81.28 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 74.32 76.20 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 81.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "95091416-a9fd-4fb2-829c-68e4c97394be")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR131")
 					(unit 1)
 				)
 			)
@@ -6781,18 +7258,18 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 86.36 88.9 0)
+		(lib_id "Device:Thermistor_NTC")
+		(at 85.09 88.9 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files no)
+		(in_pos_files yes)
 		(dnp no)
 		(uuid "18c15035-c6f3-419e-bc2a-c83df9c4b16a")
-		(property "Reference" "J107"
-			(at 86.36 94.49 0)
+		(property "Reference" "TH104"
+			(at 85.09 85.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6801,8 +7278,8 @@
 				)
 			)
 		)
-		(property "Value" "Cell 4 NTC wires"
-			(at 86.36 96.46 0)
+		(property "Value" "10k B3435"
+			(at 85.09 91.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6811,8 +7288,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
-			(at 86.36 88.9 0)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6823,7 +7300,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 86.36 88.9 0)
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6833,8 +7310,8 @@
 				)
 			)
 		)
-		(property "Description" ""
-			(at 86.36 88.9 0)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6844,8 +7321,8 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 86.36 88.9 0)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C4 (BT104), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C4 (BT104) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS4 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6855,8 +7332,8 @@
 				)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 86.36 88.9 0)
+		(property "LCSC" "C77131"
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6866,8 +7343,8 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT104, over its sleeve. The can is that cell's negative terminal (about 12.6 V above VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS4 in data flash"
-			(at 86.36 88.9 0)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 85.09 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6886,7 +7363,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J107")
+					(reference "TH104")
 					(unit 1)
 				)
 			)
@@ -6904,7 +7381,7 @@
 		(dnp no)
 		(uuid "19f7ddf9-6375-4c75-a1cb-5c2a6c5f243d")
 		(property "Reference" "C106"
-			(at 124.50 130.95 0)
+			(at 124.5 130.95 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6914,7 +7391,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 124.50 132.91 0)
+			(at 124.5 132.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7005,7 +7482,7 @@
 		(dnp no)
 		(uuid "1d53a194-68bb-4f30-987b-72b270044ec5")
 		(property "Reference" "C111"
-			(at 182.73 27.24 90)
+			(at 185.27 27.24 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7015,7 +7492,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 182.73 29.20 90)
+			(at 185.27 29.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7229,7 +7706,7 @@
 		(dnp no)
 		(uuid "2001919c-80c5-4578-9e7b-5043338f9f44")
 		(property "Reference" "U101"
-			(at 215.90 129.60 0)
+			(at 215.9 129.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7239,7 +7716,7 @@
 			)
 		)
 		(property "Value" "BQ40Z50RSMR-R2"
-			(at 215.90 131.57 0)
+			(at 215.9 131.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7420,10 +7897,10 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "2072e02a-185e-47e3-9b00-7a94e21fb21c")
 		(property "Reference" "R124"
-			(at 323.70 114.61 90)
+			(at 323.7 122.18 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7433,7 +7910,7 @@
 			)
 		)
 		(property "Value" "5.1k"
-			(at 323.70 116.58 90)
+			(at 323.7 124.15 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7611,7 +8088,7 @@
 				)
 			)
 		)
-		(property "Value" "AGM404AP1"
+		(property "Value" "BSC007N04LS6"
 			(at 175.26 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7621,7 +8098,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7632,7 +8109,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C41349455.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C534274.pdf"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7643,7 +8120,7 @@
 				)
 			)
 		)
-		(property "Description" "40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3"
+		(property "Description" "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7665,7 +8142,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C41349455"
+		(property "LCSC" "C534274"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7676,7 +8153,7 @@
 				)
 			)
 		)
-		(property "MPN" "AGM404AP1 (AGMSEMI)"
+		(property "MPN" "BSC007N04LS6ATMA1 (Infineon)"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7743,7 +8220,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 190.50 35.57 90)
+			(at 190.5 35.57 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7809,7 +8286,7 @@
 		(dnp no)
 		(uuid "29f4bea2-f9c4-4433-9e73-05a851a888ca")
 		(property "Reference" "C107"
-			(at 243.80 82.69 0)
+			(at 243.8 82.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7819,7 +8296,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 84.65 0)
+			(at 243.8 84.65 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7920,7 +8397,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 292.14 116.40 0)
+			(at 292.14 116.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8011,7 +8488,7 @@
 		(dnp no)
 		(uuid "2da0b1dc-35d1-4ebd-b816-b1e60953e9b0")
 		(property "Reference" "D103"
-			(at 248.20 53.48 90)
+			(at 248.2 53.48 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8021,7 +8498,7 @@
 			)
 		)
 		(property "Value" "BZT52C15"
-			(at 248.20 55.44 90)
+			(at 248.2 55.44 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8106,83 +8583,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "D103")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 81.28 68.58 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "344cb6a0-5076-4e9e-9a84-e8e8627f4388")
-		(property "Reference" "#PWR110"
-			(at 81.28 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 74.32 68.58 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 81.28 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2e0980af-bca5-45be-a06a-f1d6159a1cd3")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR110")
 					(unit 1)
 				)
 			)
@@ -8284,6 +8684,83 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "R120")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 76.2 170.18 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "363c47c7-5477-4b71-9cc8-52d3b9929b05")
+		(property "Reference" "#PWR9008"
+			(at 76.2 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK_P"
+			(at 76.2 174.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 76.2 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 76.2 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 76.2 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "005968f5-8cb6-49d0-8c2b-c5faf27f7bc9")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#PWR9008")
 					(unit 1)
 				)
 			)
@@ -8444,6 +8921,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 55.88 96.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "42c51467-78f8-4ef1-aabf-724405ae2e67")
+		(property "Reference" "J115"
+			(at 55.88 88.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N Kelvin wire"
+			(at 55.88 90.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
+			(at 60.96 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 60.96 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 55.88 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d1755ca6-7021-4a2d-b702-89bf97f5b77f")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 257.81 151.13 90)
 		(unit 1)
@@ -8556,7 +9109,7 @@
 		(dnp no)
 		(uuid "4501e307-ea48-44c1-a39a-c6b4dda536b2")
 		(property "Reference" "C104"
-			(at 177.84 172.86 0)
+			(at 170.18 179.43 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8566,7 +9119,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 177.84 174.82 0)
+			(at 170.18 181.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8668,7 +9221,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 91.44 149.10 0)
+			(at 91.44 149.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8822,7 +9375,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 342.90 196.09 0)
+			(at 342.9 196.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8877,19 +9430,18 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
-		(at 176.53 140.97 270)
+		(lib_id "Connector:TestPoint")
+		(at 55.88 58.42 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "51dd147d-6fda-4e9a-a520-a6d9b1a862db")
-		(property "Reference" "#PWR107"
-			(at 176.53 140.97 0)
-			(hide yes)
+		(uuid "5250807b-1d9b-472b-9f07-3540ffd6b6b6")
+		(property "Reference" "J116"
+			(at 57.15 50.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8898,8 +9450,8 @@
 				)
 			)
 		)
-		(property "Value" "CELL_N"
-			(at 169.57 140.97 90)
+		(property "Value" "4P Kelvin wire"
+			(at 57.15 52.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8908,8 +9460,8 @@
 				)
 			)
 		)
-		(property "Footprint" ""
-			(at 176.53 140.97 0)
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
+			(at 60.96 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8920,7 +9472,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 176.53 140.97 0)
+			(at 60.96 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8930,8 +9482,8 @@
 				)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 176.53 140.97 0)
+		(property "Description" "test point"
+			(at 55.88 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8942,12 +9494,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "486c7ca9-48d6-4ed0-aa55-25b83567fca0")
+			(uuid "b25b13ca-23f9-42a3-bb78-9559bb5215f9")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR107")
+					(reference "J116")
 					(unit 1)
 				)
 			)
@@ -8976,7 +9528,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 58.42 174.50 0)
+			(at 58.42 174.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9132,19 +9684,18 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
-		(at 170.18 177.8 0)
+		(lib_id "Connector:TestPoint")
+		(at 38.1 78.74 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "541b865e-13fe-402d-be39-401af7b21ec7")
-		(property "Reference" "#PWR106"
-			(at 170.18 177.8 0)
-			(hide yes)
+		(uuid "54cb1fdb-50eb-43bd-ac48-569bf18c169c")
+		(property "Reference" "J110"
+			(at 38.1 70.92 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9153,8 +9704,8 @@
 				)
 			)
 		)
-		(property "Value" "CELL_N"
-			(at 170.18 182.12 0)
+		(property "Value" "CELL2 sense wire"
+			(at 38.1 72.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9163,8 +9714,8 @@
 				)
 			)
 		)
-		(property "Footprint" ""
-			(at 170.18 177.8 0)
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
+			(at 43.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9175,7 +9726,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 170.18 177.8 0)
+			(at 43.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9185,85 +9736,8 @@
 				)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 170.18 177.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a61bac77-cc64-4630-9422-9b532c4c673f")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR106")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 198.12 189.23 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5436e548-9f0b-4e1a-9554-6732e024e146")
-		(property "Reference" "#PWR101"
-			(at 198.12 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 198.12 193.55 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 198.12 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198.12 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 198.12 189.23 0)
+		(property "Description" "test point"
+			(at 38.1 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9274,12 +9748,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "08976fd0-afbd-4ff1-abd1-24a0285d34f3")
+			(uuid "df317038-af88-4869-894b-4bae743f4cbb")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR101")
+					(reference "J110")
 					(unit 1)
 				)
 			)
@@ -9381,6 +9855,107 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "R122")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 106.68 165.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "55994254-cd51-46de-8b39-48228455ca6f")
+		(property "Reference" "R118"
+			(at 110.91 163.97 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4.7k"
+			(at 110.91 165.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 106.68 166.88 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 106.68 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 106.68 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25900"
+			(at 106.68 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF4701TCE"
+			(at 106.68 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6e786bd2-5032-4e52-bba4-da08d1e947d8")
+		)
+		(pin "2"
+			(uuid "0e930e1e-9ab1-413f-832b-52362e668a35")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "R118")
 					(unit 1)
 				)
 			)
@@ -9598,7 +10173,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 215.90 69.09 0)
+			(at 215.9 69.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9653,6 +10228,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 76.2 170.18 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "598bfa6a-e7e0-4f6a-9b1f-f2a508a0f991")
+		(property "Reference" "J113"
+			(at 76.2 164.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOAD PACK_P"
+			(at 81.38 167.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm"
+			(at 81.28 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 76.2 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "149a2b30-63c3-4c13-8c3e-e145be10fef9")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J113")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VCC")
 		(at 241.3 58.42 180)
 		(unit 1)
@@ -9675,7 +10327,7 @@
 			)
 		)
 		(property "Value" "PACK_P"
-			(at 241.30 62.74 0)
+			(at 241.3 62.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9741,7 +10393,7 @@
 		(dnp no)
 		(uuid "5db5054d-f73d-46e9-a7fe-433996233909")
 		(property "Reference" "R110"
-			(at 168.00 59.83 0)
+			(at 168 59.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9751,7 +10403,7 @@
 			)
 		)
 		(property "Value" "10M 5%"
-			(at 168.00 61.79 0)
+			(at 168 61.79 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9919,7 +10571,7 @@
 		(dnp no)
 		(uuid "640f0fb6-8fed-40e9-8d8b-677cb0c1282c")
 		(property "Reference" "R115"
-			(at 239.88 155.20 90)
+			(at 239.88 155.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10020,7 +10672,7 @@
 		(dnp no)
 		(uuid "64a08ec5-b76e-49b4-a8a0-a320aadce41b")
 		(property "Reference" "C116"
-			(at 328.97 99.20 0)
+			(at 321.31 105.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10030,7 +10682,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 328.97 101.16 0)
+			(at 321.31 107.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10233,7 +10885,7 @@
 		(dnp no)
 		(uuid "65fd7dc7-9300-4219-a586-a413f065e6fb")
 		(property "Reference" "C108"
-			(at 243.80 97.93 0)
+			(at 243.8 97.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10243,7 +10895,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 243.80 99.89 0)
+			(at 243.8 99.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10423,7 +11075,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 38.10 103.38 0)
+			(at 38.1 103.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10486,7 +11138,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "6c98240a-a5aa-438f-9ba2-08bff26040d3")
 		(property "Reference" "R126"
 			(at 357.29 122.06 0)
@@ -10579,18 +11231,18 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
-		(at 284.48 127 0)
+		(lib_id "power:GND")
+		(at 91.44 170.18 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
+		(on_board no)
+		(in_pos_files no)
 		(dnp no)
-		(uuid "7596932f-2d45-4f14-8768-f037c1d8bd04")
-		(property "Reference" "#PWR576"
-			(at 284.48 127 0)
+		(uuid "75841cbe-d126-42c7-8d50-749b24db19b5")
+		(property "Reference" "#PWR9010"
+			(at 91.44 167.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10600,8 +11252,8 @@
 				)
 			)
 		)
-		(property "Value" "CELL_N"
-			(at 284.48 131.32 0)
+		(property "Value" "GND"
+			(at 91.44 174.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10611,7 +11263,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 284.48 127 0)
+			(at 91.44 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10622,7 +11274,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 284.48 127 0)
+			(at 91.44 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10633,7 +11285,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 284.48 127 0)
+			(at 91.44 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10644,12 +11296,88 @@
 			)
 		)
 		(pin "1"
-			(uuid "0066480d-cbac-42f9-9a39-e89ddf5ed50f")
+			(uuid "0e82d3e6-c8cf-42e1-850a-7ba7df915c7d")
 		)
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR576")
+					(reference "#PWR9010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 38.1 58.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "794c79d4-69a9-4225-bd3b-be6a1aaefd41")
+		(property "Reference" "J112"
+			(at 38.1 50.6 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK+ power wire"
+			(at 38.1 52.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
+			(at 43.18 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 43.18 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 38.1 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "34fc21f2-5a82-4180-818f-f83d64cf76cf")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J112")
 					(unit 1)
 				)
 			)
@@ -10667,7 +11395,7 @@
 		(dnp no)
 		(uuid "79bb631e-cf59-42ac-b6ca-de05d4610fdc")
 		(property "Reference" "Q102"
-			(at 228.60 38.16 0)
+			(at 228.6 38.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10676,8 +11404,8 @@
 				)
 			)
 		)
-		(property "Value" "AGM404AP1"
-			(at 228.60 40.13 0)
+		(property "Value" "BSC007N04LS6"
+			(at 228.6 40.13 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10686,7 +11414,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:AGM_PDFN-8_3.3x3.3mm_P0.65mm"
+		(property "Footprint" "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10697,7 +11425,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C41349455.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C534274.pdf"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10708,7 +11436,7 @@
 				)
 			)
 		)
-		(property "Description" "40 V 4.4 mOhm N-MOSFET, PDFN3.3x3.3"
+		(property "Description" "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10730,7 +11458,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C41349455"
+		(property "LCSC" "C534274"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10741,7 +11469,7 @@
 				)
 			)
 		)
-		(property "MPN" "AGM404AP1 (AGMSEMI)"
+		(property "MPN" "BSC007N04LS6ATMA1 (Infineon)"
 			(at 228.6 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10999,6 +11727,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 38.1 88.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "868e8ddc-b998-49fc-b2cb-18f3bb10cfeb")
+		(property "Reference" "J109"
+			(at 38.1 81.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL1 sense wire"
+			(at 38.1 83.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
+			(at 43.18 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 43.18 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 38.1 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ebadf768-fa5d-441c-9e5b-ae24020c4d55")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:PWR_FLAG")
 		(at 33.02 99.06 90)
 		(unit 1)
@@ -11077,6 +11881,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 38.1 99.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "888a6dd7-6e74-4e6a-95f4-468f1faaff67")
+		(property "Reference" "J108"
+			(at 36.83 91.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PACK- power wire"
+			(at 36.83 93.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm"
+			(at 43.18 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 43.18 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 38.1 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fd423201-f4a2-4400-a94f-a277466a524b")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "MonolithDev:BQ294700")
 		(at 307.34 107.95 0)
 		(unit 1)
@@ -11098,7 +11978,7 @@
 			)
 		)
 		(property "Value" "BQ294700DSGR"
-			(at 307.34 92.20 0)
+			(at 307.34 92.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11162,7 +12042,7 @@
 				)
 			)
 		)
-		(property "Notes" "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS (CELL_N)."
+		(property "Notes" "Independent of the gauge: 4.35 V/cell OVP (hysteresis 0.30 V), active-high OUT (~7 V) after the CD delay. RIN must be 1k (device calibrated with it). Exposed pad to VSS (CELL_1N, the Kelvin ground at the 1N tab)."
 			(at 307.34 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -11311,6 +12191,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 38.1 68.58 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9c5d9ed4-4f21-4fc8-9084-a43bf89acf1a")
+		(property "Reference" "J111"
+			(at 38.1 60.76 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "CELL3 sense wire"
+			(at 38.1 62.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad1.5x1.4mm"
+			(at 43.18 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 43.18 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 38.1 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "71b6e3e5-90a0-4396-81ab-880ba5e3d03e")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "J111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 160.02 162.56 90)
 		(unit 1)
@@ -11434,7 +12390,7 @@
 		(dnp no)
 		(uuid "a3386614-4fea-4082-8161-f10b0044fd7f")
 		(property "Reference" "R103"
-			(at 152.85 156.50 90)
+			(at 159.87 150.17 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11444,7 +12400,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 152.85 158.46 90)
+			(at 159.87 152.14 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11759,7 +12715,7 @@
 		(dnp no)
 		(uuid "a6d2b51f-09da-4ecb-a089-9155e6ccaff3")
 		(property "Reference" "C117"
-			(at 336.59 106.82 0)
+			(at 328.93 113.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11769,7 +12725,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 336.59 108.78 0)
+			(at 328.93 115.36 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11871,7 +12827,7 @@
 		(dnp no)
 		(uuid "a6def852-32f1-4b54-8480-00b0bfd54570")
 		(property "Reference" "C110"
-			(at 172.57 27.24 90)
+			(at 172.57 23.43 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11881,7 +12837,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 172.57 29.20 90)
+			(at 172.57 25.39 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12085,83 +13041,6 @@
 	)
 	(symbol
 		(lib_id "power:GNDREF")
-		(at 228.6 189.23 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "adf516c4-4faa-408d-bbce-fccfdb403230")
-		(property "Reference" "#PWR105"
-			(at 228.6 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 228.60 193.55 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 228.6 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 228.6 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 228.6 189.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bdd01310-5b7e-41dd-8b63-c85c1684cfe0")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR105")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
 		(at 375.92 124.46 0)
 		(unit 1)
 		(body_style 1)
@@ -12238,18 +13117,18 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 86.36 66.04 0)
+		(lib_id "Device:Thermistor_NTC")
+		(at 85.09 66.04 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files no)
+		(in_pos_files yes)
 		(dnp no)
 		(uuid "b4cafb9f-e99b-4f2b-bb90-31aa1675549a")
-		(property "Reference" "J102"
-			(at 86.36 61.02 0)
+		(property "Reference" "TH101"
+			(at 85.09 62.23 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12258,8 +13137,8 @@
 				)
 			)
 		)
-		(property "Value" "Cell 1 NTC wires"
-			(at 86.36 62.99 0)
+		(property "Value" "10k B3435"
+			(at 85.09 68.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12268,8 +13147,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x02_P4mm_D0.5mm_OD1.5mm"
-			(at 86.36 66.04 0)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12280,7 +13159,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 86.36 66.04 0)
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12290,8 +13169,8 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 86.36 66.04 0)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12301,8 +13180,8 @@
 				)
 			)
 		)
-		(property "Sourcing" "Hand-solder, not JLC assembled (through-hole; LCSC C492401 PZ254V-11-02P)"
-			(at 86.36 66.04 0)
+		(property "Notes" "Front-cell NTC, SMD on B.Cu in the outer bottom corner of the gap-filler zone over C1 (BT101), outboard of the BQ25756 (under the gel; research_notes/Pack thermal BAK 65E/smd-ntc.md). Reads the board there, 0.6-3.8 K above the hottest point of the C1 (BT101) can in the model. Keep the inner planes under it; low side to CELL_1N by its own trace. Gauge internal 18k pull-up; enable TS1 in data flash. Murata NCP15XH103F03RB/RC: B25/50 = 3380 K, B25/85 = 3435 K"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12312,8 +13191,8 @@
 				)
 			)
 		)
-		(property "MPN" "PZ254V-11-02P"
-			(at 86.36 66.04 0)
+		(property "LCSC" "C77131"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12323,8 +13202,8 @@
 				)
 			)
 		)
-		(property "Notes" "Wired 10k B3435 NTC (Semitec 103AT-2 class, epoxy bead with insulated leads) taped to the side of BT101, over its sleeve. The can is that cell's negative terminal (at VSS) and the TS pins are rated 2.1 V: keep the sensor insulated. Gauge internal 18k pull-up; enable TS1 in data flash"
-			(at 86.36 66.04 0)
+		(property "MPN" "NCP15XH103F03RC"
+			(at 85.09 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12343,7 +13222,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J102")
+					(reference "TH101")
 					(unit 1)
 				)
 			)
@@ -12546,83 +13425,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "R107")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 321.31 104.14 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ba650622-771b-4c2f-b54d-3f16f4f25b3f")
-		(property "Reference" "#PWR577"
-			(at 321.31 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 321.31 108.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 321.31 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 321.31 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 321.31 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2d8b83bc-e54d-4588-925f-70a9b9869438")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR577")
 					(unit 1)
 				)
 			)
@@ -13101,160 +13903,6 @@
 	)
 	(symbol
 		(lib_id "power:GNDREF")
-		(at 198.12 143.51 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "c6d629a5-10eb-4bfa-bfc6-489961e00dc3")
-		(property "Reference" "#PWR102"
-			(at 198.12 143.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 196.85 146.56 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 198.12 143.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198.12 143.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 198.12 143.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6c3fc753-b20a-467f-9993-ea839ebd35b8")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 81.28 83.82 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "c9bd1f74-6a51-495c-945c-88edcd5d91ab")
-		(property "Reference" "#PWR132"
-			(at 81.28 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 74.32 83.82 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 83.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 83.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 81.28 83.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "654aab37-2f13-4a62-a81c-602fb3f9fb14")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR132")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
 		(at 342.9 127 0)
 		(unit 1)
 		(body_style 1)
@@ -13276,7 +13924,7 @@
 			)
 		)
 		(property "Value" "CELL_N"
-			(at 342.90 131.32 0)
+			(at 342.9 131.32 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13529,7 +14177,7 @@
 		(dnp no)
 		(uuid "d4f68899-6ce6-4561-824b-b6ef6471c581")
 		(property "Reference" "C112"
-			(at 292.14 99.20 0)
+			(at 292.14 99.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13619,83 +14267,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
-		(at 332.74 127 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d89e7647-575d-4778-bcb9-f37a3c7e02da")
-		(property "Reference" "#PWR578"
-			(at 332.74 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 332.74 131.32 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 332.74 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 332.74 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e3c966dc-2b03-45b4-bd25-db7b361bdc32")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR578")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 284.48 123.19 0)
 		(unit 1)
@@ -13707,7 +14278,7 @@
 		(dnp no)
 		(uuid "da794072-a455-4cd4-926a-fe78ca4ae540")
 		(property "Reference" "C115"
-			(at 292.14 122.06 0)
+			(at 284.48 128.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13717,7 +14288,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 292.14 124.02 0)
+			(at 284.48 130.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13818,7 +14389,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 177.84 167.20 0)
+			(at 177.84 167.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14004,83 +14575,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "J105")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 81.28 91.44 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "e8faaba9-82c1-4cf1-84ff-c195ce6f00c8")
-		(property "Reference" "#PWR133"
-			(at 81.28 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 74.32 91.44 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 81.28 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8aa6cce7-8cd0-41ec-929f-8fd1b0eccbfb")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR133")
 					(unit 1)
 				)
 			)
@@ -14277,6 +14771,161 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 116.84 170.18 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ed73cc40-a8bc-478e-964b-f8b2a4cc2145")
+		(property "Reference" "TP113"
+			(at 116.84 164.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WAKE"
+			(at 122.02 167.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 121.92 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 116.84 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "abe9d3cb-0071-431a-95e4-b6b0004fe3d1")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "TP113")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 50.8 96.52 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "edf6b6a4-cb12-4dc5-9099-bbec150c8c9e")
+		(property "Reference" "#FLG107"
+			(at 50.8 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 48.26 93.72 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 50.8 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 50.8 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 50.8 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c27558f4-552c-461d-80df-ad939d4c24b9")
+		)
+		(instances
+			(project "Monolith"
+				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
+					(reference "#FLG107")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Transistor_FET:Q_NMOS_GSD")
 		(at 340.36 186.69 0)
 		(unit 1)
@@ -14386,83 +15035,6 @@
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
 					(reference "Q103")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 233.68 161.29 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f3c10a4d-c1b7-4317-ba41-9f89ae697386")
-		(property "Reference" "#PWR104"
-			(at 233.68 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL_N"
-			(at 233.68 165.61 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 233.68 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 233.68 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 233.68 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8ac5c764-9198-4b79-9581-6d26487d2af1")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR104")
 					(unit 1)
 				)
 			)
@@ -14658,7 +15230,7 @@
 		(dnp no)
 		(uuid "f9661e1c-cb1f-4994-a87e-d2f394174aff")
 		(property "Reference" "Q104"
-			(at 382.85 118.40 0)
+			(at 382.85 118.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14773,7 +15345,7 @@
 		(dnp no)
 		(uuid "fccf03bd-22cf-4444-b6d3-300983b3a0df")
 		(property "Reference" "C101"
-			(at 162.52 150.00 0)
+			(at 170.18 143.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14783,7 +15355,7 @@
 			)
 		)
 		(property "Value" "0.1u 50V"
-			(at 162.52 151.96 0)
+			(at 170.18 145.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14884,7 +15456,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 98.91 136.90 90)
+			(at 98.91 136.9 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14962,1005 +15534,6 @@
 				)
 			)
 		)
-	)
-	(wire
-		(pts
-			(xy 222.25 44.45) (xy 215.9 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2818fa2f-1b8f-4445-bc61-74e85ebe614c")
-	)
-	(wire
-		(pts
-			(xy 215.9 44.45) (xy 209.55 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1106a2f3-dd7a-4c1f-b919-07889d5fbd47")
-	)
-	(wire
-		(pts
-			(xy 215.9 44.45) (xy 215.9 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9d863620-92b4-4835-b34c-862bf165d9c3")
-	)
-	(wire
-		(pts
-			(xy 215.9 50.8) (xy 215.9 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "20eb1ad2-f620-4050-bbaa-ccf528524390")
-	)
-	(wire
-		(pts
-			(xy 168.91 44.45) (xy 162.56 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c0ff88b5-2bc7-4807-927e-6a91c6fa36d3")
-	)
-	(wire
-		(pts
-			(xy 162.56 44.45) (xy 156.21 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f106f3e1-fe09-4290-9012-ef140a7a1445")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 38.1 99.06 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "888a6dd7-6e74-4e6a-95f4-468f1faaff67")
-		(property "Reference" "J108"
-			(at 38.10 91.24 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK-"
-			(at 38.10 93.21 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "CELL_N"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
-			(at 43.18 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 38.1 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4af73491-4b6c-491d-9ede-53b5b58115b1")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J108")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 38.1 88.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "868e8ddc-b998-49fc-b2cb-18f3bb10cfeb")
-		(property "Reference" "J109"
-			(at 38.10 81.08 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL1 tap"
-			(at 38.10 83.05 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
-			(at 43.18 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 38.1 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "be89b283-c293-4c4e-afff-8bba1f1919df")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J109")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 38.1 78.74 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "54cb1fdb-50eb-43bd-ac48-569bf18c169c")
-		(property "Reference" "J110"
-			(at 38.10 70.92 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL2 tap"
-			(at 38.10 72.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
-			(at 43.18 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 38.1 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "05fb73d1-b517-43c5-a991-69d59572565a")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J110")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 38.1 68.58 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "9c5d9ed4-4f21-4fc8-9084-a43bf89acf1a")
-		(property "Reference" "J111"
-			(at 38.10 60.76 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CELL3 tap"
-			(at 38.10 62.73 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.15sqmm_1x01_D0.5mm_OD1.5mm"
-			(at 43.18 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 38.1 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "afe87465-5dd4-4f0f-b0d3-df1b52f171e5")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J111")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 38.1 58.42 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "794c79d4-69a9-4225-bd3b-be6a1aaefd41")
-		(property "Reference" "J112"
-			(at 38.10 50.60 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK+"
-			(at 38.10 52.57 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Notes" "CELL_P_RAW"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x01_D1.7mm_OD3.9mm"
-			(at 43.18 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 38.1 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "29132a36-2bda-4848-9b8a-46e45ea57b5c")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J112")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 76.2 170.18 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "598bfa6a-e7e0-4f6a-9b1f-f2a508a0f991")
-		(property "Reference" "J113"
-			(at 76.20 164.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LOAD PACK_P"
-			(at 81.38 167.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm"
-			(at 81.28 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 76.2 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f3d916e5-8a67-4640-b1c0-4d4c0566edea")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J113")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 91.44 170.18 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "081df17d-947d-4be9-9db9-49b0beb6a549")
-		(property "Reference" "J114"
-			(at 91.44 164.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LOAD GND"
-			(at 96.62 167.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.5sqmm_1x01_D0.9mm_OD2.1mm"
-			(at 96.52 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 96.52 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 91.44 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0d26264a-aeb2-42ae-aac1-17f1407948b1")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J114")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 116.84 170.18 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ed73cc40-a8bc-478e-964b-f8b2a4cc2145")
-		(property "Reference" "TP113"
-			(at 116.84 164.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "WAKE"
-			(at 122.02 167.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 121.92 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 121.92 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 116.84 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c3e75d46-e797-4e70-a293-219fd7fac9f4")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "TP113")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 106.68 165.1 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "55994254-cd51-46de-8b39-48228455ca6f")
-		(property "Reference" "R118"
-			(at 110.91 163.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "4.7k"
-			(at 110.91 165.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 106.68 166.88 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 106.68 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 106.68 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C25900"
-			(at 106.68 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF4701TCE"
-			(at 106.68 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "05e4f303-e210-4f5c-81e5-ecafb421f187")
-		)
-		(pin "2"
-			(uuid "c0d1a835-bb22-472a-8185-4ed66678478d")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "R118")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 76.2 170.18 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "17413c61-3d7d-4949-a603-d49c609e8942")
-		(property "Reference" "#PWR9007"
-			(at 76.2 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PACK_P"
-			(at 76.20 174.50 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 76.2 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 76.2 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 76.2 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "64eb4fea-b816-47ed-8840-582968586246")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR9008")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 91.44 170.18 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b746fa46-a24d-48fe-b9b7-813d6d1e5af3")
-		(property "Reference" "#PWR9009"
-			(at 91.44 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 91.44 174.50 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 91.44 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 91.44 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 91.44 170.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5ee8d9a1-6424-4fa1-9c93-6e29f3ead849")
-		)
-		(instances
-			(project "Monolith"
-				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "#PWR9010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(label "CELL_P"
-		(at 106.68 161.29 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "bb0688d7-bb5e-45f6-9488-632fd5b0d081")
-	)
-	(label "WAKE"
-		(at 106.68 168.91 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "40b8561b-6d43-4b78-a313-427a29ea66b4")
-	)
-	(label "WAKE"
-		(at 116.84 170.18 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "92e1d7e8-f1e5-4170-b7e5-564b5a7dc7f1")
-	)
-	(text "Training: J113/J114 = learning-cycle load wires (20 AWG).\nWAKE: bridge TP113 to TP106 (PACK_P)."
-		(exclude_from_sim no)
-		(at 71.12 181.61 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c14e8a34-2225-42d9-9c1c-0e4b4a090c33")
-	)
-	(wire
-		(pts
-			(xy 241.3 50.8) (xy 215.9 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "871502ed-eb94-4753-8e34-c7a8a5f4190e")
 	)
 	(sheet_instances
 		(path "/"

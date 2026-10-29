@@ -164,7 +164,8 @@ SB_VENT_D, SB_VENT_Z = 3.0, 12.0      # ePTFE vent hole in the cover (above the 
 # (0.027 above the top of a 1.6 mm board), mating face 1.949 past the board edge
 USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
 USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
-USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole
+USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole (old drawing; the retired tray's holes)
+USB_RING_W, USB_RING_H = 10.35, 4.57  # seal ring, drawing rev A4 (2025-08-18), +-0.30: the cup's bores (monolith_cup.py)
 # drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md).
 # Hobby build, sheet stock limited to 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper; everything else is printed.
 # nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.
@@ -262,9 +263,22 @@ SB_WIRE_D = 0.8                      # (legacy)
 # pad that is welded to the cell end inside the weld window. It runs through a notch in the carrier's bottom frame
 # (monolith_cup.py), crosses the gap behind the board and is soldered into a plated hole. The Kelvin side (1N / 4P) is
 # a 28 AWG PTFE wire from the same pad, through its own notch, into the existing Kelvin slot.
-SB_PWIRE_OD, SB_KWIRE_OD = 1.45, 0.6  # 18 AWG thin-wall PTFE (M22759/11-18, 1.37 max) / 28 AWG PTFE, outside diameter
+SB_PWIRE_OD, SB_KWIRE_OD = 1.8, 0.75  # 18 AWG PTFE (M22759/11-18, 1.78 max at AWC) / 28 AWG Type ET PTFE (M16878/6, 0.74 max)
 SB_PWIRE_HOLE, SB_PWIRE_RING = 1.5, 0.4   # PACK wire plated hole (finished; 19/30 strand ~1.22 mm) and its annular ring
 SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows over the board's bottom edge
+# Sense wires (Logan, 2026-10-24): every sense lead is a 28 AWG PTFE wire too, so no nickel goes into the board.
+# - CELL1 / CELL3: the top strip runs on past the cell as a short flat tongue (SB_TAIL_W wide, out to SB_TONGUE_X, just
+#   past the carrier's top frame); the wire is soldered to the tongue on the bench and drops down the gap behind the
+#   board to its hole at SB_TAIL_TOP_Z.
+# - CELL2: the wire is soldered to the middle of the bottom strip on the bench and runs in a channel in the carrier's
+#   bottom frame (monolith_cup.py) out to its hole.
+# - 1N / 4P: unchanged (Kelvin wires from the PACK pads).
+# The five holes sit where the plated slots were, in 1.5 x 1.4 pads (sb_slots(): pad = SB_SWIRE_PAD_L + 2 x ring by
+# SB_SLOT_W + 2 x ring).
+SB_SWIRE_PAD_L = 0.7                 # sense pad length less 2 x ring: 1.5 x 1.4 pads (2026-10-24, were the 4.2 / 2.4 x 1.4 slot
+                                     # pads; the 4.2 pads' courtyards overlapped the USB-C ones at J109 / J111, nothing routed yet)
+SB_SWIRE_HOLE = 0.8                  # finished hole for a 28 AWG wire (7/36 or 19/40 strand, ~0.38 mm; up to 0.75 mm OD over the PTFE)
+SB_TONGUE_X = 24.0                   # CELL1 / CELL3 tongue end (x): 1.45 past the top frame, 1.3 short of B.Cu
 # derived (x across the board, y along the board width, z along the cells)
 sb_pr = (CELL_D + SB_CAGE_WEB + 2 * SB_CAGE_CLR) / 2   # cell centres at (+-sb_pr, +-sb_pr)
 sb_ac = sb_pr + CELL_D / 2 + SB_CELL_WALL     # cell-zone half-width (cavity, -x and +-y walls), and the cells' +x face line
@@ -320,16 +334,17 @@ def sb_fingers(name):
     k = '4P' if s > 0 else '1N'
     return {name: tuple(sorted((outer, outer - s * pw))), k: tuple(sorted((inner, inner + s * kw)))}
 def sb_slots():
-    """the five plated slots, {name: (y centre, z centre, length along y)}: the two Kelvin leads and the three cell taps
-    (the PACK power paths are wires in plated holes, sb_pack_holes)"""
+    """the five sense-wire holes, {name: (y centre, z centre, pad length along y less 2 x ring)}: the two Kelvin leads and
+    the three cell taps, all 28 AWG wires in SB_SWIRE_HOLE holes (2026-10-24; they were plated slots for nickel tails,
+    hence the name). All five pads are 1.5 x 1.4 (SB_SWIRE_PAD_L). The PACK power paths are wires in plated holes too (sb_pack_holes)"""
     out = {}
     zb = sb_z_tail_b - SB_PACK_T / 2
     for n in ('PACK-', 'PACK+'):
         for k, (y0, y1) in sb_fingers(n).items():
-            if k not in ('PACK-', 'PACK+'): out[k] = ((y0 + y1) / 2, zb, y1 - y0 + SB_SLOT_CLR)
-    out['CELL2'] = (0.0, sb_z_tail_b - SB_TAB_T / 2, SB_TAIL_W + SB_SLOT_CLR)
-    out['CELL1'] = (-SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
-    out['CELL3'] = (SB_TAIL_Y, SB_TAIL_TOP_Z, SB_TAIL_W + SB_SLOT_CLR)
+            if k not in ('PACK-', 'PACK+'): out[k] = ((y0 + y1) / 2, zb, SB_SWIRE_PAD_L)
+    out['CELL2'] = (0.0, sb_z_tail_b - SB_TAB_T / 2, SB_SWIRE_PAD_L)
+    out['CELL1'] = (-SB_TAIL_Y, SB_TAIL_TOP_Z, SB_SWIRE_PAD_L)
+    out['CELL3'] = (SB_TAIL_Y, SB_TAIL_TOP_Z, SB_SWIRE_PAD_L)
     return out
 def sb_pack_holes():
     """the PACK wire holes, {name: (y centre, z centre, finished diameter)}, on the old power-finger centrelines"""
@@ -343,17 +358,42 @@ def sb_wire_runs():
         y, z, _ = sb_slots()[k]; out.append((y - SB_KWIRE_OD/2 - m, y + SB_KWIRE_OD/2 + m, sb_zb0, z + SB_KWIRE_OD/2 + m))
     return out
 def sb_tail_runs():
-    """where nickel runs behind B.Cu, as (y0, y1, z0, z1) with 0.5 mm margin: the bottom tails and their kinks, and the
-    CELL1 / CELL3 tails down the gap (about 1.1 mm from B.Cu). Only low B.Cu parts here (<= 0.6 mm)."""
+    """where the sense wires cross the gap behind B.Cu, as (y0, y1, z0, z1) with 0.5 mm margin, CELL2 then CELL1, CELL3:
+    the CELL2 wire from the carrier's bottom frame to its hole, and the CELL1 / CELL3 tongues and wires down the gap
+    (about 1 mm from B.Cu). Drawn as the old nickel tail runs, which cover the wires (the board's KO_B_tail_* zones).
+    Only low B.Cu parts here (<= 0.6 mm)."""
     out, m = [], 0.5
     zlo = sb_z_tail_b - SB_PACK_T - SB_KINK[2] - m
     out.append((-SB_TAIL_W/2 - m, SB_TAIL_W/2 + m, zlo, sb_z_tail_b + m))
     for sy in (-1, 1): out.append((sy*SB_TAIL_Y - SB_TAIL_W/2 - m, sy*SB_TAIL_Y + SB_TAIL_W/2 + m, SB_TAIL_TOP_Z - m, sb_zb1))
     return out
+# Front-cell NTCs (C1 on TS1, C4 on TS4), 2026-10-28: SMD 0402s on B.Cu at the cool end of the gap-filler zone, under the gel
+# (research_notes/Pack thermal BAK 65E/smd-ntc.md; they replaced the wired beads of 2026-10-24 and their J102 / J107 pads)
+SB_NTC_SMD = (15.5, 29.0)            # (|y|, z): outboard of port 1's BQ25756, 2 mm in from the filler zone's outer edge
+SB_NTC_NOTCH = (1.1, 1.1)            # notch in KO_B_gap_filler_* round each NTC: depth in from the zone's outer edge, half-height
+def sb_ntc_smd():
+    """the front-cell SMD NTCs on B.Cu, {cell: (y, z)}: C1 (TH101) on the PACK- side, C4 (TH104) on the PACK+ side"""
+    return {c: (s * SB_NTC_SMD[0], SB_NTC_SMD[1]) for c, s in (('C1', -1), ('C4', 1))}
 SB_TAP_HOLES = {n: (y, z) for n, (y, z, _) in sb_slots().items() if n.startswith('CELL')}   # (legacy name for make_board.py)
 SB_TAB_PAD_H = 5.0                             # (legacy: the old PACK strip pads; Production/tools/make_board.py still reads it)
 sb_z_mid = (sb_zb0 + sb_zb1) / 2
 def kicad(y, z): return 100.0 + y, 100.0 - (z - sb_z_mid)   # board position in Production/Monolith.kicad_pcb
+# The cup (monolith_cup.py, adopted 2026-10-21): its board-facing values live here so Production/tools/make_board.py
+# can read them (KiCad's python can't import monolith_cup: manifold3d).
+CUP_FILL_Y, CUP_FILL_Z = (7.0, 16.0), (27.0, 53.0)   # gap filler, B.Cu to the two front cells: |y| span, z span
+CUP_RAIL_GAP = (25.0, 55.0)          # carrier rails (|y| SB_BAR_Y) stop here so the filler reaches the cell tangents
+CUP_PEGS = [(s * 8.6, z) for s in (-1, 1) for z in (14.0, 68.0)]   # carrier pegs through the board, (y, z)
+CUP_PEG_D = 2.0                      # carrier peg
+CUP_PEG_SLOT = (2.6, 2.2)            # its NPTH slot in the board, (y, z) (2026-10-24, was a 2.2 hole): +-0.3 float across y so
+                                     # the USB-C seal bores, not the pegs, centre the ports across their width; +-0.1 in z, so
+                                     # a cable push can't slide the board and pull the seal rings down out of the top wall
+CUP_PEG_PROUD = 0.6                  # peg tip above F.Cu
+# (no vent in the cup since 2026-10-28: Logan removed it; it was an ePTFE patch at y 0, z 14 on the board face)
+cup_fr_b0 = sb_z_tail_b - SB_PACK_T - 0.05 - 1.6     # carrier bottom frame, underside (monolith_cup.py FR_B0)
+def cup_rails():
+    """the carrier rails pressing on B.Cu, as (y0, y1, z0, z1): two per side, split at CUP_RAIL_GAP"""
+    return [(y0, y1, z0, z1) for y0, y1 in ((-SB_BAR_Y[1], -SB_BAR_Y[0]), SB_BAR_Y)
+            for z0, z1 in ((cup_fr_b0, CUP_RAIL_GAP[0]), (CUP_RAIL_GAP[1], sb_z_top_in))]
 
 def _dxf(path, ents):
     open(path, 'w').write("0\nSECTION\n2\nENTITIES\n" + "".join(ents) + "0\nENDSEC\n0\nEOF\n")
@@ -377,9 +417,9 @@ def write_side_dxf(path):
     s, (ma, mi) = SB_ANT_SIDE, SB_ANT_MOD     # BLE module on B.Cu at the edge, and the frame bars (no B.Cu parts there)
     _rect(e, s*(w - mi/2), sb_ant_zc, mi, ma, 'BLE_MODULE_BCU')
     for y0, y1, z0, z1 in sb_lanes(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_FRAME_BARS')
-    for y, z, l in sb_slots().values():                                   # plated slots (finished size) and their pads
-        _rect(e, y, z, l, SB_SLOT_W, 'TAB_SLOTS'); _rect(e, y, z, l + 2*SB_SLOT_RING, SB_SLOT_W + 2*SB_SLOT_RING, 'TAB_SLOT_PADS')
-    for y0, y1, z0, z1 in sb_tail_runs(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_TAIL_RUNS')   # nickel behind B.Cu
+    for y, z, l in sb_slots().values():                                   # sense-wire holes (finished size) and their pads
+        _circ(e, y, z, SB_SWIRE_HOLE/2, 'SENSE_WIRE_HOLES'); _rect(e, y, z, l + 2*SB_SLOT_RING, SB_SLOT_W + 2*SB_SLOT_RING, 'SENSE_WIRE_PADS')
+    for y0, y1, z0, z1 in sb_tail_runs(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_TAIL_RUNS')   # sense wires behind B.Cu
     for y, z, d in sb_pack_holes().values():                                # PACK wire holes (finished size) and their pads
         _circ(e, y, z, d/2, 'PACK_WIRE_HOLES'); _circ(e, y, z, d/2 + SB_PWIRE_RING, 'PACK_WIRE_PADS')
     for y0, y1, z0, z1 in sb_wire_runs(): _rect(e, (y0 + y1)/2, (z0 + z1)/2, y1 - y0, z1 - z0, 'BCU_WIRE_RUNS')   # wires behind B.Cu: no parts
@@ -478,27 +518,24 @@ if __name__ == '__main__':
         'ring carrier: ring height >= 1.0 over the wedge': sb_z_pad1 - (SB_END_T + SB_WEDGE_T) - SB_FRAME_BASE - 1.0,
         'wedge under the board edge reaches it (shim job)': sb_zb0 - (SB_END_T + SB_WEDGE_T),
         'wedge trapped by the cover (cover reaches below the wedge top, z)': (SB_END_T + SB_WEDGE_T) - sb_cover_z0 - 1.0,
-        'slots: pads above the board bottom edge (z)': min(z for _, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - sb_zb0 - 0.5,
-        'slots: pads clear of the corner notches (y)': sb_notch_y - max(abs(y) + l/2 + SB_SLOT_RING for y, _, l in sb_slots().values()) - 0.5,
-        'slots: pads between each other (y, >= 0.4)': min(abs(a[0] - b[0]) - (a[2] + b[2])/2 - 2*SB_SLOT_RING
+        'sense pads above the board bottom edge (z)': min(z for _, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - sb_zb0 - 0.5,
+        'sense pads clear of the corner notches (y)': sb_notch_y - max(abs(y) + l/2 + SB_SLOT_RING for y, _, l in sb_slots().values()) - 0.5,
+        'sense pads between each other (y, >= 0.4)': min(abs(a[0] - b[0]) - (a[2] + b[2])/2 - 2*SB_SLOT_RING
                                                        for i, a in enumerate(sb_slots().values()) for b in list(sb_slots().values())[i+1:] if abs(a[1] - b[1]) < 2) - 0.4,
         'PACK wire holes: pads above the board bottom edge (z, >= 0.1)': min(z - d/2 for _, z, d in sb_pack_holes().values()) - SB_PWIRE_RING - sb_zb0 - 0.1,
         'PACK wire holes: pads clear of the corner notches (y)': sb_notch_y - max(abs(y) + d/2 for y, _, d in sb_pack_holes().values()) - SB_PWIRE_RING - 0.5,
-        'PACK wire holes: pads clear of the Kelvin slot pads (y, >= 0.4)': min(abs(abs(y) - abs(sb_slots()[k][0])) - d/2 - SB_PWIRE_RING - sb_slots()[k][2]/2 - SB_SLOT_RING
+        'PACK wire holes: pads clear of the Kelvin pads (y, >= 0.4)': min(abs(abs(y) - abs(sb_slots()[k][0])) - d/2 - SB_PWIRE_RING - sb_slots()[k][2]/2 - SB_SLOT_RING
                                                        for y, _, d in sb_pack_holes().values() for k in ('1N', '4P')) - 0.4,
         'PACK wire holes below the frame bars (z)': SB_BAR_Z0 - (SB_PWIRE_Z + SB_PWIRE_HOLE/2 + SB_PWIRE_RING) - 0.3,
-        'bottom slots below the frame bars (z)': SB_BAR_Z0 - (sb_z_tail_b + SB_SLOT_W/2 + SB_SLOT_RING) - 0.3,
-        'bottom slots clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - (SB_VENT_D/2 + 2),
-        'top tails outside the frame bars (y)': (SB_TAIL_Y - SB_TAIL_W/2) - SB_BAR_Y[1] - 0.5,
-        'top tails clear of the USB-C notches (y)': (SB_TAIL_Y - SB_TAIL_W/2) - (SB_PORT_Y + 10.20/2) - 0.5,
-        'top tails overlap their series strip by >= 2 mm (y)': (sb_pr + SB_TAB_W/2) - (SB_TAIL_Y - SB_TAIL_W/2) - 2.0,
-        'top tails inside the board edge (y)': sb_board_w/2 - (SB_TAIL_Y + SB_TAIL_W/2 + SB_SLOT_CLR/2 + SB_SLOT_RING) - 1.0,
-        'top slots clear of the BLE module (z)': (SB_TAIL_TOP_Z - SB_SLOT_W/2 - SB_SLOT_RING) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 1.0,
-        'top tails: room behind the board, past the cans (x)': (sb_xb0 - 1.3) - (sb_pr + float(np.sqrt((CELL_D/2)**2 - (SB_TAIL_Y - SB_TAIL_W/2 - sb_pr)**2))) - 0.5,
-        'kink inside the gap behind the board (x)': min(SB_KINK[0] - (sb_ac + 0.2), sb_xb0 - SB_KINK[1]) - 0.2,
-        'kink above the wedge (z)': (sb_z_tail_b - SB_PACK_T - SB_KINK[2]) - sb_zb0 - 0.3,
-        'CELL2 tail in the channel between the rings (y)': 2*(sb_pr - SB_RING_OD/2) - SB_TAIL_W - 1.0,
-        'Kelvin fingers clear of the CELL2 tail (y)': min(abs(y) - l/2 for n, (y, _, l) in sb_slots().items() if n in ('1N', '4P')) - (SB_TAIL_W/2 + SB_SLOT_CLR/2) - 2.0,
+        'bottom sense pads below the frame bars (z)': SB_BAR_Z0 - (sb_z_tail_b + SB_SLOT_W/2 + SB_SLOT_RING) - 0.3,
+        'bottom sense pads clear of the vent keep-out': min(np.hypot(y, z - SB_VENT_Z) for y, z, _ in sb_slots().values()) - SB_SLOT_W/2 - SB_SLOT_RING - (SB_VENT_D/2 + 2),
+        'top tongues outside the frame bars (y)': (SB_TAIL_Y - SB_TAIL_W/2) - SB_BAR_Y[1] - 0.5,
+        'top tongues clear of the USB-C notches (y)': (SB_TAIL_Y - SB_TAIL_W/2) - (SB_PORT_Y + 10.20/2) - 0.5,
+        'top tongues overlap their series strip by >= 2 mm (y)': (sb_pr + SB_TAB_W/2) - (SB_TAIL_Y - SB_TAIL_W/2) - 2.0,
+        'top sense pads inside the board edge (y)': sb_board_w/2 - (SB_TAIL_Y + SB_TAIL_W/2 + SB_SLOT_CLR/2 + SB_SLOT_RING) - 1.0,
+        'top sense pads clear of the BLE module (z)': (SB_TAIL_TOP_Z - SB_SLOT_W/2 - SB_SLOT_RING) - (sb_ant_zc + SB_ANT_MOD[0]/2) - 1.0,
+        'top tongues: end 1.0 clear of B.Cu, room for the soldered wire (x)': sb_xb0 - SB_TONGUE_X - 1.0,
+        'sense holes: ring on the short side of the pad >= 0.25': (SB_SLOT_W + 2*SB_SLOT_RING - SB_SWIRE_HOLE)/2 - 0.25,
         'spring rings clear the + cap cut-out': SB_RING_ID - SB_VENT_CUT_D,
         'spring ring wall >= 1.2': (SB_RING_OD - SB_RING_ID)/2 - 1.2,
         'BLE module on B.Cu: room behind it to the fish paper (min over its span)':
