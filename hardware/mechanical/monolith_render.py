@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 import monolith_shell as S, monolith_parts as P
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CELL_G = 75.0          # FEB 21700G (was 71 g, EVE 58E)
+CELL_G = 75.0          # BAK N21700CX-65E, <= 75 g per the spec (same as the FEB 21700G; EVE 58E was 71 g)
 FR4_RHO, CU_RHO, CU_T, CU_FILL = 1.85, 8.96, 2*0.070 + 4*0.0175, 0.70
 PX = 5.0                        # pixels per mm, same for every view
 
