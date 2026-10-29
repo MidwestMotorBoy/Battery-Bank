@@ -30,8 +30,9 @@ All of these come from the Python models in `hardware/mechanical/`. Re-run the s
 - **Size and mass:** 61.9 × 53.8 × 98.5 mm, about 389 g modelled (after the 2026-10-24 review fixes; `python3 monolith_cup.py none` prints the part table). The model is designed to a 21.85 mm cell diameter (cell pitch 23.25 mm), so measure each cell's diameter before assembly.
 - **PACK tails (option C, 2026-10-24):** nickel pads welded to the C1 and C4 bottoms, with an 18 AWG PTFE power wire and a 28 AWG Kelvin wire soldered to each; they pass through one notch per side in the carrier's bottom frame (`wire_notches()`) into two Ø1.5 mm plated holes and two Ø0.8 mm holes on the board (`sb_pack_holes()`).
 - **Sense wires (2026-10-24):** the three cell taps are 28 AWG PTFE wires too, into Ø0.8 mm plated holes in 1.5 × 1.4 mm pads (`sb_slots()`). CELL1 and CELL3 solder to a flat tongue on their top strip (`_top_tongue()`); CELL2 solders to the middle of the bottom strip and runs in a 1.0 × 0.95 mm channel in the bottom frame (`sense_channel()`). Details: [`production/p0-assembly.md`](production/p0-assembly.md).
-- **Board:** same outline and cell-tap positions as the tray. New: sense-wire holes in place of the tab slots, two peg holes, the gap-filler zone on B.Cu with thermal vias, the rails split at z 25–55 mm, the PACK wire holes; the cover standoffs are gone.
-- **Open:** the label (emboss, or a small plate), the three coupons (cap collar on a mouth section, a clip-on rail block, a USB-C bore), the drop series, the push-in force.
+- **Board:** same outline and cell-tap positions as the tray. New: sense-wire holes in place of the tab slots, four peg slots (H101–H104, the former cover-standoff references), the gap-filler zone on B.Cu with thermal vias, the rails split at z 25–55 mm, the PACK wire holes; the cover standoffs are gone.
+- **Label:** a printed vinyl wrap label (Borderlands bear art, 2026-10-28) in the cup's label relief; art and order files in [`hardware/label/`](../hardware/label/README.md).
+- **Open:** the three coupons (cap collar on a mouth section, a clip-on rail block, a USB-C bore), the drop series, the push-in force.
 
 ## Board geometry shared with the retired side tray
 
@@ -42,7 +43,7 @@ The cup kept the side-board layout's board, so these still apply. They are gener
     - To make room for it, the board sits 2.3 mm further from the cells (`SB_BCU_H`).
     - `monolith_side_pcb.dxf` shows it on `BLE_MODULE_BCU`.
 - **Board:** 1.6 mm thick (for cost). The outline is on the production board as well (`hardware/Production/tools/make_board.py` imports it from `monolith_shell.py`).
-- **Files:** the board outline is `monolith_side_pcb.dxf`, with the `SENSE_WIRE_HOLES`, `SENSE_WIRE_PADS`, `BCU_TAIL_RUNS` and frame-bar layers that `make_board.py` follows.
+- **Files:** the board outline is `monolith_side_pcb.dxf`, with the `SENSE_WIRE_HOLES`, `SENSE_WIRE_PADS`, `BCU_TAIL_RUNS`, `BCU_WIRE_RUNS` and frame-bar layers that `make_board.py` follows.
 - **Running it:** parameters are `SB_*` in `monolith_shell.py`, which also prints the assembly clearance checks.
 
 The side tray itself (aluminium cover, wedge, TPU cell cage, cover label), the original top-cap tube and the scripts that render them are described in [`archive/side-tray-mechanical.md`](archive/side-tray-mechanical.md).

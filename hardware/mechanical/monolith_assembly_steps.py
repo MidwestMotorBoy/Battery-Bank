@@ -1,6 +1,7 @@
-"""Monolith side tray: assembly in six steps, one render each (same model as monolith_side_renders.py).
-Run: python monolith_assembly_steps.py   (mechanical venv)  -> monolith_side_assembly.png
-The written procedure, with the checks at each step, is docs/production/p0-assembly.md."""
+"""Monolith side tray (RETIRED 2026-10-21): assembly in six steps, one render each (same model as monolith_side_renders.py).
+Run: python monolith_assembly_steps.py   (mechanical venv)  -> retired/monolith_side_assembly.png
+The current cup's assembly sheets are monolith_cup_assembly_steps.py (assembly_steps/), and docs/production/p0-assembly.md
+now describes the cup; the side tray is in docs/archive/side-tray-mechanical.md."""
 import numpy as np
 import monolith_shell as S
 from monolith_side_renders import Sheet, camera, proj, C, INK, MUTED, RULE, ACCENT, assembly

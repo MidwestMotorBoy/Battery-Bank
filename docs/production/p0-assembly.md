@@ -72,7 +72,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
-- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the SMBus pogo pads, XDS110 with Tag-Connect), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
+- **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the J302 "GAUGE" Tag-Connect, XDS110 on J301, one TC2030-IDC-NL cable for both), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
 - **Cell simulator** (for step 0): a bench supply at 14.0–14.8 V, current-limited to 100 mA, and a ladder of four equal resistors (1 kΩ) across it, with pins that drop into the seven holes: PACK− and 1N on the supply's −, the three taps on the ladder's joints, 4P and PACK+ on its +.
 
 ## Steps
@@ -85,7 +85,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 1. **Inspect** the hand-fitted B.Cu parts (19, including the CC2340 module) under a loupe, and check that R124 and R126 are not fitted.
 2. **Power it from the cell simulator** through the seven holes. Check the current draw, then 3V3 at TP301.
-3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks on the SMBus pogo pads (wake it from USB or TP113 per `p0-bringup-and-training.md`).
+3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks through J302 (wake it from USB or TP113 per `p0-bringup-and-training.md`).
 4. If anything is wrong, fix it now: once the board is on the pack it can't come off without desoldering seven wires, and it is bedded in gel.
 
 ### 1. Cells into the carrier and welded, on the bench
@@ -122,9 +122,9 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 ![Step 3](../../hardware/mechanical/assembly_steps/step3.png)
 
 1. **Check the seven voltages** at the pads against PACK−: each step should be one cell (2.5–4.2 V). Only then **fit R124 and R126** (5.1 kΩ 0402, F.Cu).
-2. **Program and set up:** load the BQ40Z50 golden file and run gauge training on the SMBus pogo pads (`p0-bringup-and-training.md`).
+2. **Program and set up:** load the BQ40Z50 golden file and run gauge training through J302 (`p0-bringup-and-training.md`).
 3. **Function test:** charge and discharge on each port, the 100 W thermal run (thermocouples on a front and a back cell), the gauge readings, and BLE.
-4. **Conformal coat**, last. Keep the coat off the antenna end, the pogo pads, the gap-filler zone and the USB-C seal rings (mask the rings).
+4. **Conformal coat**, last. Keep the coat off the antenna end, the J301 / J302 Tag-Connect pads, the gap-filler zone and the USB-C seal rings (mask the rings).
 
 ### 4. Module into the cup
 
@@ -166,6 +166,6 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
     - Carrier + rail blocks with real cells: load all four cells, check the key slots and the foam, and fit a bare board on the posts.
     - How hard the module pushes home.
 - **Drop:** a dummy-core drop series (dead cells or steel slugs, dummy board) at 1 m onto concrete: board face down, back down, cap down, port down, end-on both ways. Before and after: joint resistance, putty marks between the wall and the parts, the groove root, the ring position.
-- **Label:** emboss it in the PA12 or add a small label plate.
+- **Label:** apply the printed vinyl wrap label (`hardware/label/`, StickerApp matte) in the cup's label relief; check its thickness fits the relief first.
 - **Service:** the board can't come off the cells without desoldering seven wires, and the cap is screwed. A bad cell means rework at the bench.
 - **Connection order:** check the BQ294700 datasheet.

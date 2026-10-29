@@ -1,6 +1,6 @@
 # Monolith Battery Bank: Current Design Spec
 
-Last updated 2026-10-27. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
+Last updated 2026-10-28. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
 
 ## Overview
 
@@ -158,11 +158,11 @@ The MCU is a TI CC2340R5MODA Bluetooth LE module (Cortex-M0+, 512 KB flash / 64 
 
 ## Boards and enclosure
 
-The production P0 board is the design of record and the first board planned to be built; it is mid-placement, not routed and not reviewed.
+The production P0 board is the design of record and the first board planned to be built; placement is done (Logan's `ca78123`, 2026-10-28) and it is not routed yet. The 2026-10-29 placement review lists what to fix before routing.
 
-| Board | State (repo, 2026-10-21) | Key facts |
+| Board | State (repo, 2026-10-29) | Key facts |
 | --- | --- | --- |
-| Production P0 (`hardware/Production/`) | Schematic generated and netlist-checked; placement in progress; USB-C ports placed and locked | 283 parts, 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu; 19 B.Cu parts are hand-fitted, including the CC2340 module by hot air |
+| Production P0 (`hardware/Production/`) | Schematic generated and netlist-checked; placement done 2026-10-28, not routed; USB-C ports placed and locked | 283 parts, 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu; 19 B.Cu parts are hand-fitted, including the CC2340 module by hot air |
 | Dev board MonolithDev rev A8 (`hardware/DevBoard/`) | Routed, DRC clean, fab files generated. Repo says it was skipped on 10-18 and never ordered (see Contradictions) | 196 × 115 mm, about 430 parts, cell holders, test points, sleep-current section |
 
 **P0 board changes still to apply:**
@@ -170,8 +170,8 @@ The production P0 board is the design of record and the first board planned to b
 - [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five sense holes already sit at the 6500 mAh positions
 - [ ] Run KiCad DRC on the `Production` board after the wire-hole change (so far only a script check: outline, 0.25 mm edge rule, ring, courtyards of the placed parts, B.Cu parts in the wire runs)
 - [x] Loss cuts 1–3 in the schematic (2026-10-28): Q101/Q102 BSC007N04LS6 on `MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8`, the 9 V gate drive per port (U406, D410 in place of R420, D411, Q409, R452–R455, C457, C458; GPIO6 freed from the GND rail), L401/L501 XGL7030-332, R412/R512 49.9k, C411/C511 4.7 µF 25 V 0805. Checked by a script connectivity diff only (no KiCad in the cloud)
-- [ ] Run ERC, then Update PCB from Schematic, and place and route the new parts: about 25 mm² per port for the gate drive, Q101/Q102 grow from 3.3 × 3.3 to 5 × 6 (R413/R513 = 0 Ω is still to change in the schematic too). Check the TDSON footprint against the BSC007N04LS6 datasheet's footprint drawing, and look up an LCSC code for R412/R512 (0201WMF4992TEE)
-- [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, two Ø2.0 mm peg holes, remove the cover standoffs H101–H104, rerun `make_board.py --keepouts` for the cup
+- [ ] Run ERC, then Update PCB from Schematic, and place and route the new parts (the loss-cut parts, including U406 / U506, D410, Q409, Q101 / Q102 BSC007N04LS6, L401 and R412, are on the board since `ed56285`; ERC and routing are still to confirm): about 25 mm² per port for the gate drive, Q101/Q102 grow from 3.3 × 3.3 to 5 × 6 (R413/R513 = 0 Ω is still to change in the schematic too). Check the TDSON footprint against the BSC007N04LS6 datasheet's footprint drawing, and look up an LCSC code for R412/R512 (0201WMF4992TEE)
+- [ ] Cup changes: B.Cu gap-filler zone with a dense thermal-via array, split carrier rails, four 2.6 × 2.2 mm peg slots for the Ø2.0 pegs (H101–H104, in place of the cover standoffs), rerun `make_board.py --keepouts` for the cup
 - [ ] Fix DRC: port 1's stage (U403, Q402, C434, R446, R447) sits in the antenna keep-out; L401 is on B.Cu and belongs on F.Cu
 - [ ] Make C302–C304 0402 instead of 0201; remove the four stranded VBUS traces
 - [ ] Check SiZ240DT stock
@@ -224,7 +224,7 @@ Firmware is a bring-up skeleton, the GATT spec predates the 10-21 policy, the ap
 
 ### Firmware (CC2340, LPF3 SDK)
 
-Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with LaunchPad and dev-board targets, about 10 KB, not yet confirmed running on hardware.
+Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with LaunchPad and dev-board targets, about 10 KB. It runs on the LP-EM-CC2340R53 LaunchPad: Day 1 and tests T1, T3, T5 and T6 passed on 2026-10-20 (`docs/devboard/launchpad-cc2340-plan.md`); not yet on P0.
 
 - [ ] P0 board file (`boards/p0.syscfg`): pin map, safe initial states, CCFG
 - [ ] Move to FreeRTOS with the BLE5 stack; supervision loop on an RTC wake, watchdog that can't be stopped
@@ -308,7 +308,7 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Cells | BAK N21700CX-65E replaces the FEB 21700G | 91 Wh typical (88.9 Wh minimum). Short-circuit current rises to about 220–300 A (checks under Battery management). Firmware keeps the 4.55 A ceiling and the FEB ramp until BAK's table is confirmed. New chemistry ID |
 | Source of truth | This spec goes in the repo as `docs/spec.md` and replaces both next-actions files | Repo PR opened |
 | Spot welder (10-23) | AWithZ P20B; the kWeld plus kCap is dropped | Mains powered, rated 0.3 mm nickel; handheld pens weld through the carrier windows (`docs/production/spot-welding.md`) |
-| PACK tails (10-24) | Wire tails (option C), 18 AWG power wires | Two Ø1.5 plated holes on the board, four carrier frame notches, wires soldered to the nickel pads on the bench. Options compared in `docs/production/pack-tail-options.html` |
+| PACK tails (10-24) | Wire tails (option C), 18 AWG power wires | Two Ø1.5 plated holes on the board, carrier frame notches (one per side since the 10-24 review merged each pair), wires soldered to the nickel pads on the bench. Options compared in `docs/archive/pack-tail-options.html` |
 | Vent (10-28) | Removed from the cup and the board | No ePTFE patch or hole in the board-face wall, no `KO_F_cup_vent` on F.Cu, no label hole (the sun stays, solid). The cup is sealed for good: the seals and walls carry the altitude pressure (about +50 kPa at a warm 4300 m), and the leak test is a vacuum-jar bubble test |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)

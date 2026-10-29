@@ -46,7 +46,7 @@ The owner's approach: **don't cap the offer below 100 W; lower where the derate 
 - **Where the ramp starts** sets how long a burst lasts.
 - **Where the ramp ends (the sustain power)** sets how warm the cells sit for the rest of the discharge.
 
-The current values (100 W to 42 °C, then a ramp to 40 W at 46 °C) and the model results are in the spec. A 44 → 48 °C ramp is worth trying on P0.
+The current values (100 W to 44 °C, then a ramp to 40 W at 48 °C, retuned 2026-10-28 for the board NTCs) and the model results are in the spec. A 46 → 50 °C ramp is worth trying on P0.
 
 **Implementation:**
 - `P_allow = min(100 W, comfort_ramp(hottest cell), board_ramp(charger TS), low_voltage_limit(V_pack))`. The board ramp is 55 → 70 °C on each charger's TS NTC; the low-voltage limit gives less power as the pack empties, because the cells' resistance rises near empty.

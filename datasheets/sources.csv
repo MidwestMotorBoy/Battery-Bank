@@ -55,3 +55,4 @@ tvs2200.pdf,TI TVS2200,VBUS flat-clamp TVS D401/D501 (rev A8),https://www.ti.com
 aps0730.pdf,Coilank APS-F series (APS0730M2R2F),Production charger inductor L401/L501,https://jlcpcb.com/partdetail/COILANKINTERNATIONAL-APS0730M2R2F/C49261221
 siz240dt.pdf,Vishay SiZ240DT (doc 77182) + PowerPAIR 3x3S land pattern (doc 78115),Production charger half-bridges Q401/Q402 (x2 ports),https://www.vishay.com/docs/77182/siz240dt.pdf
 tpd6s300.pdf,TI TPD6S300,USB-C CC/SBU short-to-VBUS + IEC ESD port protector U405/U505 (production),https://www.ti.com/lit/ds/symlink/tpd6s300.pdf
+bak-n21700cx-65e.pdf,BAK N21700CX-65E (spec A/00 2025-04-10),Pack cells (4S1P; adopted 2026-10-23),manual: from the Convoy store page (not scriptable)

@@ -22,7 +22,7 @@ rep('"""Signal router: A* maze routing on a 0.1 mm grid for the connections DRC 
     'as missing. Generated from route_signals.py by make_router6.py; see routing-discipline.md.\n'
     'Layers F.Cu (cost 1.6), In2 (1.0, vertical moves only), In3 (1.0, horizontal moves only), B.Cu (1.8); In1/In4\n'
     'are the GND planes and are never used. A GND reference via next to each In2/In3 or B via is added afterwards by\n'
-    'finish_gnd_vias.py.')
+    'finish_d_gndvias.py.')
 rep('IDS = os.path.join(HERE, "route_signals.uuids")', 'IDS = os.path.join(HERE, "route_signals6.uuids")')
 rep("from pcb_text import strip_items",
     "sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # runs under python -I too\n"

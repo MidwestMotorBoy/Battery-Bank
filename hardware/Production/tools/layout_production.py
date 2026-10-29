@@ -5,7 +5,7 @@ re-places every Reference/Value field with DevBoard/tools/place_fields.py and re
 DevBoard/tools/check_overlaps.py. Moves are multiples of 1.27 mm so everything stays on grid. Electrical content is
 unchanged: check_netlist.py must still pass afterwards.
 
-Run: "C:/Program Files/KiCad/10.0/bin/python.exe" Production/tools/layout_production.py
+Run: "C:/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/layout_production.py
 """
 import os
 import subprocess

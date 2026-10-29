@@ -1,7 +1,9 @@
 """Monolith side cover: laser-cut 1.0 mm 5052 aluminium, black anodized, laser-marked label (JLCCNC sheet metal).
-PROTOTYPE artwork, built from the data we have now (cells: docs/project/feb-21700g-datasheet-notes.md).
+PROTOTYPE artwork, built from the data we had then (cells: docs/archive/feb-21700g-datasheet-notes.md).
+RETIRED with the side tray (2026-10-21): outputs go to retired/. The current label is hardware/label/monolith_label.py.
 Run: python monolith_cover_label.py   (numpy, shapely, matplotlib, Pillow; KiCad 10 for the STEP)
--> monolith_side_cover.step            plate with holes, the 3D file JLCCNC requires (made by kicad-cli from a
+-> (in retired/)
+   monolith_side_cover.step            plate with holes, the 3D file JLCCNC requires (made by kicad-cli from a
                                         throw-away board file, since the plate is just a 1.0 mm outline with holes)
    monolith_side_cover_marking.dxf     2D marking file: OUTLINE + HOLES for registration, MARKING as closed outlines
                                         (JLCCNC: text as "double-line" outlines, lines at least 0.2 mm wide)

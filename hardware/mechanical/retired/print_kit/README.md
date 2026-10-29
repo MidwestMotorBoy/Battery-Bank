@@ -1,5 +1,7 @@
 # Monolith print kit
 
+> **Retired.** This kit is for the side tray, which the cup replaced on 2026-10-21; see [`../README.md`](../README.md). It is kept for reference and is not to be built. The cell figures below are the EVE 58E of the time; the pack now uses the BAK N21700CX-65E ([`docs/spec.md`](../../../../docs/spec.md)). The scripts named here are in `hardware/mechanical/`.
+
 A home-printable (FDM) mock-up of the side-board pack. It has dummy cells, a dummy board and every printed part. Use it for fit checks, assembly practice and the dummy-mass drop test. `monolith_print_kit.py` generates everything from the same parameters as the production model (`monolith_shell.py`, `monolith_parts.py`). Re-run it after changing an `SB_*` value.
 
 Each STL is already in its print pose, sitting on the bed at z = 0, so load it as-is.

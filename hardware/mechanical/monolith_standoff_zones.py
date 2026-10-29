@@ -2,7 +2,7 @@
 parts already placed on Production/Monolith.kicad_pcb.
 Run: (1) KiCad's python dumps the placement:  "C:/Program Files/KiCad/10.0/bin/python.exe" -I monolith_standoff_zones.py --dump BOARD JSON
      (2) the mechanical venv draws the map:    python monolith_standoff_zones.py JSON
--> monolith_side_standoff_zones.png, plus suggested positions on stdout (KiCad mm).
+-> retired/monolith_side_standoff_zones.png (the side tray and its cover standoffs are retired), plus suggested positions on stdout (KiCad mm).
 Rules (from the mechanical model; positions are SB_STANDOFFS in monolith_shell.py):
 - the standoff (Wurth WA-SMSI, 5.8 mm courtyard) sits on F.Cu, and its 3 mm hole goes through the board, so B.Cu parts
   must clear the hole too;

@@ -1,6 +1,6 @@
 """Monolith cover standoffs explained: what the four steel spacers on F.Cu do, and how they differ from the two cover screws.
 Run: python monolith_standoff_detail.py   (same venv as monolith_side_renders.py)
--> monolith_side_standoffs.png
+-> retired/monolith_side_standoffs.png   (the side tray and its cover standoffs are retired; the cup has none)
    1. 3D view, caps off, cover and screws lifted: the four standoffs (H101-H104) on the board, the two real screws
    2. section through the upper pair (z = 48): cover, 0.2 mm gap, standoff, board, EVA lane, cells, tray
    3. the squeeze: normal vs. cover bent onto the standoffs, and the load path, plus where H101-H104 sit on the board"""
