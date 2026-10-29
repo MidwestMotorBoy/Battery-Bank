@@ -2155,7 +2155,7 @@
 			(uuid "a8e9d449-edbb-4d2d-9c80-86302fcd08f5")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SON.3dshapes/Infineon_PG-TDSON-8_6.15x5.15mm.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -9629,6 +9629,17 @@
 			(uuid "0289b2f9-63bc-4f85-8d60-e5997a87e0b4")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-18AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
@@ -11927,7 +11938,7 @@
 			(uuid "6b18d30e-1d1b-4133-bdf9-12cf40226596")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step"
+		(model "${KIPRJMOD}/3dmodels/L_Coilank_APS0530.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -13158,7 +13169,7 @@
 			(uuid "b5d480ba-e104-4350-a5c2-b58a5848cb9c")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step"
+		(model "${KIPRJMOD}/3dmodels/L_Coilank_APS0530.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -15041,6 +15052,17 @@
 			(uuid "dd73b5e5-3d2f-453d-bbb1-b30193ea7144")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-28AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -16164,6 +16186,18 @@
 			)
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/TagConnect_TC2030-IDC-NL_envelope.step"
+			(hide yes)
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0201_0603Metric"
 		(layer "F.Cu")
@@ -26308,6 +26342,17 @@
 			(uuid "783cc2e6-fa45-422e-9235-4008412494ca")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-28AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -27465,7 +27510,7 @@
 			(uuid "165d5fd6-cf76-4963-98b7-458e1a6c022c")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.95x2.15mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -30405,6 +30450,17 @@
 			(uuid "3a99c54d-eeab-4fbb-9051-1686d0f6c25c")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Peg_PA12_TPU_sleeve.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_1206_3216Metric"
 		(layer "F.Cu")
@@ -35532,6 +35588,17 @@
 			(uuid "a3420fbd-286b-4758-ae59-da55b5dd404f")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Peg_PA12_TPU_sleeve.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -35959,6 +36026,18 @@
 			)
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/TagConnect_TC2030-IDC-NL_envelope.step"
+			(hide yes)
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0201_0603Metric"
 		(layer "F.Cu")
@@ -43431,6 +43510,17 @@
 			(uuid "2382b24e-500b-4e12-a6ce-b8d3835e4763")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-28AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -44617,6 +44707,17 @@
 			(uuid "b9c54a8b-e64c-4fd0-9889-0ada4541ab28")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Peg_PA12_TPU_sleeve.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
@@ -45780,6 +45881,17 @@
 			(uuid "e9b5fac8-5a27-46d6-8350-1f72d30000ea")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-28AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -46604,6 +46716,17 @@
 			(uuid "b3de75c0-73b4-49b3-89d7-c49d8634de74")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-28AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -47289,6 +47412,17 @@
 			(uuid "5718f646-0364-478d-a8f6-c44c72103873")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Peg_PA12_TPU_sleeve.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "F.Cu")
@@ -50583,7 +50717,7 @@
 			(uuid "f537deb4-50ba-447c-af9b-c703f5266f64")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.95x2.15mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -50704,6 +50838,17 @@
 			(uuid "96dd7837-ef1b-44d5-a374-a5b2a55ddfbf")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/SolderWire-18AWG_PTFE_from_BCu.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "MonolithDev:TI_RSM0032A_VQFN-32_4x4mm_P0.4mm_EP1.4x1.4mm"
 		(layer "F.Cu")
@@ -53343,7 +53488,7 @@
 			(uuid "465c6570-067a-4da0-adbe-6cf1bba7788b")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SON.3dshapes/Infineon_PG-TDSON-8_6.15x5.15mm.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -59624,7 +59769,7 @@
 			(uuid "78116810-8982-423b-ae20-099d71ad0d80")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-31_Kemet-D.step"
+		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -60060,7 +60205,7 @@
 			(uuid "34614b3c-67e9-4bd6-8c5f-f9462bc8ffd3")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-31_Kemet-D.step"
+		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -60302,7 +60447,7 @@
 			(uuid "49cb917f-9398-4599-a34a-457abbdd3746")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-31_Kemet-D.step"
+		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -60738,7 +60883,7 @@
 			(uuid "967ca254-21d6-4145-a1b2-979ac223a80d")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-31_Kemet-D.step"
+		(model "${KICAD10_3DMODEL_DIR}/Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step"
 			(offset
 				(xyz 0 0 0)
 			)
