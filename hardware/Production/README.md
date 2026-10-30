@@ -1,8 +1,8 @@
 # Monolith production board
 
-KiCad 10 project `Monolith`: the P0 board, the design of record. The live board is on the `Production` branch; `master` lags it.
+KiCad 10 project `Monolith`: the P0 board, the design of record. Since 2026-10-30 the routed board is on `master` (the `Production` and `Layout-P0` branches were merged in).
 
-**Status (2026-10-29):** the dev board was skipped on 2026-10-18, so P0 is the first build (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). The schematic is the dev board's (rev A8) with the dev-only parts removed, plus the P0 changes below. Footprint placement was finished on 2026-10-28; the board is not routed or reviewed, and nothing has been ordered.
+**Status (2026-10-29):** the dev board was skipped on 2026-10-18, so P0 is the first build (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). The schematic is the dev board's (rev A8) with the dev-only parts removed, plus the P0 changes below. Footprint placement was finished on 2026-10-28 and routing on 2026-10-30 (`8fd8b74`); the routed board is in review ([`docs/reviews/2026-10-30-routed-board/`](../../docs/reviews/2026-10-30-routed-board/README.md) lists what to fix before fab), and nothing has been ordered.
 
 The current design is in `docs/spec.md`, which wins where this file disagrees; its *P0 board changes still to apply* list is the to-do list. The sections below are a dated design log. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-10-29:
 

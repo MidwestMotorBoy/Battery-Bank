@@ -158,11 +158,11 @@ The MCU is a TI CC2340R5MODA Bluetooth LE module (Cortex-M0+, 512 KB flash / 64 
 
 ## Boards and enclosure
 
-The production P0 board is the design of record and the first board planned to be built; placement is done (Logan's `ca78123`, 2026-10-28) and it is not routed yet. The 2026-10-29 placement review lists what to fix before routing.
+The production P0 board is the design of record and the first board planned to be built. It is fully routed (Logan's `8fd8b74`, 2026-10-30) and in review: [`docs/reviews/2026-10-30-routed-board/`](reviews/2026-10-30-routed-board/README.md) is the current list of what to fix before fab, and supersedes the pre-routing items in the checklist below.
 
-| Board | State (repo, 2026-10-29) | Key facts |
+| Board | State (repo, 2026-10-30) | Key facts |
 | --- | --- | --- |
-| Production P0 (`hardware/Production/`) | Schematic generated and netlist-checked; placement done 2026-10-28, not routed; USB-C ports placed and locked | 283 parts, 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu; 19 B.Cu parts are hand-fitted, including the CC2340 module by hot air |
+| Production P0 (`hardware/Production/`) | Schematic generated and netlist-checked; routed 2026-10-30, 0 unconnected, in review (fixes listed in the review) | 283 parts, 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu; 19 B.Cu parts are hand-fitted, including the CC2340 module by hot air |
 | Dev board MonolithDev rev A8 (`hardware/DevBoard/`) | Routed, DRC clean, fab files generated. Repo says it was skipped on 10-18 and never ordered (see Contradictions) | 196 × 115 mm, about 430 parts, cell holders, test points, sleep-current section |
 
 **P0 board changes still to apply:**
