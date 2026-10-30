@@ -11991,7 +11991,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:L_Coilank_APS0530"
+		(property "Footprint" "MonolithDev:L_COILMX_MS0520"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12024,7 +12024,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A defined at a 40 % drop (not like-for-like with the SRP5030T); fine, as the 5.8 A IHS limit is a fault-only peak"
+		(property "Notes" "2026-10-30 (was APS0530M3R3H, 3.1 mm tall, hit the cup corner fillet at L502): ABC EHE05023R3MFB (JLC C49248023, in JLC stock), 5.5 x 5.2 x 2.0 mm max, 3.3 uH, 58 mOhm, Isat 5 A (30 %), 4.5 A rated; same electricals and land as COILMX MS0520-3R3M (C18163579, alternate). 2.0 mm height gives ~1.0 mm to the fillet. Isat is below the 5.8 A IHS limit, which is a fault-only peak. Footprint MonolithDev:L_COILMX_MS0520: land H 6.0, G 2.2, F 2.5 = 1.9 x 2.5 at +-2.05"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12035,7 +12035,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C49073587"
+		(property "LCSC" "C49248023"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12046,7 +12046,7 @@
 				)
 			)
 		)
-		(property "MPN" "APS0530M3R3H (Coilank)"
+		(property "MPN" "EHE05023R3MFB (ABC)"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
