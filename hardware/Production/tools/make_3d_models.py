@@ -36,8 +36,8 @@ Writes STEP files into Production/3dmodels/ with step_mesh.py (pure Python) and 
     the ShouHan USB-C 1.6 mm.
 No model on purpose: test pads (TestPoint_Pad_D1.0mm: bare copper, nothing fitted).
 
-Run (any Python 3):  python Production/tools/make_3d_models.py            -> writes the STEP files
-                     python Production/tools/make_3d_models.py --board  -> also sets the model paths on the board's
+Run (any Python 3):  python hardware/Production/tools/make_3d_models.py            -> writes the STEP files
+                     python hardware/Production/tools/make_3d_models.py --board  -> also sets the model paths on the board's
                                                                            footprints (as text; board closed in KiCad)
 make_production.py calls attach_library() so the generated MonolithDev footprints carry the same models.
 """

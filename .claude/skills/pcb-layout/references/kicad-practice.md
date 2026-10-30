@@ -256,6 +256,6 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
 - **Stock check**: POST `{"keyword": "<Cxxxx>", "currentPage": 1, "pageSize": 5}` to
   `https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList`; match
   `componentCode`, read `stockCount`, `componentLibraryType` (`base` = basic), `preferredComponentFlag`,
-  `componentPrices[0].productPrice`. Run it over the whole BOM before an order (`tools/jlc_stock.py`).
+  `componentPrices[0].productPrice`. Run it over the whole BOM before an order (`hardware/DevBoard/tools/jlc_stock.py` in this repo).
 - JLC's "BOM Matching" export (`…-JLCPCB Assembly Order.xls`) is really xlsx: unzip, read `xl/sharedStrings.xml`
   and `xl/worksheets/sheet1.xml`; column K "Warning" says why a line is unconfirmed.

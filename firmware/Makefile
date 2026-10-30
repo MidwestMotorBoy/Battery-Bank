@@ -1,8 +1,8 @@
-# MonolithDev MCU firmware: CC2340R5MODA on the dev board, CC2340R53 on the
+# Monolith MCU firmware: CC2340R5MODA (U301), CC2340R53 on the
 # LP-EM-CC2340R53 LaunchPad for bring-up. Run from Git Bash with gmake.
 #
 #   make                  build for the LaunchPad (BOARD=launchpad)
-#   make BOARD=devboard   build for the dev board (U301 CC2340R5MODA)
+#   make BOARD=devboard   build for the dev board pin map (never built; P0 template)
 #   make flash            flash over the XDS110 with DSLite (add BOARD=... too)
 #   make gui              open the pin/peripheral config in the SysConfig GUI
 #   make clean

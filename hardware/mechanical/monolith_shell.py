@@ -1,6 +1,7 @@
 """Monolith 4S1P 21700 shell - parametric generator (numpy only).
 Run: python3 monolith_shell.py   -> monolith_side_pcb.dxf (the current board outline), plus the retired
 top-cap tube (monolith_shell.stl, monolith_bottom_pcb.dxf) and tray cover (monolith_side_cover.dxf) in retired/
+(git-ignored since 2026-10-29: the retired outputs are no longer kept in the repo)
 All dimensions in mm. Z = 0 is the bottom rim of the tube."""
 import numpy as np, struct, os
 

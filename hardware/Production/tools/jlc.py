@@ -1,4 +1,4 @@
-"""JLC parts lookup (same public API as DevBoard/tools/jlc_stock.py).
+"""JLC parts keyword search (the same JLC API that DevBoard/tools/jlc_stock.py uses for its BOM stock check).
 
 usage: python -I jlc.py KEYWORD [KEYWORD ...]     prints up to 8 hits per keyword: code, library, stock, price, MPN,
                                                   package, description

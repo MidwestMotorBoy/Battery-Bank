@@ -39,4 +39,4 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 - Once the first strip is on, the cells are live. Keep the pens from bridging two cells, and cap every loose wire end.
 - To confirm on the first carrier fit print: that a 0.2 × 10 mm strip slides into the frame gap, and that the pens sit flat through a 1.6 mm deep, 14 mm window.
 
-The comparison of the PACK tail options (plain nickel, bimetal copper, wire) is drawn to scale in `pack-tail-options.html` in this folder. This branch takes option C, the wire tails: solder the wires to the PACK pads before the pads are welded, and keep every weld spot at least 3 mm from the solder.
+The comparison of the PACK tail options (plain nickel, bimetal copper, wire) is drawn to scale in [`docs/archive/pack-tail-options.html`](../archive/pack-tail-options.html) (archived: it predates the decision and still marks option A as recommended). P0 takes option C, the wire tails (2026-10-24): solder the wires to the PACK pads before the pads are welded, and keep every weld spot at least 3 mm from the solder.

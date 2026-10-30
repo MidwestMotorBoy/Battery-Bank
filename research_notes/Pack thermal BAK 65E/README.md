@@ -64,7 +64,7 @@ Cell DC resistance 14 mΩ at 25 °C (BAK gives only ≤ 8 mΩ AC), 1.8× at empt
 - `pack3d.py`: geometry, materials, voxel grid, electrical and loss model, firmware policy, cases.
 - `network.py`: lumped thermal circuit (8 nodes) extracted from the 3-D model, with capacities fitted to its transients; `build_network_page.py` and `network_template.html` draw it (report: <https://claude.ai/artifact/EwEruQGBk4FTVFuvoE97Kr>).
 - `ntc.py`: front-cell NTC spots (80 probes per cell) and the derate retuned for the chosen spot; results in `renders/ntc.json`, write-up in `ntc-placement.md`.
-- `smd.py`: board-mounted SMD NTCs for TS1 / TS4 (spots on B.Cu, policy runs; `SMD_LAYOUT=p0b` puts port 1's stage where the 10-27 `Production` layout has it); `island.py`: local model of an isolated NTC island; write-up in `smd-ntc.md`.
+- `smd.py`: board-mounted SMD NTCs for TS1 / TS4 (spots on B.Cu, policy runs; `SMD_LAYOUT=p0b` puts port 1's stage where the 10-27 `Production` layout has it; `SMD_LAYOUT=p0f`, added 10-29, puts every heat source of both ports where the `ca78123` "Footprint Layout Done" board has it, run with `python smd.py probesf`, no results committed yet); `island.py`: local model of an isolated NTC island; write-up in `smd-ntc.md`.
 - `fill.py`: gap-filler variants. `sheet.py`: graphite wrap variants. `sens.py`: sensitivity runs. `jobs.py`: runs everything on 4 cores (about 1.5 h).
 - `render.py`: thermal maps and chart series. `summary.py`: summary table.
 - `make_text.py` and `page_template.html` with `build_page.py OUT_DIR`: builds the report.
