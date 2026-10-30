@@ -4788,7 +4788,7 @@
 							)
 						)
 					)
-					(number "7"
+					(number "8"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4806,7 +4806,7 @@
 							)
 						)
 					)
-					(number "8"
+					(number "7"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7860,6 +7860,18 @@
 		(uuid "e3f563f4-a17a-4815-b7a0-4e6fe0b52142")
 	)
 	(junction
+		(at 149.86 111.76)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0c677886-fa2c-44b1-8699-47343037a894")
+	)
+	(junction
+		(at 149.86 116.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2660d250-8e97-4841-87bd-fd19aa1996e6")
+	)
+	(junction
 		(at 114.3 203.2)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8224,6 +8236,26 @@
 	(no_connect
 		(at 138.43 166.37)
 		(uuid "cc30a023-a6a9-4ce4-ba38-1b82a9de72fd")
+	)
+	(wire
+		(pts
+			(xy 149.86 111.76) (xy 149.86 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23382ce2-307b-43e5-9514-14af77d2c313")
+	)
+	(wire
+		(pts
+			(xy 154.94 114.3) (xy 144.78 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ecefd27-4a21-4f28-91c7-56f4df53e2ec")
 	)
 	(wire
 		(pts
@@ -10244,6 +10276,16 @@
 			(justify left bottom)
 		)
 		(uuid "153a62fd-bff4-4679-af2a-943a16097f4f")
+	)
+	(label "DRV9_OFF"
+		(at 144.78 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6e901668-0322-4f9a-9bcf-b5c43056e05c")
 	)
 	(label "DRV9_OFF"
 		(at 464.82 215.9 180)

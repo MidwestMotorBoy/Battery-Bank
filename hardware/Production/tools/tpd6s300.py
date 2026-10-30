@@ -10,7 +10,7 @@ TPS25751's 480 pF CC limit. IVPWR 90 uA typ / 135 uA max (TPD2S300: 3.2 uA).
 Pins (RUK WQFN-20):
   1 C_SBU1, 2 C_SBU2, 14 SBU2, 15 SBU1: no-connects (nothing uses SBU on production; the connector SBU pins are open).
   3 VBIAS: C451 (0.1 uF, >= 35 V). 4 C_CC1, 5 C_CC2: connector CC. 11 CC2, 12 CC1: TPS25751 CC.
-  6 RPD_G2 -> C_CC2, 8 RPD_G1 -> C_CC1: dead-battery Rd while unpowered (the TPD2S300 had them built in).
+  6 RPD_G2 -> C_CC2, 7 RPD_G1 -> C_CC1: dead-battery Rd while unpowered (the TPD2S300 had them built in).
   9 FLT (open drain) -> SBU_FLT (R441 -> GPIO3). 10 VPWR (2.7-4.5 V) -> LDO_3V3, C452 1 uF.
   7, 13, 18, 21 (EP) GND. 16, 17 N.C.: datasheet says connect to GND. 19 D2, 20 D1 (USB2 ESD): no-connects; D+/D- only
   meet each other (DPDN_DCP) and need no ESD path.
@@ -27,18 +27,18 @@ LCSC, MPN, VALUE = "C2649810", "TPD6S300RUKR (TI)", "TPD6S300RUKR"
 DATASHEET = "https://www.ti.com/lit/ds/symlink/tpd6s300.pdf"
 DESCRIPTION = "USB Type-C CC/SBU short-to-VBUS OVP + IEC ESD, 6 channels, WQFN-20 3x3"
 # pin number -> net label, "GND" (power symbol) or "NC" (no-connect flag); labels are the sheet's existing local nets
-PIN_NETS = {"4": "C_CC1", "5": "C_CC2", "8": "C_CC1", "6": "C_CC2", "3": "VBIAS", "12": "CC1", "11": "CC2",
-            "9": "SBU_FLT", "10": "LDO_3V3", "7": "GND", "13": "GND", "18": "GND", "21": "GND", "16": "GND",
+PIN_NETS = {"4": "C_CC1", "5": "C_CC2", "7": "C_CC1", "6": "C_CC2", "3": "VBIAS", "12": "CC1", "11": "CC2",
+            "9": "SBU_FLT", "10": "LDO_3V3", "8": "GND", "13": "GND", "18": "GND", "21": "GND", "16": "GND",
             "17": "GND", "1": "NC", "2": "NC", "14": "NC", "15": "NC", "19": "NC", "20": "NC"}
 PINS = [("bidirectional", -16.51, 11.43, 0, "C_CC1", "4"), ("bidirectional", -16.51, 8.89, 0, "C_CC2", "5"),
-        ("bidirectional", -16.51, 3.81, 0, "RPD_G1", "8"), ("bidirectional", -16.51, 1.27, 0, "RPD_G2", "6"),
+        ("bidirectional", -16.51, 3.81, 0, "RPD_G1", "7"), ("bidirectional", -16.51, 1.27, 0, "RPD_G2", "6"),
         ("bidirectional", -16.51, -3.81, 0, "C_SBU1", "1"), ("bidirectional", -16.51, -6.35, 0, "C_SBU2", "2"),
         ("bidirectional", -16.51, -8.89, 0, "D1", "20"), ("bidirectional", -16.51, -11.43, 0, "D2", "19"),
         ("bidirectional", 16.51, 11.43, 180, "CC1", "12"), ("bidirectional", 16.51, 8.89, 180, "CC2", "11"),
         ("bidirectional", 16.51, -3.81, 180, "SBU1", "15"), ("bidirectional", 16.51, -6.35, 180, "SBU2", "14"),
         ("open_collector", 16.51, -11.43, 180, "~{FLT}", "9"),
         ("power_in", -2.54, 16.51, 270, "VPWR", "10"), ("passive", 2.54, 16.51, 270, "VBIAS", "3"),
-        ("power_in", -2.54, -16.51, 90, "GND", "7"), ("passive", -2.54, -16.51, 90, "GND", "13"),
+        ("power_in", -2.54, -16.51, 90, "GND", "8"), ("passive", -2.54, -16.51, 90, "GND", "13"),
         ("passive", -2.54, -16.51, 90, "GND", "18"), ("passive", -2.54, -16.51, 90, "GND", "21"),
         ("passive", 2.54, -16.51, 90, "N.C.", "16"), ("passive", 2.54, -16.51, 90, "N.C.", "17")]
 KICAD_FP = (r"C:\Program Files\KiCad\10.0\share\kicad\footprints\Package_DFN_QFN.pretty"
