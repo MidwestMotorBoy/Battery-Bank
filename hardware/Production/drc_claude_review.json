@@ -1,0 +1,2401 @@
+** Drc report for Monolith.kicad_pcb **
+** Created on 2026-10-29T22:15:56 **
+** Report includes: Errors, Warnings **
+
+** Found 598 DRC violations **
+[zones_intersect]: Copper zones intersect (intersecting zones must have distinct priorities)
+    Local override; error
+    @(92.3290 mm, 102.2350 mm): Zone [/USB Port 2/BAT_SNS_P] on F.Cu and B.Cu, priority 0
+    @(91.1860 mm, 101.3460 mm): Zone [/USB Port 2/BAT_SNS_P] on F.Cu and B.Cu, priority 0
+[zones_intersect]: Copper zones intersect (intersecting zones must have distinct priorities)
+    Local override; error
+    @(92.3290 mm, 102.2350 mm): Zone [/USB Port 2/BAT_SNS_P] on F.Cu and B.Cu, priority 0
+    @(91.1860 mm, 101.3460 mm): Zone [/USB Port 2/BAT_SNS_P] on F.Cu and B.Cu, priority 0
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(99.5680 mm, 122.2950 mm): Via [/Cells and Gauge/DSG_G] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(104.0892 mm, 77.4700 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(103.7828 mm, 76.6922 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(98.1680 mm, 128.7730 mm): Track [/Cells and Gauge/CELL_1N] on F.Cu, length 0.3890 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(80.2640 mm, 93.8530 mm): Track [/USB Port 2/CHG_INT] on In2.Cu (signal V + 3V3), length 1.9050 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(103.5812 mm, 134.8272 mm): Via [/Cells and Gauge/CELL2] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(110.7560 mm, 104.3940 mm): Track [/USB Port 1/LODRV1] on In2.Cu (signal V + 3V3), length 0.7500 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(98.3352 mm, 128.0532 mm): Via [/Cells and Gauge/TS1] on F.Cu - B.Cu
+[connection_width]: Copper connection too narrow (board setup constraints minimum connection width 0.1500 mm; actual 0.1235 mm) (B.Cu)
+    Rule: board setup constraints; warning
+    @(105.2274 mm, 109.1840 mm): Via [GND] on F.Cu - B.Cu
+    @(104.1400 mm, 108.3564 mm): Pad 2 [GND] of C209 on B.Cu
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6000 mm, 62.8245 mm): Segment on Edge.Cuts
+    @(120.1635 mm, 129.7560 mm): Reference field of C118
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6000 mm, 62.8245 mm): Segment on Edge.Cuts
+    @(120.5236 mm, 116.7976 mm): Reference field of C315
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(91.4000 mm, 127.4755 mm): NPTH pad of H101
+    @(90.8152 mm, 128.7236 mm): Reference field of C207
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(78.4000 mm, 132.3750 mm): Segment on Edge.Cuts
+    @(79.6544 mm, 72.5676 mm): Reference field of TP512
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6000 mm, 62.8245 mm): Segment on Edge.Cuts
+    @(120.5484 mm, 85.4708 mm): Reference field of TP106
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(91.4000 mm, 127.4755 mm): NPTH pad of H101
+    @(93.0640 mm, 126.7720 mm): Reference field of R103
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6000 mm, 62.8245 mm): Segment on Edge.Cuts
+    @(121.8695 mm, 128.3740 mm): Reference field of R124
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6000 mm, 62.8245 mm): Segment on Edge.Cuts
+    @(120.1935 mm, 128.7300 mm): Reference field of R126
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(91.4000 mm, 127.4755 mm): NPTH pad of H101
+    @(93.0640 mm, 128.6810 mm): Reference field of R102
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(78.4000 mm, 132.3750 mm): Segment on Edge.Cuts
+    @(78.4714 mm, 96.0396 mm): Reference field of C556
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(84.8360 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+    @(84.8360 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(84.8360 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+    @(84.8360 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(96.7232 mm, 69.5706 mm): Via [GND] on F.Cu - B.Cu
+    @(96.7232 mm, 69.0626 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(84.8360 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(84.8360 mm, 100.0760 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.7280 mm, 69.0626 mm): Via [GND] on F.Cu - B.Cu
+    @(109.7280 mm, 69.5706 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(107.9500 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
+    @(107.9500 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.3224 mm, 69.0626 mm): Via [GND] on F.Cu - B.Cu
+    @(90.3224 mm, 69.5706 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(89.6620 mm, 133.1976 mm): Via [GND] on F.Cu - B.Cu
+    @(89.6620 mm, 132.7912 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(89.6620 mm, 133.1976 mm): Via [GND] on F.Cu - B.Cu
+    @(89.6620 mm, 133.6040 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(89.4080 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(89.4080 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(89.4080 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(89.4080 mm, 100.0760 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.3950 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
+    @(112.3950 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(103.2764 mm, 69.5706 mm): Via [GND] on F.Cu - B.Cu
+    @(103.2764 mm, 69.0626 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(90.2208 mm, 132.3848 mm): Via [GND] on F.Cu - B.Cu
+    @(90.2208 mm, 132.7912 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.3950 mm, 100.0760 mm): Via [GND] on F.Cu - B.Cu
+    @(112.3950 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.3950 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(112.3950 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(107.9500 mm, 100.0760 mm): Via [GND] on F.Cu - B.Cu
+    @(107.9500 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(90.2208 mm, 133.1976 mm): Via [GND] on F.Cu - B.Cu
+    @(90.2208 mm, 132.7912 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(90.2208 mm, 133.1976 mm): Via [GND] on F.Cu - B.Cu
+    @(90.2208 mm, 133.6040 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(107.9500 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(107.9500 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(89.4080 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
+    @(89.4080 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)
+    Rule: board setup constraints; warning
+    @(89.6620 mm, 132.3848 mm): Via [GND] on F.Cu - B.Cu
+    @(89.6620 mm, 132.7912 mm): Via [GND] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(98.0440 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(97.5360 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(98.0440 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(98.0440 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(98.0440 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(98.5520 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(97.5360 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(97.5360 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(97.5360 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(98.0440 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(117.6020 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(118.1100 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(117.6020 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(117.6020 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(98.0440 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(98.5520 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(118.6180 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(118.1100 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(118.6180 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(118.6180 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(118.1100 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(118.1100 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(118.1100 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(117.6020 mm, 106.1720 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(118.6180 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(118.1100 mm, 106.6800 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(98.5520 mm, 98.4250 mm): Via [PACK_P] on F.Cu - B.Cu
+    @(98.5520 mm, 98.9330 mm): Via [PACK_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(115.8240 mm, 99.0600 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(115.8240 mm, 98.5520 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(115.8240 mm, 99.0600 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(115.8240 mm, 99.5680 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(114.8080 mm, 98.5520 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(114.8080 mm, 99.0600 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(114.8080 mm, 99.5680 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(114.8080 mm, 99.0600 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(114.8080 mm, 99.5680 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(114.8080 mm, 100.0760 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(114.8080 mm, 101.0920 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(114.8080 mm, 100.5840 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(115.8240 mm, 99.5680 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(115.8240 mm, 100.0760 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(114.8080 mm, 100.0760 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+    @(114.8080 mm, 100.5840 mm): Via [/USB Port 1/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(101.0920 mm, 88.3920 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+    @(101.6000 mm, 88.3920 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(101.0920 mm, 88.3920 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+    @(100.5840 mm, 88.3920 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2442 mm)
+    Rule: board setup constraints; warning
+    @(104.0892 mm, 77.4700 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+    @(104.0924 mm, 78.0142 mm): Via [/USB Port 1/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.7100 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(92.7100 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.7100 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(92.7100 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.7100 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(92.7100 mm, 100.0760 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 101.0920 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 100.5840 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 100.5840 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 100.0760 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 100.0760 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(84.2772 mm, 78.0796 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(84.2772 mm, 77.5716 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(82.2960 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(81.7880 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(82.2960 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(82.8040 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(80.7720 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(81.2800 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(80.7720 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(81.2800 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(81.2800 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(81.7880 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(82.8040 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(82.2960 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(81.7880 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(82.2960 mm, 121.4120 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(81.7880 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+    @(81.2800 mm, 120.1420 mm): Via [/USB Port 2/PP5V] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(110.2360 mm, 99.5680 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(110.2360 mm, 99.0600 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(110.2360 mm, 99.5680 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(110.2360 mm, 100.0760 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(110.2360 mm, 101.0920 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(110.2360 mm, 100.5840 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(111.2520 mm, 99.5680 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(111.2520 mm, 99.0600 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(111.2520 mm, 99.5680 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(111.2520 mm, 100.0760 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(111.2520 mm, 99.0600 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(111.2520 mm, 98.5520 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(110.2360 mm, 98.5520 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(110.2360 mm, 99.0600 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.5220 mm, 81.1530 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(112.5220 mm, 80.6450 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.5220 mm, 80.1370 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(112.5220 mm, 80.6450 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(111.8870 mm, 80.6450 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(111.8870 mm, 80.1370 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(111.8870 mm, 80.6450 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(111.8870 mm, 81.1530 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(110.2360 mm, 100.0760 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+    @(110.2360 mm, 100.5840 mm): Via [/USB Port 1/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(88.1380 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(88.1380 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(88.1380 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(88.1380 mm, 100.0760 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.1766 mm, 80.2132 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(92.1766 mm, 80.7212 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.8116 mm, 80.2132 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(92.8116 mm, 80.7212 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(87.1220 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(87.1220 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(87.1220 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(87.1220 mm, 98.5520 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(87.1220 mm, 100.5840 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(87.1220 mm, 100.0760 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(87.1220 mm, 100.5840 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(87.1220 mm, 101.0920 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.1766 mm, 80.7212 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(92.1766 mm, 81.2292 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(88.1380 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(88.1380 mm, 98.5520 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(87.1220 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(87.1220 mm, 100.0760 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(92.8116 mm, 80.7212 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(92.8116 mm, 81.2292 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.1352 mm, 69.5706 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+    @(91.1352 mm, 69.0626 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1709 mm)
+    Rule: board setup constraints; warning
+    @(85.1408 mm, 77.5716 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+    @(85.1114 mm, 78.0416 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(95.9104 mm, 69.0626 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+    @(95.9104 mm, 69.5706 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(88.2396 mm, 79.5528 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+    @(88.2396 mm, 79.0448 mm): Via [/USB Port 2/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.7920 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.2680 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.2680 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.2680 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.7920 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.7920 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.7760 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.7760 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.2680 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.2680 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.2680 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.2680 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 101.0920 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 98.5520 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 99.5680 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 98.5520 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 98.5520 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 101.0920 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 101.0920 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.7920 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 98.5520 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 101.0920 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 98.4237 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 98.4237 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 98.4237 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.7956 mm, 98.4237 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.7956 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.7956 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.7956 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(109.3036 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 98.9317 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.7956 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(104.0892 mm, 69.5706 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+    @(104.0892 mm, 69.0626 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.9152 mm, 69.5706 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+    @(108.9152 mm, 69.0626 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1869 mm)
+    Rule: board setup constraints; warning
+    @(104.9020 mm, 77.4700 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+    @(105.0544 mm, 77.0076 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(104.9020 mm, 77.4700 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+    @(104.9020 mm, 77.9780 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(108.0008 mm, 79.5528 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+    @(108.0008 mm, 79.0448 mm): Via [/USB Port 1/VBUS] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 98.4237 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 98.4237 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 98.4237 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 98.4237 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 100.9637 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 100.9637 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 100.9637 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 100.9637 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(86.1896 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(85.6816 mm, 99.4397 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 98.9317 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+[lib_footprint_mismatch]: Footprint 'TI_MHA0024A_CC2340R5MODA_7x10mm' does not match copy in library 'MonolithDev'
+    Local override; warning
+    @(116.3196 mm, 122.5816 mm): Footprint U301
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.6100 mm, 130.5752 mm): Segment of C104 on F.Silkscreen
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(95.6100 mm, 130.5752 mm): Segment of C104 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.4100 mm, 130.6830 mm): Reference field of C104
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.4100 mm, 128.7100 mm): Reference field of C103
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.8900 mm, 130.5752 mm): Segment of C104 on F.Silkscreen
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.2670 mm, 131.6006 mm): Segment of R108 on F.Silkscreen
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.2670 mm, 131.6006 mm): Segment of R108 on F.Silkscreen
+    @(96.4100 mm, 130.6830 mm): Reference field of C104
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(97.0270 mm, 131.6006 mm): Segment of R108 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.0270 mm, 131.6006 mm): Segment of R108 on F.Silkscreen
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.0270 mm, 131.6006 mm): Segment of R108 on F.Silkscreen
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.4100 mm, 130.6830 mm): Reference field of C104
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.4100 mm, 130.6830 mm): Reference field of C104
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(96.4100 mm, 130.6830 mm): Reference field of C104
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(98.0430 mm, 131.6006 mm): Segment of R107 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(97.2830 mm, 131.6006 mm): Segment of R107 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+    @(97.2628 mm, 129.5610 mm): Segment of C106 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.2628 mm, 130.2810 mm): Segment of C106 on F.Silkscreen
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7180 mm, 131.4170 mm): Reference field of C116
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.4260 mm, 131.5752 mm): Segment of R123 on F.Silkscreen
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7180 mm, 131.4170 mm): Reference field of C116
+    @(99.7140 mm, 130.9390 mm): Reference field of U102
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(99.7140 mm, 130.9390 mm): Reference field of U102
+    @(100.0522 mm, 132.7360 mm): Segment of C112 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7180 mm, 131.4170 mm): Reference field of C116
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.6360 mm, 131.4216 mm): Reference field of R123
+    @(95.6564 mm, 131.9844 mm): Reference field of J114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.1328 mm, 129.2650 mm): Segment of C117 on F.Silkscreen
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(105.5650 mm, 123.3060 mm): Reference field of C108
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.5650 mm, 123.3060 mm): Reference field of C108
+    @(104.3952 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(104.3952 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(105.3952 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.5650 mm, 123.3060 mm): Reference field of C108
+    @(107.5410 mm, 123.3340 mm): Reference field of C107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(107.5410 mm, 123.3340 mm): Reference field of C107
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.5650 mm, 123.3060 mm): Reference field of C108
+    @(105.3952 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(105.6728 mm, 122.5060 mm): Segment of C108 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(101.7390 mm, 121.5200 mm): Segment of Q101 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(101.7390 mm, 121.5200 mm): Segment of Q101 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.0910 mm, 135.2820 mm): Reference field of R120
+    @(100.0760 mm, 135.2820 mm): Reference field of R119
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(102.0910 mm, 135.2820 mm): Reference field of R120
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(100.0760 mm, 135.2820 mm): Reference field of R119
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(103.2264 mm, 126.6180 mm): Segment of R117 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(103.4552 mm, 125.0719 mm): Polygon of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(104.2252 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(103.2264 mm, 125.8580 mm): Segment of R117 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(103.2264 mm, 126.6180 mm): Segment of R117 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(101.6780 mm, 125.1630 mm): Segment of U101 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.2780 mm, 124.7630 mm): Segment of U101 on F.Silkscreen
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(101.2780 mm, 124.7630 mm): Segment of U101 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(101.6780 mm, 125.1630 mm): Segment of U101 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.2752 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.3252 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.2752 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.2752 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(102.3252 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(102.2752 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(102.3252 mm, 124.5319 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(102.2752 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(102.2752 mm, 123.0119 mm): Segment of Q103 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.9572 mm, 132.7360 mm): Segment of C113 on F.Silkscreen
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(101.9572 mm, 132.7360 mm): Segment of C113 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.5290 mm, 131.6346 mm): Segment of U102 on F.Silkscreen
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.5290 mm, 131.6346 mm): Segment of U102 on F.Silkscreen
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.5240 mm, 131.9290 mm): Polygon of U102 on F.Silkscreen
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.5240 mm, 131.9290 mm): Polygon of U102 on F.Silkscreen
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(99.7140 mm, 130.9390 mm): Reference field of U102
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(99.5180 mm, 131.5248 mm): Segment of C116 on F.Silkscreen
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7180 mm, 131.4170 mm): Reference field of C116
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(98.4260 mm, 131.5752 mm): Segment of R123 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.9572 mm, 133.4560 mm): Segment of C113 on F.Silkscreen
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(101.9572 mm, 133.4560 mm): Segment of C113 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.2446 mm, 133.7320 mm): Segment of R120 on F.Silkscreen
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(102.2446 mm, 133.7320 mm): Segment of R120 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(100.9640 mm, 122.6534 mm): Segment of R113 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(99.5680 mm, 123.6730 mm): Reference field of U101
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(101.2200 mm, 122.6534 mm): Segment of R106 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(99.5680 mm, 123.6730 mm): Reference field of U101
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7060 mm, 122.8070 mm): Reference field of R105
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(98.9320 mm, 122.9626 mm): Segment of R109 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(99.5680 mm, 123.6730 mm): Reference field of U101
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.7060 mm, 122.8070 mm): Reference field of R105
+    @(99.1880 mm, 122.9586 mm): Segment of R111 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(97.3820 mm, 122.8090 mm): Reference field of R109
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.1720 mm, 122.9626 mm): Segment of R109 on F.Silkscreen
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.2830 mm, 121.4750 mm): Segment of Q102 on F.Silkscreen
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.2010 mm, 130.5648 mm): Segment of C115 on F.Silkscreen
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.9210 mm, 130.5648 mm): Segment of C115 on F.Silkscreen
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.9210 mm, 132.4698 mm): Segment of C114 on F.Silkscreen
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7990 mm, 129.8290 mm): Segment of U102 on F.Silkscreen
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7990 mm, 129.8290 mm): Segment of U102 on F.Silkscreen
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.7990 mm, 129.8290 mm): Segment of U102 on F.Silkscreen
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(103.2010 mm, 132.4698 mm): Segment of C114 on F.Silkscreen
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.2780 mm, 114.9350 mm): Reference field of Q102
+    @(96.0864 mm, 112.7804 mm): Reference field of R518
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(96.0864 mm, 112.7804 mm): Reference field of R518
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(96.0864 mm, 112.7804 mm): Reference field of R518
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.4504 mm, 112.4964 mm): Reference field of TP412
+    @(96.0864 mm, 112.7804 mm): Reference field of R518
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.5347 mm, 110.9038 mm): Segment of R529 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.5347 mm, 110.9038 mm): Segment of R529 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(96.0864 mm, 112.7804 mm): Reference field of R518
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(95.2964 mm, 112.6267 mm): Segment of R518 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.5347 mm, 111.6638 mm): Segment of R529 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.5347 mm, 111.6638 mm): Segment of R529 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(93.2136 mm, 112.6307 mm): Segment of R519 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(92.5812 mm, 114.8418 mm): Reference field of R514
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(93.5404 mm, 112.6465 mm): Segment of C519 on F.Silkscreen
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(94.2604 mm, 112.6465 mm): Segment of C519 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.2604 mm, 112.6465 mm): Segment of C519 on F.Silkscreen
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.5364 mm, 112.6267 mm): Segment of R518 on F.Silkscreen
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(94.5364 mm, 112.6267 mm): Segment of R518 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.2964 mm, 112.6267 mm): Segment of R518 on F.Silkscreen
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.5364 mm, 112.6267 mm): Segment of R518 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.5347 mm, 110.6478 mm): Segment of R528 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.9960 mm, 116.6030 mm): Reference field of C111
+    @(93.5962 mm, 116.9250 mm): Polygon of Q102 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.8730 mm, 116.6030 mm): Reference field of C110
+    @(94.9960 mm, 116.6030 mm): Reference field of C111
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.8730 mm, 116.6030 mm): Reference field of C110
+    @(100.2830 mm, 116.1500 mm): Segment of Q102 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(98.4504 mm, 113.9444 mm): Circle of TP412 on F.Silkscreen
+    @(97.2780 mm, 114.9350 mm): Reference field of Q102
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.8268 mm, 116.4984 mm): Reference field of C444
+    @(100.2830 mm, 116.1500 mm): Segment of Q102 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(92.5812 mm, 114.8418 mm): Reference field of R514
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.7912 mm, 114.6881 mm): Segment of R514 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.5200 mm, 113.1188 mm): Segment of U503 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.5200 mm, 112.6438 mm): Segment of U503 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.2044 mm, 105.5332 mm): Reference field of C511
+    @(91.7064 mm, 105.2640 mm): Segment of D510 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.2044 mm, 105.5332 mm): Reference field of C511
+    @(90.5064 mm, 107.2240 mm): Segment of D510 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(88.7272 mm, 105.3428 mm): Reference field of C513
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(90.5064 mm, 105.2640 mm): Segment of D510 on F.Silkscreen
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(96.8230 mm, 110.4350 mm): Reference field of C441
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(93.2190 mm, 110.6959 mm): Segment of C517 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(93.5404 mm, 108.8998 mm): Segment of C518 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(94.5347 mm, 109.8878 mm): Segment of R528 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.8448 mm, 108.0982 mm): Reference field of C442
+    @(97.5343 mm, 107.6750 mm): Segment of C441 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1476 mm, 111.3250 mm): Segment of R434 on F.Silkscreen
+    @(100.7038 mm, 111.0962 mm): Reference field of U404
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1476 mm, 109.2930 mm): Segment of R433 on F.Silkscreen
+    @(101.3196 mm, 110.2276 mm): Reference field of C439
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.7038 mm, 111.0962 mm): Reference field of U404
+    @(100.1476 mm, 109.2930 mm): Segment of R433 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.7038 mm, 111.0962 mm): Reference field of U404
+    @(101.3196 mm, 110.2276 mm): Reference field of C439
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(100.1146 mm, 111.7706 mm): Reference field of R432
+    @(98.4504 mm, 112.4964 mm): Reference field of TP412
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.8448 mm, 105.7360 mm): Reference field of C443
+    @(97.5561 mm, 105.3382 mm): Segment of C442 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5620 mm, 102.7768 mm): Reference field of R546
+    @(91.2044 mm, 105.5332 mm): Reference field of C511
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(90.2472 mm, 105.4506 mm): Segment of C513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(89.2680 mm, 105.6988 mm): Segment of D505 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(89.5272 mm, 105.4506 mm): Segment of C513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+    @(89.5272 mm, 105.4506 mm): Segment of C513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+    @(90.2472 mm, 105.4506 mm): Segment of C513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.0312 mm, 114.6881 mm): Segment of R514 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(91.0312 mm, 114.6881 mm): Segment of R514 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.0152 mm, 114.6881 mm): Segment of R513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.7752 mm, 114.6881 mm): Segment of R513 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(89.9958 mm, 116.0210 mm): Segment of C546 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(112.8322 mm, 105.9576 mm): Reference field of D410
+    @(111.7530 mm, 105.3364 mm): Reference field of C413
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(112.8322 mm, 105.9576 mm): Reference field of D410
+    @(112.9938 mm, 104.9924 mm): Reference field of D405
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(111.4698 mm, 104.9894 mm): Reference field of D404
+    @(111.7530 mm, 105.3364 mm): Reference field of C413
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(114.0830 mm, 114.6576 mm): Reference field of R413
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(110.6626 mm, 116.1882 mm): Reference field of R417
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(113.1148 mm, 117.3328 mm): Reference field of R304
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(112.5330 mm, 114.5040 mm): Segment of R413 on F.Silkscreen
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+    @(113.2930 mm, 114.5040 mm): Segment of R413 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+    @(113.5490 mm, 114.5040 mm): Segment of R414 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(111.4916 mm, 114.9104 mm): Segment of R416 on F.Silkscreen
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.4580 mm, 114.8080 mm): Circle of TP113 on F.Silkscreen
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.7510 mm, 114.9436 mm): Reference field of R412
+    @(106.5610 mm, 114.0984 mm): Reference field of R411
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(106.5610 mm, 114.0984 mm): Reference field of R411
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(108.3258 mm, 113.0532 mm): Segment of U403 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.8008 mm, 113.0532 mm): Segment of U403 on F.Silkscreen
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.8358 mm, 113.3432 mm): Circle of U403 on F.Silkscreen
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+    @(95.2500 mm, 131.1630 mm): Pad 2 [/Cells and Gauge/CELL_1N] of C104 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(95.2500 mm, 131.1630 mm): Pad 2 [/Cells and Gauge/CELL_1N] of C104 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+    @(95.2500 mm, 130.2030 mm): Pad 1 [Net-(U101-VC1)] of C104 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.4770 mm, 131.4470 mm): Reference field of R108
+    @(95.6564 mm, 134.2644 mm): PTH pad 1 [GND] of J114
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.4930 mm, 131.4470 mm): Reference field of R107
+    @(95.6564 mm, 134.2644 mm): PTH pad 1 [GND] of J114
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(96.6470 mm, 130.9370 mm): Pad 2 [/Cells and Gauge/SRN] of R108 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(97.6630 mm, 130.9370 mm): Pad 2 [/Cells and Gauge/SRP] of R107 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(98.8060 mm, 131.9316 mm): Pad 1 [Net-(U102-VDD)] of R123 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(105.5650 mm, 123.3060 mm): Reference field of C108
+    @(103.8352 mm, 122.8344 mm): Pad 3 [IRQ_N] of Q103 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(103.8352 mm, 122.8344 mm): Pad 3 [IRQ_N] of Q103 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(103.8900 mm, 126.2380 mm): Pad 2 [/Cells and Gauge/CELL_1N] of R117 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(104.7852 mm, 124.7094 mm): Pad 2 [GND] of Q103 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(105.0850 mm, 122.1460 mm): Pad 2 [GND] of C108 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104.7440 mm, 122.7350 mm): Reference field of Q101
+    @(106.0450 mm, 122.1460 mm): Pad 1 [/Cells and Gauge/PACK_CMID] of C108 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(104.0690 mm, 118.8350 mm): Pad 5 [/Cells and Gauge/FET_MID] of Q101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0910 mm, 135.2820 mm): Reference field of R120
+    @(100.0000 mm, 135.4505 mm): PTH pad 1 [/Cells and Gauge/CELL2] of J110
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.0760 mm, 135.2820 mm): Reference field of R119
+    @(100.0000 mm, 135.4505 mm): PTH pad 1 [/Cells and Gauge/CELL2] of J110
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(103.6320 mm, 136.1440 mm): PTH pad 1 [/Cells and Gauge/TS3] of J3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0910 mm, 135.2820 mm): Reference field of R120
+    @(103.5812 mm, 134.8272 mm): Pad 1 [/Cells and Gauge/CELL2] of R121 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0910 mm, 135.2820 mm): Reference field of R120
+    @(103.6320 mm, 136.1440 mm): PTH pad 1 [/Cells and Gauge/TS3] of J3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(107.9500 mm, 134.4752 mm): Reference field of J302
+    @(108.7250 mm, 135.4755 mm): PTH pad 1 [/Cells and Gauge/CELL_4P] of J116
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(113.7920 mm, 134.8260 mm): Reference field of F102
+    @(113.0250 mm, 135.7255 mm): PTH pad 1 [/Cells and Gauge/CELL_P_RAW] of J112
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(102.8700 mm, 126.2380 mm): Pad 1 [/Cells and Gauge/BTP_INT] of R117 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(101.4680 mm, 125.4730 mm): Pad 24 [/Cells and Gauge/CELL_1N] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(101.4680 mm, 125.4730 mm): Pad 24 [/Cells and Gauge/CELL_1N] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.3800 mm, 125.0680 mm): Reference field of R117
+    @(102.8852 mm, 124.7094 mm): Pad 1 [/Cells and Gauge/BTP_INT] of Q103 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(102.8852 mm, 124.7094 mm): Pad 1 [/Cells and Gauge/BTP_INT] of Q103 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(101.4680 mm, 126.2730 mm): Pad 22 [unconnected-(U101-LEDCNTLC-Pad22)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(101.4680 mm, 125.4730 mm): Pad 24 [/Cells and Gauge/CELL_1N] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(101.4680 mm, 126.6730 mm): Pad 21 [unconnected-(U101-LEDCNTLB-Pad21)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.0770 mm): Reference field of R115
+    @(101.4680 mm, 125.8730 mm): Pad 23 [/Cells and Gauge/CELL_1N] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(101.4680 mm, 127.0730 mm): Pad 20 [unconnected-(U101-LEDCNTLA-Pad20)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(101.4680 mm, 127.4730 mm): Pad 19 [Net-(U101-SMBC)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(101.4680 mm, 126.6730 mm): Pad 21 [unconnected-(U101-LEDCNTLB-Pad21)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(101.4680 mm, 126.2730 mm): Pad 22 [unconnected-(U101-LEDCNTLC-Pad22)] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(102.7380 mm, 127.1270 mm): Pad 1 [Net-(U101-SMBC)] of R115 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(102.8700 mm, 126.2380 mm): Pad 1 [/Cells and Gauge/BTP_INT] of R117 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(103.3780 mm, 127.1270 mm): Pad 2 [SCL] of R115 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0580 mm, 126.9380 mm): Reference field of R116
+    @(103.8900 mm, 126.2380 mm): Pad 2 [/Cells and Gauge/CELL_1N] of R117 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(102.5450 mm, 133.0960 mm): Pad 2 [Net-(U102-V2)] of C113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(101.5850 mm, 133.0960 mm): Pad 1 [Net-(U102-V3)] of C113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(102.5450 mm, 133.0960 mm): Pad 2 [Net-(U102-V2)] of C113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(101.5850 mm, 133.0960 mm): Pad 1 [Net-(U102-V3)] of C113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+    @(101.4140 mm, 131.8890 mm): Pad 2 [Net-(U102-V4)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+    @(101.6640 mm, 130.9390 mm): Pad 9 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(101.6640 mm, 130.9390 mm): Pad 9 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(101.4140 mm, 131.8890 mm): Pad 2 [Net-(U102-V4)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(101.9140 mm, 131.8890 mm): Pad 3 [Net-(U102-V3)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(100.1600 mm, 131.9360 mm): Reference field of C112
+    @(99.8780 mm, 131.8970 mm): Pad 1 [Net-(U102-VDD)] of C116 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.1550 mm, 131.0810 mm): Reference field of C106
+    @(98.8060 mm, 130.9116 mm): Pad 2 [/Cells and Gauge/CELL_4P] of R123 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(101.5810 mm, 134.1120 mm): Pad 2 [Net-(U102-V3)] of R120 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4112 mm, 134.3172 mm): Reference field of R121
+    @(102.6010 mm, 134.1120 mm): Pad 1 [/Cells and Gauge/CELL3] of R120 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(102.6010 mm, 134.1120 mm): Pad 1 [/Cells and Gauge/CELL3] of R120 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(101.5810 mm, 134.1120 mm): Pad 2 [Net-(U102-V3)] of R120 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(100.9680 mm, 124.9730 mm): Pad 25 [/Cells and Gauge/GAUGE_FUSE] of U101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(100.5840 mm, 123.3170 mm): Pad 2 [Net-(U101-PACK)] of R113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(99.5680 mm, 123.6730 mm): Reference field of U101
+    @(100.5840 mm, 123.3170 mm): Pad 2 [Net-(U101-PACK)] of R113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(101.6000 mm, 123.3170 mm): Pad 2 [Net-(U101-VCC)] of R106 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(101.6000 mm, 123.3170 mm): Pad 2 [Net-(U101-VCC)] of R106 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(100.5840 mm, 122.2970 mm): Pad 1 [PACK_P] of R113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.4352 mm, 123.7719 mm): Reference field of Q103
+    @(101.6000 mm, 122.2970 mm): Pad 1 [/Cells and Gauge/FET_MID] of R106 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(101.6000 mm, 122.2970 mm): Pad 1 [/Cells and Gauge/FET_MID] of R106 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(98.5520 mm, 123.3190 mm): Pad 1 [/Cells and Gauge/CHG] of R109 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(97.5360 mm, 123.3170 mm): Pad 2 [Net-(U101-BAT)] of R105 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(98.5520 mm, 122.2990 mm): Pad 2 [/Cells and Gauge/CHG_G] of R109 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(97.5360 mm, 122.2970 mm): Pad 1 [Net-(D101-K)] of R105 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.3980 mm, 122.8050 mm): Reference field of R111
+    @(97.9530 mm, 118.8350 mm): Pad 5 [/Cells and Gauge/FET_MID] of Q102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(101.8190 mm, 120.8300 mm): Pad 8 [/Cells and Gauge/FET_MID] of Q101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.7540 mm, 122.8070 mm): Reference field of R113
+    @(104.0690 mm, 118.8350 mm): Pad 5 [/Cells and Gauge/FET_MID] of Q101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.7700 mm, 122.8070 mm): Reference field of R106
+    @(101.8190 mm, 120.8300 mm): Pad 8 [/Cells and Gauge/FET_MID] of Q101 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+    @(103.5610 mm, 131.8820 mm): Pad 2 [Net-(U102-V1)] of C114 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(101.6640 mm, 130.9390 mm): Pad 9 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(102.4140 mm, 129.9890 mm): Pad 5 [Net-(U102-V1)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(101.6640 mm, 130.9390 mm): Pad 9 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(101.4140 mm, 129.9890 mm): Pad 7 [Net-(U102-CD)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(101.6640 mm, 130.9390 mm): Pad 9 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(102.4140 mm, 129.9890 mm): Pad 5 [Net-(U102-V1)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(101.9140 mm, 129.9890 mm): Pad 6 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.0650 mm, 131.9360 mm): Reference field of C113
+    @(102.4140 mm, 131.8890 mm): Pad 4 [Net-(U102-V2)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(102.4140 mm, 131.8890 mm): Pad 4 [Net-(U102-V2)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(101.9140 mm, 131.8890 mm): Pad 3 [Net-(U102-V3)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 132.3620 mm): Reference field of C114
+    @(102.4140 mm, 131.8890 mm): Pad 4 [Net-(U102-V2)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(101.9140 mm, 131.8890 mm): Pad 3 [Net-(U102-V3)] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(101.9140 mm, 129.9890 mm): Pad 6 [/Cells and Gauge/CELL_1N] of U102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(103.0250 mm, 130.0650 mm): Reference field of C117
+    @(103.5610 mm, 129.9770 mm): Pad 2 [/Cells and Gauge/CELL_1N] of C115 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(102.4010 mm, 130.4570 mm): Reference field of C115
+    @(102.5450 mm, 128.9050 mm): Pad 2 [Net-(U102-CD)] of C117 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.2780 mm, 114.9350 mm): Reference field of Q102
+    @(95.4760 mm, 115.4430 mm): Pad 1 [Net-(C110-Pad2)] of C111 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.8910 mm, 111.2838 mm): Pad 1 [PACK_P] of R529 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(94.8910 mm, 111.2838 mm): Pad 1 [PACK_P] of R529 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.9164 mm, 113.2904 mm): Pad 2 [Net-(U503-FB)] of R518 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(93.8710 mm, 111.2838 mm): Pad 2 [/USB Port 2/SRN_F] of R529 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+    @(93.8710 mm, 111.2838 mm): Pad 2 [/USB Port 2/SRN_F] of R529 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(93.8710 mm, 111.2838 mm): Pad 2 [/USB Port 2/SRN_F] of R529 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(94.9164 mm, 112.2704 mm): Pad 1 [PACK_P] of R518 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(93.9004 mm, 112.2744 mm): Pad 1 [/USB Port 2/SRN_F] of C519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+    @(93.9004 mm, 112.2744 mm): Pad 1 [/USB Port 2/SRN_F] of C519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(92.8336 mm, 112.2744 mm): Pad 1 [Net-(U503-FB)] of R519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(93.9004 mm, 112.2744 mm): Pad 1 [/USB Port 2/SRN_F] of C519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 112.4538 mm): Reference field of R529
+    @(93.9004 mm, 113.2344 mm): Pad 2 [GND] of C519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(95.0604 mm, 112.7544 mm): Reference field of C519
+    @(94.9164 mm, 112.2704 mm): Pad 1 [PACK_P] of R518 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0036 mm, 112.7844 mm): Reference field of R519
+    @(93.9004 mm, 113.2344 mm): Pad 2 [GND] of C519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(92.5812 mm, 114.8418 mm): Reference field of R514
+    @(92.8336 mm, 113.2944 mm): Pad 2 [Net-(U503-FBG)] of R519 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(93.8710 mm, 110.2678 mm): Pad 2 [/USB Port 2/SRP_F] of R528 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8730 mm, 116.6030 mm): Reference field of C110
+    @(97.9530 mm, 118.8350 mm): Pad 5 [/Cells and Gauge/FET_MID] of Q102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.9960 mm, 116.6030 mm): Reference field of C111
+    @(94.4530 mm, 116.9300 mm): Pad 1 [PACK_P] of Q102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(97.2780 mm, 114.9350 mm): Reference field of Q102
+    @(96.3930 mm, 115.4430 mm): Pad 2 [Net-(C110-Pad2)] of C110 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.8268 mm, 116.4984 mm): Reference field of C444
+    @(100.2030 mm, 116.8400 mm): Pad 8 [/Cells and Gauge/FET_MID] of Q102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(101.8268 mm, 116.4984 mm): Reference field of C444
+    @(97.9530 mm, 118.8350 mm): Pad 5 [/Cells and Gauge/FET_MID] of Q102 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.1600 mm, 112.9088 mm): Pad 9 [Net-(U503-ICHG)] of U503 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.6600 mm, 112.9088 mm): Pad 10 [/USB Port 2/ILIM] of U503 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(92.7404 mm, 108.7920 mm): Reference field of C518
+    @(92.8590 mm, 110.3238 mm): Pad 1 [/USB Port 2/SRP_F] of C517 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(86.9180 mm, 107.9988 mm): Reference field of C510
+    @(88.6600 mm, 108.1088 mm): Pad 23 [/USB Port 2/DRV_SUP] of U503 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(86.9180 mm, 107.9988 mm): Reference field of C510
+    @(88.1600 mm, 108.1088 mm): Pad 24 [/USB Port 2/REGN] of U503 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(92.7404 mm, 108.7920 mm): Reference field of C518
+    @(92.8844 mm, 106.4832 mm): Pad 1 [/USB Port 2/DRV_SUP] of C511 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.3810 mm, 111.4378 mm): Reference field of R528
+    @(92.8590 mm, 111.2838 mm): Pad 2 [/USB Port 2/SRN_F] of C517 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8230 mm, 110.4350 mm): Reference field of C441
+    @(94.8910 mm, 110.2678 mm): Pad 1 [/USB Port 2/BAT_SNS_P] of R528 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(94.0190 mm, 110.8038 mm): Reference field of C517
+    @(93.9004 mm, 109.2720 mm): Pad 1 [/USB Port 2/SRP_F] of C518 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8448 mm, 108.0982 mm): Reference field of C442
+    @(95.3480 mm, 108.5850 mm): Pad 2 [GND] of C441 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8448 mm, 108.0982 mm): Reference field of C442
+    @(98.2980 mm, 108.5850 mm): Pad 1 [/USB Port 1/PP5V] of C441 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4504 mm, 112.4964 mm): Reference field of TP412
+    @(99.7676 mm, 111.9886 mm): Pad 2 [GND] of R434 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8448 mm, 105.7360 mm): Reference field of C443
+    @(95.3698 mm, 106.2482 mm): Pad 2 [GND] of C442 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96.8448 mm, 105.7360 mm): Reference field of C443
+    @(98.3198 mm, 106.2482 mm): Pad 1 [/USB Port 1/PP5V] of C442 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+    @(89.8872 mm, 105.8228 mm): Pad 1 [/USB Port 2/BTST2] of C513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(89.8872 mm, 105.8228 mm): Pad 1 [/USB Port 2/BTST2] of C513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.9680 mm, 104.9988 mm): Reference field of D505
+    @(89.8872 mm, 104.8628 mm): Pad 2 [/USB Port 2/SW2] of C513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(91.2044 mm, 105.5332 mm): Reference field of C511
+    @(91.1064 mm, 105.2640 mm): Pad 2 [/USB Port 2/REGN] of D510 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(91.2044 mm, 105.5332 mm): Reference field of C511
+    @(91.1064 mm, 106.6640 mm): Pad 1 [/USB Port 2/DRV_SUP] of D510 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.8064 mm, 105.9640 mm): Reference field of D510
+    @(89.8872 mm, 104.8628 mm): Pad 2 [/USB Port 2/SW2] of C513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.4112 mm, 115.3518 mm): Pad 2 [GND] of R514 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(91.5652 mm, 114.8418 mm): Reference field of R513
+    @(91.4112 mm, 114.3318 mm): Pad 1 [/USB Port 2/ILIM] of R514 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.3680 mm, 116.3810 mm): Pad 1 [PACK_P] of C546 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.3952 mm, 115.3518 mm): Pad 2 [GND] of R513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(90.5238 mm, 114.8418 mm): Reference field of R516
+    @(90.3952 mm, 114.3318 mm): Pad 1 [Net-(U503-ICHG)] of R513 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.8880 mm, 117.5410 mm): Reference field of C546
+    @(90.4748 mm, 117.7236 mm): Pad 1 [PACK_P] of C544 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(87.7638 mm, 116.1438 mm): Reference field of R517
+    @(88.3418 mm, 115.9828 mm): Pad 2 [/USB Port 2/TS] of R515 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(87.7638 mm, 116.1438 mm): Reference field of R517
+    @(89.3538 mm, 115.3518 mm): Pad 2 [GND] of R516 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(87.7638 mm, 116.1438 mm): Reference field of R517
+    @(89.4080 mm, 116.3810 mm): Pad 2 [GND] of C546 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.8880 mm, 117.5410 mm): Reference field of C546
+    @(88.1448 mm, 118.0320 mm): Pad 3 [PACK_P] of U504 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(89.8880 mm, 117.5410 mm): Reference field of C546
+    @(88.1448 mm, 117.5320 mm): Pad 4 [GND] of U504 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+    @(112.9130 mm, 114.1476 mm): Pad 1 [Net-(U403-ICHG)] of R413 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.0830 mm, 114.6576 mm): Reference field of R413
+    @(113.6858 mm, 112.8432 mm): Pad 10 [/USB Port 1/ILIM] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(110.9576 mm, 114.3762 mm): Pad 2 [/USB Port 1/CE_N] of R435 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(110.9826 mm, 115.1382 mm): Pad 1 [/USB Port 1/CE_N] of R417 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(110.6858 mm, 112.8432 mm): Pad 4 [unconnected-(U403-~{STAT1}-Pad4)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(111.1858 mm, 112.8432 mm): Pad 5 [unconnected-(U403-~{STAT2}-Pad5)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(111.6858 mm, 112.8432 mm): Pad 6 [unconnected-(U403-~{PG}-Pad6)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(112.1858 mm, 112.8432 mm): Pad 7 [/USB Port 1/CE_N] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+    @(112.9130 mm, 115.1676 mm): Pad 2 [GND] of R413 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(113.0416 mm, 115.0640 mm): Reference field of R416
+    @(112.9284 mm, 116.0780 mm): Pad 2 [GND] of C301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(111.8716 mm, 114.5540 mm): Pad 1 [/USB Port 1/TS] of R416 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(111.8716 mm, 115.5740 mm): Pad 2 [GND] of R416 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(106.5650 mm, 111.7616 mm): Reference field of R409
+    @(108.5358 mm, 112.1932 mm): Pad 36 [/USB Port 1/FSW] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(109.1858 mm, 112.8432 mm): Pad 1 [/USB Port 1/I2CC_SCL] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(108.4580 mm, 114.8080 mm): Pad 1 [/Cells and Gauge/WAKE] of TP113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(110.3426 mm, 115.1382 mm): Pad 2 [3V3] of R417 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3496 mm, 114.8572 mm): Reference field of R415
+    @(110.3176 mm, 114.3762 mm): Pad 1 [CHG_INH] of R435 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(106.7510 mm, 114.9436 mm): Reference field of R412
+    @(108.4580 mm, 114.8080 mm): Pad 1 [/Cells and Gauge/WAKE] of TP113 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(109.1858 mm, 112.8432 mm): Pad 1 [/USB Port 1/I2CC_SCL] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(110.1858 mm, 112.8432 mm): Pad 3 [/USB Port 1/CHG_INT] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(110.1858 mm, 112.8432 mm): Pad 3 [/USB Port 1/CHG_INT] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(108.4580 mm, 113.3600 mm): Reference field of TP113
+    @(110.6858 mm, 112.8432 mm): Pad 4 [unconnected-(U403-~{STAT1}-Pad4)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.9438 mm, 107.9924 mm): Reference field of C410
+    @(109.6858 mm, 108.0432 mm): Pad 27 [/USB Port 1/HIDRV1] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.9438 mm, 107.9924 mm): Reference field of C410
+    @(109.1858 mm, 108.0432 mm): Pad 28 [/USB Port 1/SW1] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.9438 mm, 107.9924 mm): Reference field of C410
+    @(110.1858 mm, 108.0432 mm): Pad 26 [/USB Port 1/BTST1] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(106.5650 mm, 110.5900 mm): Reference field of R410
+    @(108.5358 mm, 110.1932 mm): Pad 32 [/USB Port 1/PPHV] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(106.5650 mm, 110.5900 mm): Reference field of R410
+    @(108.5358 mm, 110.6932 mm): Pad 33 [/USB Port 1/PPHV] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.9438 mm, 107.9924 mm): Reference field of C410
+    @(111.6858 mm, 108.0432 mm): Pad 23 [/USB Port 1/DRV_SUP] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.9438 mm, 107.9924 mm): Reference field of C410
+    @(111.1858 mm, 108.0432 mm): Pad 24 [/USB Port 1/REGN] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.8164 mm, 108.6384 mm): Reference field of C418
+    @(114.3358 mm, 110.1932 mm): Pad 15 [unconnected-(U403-NC-Pad15)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.8164 mm, 108.6384 mm): Reference field of C418
+    @(114.3358 mm, 109.6932 mm): Pad 16 [unconnected-(U403-NC-Pad16)] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.8164 mm, 108.6384 mm): Reference field of C418
+    @(114.3358 mm, 109.1932 mm): Pad 17 [GND] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.0830 mm, 114.6576 mm): Reference field of R413
+    @(113.9290 mm, 114.1476 mm): Pad 1 [/USB Port 1/ILIM] of R414 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.5236 mm, 116.7976 mm): Reference field of C315
+    @(119.2276 mm, 116.1288 mm): Pad 5 [GND] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(116.7592 mm, 116.7976 mm): Reference field of C313
+    @(117.9576 mm, 116.1288 mm): Pad 3 [/MCU/NRST] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(118.6180 mm, 116.7876 mm): Reference field of R321
+    @(117.9576 mm, 116.1288 mm): Pad 3 [/MCU/NRST] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(118.6180 mm, 116.7876 mm): Reference field of R321
+    @(119.2276 mm, 116.1288 mm): Pad 5 [GND] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.5236 mm, 116.7976 mm): Reference field of C315
+    @(120.4976 mm, 116.5098 mm): NPTH pad of J301
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(118.6180 mm, 116.7876 mm): Reference field of R321
+    @(120.4976 mm, 116.5098 mm): NPTH pad of J301
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.7196 mm, 118.3316 mm): Circle of U301 on F.Silkscreen
+    @(121.0036 mm, 117.9576 mm): Pad 2 [GND] of C315 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(117.9576 mm, 118.1938 mm): Reference field of J301
+    @(118.1080 mm, 117.9576 mm): Pad 1 [Net-(C313-Pad2)] of R321 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(117.9576 mm, 118.1938 mm): Reference field of J301
+    @(119.1280 mm, 117.9576 mm): Pad 2 [/MCU/ANT_IN] of R321 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(117.9576 mm, 118.1938 mm): Reference field of J301
+    @(117.2392 mm, 117.9576 mm): Pad 2 [Net-(C313-Pad2)] of C313 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(116.7592 mm, 116.7976 mm): Reference field of C313
+    @(116.6876 mm, 116.1288 mm): Pad 1 [3V3] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(118.6180 mm, 116.7876 mm): Reference field of R321
+    @(116.6876 mm, 116.1288 mm): Pad 1 [3V3] of J301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.1868 mm, 117.4516 mm): Reference field of R110
+    @(110.8596 mm, 116.0272 mm): Pad 2 [/USB Port 1/TS] of R415 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6626 mm, 116.1882 mm): Reference field of R417
+    @(110.8596 mm, 116.0272 mm): Pad 2 [/USB Port 1/TS] of R415 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.1868 mm, 117.4516 mm): Reference field of R110
+    @(109.8396 mm, 116.0272 mm): Pad 1 [/USB Port 1/REGN] of R415 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6626 mm, 116.1882 mm): Reference field of R417
+    @(109.8396 mm, 116.0272 mm): Pad 1 [/USB Port 1/REGN] of R415 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.0830 mm, 114.6576 mm): Reference field of R413
+    @(113.8884 mm, 116.0780 mm): Pad 1 [3V3] of C301 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.0830 mm, 114.6576 mm): Reference field of R413
+    @(113.9290 mm, 115.1676 mm): Pad 2 [GND] of R414 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(115.0990 mm, 114.6576 mm): Reference field of R414
+    @(115.4176 mm, 115.4938 mm): NPTH pad of J301
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(115.0990 mm, 114.6576 mm): Reference field of R414
+    @(115.9102 mm, 113.0340 mm): Pad 2 [Net-(U403-FBG)] of R419 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.1868 mm, 117.4516 mm): Reference field of R110
+    @(110.0328 mm, 117.9616 mm): Pad 1 [/Cells and Gauge/CELL_P] of R118 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.1868 mm, 117.4516 mm): Reference field of R110
+    @(110.0328 mm, 116.9416 mm): Pad 2 [/Cells and Gauge/WAKE] of R118 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6376 mm, 113.3262 mm): Reference field of R435
+    @(109.6858 mm, 112.8432 mm): Pad 2 [/USB Port 1/I2CC_SDA] of U403 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.6626 mm, 116.1882 mm): Reference field of R417
+    @(109.0168 mm, 116.9416 mm): Pad 1 [/Cells and Gauge/CHG_G] of R110 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(108.8628 mm, 117.4516 mm): Reference field of R118
+    @(109.0168 mm, 117.9616 mm): Pad 2 [/Cells and Gauge/CELL_P] of R110 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(108.8628 mm, 117.4516 mm): Reference field of R118
+    @(109.0168 mm, 116.9416 mm): Pad 1 [/Cells and Gauge/CHG_G] of R110 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(112.8322 mm, 105.9576 mm): Reference field of D410
+    @(112.9130 mm, 105.8164 mm): Pad 1 [/USB Port 1/BTST2] of C413 on F.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

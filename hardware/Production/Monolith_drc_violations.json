@@ -1,0 +1,6003 @@
+{
+  "board": "C:\\Users\\Logan\\Documents\\BatteryBank\\hardware\\Production\\Monolith.kicad_pcb",
+  "timestamp": "2026-10-29T22:15:54",
+  "total_violations": 598,
+  "violation_counts": {
+    "zones_intersect": 2,
+    "via_dangling": 5,
+    "track_dangling": 3,
+    "connection_width": 1,
+    "silk_edge_clearance": 10,
+    "hole_to_hole": 178,
+    "lib_footprint_mismatch": 1,
+    "silk_overlap": 199,
+    "silk_over_copper": 199
+  },
+  "severity_counts": {
+    "error": 2,
+    "warning": 596,
+    "info": 0
+  },
+  "violations": [
+    {
+      "type": "zones_intersect",
+      "severity": "error",
+      "message": "Copper zones intersect (intersecting zones must have distinct priorities)",
+      "location": {
+        "x": 92.329,
+        "y": 102.235,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "zones_intersect",
+      "severity": "error",
+      "message": "Copper zones intersect (intersecting zones must have distinct priorities)",
+      "location": {
+        "x": 92.329,
+        "y": 102.235,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "via_dangling",
+      "severity": "warning",
+      "message": "Via is not connected or connected on only one layer",
+      "location": {
+        "x": 99.568,
+        "y": 122.295,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "via_dangling",
+      "severity": "warning",
+      "message": "Via is not connected or connected on only one layer",
+      "location": {
+        "x": 104.0892,
+        "y": 77.47,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "via_dangling",
+      "severity": "warning",
+      "message": "Via is not connected or connected on only one layer",
+      "location": {
+        "x": 103.7828,
+        "y": 76.6922,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "track_dangling",
+      "severity": "warning",
+      "message": "Track has unconnected end",
+      "location": {
+        "x": 98.168,
+        "y": 128.773,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "track_dangling",
+      "severity": "warning",
+      "message": "Track has unconnected end",
+      "location": {
+        "x": 80.264,
+        "y": 93.853,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "via_dangling",
+      "severity": "warning",
+      "message": "Via is not connected or connected on only one layer",
+      "location": {
+        "x": 103.5812,
+        "y": 134.8272,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "track_dangling",
+      "severity": "warning",
+      "message": "Track has unconnected end",
+      "location": {
+        "x": 110.755979,
+        "y": 104.394,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "via_dangling",
+      "severity": "warning",
+      "message": "Via is not connected or connected on only one layer",
+      "location": {
+        "x": 98.335215,
+        "y": 128.053215,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "connection_width",
+      "severity": "warning",
+      "message": "Copper connection too narrow (board setup constraints minimum connection width 0.1500 mm; actual 0.1235 mm) (B.Cu)",
+      "location": {
+        "x": 105.227432,
+        "y": 109.183968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 121.6,
+        "y": 62.8245,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 121.6,
+        "y": 62.8245,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 91.4,
+        "y": 127.4755,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 78.4,
+        "y": 132.375,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 121.6,
+        "y": 62.8245,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 91.4,
+        "y": 127.4755,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 121.6,
+        "y": 62.8245,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 121.6,
+        "y": 62.8245,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 91.4,
+        "y": 127.4755,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 78.4,
+        "y": 132.375,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 84.836,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 84.836,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 96.7232,
+        "y": 69.5706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 84.836,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.728,
+        "y": 69.0626,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 107.95,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.3224,
+        "y": 69.0626,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 89.662,
+        "y": 133.1976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 89.662,
+        "y": 133.1976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 89.408,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 89.408,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.395,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 103.2764,
+        "y": 69.5706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 90.2208,
+        "y": 132.3848,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.395,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.395,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 107.95,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 90.2208,
+        "y": 133.1976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 90.2208,
+        "y": 133.1976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 107.95,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 89.408,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1064 mm)",
+      "location": {
+        "x": 89.662,
+        "y": 132.3848,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 98.044,
+        "y": 98.933,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 98.044,
+        "y": 98.933,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 98.044,
+        "y": 98.933,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 97.536,
+        "y": 98.425,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 97.536,
+        "y": 98.425,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 117.602,
+        "y": 106.68,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 117.602,
+        "y": 106.68,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 98.044,
+        "y": 98.425,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 118.618,
+        "y": 106.172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 118.618,
+        "y": 106.172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 118.11,
+        "y": 106.172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 118.11,
+        "y": 106.172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 118.618,
+        "y": 106.68,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 98.552,
+        "y": 98.425,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 115.824,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 115.824,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 114.808,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 114.808,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 114.808,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 114.808,
+        "y": 101.092,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 115.824,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 114.808,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 101.092,
+        "y": 88.392,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 101.092,
+        "y": 88.392,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2442 mm)",
+      "location": {
+        "x": 104.0892,
+        "y": 77.47,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.71,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.71,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.694,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.694,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.71,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.694,
+        "y": 101.092,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.694,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.694,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 84.2772,
+        "y": 78.0796,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 82.296,
+        "y": 120.142,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 82.296,
+        "y": 120.142,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 80.772,
+        "y": 120.142,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 80.772,
+        "y": 121.412,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 81.28,
+        "y": 121.412,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 82.804,
+        "y": 121.412,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 81.788,
+        "y": 121.412,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 81.788,
+        "y": 120.142,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 110.236,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 110.236,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 110.236,
+        "y": 101.092,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 111.252,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 111.252,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 111.252,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 110.236,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.522,
+        "y": 81.153,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.522,
+        "y": 80.137,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 111.887,
+        "y": 80.645,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 111.887,
+        "y": 80.645,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 110.236,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 88.138,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 88.138,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.1766,
+        "y": 80.2132,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.8116,
+        "y": 80.2132,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 87.122,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 87.122,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 87.122,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 87.122,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.1766,
+        "y": 80.7212,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 88.138,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 87.122,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 92.8116,
+        "y": 80.7212,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.761624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 90.253624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 91.1352,
+        "y": 69.5706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1709 mm)",
+      "location": {
+        "x": 85.1408,
+        "y": 77.5716,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 95.9104,
+        "y": 69.0626,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 88.2396,
+        "y": 79.5528,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 131.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 131.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 131.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.268,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.268,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.776,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.776,
+        "y": 130.048,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.268,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.268,
+        "y": 130.556,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.776,
+        "y": 131.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 112.776,
+        "y": 131.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 100.076,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 99.568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 98.552,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 101.092,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.792,
+        "y": 99.06,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 113.284,
+        "y": 100.584,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.795624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.795624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.795624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.795624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 109.303624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.795624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 104.0892,
+        "y": 69.5706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.9152,
+        "y": 69.5706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1869 mm)",
+      "location": {
+        "x": 104.902,
+        "y": 77.47,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 104.902,
+        "y": 77.47,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 108.0008,
+        "y": 79.5528,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 98.423747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 100.963747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 99.947747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 100.455747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 86.189624,
+        "y": 98.931747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "hole_to_hole",
+      "severity": "warning",
+      "message": "Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)",
+      "location": {
+        "x": 85.681624,
+        "y": 99.439747,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "lib_footprint_mismatch",
+      "severity": "warning",
+      "message": "Footprint 'TI_MHA0024A_CC2340R5MODA_7x10mm' does not match copy in library 'MonolithDev'",
+      "location": {
+        "x": 116.3196,
+        "y": 122.5816,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.477,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.61,
+        "y": 130.575164,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.477,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.41,
+        "y": 130.683,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.41,
+        "y": 128.71,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.89,
+        "y": 130.575164,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.267,
+        "y": 131.600641,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.267,
+        "y": 131.600641,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.027,
+        "y": 131.600641,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.027,
+        "y": 131.600641,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.41,
+        "y": 130.683,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.41,
+        "y": 130.683,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.636,
+        "y": 131.4216,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.6564,
+        "y": 131.9844,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.636,
+        "y": 131.4216,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.262836,
+        "y": 130.281,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.718,
+        "y": 131.417,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.426,
+        "y": 131.575241,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.718,
+        "y": 131.417,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 99.714,
+        "y": 130.939,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.718,
+        "y": 131.417,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.636,
+        "y": 131.4216,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.132836,
+        "y": 129.265,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 105.565,
+        "y": 123.306,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 105.565,
+        "y": 123.306,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 105.565,
+        "y": 123.306,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.091,
+        "y": 135.282,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.278,
+        "y": 124.763,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.2752,
+        "y": 124.5319,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.3252,
+        "y": 124.5319,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.2752,
+        "y": 124.5319,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.2752,
+        "y": 124.5319,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.957164,
+        "y": 132.736,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.065,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.529,
+        "y": 131.634568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.529,
+        "y": 131.634568,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.524,
+        "y": 131.929,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.524,
+        "y": 131.929,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 99.518,
+        "y": 131.524836,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.718,
+        "y": 131.417,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.957164,
+        "y": 133.456,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.244641,
+        "y": 133.732,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 99.568,
+        "y": 123.673,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 99.568,
+        "y": 123.673,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.706,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 99.568,
+        "y": 123.673,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.706,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.172,
+        "y": 122.962641,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.283,
+        "y": 121.475,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.201,
+        "y": 130.564836,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.921,
+        "y": 130.564836,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.921,
+        "y": 132.469836,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.799,
+        "y": 129.829,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.799,
+        "y": 129.829,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.799,
+        "y": 129.829,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 103.201,
+        "y": 132.469836,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 97.278,
+        "y": 114.935,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.4504,
+        "y": 112.4964,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 92.58123,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 93.54043,
+        "y": 112.646532,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.26043,
+        "y": 112.646532,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.53643,
+        "y": 112.626727,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.29643,
+        "y": 112.626727,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.996,
+        "y": 116.603,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.873,
+        "y": 116.603,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.873,
+        "y": 116.603,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 98.4504,
+        "y": 113.9444,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 101.8268,
+        "y": 116.4984,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.20443,
+        "y": 105.533168,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.20443,
+        "y": 105.533168,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 90.50643,
+        "y": 105.263968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.8448,
+        "y": 108.0982,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.1476,
+        "y": 111.324959,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.1476,
+        "y": 109.292959,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.7038,
+        "y": 111.0962,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.7038,
+        "y": 111.0962,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 100.1146,
+        "y": 111.7706,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 96.8448,
+        "y": 105.736,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56203,
+        "y": 102.776768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.96803,
+        "y": 104.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 89.96803,
+        "y": 104.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 112.8322,
+        "y": 105.9576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 112.8322,
+        "y": 105.9576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 111.4698,
+        "y": 104.9894,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 114.083,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 110.6626,
+        "y": 116.1882,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 113.1148,
+        "y": 117.3328,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 112.533,
+        "y": 114.503959,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 113.0416,
+        "y": 115.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 113.0416,
+        "y": 115.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 111.4916,
+        "y": 114.910359,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.458,
+        "y": 114.808,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 106.751,
+        "y": 114.9436,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.8008,
+        "y": 113.0532,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 108.8358,
+        "y": 113.3432,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.477,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.477,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.477,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.493,
+        "y": 131.447,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 105.565,
+        "y": 123.306,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 104.744,
+        "y": 122.735,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.091,
+        "y": 135.282,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.076,
+        "y": 135.282,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.091,
+        "y": 135.282,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.091,
+        "y": 135.282,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 107.95,
+        "y": 134.4752,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 113.792,
+        "y": 134.826,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.38,
+        "y": 125.068,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.077,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.058,
+        "y": 126.938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.065,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.065,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 100.16,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.155,
+        "y": 131.081,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.4112,
+        "y": 134.3172,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 99.568,
+        "y": 123.673,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.4352,
+        "y": 123.7719,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.398,
+        "y": 122.805,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.754,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.77,
+        "y": 122.807,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.065,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.065,
+        "y": 131.936,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 132.362,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 103.025,
+        "y": 130.065,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 102.401,
+        "y": 130.457,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.278,
+        "y": 114.935,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.00363,
+        "y": 112.784368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.00363,
+        "y": 112.784368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 112.453768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 95.06043,
+        "y": 112.754368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.00363,
+        "y": 112.784368,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 92.58123,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.873,
+        "y": 116.603,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.996,
+        "y": 116.603,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 97.278,
+        "y": 114.935,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.8268,
+        "y": 116.4984,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 101.8268,
+        "y": 116.4984,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 92.74043,
+        "y": 108.791968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 86.91803,
+        "y": 107.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 86.91803,
+        "y": 107.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 92.74043,
+        "y": 108.791968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.38103,
+        "y": 111.437768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.823,
+        "y": 110.435,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 94.01903,
+        "y": 110.803768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.8448,
+        "y": 108.0982,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.8448,
+        "y": 108.0982,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 98.4504,
+        "y": 112.4964,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.8448,
+        "y": 105.736,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 96.8448,
+        "y": 105.736,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.96803,
+        "y": 104.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.96803,
+        "y": 104.998768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 91.20443,
+        "y": 105.533168,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 91.20443,
+        "y": 105.533168,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.80643,
+        "y": 105.963968,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 91.56523,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 90.52383,
+        "y": 114.841768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.888,
+        "y": 117.541,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 87.76383,
+        "y": 116.143768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 87.76383,
+        "y": 116.143768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 87.76383,
+        "y": 116.143768,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.888,
+        "y": 117.541,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 89.888,
+        "y": 117.541,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 113.0416,
+        "y": 115.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.083,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 113.0416,
+        "y": 115.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 113.0416,
+        "y": 115.064,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 106.565,
+        "y": 111.7616,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.3496,
+        "y": 114.8572,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 106.751,
+        "y": 114.9436,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 108.458,
+        "y": 113.36,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 109.9438,
+        "y": 107.9924,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 109.9438,
+        "y": 107.9924,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 109.9438,
+        "y": 107.9924,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 106.565,
+        "y": 110.59,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 106.565,
+        "y": 110.59,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 109.9438,
+        "y": 107.9924,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 109.9438,
+        "y": 107.9924,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.8164,
+        "y": 108.6384,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.8164,
+        "y": 108.6384,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.8164,
+        "y": 108.6384,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.083,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 120.5236,
+        "y": 116.7976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 116.7592,
+        "y": 116.7976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 118.618,
+        "y": 116.7876,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 118.618,
+        "y": 116.7876,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 120.5236,
+        "y": 116.7976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 118.618,
+        "y": 116.7876,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 120.7196,
+        "y": 118.3316,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 117.9576,
+        "y": 118.1938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 117.9576,
+        "y": 118.1938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 117.9576,
+        "y": 118.1938,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 116.7592,
+        "y": 116.7976,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 118.618,
+        "y": 116.7876,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.1868,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6626,
+        "y": 116.1882,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.1868,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6626,
+        "y": 116.1882,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.083,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 114.083,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 115.099,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 115.099,
+        "y": 114.6576,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.1868,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.1868,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6376,
+        "y": 113.3262,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 110.6626,
+        "y": 116.1882,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 108.8628,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 108.8628,
+        "y": 117.4516,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 112.8322,
+        "y": 105.9576,
+        "unit": "mm"
+      }
+    }
+  ]
+}
