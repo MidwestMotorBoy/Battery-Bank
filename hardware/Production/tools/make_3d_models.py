@@ -13,6 +13,9 @@ Writes STEP files into Production/3dmodels/ with step_mesh.py (pure Python) and 
       - L_Coilank_APS0730.step  APS0730M2R2F, datasheets/aps0730.pdf: 7.6 x 7.8 x 3.1 mm molded body, end terminals.
       - L_Coilank_APS0530.step  APS0530M3R3H (L402/L502), same datasheet: 5.3 x 5.5 x 3.1 mm, terminals 1.1 x 4.3
         (2026-10-29; it used the 2.8 mm Bourns SRP5030T).
+      - L_COILMX_MS0520.step  MS0520-3R3M (L402/L502 from 2026-10-30), datasheets/COILMX MS0520-3R3M.pdf: A 5.45 (along
+        the terminals) x B 5.2 x C 2.0 max, bottom terminals E 1.0 x D 2.3. Replaced the 3.1 mm APS0530, which hit the cup
+        corner fillet at L502.
       - SolderWire-0.15sqmm_1x02_P4mm_standin.step / SolderWire-0.5sqmm_1x01_standin.step: insulated wire stubs for
         the NTC and learning-cycle load wire pads (KiCad has no Connector_Wire models).
       - SolderWire-18AWG_PTFE_from_BCu.step (J108 / J112 PACK wires) and SolderWire-28AWG_PTFE_from_BCu.step (J109-J111,
@@ -75,6 +78,7 @@ MODELS = {
     "MonolithDev:Peg_NPTH_Slot2.6x2.2mm": P + "Peg_PA12_TPU_sleeve.step",
     "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical": P + "TagConnect_TC2030-IDC-NL_envelope.step",
     "MonolithDev:L_Coilank_APS0530": P + "L_Coilank_APS0530.step",
+    "MonolithDev:L_COILMX_MS0520": P + "L_COILMX_MS0520.step",
     # stock models that fit better than the footprint's own (2026-10-29): KiCad's PG-TDSON-8 and HVSSOP-8 footprints
     # name models that aren't in kicad-packages3D (the parts rendered empty), and the CA55 is 2.8 mm, not the Kemet D 3.1
     "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8": STOCK + "Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step",
@@ -131,6 +135,15 @@ def aps0530():
     return m
 
 
+def ms0520():
+    m = Mesh()
+    m.box(MOLD, -2.725, 2.725, -2.6, 2.6, 0.1, 2.0)
+    for s in (-1, 1):                                # bottom terminals (E 1.0 x D 2.3), up the ends
+        m.box(SILVER, s * 1.725, s * 2.775, -1.15, 1.15, 0.0, 0.1)
+        m.box(SILVER, s * 2.725, s * 2.775, -1.15, 1.15, 0.1, 0.8)
+    return m
+
+
 def wire(pitch, n, od, cond):
     m = Mesh()
     for k in range(n):
@@ -181,6 +194,7 @@ BUILD = {
     "TI_MHA0024A_CC2340R5MODA_7x10mm.step": cc2340r5moda,
     "L_Coilank_APS0730.step": aps0730,
     "L_Coilank_APS0530.step": aps0530,
+    "L_COILMX_MS0520.step": ms0520,
     "SolderWire-0.15sqmm_1x02_P4mm_standin.step": lambda: wire(4.0, 2, 1.5, 0.5),
     "SolderWire-0.5sqmm_1x01_standin.step": lambda: wire(0.0, 1, 2.1, 0.9),
     "SolderWire-18AWG_PTFE_from_BCu.step": lambda: wire_from_bcu(1.8, 1.22, 1.1),     # pad Ø2.3

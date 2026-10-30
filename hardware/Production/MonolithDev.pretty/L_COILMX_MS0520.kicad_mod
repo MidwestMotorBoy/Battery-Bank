@@ -1,0 +1,28 @@
+(footprint "L_COILMX_MS0520"
+	(version 20241229)
+	(generator "make_footprints.py")
+	(layer "F.Cu")
+	(descr "Inductor, COILMX MS0520, 5.45x5.2x2.0mm, datasheet recommended land pattern (H 2.5, S 2.2, M 5.99)")
+	(tags "inductor molded MS0520")
+	(property "Reference" "REF**" (at 0 -3.6 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
+	(property "Value" "L_COILMX_MS0520" (at 0 3.6 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))
+	(attr smd)
+	(pad "1" smd rect (at -2.05 0) (size 1.9 2.5) (layers "F.Cu" "F.Paste" "F.Mask"))
+	(pad "2" smd rect (at 2.05 0) (size 1.9 2.5) (layers "F.Cu" "F.Paste" "F.Mask"))
+	(fp_rect (start -2.725 -2.6) (end 2.725 2.6) (stroke (width 0.1) (type solid)) (fill no) (layer "F.Fab"))
+	(fp_line (start -1 -2.75) (end 1 -2.75) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+	(fp_line (start -1 2.75) (end 1 2.75) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+	(fp_rect (start -3.25 -2.85) (end 3.25 2.85) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
+	(fp_text user "${REFERENCE}" (at 0 0 0) (layer "F.Fab") (effects (font (size 0.5 0.5) (thickness 0.08))))
+	(model "${KIPRJMOD}/3dmodels/L_COILMX_MS0520.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

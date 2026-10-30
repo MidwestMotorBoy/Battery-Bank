@@ -4778,24 +4778,6 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -2.54 -16.51 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin bidirectional line
 					(at -16.51 3.81 0)
 					(length 2.54)
@@ -4807,6 +4789,24 @@
 						)
 					)
 					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 -16.51 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7860,22 +7860,16 @@
 		(uuid "e3f563f4-a17a-4815-b7a0-4e6fe0b52142")
 	)
 	(junction
-		(at 149.86 111.76)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0c677886-fa2c-44b1-8699-47343037a894")
-	)
-	(junction
-		(at 149.86 116.84)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2660d250-8e97-4841-87bd-fd19aa1996e6")
-	)
-	(junction
 		(at 114.3 203.2)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "04c3886e-9cad-4481-9d4e-283b2d21ff7d")
+	)
+	(junction
+		(at 149.86 111.76)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0c677886-fa2c-44b1-8699-47343037a894")
 	)
 	(junction
 		(at 330.2 60.96)
@@ -7912,6 +7906,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "25466bce-30e8-461a-bc7f-9ef746c37727")
+	)
+	(junction
+		(at 149.86 116.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2660d250-8e97-4841-87bd-fd19aa1996e6")
 	)
 	(junction
 		(at 137.16 71.12)
@@ -8239,26 +8239,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 111.76) (xy 149.86 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "23382ce2-307b-43e5-9514-14af77d2c313")
-	)
-	(wire
-		(pts
-			(xy 154.94 114.3) (xy 144.78 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ecefd27-4a21-4f28-91c7-56f4df53e2ec")
-	)
-	(wire
-		(pts
 			(xy 330.2 80.01) (xy 330.2 86.36)
 		)
 		(stroke
@@ -8479,6 +8459,16 @@
 	)
 	(wire
 		(pts
+			(xy 154.94 114.3) (xy 144.78 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ecefd27-4a21-4f28-91c7-56f4df53e2ec")
+	)
+	(wire
+		(pts
 			(xy 367.03 185.42) (xy 368.3 185.42)
 		)
 		(stroke
@@ -8486,6 +8476,16 @@
 			(type default)
 		)
 		(uuid "2323b39d-1f6c-4d3f-8287-8e36309d50bc")
+	)
+	(wire
+		(pts
+			(xy 149.86 111.76) (xy 149.86 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23382ce2-307b-43e5-9514-14af77d2c313")
 	)
 	(wire
 		(pts
@@ -10278,16 +10278,6 @@
 		(uuid "153a62fd-bff4-4679-af2a-943a16097f4f")
 	)
 	(label "DRV9_OFF"
-		(at 144.78 114.3 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6e901668-0322-4f9a-9bcf-b5c43056e05c")
-	)
-	(label "DRV9_OFF"
 		(at 464.82 215.9 180)
 		(effects
 			(font
@@ -10686,6 +10676,16 @@
 			(justify right bottom)
 		)
 		(uuid "6dd1bca3-e0a4-405c-81d5-4d25611f395a")
+	)
+	(label "DRV9_OFF"
+		(at 144.78 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6e901668-0322-4f9a-9bcf-b5c43056e05c")
 	)
 	(label "I2CC_SDA"
 		(at 185.42 111.76 0)
@@ -11991,7 +11991,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MonolithDev:L_Coilank_APS0530"
+		(property "Footprint" "MonolithDev:L_COILMX_MS0520"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12024,7 +12024,7 @@
 				)
 			)
 		)
-		(property "Notes" "Cost-down 2026-10-14 (was SRP5030T-3R3M): 3.3 uH, 38 mOhm max, Irms 5 A, Isat 8 A defined at a 40 % drop (not like-for-like with the SRP5030T); fine, as the 5.8 A IHS limit is a fault-only peak"
+		(property "Notes" "2026-10-30 (was APS0530M3R3H, 3.1 mm tall, hit the cup corner fillet at L502): ABC EHE05023R3MFB (JLC C49248023, in JLC stock), 5.5 x 5.2 x 2.0 mm max, 3.3 uH, 58 mOhm, Isat 5 A (30 %), 4.5 A rated; same electricals and land as COILMX MS0520-3R3M (C18163579, alternate). 2.0 mm height gives ~1.0 mm to the fillet. Isat is below the 5.8 A IHS limit, which is a fault-only peak. Footprint MonolithDev:L_COILMX_MS0520: land H 6.0, G 2.2, F 2.5 = 1.9 x 2.5 at +-2.05"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12035,7 +12035,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C49073587"
+		(property "LCSC" "C49248023"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -12046,7 +12046,7 @@
 				)
 			)
 		)
-		(property "MPN" "APS0530M3R3H (Coilank)"
+		(property "MPN" "EHE05023R3MFB (ABC)"
 			(at 128.27 203.2 0)
 			(hide yes)
 			(show_name no)
