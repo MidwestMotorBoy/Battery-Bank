@@ -7,11 +7,10 @@ fp-info-cache
 *.bck
 ~*
 _autosave-*
+\#auto_saved_files\#
 .history/
 _restore_backup_*/
-# KiCad check reports and default-named plots
-ERC.rpt
-DRC.rpt
+# KiCad check reports (ERC.rpt, DRC.rpt, ...) and default-named plots
 *.rpt
 hardware/DevBoard/MonolithDev.pdf
 hardware/Production/Monolith.pdf
@@ -21,13 +20,11 @@ hardware/**/*.gbr
 hardware/**/*.gbrjob
 hardware/**/*.drl
 
-# Firmware build outputs and local tool paths (see firmware/.gitignore)
-firmware/build/
+# Firmware build outputs (build/ and tools.mak are in firmware/.gitignore)
 firmware/**/*.out
 firmware/**/*.hex
 firmware/**/*.map
 firmware/**/*.obj
-firmware/tools.mak
 
 # Python
 __pycache__/
@@ -39,9 +36,15 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Local agent settings and reviewers' scratch work
+# Local agent settings, skill-creator eval output and reviewers' scratch work
 **/.claude/settings.local.json
+.claude/skills/*-workspace/
+.claude/skills/*-review-iter*.html
 docs/devboard/review4/scratch-*/
 
 # STEP export output (hardware/mechanical/monolith_step.py)
 hardware/mechanical/step/
+
+# Retired enclosure outputs (removed 2026-10-29; monolith_shell.py / monolith_parts.py still write them here)
+hardware/mechanical/retired/*
+!hardware/mechanical/retired/README.md

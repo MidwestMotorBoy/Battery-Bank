@@ -38,10 +38,71 @@ def p0b_src_boxes():
         b[f'ic{p}'] = [bx(11.44, 30.97, 3.0, 2.5, 27.7)]
         b[f'sense{p}'] = [bx(18.17, 36.48, 0.8, 1.6, 27.5), bx(9.0, 54.5, 1.0, 0.65, 27.5)]
     return b
+# SMD_LAYOUT=p0f: every heat source where it sits on the board at ca78123 "Footprint Layout Done" (2026-10-29), read from
+# Monolith.kicad_pcb (KiCad x = 100 + y, y = 141.47 - z). Port 2 is a translated copy of port 1 (x - 23.03), not a mirror,
+# so over C1 the outboard FET is leg A (Q501) and over C4 it is leg B (Q402). The FET loss is split by leg: conduction
+# half and half, the switching terms (edges, Coss, dead time) on the leg at the higher voltage (leg A, USB side, when
+# V_USB > V_BUS; leg B when V_USB < V_BUS; shared within 5 %). Sources off the gap-filler zone (RBAT R527 / RAC R524 of
+# port 2, both RAC, the TPS62933s, Q101 / Q102, F102, RS101) sit where they are, on board without the via array.
+#   port 1: Q401 (A) (9.56, 41.66), Q402 (B) (14.08, 41.62), L401 (11.81, 48.86), U403 (11.44, 30.97), R427 RBAT (18.17, 36.48),
+#           R424 RAC (11.28, 60.83), U401 TPS25751 (5.09, 61.53), U404 TPS62933 (2.90, 30.37)
+#   port 2: Q501 (A) (-13.47, 41.66), Q502 (B) (-8.95, 41.62), L501 (-11.22, 48.86), U503 (-11.59, 30.96), R527 RBAT (-1.96, 41.33),
+#           R524 RAC (-2.21, 48.66), U501 TPS25751 (-14.69, 61.50), U504 TPS62933 (-12.60, 23.19)
+#   pack:   Q101 (4.74, 22.64), Q102 (-2.72, 22.64), F102 (13.79, 9.64), RS101 (-11.52, 8.48)
+FETSPLIT = os.environ.get('SMD_FETSPLIT', '')
+BUCK5_W = 0.10                             # TPS62933 (PP5V / VCONN) loss while its port sources: assumed
+def p0f_src_boxes():
+    b = _orig_src_boxes()
+    def bx(y, z, hy, hz, x1=27.8): return (26.9, x1, y - hy, y + hy, z - hz, z + hz)
+    st = {1: dict(fetA=(9.56, 41.66), fetB=(14.08, 41.62), ind=(11.81, 48.86), ic=(11.44, 30.97), rbat=(18.17, 36.48, 0.8, 1.6),
+                  rac=(11.28, 60.83, 1.0, 0.65), pphv=(5.09, 61.53), buck5=(2.90, 30.37)),
+          2: dict(fetA=(-13.47, 41.66), fetB=(-8.95, 41.62), ind=(-11.22, 48.86), ic=(-11.59, 30.96), rbat=(-1.96, 41.33, 0.8, 1.6),
+                  rac=(-2.21, 48.66, 0.65, 1.0), pphv=(-14.69, 61.50), buck5=(-12.60, 23.19))}
+    for p, s in st.items():
+        b.pop(f'fet{p}'); b.pop(f'sense{p}')
+        b[f'fetA{p}'] = [bx(*s['fetA'], 1.65, 1.65)]
+        b[f'fetB{p}'] = [bx(*s['fetB'], 1.65, 1.65)]
+        b[f'ind{p}'] = [bx(*s['ind'], 3.5, 3.5, 30.0)]
+        b[f'ic{p}'] = [bx(*s['ic'], 3.0, 2.5, 27.7)]
+        b[f'rbat{p}'] = [bx(*s['rbat'], 27.5)]
+        b[f'rac{p}'] = [bx(*s['rac'], 27.5)]
+        b[f'pphv{p}'] = [bx(*s['pphv'], 3.0, 2.0)]
+        b[f'buck5{p}'] = [bx(*s['buck5'], 1.0, 0.8, 27.6)]
+    b['prot'] = [bx(4.74, 22.64, 3.0, 2.6, 27.9), bx(-2.72, 22.64, 3.0, 2.6, 27.9)]
+    b['fuse'] = [bx(13.79, 9.64, 2.0, 1.5, 27.9)]
+    b['shunt'] = [bx(-11.52, 8.48, 1.6, 0.8, 27.5)]
+    return b
+_orig_port_loss = P.port_loss
+def p0f_port_loss(p_usb, v_usb, v_bus, sink, prm=P.P0):
+    """as pack3d.port_loss, with the FET loss split into leg A (USB side) and leg B (battery side), the sense loss into
+    RBAT and RAC, and the TPS62933 on a sourcing port"""
+    L, i_b = _orig_port_loss(p_usb, v_usb, v_bus, sink, prm)
+    L = dict(L); fet = L.pop('fet'); sense = L.pop('sense')
+    if p_usb <= 0:
+        L.update(fetA=0, fetB=0, rbat=0, rac=0, buck5=0); return L, i_b
+    v_hi = max(v_usb, v_bus)
+    il2 = max(0.0, (L['ind'] - prm['core']*min(1.0, v_hi/20.0)) / prm['ind'])
+    cond = prm['fet']*il2*2; sw = fet - cond
+    r = v_usb / v_bus
+    fa = 1.0 if r > 1.05 else 0.0 if r < 1/1.05 else 0.5           # share of the switching loss on leg A
+    rac = prm['rac']*(p_usb / v_usb)**2
+    if FETSPLIT == 'even': fa = 0.5                                  # SMD_FETSPLIT=even: as p0b, both legs alike
+    L.update(fetA=cond/2 + fa*sw, fetB=cond/2 + (1 - fa)*sw, rbat=sense - rac, rac=rac,
+             buck5=0.0 if sink else BUCK5_W)
+    return L, i_b
+P.CASES.update({   # port 2 and swapped-port versions of the smd-ntc.md cases
+    'dis100u2': dict(title='100 W asked, USB2 only (20 V 5 A)', ports={2: ('src', 100, 20.0)}, soc0=1.0, hours=2.5, dt=10),
+    'chg1u2':   dict(title='Charging, USB2 only (100 W charger)', ports={2: ('snk', 100, 20.0)}, soc0=0.05, hours=3.0, dt=20),
+    'pass21':   dict(title='Pass-through: 100 W charger on USB2, 30 W out of USB1', ports={2: ('snk', 100, 20.0), 1: ('src', 30, 15.0)},
+                     soc0=0.20, hours=2.0, dt=20),
+})
 _orig_src_boxes = P.src_boxes
 if LAYOUT in ('p0', 'p0b'):
     P.src_boxes = p0_src_boxes if LAYOUT == 'p0' else p0b_src_boxes
     P.OUT_DIR = os.path.join(P.HERE, 'results', 'p0layout' if LAYOUT == 'p0' else 'p0b')
+if LAYOUT == 'p0f':
+    P.src_boxes, P.port_loss = p0f_src_boxes, p0f_port_loss
+    P.OUT_DIR = os.path.join(P.HERE, 'results', 'p0f' + ('_' + FETSPLIT if FETSPLIT else ''))
 
 X_BCU, X_FCU = 25.8, 26.4                 # board voxels: the B.Cu half (board is x 25.3-26.9) and the F.Cu half
 SPOTS = {                                  # name: (x, |y|, z) on the board, mirrored onto C1 (-y) and C4 (+y)
@@ -59,6 +120,9 @@ SPOTS = {                                  # name: (x, |y|, z) on the board, mir
     'in29':    (X_BCU, 7.5, 29.0),         # filler zone bottom, inboard of U403
     'z26':     (X_BCU, 12.9, 26.0),        # just below the filler zone
     'z20':     (X_BCU, 13.5, 20.0),
+    'out27':   (X_BCU, 15.5, 27.5),        # p0f alternatives round TH101 / TH104 (15.5, 29)
+    'out33':   (X_BCU, 15.5, 33.0),
+    'mid29':   (X_BCU, 11.5, 29.0),
     'stripe_f': (X_FCU, 12.9, 48.0),       # F.Cu side of the stripe spot
 }
 def spot_points():
@@ -69,7 +133,8 @@ def spot_points():
         pts.append(P.can_point(k, *N.SPOT))                       # the wired bead's spot (today's design)
     return pts
 NAMES = list(SPOTS) + ['wired']
-CASES = {'dis100': None, 'dis60': None, 'dis30': None, 'chg1': None, 'pass': None, 'dis100x2': None}
+CASES = {'dis100': None, 'dis60': None, 'dis30': None, 'chg1': None, 'pass': None, 'dis100x2': None,
+         'dis100u2': None, 'chg1u2': None, 'pass21': None}
 
 POLICIES = {    # name: (DERATE, DERATE_HOT, CHG_HOT) on the hottest TS reading, as ntc.POLICIES
     'p42c': N.POLICIES['p42c'],
@@ -131,7 +196,9 @@ def bias(z):
         d = np.stack([pr[:, i*len(NAMES) + j] - sm[:, k] for i, k in enumerate(P.FRONT)], 1)   # (t, 2)
         late = t > 3                                                    # skip the first minutes from a cold start
         out[n] = dict(max=float(d[late].max()), min=float(d[late].min()), at_peak=float(d[hot].max()),
-                      c4_at_peak=float(d[hot, 1]), c1_at_peak=float(d[hot, 0]))
+                      c4_at_peak=float(d[hot, 1]), c1_at_peak=float(d[hot, 0]),
+                      c1_max=float(d[late, 0].max()), c1_min=float(d[late, 0].min()),
+                      c4_max=float(d[late, 1].max()), c4_min=float(d[late, 1].min()))
     return out
 
 def run_row(z, case):
@@ -173,6 +240,8 @@ if __name__ == '__main__':
         N.pool_run(lambda_free_job, [('policy', ('dis100', 'd44', 'out29', 25.0)), ('seq', ('d44', 'out29')),
                                      ('policy', ('dis60', 'd44', 'out29', 25.0)), ('policy', ('dis60', 'p42c', 'wired', 25.0))])
     if 'probes4' in what: N.pool_run(probe_job, ['dis100', 'chg1', 'pass', 'dis30'])
+    if 'probesf' in what:     # SMD_LAYOUT=p0f: both ports' cases
+        N.pool_run(probe_job, ['dis100', 'dis100u2', 'chg1', 'chg1u2', 'pass', 'pass21', 'dis30'])
     if 'p0b' in what:         # the recommended spot (z 33) with today's thresholds
         N.pool_run(lambda_free_job, [('policy', ('dis100', 'p42c', 'low33', 25.0)), ('policy', ('chg1', 'p42c', 'low33', 25.0)),
                                      ('policy', ('pass', 'p42c', 'low33', 25.0)), ('seq', ('p42c', 'low33'))])
@@ -197,7 +266,7 @@ if __name__ == '__main__':
                                         can_max_while_charging=float(sm[i > 0.1].max()) if len(on) else None,
                                         can_max_at_full_current=float(sm[i > 4.4].max()) if (i > 4.4).any() else None)
         os.makedirs(os.path.join(P.HERE, 'renders'), exist_ok=True)
-        json.dump(res, open(os.path.join(P.HERE, 'renders', f'smd{"_" + LAYOUT if LAYOUT else ""}.json'), 'w'), indent=1)
+        json.dump(res, open(os.path.join(P.HERE, 'renders', f'smd{"_" + LAYOUT if LAYOUT else ""}{"_" + FETSPLIT if LAYOUT == "p0f" and FETSPLIT else ""}.json'), 'w'), indent=1)
         for c, r in res['probes'].items():
             print(c, {k: round(v, 1) for k, v in r.items() if isinstance(v, float)})
             for n, b in r['bias'].items(): print(f'   {n:9s}', {k: round(v, 1) for k, v in b.items()})

@@ -12,7 +12,7 @@ Checks per bank option:
   * per-capacitor ripple current against its rating, worst over the operating cases;
   * ripple at P1 and P2;
   * input-filter damping (Middlebrook) at P1: bus + pack |Zout| against V^2/P of 100 W total from the pack.
-Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/pack_bus_sims.py
+Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/pack_bus_sims.py
 """
 import importlib.util
 import os

@@ -11,11 +11,11 @@ mechanical/monolith_side_pcb.dxf): 43.2 mm wide, its bottom corners notched arou
 (100, 100). KiCad x = the tray's y (left = the C1 / PACK- side), KiCad y = down the pack (top edge = the port end).
 F.Cu faces the cup wall (outer face), B.Cu faces the cells. The outline leaves gaps for the connector notches
 (PORTS_X), and place_ports() puts J401/J501 there.
-(History: 40.5 mm then 45.5 mm top-cap boards, 2026-10-17. mechanical/monolith_bottom_pcb.dxf is the old bottom end
-board with the vent, not this board.)
+(History: 40.5 mm then 45.5 mm top-cap boards, 2026-10-17. The old bottom end board with the vent,
+monolith_bottom_pcb.dxf, is not this board; it was removed from the repo on 2026-10-29 and is in Production 5cf521e.)
 
-Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py [--force] [--keep-copper]
-     ... make_board.py --mech        (only places the tail slots, PACK wire holes, NTC pads and carrier peg holes, after Update PCB
+Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/make_board.py [--force] [--keep-copper]
+     ... make_board.py --mech        (only places the sense wire holes, PACK wire holes, front-cell SMD NTCs and peg holes, after Update PCB
                                       from Schematic)
      ... make_board.py --keepouts    (redraws the KO_* mechanical keep-out rule areas from mechanical/monolith_shell.py)
 Enclosure (2026-10-21): the cup (mechanical/monolith_cup.py). The board rides on the PA12 carrier's rails and pegs, F.Cu

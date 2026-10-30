@@ -11,4 +11,15 @@
 	(fp_rect (start -1.8 -1.6) (end 1.8 1.6) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
 	(fp_rect (start -1.8 -1.6) (end 1.8 1.6) (stroke (width 0.05) (type solid)) (fill no) (layer "B.CrtYd"))
 	(fp_rect (start -1.8 -1.6) (end 1.8 1.6) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))
+	(model "${KIPRJMOD}/3dmodels/Peg_PA12_TPU_sleeve.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

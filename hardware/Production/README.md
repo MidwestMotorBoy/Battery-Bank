@@ -1,6 +1,32 @@
 # Monolith production board
 
-KiCad 10 project `Monolith`. **Status (2026-10-18): the dev board is skipped, so P0 is the first build** (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). It is the dev board schematic (rev A8) with the dev-only parts removed. It has not been reviewed and there is no board yet.
+KiCad 10 project `Monolith`: the P0 board, the design of record. The live board is on the `Production` branch; `master` lags it.
+
+**Status (2026-10-29):** the dev board was skipped on 2026-10-18, so P0 is the first build (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). The schematic is the dev board's (rev A8) with the dev-only parts removed, plus the P0 changes below. Footprint placement was finished on 2026-10-28; the board is not routed or reviewed, and nothing has been ordered.
+
+The current design is in `docs/spec.md`, which wins where this file disagrees; its *P0 board changes still to apply* list is the to-do list. The sections below are a dated design log. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-10-29:
+
+- **Cells:** four BAK N21700CX-65E (6500 mAh) in 4S1P, 14.0 V nominal, 91 Wh (since 2026-10-23; the FEB 21700G section below is history).
+- **Enclosure:** the MJF PA12 cup, with no vent since 2026-10-28 (the side tray, its aluminium cover and the top-cap tube are retired; their outputs were removed on 2026-10-29 and are in git history at `5cf521e`).
+- **Loss cuts:** Q101/Q102 BSC007N04LS6, a 9 V gate drive per port (U406/U506), L401/L501 XGL7030-332 at 500 kHz.
+- **Front-cell NTCs:** SMD TH101 / TH104 on B.Cu (since 2026-10-28; they replace the J102 / J107 wire pads).
+- **Charge ceiling:** R413/R513 are to become 0 Ω (decided 2026-10-23, register-only limit); the schematic still has 11.8k.
+
+## Tools
+
+All in `tools/`. Run them from the repo root as `hardware/Production/tools/<name>.py`, with KiCad's Python unless the script's docstring says any Python 3 will do.
+
+| Script | What it does |
+|---|---|
+| `make_production.py` | Builds the production schematic from the dev board's (see below); holds the part swaps (`DOWNSIZE`, loss cuts, P0 pads). It overwrites the sheets, which have been edited in KiCad since (2026-10-28), so don't re-run it blindly |
+| `tidy_production.py`, `layout_production.py` | Drawing tidy and block layout after `make_production.py` (no electrical change) |
+| `check_netlist.py` | Compares the production netlist with the dev board's |
+| `schlib.py` | Schematic text helpers used by the three above |
+| `siz240dt.py`, `tpd6s300.py`, `tps7a4101.py` | Symbol, footprint and wiring for the SiZ240DT, TPD6S300 and TPS7A4101 (imported by `make_production.py`) |
+| `make_board.py` | Board stack-up and outline; `--mech` places and locks the wire holes, peg holes and front-cell NTCs; `--keepouts` redraws the `KO_*` rule areas (board closed in KiCad) |
+| `make_3d_models.py`, `step_mesh.py` | Writes the STEP models in `3dmodels/` (pure Python); the SiZ240DT and TPD6S300 models start from the EasyEDA meshes in `3dmodels/source/`, so keep those |
+| `pack_bus_sims.py`, `low_profile_sims.py` | Bulk-capacitor studies (reuse `hardware/DevBoard/tools/cap_sims.py`) |
+| `jlc.py`, `jlc_datasheet.py` | JLC part search, and a datasheet download through a part's JLC page |
 
 ## How P0 was made
 
@@ -81,7 +107,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
-- **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103).
+- **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103). Later replaced by the J302 Tag-Connect (see below).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
 
@@ -179,7 +205,7 @@ Parts: 256.
 
 **Outline:** since 2026-10-18, the side board of the one-piece tray. The details are in *Side outline and 1.6 mm board* below. The 40.5 mm and then 45.5 mm top-cap outlines that came before it are kept below as history.
 
-- `hardware/mechanical/monolith_bottom_pcb.dxf` is the old 43.3 mm bottom end board with the 8 mm vent, not this board.
+- `monolith_bottom_pcb.dxf` (removed 2026-10-29, in git at `5cf521e`) was the old 43.3 mm bottom end board with the 8 mm vent, not this board.
 
 **Stack-up:** 6 layers, **1.6 mm** (2026-10-18, for cost; it was 0.8 mm), 2 oz outer / 0.5 oz inner, ENIG. Vias are filled and capped, JLC's default on 6+ layers, so via-in-pad is free. No net here needs controlled impedance, so the split below is a symmetric approximation. Replace it with JLC's stack at order time.
 
@@ -203,7 +229,7 @@ Parts: 256.
 
 ## Side outline and 1.6 mm board (2026-10-18)
 
-The board moved from the top cap to one side of the cells, in a one-piece printed tray (`hardware/mechanical/`, see the root README). The board thickness went to 1.6 mm, for cost.
+The board moved from the top cap to one side of the cells, in a one-piece printed tray (`hardware/mechanical/`, see the root README). The tray was replaced by the cup on 2026-10-21 (*Enclosure: the cup* below); the outline stayed. The board thickness went to 1.6 mm, for cost.
 
 - **Outline:** 43.2 × 74.35 mm, about 3,164 mm² per side.
     - The bottom corners are notched 5.0 × 4.8 mm around the cover-screw bosses (on the wedge since 2026-10-21; they were tray pillars).
@@ -217,7 +243,7 @@ The board moved from the top cap to one side of the cells, in a one-piece printe
     - PACK- (C1 side) and PACK+ (C4 side) at the bottom edge, within 16 mm of centre, clear of the notches;
     - CELL2 at the bottom; CELL1 and CELL3 at the top.
     - The cell order and the assembly steps are in the assembly doc.
-- **Vent:** keep a Ø7 mm circle free of tall parts and gap pad, centred 12 mm above the tray bottom (shown on the DXF's `VENT_KEEPOUT` layer).
+- **Vent:** keep a Ø7 mm circle free of tall parts and gap pad, centred 12 mm above the tray bottom (shown on the DXF's `VENT_KEEPOUT` layer). Gone since 2026-10-28: the cup has no vent.
 - **Still to do:**
     - Placement: every part except J401/J501 still sits where it was.
     - Four hand-drawn VBUS traces near the old J401 position were kept as they were (`--keep-copper`). They now dangle (3 DRC warnings).
@@ -323,7 +349,7 @@ The dev board won't be built, to save cost. P0 trains the gauge and carries the 
     - One TC2030-IDC-NL cable (+ clip) serves J301 and J302. Its 2×3 end takes the EV2400 and XDS110 jumper wires.
     - The pinout makes a wrong plug harmless: the SWD probe would drive only CHG_INH and NRST.
     - The gauge pogo pads TP110–TP112 are gone; J302 replaces them.
-- **J113/J114:** PACK_P/GND 20 AWG wire pads for the learning-cycle load (~C/5 ≈ 1.2 A). The current runs through the protection FETs and RS101, so the gauge measures it.
+- **J113/J114:** PACK_P/GND 20 AWG wire pads for the learning-cycle load (~C/5 of 6.5 Ah ≈ 1.3 A). The current runs through the protection FETs and RS101, so the gauge measures it.
 - **WAKE:** R118 4.7 kΩ (0402, C25900) from CELL_P to TP113. Bridging TP113 to TP106 wakes the gauge, in case wake-on-USB fails.
 - **With the MCU held in reset:** ground J302 pin 2 (CHG_INH) to keep charging enabled while BQStudio owns the bus.
 
@@ -402,15 +428,15 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 
 ## Board mounting: carrier pegs (2026-10-21; the cover standoffs are retired)
 
-The board has **no screw holes**. In the cup it rides on the PA12 carrier (`mechanical/monolith_cup.py`):
+The board has **no screw holes**. In the cup it rides on the PA12 carrier (`hardware/mechanical/monolith_cup.py`):
 - **four pegs** (Ø2.0 mm) on the carrier rails pass through four NPTH slots and stand 0.6 mm proud of F.Cu;
 - the rails bear on B.Cu along the front cells' tangents;
 - the top edge stops on the top wall, and the USB-C bodies sit in their seal bores.
 
 - **Schematic:** H101–H104 on the 3V3 Rail sheet, now `Mechanical:MountingHole` (no pins, no net, not in the BOM) with the generated footprint `MonolithDev:Peg_NPTH_Slot2.6x2.2mm` (2.6 × 2.2 mm NPTH slot, long along KiCad x; courtyard 0.5 mm round it on both faces). Until 2026-10-24 these were Ø2.2 holes; the slot gives ±0.3 mm float across the board so the USB-C seal bores centre the ports, and keeps ±0.1 mm along it. Same references as the old Würth standoffs, so Update PCB swaps the footprints in place.
-- **Positions:** `CUP_PEGS` in `mechanical/monolith_shell.py`. In KiCad, H101 (91.40, 127.48), H102 (91.40, 73.48), H103 (108.60, 127.48), H104 (108.60, 73.48).
+- **Positions:** `CUP_PEGS` in `hardware/mechanical/monolith_shell.py`. In KiCad, H101 (91.40, 127.48), H102 (91.40, 73.48), H103 (108.60, 127.48), H104 (108.60, 73.48).
     - H104 lands on U405 and C452 as placed today: move them.
-- **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/make_board.py --mech`. It moves only the peg holes and the seven pack wire holes to their positions and locks them.
+- **Placing them:** run Update PCB from Schematic, save and close the board, then run `"C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/make_board.py --mech`. It moves only the peg holes, the seven pack wire holes and (since 2026-10-28) the front-cell NTCs TH101 / TH104 to their positions and locks them.
 
 ## Pack wire holes and the 1N / 4P Kelvin nets (2026-10-21; all wires 2026-10-24)
 
@@ -435,13 +461,13 @@ Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wi
 
 ## Mechanical keep-outs on the board (cup, 2026-10-21)
 
-JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `mechanical/monolith_shell.py` (the cup's values are the `CUP_*` constants there), and re-running it replaces the old `KO_*` areas. It edits the board file as text (KiCad 10's python can't build zone outlines), so run it with the board closed in KiCad.
+JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `hardware/mechanical/monolith_shell.py` (the cup's values are the `CUP_*` constants there), and re-running it replaces the old `KO_*` areas. It edits the board file as text (KiCad 10's python can't build zone outlines), so run it with the board closed in KiCad.
 
 The cup has had no vent since 2026-10-28, so `KO_F_cup_vent` (a Ø7 mm F.Cu circle at 100, 127.5) is gone and parts may go there.
 
 | Rule area | Layer | Not allowed | Why |
 |---|---|---|---|
-| `KO_F_above_antenna` (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | nothing metal over the BLE module's antenna end. The module footprint already keeps copper off every layer there |
+| ~~`KO_F_above_antenna`~~ (x 117.4–121.6, y 77.4–86.4) | F.Cu | parts | removed by Logan on 2026-10-23, and `make_board.py` no longer draws it. The module footprint keeps copper off every layer under the antenna end |
 | `KO_top_stop_L` / `_R` (top edge, 1 mm, x ≤ 86 and ≥ 114) | F.Cu + B.Cu | parts | the top edge bears on the top wall's inside face |
 | `KO_B_rail_L/R_top` (x 88.7–93.5 / 106.5–111.3, y to 86.48) and `_bottom` (from y 116.48) | B.Cu | parts | the carrier rails bear on B.Cu; they stop where the gap filler is |
 | `KO_B_gap_filler_L` / `_R` (x 84–93 / 107–116, y 88.48–114.48, notched 1.1 × 2.2 mm at the outer edge round TH101 / TH104) | B.Cu | parts | gap filler to the front cells: solid copper and thermal vias to the power stages; the two front-cell NTCs sit in the notches, under the gel |
@@ -460,15 +486,17 @@ There is no rule-area type for height, so a note on Cmts.User under the board ho
 Fit all 19 before the first power-up: the chargers need both bulk banks.
 
 **DRC with the cup keep-outs (scratch run, 2026-10-22):**
-- Port 1's stage sits over the antenna area: Q402, R446 and R447 are in `KO_F_above_antenna`. The power stages belong over the gap-filler zones.
+- Port 1's stage sits over the antenna area: Q402, R446 and R447 are in `KO_F_above_antenna` (that keep-out was removed on 2026-10-23). The power stages belong over the gap-filler zones.
 
 ## FEB 21700G cells (2026-10-21)
 
-The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 Wh. Why and how: `docs/project/feb-21700g-datasheet-notes.md`, `research_notes/Loss reduction/G_feb_21700g.md`, `docs/firmware/charge-and-thermal-policy.md`.
+_Superseded on 2026-10-23 by the BAK N21700CX-65E (91 Wh; `docs/spec.md`, Cells and pack); kept as history. R413/R513 are to become 0 Ω (spec, *Decided: the charge-ceiling resistor*)._
+
+The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 Wh. Why and how: `docs/archive/feb-21700g-datasheet-notes.md`, `research_notes/Loss reduction/G_feb_21700g.md`, `docs/firmware/charge-and-thermal-policy.md`.
 
 - **R413/R513 (ICHG) 9.1k → 11.8k 1 %** (UNI-ROYAL 0402WGF1182TCE, LCSC C93752; `tools/make_production.py` updated). The hardware charge ceiling becomes 48–52 A·kΩ / 11.8 kΩ = 4.07–4.45 A per port, under the FEB's 4.55 A maximum (the 9.1k allowed up to 5.83 A). Check C93752 stock before ordering; 12k (C25752, 4.0–4.33 A) is the fallback.
 - **Board outline unchanged** (43.20 × 74.35 mm). The mechanical model holds the board's guide line at the 58E-era value, and the extra 0.3 mm of cell length comes out of the floor zone.
-- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. On the board: Update PCB from Schematic, then `tools/make_board.py --mech` places all seven (see *Pack slots and the 1N / 4P Kelvin nets*).
+- **Slots move:** the five bottom slots (PACK−, 1N, CELL2, 4P, PACK+) move 0.30 mm toward the board's bottom edge, and the PACK / Kelvin pairs 0.18 mm outward. New positions are in `docs/production/p0-assembly.md` and `monolith_side_pcb.dxf`. CELL1 / CELL3 are unchanged. On the board: Update PCB from Schematic, then `tools/make_board.py --mech` places all seven (see *Pack wire holes and the 1N / 4P Kelvin nets*).
 - **Footprint values:** run Update PCB from Schematic so R413/R513 carry 11.8k.
 - **Gauge:** design capacity 6,500 mAh, new temperature ranges and protections, and a new chemistry ID (`docs/production/p0-bringup-and-training.md`).
 - **Heat:** about 12 W at 100 W out (cells ~6.5 W of it). Firmware keeps the 100 W offer but starts a linear derate at ~33 °C on the hottest cell, down to ~40 W.
@@ -484,6 +512,6 @@ The side tray and its aluminium cover are retired; the enclosure is now **the cu
 
 ## Next
 
-1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this on the dev board.
+1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this at P0 bring-up.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Place the board.** Run Update PCB from Schematic, then `make_board.py --mech` and `--keepouts` (board closed), so the locked wire holes, peg holes and keep-outs are in place before the rest goes down. Heat sources go on F.Cu, and B.Cu stays nearly flat (see *Side outline and 1.6 mm board*). Then remove or reroute the four stranded VBUS traces, and run Update PCB from Schematic for the P0 additions.
+3. **Finish the board.** Placement is done (2026-10-28). Still to do (full list in `docs/spec.md`, *P0 board changes still to apply*): run ERC, `check_netlist.py` and DRC in KiCad (the 2026-10-28 schematic changes were checked by script only), change R413/R513 to 0 Ω, check the TDSON footprint against the BSC007N04LS6 drawing, look up R412/R512's LCSC code, make C302–C304 0402, remove the stranded VBUS traces, then route, with the gap-filler copper and thermal vias by hand.

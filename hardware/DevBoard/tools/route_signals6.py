@@ -2,7 +2,7 @@
 as missing. Generated from route_signals.py by make_router6.py; see routing-discipline.md.
 Layers F.Cu (cost 1.6), In2 (1.0, vertical moves only), In3 (1.0, horizontal moves only), B.Cu (1.8); In1/In4
 are the GND planes and are never used. A GND reference via next to each In2/In3 or B via is added afterwards by
-finish_gnd_vias.py.
+finish_d_gndvias.py.
 
     "C:/Program Files/KiCad/10.0/bin/python.exe" tools/route_signals.py <drc_report.rpt> [max_edges]
 

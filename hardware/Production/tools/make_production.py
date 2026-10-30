@@ -11,8 +11,8 @@ Copies the DevBoard schematic sheets, symbol/footprint libraries and project fil
     SWD header J301 -> Tag-Connect TC2030-NL;
   * keeps a few dev test points as factory test pads (PACK_P, GND, 3V3, VBUS per port).
 
-Run from the repo root or anywhere:  "C:/Program Files/KiCad/10.0/bin/python.exe" Production/tools/make_production.py
-Then check:                          ... Production/tools/check_netlist.py
+Run from the repo root or anywhere:  "C:/Program Files/KiCad/10.0/bin/python.exe" hardware/Production/tools/make_production.py
+Then check:                          ... hardware/Production/tools/check_netlist.py
 """
 import os
 import re

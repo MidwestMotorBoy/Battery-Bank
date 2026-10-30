@@ -9,7 +9,7 @@ are rated 0.1-0.3 CV of leakage (hundreds of uA), against a ~150 uA sleep budget
 (2.7 mm max) keeps ~10 uF at 16.8 V, more than a TMK325 47u 25V (~8 uF). Applied: C2 (USB) and N1 (PACK_P).
 
 Reuses DevBoard/tools/cap_sims.py (USB side: ripple, RMS, cable damping) and pack_bus_sims.py (shared bus).
-Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I Production/tools/low_profile_sims.py
+Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/low_profile_sims.py
 """
 import importlib.util
 import os
