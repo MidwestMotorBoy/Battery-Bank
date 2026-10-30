@@ -61,6 +61,7 @@ Steps:
     - TS1–TS4 enabled;
     - FET temperature sensor configured;
     - protection thresholds per `docs/spec.md` (Battery management and protection): OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell, SCD1 and SCD2 as listed there;
+    - **FET Options (0x4887) = 0x24**, i.e. `[OTFET]` = 1. The default 0x20 leaves OTFET = 0, so an OTD/OTC trip only sets the flag and never opens the FETs, and the 60 °C OTD backstop does nothing (rev 7 board review, 2026-10-30). Read it back after writing;
     - charge algorithm temperature ranges T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C (T4 moved from 40 °C on 2026-10-24; unchanged by the 10-28 move of the front NTCs onto the board; OTC recovery 42 °C) with charging current 650 / 3250 / 4550 / 2275 mA, charging voltage 4.20 V (`docs/spec.md`);
     - the cell thermistors that matter are on the front cells (C1 / C4, the pair the board heats), so the hottest cells are seen;
     - COV delay 1 s and Min Blow Fuse Voltage 10,500 mV (second-level protection).
