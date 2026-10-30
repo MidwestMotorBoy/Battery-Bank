@@ -24,3 +24,10 @@
 (rule "HighCurrent copper to small signals"
 	(constraint clearance (min 0.25mm))
 	(condition "A.hasNetclass('HighCurrent') && !B.hasNetclass('HighCurrent') && !B.hasNetclass('Power') && !B.hasNetclass('GND') && !B.hasNetclass('GateDrive') && !B.hasNetclass('Kelvin') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+# JLC hole-to-hole: 0.2 mm between via holes (board setup minimum) and 0.45 mm where either hole is a pad
+# hole of 0.5 mm or more (PTH/NPTH: wire holes, pegs, Tag-Connect guides, USB-C shell). Via-sized pad holes, such as
+# thermal vias in exposed pads, follow the via rule.
+(rule "Pad hole spacing"
+	(constraint hole_to_hole (min 0.45mm))
+	(condition "(A.Type == 'Pad' && A.Hole_Size_X >= 0.5mm) || (B.Type == 'Pad' && B.Hole_Size_X >= 0.5mm)"))

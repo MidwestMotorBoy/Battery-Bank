@@ -1,8 +1,32 @@
 ** Drc report for Monolith.kicad_pcb **
-** Created on 2026-10-29T22:15:56 **
+** Created on 2026-10-29T23:28:51 **
 ** Report includes: Errors, Warnings **
 
-** Found 598 DRC violations **
+** Found 604 DRC violations **
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.1500 mm; actual 0.1346 mm)
+    Rule: netclass 'Power'; error
+    @(109.6218 mm, 120.0912 mm): Via [3V3] on F.Cu - B.Cu
+    @(109.6010 mm, 119.5070 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [zones_intersect]: Copper zones intersect (intersecting zones must have distinct priorities)
     Local override; error
     @(92.3290 mm, 102.2350 mm): Zone [/USB Port 2/BAT_SNS_P] on F.Cu and B.Cu, priority 0
@@ -82,11 +106,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(84.8360 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
-    @(84.8360 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
+    @(84.8360 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(84.8360 mm, 99.0600 mm): Via [GND] on F.Cu - B.Cu
-    @(84.8360 mm, 99.5680 mm): Via [GND] on F.Cu - B.Cu
+    @(84.8360 mm, 98.5520 mm): Via [GND] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(96.7232 mm, 69.5706 mm): Via [GND] on F.Cu - B.Cu
@@ -270,19 +294,19 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(92.7100 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
-    @(92.7100 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
-    Rule: board setup constraints; warning
-    @(92.7100 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
     @(92.7100 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
-    @(91.6940 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
-    @(91.6940 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(92.7100 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(92.7100 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(91.6940 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
     @(91.6940 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(91.6940 mm, 99.0600 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
+    @(91.6940 mm, 98.5520 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(92.7100 mm, 99.5680 mm): Via [/USB Port 2/BAT_SNS_P] on F.Cu - B.Cu
@@ -386,11 +410,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(88.1380 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
-    @(88.1380 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(88.1380 mm, 100.0760 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(88.1380 mm, 99.5680 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
-    @(88.1380 mm, 100.0760 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
+    @(88.1380 mm, 99.0600 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(92.1766 mm, 80.2132 mm): Via [/USB Port 2/AC_SNS_N] on F.Cu - B.Cu
@@ -434,15 +458,15 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.7616 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.2536 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
-    Rule: board setup constraints; warning
-    @(90.7616 mm, 98.9317 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
-    @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.7616 mm, 98.4237 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
@@ -454,27 +478,27 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
-    @(90.2536 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
-    Rule: board setup constraints; warning
-    @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.7616 mm, 99.4397 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
-    @(90.7616 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
-    @(90.2536 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 99.9477 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.7616 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.7616 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
-    @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.7616 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.2536 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
     @(90.7616 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
+    @(90.2536 mm, 100.9637 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(90.2536 mm, 100.4557 mm): Via [/USB Port 2/SW2] on F.Cu - B.Cu
@@ -514,6 +538,10 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
     @(113.2840 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
@@ -521,24 +549,20 @@
     @(113.7920 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
-    @(113.2840 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
-    @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.2680 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(112.7760 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(112.2680 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
     @(112.2680 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
-    @(112.2680 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
-    @(112.7760 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.7920 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
+    @(113.2840 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.7920 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
     @(113.7920 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
-    Rule: board setup constraints; warning
-    @(113.7920 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
-    @(113.2840 mm, 130.0480 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.7920 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
@@ -579,14 +603,14 @@
     Rule: board setup constraints; warning
     @(112.7760 mm, 131.0640 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
     @(112.7760 mm, 130.5560 mm): Via [/Cells and Gauge/CELL_P] on F.Cu - B.Cu
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
-    Rule: board setup constraints; warning
-    @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
-    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
     @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
+    Rule: board setup constraints; warning
+    @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.2840 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
@@ -610,11 +634,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.7920 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
-    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.7920 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
-    @(113.2840 mm, 100.5840 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
+    @(113.7920 mm, 100.0760 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(113.2840 mm, 99.0600 mm): Via [/USB Port 1/SW2] on F.Cu - B.Cu
@@ -658,11 +682,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(109.3036 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
-    @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(109.3036 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
-    @(108.7956 mm, 100.9637 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(109.3036 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
@@ -682,11 +706,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
-    @(109.3036 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(108.7956 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(109.3036 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
-    @(108.7956 mm, 100.4557 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
+    @(109.3036 mm, 99.9477 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(108.7956 mm, 99.4397 mm): Via [/USB Port 1/SW1] on F.Cu - B.Cu
@@ -766,11 +790,11 @@
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(86.1896 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
-    @(86.1896 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(86.1896 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
-    @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
+    @(86.1896 mm, 100.4557 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2080 mm)
     Rule: board setup constraints; warning
     @(85.6816 mm, 99.9477 mm): Via [/USB Port 2/SW1] on F.Cu - B.Cu

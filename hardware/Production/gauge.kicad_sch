@@ -4561,7 +4561,7 @@
 		)
 		(uuid "7cd55707-768c-41d2-a8dc-9420b3ba9024")
 	)
-	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101, Q104). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1 / TS4 (front cells C1 / C4): SMD 0402 NTCs TH101 / TH104 on B.Cu in the gap-filler zones (smd-ntc.md).\n   TS2 / TS3 (back cells): wired 10k NTCs on J105 / J106, taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.\n16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while\n    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."
+	(text "NOTES\n1. CELL_N = cell 1 negative at the PACK- power wire J108 (RS101). CELL_1N = gauge VSS, star-connected only\n   at the 1N Kelvin wire hole J115 (TI SLUA660 2.3). GND = system ground, on the far side of RS101.\n2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).\n3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,\n    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.\n4. TS1 / TS4 (front cells C1 / C4): SMD 0402 NTCs TH101 / TH104 on B.Cu in the gap-filler zones (smd-ntc.md).\n   TS2 / TS3 (back cells): wired 10k NTCs on J117 / J118 (TS2) and J119 / J120 (TS3), taped to the cell at mid-height; insulated sensors only\n    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.\n5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).\n6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).\n7. Diamonds are PWR_FLAGs (ERC only, no part): each sits where its rail is sourced through a passive part.\n8. Q103 buffers BTP_INT onto the shared open-drain IRQ_N (CC2340 DIO11): IRQ_N is low while BTP_INT is high.\n   Keep BTP disabled, or set BTP_POL = 1 with BTP_EN = 1, or IRQ_N is held low (review 4 D-2).\n9. D103 clamps Q102 VGS at 15 V in a hard short. The dev board's C109/D102 inrush options are not on P0.\n10. No wake button: the gauge leaves SHUTDOWN when PACK_P comes up (USB plugged in: TPS25751 dead-battery sink +\n    BQ25756 charging with 3V3 down, USB sheet note 11). P0 fallback: bridge TP113 (WAKE, R118 4.7k from CELL_P) to TP106.\n11. Gauge access is the GAUGE Tag-Connect J302 on the MCU sheet (SMBus + CHG_INH + NRST): BQStudio / EV2400 for\n    training, golden image and calibration. J113/J114 = 20 AWG load wires (PACK_P/GND) for the learning-cycle discharge.\n12. TP106 PACK_P and TP109 GND are 1.0 mm probe pads.\n13. ESD caps (TI): C110+C111 in series across the FET pair (fig. 9-2 C1/C2), C107+C108 across PACK+/PACK- (sec. 9.2.2.1.5).\n14. Second level (TI fig. 9-11): U102 BQ294700 (4.35 V/cell, CD 0.1u = 1-2 s) or the gauge FUSE pin turns Q104 on;\n    F102's heater then blows its fuse, permanently opening the cell top. F102 is also the pack's only overcurrent fuse.\n    Q104's source and gate pull-down R125 return to GND (cell negative through RS101): the heater current needs no long CELL_N trace.\n15. Solder the pack with USB unplugged: PACK-, then 1N and the taps bottom-up, 4P, PACK+ last: a floating tap can read\n    > 4.35 V, U102 trips after 1-2 s and F102 blows. Gauge data flash: COV Delay 1 s, Min Blow Fuse Voltage 10500 mV.\n16. R124 / R126 are DNP from JLC (2026-10-24): with them off, neither U102 nor the gauge FUSE pin can turn Q104 on while\n    the pack is wired up. Fit them by hand only after all seven pack voltages read right at the pads."
 		(exclude_from_sim no)
 		(at 196.596 248.412 0)
 		(effects
@@ -9074,13 +9074,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "43c3b4f2-108c-4fb8-a038-ffce15aa229d")
-		(property "Reference" "J1"
+		(property "Reference" "J117"
 			(at 88.9 72.3899 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9091,7 +9091,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x01"
+		(property "Value" "TS2 NTC wire"
 			(at 88.9 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9141,7 +9141,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J1")
+					(reference "J117")
 					(unit 1)
 				)
 			)
@@ -12145,13 +12145,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "959312ca-68f1-451e-8e73-293999802c6b")
-		(property "Reference" "J3"
+		(property "Reference" "J119"
 			(at 88.9 80.0099 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12162,7 +12162,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x01"
+		(property "Value" "TS3 NTC wire"
 			(at 88.9 82.5499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12212,7 +12212,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J3")
+					(reference "J119")
 					(unit 1)
 				)
 			)
@@ -13169,7 +13169,7 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
+		(lib_id "power:GND")
 		(at 375.92 124.46 0)
 		(unit 1)
 		(body_style 1)
@@ -13190,7 +13190,7 @@
 				)
 			)
 		)
-		(property "Value" "CELL_N"
+		(property "Value" "GND"
 			(at 375.92 128.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13464,13 +13464,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b7d1f40e-5089-48fb-95a5-9197a8f89d78")
-		(property "Reference" "J2"
+		(property "Reference" "J118"
 			(at 88.9 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13481,7 +13481,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x01"
+		(property "Value" "TS2 NTC return wire"
 			(at 88.9 77.4699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13531,7 +13531,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J2")
+					(reference "J118")
 					(unit 1)
 				)
 			)
@@ -13543,13 +13543,13 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b84c02b8-0a33-4e23-ac70-6719a32db111")
-		(property "Reference" "J4"
+		(property "Reference" "J120"
 			(at 88.9 82.5499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13560,7 +13560,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x01"
+		(property "Value" "TS3 NTC return wire"
 			(at 88.9 85.0899 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13610,7 +13610,7 @@
 		(instances
 			(project "Monolith"
 				(path "/f83241ae-2bb3-4ed7-b986-c0a03971de0a/5f8e2264-136e-4c01-877f-88ca3aa05650"
-					(reference "J4")
+					(reference "J120")
 					(unit 1)
 				)
 			)
@@ -14189,7 +14189,7 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GNDREF")
+		(lib_id "power:GND")
 		(at 342.9 127 0)
 		(unit 1)
 		(body_style 1)
@@ -14210,7 +14210,7 @@
 				)
 			)
 		)
-		(property "Value" "CELL_N"
+		(property "Value" "GND"
 			(at 342.9 131.32 0)
 			(show_name no)
 			(do_not_autoplace no)
