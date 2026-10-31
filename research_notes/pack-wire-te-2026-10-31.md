@@ -18,7 +18,7 @@ TE's own drawing pages can't be fetched from the cloud, so the figures come from
 | Temperature | −55 to 125 °C (20,000 h) | −65 to 200 °C | −65 to 150 °C |
 | Mass | 10.7 g/m, ~0.5 g for both leads | ~11 g/m | ~9 g/m |
 | Voltage | 750 / 1300 V AC | 600 V | 600 V |
-| Buying | 100 m reels only, ~US$180–245; RS UK has dropped it, RS AU back-ordered to 2027-01-07 | 50 ft lots (Skycraft) | 10 ft cuts, ~US$11 (wirecare.com) |
+| Buying | DigiKey cuts it by the foot, $1.26/ft (100G0111-1.00-0-DS-ND, found by Logan 2026-10-31); elsewhere 100 m reels, ~US$180–245 | 50 ft lots (Skycraft) | 10 ft cuts, ~US$11 (wirecare.com) |
 
 - **Electrical:** the 1.00 mm² conductor is a touch bigger than 18 AWG (0.82 mm²), so it is marginally better. At the 6.5–9.4 A this pack runs, any of the three is about 0.5 mΩ per lead and under 50 mW. The difference is a few milliwatts.
 - **Temperature:** the cans top out at 48 °C and the board near the holes at about 60 °C at 100 W, so 125 °C is plenty.
@@ -34,7 +34,7 @@ TE's own drawing pages can't be fetched from the cloud, so the figures come from
 | Insulation | Radiation cross-linked ETFE, ~0.15 mm | PTFE |
 | OD | 0.64–0.74 mm (0.027 ± 0.002 in; it's M22759/32-28) | 0.64–0.74 mm |
 | Temperature | −65 to 150 °C | −65 to 200 °C |
-| Buying | £71.35 per 100 m reel at Farnell UK, 27 in stock | IEWC 500 ft minimum |
+| Buying | DigiKey by the foot, $1.21/ft (484-55A0111-28-9-DS-ND); £71.35 per 100 m reel at Farnell UK | IEWC 500 ft minimum |
 
 It's a drop-in: same OD, so the CELL2 channel (1.0 × 0.95 mm) and the Ø0.8 mm holes are unchanged. XL-ETFE is the usual aerospace wire for hand soldering and doesn't melt back at iron temperatures. The sense leads carry only balancing current and the Kelvin leads none, so resistance doesn't matter.
 
