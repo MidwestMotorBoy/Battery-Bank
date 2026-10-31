@@ -14,9 +14,9 @@ The cells, their PA12 carrier and the board become **one rigid power module, bui
 - The board is powered and programmed on its own first (step 0), then joined to the pack, tested at 100 W with everything open, and only then goes into the cup.
 - Nothing is soldered in the cup.
 
-The cup is closed on five sides, with the two USB-C seal bores in its top wall. The module goes in **from the bottom**, port end first, and is pushed home until the USB-C faces seat in the top wall. A bottom cap seals it with one radial O-ring; an outer collar on the cap holds the cup's mouth against the O-ring, and two M2 screws through the collar and the wall into blind bosses hold the cap. There is no aluminium: the power stage's heat goes into the front cells through thermal vias and a dispensed gap filler, and the carrier's full-length PA12 webs share it with the back pair.
+The cup is closed on five sides, with the two USB-C seal bores in its top wall. The module goes in **from the bottom**, port end first, and is pushed home until the USB-C faces seat in the top wall. A bottom cap seals it with one radial O-ring; the cup's wall is 2.4 mm thick round the mouth so it stays on the O-ring, and two M2 screws through it into blind bosses hold the cap. There is no aluminium: the power stage's heat goes into the front cells through thermal vias and a dispensed gap filler, and the carrier's full-length PA12 webs share it with the back pair.
 
-**Changed on 2026-10-24** after the five-reviewer mechanical review (report: https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF): the sense wires; insulator rings on the + ends; foam preload rings under the cells; clip-on rails; posts to the board-face wall and a 2.0 mm wall there; the cap collar, blind screw pilots, a taller skirt and overtravel posts; a softer pad; a 1.85 mm top wall with resized USB-C bores; R124 / R126 left off the board until the pack is wired; and a bare-board step 0.
+**Changed on 2026-10-24** after the five-reviewer mechanical review (report: https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF): the sense wires; insulator rings on the + ends; foam preload rings under the cells; clip-on rails; posts to the board-face wall and a 2.0 mm wall there; a cap collar (replaced on 2026-10-31 by a 2.4 mm thick cup mouth), blind screw pilots, a taller skirt and overtravel posts; a softer pad; a 1.85 mm top wall with resized USB-C bores; R124 / R126 left off the board until the pack is wired; and a bare-board step 0.
 
 ## Connections
 
@@ -65,11 +65,11 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Insulation:** four 0.2 mm fish-paper rings for the + ends (self-adhesive "barley" rings, cut to fit the measured + cap). Kapton tape.
 - **Foam:** silicone foam sheet (about 1 and 1.6 mm), cut into four preload rings.
 - **Printed parts:**
-    - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap with its collar (MJF PA12);
+    - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
     - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 20 % gyroid, the four post sleeves, and the two bumpers.
-- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
+- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the mouth wall and boss stack is 6.1 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the J302 "GAUGE" Tag-Connect, XDS110 on J301, one TC2030-IDC-NL cable for both), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
@@ -139,16 +139,16 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 1. Measure the cap: the gap from the cup rim to the carrier frame's underside, with calipers, against the pad's printed height. The pad should be about 1.2 mm proud; shim or trim it if not.
 2. O-ring into the skirt groove, lightly greased with silicone grease that is safe on silicone rubber (a PTFE-based or silicone-compatible grease, not a silicone oil grease, which swells it).
-3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The collar's crush ribs go over the outside of the cup's mouth; the pad preloads the core against the top wall.
-4. Drive the two M2 thread-forming screws through the collar and the cup wall into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.
+3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The pad preloads the core against the top wall.
+4. Drive the two M2 thread-forming screws through the thick cup mouth into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.
 
 ### 6. Leak test, bumpers
 
 ![Step 6](../../hardware/mechanical/assembly_steps/step6.png)
 
-1. **Leak test** in a vacuum jar. There is no vent, so the closed pack keeps its own air and a vacuum round it loads the seals the way altitude does. Brush leak-detection fluid or soapy water over the collar edge, both screw heads and both USB-C ports, stand the pack in the dry jar and pull **−20 kPa** (about an airliner cabin). Watch for 5 min: a bubble or foam that keeps growing at a joint is a leak. Let the air back in slowly and wipe the pack dry. Don't submerge the pack for this test: if a seal leaks, the jar's water is pulled in when the air goes back in.
+1. **Leak test** in a vacuum jar. There is no vent, so the closed pack keeps its own air and a vacuum round it loads the seals the way altitude does. Brush leak-detection fluid or soapy water over the cap seam, both screw heads and both USB-C ports, stand the pack in the dry jar and pull **−20 kPa** (about an airliner cabin). Watch for 5 min: a bubble or foam that keeps growing at a joint is a leak. Let the air back in slowly and wipe the pack dry. Don't submerge the pack for this test: if a seal leaks, the jar's water is pulled in when the air goes back in.
 2. **First pack only:** take the empty fit print (cup, cap, O-ring and screws, no core) to **−50 kPa** (a warm pack at 4300 m) for 10 min. Measure across both side flats before and after, and look for cracks round the screw holes. If the flats take a set, thicken the side walls before building more.
-3. Press the TPU bumpers on, top (port well) and bottom (over the collar, pockets over the screw heads).
+3. Press the TPU bumpers on, top (port well) and bottom (over the thick mouth, pockets over the screw heads).
 
 ## Working on the live pack
 
@@ -162,7 +162,7 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
 - **Board:** run KiCad DRC on the `Production` board after the sense-hole and DNP changes, and set the DNP flags in the JLC BOM export.
 - **Fit (coupons before the full cup):** print files in `hardware/mechanical/coupons/` (`monolith_coupons.py`, 2026-10-31): A the seal-bore ladder, B the cup mouth (lidded) with the real cap, C the real carrier, rail blocks and sleeves.
     - USB-C bore ladder: a 1.85 mm wall printed in the cup's orientation, with the housing pocket (`usb_pocket()`, 0.47 mm deep) under each bore, bores at ring − 0.1 to − 0.5 mm per axis (squeeze 0.05–0.25 a side, debossed 05–25 beside each bore), rounded-rectangle like the ring. Push a loose connector in from the pocket side. Pick the one that gives 0.12–0.18 mm squeeze and passes a 1 m dunk with a connector pushed in blind. Measure the rings on 5 connectors from the batch first.
-    - Cup mouth + collar cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.
+    - Cup mouth + cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.
     - Carrier + rail blocks with real cells: load all four cells, check the key slots and the foam, and fit a bare board on the posts.
     - How hard the module pushes home.
 - **Drop:** a dummy-core drop series (dead cells or steel slugs, dummy board) at 1 m onto concrete: board face down, back down, cap down, port down, end-on both ways. Before and after: joint resistance, putty marks between the wall and the parts, the groove root, the ring position.

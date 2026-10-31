@@ -222,14 +222,14 @@ def step4(P):
 def step5(P):
     built = L(P, 'cup')
     st = Step(5, '5   Cap',
-              'Check the pad height, grease the O-ring into the skirt groove, push the cap in to its hard stop, then two M2 screws through the collar.', 2)
+              'Check the pad height, grease the O-ring into the skirt groove, push the cap in to its hard stop, then two M2 screws through the cup wall.', 2)
     st.panel('5.1-5.3  Pad and O-ring on the cap, cap in', built,
              L(P, 'pad', o=(0, 0, -22)) + L(P, 'oring', o=(0, 0, -40)) + L(P, 'cap', o=(0, 0, -40)), LOW,
              arrows=[((5, -30, -60), (5, -30, -14))],
              notes=[((22.1, 0, -22 - 2), 'TPU pad: ~1.2 mm proud,\npreloads the core'),
                     ((30.6, 0, -40 + 1), 'O-ring in the skirt groove,\nsilicone-safe grease'),
-                    ((34.2, -20, -40 - 5), 'Push until the plate lands on\nthe rim; the collar goes outside')])
-    st.panel('5.4  Two M2 screws through the collar', built + L(P, 'pad', 'oring', 'cap'),
+                    ((34.2, -20, -40 - 5), 'Push until the plate lands on\nthe rim')])
+    st.panel('5.4  Two M2 screws through the cup wall', built + L(P, 'pad', 'oring', 'cap'),
              [(V, c, (0, -12 if cen(V)[:, 1].mean() < 0 else 12, 0)) for V, c in [(pick(V, cen(V)[:, 1] < 0), c) for V, c in P['screw']]
               + [(pick(V, cen(V)[:, 1] >= 0), c) for V, c in P['screw']]], LOW,
              arrows=[((16, -44, -2), (16, -30, -2))],
@@ -243,7 +243,7 @@ def step6(P):
     st = Step(6, '6   Leak test, bumpers',
               'No vent: the pack is sealed for good. Soap the joints, pull a vacuum round the pack in a jar, then press the bumpers on.', 2)
     st.panel('6.1  Vacuum-jar bubble test', L(P, 'cup'), L(P, 'cap', 'screw'), (1.0, -0.7, 0.3),
-             notes=[((K.X_OUT, -K.YI, K.Z_MOUTH + 3), 'Soap film on the collar edge\nand the two screw heads'),
+             notes=[((K.X_OUT, -K.YI, K.Z_MOUTH + 3), 'Soap film on the cap seam\nand the two screw heads'),
                     ((S.sb_port_x, S.SB_PORT_Y, K.Z_TOP1), 'Soap film on both USB-C ports'),
                     ((K.X_OUT, 0, 40), 'Pull -20 kPa, watch 5 min:\ngrowing bubbles = a leak')],
              side_notes=['Fit print first, to -50 kPa (a warm pack at 4300 m):', 'side flats measured before and after.'])
@@ -251,7 +251,7 @@ def step6(P):
              L(P, 'bumpt_band', 'bumpt_slab', o=(0, 0, 22)) + L(P, 'bumpb_band', 'bumpb_slab', o=(0, 0, -22)), (1.0, -1.1, 0.35),
              arrows=[((0, -30, 115), (0, -30, 100)), ((0, -30, -40), (0, -30, -25))],
              notes=[((S.sb_port_x, S.SB_PORT_Y, 88.6 + 22), 'Top bumper: port well\nover the USB-C'),
-                    ((0, -26.6, -9.9 - 22), 'Bottom bumper over the collar,\npockets over the screw heads')])
+                    ((0, -26.6, -9.9 - 22), 'Bottom bumper over the mouth,\npockets over the screw heads')])
     st.save()
 
 STEPS = [step0, step1, step2, step3, step4, step5, step6]

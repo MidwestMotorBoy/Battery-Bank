@@ -18,7 +18,7 @@ This spec reflects the repo's `master` at commit a490f98 (2026-10-21). Where sou
 | Wireless | Bluetooth LE (CC2340R5MODA), custom GATT service, signed OTA updates |
 | Board | One 43.2 × 74.35 mm 6-layer board along one face of the cells |
 | Enclosure | MJF PA12 cup with an O-ring bottom cap and TPU bumpers. No metal, no potting |
-| Size and mass | 61.9 × 53.8 × 95.9 mm, about 392.5 g (modelled 2026-10-31 with the routed board's parts, after the bumper / pad trim) |
+| Size and mass | 60.7 × 52.9 × 95.9 mm, about 391.2 g (modelled 2026-10-31 with the routed board's parts, after the bumper / pad trim and the thick cup mouth) |
 | Cost (estimate) | About $105 per board at 5 boards, about $165 per finished pack with the 65E cells |
 
 ## System architecture
@@ -182,14 +182,14 @@ The production P0 board is the design of record and the first board planned to b
 **Enclosure: the cup (adopted 2026-10-21).** The cells, carrier and board are built and tested on the bench as one power module, which slides into the cup from the bottom until the USB-C faces seat in the top wall.
 
 - MJF PA12 cup closed on five sides, with two USB-C seal bores in the top wall.
-- MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze). Since the 2026-10-24 review the cap has a 1.5 mm outer collar that holds the cup's mouth round against the O-ring, with crush ribs, and two radial M2 thread-forming screws through the collar into blind pilots below the seal. Four overtravel posts stop the cap on the frame so the screws can't over-squeeze the pad.
+- MJF PA12 bottom cap with one 2.0 mm silicone O-ring (60A, about 25 % squeeze). The cup's wall is 2.4 mm thick over the bottom 7.5 mm (the O-ring band), so the mouth flats don't bow off the O-ring; two radial M2 thread-forming screws go through it into blind pilots below the seal. This replaced the cap's 1.5 mm outer collar on 2026-10-31: a plate model (`docs/reviews/2026-10-31-mouth-band/`) showed the collar flexing off the cap plate, leaving ~16 % squeeze at the worst spot on a flat, against ~19 % for the thick mouth, which is also 1.3 g lighter. Four overtravel posts stop the cap on the frame so the screws can't over-squeeze the pad.
 - Cup walls 1.2 mm, 2.0 mm on the board face, 1.85 mm top wall. The USB-C seal bores are the connector's rev A4 ring (10.35 × 4.57 mm) minus 0.15 mm a side, ring-shaped (rounded rectangle), over a 0.47 mm pocket round the connector's front housing with a 0.25 mm lead-in (2026-10-30).
 - The board's four peg posts run to 0.3 mm under the board-face wall, with TPU sleeves, so a drop on that face loads the carrier, not the inductors.
 - Fish-paper insulator rings on all four + ends, and foam preload rings under the cells so they can't float axially. The board rails are four clip-on blocks fitted after the cells.
 - TPU 95A bumpers at both ends and a TPU pad on the cap (1.2 mm proud for preload). No vent (removed 2026-10-28): the cup keeps the air it was closed with, so at a warm 4300 m it pushes out by about 50 kPa (side flats about 25–31 MPa and a 1–2 mm bulge, about 120 N on the cap screws; `sealed_pressure()` in `monolith_cup.py`). The leak test is a vacuum-jar bubble test. Review and fix list: `docs/production/p0-assembly.md` and [the review](https://claude.ai/artifact/3tGQPMVpdSpkVSX3okK4EF).
 - No metal and no potting: the power stage's heat goes into the front cells through thermal vias and about 4.5 g (1.5 cc) of 3–3.6 W/m·K gap filler, between the B.Cu via zone and the two front cells over each stage. The board gets conformal coat.
 - Gap filler (2026-10-23 thermal model): the bond line is 2.75 mm at the can tangent and about 3.8 mm at the zone edges, so use a dispensable gel or cure-in-place filler, not a pad. Material (decided 2026-10-24, P0 and gift packs): Parker Chomerics THERM-A-GAP GEL 30 (3.5 W/m·K, SG 3.1, about 4.5 g; one part, supplied cured, so no mixing, gun or cure time; peels off for rework; 8 kV/mm, 10¹⁴ Ω·cm, UL94 V-0; 18-month shelf life at 10–32 °C). One 10 cc Luer-Lok syringe (65-00-GEL30-0010, about €51 at Farnell, also Newark and DigiKey) covers five or six packs. Bergquist TGF 3600 (two part, 15 h at 25 °C) was the runner-up but comes in 50 cc cartridges with a 5-month shelf life and needs a 1:1 gun and static mixers. Laird Tflex CR350S is out: its datasheet gives only an oven cure (2 h at 70 °C plus 0.5 h at 100 °C), which the fitted cells can't take. In the model, 1.5 / 3 / 6 W/m·K put the hottest part at 60.0 / 58.5 / 55.7 °C at 100 W with a 5.2 / 6.2 / 5.8 min burst, so more conductivity than this doesn't help. Comparison: `research_notes/Pack thermal BAK 65E/gap-filler-options.md`. Without it the board ramp ends the 100 W burst after 2 min. Higher-k grades, wider zones, beads between cells and a parts-to-wall pad cost 4–11 g for a few kelvin and are not worth it; filler between the cans and the cup wall does nothing.
-- Outside size 61.9 × 53.8 × 95.9 mm, about 392.5 g modelled (2026-10-31: cells 300 g, board with parts ~20 g, cup 26.9 g, cap 10.1 g, bumpers 12.3 g, carrier and rails 10.2 g, filler 4.5 g, label 2.9 g, pad 1.5 g). The board in the model is the routed P0 board from KiCad (`hardware/mechanical/board/`). The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
+- Outside size 60.7 × 52.9 × 95.9 mm, about 391.2 g modelled (2026-10-31: cells 300 g, board with parts ~20 g, cup 28.3 g, cap 7.6 g, bumpers 12.1 g, carrier and rails 10.2 g, filler 4.5 g, label 2.9 g, pad 1.5 g). The board in the model is the routed P0 board from KiCad (`hardware/mechanical/board/`). The design came from a five-concept study (`reports/Ground-up mechanical design.md`) and replaced the side tray with its aluminium cover.
 
 ## Contradictions between sources
 
@@ -215,7 +215,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 16 | Production board size | Project notes, repo checklist: \~44 × 44 mm double-sided board at the top cap, 0.8 mm, 4 layers | P0: 43.2 × 74.35 mm side board, 1.6 mm, 6 layers | P0 |
 | 17 | Checklist docs | Repo checklist: 10-11 base with STM32WB pin map, ProtoFlow, 10-18 header | Project notes: 10-16 rewrite for the CC2340. Both predate the FEB cells and the cup | This spec |
 | 18 | MCU in older notes | EEPROM programming notes: STM32WB, separate IRQ pins | CC2340, one IRQ\_N line | CC2340 (method unchanged) |
-| 19 | Mass | Early plan: \~345 g | FEB notes: \~384 g; README: \~400 g with the board | About 392.5 g modelled with the board's parts, after the bumper / pad trim (10-31) |
+| 19 | Mass | Early plan: \~345 g | FEB notes: \~384 g; README: \~400 g with the board | About 391.2 g modelled with the board's parts, after the bumper / pad trim and the thick cup mouth (10-31) |
 | 20 | Learning-cycle load | P0 README: "\~C/5 ≈ 1.2 A" (58E math) | C/5 of 6.5 Ah = 1.3 A | 1.3 A |
 
 ## To do: areas not yet specified or built
@@ -262,7 +262,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 ### Enclosure
 
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
-- [ ] Three coupons before the full print: the cap collar on a mouth section (O-ring squeeze and screw hold), a clip-on rail block, and a USB-C bore with the connector's ring
+- [ ] Three coupons before the full print: the cup mouth on its cap (O-ring squeeze and screw hold), a clip-on rail block, and a USB-C bore with the connector's ring
 - [ ] Drop series on the fit print: board face, top, bottom, a corner
 - [ ] O-ring dunk coupon and vacuum-jar leak test (soap film on the joints, −20 kPa; the empty fit print to −50 kPa, side flats measured before and after)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack
@@ -271,9 +271,9 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 
 ### Mass reduction (400 g accepted; keep working on it)
 
-The four cells are 300 g of the \~392.5 g modelled pack (2026-10-31, board parts included), so the housing and board have about 92 g between them to work on.
+The four cells are 300 g of the \~391.2 g modelled pack (2026-10-31, board parts included), so the housing and board have about 92 g between them to work on.
 
-Trim study 2026-10-31 (Logan approved): top bumper slab 8 → 6 mm, top band 9 → 7 mm, bottom slab 4 → 3 mm, bumper slabs 30 → 20 % gyroid, cap pad 15 → 10 % gyroid: −8.0 g modelled and 3 mm shorter; the label grew 2 mm to keep its tuck under the shorter band. Not taken: carrier webs trimmed to the filler zone (−1.1 g, needs a thermal run), label without laminate (−1.3 g). Rejected: a thinner board-face wall (it would flex onto L401 at airliner pressure), a thinner cap plate or collar (they hold the seal under internal pressure). The model's cells are 75 g each (datasheet max), so weighing real cells may take more off the figure.
+Trim study 2026-10-31 (Logan approved): top bumper slab 8 → 6 mm, top band 9 → 7 mm, bottom slab 4 → 3 mm, bumper slabs 30 → 20 % gyroid, cap pad 15 → 10 % gyroid: −8.0 g modelled and 3 mm shorter; the label grew 2 mm to keep its tuck under the shorter band. Then (Logan, 2026-10-31) the cap collar was replaced by a 2.4 mm thick cup mouth: −1.3 g, 1.2 mm narrower, a stiffer seal. Not taken: carrier webs trimmed to the filler zone (−1.1 g, needs a thermal run), label without laminate (−1.3 g). Rejected: a thinner board-face wall (it would flex onto L401 at airliner pressure), a thinner cap plate or collar (they hold the seal under internal pressure). The model's cells are 75 g each (datasheet max), so weighing real cells may take more off the figure.
 
 - [ ] Confirm the trimmed bumpers (6 / 3 mm slabs, 20 % gyroid) and pad (10 %) in the 1 m drop series; go back toward 8 / 4 mm and 30 % if the core bottoms out
 - [ ] Weigh printed bumpers: FDM skins make them heavier than the infill-only model
