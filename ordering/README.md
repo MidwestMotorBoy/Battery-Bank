@@ -23,7 +23,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 ## Order plan
 
 1. **Now, the board (JLCPCB).** Upload the files in [`hardware/Production/jlc/`](../hardware/Production/jlc/) (top-side assembly only, see `ORDER-NOTES.md`). Sort out B02–B07 in the same order, or JLC leaves those parts off: TPS25751 (U401/U501), SiZ240DT (Q401/Q402/Q501/Q502) through global sourcing (D401/D501 are now the in-stock Maxinmicro TVS2200DRVR, C55616459); Coilcraft XGL7030-332MEC (L401/L501) and the CC2340 module (U301) consigned or global-sourced; and C49248023 picked by hand on the L402/L502 line.
-2. **Now, DigiKey** ([cart](https://www.digikey.com/short/mw5jfqzc), 2026-10-31). The 12 bottom-side parts for hand-soldering, plus R124/R126 (left off at JLC on purpose, fitted after the pack voltages check): L01–L04, with the pack wires (C03/C04, cut by the foot) and the gap filler (C07). Raise L01 to 35 and L02 to 22 before checking out: the cart has 25 and 12, which covers only 4 and 3 boards.
+2. **Now, DigiKey** ([cart](https://www.digikey.com/short/mw5jfqzc), 2026-10-31). The 12 bottom-side parts for hand-soldering, plus R124/R126 (left off at JLC on purpose, fitted after the pack voltages check): L01–L04, with the pack wires (C03/C04, cut by the foot) and the gap filler (C07, the 10 cc syringe). Raise L01 to 35 and L02 to 22 before checking out: the cart has 25 and 12, which covers only 4 and 3 boards.
 3. **Now, the fit coupons (H01)**, so the full housing order isn't held up. They test the USB-C bores, O-ring squeeze, cap screws and rail clips.
 4. **Now, the long-lead small stuff:** gap filler (C07), stickers (H12), vent patches (H10), O-rings, screws, grease, foam and punches, nickel strip, wire, fish-paper rings.
 5. **After the coupons pass:** cup, cap, carrier and rail blocks in one JLC3DP order (one powder batch), and the TPU parts. The print files are on master since PR #50 (1.6 mm walls, vent pocket, one-piece bumpers).
@@ -43,8 +43,8 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 
 _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not this table._
 
-**Status:** To order 29 · Decide 2 · Hold 7 · Check 5 · Have 1  
-**Known prices:** $518.81 listed so far (most lines have no price yet), $0.00 ordered.
+**Status:** To order 29 · Decide 1 · Hold 7 · Check 5 · Have 1  
+**Known prices:** $562.14 listed so far (most lines have no price yet), $0.00 ordered.
 
 ### Board
 
@@ -77,7 +77,7 @@ _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not thi
 | C04 | 28 AWG XL-ETFE wire, TE 55A0111-28-9 (sense + Kelvin leads)<br><sub>Raychem Spec 55 (= M22759/32-28), 7/36 tinned Cu, 0.64-0.74 mm OD, 150 C, white</sub> | 5 ft | [DigiKey (cut by the foot)](https://www.digikey.com/en/products/result?keywords=484-55A0111-28-9-DS-ND) | 6.06 | **To order** |  | Logan 2026-10-31. DK 484-55A0111-28-9-DS-ND, by the foot. 5 ft = 1.5 m against ~0.75 m for 5 packs. DigiKey cart https://www.digikey.com/short/mw5jfqzc (2026-10-31). Any M22759/32-28 is a drop-in. Not M22759/11-28 (0.79-0.89 mm OD, too fat for the CELL2 channel). |
 | C05 | Fish-paper insulator rings, 21700, adhesive<br><sub>0.2 mm; about 20 mm OD, 10-10.5 mm ID</sub> | 1 pack (330) | [Amazon (MatchWhiz)](https://www.amazon.com/MatchWhiz-Insulator-Highland-Electrical-Insulation/dp/B0CQJMXZSV) |  | **To order** |  | Check the listing photo for size; hole must clear the measured BAK + cap (< ~10 mm). |
 | C06 | Back-cell NTCs (TS2, TS3)<br><sub>10 kOhm NTC, Semitec 103AT type, insulated leads</sub> | 12 | [DigiKey](https://azcus.digikey.com/en/products/detail/semitec-usa-corp/103AT-2/16579059) |  | **Decide** |  | Confirm 103AT matches the BQ40Z50 thermistor table before buying (parts list doc, Still to choose). |
-| C07 | Gap filler: Parker Chomerics THERM-A-GAP GEL 30, 30 cc<br><sub>65-02-GEL30-0030 (27 cc fill in a 30 cc EFD-style barrel); ~4.5 g per pack (3.1 g/cc)</sub> | 1 | [DigiKey](https://www.digikey.com/en/products/result?keywords=1944-1137-ND) | 61.09 | **To order** |  | Logan stays on GEL 30 (2026-10-31). DigiKey cart https://www.digikey.com/short/mw5jfqzc (2026-10-31): one 30 cc EFD barrel (DK 1944-1137-ND) is ~84 g, about 18 packs, for less than two 10 cc syringes ($104 at Newark). The 65-02 barrel needs an EFD-style plunger or a manual 30 cc barrel gun to push a thick gel by hand (see K05); the 65-00 is the same gel in a cartridge. 18-month shelf life. |
+| C07 | Gap filler: Parker Chomerics THERM-A-GAP GEL 30, 10 cc<br><sub>65-00-GEL30-0010 (10 cc Luer-Lok syringe); ~4.5 g per pack (3.1 g/cc)</sub> | 2 | [DigiKey (in the cart) / Newark](https://www.digikey.com/en/products/result?keywords=65-00-GEL30-0010) | 104.42 | **To order** |  | Logan stays on GEL 30 (2026-10-31). Logan swapping the cart line from the 30 cc EFD barrel (65-02-GEL30-0030) to the 10 cc syringe, which is hand-pushed with no gun. One syringe covers 5-6 packs; the second is for rework. Price is Newark's (2026-10-31). |
 | C08 | Silicone foam sheet 1.6 mm, PSA (preload rings)<br><sub>USA Sealing ZUSA-FRS-HTPSA-125, FR closed-cell, 1/16 in x 12 x 12 in</sub> | 1 sheet | [Amazon (USA Sealing)](https://www.amazon.com/USA-Sealing-Retardant-Silicone-Adhesive/dp/B07CRV3NPF) |  | **To order** |  | Buy both sheets (cheap); pick 1.6 or 1 mm after measuring the cell gap (~30 % squeeze). |
 | C09 | Silicone foam sheet 1 mm, PSA (preload rings)<br><sub>Generic 250 x 250 mm closed-cell silicone, 1MM option</sub> | 1 sheet | [Amazon](https://www.amazon.com/250X250MM-Adhesive-Silicone-Thickness-Silicon/dp/B0F93B4RX6) |  | **To order** |  | Firmness not listed: a punched ring should squeeze to 70 % by finger. |
 
@@ -106,7 +106,6 @@ _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not thi
 | K02 | Kapton tape<br><sub>Polyimide</sub> | 1 roll | Any |  | Check |  | Probably already on the bench. |
 | K03 | Dispensing tips 14-16 ga tapered<br><sub>For GEL 30</sub> | 1 pack | Any |  | **To order** |  |  |
 | K04 | Leak-detection fluid<br><sub>Or soapy water</sub> | 1 | Any |  | Check |  | Vacuum-jar bubble test, p0-assembly step 6. |
-| K05 | Manual dispenser for a 30 cc EFD barrel (GEL 30)<br><sub>Hand plunger or ratchet gun that takes 30 cc EFD-style barrels (Luer-lock tip end)</sub> | 1 | Any (DigiKey, Amazon) |  | **Decide** |  | Only needed for the 30 cc 65-02 barrel in C07. A 14-16 ga tapered tip (K03) screws onto the barrel tip. |
 
 ### Tools
 
