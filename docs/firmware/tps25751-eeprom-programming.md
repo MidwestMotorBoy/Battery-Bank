@@ -77,6 +77,6 @@ For each TPS25751 at every MCU boot:
 - First-time programming time estimate: ~32 KB in 32-byte FLwd commands ≈ 1,000 commands; at ~10 ms per command handshake that's ~10–15 s per port.
 
 ## Known limits
-- SafeMode can't charge from USB until a configuration runs. On a fresh board, power the first boot from a bench supply on the pack pads.
+- SafeMode can't charge from USB until a configuration runs. On a fresh board, power the first boot from a bench supply on the J113 / J114 load pads (PACK_P / GND). The cell holes don't work: a factory gauge keeps Q101 / Q102 off, so they never reach PACK_P.
 - Double fault: pack fully dead AND an EEPROM corrupt means no USB recovery, since the MCU can't run to repair it. Very unlikely given the two-region scheme; accepted.
 - Bluetooth firmware updates can carry a new Low Region binary, so PD configuration can change after the pack is sealed.
