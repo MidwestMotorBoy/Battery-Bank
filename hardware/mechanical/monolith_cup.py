@@ -74,12 +74,13 @@ VENT_D, VENT_T = 12.0, 1.0         # through the cap plate in the free strip bet
 VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE80308, 7.6 mm, fits the same hole and pocket) on the
                                    # plate's outside, in a pocket
                                    # through the bottom bumper slab;
-VENT_GROOVE = (1.2, 0.8)           # a groove (width, depth) in the slab's base runs from the pocket to the +x edge so it breathes on a table
 VENT_GRILLE = (1.0, 0.8, 2.4)      # cross-hatch grille over the pocket at the slab's base (thick, bar width, pitch; 45 deg): it
-                                   # prints on the bed, the breather groove notches it, and the patch sits 1 mm above it
-OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
-PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (10 % gyroid since 2026-10-31): roughly
-                                   # 8-40 N of preload on the core (~15-80 N at 15 %); check the core can't rattle
+                                   # prints on the bed and the patch sits 1 mm above it (no breather groove since 2026-10-31: it
+                                   # cut the bars into slivers that JLC flagged as thin walls)
+OT_R, OT_GAP = 1.5, 0.3            # post radius; gap to the frame underside at nominal (0.6 until 2026-10-31: a hard plug-in
+                                   # could push the core far enough to pull the USB-C rings out of the full bore)
+PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (15 % gyroid): roughly 15-80 N of preload on
+                                   # the core, above a normal USB-C plug-in (5-20 N); check the core can't rattle
 PAD_RELIEF = 1.5                   # pad pocketed this deep under the C1 / C4 windows and the wire notches (PACK pads, wires)
 WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
@@ -108,8 +109,9 @@ CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom fra
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 6.0, 3.0, 7.0, 2.0   # mass trim 2026-10-31 (was 8 / 4 / 9): pick the
                                     # final slabs in the drop series
-SLAB_FILL, PAD_FILL = 0.30, 0.10    # TPU gyroid infill: bumper slabs (20 % in the mass trim bottomed the port-end slab out
-                                    # at 1 m: 2685 g; 30 %: 569 g, drop analysis 2026-10-31), cap pad (was 15 %)
+SLAB_FILL, PAD_FILL = 0.30, 0.15    # TPU gyroid infill: bumper slabs (20 % in the mass trim bottomed the port-end slab out
+                                    # at 1 m: 2685 g; 30 %: 569 g, drop analysis 2026-10-31), cap pad (15 %; 10 % in the mass trim, back to 15 on
+                                    # 2026-10-31 so a plug-in can't push the core off the top wall)
 BUMP_WALL_BOT = 1.0                 # bottom band over the cup's thick mouth (the 2.4 mm PA12 under it is the edge's backbone)
 # Wrap label (label plan 2026-10-27, art in hardware/label/): printed vinyl round the whole cup, its top and bottom edges
 # TUCKed under the bumpers. The bottom bumper grows a lip over the label's lower edge; the top band is relieved over it.
@@ -348,9 +350,9 @@ def bumper(top):
         zb = z0 - BUMP_T_BOT                              # rating debossed in the base, reads from below
         bx0, by0, bx1, by1 = out.bounds()
         slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2 + BASE_TEXT_DX, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
-        w, d = VENT_GROOVE                                # vent pocket, and its breather groove out to the board-face edge
+        # vent pocket with its grille
         slab = slab - pz(circ(*VENT_XY, VENT_POCKET_R), zb - 1, z0 + 1)
-        slab = U(slab, pz(vent_grille(), zb, zb + VENT_GRILLE[0])) - pz(rect(VENT_XY[0], bx1 + 1, VENT_XY[1] - w/2, VENT_XY[1] + w/2), zb - 1, zb + d)
+        slab = U(slab, pz(vent_grille(), zb, zb + VENT_GRILLE[0]))
     return band, slab
 def vent_grille():
     """the 45 deg cross-hatch over the vent pocket (section), bars run into the pocket wall"""
@@ -447,7 +449,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (9, 'Board 1.6 mm with its parts (routed P0, from KiCad)', 'FR4, 6 layers', 'board'),
          (10, 'Retaining sleeves on the posts (4)', 'TPU 95A', 'sleeve'),
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', f'MJF PA12, {WALL} / {WALL_BF}', 'cup'),
-         (12, 'Pad on the cap: preloads the core', 'TPU 95A, 10 % gyroid', 'pad'),
+         (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, skirt, posts', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
@@ -528,6 +530,8 @@ def checks():
         'overtravel posts stop before the skirt touches (z)': (FR_B0 - Z_SKIRT1) - OT_GAP - 0.3,
         'overtravel posts under frame material, not a window or notch': min(
             min(np.hypot(x - cx, y - cy) for cx, cy in CELLS) - WIN_R - OT_R for x, y in OT_POSTS),
+        'USB-C rings stay in the full bore when a plug pushes the core onto the overtravel posts (z, >= 0.2)':
+            (Z_TOP1 - S.USB_RING_D[0]) - (OT_GAP + (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D) / 2) - (Z_POCKET + POCKET_LEAD) - 0.2,
         'pad preload: printed proud 1.0-1.5': min(PAD_PROUD - 1.0, 1.5 - PAD_PROUD),
         'pad relief under the PACK pads deeper than the proud (z)': PAD_RELIEF - PAD_PROUD - 0.2,
         'skirt root behind the groove >= 1.2': SKIRT_T - GROOVE_D - 1.2 + 1e-9,
@@ -549,7 +553,7 @@ def checks():
         'base rating text inside the slab (x, >= 2)': base_text_bounds()[0] - cs_mouth.offset(BUMP_WALL_BOT, ROUND).bounds()[0] - 2,
         'vent: grille open area over the pocket (>= 40 %)': 100 * (1 - vent_grille().area() / (math.pi * (VENT_POCKET_R + 0.2)**2)) - 40,
         'vent: patch clears the grille (z, >= 0.5)': (Z_MOUTH - CAP_T - VENT_T) - (Z_MOUTH - CAP_T - BUMP_T_BOT + VENT_GRILLE[0]) - 0.5,
-        'vent: pocket and groove clear of the base rating text (x, >= 1.0)': (VENT_XY[0] - VENT_POCKET_R) - base_text_bounds()[2] - 1.0,
+        'vent: pocket clear of the base rating text (x, >= 1.0)': (VENT_XY[0] - VENT_POCKET_R) - base_text_bounds()[2] - 1.0,
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
         'thick mouth band covers the O-ring band before its taper (z)': (Z_MOUTH + MOUTH_H - MOUTH_TAPER) - GROOVE_Z[1],

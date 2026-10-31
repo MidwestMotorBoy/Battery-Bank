@@ -119,6 +119,23 @@ Logan then took the cup's side walls from 1.2 to 1.6 mm, so the sealed pack does
 
 The board-face bow scales with the core g, to about 0.64 mm. That is still inside the 0.68 mm the L401 / L501 pocket check allows for.
 
+### Stiffer cap pad and closer overtravel posts (2026-10-31)
+
+A hard USB-C plug-in pushes the board, carrier and cells down onto the cap pad. With the 10 % pad and a 0.6 mm gap to the overtravel posts, the core could move far enough to pull the USB-C seal rings out of the full bore. The pad is now 15 % gyroid and the posts sit 0.3 mm from the core (see `hardware/mechanical/usb_port_retention.png` and the ring check in `monolith_cup.checks()`). The vent's breather groove is also gone. The rerun on this geometry (399.6 g, 95.5 mm tall) is in `out/drop-pad15.json`:
+
+| Pose | 1.6 mm walls | Pad 15 %, posts 0.3 mm |
+|---|---|---|
+| Flat on the port end | 573 g | 572 g |
+| Flat on the cap end | 1107 g | 1182 g |
+| Flat on the board face | 2539 g | 2535 g |
+| Flat on a narrow side | 4018 g | 4013 g |
+| Corner, port end | 2443 g | 2611 g |
+| Corner, cap end | 1549 g | 1550 g |
+
+Only the cap-end drop is touched by the pad and posts: the core hits the posts sooner, +7 %. A sweep on the same geometry gives 1101 g (10 %, 0.6), 1107 g (15 %, 0.6), 1185 g (10 %, 0.3) and 1182 g (15 %, 0.3), so the gap does it, not the pad. The 3 mm cap slab still just bottoms out (1.78 mm crush), which makes its peak floor force jumpy: 14 kN here against 6 kN before for 0.03 mm more crush, still well under the 31 kN of the first run. The port-end corner change comes from the one-piece top bumper with debossed digits (PR #50), not from this change.
+
+`geom.py` leaves the vent grille out of the floor contact. It spans the 12.7 mm pocket on its rim, so a floor bends it into the pocket. Modelled as a rigid-backed gyroid column, it took 88 MPa and faked 1930 g in the cap-end pose.
+
 ## Method
 
 1. **Geometry.** The cup assembly is meshed from `monolith_cup.py` (`geom.py`, cached). Each part has a mass, so the model knows the centre of mass and splits the pack into a 52 g "shell" (the bumpers, label and outer skin that hit first) and a 339 g "core" (cells, carrier, board and everything inside the cup).
@@ -147,6 +164,7 @@ The board-face bow scales with the core g, to about 0.64 mm. That is still insid
 | `board_flex.py` | Board plate model and per-part clearance |
 | `sens.py` | Height, material and slab-build sweeps → `out/sens.json` |
 | `out/drop-after-fixes.json` | `drop.py` rerun after the 30 % slabs, counterbores and wall pockets |
+| `out/drop-wall-1p6.json`, `out/drop-pad15.json` | Reruns with 1.6 mm side walls, then the 15 % cap pad and 0.3 mm overtravel gap |
 | `peba.py` | PEBA 85A bumpers against TPU 95A at 20–40 %, 1 m, 1.5 m and −20 °C → `out/peba.json` |
 | `poses.py`, `figs.py` | The figures here and `out/checks.json` (stress percentiles, board results) |
 | `out/` | The results as JSON |

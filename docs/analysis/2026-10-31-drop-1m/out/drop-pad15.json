@@ -1,0 +1,161 @@
+{
+ "v0": 4.4294469180700204,
+ "m_all_g": 399.58275583996897,
+ "m_shell_g": 59.52845998470083,
+ "m_core_g": 340.05429585526815,
+ "cg": [
+  3.3493468261538824,
+  0.0012310882400139453,
+  40.48376777880335
+ ],
+ "cases": {
+  "top": {
+   "title": "Flat on the port end (top bumper)",
+   "d": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "k_struct_N_per_mm": 174665.08099576642,
+   "crush_mm": 2.5956364766948075,
+   "F_peak_N": 2243.6623963557345,
+   "g_shell": 1889.3905259823016,
+   "g_core": 572.2419169314056,
+   "pulse_ms": 2.5973999999992596,
+   "t_peak_ms": 1.0444999999997966,
+   "rebound_m_s": 2.6253347583713555,
+   "contact_area_mm2": 2846.625,
+   "p_max_MPa": 0.7883010173008707,
+   "parts_in_contact": {
+    "bumpt_slab": 2846.625
+   },
+   "u_core_1g_um": 0.02244241844129742,
+   "pad": null
+  },
+  "bottom": {
+   "title": "Flat on the cap end (bottom bumper)",
+   "d": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "k_struct_N_per_mm": 35626.817072812344,
+   "crush_mm": 1.7813784757701507,
+   "F_peak_N": 13916.447833510689,
+   "g_shell": 19802.014969725344,
+   "g_core": 1182.2981983221418,
+   "pulse_ms": 1.535300000000099,
+   "t_peak_ms": 0.8105999999998441,
+   "rebound_m_s": 2.338641179724144,
+   "contact_area_mm2": 2905.625,
+   "p_max_MPa": 4.945562646012427,
+   "parts_in_contact": {
+    "bumpb_slab": 2905.625
+   },
+   "u_core_1g_um": 0.11002686057468401,
+   "pad": {
+    "t_pad": 8.600000381469727,
+    "area": 910.2775268554688,
+    "k_post": 8011.061266653972
+   }
+  },
+  "board": {
+   "title": "Flat on the board face (+x)",
+   "d": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "k_struct_N_per_mm": 17319.32680266345,
+   "crush_mm": 0.3754193989807764,
+   "F_peak_N": 10622.728292693575,
+   "g_shell": 11026.087404286198,
+   "g_core": 2534.5977230353255,
+   "pulse_ms": 0.5836999999999581,
+   "t_peak_ms": 0.42520000000000946,
+   "rebound_m_s": 3.316105313271871,
+   "contact_area_mm2": 546.0,
+   "p_max_MPa": 69.26325204256348,
+   "parts_in_contact": {
+    "bumpt_slab": 252.0,
+    "bumpt_band": 294.0
+   },
+   "u_core_1g_um": 0.22633136261319775,
+   "pad": null
+  },
+  "side": {
+   "title": "Flat on a narrow side (USB1 side, +y)",
+   "d": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "k_struct_N_per_mm": 46205.88547353816,
+   "crush_mm": 0.3374726356580639,
+   "F_peak_N": 16728.74785891149,
+   "g_shell": 13855.92316220866,
+   "g_core": 4013.280218729266,
+   "pulse_ms": 0.39080000000000886,
+   "t_peak_ms": 0.26920000000000566,
+   "rebound_m_s": 3.874367046484222,
+   "contact_area_mm2": 1091.5,
+   "p_max_MPa": 58.198350335483596,
+   "parts_in_contact": {
+    "bumpt_slab": 262.5,
+    "bumpt_band": 306.25,
+    "bumpb_slab": 124.5,
+    "bumpb_band": 398.25
+   },
+   "u_core_1g_um": 0.08483566096866607,
+   "pad": null
+  },
+  "corner_top": {
+   "title": "Corner, port end, board side (CG over the corner)",
+   "d": [
+    0.4964782126298029,
+    0.3938081570333629,
+    0.7735790327031249
+   ],
+   "k_struct_N_per_mm": 14019.057428629832,
+   "crush_mm": 5.0078419187772685,
+   "F_peak_N": 9150.291484536037,
+   "g_shell": 10333.592855770326,
+   "g_core": 2611.10636857911,
+   "pulse_ms": 0.6040000000003422,
+   "t_peak_ms": 1.5205000000000664,
+   "rebound_m_s": 3.6037907976127395,
+   "contact_area_mm2": 146.375,
+   "p_max_MPa": 3997.0126145741624,
+   "parts_in_contact": {
+    "bumpt_slab": 145.25,
+    "bumpt_band": 1.125
+   },
+   "u_core_1g_um": 0.27961272394710573,
+   "pad": null
+  },
+  "corner_bottom": {
+   "title": "Corner, cap end, board side (CG over the corner)",
+   "d": [
+    0.46880473110640297,
+    0.3775885948030757,
+    -0.7985292588045174
+   ],
+   "k_struct_N_per_mm": 4675.404671691706,
+   "crush_mm": 2.7165972294494742,
+   "F_peak_N": 7219.8738330538035,
+   "g_shell": 9969.921653526766,
+   "g_core": 1550.0203422275818,
+   "pulse_ms": 0.8954000000000655,
+   "t_peak_ms": 1.2824999999999316,
+   "rebound_m_s": 3.7628658279111784,
+   "contact_area_mm2": 58.1875,
+   "p_max_MPa": 3997.0126145741624,
+   "parts_in_contact": {
+    "bumpb_slab": 57.25,
+    "bumpb_band": 0.9375
+   },
+   "u_core_1g_um": 0.8384101719630939,
+   "pad": null
+  }
+ }
+}

@@ -7,11 +7,10 @@ import monolith_cup as K, monolith_side_renders as RR, monolith_cup_assembly_ste
 P = AS.split_parts(); L = AS.L
 vx, vy = K.VENT_XY; zc = K.Z_MOUTH - K.CAP_T; zb = zc - K.BUMP_T_BOT
 st = AS.Step(7, 'Pressure vent on the cap, under the bottom bumper',
-             f'12 mm ePTFE patch over a 3 mm hole in the cap; bumper pocket {2*K.VENT_POCKET_R:.1f} mm with a cross-hatch grille and a breather groove to the board-face edge. No label hole.', 3)
+             f'12 mm ePTFE patch over a 3 mm hole in the cap; bumper pocket {2*K.VENT_POCKET_R:.1f} mm with a cross-hatch grille. No label hole.', 3)
 allp = L(P, 'cup', 'label', 'screw', 'bumpt_band', 'bumpt_slab')
 st.panel('Pack from below', [], allp + L(P, 'cap', 'vent', 'bumpb_band', 'bumpb_slab'), (0.55, -0.75, -0.9),
          notes=[((vx, vy, zb), f'45 deg TPU grille over the\n{2*K.VENT_POCKET_R:.1f} mm vent pocket ({K.VENT_GRILLE[1]} mm bars,\n{K.VENT_GRILLE[2] - K.VENT_GRILLE[1]:.1f} mm openings)'),
-                ((K.X_OUT + 1, 0, zb + 0.4), 'Breather groove 1.2 x 0.8 mm:\nbreathes on a flat table'),
                 ((-3, 0, zb), '"91 Wh" moved 2.5 mm\naway from the vent')])
 st.panel('Bottom bumper off', allp + L(P, 'cap'), L(P, 'vent') + L(P, 'bumpb_band', 'bumpb_slab', o=(0, 0, -34)), (0.55, -0.75, -0.9),
          notes=[((vx, vy, zc - 0.5), '12 mm patch stuck on the\ncap plate, over the 3 mm hole'),
