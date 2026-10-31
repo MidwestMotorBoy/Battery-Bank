@@ -17,8 +17,8 @@ P0 = LB.L['poly']
 Z_VIS0 = LB.L['z_bot'] + LB.TUCK                       # bottom bumper top edge
 Z_VIS1 = K.Z_TOP1 - K.BUMP_BAND                        # top bumper bottom edge
 TOPB = ring(K.cs_out.offset(K.BUMP_WALL, K.ROUND)); TOP_Z = (Z_VIS1, K.Z_TOP1 + K.BUMP_T_TOP)
-BOTA = ring(K.cs_col1.offset(K.BUMP_WALL_BOT, K.ROUND)); BOTA_Z = (K.Z_MOUTH - K.CAP_T - K.BUMP_T_BOT, K.Z_MOUTH + K.COLLAR_H)
-BOTB = ring(K.cs_out.offset(K.LABEL_RELIEF + K.LIP_WALL, K.ROUND)); BOTB_Z = (K.Z_MOUTH + K.COLLAR_H, Z_VIS0)
+BOTA = ring(K.cs_mouth.offset(K.BUMP_WALL_BOT, K.ROUND)); BOTA_Z = (K.Z_MOUTH - K.CAP_T - K.BUMP_T_BOT, K.Z_MOUTH + K.MOUTH_H)
+BOTB = ring(K.cs_out.offset(K.LABEL_RELIEF + K.LIP_WALL, K.ROUND)); BOTB_Z = (K.Z_MOUTH + K.MOUTH_H, Z_VIS0)
 
 class Cam:
     def __init__(self, az, el, dist=330.0, f=2500.0, size=(900, 1100), target=(4.0, 0.0, 39.0)):

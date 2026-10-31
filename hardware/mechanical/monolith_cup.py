@@ -465,8 +465,8 @@ def sealed_pressure(p_kpa):
     a_side = X_IN - R_FRONT + PR                        # side flat: the back cell's tangent to the board-face corner
     a_face = 2 * (YI - R_FRONT)
     F = cs_in.area() * q
-    return {'side flat 1.2 mm: stress (MPa)': 0.61 * q * a_side**2 / WALL**2,
-            'side flat 1.2 mm: centre bulge, linear bound (mm)': wall_deflection(WALL, p_kpa, a_side),
+    return {f'side flat {WALL} mm: stress (MPa)': 0.61 * q * a_side**2 / WALL**2,
+            f'side flat {WALL} mm: centre bulge, linear bound (mm)': wall_deflection(WALL, p_kpa, a_side),
             'board face 2.0 mm: stress (MPa)': 0.61 * q * a_face**2 / WALL_BF**2,
             'cap push (N)': F,
             'screw ligament shear (MPa)': F / 2 / (2 * (SCREW_Z - SCREW_HOLE_R - Z_MOUTH) * MOUTH_T)}
@@ -666,7 +666,7 @@ def sheet_sections(A):
     oa = (600, 600); tp = sh.section(core, 2, z_a, 0, 1, oa, pxa)
     for (x, y), nm in zip(CELLS, [S.SB_CELLS[k][0] for k in S.SB_CELLS]):
         q = tp(x, y); sh.text(q[0], q[1], nm, 22, True, fill='white', anchor='mm')
-    sh.callouts([(tp(-YI - WALL/2, 6), '1.2 mm MJF PA12 cup wall,\nclosed all round'),
+    sh.callouts([(tp(-YI - WALL/2, 6), f'{WALL} mm MJF PA12 cup wall,\nclosed all round'),
                  (tp(-PR - CR + 2.5, 0), 'Carrier spine (the core is rigid)'),
                  (tp(0, PR + CR - 2), 'Side spine'),
                  (tp(0, -PR), 'PA12 web, full length: carries heat\nfrom the front pair to the back pair')], 300, 'l', 230)

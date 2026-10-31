@@ -65,7 +65,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Insulation:** four 0.2 mm fish-paper rings for the + ends (self-adhesive "barley" rings, cut to fit the measured + cap). Kapton tape.
 - **Foam:** silicone foam sheet (about 1 and 1.6 mm), cut into four preload rings.
 - **Printed parts:**
-    - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap (MJF PA12);
+    - the cup (1.6 mm side walls, 2.0 mm on the board face, 1.85 mm top wall, 2.4 mm mouth band) and the bottom cap (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
     - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 30 % gyroid, the four post sleeves, and the two bumpers.

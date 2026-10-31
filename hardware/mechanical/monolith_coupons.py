@@ -2,7 +2,7 @@
 (docs/production/p0-assembly.md, Open items: Fit). Geometry comes from monolith_cup.py, so a coupon is the real part's
 feature, not a redraw.
   A  USB-C seal-bore ladder: a 1.85 mm top-wall plate with five bores at 0.05-0.25 mm squeeze a side, each over the
-     housing pocket and lead-in, the squeeze debossed beside it, and a 1.2 mm skirt so the plate stays flat. Push a
+     housing pocket and lead-in, the squeeze debossed beside it, and a 1.6 mm skirt (the cup's side wall) so the plate stays flat. Push a
      loose connector in from the pocket side; pick the bore that seals (1 m dunk) and still lets the board float.
   B  Cup mouth + cap: the bottom 14 mm of the cup, closed by a lid, with the real cap, O-ring and M2 screws. Squeeze in
      the middle of each flat (clay or feelers), dunk at 1 m / 30 min, pull-test the cap, -50 kPa jar test.

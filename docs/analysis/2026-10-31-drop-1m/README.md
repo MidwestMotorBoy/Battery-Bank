@@ -104,6 +104,21 @@ Logan approved the three housing fixes this analysis pointed to:
 
 The narrow-side number went up because the first run let the steel heads crush like nylon for their first 0.3 mm, which made the stop look softer than it is. The 3875 g figure is the honest one. If it matters, the fix is a thicker bottom band at the sides: it is 1.0 mm of solid TPU there.
 
+### With 1.6 mm side walls (2026-10-31)
+
+Logan then took the cup's side walls from 1.2 to 1.6 mm, so the sealed pack doesn't creep at altitude (side flats 8.7 MPa at +25 kPa, was 15.5). That makes the pack 398.8 g and 60.9 × 52.7 × 95.9 mm. The rerun is in `out/drop-wall-1p6.json`. Core g changes by 4 % or less:
+
+| Pose | 1.2 mm walls | 1.6 mm walls |
+|---|---|---|
+| Flat on the port end | 569 g | 573 g |
+| Flat on the cap end | 1069 g | 1107 g |
+| Flat on the board face | 2433 g | 2539 g |
+| Flat on a narrow side | 3875 g | 4018 g |
+| Corner, port end | 2550 g | 2443 g |
+| Corner, cap end | 1522 g | 1549 g |
+
+The board-face bow scales with the core g, to about 0.64 mm. That is still inside the 0.68 mm the L401 / L501 pocket check allows for.
+
 ## Method
 
 1. **Geometry.** The cup assembly is meshed from `monolith_cup.py` (`geom.py`, cached). Each part has a mass, so the model knows the centre of mass and splits the pack into a 52 g "shell" (the bumpers, label and outer skin that hit first) and a 339 g "core" (cells, carrier, board and everything inside the cup).
