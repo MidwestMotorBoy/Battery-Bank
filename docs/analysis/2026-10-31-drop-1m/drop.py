@@ -48,15 +48,16 @@ def force_curve(rc, dmax=8.0, step=0.005):
     return dl, F
 
 def pad_curve():
-    """bottom drop only: the core sits on the 10 % gyroid TPU pad on the cap, then the overtravel posts (0.6 mm gap)
+    """bottom drop only: the core sits on the gyroid TPU pad on the cap (PAD_FILL), then the overtravel posts (OT_GAP)
     land on the carrier frame. Pad: its area at the frame, PAD thickness from the mesh."""
     V = [V for k, V, _ in A if k == 'pad'][0].reshape(-1, 3)
     t_pad = V[:, 2].max() - V[:, 2].min(); area = 0.55 * (np.ptp(V[:, 0]) * np.ptp(V[:, 1]))     # pocketed pad
     pre = 0.0                                                    # drawn as installed (pre-squeezed by PAD_PROUD)
+    fill, gap = round(PRM.get('PAD_FILL', 0.10), 2), PRM.get('OT_GAP', 0.6)
     k_post = 4 * fe.MATS['pa12'][0] * np.pi * 1.5**2 / 6.0      # four r 1.5 PA12 posts ~6 mm long, N/mm
     def F(x_mm):
         x = np.maximum(x_mm, 0)
-        return C.gyroid(np.minimum(x / t_pad, 0.97), 0.10) * area + k_post * np.maximum(x - 0.6, 0)
+        return C.gyroid(np.minimum(x / t_pad, 0.97), fill) * area + k_post * np.maximum(x - gap, 0)
     return F, dict(t_pad=float(t_pad), area=float(area), k_post=float(k_post))
 
 def simulate(dl, Fc, k_sc, eta=0.35, F_sc=None, t_end=6e-3, dt=1e-7, zeta=0.03):

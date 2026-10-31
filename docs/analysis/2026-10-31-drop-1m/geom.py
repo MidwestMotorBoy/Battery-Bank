@@ -16,11 +16,15 @@ def build():
     sys.path.insert(0, MECH); cwd = os.getcwd(); os.chdir(MECH)
     try:
         import monolith_cup as K
+        # the vent grille spans the cap pocket on its rim: it bends into the pocket rather than crushing as a column
+        # (modelled as a rigid-backed gyroid column it adds ~800 g to the bottom pose), so leave it out of the floor contact
+        # (a thin ring inside the slab stands in for it: an empty section would void the union)
+        K.vent_grille = lambda: K.circ(*K.VENT_XY, K.VENT_POCKET_R + 0.2) - K.circ(*K.VENT_XY, K.VENT_POCKET_R)
         A = K.assembly(); m = K.masses(A)
         prm = dict(Z_TOP1=K.Z_TOP1, Z_TOP0=K.Z_TOP0, Z_MOUTH=K.Z_MOUTH, CAP_T=K.CAP_T, BUMP_T_TOP=K.BUMP_T_TOP,
                    BUMP_T_BOT=K.BUMP_T_BOT, BUMP_BAND=K.BUMP_BAND, BUMP_WALL=K.BUMP_WALL, BUMP_WALL_BOT=K.BUMP_WALL_BOT,
                    SLAB_FILL=K.SLAB_FILL, PAD_FILL=K.PAD_FILL, WALL=K.WALL, WALL_BF=K.WALL_BF, X_IN=K.X_IN, YI=K.YI,
-                   POST_GAP=K.POST_GAP, TOP_T=K.TOP_T, MOUTH_T=K.MOUTH_T, size=K.size(A).tolist(), CELLS=K.CELLS,
+                   POST_GAP=K.POST_GAP, OT_GAP=K.OT_GAP, TOP_T=K.TOP_T, MOUTH_T=K.MOUTH_T, size=K.size(A).tolist(), CELLS=K.CELLS,
                    sb_xb0=K.S.sb_xb0, sb_xb1=K.S.sb_xb1, PCB_T=K.S.SB_PCB_T)
     finally: os.chdir(cwd)
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
