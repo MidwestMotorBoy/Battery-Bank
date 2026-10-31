@@ -22,8 +22,8 @@ Writes STEP files into Production/3dmodels/ with step_mesh.py (pure Python) and 
         J115 / J116 sense wires), 2026-10-29: the pack wires come up from the cells, so these hang below B.Cu (z -1.6):
         the PTFE stub across the SB_BCU_H gap (2.3 mm, B.Cu to the 0.3 mm insulator on the front cells; the wire turns
         along the gap there, mechanical/monolith_shell.py sb_wire_runs), 0.3 mm of bare conductor under B.Cu, the
-        conductor through the hole and a 0.5 mm solder fillet and tip on F.Cu. 18 AWG: M22759/11-18, 1.8 mm OD
-        (SB_PWIRE_OD), 19/30 strand ~1.22 mm. 28 AWG: M16878/6 Type ET, 0.75 mm OD (SB_KWIRE_OD), ~0.38 mm conductor.
+        conductor through the hole and a 0.5 mm solder fillet and tip on F.Cu. 18 AWG: TE 100G0111-1.00-0, 1.8 mm OD
+        (SB_PWIRE_OD), 19/0.25 strand ~1.22 mm. 28 AWG: TE 55A0111-28-9, 0.75 mm OD (SB_KWIRE_OD), ~0.38 mm conductor.
       - Peg_PA12_TPU_sleeve.step (H101-H104), 2026-10-29: the carrier's peg post through its slot (mechanical/
         monolith_cup.py rails(): Ø2.0 CUP_PEG_D, from the rail on B.Cu to POST_GAP 0.3 under the board-face wall, i.e.
         SB_OUT_H 3.2 + 0.5 - 0.3 = 3.4 mm above F.Cu; monolith_shell.py's CUP_PEG_PROUD 0.6 predates the posts reaching
@@ -80,11 +80,11 @@ MODELS = {
     "MonolithDev:L_Coilank_APS0530": P + "L_Coilank_APS0530.step",
     "MonolithDev:L_COILMX_MS0520": P + "L_COILMX_MS0520.step",
     # stock models that fit better than the footprint's own (2026-10-29): KiCad's PG-TDSON-8 and HVSSOP-8 footprints
-    # name models that aren't in kicad-packages3D (the parts rendered empty), and the CA55 is 2.8 mm, not the Kemet D 3.1
+    # name models that aren't in kicad-packages3D (the parts rendered empty), and the C421/C456 T593V is 2.0 mm (V case), not the Kemet D 3.1
     "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8": STOCK + "Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step",
     "Package_SO:HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm":
         STOCK + "Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.95x2.15mm.step",
-    "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D": STOCK + "Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step",
+    "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D": STOCK + "Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-20_Kemet-V.step",
 }
 HIDDEN = {"Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"}   # attached with (hide yes): nothing fitted
 FROM_DEV = ["ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", "TLC_WSFB_4x3mm.step", "USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68.step"]

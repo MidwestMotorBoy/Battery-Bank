@@ -22,9 +22,9 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 |---|---|
 | J301 (TC2030-NL, "SWD") | CC2340 flash and debug: VCC, SWDIO, NRST, SWCLK, GND |
 | J302 (TC2030-NL, "GAUGE") | 1 SDA, 2 CHG_INH, 3 NRST, 4 nc, 5 GND, 6 SCL |
-| J108 / J112 | Pack − / +: Ø1.5 mm plated holes for the 18 AWG PTFE PACK wires |
-| J109–J111 | Cell taps CELL1–CELL3: Ø0.8 mm plated holes for 28 AWG PTFE sense wires |
-| J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG PTFE wires |
+| J108 / J112 | Pack − / +: Ø1.5 mm plated holes for the 18 AWG PACK wires (TE 100G0111-1.00-0) |
+| J109–J111 | Cell taps CELL1–CELL3: Ø0.8 mm plated holes for 28 AWG sense wires (TE 55A0111-28-9) |
+| J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG wires (TE 55A0111-28-9) |
 | J105 / J106 | Back-cell NTC wires (C2 / C3). The front-cell NTCs are TH101 / TH104 on the board |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge |
 | TP113 (WAKE) + TP106 (PACK_P) | Gauge wake: bridge the two pads with tweezers. TP113 is CELL_P through R118 4.7 kΩ. |
@@ -91,7 +91,7 @@ Steps:
 | PD contract survives an MCU reset (LaunchPad T4, moved here 2026-10-20) | Laptop on a 20 V contract with the e-marked 5 A cable. Force a watchdog reset; scope RST, EN_5V1 and PP5V (TP403) together | EN_5Vx back high before PP5V falls below 4.75 V (review 4 C-6: 8–80 ms window); the laptop must not see a disconnect |
 | Gauge wakes on USB plug-in | Gauge in SHUTDOWN, plug in a charger | Whether the WAKE pad can go in the next spin |
 | Sleep current | DMM in series with one pack lead | Firmware power states (estimate ~400 µA with the two TPD6S300s) |
-| USB-side bank stress | CA55 C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
+| USB-side bank stress | T593V C421/C456 temperature at reverse 20 V 5 A from a low pack (model: worst part 43 % of rating, an MLCC) | Bank OK, or add a fifth 22u 1210 |
 
 ## 5. Production boards
 

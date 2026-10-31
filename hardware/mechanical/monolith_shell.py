@@ -270,7 +270,7 @@ SB_WIRE_D = 0.8                      # (legacy)
 # pad that is welded to the cell end inside the weld window. It runs through a notch in the carrier's bottom frame
 # (monolith_cup.py), crosses the gap behind the board and is soldered into a plated hole. The Kelvin side (1N / 4P) is
 # a 28 AWG PTFE wire from the same pad, through its own notch, into the existing Kelvin slot.
-SB_PWIRE_OD, SB_KWIRE_OD = 1.8, 0.75  # 18 AWG PTFE (M22759/11-18, 1.78 max at AWC) / 28 AWG Type ET PTFE (M16878/6, 0.74 max)
+SB_PWIRE_OD, SB_KWIRE_OD = 1.8, 0.75  # 18 AWG TE 100G0111-1.00-0 (1.80 max) / 28 AWG TE 55A0111-28-9 (= M22759/32-28, 0.74 max); 2026-10-31
 SB_PWIRE_HOLE, SB_PWIRE_RING = 1.5, 0.4   # PACK wire plated hole (finished; 19/30 strand ~1.22 mm) and its annular ring
 SB_PWIRE_Z = 5.75                    # hole centre: as low as the ring allows over the board's bottom edge
 # Sense wires (Logan, 2026-10-24): every sense lead is a 28 AWG PTFE wire too, so no nickel goes into the board.

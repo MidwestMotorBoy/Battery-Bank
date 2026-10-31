@@ -168,12 +168,9 @@ SWAP = {  # parts changed in place: new lib_id and properties (pins land on the 
                      "not cSrcBulkShared (120 uF): docs/devboard/cap-reduction-sims-2026-10-17.md, P3"}),
         # low-profile bulk (2026-10-18): nothing taller than the inductors (3.1 mm), low_profile_sims.py C2 / N1
         "C421": (None, {
-            "Value": "47u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "C2761440",
-            "MPN": "CCTC CA55-D035M476T (polymer tantalum)",
-            "Notes": "USB-side bulk with C456 (two 47 uF 35 V polymer tantalum, 150 mOhm, 1.2 A rms, 7343-28, 2.8 mm max) and "
-                     "four 22u 35V 1210: 100 uF worst case at 20 V (BQ25756 >= 80 uF). Replaces the 7.7 mm tall 100 uF can. "
-                     "Polymer, not MnO2: no ignition on failure, 20 % derating (20 V on 35 V). AC_SNS_N is dead in sleep, "
-                     "so the 0.1 CV leakage rating does not matter here: Production/tools/low_profile_sims.py option C2"}),
+            "Value": "68u 35V", "Footprint": "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D", "LCSC": "",
+            "Datasheet": "https://yageogroup.com/download/specsheet/T593V686M035APE070", "MPN": "KEMET T593V686M035APE070 (polymer tantalum)",
+            "Notes": "USB-side bulk with C456 (two KEMET T593V 68 uF 35 V polymer tantalum, 70 mOhm, 1.69 A rms at 85 C, 7343-20, 2.0 mm max, on the 7343 D land pattern; was CCTC CA55 47 uF until 2026-10-31) and four 22u 35V 1210: 133 uF worst case at 20 V (BQ25756 >= 80 uF). Polymer, not MnO2: no ignition on failure, 20 % derating (20 V on 35 V). AC_SNS_N is dead in sleep, so the 0.1 CV leakage rating (238 uA) does not matter here: Production/tools/low_profile_sims.py option C4"}),
         **{c: (None, {**GMK_PROPS, "Notes": "Battery-side MLCC at the charger FETs, 22u 35V 1210 (about 10 uF at 16.8 V): "
                       "shared PACK_P bulk is C208-C213, Production/tools/low_profile_sims.py option N1"})
            for c in ("C431", "C434")},
@@ -944,7 +941,7 @@ LOW_PROFILE_AT = {"C456": (378.46, 121.92)}  # usb sheet, right of C430 on AC_SN
 
 
 def add_usb_bulk(s, templates):
-    """Per port: a second CA55 47u 35V polymer tantalum (C456) on AC_SNS_N, with C421 -> CA55:
+    """Per port: a second 35V polymer tantalum (C456; CA55 47u until 2026-10-31, now T593V 68u) on AC_SNS_N, with C421 -> CA55:
     low_profile_sims.py option C2. Clone of C421 (both ports' instance paths)."""
     syms = {y["ref"]: y for y in symbols(s)}
     add = ""
@@ -955,7 +952,7 @@ def add_usb_bulk(s, templates):
         blk = clone(tmpl, ref, val, fp, LOW_PROFILE_AT[ref], src)
         blk = blk.replace('(reference "%s")' % (src[0] + "5" + src[2:]), '(reference "%s")' % (ref[0] + "5" + ref[2:]))
         if '(property "Notes" ' in blk:
-            blk = set_prop(blk, "Notes", "Second CA55 47u on AC_SNS_N, see C421")
+            blk = set_prop(blk, "Notes", "Second T593V 68u on AC_SNS_N, see C421")
         add += "\n\t" + blk
     s = insert_top(s, add)
     pins = {y["ref"]: y["pins"] for y in symbols(s) if y["ref"] in LOW_PROFILE_AT}

@@ -104,8 +104,8 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
     - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
-    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
-    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG wires (TE 100G0111-1.00-0, up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG sense wires (TE 55A0111-28-9) in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103). Later replaced by the J302 Tag-Connect (see below).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
@@ -396,10 +396,12 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 | 5 × 22 µF + 2 × T521D (first pass) | 83.4 µF | 109 µF | 33 % | 123 mV | 17.8 dB | 158 mm² | 3.1 mm | $6.40 |
 | 4 × 22 µF + 3 × T521D (second pass) | 103.7 µF | 133 µF | 38 % | 139 mV | 18.8 dB | 185 mm² | 3.1 mm | $9.60 |
 | 4 × 22 µF + 3 × CA45 33 µF (MnO₂) | 103.7 µF | 133 µF | 43 % | 162 mV | 18.7 dB | 185 mm² | 2.8 mm | $2.14 |
-| **Applied: 4 × 22 µF + 2 × CA55 47 µF** | **99.7 µF** | **128 µF** | **43 %** | **160 mV** | **20.0 dB** | **143 mm²** | **2.8 mm** | **$2.97** |
+| Applied 10-18 to 10-31: 4 × 22 µF + 2 × CA55 47 µF | 99.7 µF | 128 µF | 43 % | 160 mV | 20.0 dB | 143 mm² | 2.8 mm | $2.97 |
 | 4 × 22 µF + 3 × CA55 47 µF | 137.3 µF | 175 µF | 42 % | 157 mV | 21.0 dB | 185 mm² | 2.8 mm | $4.46 |
+| **Applied since 2026-10-31: 4 × 22 µF + 2 × T593V 68 µF** | **133.3 µF** | **170 µF** | **41 %** | **154 mV** | **20.9 dB** | **143 mm²** | **2.0 mm** | **$4.88** |
 
-- **C421/C521 and C456/C556:** CCTC CA55-D035M476T (LCSC C2761440, 3,658 in stock, $1.49). 47 µF 35 V polymer tantalum, 150 mΩ, 1.225 A rms at 100 kHz. 7343-28 case, 2.8 mm max, on the standard 7343 D land pattern. Polymer tantalum needs only 20 % voltage derating; at 20 V on a 35 V part it runs at 57 %. C456 sits on AC_SNS_N next to C430.
+- **C421/C521 and C456/C556 (2026-10-31, Logan):** KEMET **T593V686M035APE070**. 68 µF 35 V polymer tantalum (T593, the high-humidity series: 85 °C / 85 % RH for 1000 h), 70 mΩ, 1.69 A rms at 85 °C (2.42 A at 45 °C), −55 to 105 °C, 238 µA leakage (0.1 CV, still harmless on AC_SNS_N). V case, 7343-20: 7.3 × 4.3 mm, 2.0 mm max, with the same terminals as the D case, so the footprint stays `CP_EIA-7343-31_Kemet-D` and nothing moves on the board. Being 2.0 mm tall, C456 now clears the 2.3 mm B.Cu height zone it used to stick into. `low_profile_sims.py` option C4: 133 µF worst case at 20 V (+34 %), 154 mV ripple, 20.9 dB damping, worst part still a 1210 at 41 %; PPHV inrush about 170 µF × 0.47 V/ms = 0.08 A. Mouser, $2.44 at 10+, 94 in stock on 2026-10-31 with a 52-week factory lead (not at LCSC). `tools/make_3d_models.py` now maps the D footprint to KiCad's 2.0 mm Kemet-V model; re-run it to update the board's 3D view.
+- **Before 2026-10-31:** CCTC CA55-D035M476T (LCSC C2761440, 3,658 in stock, $1.49). 47 µF 35 V polymer tantalum, 150 mΩ, 1.225 A rms at 100 kHz. 7343-28 case, 2.8 mm max, on the standard 7343 D land pattern. Polymer tantalum needs only 20 % voltage derating; at 20 V on a 35 V part it runs at 57 %. C456 sits on AC_SNS_N next to C430.
 - **Why not the CA45-D035K336T.** It's $0.71 and it simulates fine, but it is an MnO₂ solid tantalum. Those fail short and can ignite. Makers want ≥ 50 % voltage derating, more on a low-impedance input. This one would run at 57 % on a USB input that sees hot-plug surges from a 5 A charger, and in reverse mode the pack feeds it through the converter. The CA55 is the same maker's polymer series, which avoids both problems.
 - **T521D history:** the first pass used two KEMET T521D336M035ATE065 plus a fifth 22 µF 1210 (C457). The second pass used three T521Ds. Both are replaced by the CA55 pair: about $6.60 cheaper per port, one part fewer, 42 mm² smaller, with better damping.
 - **C427/C527** leaves the cut list: the bank is designed with it.
@@ -440,7 +442,7 @@ The board has **no screw holes**. In the cup it rides on the PA12 carrier (`hard
 
 ## Pack wire holes and the 1N / 4P Kelvin nets (2026-10-21; all wires 2026-10-24)
 
-Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wires** (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PTFE PACK power wires** in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
+Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG sense wires** (TE 55A0111-28-9 since 2026-10-31) (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PACK power wires** (TE 100G0111-1.00-0 since 2026-10-31; the footprint names still say PTFE, from the earlier wire) in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
 
 | Hole | Ref | Net | KiCad (x, y), pad length or Ø |
 |---|---|---|---|
@@ -481,7 +483,7 @@ There is no rule-area type for height, so a note on Cmts.User under the board ho
 **Hand-soldered B.Cu parts (19):**
 - **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
 - **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
-- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
+- **USB-side tantalums:** C421, C456, C521 and C556 (T593V, 2.0 mm since 2026-10-31; CA55 2.8 mm before), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
 
 Fit all 19 before the first power-up: the chargers need both bulk banks.
 

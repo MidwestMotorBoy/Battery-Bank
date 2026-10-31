@@ -313,7 +313,7 @@ def foam_pockets():
     stopping 1.0 inside the frame's outer edge (polish pass 2026-10-30: the old ring left a 0.2 mm skin there)"""
     return [pz(foam_rings(WIN_R - 0.3, FOAM_R[1] + 0.2, 0.2), FR_B1 - FOAM_POCKET, FR_B1 + 0.1)]
 def foam():
-    """silicone foam rings, drawn as installed: pocket floor up to the strips / cell bottoms"""
+    """foam preload rings (1 mm EVA), drawn as installed: pocket floor up to the strips / cell bottoms"""
     return pz(foam_rings(), FR_B1 - FOAM_POCKET, S.sb_z_tail_b - S.SB_TAB_T) - pz(rect(-PR - 1.5, PR + CR + 1, -CH_W, CH_W), FR_B0, FR_B1 + 1)
 def insul_rings():
     """fish-paper rings on the four + ends, on the shoulder under the nickel"""
@@ -443,7 +443,7 @@ def group(k): return k.split('_')[0]
 PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carrier'),
          (2, 'Board rails (4, clip-on) with the peg posts', 'MJF PA12', 'rails'),
          (3, 'Cells C1-C4, welded 4S', 'BAK N21700CX-65E', 'cell'),
-         (4, 'Insulator rings on the + ends (4)', 'fish paper 0.2', 'insul'), (5, 'Preload rings under the cells (4)', 'silicone foam', 'foam'),
+         (4, 'Insulator rings on the + ends (4)', 'fish paper 0.2', 'insul'), (5, 'Preload rings under the cells (4)', 'EVA foam 1 mm', 'foam'),
          (6, 'Nickel series strips (3)', 'nickel 0.2 x 10', 'nickel'), (7, 'PACK pads, CELL1/3 tongues; 18 / 28 AWG wires', 'nickel; PTFE wire', 'tails'),
          (8, 'Gap filler, board to the front cells (dispensed)', 'GEL 30, 3.1 g/cm3', 'filler'),
          (9, 'Board 1.6 mm with its parts (routed P0, from KiCad)', 'FR4, 6 layers', 'board'),

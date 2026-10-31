@@ -2,11 +2,12 @@
 taller than the inductors (APS0730M2R2F, 3.1 mm max).
 
 USB side (AC_SNS_N, per port): unpowered in sleep, so leakage does not matter; 35 V polymer tantalum CCTC
-CA55-D035M476T (47 uF, 150 mOhm, 1.225 A rms, 7343-28, 2.8 mm) next to GMK325 22u 35V 1210s. Not MnO2 tantalum
+CA55-D035M476T (47 uF, 150 mOhm, 1.225 A rms, 7343-28, 2.8 mm) next to GMK325 22u 35V 1210s; from 2026-10-31 KEMET
+T593V686M035APE070 (68 uF, 70 mOhm, 7343-20, 2.0 mm), option C4. Not MnO2 tantalum
 (CA45-D035K336T: 900 mOhm, fails short and can ignite, wants >= 50 % voltage derating on a low-impedance input).
 PACK_P (shared bus): always live, so only MLCCs. Polymer aluminium chips (SP-Cap, CDE MPD) and polymer tantalum
 are rated 0.1-0.3 CV of leakage (hundreds of uA), against a ~150 uA sleep budget. GMK325BJ226MM 22u 35V 1210
-(2.7 mm max) keeps ~10 uF at 16.8 V, more than a TMK325 47u 25V (~8 uF). Applied: C2 (USB) and N1 (PACK_P).
+(2.7 mm max) keeps ~10 uF at 16.8 V, more than a TMK325 47u 25V (~8 uF). Applied: C4 (USB, was C2) and N1 (PACK_P).
 
 Reuses DevBoard/tools/cap_sims.py (USB side: ripple, RMS, cable damping) and pack_bus_sims.py (shared bus).
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/low_profile_sims.py
@@ -24,6 +25,8 @@ TA = "T521D336 33u 35V polymer Ta"
 cs.PARTS[TA] = dict(c0=33e-6, esr=0.065, esl=2.0e-9, irms=2.2, area=42.3, kind="poly")
 C55 = "CA55-D035M476T 47u 35V polymer Ta"
 cs.PARTS[C55] = dict(c0=47e-6, esr=0.150, esl=2.0e-9, irms=1.225, area=42.3, kind="poly")
+T593 = "T593V686M035APE070 68u 35V polymer Ta"   # 2026-10-31: 7343-20, 2.0 mm max; 1.69 A rms is the 85 C figure (2.42 A at 45 C)
+cs.PARTS[T593] = dict(c0=68e-6, esr=0.070, esl=2.0e-9, irms=1.694, area=42.3, kind="poly")
 CA45 = "CA45-D035K336T 33u 35V MnO2 Ta"
 cs.PARTS[CA45] = dict(c0=33e-6, esr=0.9, esl=2.0e-9, irms=0.342, area=42.3, kind="poly")
 G, T, POLY = "GMK325 22u 35V 1210", "TMK325 47u 25V 1210", "HV1V107 100u 35V polymer"
@@ -37,8 +40,9 @@ cs.BANKS["usb"] = {
     "L3: 4x 22u 1210 + 3x 33u T521D": [(G, 4), (TA, 3)],
     "L4: 6x 22u 1210 + 2x 33u T521D": [(G, 6), (TA, 2)],
     "L3c: 4x 22u 1210 + 3x 33u CA45 (MnO2)": [(G, 4), (CA45, 3)],
-    "C2 applied: 4x 22u 1210 + 2x 47u CA55": [(G, 4), (C55, 2)],
+    "C2 was applied: 4x 22u 1210 + 2x 47u CA55": [(G, 4), (C55, 2)],
     "C3: 4x 22u 1210 + 3x 47u CA55": [(G, 4), (C55, 3)],
+    "C4 applied: 4x 22u 1210 + 2x 68u T593V": [(G, 4), (T593, 2)],
 }
 cs.BANKS["bat"] = {}
 
