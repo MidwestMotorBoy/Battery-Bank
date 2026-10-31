@@ -119,9 +119,9 @@ LEAD_IN = (0.6, 30.0)               # chamfer where a bumper meets the label edg
 RELIEF_UP = 1.5                     # top band relief runs this far past the label's top edge (label placed high)
 LABEL_Z = (0.0, 0.0)                # set below, once the cup heights are known
 LIP_WALL, LIP_FLOOR = 1.0, 0.8      # bottom-bumper lip over the label: wall, and the ledge joining it to the mouth band
-PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # raised on the top bumper beside each port (USB1 at +y, as in the
+PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # debossed (raised until 2026-10-31: the bumper prints face-down) on the top bumper beside each port (USB1 at +y, as in the
                                     # thermal model's port labels)
-DIGIT_H, DIGIT_RAISE, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
+DIGIT_H, DIGIT_D, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
 BASE_TEXT_DX = -2.5                # the rating moved off-centre (-x) to clear the vent pocket
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
 LABEL_Z = (Z_MOUTH + MOUTH_H + LABEL_GAP, Z_TOP1 - BUMP_BAND + LABEL_TUCK)   # label edges on the cup
@@ -334,8 +334,8 @@ def bumper(top):
         zb = Z_TOP1 - BUMP_BAND                           # relieved over the label, with a lead-in at the bottom edge
         band = pz(ring, zb, Z_TOP1) - pz(cs_out.offset(LABEL_RELIEF, ROUND), zb - 1, RELIEF_TOP) - lead_in(zb, +1)
         slab = pz(out, Z_TOP1, Z_TOP1 + BUMP_T_TOP) - pz(rrect(PORT_X - 4.5, PORT_X + 4.5, -14.0, 14.0, 2.0), Z_TOP1 - 0.1, Z_TOP1 + BUMP_T_TOP + 1)
-        zt = Z_TOP1 + BUMP_T_TOP                          # port numbers, raised beside the port well
-        slab = slab + U(*[pz(text_cs(d, DIGIT_H, PORT_X - 4.5 - 3.6, py), zt - 0.01, zt + DIGIT_RAISE) for py, d in PORT_DIGITS])
+        zt = Z_TOP1 + BUMP_T_TOP                          # port numbers, debossed beside the port well (the face prints on the bed)
+        slab = slab - U(*[pz(text_cs(d, DIGIT_H, PORT_X - 4.5 - 3.6, py), zt - DIGIT_D, zt + 1) for py, d in PORT_DIGITS])
     else:
         z0, zc = Z_MOUTH - CAP_T, Z_MOUTH + MOUTH_H
         band = pz(ring, z0, zc); slab = pz(out, z0 - BUMP_T_BOT, z0)
@@ -799,8 +799,10 @@ if __name__ == '__main__':
         print(f'  sealed, +{p_kpa} kPa inside: ' + ', '.join(f'{k} {v:.1f}' for k, v in sealed_pressure(p_kpa).items()))
     print('total', round(sum(m.values()), 1), 'g   size (x, y, z)', np.round(size(A), 1))
     if which in ('all', 'stl'):
-        for k in ('cup', 'cap', 'carrier', 'rails', 'sleeve', 'foam', 'pad', 'oring', 'filler', 'bumpb_band', 'bumpb_slab', 'bumpt_band', 'bumpt_slab'):
+        for k in ('cup', 'cap', 'carrier', 'rails', 'sleeve', 'foam', 'pad', 'oring', 'filler', 'vent'):
             write_stl(os.path.join(HERE, f'monolith_cup_{k}.stl'), np.vstack([V for kk, V, _ in A if kk == k]))
+        for top in (False, True):                        # each bumper is ONE TPU print: the band and the slab only differ
+            write_stl(os.path.join(HERE, f"monolith_cup_{'bumpt' if top else 'bumpb'}.stl"), tris(U(*bumper(top))))   # by infill
         print('wrote monolith_cup_*.stl')
     if which in ('all', 'exploded'): sheet_exploded(A, m)
     if which in ('all', 'sections'): sheet_sections(A)

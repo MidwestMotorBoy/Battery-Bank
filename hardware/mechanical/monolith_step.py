@@ -141,7 +141,7 @@ def box_union(fn):
 def cells():
     c = P.cell_solid(); return np.vstack([K.mv(c, (x, y, S.sb_z_cell0)) for x, y in K.CELLS])
 def bumper_parts(top):
-    b, s = K.bumper(top); return [('band', mf(b)), (f'slab ({K.SLAB_FILL:.0%} infill)', mf(s))]
+    return [('bumper', mf(K.U(*K.bumper(top))))]   # one TPU print; the slab's infill is a slicer setting
 # file name, description (from monolith_cup.PARTS), colour key, [(body name, (pts, tris))]
 def part_list():
     D = {k: name + ', ' + mat for _, name, mat, k in K.PARTS}

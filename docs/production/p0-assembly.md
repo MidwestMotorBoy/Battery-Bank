@@ -68,7 +68,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
     - the cup (1.6 mm side walls, 2.0 mm on the board face, 1.85 mm top wall, 2.4 mm mouth band) and the bottom cap (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
-    - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 30 % gyroid, the four post sleeves, and the two bumpers.
+    - in TPU 95A: the pad (inside the cap, 10 % gyroid), the four post sleeves, and the two bumpers. Each bumper is a single print, outer end face on the bed, with 5 walls, 4 top and bottom layers and 30 % gyroid: the bands come out solid and the slab gets the gyroid.
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 5 mm pan-head thread-forming screws for plastic (heads in 0.8 mm counterbores; 3.3 mm of thread in each boss), silicone grease, and one 12 mm adhesive ePTFE vent patch (VOSAREA lamp vent; a Gore VE80308 also fits) for the 3 mm hole in the cap (2026-10-31).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
