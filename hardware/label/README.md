@@ -1,6 +1,6 @@
 # Wrap label
 
-The printed vinyl label that wraps round the cup. Its top and bottom edges sit under the TPU bumpers. It is one flat rectangle, 199.3 × 70.85 mm cut size with R2 corners, plus 2 mm of bleed. The length is the cup perimeter plus a 5 mm overlap, and the seam is in the middle of the back face. The size comes from the cup model (`hardware/mechanical/monolith_cup.py`: `LABEL_T`, `LABEL_TUCK`, `LABEL_Z`), so re-run the label after a cup change.
+The printed vinyl label that wraps round the cup. Its top and bottom edges sit under the TPU bumpers. It is one flat rectangle, 199.3 × 72.85 mm cut size (2 mm taller since 2026-10-31, when the top bumper band went from 9 to 7 mm) with R2 corners, plus 2 mm of bleed. The length is the cup perimeter plus a 5 mm overlap, and the seam is in the middle of the back face. The size comes from the cup model (`hardware/mechanical/monolith_cup.py`: `LABEL_T`, `LABEL_TUCK`, `LABEL_Z`), so re-run the label after a cup change.
 
 The adopted artwork is the Borderlands-style version (`--bl`): brush inking, the vivid palette with heavy ink (Logan's pick, variant 8-1, 2026-10-27), and the angular mother bear and cub (option 9i-7). The vent hole was removed on 2026-10-28; the sun stays where it was, solid.
 

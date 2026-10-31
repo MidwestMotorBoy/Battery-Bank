@@ -68,7 +68,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
     - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap with its collar (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
-    - in TPU: the pad (inside the cap, 15 % gyroid), the four post sleeves, and the two bumpers.
+    - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 20 % gyroid, the four post sleeves, and the two bumpers.
 - **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the collar, wall and boss stack is 6.55 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
