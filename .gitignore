@@ -48,3 +48,4 @@ hardware/mechanical/step/
 # Retired enclosure outputs (removed 2026-10-29; monolith_shell.py / monolith_parts.py still write them here)
 hardware/mechanical/retired/*
 !hardware/mechanical/retired/README.md
+hardware/mechanical/board/*.step

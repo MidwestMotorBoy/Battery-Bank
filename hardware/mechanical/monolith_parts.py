@@ -577,6 +577,13 @@ def cover_standoffs():
     """SMD standoffs on F.Cu that carry crush loads from the cover into the board (render only)"""
     h = S.SB_STANDOFF_D/2
     return np.vstack([_box(S.sb_xb1, S.sb_xb1 + S.sb_standoff_h, y - h, y + h, z - h, z + h) for y, z in S.SB_STANDOFFS])
+BOARD_NPZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'board', 'monolith_board.npz')
+BENCH_ONLY = ('J113', 'J114')        # learning-cycle load wire pads: bench only, wires off before the pack closes
+def real_board():
+    """the routed P0 board from KiCad (board/board_from_step.py), in the pack frame: {'PCB': tris, refdes: tris} plus
+    '_model_<ref>' names, or None if board/monolith_board.npz hasn't been made"""
+    if not os.path.exists(BOARD_NPZ): return None
+    d = np.load(BOARD_NPZ); return {k: d[k] if k.startswith('_') else d[k].astype(float) for k in d.files}
 def ble_module():
     """BLE module envelope on B.Cu at the right edge (render only)"""
     y0, y1 = sorted((S.SB_ANT_SIDE*S.sb_ant_y[0], S.SB_ANT_SIDE*S.sb_ant_y[1]))
