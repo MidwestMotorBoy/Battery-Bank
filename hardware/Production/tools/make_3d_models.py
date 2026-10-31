@@ -80,11 +80,11 @@ MODELS = {
     "MonolithDev:L_Coilank_APS0530": P + "L_Coilank_APS0530.step",
     "MonolithDev:L_COILMX_MS0520": P + "L_COILMX_MS0520.step",
     # stock models that fit better than the footprint's own (2026-10-29): KiCad's PG-TDSON-8 and HVSSOP-8 footprints
-    # name models that aren't in kicad-packages3D (the parts rendered empty), and the CA55 is 2.8 mm, not the Kemet D 3.1
+    # name models that aren't in kicad-packages3D (the parts rendered empty), and the C421/C456 T593V is 2.0 mm (V case), not the Kemet D 3.1
     "MonolithDev:Infineon_PG-TDSON-8_6.15x5.15mm_D5-8": STOCK + "Package_TO_SOT_SMD.3dshapes/TDSON-8-1.step",
     "Package_SO:HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm":
         STOCK + "Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.95x2.15mm.step",
-    "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D": STOCK + "Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-30_AVX-N.step",
+    "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D": STOCK + "Capacitor_Tantalum_SMD.3dshapes/CP_EIA-7343-20_Kemet-V.step",
 }
 HIDDEN = {"Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"}   # attached with (hide yes): nothing fitted
 FROM_DEV = ["ST_UFDFPN-8-1EP_2x3mm_P0.5mm.step", "TLC_WSFB_4x3mm.step", "USB_C_Receptacle_ShouHan_TYPE-C_16PCB1.6_IP68.step"]

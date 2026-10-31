@@ -44,7 +44,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not this table._
 
 **Status:** To order 28 · Decide 2 · Hold 7 · Check 5 · Have 1  
-**Known prices:** $473.25 listed so far (most lines have no price yet), $0.00 ordered.
+**Known prices:** $526.93 listed so far (most lines have no price yet), $0.00 ordered.
 
 ### Board
 
@@ -63,7 +63,7 @@ _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not thi
 | ID | Item | Qty | Vendor | Cost (USD) | Status | Ordered | Notes |
 |---|---|---|---|---|---|---|---|
 | L01 | 22 uF 35 V 1210 (C208-C213, bottom side)<br><sub>Taiyo Yuden GMK325BJ226MM-P</sub> | 35 | [LCSC](https://www.lcsc.com/product-detail/C778721.html) |  | **To order** |  | From Monolith_bottom_hand_solder.csv. 30 + spares. |
-| L02 | 47 uF 35 V polymer tantalum (C421, C456, C521, C556, bottom side)<br><sub>CCTC CA55-D035M476T, EIA-7343-31 (D case)</sub> | 22 | [LCSC](https://www.lcsc.com/product-detail/C2761440.html) |  | **To order** |  | From Monolith_bottom_hand_solder.csv. 20 + 2 spare. |
+| L02 | 68 uF 35 V polymer tantalum (C421, C456, C521, C556, bottom side)<br><sub>KEMET T593V686M035APE070, EIA-7343-20 (V case, 2.0 mm), on the 7343 D land pattern</sub> | 22 | [Mouser](https://www.mouser.com/c/?q=T593V686M035APE070) | 53.68 | **To order** |  | Logan 2026-10-31, replaces CCTC CA55-D035M476T (LCSC C2761440). Mouser 94 in stock, $2.44 at 10+ (2026-10-31); 52-week factory lead, next 1,000 due 2026-12-21, so buy now. Not at LCSC. From Monolith_bottom_hand_solder.csv. 20 + 2 spare. |
 | L03 | 10k B3435 NTC 0402 (TH101, TH104, bottom side)<br><sub>Murata NCP15XH103F03RC</sub> | 20 | [LCSC](https://www.lcsc.com/product-detail/C77131.html) |  | **To order** |  | Front-cell NTCs (TS1/TS4). 0402s get lost: buy double. |
 | L04 | 5.1k 0402 (R124, R126)<br><sub>UNI-ROYAL 0402WGF5101TCE</sub> | 20 | [LCSC](https://www.lcsc.com/product-detail/C25905.html) |  | **To order** |  | DNP at JLC on purpose: fitted by hand after the seven pack voltages read right (p0-assembly step 3.1). |
 

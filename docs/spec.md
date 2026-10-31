@@ -81,7 +81,7 @@ Each USB-C port is an identical, self-contained power stage, so either port can 
 | 5 V source rail | TPS62933 | Feeds PP5V and VCONN; enabled per port (EN\_5V1/2) |
 | Port protection | TPD6S300 on CC, TVS2200 on VBUS | No liquid detection on P0 |
 | Connector | Shou Han TYPE-C 16PCB1.6 IP68 (C55629729) | Right angle, 5 A / 20 V, seals in the cup's top wall |
-| Bulk caps | USB side 4 × 22 µF + 2 × CA55 47 µF polymer tantalum; PACK\_P 3 × 22 µF per port + 6 shared | All parts ≤ 3.1 mm tall |
+| Bulk caps | USB side 4 × 22 µF + 2 × KEMET T593V 68 µF polymer tantalum (2.0 mm, since 2026-10-31; was CA55 47 µF); PACK\_P 3 × 22 µF per port + 6 shared | All parts ≤ 3.1 mm tall |
 
 The 3.3 V rail is a TPS62177 buck with a sleep pin the MCU controls (3V3\_SLEEP).
 

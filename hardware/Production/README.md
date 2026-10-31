@@ -396,10 +396,12 @@ The 6.3 × 7.7 mm cans (C421/C521 polymer, C208 hybrid) stood 7.7 mm tall. Every
 | 5 × 22 µF + 2 × T521D (first pass) | 83.4 µF | 109 µF | 33 % | 123 mV | 17.8 dB | 158 mm² | 3.1 mm | $6.40 |
 | 4 × 22 µF + 3 × T521D (second pass) | 103.7 µF | 133 µF | 38 % | 139 mV | 18.8 dB | 185 mm² | 3.1 mm | $9.60 |
 | 4 × 22 µF + 3 × CA45 33 µF (MnO₂) | 103.7 µF | 133 µF | 43 % | 162 mV | 18.7 dB | 185 mm² | 2.8 mm | $2.14 |
-| **Applied: 4 × 22 µF + 2 × CA55 47 µF** | **99.7 µF** | **128 µF** | **43 %** | **160 mV** | **20.0 dB** | **143 mm²** | **2.8 mm** | **$2.97** |
+| Applied 10-18 to 10-31: 4 × 22 µF + 2 × CA55 47 µF | 99.7 µF | 128 µF | 43 % | 160 mV | 20.0 dB | 143 mm² | 2.8 mm | $2.97 |
 | 4 × 22 µF + 3 × CA55 47 µF | 137.3 µF | 175 µF | 42 % | 157 mV | 21.0 dB | 185 mm² | 2.8 mm | $4.46 |
+| **Applied since 2026-10-31: 4 × 22 µF + 2 × T593V 68 µF** | **133.3 µF** | **170 µF** | **41 %** | **154 mV** | **20.9 dB** | **143 mm²** | **2.0 mm** | **$4.88** |
 
-- **C421/C521 and C456/C556:** CCTC CA55-D035M476T (LCSC C2761440, 3,658 in stock, $1.49). 47 µF 35 V polymer tantalum, 150 mΩ, 1.225 A rms at 100 kHz. 7343-28 case, 2.8 mm max, on the standard 7343 D land pattern. Polymer tantalum needs only 20 % voltage derating; at 20 V on a 35 V part it runs at 57 %. C456 sits on AC_SNS_N next to C430.
+- **C421/C521 and C456/C556 (2026-10-31, Logan):** KEMET **T593V686M035APE070**. 68 µF 35 V polymer tantalum (T593, the high-humidity series: 85 °C / 85 % RH for 1000 h), 70 mΩ, 1.69 A rms at 85 °C (2.42 A at 45 °C), −55 to 105 °C, 238 µA leakage (0.1 CV, still harmless on AC_SNS_N). V case, 7343-20: 7.3 × 4.3 mm, 2.0 mm max, with the same terminals as the D case, so the footprint stays `CP_EIA-7343-31_Kemet-D` and nothing moves on the board. Being 2.0 mm tall, C456 now clears the 2.3 mm B.Cu height zone it used to stick into. `low_profile_sims.py` option C4: 133 µF worst case at 20 V (+34 %), 154 mV ripple, 20.9 dB damping, worst part still a 1210 at 41 %; PPHV inrush about 170 µF × 0.47 V/ms = 0.08 A. Mouser, $2.44 at 10+, 94 in stock on 2026-10-31 with a 52-week factory lead (not at LCSC). `tools/make_3d_models.py` now maps the D footprint to KiCad's 2.0 mm Kemet-V model; re-run it to update the board's 3D view.
+- **Before 2026-10-31:** CCTC CA55-D035M476T (LCSC C2761440, 3,658 in stock, $1.49). 47 µF 35 V polymer tantalum, 150 mΩ, 1.225 A rms at 100 kHz. 7343-28 case, 2.8 mm max, on the standard 7343 D land pattern. Polymer tantalum needs only 20 % voltage derating; at 20 V on a 35 V part it runs at 57 %. C456 sits on AC_SNS_N next to C430.
 - **Why not the CA45-D035K336T.** It's $0.71 and it simulates fine, but it is an MnO₂ solid tantalum. Those fail short and can ignite. Makers want ≥ 50 % voltage derating, more on a low-impedance input. This one would run at 57 % on a USB input that sees hot-plug surges from a 5 A charger, and in reverse mode the pack feeds it through the converter. The CA55 is the same maker's polymer series, which avoids both problems.
 - **T521D history:** the first pass used two KEMET T521D336M035ATE065 plus a fifth 22 µF 1210 (C457). The second pass used three T521Ds. Both are replaced by the CA55 pair: about $6.60 cheaper per port, one part fewer, 42 mm² smaller, with better damping.
 - **C427/C527** leaves the cut list: the bank is designed with it.
@@ -481,7 +483,7 @@ There is no rule-area type for height, so a note on Cmts.User under the board ho
 **Hand-soldered B.Cu parts (19):**
 - **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
 - **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
-- **USB-side tantalums:** C421, C456, C521 and C556 (CA55, 2.8 mm), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
+- **USB-side tantalums:** C421, C456, C521 and C556 (T593V, 2.0 mm since 2026-10-31; CA55 2.8 mm before), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
 
 Fit all 19 before the first power-up: the chargers need both bulk banks.
 
