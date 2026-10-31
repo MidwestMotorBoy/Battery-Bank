@@ -138,7 +138,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 ![Step 5](../../hardware/mechanical/assembly_steps/step5.png)
 
 1. Measure the cap: the gap from the cup rim to the carrier frame's underside, with calipers, against the pad's printed height. The pad should be about 1.2 mm proud; shim or trim it if not.
-2. O-ring into the skirt groove, lightly greased with silicone grease that is safe on silicone rubber (a PTFE-based or silicone-compatible grease, not a silicone oil grease, which swells it).
+2. O-ring (NBR) into the skirt groove, lightly greased with Super Lube 21030 (PTFE in synthetic PAO oil; Krytox GPL 205 also works). Not a petroleum grease on anything EPDM, and not a silicone-oil grease near the silicone USB-C rings.
 3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The pad preloads the core against the top wall.
 4. Drive the two M2 thread-forming screws through the thick cup mouth into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.
 
