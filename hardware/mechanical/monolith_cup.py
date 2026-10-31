@@ -75,6 +75,8 @@ VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE8
                                    # plate's outside, in a pocket
                                    # through the bottom bumper slab;
 VENT_GROOVE = (1.2, 0.8)           # a groove (width, depth) in the slab's base runs from the pocket to the +x edge so it breathes on a table
+VENT_GRILLE = (1.0, 0.8, 2.4)      # cross-hatch grille over the pocket at the slab's base (thick, bar width, pitch; 45 deg): it
+                                   # prints on the bed, the breather groove notches it, and the patch sits 1 mm above it
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
 PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (10 % gyroid since 2026-10-31): roughly
                                    # 8-40 N of preload on the core (~15-80 N at 15 %); check the core can't rattle
@@ -347,8 +349,15 @@ def bumper(top):
         bx0, by0, bx1, by1 = out.bounds()
         slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2 + BASE_TEXT_DX, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
         w, d = VENT_GROOVE                                # vent pocket, and its breather groove out to the board-face edge
-        slab = slab - pz(circ(*VENT_XY, VENT_POCKET_R), zb - 1, z0 + 1) - pz(rect(VENT_XY[0], bx1 + 1, VENT_XY[1] - w/2, VENT_XY[1] + w/2), zb - 1, zb + d)
+        slab = slab - pz(circ(*VENT_XY, VENT_POCKET_R), zb - 1, z0 + 1)
+        slab = U(slab, pz(vent_grille(), zb, zb + VENT_GRILLE[0])) - pz(rect(VENT_XY[0], bx1 + 1, VENT_XY[1] - w/2, VENT_XY[1] + w/2), zb - 1, zb + d)
     return band, slab
+def vent_grille():
+    """the 45 deg cross-hatch over the vent pocket (section), bars run into the pocket wall"""
+    t, bw, pitch = VENT_GRILLE; R = VENT_POCKET_R + 0.3; n = int(R / pitch) + 1
+    bars = [rect(-R, R, k*pitch - bw/2, k*pitch + bw/2) for k in range(-n, n + 1)]
+    h = CS.batch_boolean(bars, M3.OpType.Add); h = CS.batch_boolean([h.rotate(45), h.rotate(-45)], M3.OpType.Add)
+    return CS.batch_boolean([h.translate(VENT_XY), circ(*VENT_XY, VENT_POCKET_R + 0.2)], M3.OpType.Intersect)
 def base_text_bounds():
     out = cs_mouth.offset(BUMP_WALL_BOT, ROUND); bx0, by0, bx1, by1 = out.bounds()
     return text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2 + BASE_TEXT_DX, (by0 + by1) / 2, mirror=True).bounds()
@@ -538,6 +547,8 @@ def checks():
         'vent: patch inside the cap plate, clear of its edge (x, >= 0.8)': (X_IN + WALL_BF) - (VENT_XY[0] + VENT_D / 2) - 0.8,
         'vent: slab wall left outside the pocket (x, >= 0.8)': (X_IN + WALL_BF + BUMP_WALL_BOT) - (VENT_XY[0] + VENT_POCKET_R) - 0.8,
         'base rating text inside the slab (x, >= 2)': base_text_bounds()[0] - cs_mouth.offset(BUMP_WALL_BOT, ROUND).bounds()[0] - 2,
+        'vent: grille open area over the pocket (>= 40 %)': 100 * (1 - vent_grille().area() / (math.pi * (VENT_POCKET_R + 0.2)**2)) - 40,
+        'vent: patch clears the grille (z, >= 0.5)': (Z_MOUTH - CAP_T - VENT_T) - (Z_MOUTH - CAP_T - BUMP_T_BOT + VENT_GRILLE[0]) - 0.5,
         'vent: pocket and groove clear of the base rating text (x, >= 1.0)': (VENT_XY[0] - VENT_POCKET_R) - base_text_bounds()[2] - 1.0,
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
