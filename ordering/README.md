@@ -33,7 +33,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 
 - **Cells:** waiting on BAK's reply (C01).
 - **Back-cell NTCs:** confirm the Semitec 103AT type against the BQ40Z50 thermistor table (C06).
-- **Foam thickness:** 1.6 or 1 mm, picked by measuring the cell gap once cells are in the carrier (C08/C09).
+- **Foam:** 1 mm EVA (C09, Logan 2026-10-31). Measure the cell gap once cells are in the carrier: a cell shorter than about 70.85 mm gets no preload from 1 mm.
 - **Screw length:** the model uses M2 × 5 (`SCREW_L` in `monolith_cup.py`); the parts list doc still says × 6.
 - **Tools marked `Check`:** mark them `Have` or `To order`.
 
@@ -43,7 +43,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 
 _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not this table._
 
-**Status:** To order 29 · Decide 1 · Hold 7 · Check 5 · Have 1  
+**Status:** To order 28 · Decide 1 · Hold 7 · Check 5 · Have 1 · Dropped 1  
 **Known prices:** $562.14 listed so far (most lines have no price yet), $0.00 ordered.
 
 ### Board
@@ -78,8 +78,8 @@ _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not thi
 | C05 | Fish-paper insulator rings, 21700, adhesive<br><sub>0.2 mm; about 20 mm OD, 10-10.5 mm ID</sub> | 1 pack (330) | [Amazon (MatchWhiz)](https://www.amazon.com/MatchWhiz-Insulator-Highland-Electrical-Insulation/dp/B0CQJMXZSV) |  | **To order** |  | Check the listing photo for size; hole must clear the measured BAK + cap (< ~10 mm). |
 | C06 | Back-cell NTCs (TS2, TS3)<br><sub>10 kOhm NTC, Semitec 103AT type, insulated leads</sub> | 12 | [DigiKey](https://azcus.digikey.com/en/products/detail/semitec-usa-corp/103AT-2/16579059) |  | **Decide** |  | Confirm 103AT matches the BQ40Z50 thermistor table before buying (parts list doc, Still to choose). |
 | C07 | Gap filler: Parker Chomerics THERM-A-GAP GEL 30, 10 cc<br><sub>65-00-GEL30-0010 (10 cc Luer-Lok syringe); ~4.5 g per pack (3.1 g/cc)</sub> | 2 | [DigiKey (in the cart) / Newark](https://www.digikey.com/en/products/result?keywords=65-00-GEL30-0010) | 104.42 | **To order** |  | Logan stays on GEL 30 (2026-10-31). Logan swapping the cart line from the 30 cc EFD barrel (65-02-GEL30-0030) to the 10 cc syringe, which is hand-pushed with no gun. One syringe covers 5-6 packs; the second is for rework. Price is Newark's (2026-10-31). |
-| C08 | Silicone foam sheet 1.6 mm, PSA (preload rings)<br><sub>USA Sealing ZUSA-FRS-HTPSA-125, FR closed-cell, 1/16 in x 12 x 12 in</sub> | 1 sheet | [Amazon (USA Sealing)](https://www.amazon.com/USA-Sealing-Retardant-Silicone-Adhesive/dp/B07CRV3NPF) |  | **To order** |  | Buy both sheets (cheap); pick 1.6 or 1 mm after measuring the cell gap (~30 % squeeze). |
-| C09 | Silicone foam sheet 1 mm, PSA (preload rings)<br><sub>Generic 250 x 250 mm closed-cell silicone, 1MM option</sub> | 1 sheet | [Amazon](https://www.amazon.com/250X250MM-Adhesive-Silicone-Thickness-Silicon/dp/B0F93B4RX6) |  | **To order** |  | Firmness not listed: a punched ring should squeeze to 70 % by finger. |
+| C08 | Silicone foam sheet 1.6 mm, PSA (preload rings)<br><sub>USA Sealing ZUSA-FRS-HTPSA-125, FR closed-cell, 1/16 in x 12 x 12 in</sub> | 1 sheet | [Amazon (USA Sealing)](https://www.amazon.com/USA-Sealing-Retardant-Silicone-Adhesive/dp/B07CRV3NPF) |  | Dropped |  | Dropped 2026-10-31 (Logan): 1 mm only, EVA (C09). Buy 1.5-2 mm EVA later only if the measured gap needs it. |
+| C09 | EVA foam sheet 1 mm (preload rings)<br><sub>EARCOOH black EVA foam roll, 1 mm, 49 x 13.5 in, 86 kg/m3 closed-cell, no PSA</sub> | 1 sheet | [Amazon (EARCOOH)](https://www.amazon.com/s?k=EARCOOH+EVA+foam+roll+1mm) |  | **To order** |  | Logan 2026-10-31, replaces the silicone sheets. 1 mm gives ~30 % squeeze in the 0.7 mm space the model has for a 71.1 mm cell, ~15 % at the 70.95 nominal; a cell under ~70.85 mm gets no preload (then use 1.5 mm EVA). EVA takes more compression set than silicone when warm: check the cells are still snug after the first heat cycles. No adhesive: the pockets locate the rings. |
 
 ### Housing
 
