@@ -69,9 +69,10 @@ MOUTH_T, MOUTH_H, MOUTH_TAPER = 2.4, SKIRT_L, 0.8   # cup wall at the mouth, thi
                                    # off the cap plate; plate model in docs/reviews/2026-10-31-mouth-band/)
 MOUTH_LEAD = 0.8                   # lead-in at the cup mouth for the O-ring (0.3 deep over this height)
 OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6)]   # overtravel posts (x, y)
-VENT_XY, VENT_HOLE_R = (25.0, 0.0), 1.0   # ePTFE pressure vent (2026-10-31, Logan: behind a bumper, no label hole): a 2 mm hole
-VENT_D, VENT_T = 5.0, 0.4          # through the cap plate in the free strip between the cells and the board, with a Gore VE70205
-VENT_POCKET_R = 3.0                # (5 mm adhesive, 2 mm hole) on the plate's outside, in a pocket through the bottom bumper slab;
+VENT_XY, VENT_HOLE_R = (25.6, 0.0), 1.5   # ePTFE pressure vent (2026-10-31, Logan: behind a bumper, no label hole): a 3 mm hole
+VENT_D, VENT_T = 7.6, 0.26         # through the cap plate in the free strip between the cells and the board, with a Gore VE80308
+VENT_POCKET_R = 4.15               # (7.6 mm adhesive, 3.3 mm membrane; Takachi sells 8-packs) on the plate's outside, in a pocket
+                                   # through the bottom bumper slab;
 VENT_GROOVE = (1.2, 0.8)           # a groove (width, depth) in the slab's base runs from the pocket to the +x edge so it breathes on a table
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
 PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (10 % gyroid since 2026-10-31): roughly
@@ -440,7 +441,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
-         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE, Gore VE70205', 'vent')]
+         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE, Gore VE80308', 'vent')]
 NUM = {k: n for n, _, _, k in PARTS}
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9,
            insul=1.1, foam=0.3, sleeve=1.2, label=1.35, vent=1.0)
