@@ -7,12 +7,14 @@ feature, not a redraw.
   B  Cup mouth + cap: the bottom 14 mm of the cup, closed by a lid, with the real cap, O-ring and M2 screws. Squeeze in
      the middle of each flat (clay or feelers), dunk at 1 m / 30 min, pull-test the cap, -50 kPa jar test.
   C  Core: the real carrier, the four clip-on rail blocks and the four TPU sleeves (no coupon: the parts themselves).
-Run: python monolith_coupons.py   -> coupons/*.stl, coupons/monolith_coupons.png"""
+Run: python monolith_coupons.py   -> stl/MJF_PA12/coupons/*.stl, stl/TPU_95A/coupons/*.stl, monolith_coupons.png"""
 import os, numpy as np
 import manifold3d as M3
 import monolith_shell as S, monolith_cup as K, monolith_side_renders as RR
 from monolith_render import camera
-HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, 'coupons')
+HERE = os.path.dirname(os.path.abspath(__file__))
+def out_dir(mat):   # coupons sit with the parts of the same material (stl/README.md)
+    d = os.path.join(K.STL_DIR, 'TPU_95A' if mat.startswith('TPU') else 'MJF_PA12', 'coupons'); os.makedirs(d, exist_ok=True); return d
 MF, CS = M3.Manifold, M3.CrossSection
 pz, rect, rrect, U = K.pz, K.rect, K.rrect, K.U
 
@@ -53,10 +55,9 @@ def coupons():
             ('C3_sleeves', 'Post sleeves, 4', 'TPU 95A', K.sleeves())]
 
 if __name__ == '__main__':
-    os.makedirs(OUT, exist_ok=True)
     C = coupons(); rows = []
     for stem, desc, mat, m in C:
-        K.write_stl(os.path.join(OUT, f'monolith_coupon_{stem}.stl'), K.tris(m))
+        K.write_stl(os.path.join(out_dir(mat), f'monolith_coupon_{stem}.stl'), K.tris(m))
         b = np.array(m.bounding_box()); sz = b[3:] - b[:3]
         g = m.volume() / 1000 * (1.2 if mat.startswith('TPU') else 1.01)
         rows.append([stem.split('_')[0], desc, mat, f'{sz[0]:.1f} x {sz[1]:.1f} x {sz[2]:.1f}', f'{g:.1f}'])
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     # preview sheet
     sh = RR.Sheet(2700, 1100)
     sh.header('Monolith fit coupons', 'Print these before the full cup: the USB-C seal bores, the cap seal and the core fit. '
-              'Same geometry as monolith_cup.py. Files: hardware/mechanical/coupons/.')
+              'Same geometry as monolith_cup.py. Files: hardware/mechanical/stl/<material>/coupons/.')
     col = dict(A=K.C['cup'], B1=K.C['cup'], B2=K.C['cap'], C1=K.C['carrier'], C2=K.C['rails'], C3=K.C['sleeve'])
     R = camera((0.9, -1.0, 0.8)); RB = camera((0.9, -1.0, -0.7))
     def ctr(m):
@@ -78,4 +79,4 @@ if __name__ == '__main__':
         for c, o in (((R, (x + 420, 330)), (RB, (x + 420, 620))) if cam is None else ((cam, (x + 420, 470)),)):
             sh.render([(K.tris(m.translate(off)), col[k]) for k, m in parts], c, o, px)
     sh.table(40, 800, ['', 'Coupon', 'Material', 'Size (mm)', '>g'], rows, [80, 900, 200, 300, 100], 14, rh=30)
-    K.save(sh, os.path.join('coupons', 'monolith_coupons.png'))
+    K.save(sh, 'monolith_coupons.png')
