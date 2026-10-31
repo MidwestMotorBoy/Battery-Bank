@@ -1,0 +1,637 @@
+<title>Monolith Pack Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a parts-and-sections rail on the left, the model fills the rest; on phones the rail becomes a bottom drawer. */
+:root {
+  --bg: #e9edf1; --panel: #f7f9fa; --fg: #1a2128; --muted: #5b6875; --rule: #d3dae1; --hover: #e8edf1;
+  --accent: #b9581a; --accent-soft: #f4e2d4; --vp-top: #f5f7f9; --vp-bot: #d8dfe6; --edge: #20262c;
+  --x: #c8323c; --y: #2f8a3e; --z: #2f62c8;
+  --f-display: "Barlow Semi Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --rail: 330px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111519; --panel: #171c21; --fg: #e2e7eb; --muted: #8d99a5; --rule: #29313a; --hover: #1f262d;
+  --accent: #ee8a40; --accent-soft: #3a2616; --vp-top: #222a32; --vp-bot: #0d1013; --edge: #0a0c0e;
+  --x: #ef5d66; --y: #5cc06b; --z: #6b93ef; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111519; --panel: #171c21; --fg: #e2e7eb; --muted: #8d99a5; --rule: #29313a; --hover: #1f262d;
+  --accent: #ee8a40; --accent-soft: #3a2616; --vp-top: #222a32; --vp-bot: #0d1013; --edge: #0a0c0e;
+  --x: #ef5d66; --y: #5cc06b; --z: #6b93ef; color-scheme: dark }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 14px; overflow: hidden; }
+#app { display: grid; grid-template-columns: var(--rail) 1fr; height: 100%; }
+#rail { background: var(--panel); border-right: 1px solid var(--rule); overflow-y: auto; min-width: 0;
+  display: flex; flex-direction: column; }
+#rail > section { padding: 14px 16px; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; }
+header.brand { padding: 18px 16px 14px; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 4px; }
+.brand h1 { font-family: var(--f-display); font-weight: 700; font-size: 26px; letter-spacing: .02em; margin: 0; line-height: 1.05; text-wrap: balance; }
+.brand h1 span { color: var(--accent); }
+.brand .spec { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1.5; }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin: 0;
+  color: var(--muted); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+button { font: inherit; color: inherit; }
+.chip { border: 1px solid var(--rule); background: transparent; border-radius: 999px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; }
+.chip:hover { background: var(--hover); }
+.chip.on { background: var(--accent-soft); border-color: var(--accent); color: var(--fg); }
+button:focus-visible, input:focus-visible, .row-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.group { display: flex; flex-direction: column; }
+.group-head { display: grid; grid-template-columns: 20px 1fr auto; align-items: center; gap: 8px; padding: 6px 0 4px;
+  font-family: var(--f-display); font-weight: 600; font-size: 14px; letter-spacing: .03em; }
+.group-head small { font-family: var(--f-mono); font-weight: 400; color: var(--muted); font-size: 11px; }
+.row { display: grid; grid-template-columns: 20px 12px 1fr 64px; align-items: center; gap: 8px; padding: 3px 4px 3px 0; border-radius: 6px; }
+.row:hover { background: var(--hover); }
+.row.sel { background: var(--accent-soft); }
+.row.off .row-name { color: var(--muted); }
+.sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.25); }
+.row-name { cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; font-size: 13.5px; }
+.row-name .num { font-family: var(--f-mono); color: var(--muted); font-size: 11px; margin-right: 6px; }
+input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; cursor: pointer; }
+input[type=range] { accent-color: var(--accent); width: 100%; margin: 0; cursor: pointer; }
+.row input[type=range] { height: 14px; }
+.cut { display: grid; grid-template-columns: 20px 18px 1fr 62px auto; align-items: center; gap: 8px; }
+.cut b { font-family: var(--f-mono); font-weight: 500; }
+.cut .val { font-family: var(--f-mono); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.cut label.flip { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.cut[data-axis=x] b { color: var(--x); } .cut[data-axis=y] b { color: var(--y); } .cut[data-axis=z] b { color: var(--z); }
+.cut[data-axis=x] input[type=range] { accent-color: var(--x); } .cut[data-axis=y] input[type=range] { accent-color: var(--y); }
+.cut[data-axis=z] input[type=range] { accent-color: var(--z); }
+.line { display: grid; grid-template-columns: 1fr 52px; align-items: center; gap: 10px; }
+.line .val { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; }
+.toggles label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.note { font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0; }
+.note kbd { font-family: var(--f-mono); font-size: 11px; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; }
+#stage { position: relative; min-width: 0; background: radial-gradient(120% 90% at 50% 30%, var(--vp-top), var(--vp-bot)); }
+#stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+#tip { position: absolute; pointer-events: none; background: var(--panel); color: var(--fg); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 3px 8px; font-size: 12.5px; white-space: nowrap; transform: translate(12px, 12px); box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+#tip small { font-family: var(--f-mono); color: var(--muted); font-size: 11px; margin-left: 6px; }
+#info { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: 16px; width: min(360px, calc(100% - 32px));
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  display: flex; flex-direction: column; gap: 6px; }
+#info .t { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+#info h3 { font-family: var(--f-display); font-weight: 600; font-size: 18px; margin: 0; }
+#info h3 .num { font-family: var(--f-mono); font-size: 12px; color: var(--accent); margin-right: 8px; font-weight: 500; }
+#info .x { border: 0; background: transparent; cursor: pointer; font-size: 18px; color: var(--muted); line-height: 1; padding: 2px 4px; }
+#info p { margin: 0; line-height: 1.45; }
+#info dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0; font-size: 13px; }
+#info dt { color: var(--muted); } #info dd { margin: 0; font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
+#info .chips { margin-top: 4px; }
+#loading { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-size: 16px; letter-spacing: .08em;
+  color: var(--muted); text-transform: uppercase; }
+#drawer-btn { display: none; }
+@media (max-width: 760px) {
+  #app { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+  #stage { grid-row: 1; grid-column: 1; }
+  #rail { grid-row: 1; grid-column: 1; align-self: end; z-index: 3; max-height: 62%; border-right: 0; border-top: 1px solid var(--rule);
+    border-radius: 14px 14px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,.25); transform: translateY(0); transition: transform .25s ease;
+    padding-bottom: env(safe-area-inset-bottom, 0px); }
+  #rail.closed { transform: translateY(calc(100% - 64px)); }
+  #rail > section, header.brand { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  #drawer-btn { display: inline-block; }
+  header.brand { flex-direction: row; align-items: center; justify-content: space-between; min-height: 64px; box-sizing: border-box; padding-block: 10px; }
+  .brand .spec { display: none; }
+  #info { bottom: auto; top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { #rail { transition: none; } }
+</style>
+
+<div id="app">
+  <aside id="rail" aria-label="Viewer controls">
+    <header class="brand">
+      <div>
+        <h1>Monolith <span>pack</span></h1>
+        <div class="spec" id="spec"></div>
+      </div>
+      <button class="chip" id="drawer-btn" aria-expanded="true" aria-controls="rail">Hide controls</button>
+    </header>
+
+    <section aria-labelledby="h-parts">
+      <h2 id="h-parts">Parts <span class="chips">
+        <button class="chip" id="all-on">Show all</button>
+      </span></h2>
+      <div class="chips" id="presets">
+        <button class="chip" data-preset="core">Core only</button>
+        <button class="chip" data-preset="enclosure">Enclosure only</button>
+        <button class="chip" data-preset="board">Board and cells</button>
+        <button class="chip" data-preset="ghost">Ghost the shell</button>
+      </div>
+      <div id="parts"></div>
+    </section>
+
+    <section aria-labelledby="h-cut">
+      <h2 id="h-cut">Section planes</h2>
+      <div id="cuts"></div>
+      <div class="toggles">
+        <label><input type="checkbox" id="show-planes" checked> Show planes</label>
+        <label><input type="checkbox" id="hatch" checked> Hatch cut faces</label>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-ex">
+      <h2 id="h-ex">Explode</h2>
+      <div class="line"><input type="range" id="explode" min="0" max="100" value="0" aria-label="Explode distance"><span class="val" id="explode-val">0 %</span></div>
+      <p class="note">Parts move apart in assembly order: the core drops out of the cup, then the pad, O-ring, cap and bottom bumper.</p>
+    </section>
+
+    <section aria-labelledby="h-view">
+      <h2 id="h-view">View</h2>
+      <div class="chips" id="views">
+        <button class="chip" data-view="iso">Iso</button>
+        <button class="chip" data-view="board">Board face +X</button>
+        <button class="chip" data-view="back">Back −X</button>
+        <button class="chip" data-view="side">Side −Y</button>
+        <button class="chip" data-view="top">Ports +Z</button>
+        <button class="chip" data-view="bottom">Cap −Z</button>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="edges"> Edges</label>
+        <label><input type="checkbox" id="ortho"> Orthographic</label>
+        <label><input type="checkbox" id="spin"> Turntable</label>
+      </div>
+      <div class="chips"><button class="chip" id="fit">Fit to view</button><button class="chip" id="reset">Reset everything</button></div>
+      <p class="note">Drag to orbit, right-drag or two fingers to pan, scroll or pinch to zoom. Click a part for details.
+        <kbd>F</kbd> fit, <kbd>H</kbd> hide selected, <kbd>I</kbd> isolate, <kbd>Esc</kbd> clear.</p>
+      <p class="note" id="source"></p>
+    </section>
+  </aside>
+
+  <main id="stage">
+    <div id="loading">Loading meshes</div>
+    <div id="tip" hidden></div>
+    <div id="info" hidden></div>
+  </main>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+
+const META = /*__META__*/null;
+const BLOB = "__BLOB__";
+
+const $ = (s, r = document) => r.querySelector(s);
+const stage = $('#stage'), tip = $('#tip'), info = $('#info');
+const store = { get(k, d) { try { const v = localStorage.getItem('monolith-viewer:' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+                set(k, v) { try { localStorage.setItem('monolith-viewer:' + k, JSON.stringify(v)); } catch {} } };
+
+async function inflate(b64) {
+  const bin = atob(b64), u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  if (!('DecompressionStream' in window)) throw new Error('This browser cannot unpack the meshes (no DecompressionStream). Try a current Chrome, Edge, Firefox or Safari.');
+  const s = new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return await new Response(s).arrayBuffer();
+}
+
+// ---------- renderer, scene, cameras ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.localClippingEnabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.autoClear = false;
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(80, -120, 160); scene.add(key);
+const persp = new THREE.PerspectiveCamera(30, 1, 1, 5000);
+const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, -5000, 5000);
+for (const c of [persp, ortho]) c.up.set(0, 0, 1);
+let camera = persp;
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.12; controls.screenSpacePanning = true;
+
+const [bmin, bmax] = META.bbox.map(a => new THREE.Vector3(...a));
+const center = bmin.clone().add(bmax).multiplyScalar(0.5);
+const radius = bmax.clone().sub(bmin).length() / 2;
+
+// ---------- section planes ----------
+const AX = ['x', 'y', 'z'], AXV = { x: new THREE.Vector3(1, 0, 0), y: new THREE.Vector3(0, 1, 0), z: new THREE.Vector3(0, 0, 1) };
+const cut = Object.fromEntries(AX.map((a, i) => [a, { on: false, flip: false, v: +center.getComponent(i).toFixed(1), plane: new THREE.Plane() }]));
+const KEEP = { x: -1, y: 1, z: -1 };
+const clip = [];                 // shared by every material; mutated in place
+function updatePlanes() {
+  clip.length = 0;
+  for (const a of AX) {
+    const c = cut[a];
+    // three.js keeps n·p + d >= 0. By default cut away the side the Iso view looks from (+X, -Y, +Z), so the cut faces you
+    const k = KEEP[a] * (c.flip ? -1 : 1);
+    c.plane.normal.copy(AXV[a]).multiplyScalar(k); c.plane.constant = -k * c.v;
+    if (c.on) clip.push(c.plane);
+  }
+  updatePlaneHelpers();
+}
+
+// ---------- materials ----------
+const hatch = { value: 1 };
+function makeMaterial(color, opts = {}) {
+  const m = new THREE.MeshStandardMaterial({ color, roughness: opts.rough ?? 0.62, metalness: opts.metal ?? 0, side: THREE.DoubleSide,
+    vertexColors: !!opts.vcol, map: opts.map || null, clippingPlanes: clip, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  m.onBeforeCompile = sh => {
+    sh.uniforms.uHatch = hatch;
+    sh.fragmentShader = 'uniform float uHatch;\n' + sh.fragmentShader.replace('#include <dithering_fragment>', `#include <dithering_fragment>
+      if (!gl_FrontFacing) {               // inside of a closed part seen through a section plane: a flat, hatched cut face
+        float h = step(0.5, fract((gl_FragCoord.x + gl_FragCoord.y) / 9.0));
+        vec3 c = diffuseColor.rgb * mix(1.0, mix(0.62, 0.9, h), uHatch);
+        gl_FragColor = vec4(c, diffuseColor.a);
+      }`);
+  };
+  return m;
+}
+const METALLIC = { nickel: [0.75, 0.32], screw: [0.85, 0.3], usb: [0.8, 0.3] };
+
+// ---------- build the parts ----------
+const parts = [], byId = {}, pickables = [];
+function geometryFrom(buf, e) {
+  const q = new Uint16Array(buf, e.pos, e.nv * 3), p = new Float32Array(e.nv * 3);
+  for (let i = 0; i < e.nv; i++) for (let k = 0; k < 3; k++) p[3 * i + k] = e.lo[k] + q[3 * i + k] / 65535 * e.sc[k];
+  let g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  const I = e.it === 'u16' ? new Uint16Array(buf, e.idx, e.ni) : new Uint32Array(buf, e.idx, e.ni);
+  g.setIndex(new THREE.BufferAttribute(I, 1));
+  if (e.uv != null) g.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(buf, e.uv, e.nv * 2), 2));
+  if (e.vcol != null) g.setAttribute('color', new THREE.BufferAttribute(new Uint8Array(buf, e.vcol, e.nv * 3), 3, true));
+  g = toCreasedNormals(g, THREE.MathUtils.degToRad(32));
+  g.computeBoundingSphere(); g.computeBoundingBox();
+  return g;
+}
+function hex(c) { return '#' + new THREE.Color(c).getHexString(); }
+
+function build(buf) {
+  const texLoader = new THREE.TextureLoader();
+  for (const P of META.parts) {
+    const grp = new THREE.Group(); grp.name = P.id; scene.add(grp);
+    const part = { ...P, group: grp, meshes: [], mats: [], visible: true, opacity: 1, edges: null };
+    for (const e of P.meshes) {
+      const g = geometryFrom(buf, e);
+      let map = null;
+      if (e.tex) { map = texLoader.load(e.tex, () => requestRender()); map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8; }
+      const [metal, rough] = METALLIC[P.id] || [0, P.id === 'cell' ? 0.38 : P.id === 'pcb' ? 0.5 : 0.62];
+      const mat = makeMaterial(e.color, { vcol: e.vcol != null, map, metal, rough });
+      const mesh = new THREE.Mesh(g, mat); mesh.userData.part = part; grp.add(mesh);
+      part.meshes.push(mesh); part.mats.push(mat); pickables.push(mesh);
+    }
+    part.color = P.meshes[0].vcol != null ? '#3a3a40' : P.meshes[0].color;
+    parts.push(part); byId[P.id] = part;
+  }
+}
+
+// ---------- plane helpers and axis triad ----------
+const helpers = {};
+function updatePlaneHelpers() {
+  const show = $('#show-planes')?.checked ?? true;
+  const lo = bmin.clone().subScalar(6), hi = bmax.clone().addScalar(6);
+  for (const a of AX) {
+    let h = helpers[a];
+    if (!h) {
+      const col = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--' + a).trim() || '#888');
+      const fill = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.07, side: THREE.DoubleSide, depthWrite: false }));
+      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1, 1)), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.8 }));
+      h = helpers[a] = new THREE.Group(); h.add(fill, edge); h.userData = { fill, edge }; scene.add(h);
+    }
+    const c = cut[a]; h.visible = show && c.on;
+    const i = AX.indexOf(a), u = (i + 1) % 3, w = (i + 2) % 3;
+    const su = hi.getComponent(u) - lo.getComponent(u), sw = hi.getComponent(w) - lo.getComponent(w);
+    const pos = new THREE.Vector3(); pos.setComponent(i, c.v); pos.setComponent(u, (hi.getComponent(u) + lo.getComponent(u)) / 2); pos.setComponent(w, (hi.getComponent(w) + lo.getComponent(w)) / 2);
+    h.position.copy(pos);
+    // the plane geometry lies in xy (normal +z): rotate it so its normal is axis a, with its width along u and height along w
+    const U = new THREE.Vector3().setComponent(u, 1), W = new THREE.Vector3().setComponent(w, 1), N = new THREE.Vector3().setComponent(i, 1);
+    h.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(U, W, N));
+    h.scale.set(su, sw, 1);
+  }
+}
+const triScene = new THREE.Scene(), triCam = new THREE.OrthographicCamera(-1.6, 1.6, 1.6, -1.6, -10, 10); triCam.up.set(0, 0, 1);
+function letter(t, col) {
+  const cv = document.createElement('canvas'); cv.width = cv.height = 64; const g = cv.getContext('2d');
+  g.fillStyle = col; g.font = '600 44px "Barlow Semi Condensed", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(t, 32, 34);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false })); s.scale.set(0.62, 0.62, 1); return s;
+}
+function buildTriad() {
+  triScene.clear();
+  const css = getComputedStyle(document.documentElement);
+  for (const a of AX) {
+    const col = css.getPropertyValue('--' + a).trim();
+    triScene.add(new THREE.ArrowHelper(AXV[a], new THREE.Vector3(), 1, new THREE.Color(col), 0.28, 0.16));
+    const s = letter(a.toUpperCase(), col); s.position.copy(AXV[a]).multiplyScalar(1.32); triScene.add(s);
+  }
+}
+
+// ---------- edges ----------
+function edgeColor() { return new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--edge').trim() || '#222'); }
+const edgeMat = new THREE.LineBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.35, clippingPlanes: clip });
+function setEdges(on) {
+  edgeMat.color.copy(edgeColor());
+  for (const p of parts) {
+    if (on && !p.edges) {
+      p.edges = p.meshes.map(m => { const l = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 30), edgeMat); m.add(l); return l; });
+    }
+    if (p.edges) for (const l of p.edges) l.visible = on;
+  }
+  requestRender();
+}
+
+// ---------- state changes ----------
+function applyPart(p) {
+  p.group.visible = p.visible && p.opacity > 0.01;
+  for (const m of p.mats) {
+    const t = p.opacity < 0.999;
+    if (m.transparent !== t) m.needsUpdate = true;
+    m.transparent = t; m.opacity = p.opacity; m.depthWrite = !t; m.side = t ? THREE.FrontSide : THREE.DoubleSide;
+  }
+  p.group.renderOrder = p.opacity < 0.999 ? 2 : 0;
+  const row = $(`.row[data-id="${p.id}"]`);
+  if (row) { row.classList.toggle('off', !p.visible); $('input[type=checkbox]', row).checked = p.visible; $('input[type=range]', row).value = Math.round(p.opacity * 100); }
+  syncGroups(); requestRender();
+}
+function setExplode(t) {
+  for (const p of parts) p.group.position.set(...p.explode).multiplyScalar(t);
+  $('#explode-val').textContent = Math.round(t * 100) + ' %';
+  if (selBox) updateSelBox();
+  requestRender();
+}
+
+// ---------- UI: parts list ----------
+function buildPartsUI() {
+  const root = $('#parts'); root.innerHTML = '';
+  const sections = [...new Set(parts.map(p => p.section))];
+  for (const s of sections) {
+    const grp = document.createElement('div'); grp.className = 'group'; grp.dataset.section = s;
+    const items = parts.filter(p => p.section === s);
+    const head = document.createElement('div'); head.className = 'group-head';
+    head.innerHTML = `<input type="checkbox" id="g-${s.replace(/\W+/g, '-')}" aria-label="Show all ${s}"><span>${s}</span><small>${items.length}</small>`;
+    $('input', head).addEventListener('change', ev => { for (const p of items) { p.visible = ev.target.checked; if (p.opacity < 0.05) p.opacity = 1; applyPart(p); } });
+    grp.append(head);
+    for (const p of items) {
+      const row = document.createElement('div'); row.className = 'row'; row.dataset.id = p.id;
+      row.innerHTML = `<input type="checkbox" id="v-${p.id}" checked aria-label="Show ${p.title}">
+        <span class="sw" style="background:${p.color}"></span>
+        <span class="row-name" tabindex="0" role="button" title="${p.name}"><span class="num">${String(p.num).padStart(2, '0')}</span>${p.title}</span>
+        <input type="range" id="o-${p.id}" min="0" max="100" value="100" aria-label="${p.title} opacity" title="Opacity">`;
+      $('input[type=checkbox]', row).addEventListener('change', ev => { p.visible = ev.target.checked; if (p.visible && p.opacity < 0.05) p.opacity = 1; applyPart(p); });
+      $('input[type=range]', row).addEventListener('input', ev => { p.opacity = ev.target.value / 100; if (p.opacity > 0.01) p.visible = true; applyPart(p); });
+      const nm = $('.row-name', row);
+      nm.addEventListener('click', () => select({ part: p }));
+      nm.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select({ part: p }); } });
+      grp.append(row);
+    }
+    root.append(grp);
+  }
+  syncGroups();
+}
+function syncGroups() {
+  for (const grp of document.querySelectorAll('.group')) {
+    const items = parts.filter(p => p.section === grp.dataset.section), on = items.filter(p => p.visible).length;
+    const cb = $('.group-head input', grp); cb.checked = on === items.length; cb.indeterminate = on > 0 && on < items.length;
+  }
+}
+function buildCutsUI() {
+  const root = $('#cuts');
+  AX.forEach((a, i) => {
+    const lo = Math.floor(bmin.getComponent(i)) - 1, hi = Math.ceil(bmax.getComponent(i)) + 1, c = cut[a];
+    const row = document.createElement('div'); row.className = 'cut'; row.dataset.axis = a;
+    row.innerHTML = `<input type="checkbox" id="c-${a}" aria-label="Cut along ${a.toUpperCase()}"><b>${a.toUpperCase()}</b>
+      <input type="range" id="cv-${a}" min="${lo}" max="${hi}" step="0.1" value="${c.v}" aria-label="${a.toUpperCase()} plane position">
+      <span class="val">${c.v.toFixed(1)} mm</span>
+      <label class="flip" title="Keep the other side"><input type="checkbox" id="cf-${a}"> flip</label>`;
+    const [on, sl, , ] = row.querySelectorAll('input'); const fl = $('#cf-' + a, row) || row.querySelectorAll('input')[2];
+    on.addEventListener('change', () => { c.on = on.checked; updatePlanes(); requestRender(); });
+    sl.addEventListener('input', () => { c.v = +sl.value; $('.val', row).textContent = c.v.toFixed(1) + ' mm'; if (!c.on) { c.on = on.checked = true; } updatePlanes(); requestRender(); });
+    fl.addEventListener('change', () => { c.flip = fl.checked; updatePlanes(); requestRender(); });
+    root.append(row);
+  });
+}
+function syncCutsUI() {
+  for (const a of AX) { const c = cut[a]; $('#c-' + a).checked = c.on; $('#cf-' + a).checked = c.flip; $('#cv-' + a).value = c.v;
+    $(`.cut[data-axis=${a}] .val`).textContent = c.v.toFixed(1) + ' mm'; }
+}
+
+// ---------- selection ----------
+let selected = null, selBox = null;
+const tmpBox = new THREE.Box3();
+function selectionBox() {
+  if (!selected) return null;
+  const box = new THREE.Box3();
+  if (selected.ref) {
+    const m = selected.mesh, pos = m.geometry.attributes.position, [, , t0, n] = selected.ref, v = new THREE.Vector3();
+    for (let i = t0 * 3; i < (t0 + n) * 3; i++) box.expandByPoint(v.fromBufferAttribute(pos, i));
+    box.translate(selected.part.group.position);
+  } else box.setFromObject(selected.part.group);
+  return box;
+}
+function updateSelBox() {
+  const b = selectionBox(); if (!b) return;
+  if (!selBox) { selBox = new THREE.Box3Helper(b, new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--accent').trim())); selBox.material.depthTest = false; selBox.renderOrder = 9; scene.add(selBox); }
+  selBox.box.copy(b.expandByScalar(0.4));
+}
+function select(s) {
+  if (selected?.part) for (const m of selected.part.mats) m.emissive?.setHex(0x000000);
+  selected = s;
+  document.querySelectorAll('.row.sel').forEach(r => r.classList.remove('sel'));
+  if (!s) { info.hidden = true; if (selBox) { scene.remove(selBox); selBox = null; } requestRender(); return; }
+  const p = s.part;
+  $(`.row[data-id="${p.id}"]`)?.classList.add('sel');
+  if (!s.ref) for (const m of p.mats) m.emissive?.setHex(0x3a1a05);
+  updateSelBox();
+  const mass = p.id === 'pcb' || p.id === 'parts' || p.id === 'usb' || p.id === 'ble' ? `${META.board_mass} g for the whole board (parts estimated)` : p.mass != null ? `${p.mass} g` : '';
+  if (s.ref) {
+    const [ref, model] = s.ref;
+    info.innerHTML = `<div class="t"><h3><span class="num">09</span>${ref}</h3><button class="x" aria-label="Close">×</button></div>
+      <dl><dt>Footprint</dt><dd>${model}</dd><dt>On</dt><dd>${p.name}</dd></dl>
+      <div class="chips"><button class="chip" data-act="part">Select all components</button><button class="chip" data-act="hide">Hide components</button></div>`;
+  } else {
+    info.innerHTML = `<div class="t"><h3><span class="num">${String(p.num).padStart(2, '0')}</span>${p.title}</h3><button class="x" aria-label="Close">×</button></div>
+      <p>${p.name}</p>
+      <dl><dt>Material</dt><dd>${p.material}</dd>${mass ? `<dt>Mass</dt><dd>${mass}</dd>` : ''}</dl>
+      <div class="chips"><button class="chip" data-act="hide">Hide</button><button class="chip" data-act="iso">Isolate</button>
+        <button class="chip" data-act="ghost">Ghost the rest</button><button class="chip" data-act="all">Show all</button></div>`;
+  }
+  info.hidden = false;
+  $('.x', info).onclick = () => select(null);
+  info.querySelectorAll('[data-act]').forEach(b => b.onclick = () => act(b.dataset.act));
+  requestRender();
+}
+function act(a) {
+  if (!selected) return; const p = selected.part;
+  if (a === 'hide') { p.visible = false; applyPart(p); select(null); }
+  else if (a === 'iso') { for (const q of parts) { q.visible = q === p; q.opacity = 1; applyPart(q); } fit(); }
+  else if (a === 'ghost') { for (const q of parts) { q.visible = true; q.opacity = q === p ? 1 : 0.12; applyPart(q); } }
+  else if (a === 'all') showAll();
+  else if (a === 'part') select({ part: p });
+}
+function showAll() { for (const p of parts) { p.visible = true; p.opacity = 1; applyPart(p); } }
+
+// ---------- picking ----------
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+function pick(cx, cy) {
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const list = pickables.filter(m => m.userData.part.group.visible && m.userData.part.opacity > 0.2);
+  for (const h of ray.intersectObjects(list, false)) {
+    if (clip.some(pl => pl.distanceToPoint(h.point) < -1e-3)) continue;
+    const part = h.object.userData.part;
+    let ref = null;
+    if (part.picks) { const t = h.faceIndex; ref = part.picks.find(([, , t0, n]) => t >= t0 && t < t0 + n) || null; }
+    return { part, ref, mesh: h.object };
+  }
+  return null;
+}
+let down = null, hoverPending = false, lastMove = null;
+renderer.domElement.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY }; tip.hidden = true; setSpin(false); });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 5 && e.button === 0) select(pick(e.clientX, e.clientY));
+  down = null;
+});
+renderer.domElement.addEventListener('pointermove', e => {
+  if (e.buttons || e.pointerType !== 'mouse') return;
+  lastMove = e; if (hoverPending) return; hoverPending = true;
+  setTimeout(() => {
+    hoverPending = false; const ev = lastMove; const h = pick(ev.clientX, ev.clientY);
+    if (!h) { tip.hidden = true; renderer.domElement.style.cursor = ''; return; }
+    const r = stage.getBoundingClientRect();
+    tip.innerHTML = h.ref ? `${h.ref[0]}<small>${h.ref[1]}</small>` : `${h.part.title}<small>#${h.part.num}</small>`;
+    tip.style.left = (ev.clientX - r.left) + 'px'; tip.style.top = (ev.clientY - r.top) + 'px'; tip.hidden = false;
+    renderer.domElement.style.cursor = 'pointer';
+  }, 50);
+});
+renderer.domElement.addEventListener('pointerleave', () => { tip.hidden = true; });
+
+// ---------- views ----------
+const VIEWS = { iso: [1, -1.1, 0.65], board: [1, 0, 0.0001], back: [-1, 0, 0.0001], side: [0, -1, 0.0001], top: [0.0001, 0, 1], bottom: [0.0001, 0, -1] };
+function visibleBox() {
+  const b = new THREE.Box3();
+  for (const p of parts) if (p.group.visible) b.expandByObject(p.group);
+  return b.isEmpty() ? new THREE.Box3(bmin, bmax) : b;
+}
+function fit(dir) {
+  const b = visibleBox(), c = b.getCenter(new THREE.Vector3()), r = b.getSize(new THREE.Vector3()).length() / 2;
+  const d = dir ? new THREE.Vector3(...dir).normalize() : camera.position.clone().sub(controls.target).normalize();
+  const dist = r / Math.sin(THREE.MathUtils.degToRad(persp.fov / 2)) * 1.02;
+  controls.target.copy(c);
+  for (const cam of [persp, ortho]) { cam.position.copy(c).addScaledVector(d, dist); cam.lookAt(c); }
+  ortho.zoom = 1; orthoHalf = r * 1.15; resize();
+  controls.update(); requestRender();
+}
+let orthoHalf = radius;
+function setOrtho(on) {
+  const from = camera, to = on ? ortho : persp;
+  to.position.copy(from.position); to.quaternion.copy(from.quaternion);
+  if (on) { orthoHalf = from.position.distanceTo(controls.target) * Math.tan(THREE.MathUtils.degToRad(persp.fov / 2)); ortho.zoom = 1; }
+  else { const dist = orthoHalf / ortho.zoom / Math.tan(THREE.MathUtils.degToRad(persp.fov / 2));
+    persp.position.copy(controls.target).addScaledVector(from.position.clone().sub(controls.target).normalize(), dist); }
+  camera = to; controls.object = to; resize(); controls.update(); requestRender();
+}
+let spinning = false;
+function setSpin(on) { spinning = on; controls.autoRotate = on; controls.autoRotateSpeed = 1.6; $('#spin').checked = on; if (on) requestRender(); }
+
+// ---------- render loop (on demand) ----------
+let need = true;
+function requestRender() { need = true; }
+controls.addEventListener('change', requestRender);
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false);
+  persp.aspect = w / h; persp.updateProjectionMatrix();
+  const a = w / h; ortho.left = -orthoHalf * a; ortho.right = orthoHalf * a; ortho.top = orthoHalf; ortho.bottom = -orthoHalf; ortho.updateProjectionMatrix();
+  requestRender();
+}
+new ResizeObserver(resize).observe(stage);
+function frame() {
+  requestAnimationFrame(frame);
+  const moved = controls.update();
+  if (!need && !moved && !spinning) return;
+  need = false;
+  key.position.copy(camera.position).add(new THREE.Vector3(40, -30, 90));
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setViewport(0, 0, w, h); renderer.setScissorTest(false); renderer.clear();
+  renderer.render(scene, camera);
+  // axis triad, bottom right
+  const s = Math.min(96, Math.round(Math.min(w, h) * 0.2));
+  triCam.position.copy(camera.position).sub(controls.target).normalize().multiplyScalar(5); triCam.quaternion.copy(camera.quaternion);
+  renderer.setViewport(w - s - 10, 10, s, s); renderer.setScissor(w - s - 10, 10, s, s); renderer.setScissorTest(true);
+  renderer.clearDepth(); renderer.localClippingEnabled = false; renderer.render(triScene, triCam); renderer.localClippingEnabled = true;
+  renderer.setScissorTest(false);
+}
+
+// ---------- theme ----------
+function onTheme() {
+  buildTriad(); edgeMat.color.copy(edgeColor());
+  for (const a of AX) if (helpers[a]) { const col = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--' + a).trim());
+    helpers[a].userData.fill.material.color.copy(col); helpers[a].userData.edge.material.color.copy(col); }
+  if (selBox) selBox.material.color.set(getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
+  requestRender();
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onTheme);
+new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+// ---------- wire up ----------
+function presets(k) {
+  const enc = ['cup', 'label', 'bumpt', 'bumpb', 'cap', 'oring', 'screw', 'vent'];
+  for (const p of parts) {
+    p.opacity = 1;
+    if (k === 'core') p.visible = !enc.includes(p.id);
+    else if (k === 'enclosure') p.visible = enc.includes(p.id);
+    else if (k === 'board') p.visible = ['cell', 'nickel', 'tails', 'wires', 'pcb', 'parts', 'usb', 'ble', 'filler'].includes(p.id);
+    else if (k === 'ghost') { p.visible = true; if (['cup', 'label', 'bumpt', 'bumpb'].includes(p.id)) p.opacity = 0.14; }
+    applyPart(p);
+  }
+}
+function resetAll() {
+  showAll(); for (const a of AX) { cut[a].on = false; cut[a].flip = false; cut[a].v = +center.getComponent(AX.indexOf(a)).toFixed(1); }
+  syncCutsUI(); updatePlanes(); $('#explode').value = 0; setExplode(0); select(null);
+  if ($('#ortho').checked) { $('#ortho').checked = false; setOrtho(false); }
+  $('#edges').checked = false; setEdges(false); setSpin(false); fit(VIEWS.iso);
+}
+function wire() {
+  $('#all-on').onclick = showAll;
+  $('#presets').addEventListener('click', e => { const k = e.target.dataset?.preset; if (k) presets(k); });
+  $('#views').addEventListener('click', e => { const k = e.target.dataset?.view; if (k) { setSpin(false); fit(VIEWS[k]); } });
+  $('#explode').addEventListener('input', e => setExplode(e.target.value / 100));
+  $('#show-planes').addEventListener('change', () => { updatePlaneHelpers(); requestRender(); });
+  $('#hatch').addEventListener('change', e => { hatch.value = e.target.checked ? 1 : 0; requestRender(); });
+  $('#edges').addEventListener('change', e => setEdges(e.target.checked));
+  $('#ortho').addEventListener('change', e => setOrtho(e.target.checked));
+  $('#spin').addEventListener('change', e => setSpin(e.target.checked));
+  $('#fit').onclick = () => fit();
+  $('#reset').onclick = resetAll;
+  const rail = $('#rail'), db = $('#drawer-btn');
+  db.onclick = () => { const closed = rail.classList.toggle('closed'); db.textContent = closed ? 'Show controls' : 'Hide controls'; db.setAttribute('aria-expanded', String(!closed)); store.set('drawer', closed); };
+  if (store.get('drawer', false) && matchMedia('(max-width: 760px)').matches) db.click();
+  addEventListener('keydown', e => {
+    if (e.target.closest('input, textarea')) return;
+    if (e.key === 'Escape') select(null);
+    else if (e.key === 'f' || e.key === 'F') fit();
+    else if ((e.key === 'h' || e.key === 'H') && selected) act('hide');
+    else if ((e.key === 'i' || e.key === 'I') && selected) act('iso');
+  });
+  const [w, d, l] = META.size;
+  $('#spec').innerHTML = `4S BAK N21700CX-65E · ~91 Wh<br>${META.total} g · ${w} × ${d} × ${l} mm`;
+  $('#source').textContent = `Model: monolith_cup.py + the routed P0 board (KiCad), master ${META.rev}. Board parts are coloured by type; copper and silkscreen are not drawn.`;
+}
+
+// ---------- go ----------
+try {
+  const buf = await inflate(BLOB);
+  build(buf); buildPartsUI(); buildCutsUI(); wire(); updatePlanes(); buildTriad();
+  resize(); fit(VIEWS.iso);
+  $('#loading').remove();
+  frame();
+} catch (err) {
+  $('#loading').textContent = 'Could not load the model: ' + err.message;
+  console.error(err);
+}
+</script>
