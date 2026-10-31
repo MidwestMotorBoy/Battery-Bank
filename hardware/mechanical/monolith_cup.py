@@ -327,6 +327,42 @@ def label():
     """the wrap label as fitted: a 0.15 mm shell on the cup between LABEL_Z"""
     return pz(CS.batch_boolean([cs_out.offset(LABEL_T, ROUND), cs_out], M3.OpType.Subtract), *LABEL_Z)
 
+LABEL_ART = os.path.join(HERE, '..', 'label', 'out', 'monolith_label_bl_print.svg')   # the adopted art (2 mm bleed)
+def label_tex(parts_keys, offset=(0, 0, 0), dpmm=12):
+    """zrender tex hook that paints the printed label art on the label's pixels: each pixel is unprojected to the cup,
+    its perimeter position measured from the seam (middle of the back flat, as hardware/label/monolith_label.py lays it
+    out) and the art sampled there, keeping the renderer's shading. Plain label colour if the art or cairosvg is missing."""
+    try:
+        import cairosvg, io
+        bleed = 2.0
+        png = cairosvg.svg2png(url=LABEL_ART, scale=dpmm / (96 / 25.4), background_color='white')
+        art = np.asarray(Image.open(io.BytesIO(png)).convert('RGB'), float)
+    except Exception as e:
+        print('label art not drawn:', e); return None
+    Pl = np.array(cs_out.offset(LABEL_T / 2, ROUND, circular_segments=720).to_polygons()[0], float)
+    Ql = np.roll(Pl, -1, 0); seg = np.linalg.norm(Ql - Pl, axis=1); s0 = np.concatenate([[0], np.cumsum(seg)[:-1]]); per = seg.sum()
+    back = [i for i in range(len(Pl)) if seg[i] > 2 and abs(Pl[i, 0] - Ql[i, 0]) < 1e-4 and Pl[i, 0] < 0][0]
+    seam = s0[back] + seg[back] / 2
+    idx = [i for i, k in enumerate(parts_keys) if k == 'label']
+    def tex(base, pid, zb, ox, oy, px, R):
+        m = np.isin(pid, idx)
+        if not m.any(): return
+        iy, ix = np.nonzero(m)
+        Q = np.stack([(ix + 0.5 - ox) / px, (oy - iy - 0.5) / px, zb[iy, ix]], -1)
+        p = Q @ R - np.asarray(offset, float)
+        d = Ql - Pl; u = np.empty(len(p))
+        for a in range(0, len(p), 4000):                  # nearest perimeter segment, in chunks
+            q = p[a:a + 4000, None, :2]
+            t = np.clip(((q - Pl[None]) * d[None]).sum(-1) / (seg**2)[None], 0, 1)
+            j = np.argmin(np.linalg.norm(q - (Pl[None] + t[..., None] * d[None]), axis=-1), axis=1)
+            u[a:a + 4000] = (s0[j] + t[np.arange(len(j)), j] * seg[j] - seam) % per
+        v = LABEL_Z[1] - p[:, 2]
+        cx = np.clip(((u + bleed) * dpmm).astype(int), 0, art.shape[1] - 1)
+        cy = np.clip(((v + bleed) * dpmm).astype(int), 0, art.shape[0] - 1)
+        shade = (base[iy, ix] / np.array(C['label'], float)).mean(1, keepdims=True)
+        base[iy, ix] = art[cy, cx] * np.clip(shade, 0.35, 1.15)
+    return tex
+
 # ---------------- assembly and masses ----------------
 C = dict(RR.C, cup=(214, 214, 208), cap=(170, 186, 200), carrier=(196, 190, 150), filler=(232, 150, 200), oring=(200, 60, 60),
          screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80),
@@ -563,7 +599,8 @@ def sheet_exploded(A, m):
               f'The power stage dumps its heat into the cells. BAK N21700CX-65E cells, about 91 Wh. Pack {w:.1f} x {d:.1f} x {L:.1f} mm, about {total:.0f} g.')
     sh.panel_title(40, 128, 'Assembled', 640)
     R = camera((1.0, -1.1, 0.65)); o1 = (250, 660); pxs = 5.0
-    sh.render([(V, c) for _, V, c in A], R, o1, pxs); pj = RR.proj(R, o1, pxs)
+    keys = [k for k, _, _ in A]
+    sh.render([(V, c) for _, V, c in A], R, o1, pxs, tex=label_tex(keys)); pj = RR.proj(R, o1, pxs)
     sh.callouts([(pj((PORT_X, 9, Z_TOP1 + BUMP_T_TOP)), 'Port well through the top bumper'),
                  (pj((X_OUT, -8, 50)), 'Board face: 2.0 mm PA12 under the\nwrap label (seam on the back)'),
                  (pj((X_OUT + 2, -YI, Z_MOUTH - CAP_T - BUMP_T_BOT + 1)), f'{BUMP_T_BOT:.0f} mm bottom bumper over the cap and the thick mouth\n(the pad inside adds the rest of the stroke)')],
@@ -577,7 +614,7 @@ def sheet_exploded(A, m):
         g_ = group(k); dd = EX.get(g_, (0, 0, -182) if g_ == 'bumpb' else (0, 0, 50))
         ex.append((mv(V, dd), c)); gid.append(g_)
     R2 = camera((0.5, -1.25, 0.32)); o2 = (1180, 690); px2 = 3.0
-    pid = sh.render(ex, R2, o2, px2)
+    pid = sh.render(ex, R2, o2, px2, tex=label_tex(keys, EX['label']))
     balloons(sh, pid, gid, dict(cup=160, carrier=150, cell=200, nickel=330, tails=10, filler=20, board=0, pad=200, oring=0,
                                 cap=200, screw=340, bumpb=200, bumpt=170, rails=30, insul=120, foam=230, sleeve=20))
     x0 = 2010; sh.panel_title(x0, 128, 'Parts', 650)
