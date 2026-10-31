@@ -68,8 +68,8 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
     - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
-    - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 20 % gyroid, the four post sleeves, and the two bumpers.
-- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the mouth wall and boss stack is 6.1 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
+    - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 30 % gyroid, the four post sleeves, and the two bumpers.
+- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 5 mm pan-head thread-forming screws for plastic (heads in 0.8 mm counterbores; 3.3 mm of thread in each boss), silicone grease. No vent: the pack is sealed for good (2026-10-28).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the J302 "GAUGE" Tag-Connect, XDS110 on J301, one TC2030-IDC-NL cable for both), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.

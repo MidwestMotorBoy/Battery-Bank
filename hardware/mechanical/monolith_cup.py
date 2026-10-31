@@ -41,6 +41,10 @@ USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.
 HOUSING_CLR = 0.15                  # pocket round the housing, each side
 POCKET_LEAD = 0.25                  # loft from the pocket up to the seal bore (the ring squeezes in over it)
 BOARD_ZFLOAT = 0.1                  # board top edge to the top wall (it can rise this much before it stops)
+WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.5, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
+                                    # 3.3 uH inductors: the board bows 0.68 mm toward the wall in a board-face drop and
+                                    # had 0.02 mm left over them (drop analysis 2026-10-31); depth, parts, margin round each
+DROP_BOW = 0.68                     # that bow (docs/analysis/2026-10-31-drop-1m, board-face drop)
 FR_B0 = S.cup_fr_b0; FR_B1 = FR_B0 + 1.6                            # carrier bottom frame, under the bottom strips
 FR_T0, FR_T1 = S.sb_z_cell1 + S.TAB_T, Z_TOP0                       # carrier top frame, bears on the top wall
 # Cap end (#1, #2, #7). The skirt top stays SKIRT_GAP under the carrier frame, so no rigid contact crosses the groove;
@@ -56,6 +60,9 @@ ORING_CS, GROOVE_D = 2.0, 1.4      # 2.0 mm cord, groove 2.6 wide x 1.4 deep (+0
 GROOVE_Z = (Z_MOUTH + 3.9, Z_MOUTH + 6.5)
 SCREW_X, SCREW_Z = 16.0, Z_MOUTH + 2.4   # two M2 (thread-forming), radially through the thick mouth of the cup wall into blind
 SCREW_HOLE_R, PILOT_R, PILOT_SOLID = 1.1, 0.8, 1.2   # pilots in the skirt bosses, below the O-ring; >= 1.2 solid behind
+SCREW_HEAD, SCREW_L = (1.9, 1.3), 5.0   # M2 pan head (radius, height); M2 x 5 thread-forming
+SCREW_CBORE = (2.1, 0.8)           # counterbore under each head in the mouth band (radius, depth): the heads sit 0.5 below the
+                                   # bottom bumper's band, not 0.3 proud of it (drop analysis 2026-10-31, narrow-side drop)
 BOSS_DEPTH = 5.0                   # skirt boss depth (y)
 MOUTH_T, MOUTH_H, MOUTH_TAPER = 2.4, SKIRT_L, 0.8   # cup wall at the mouth, thickened outward over the O-ring band, tapering
                                    # back to WALL at the top (2026-10-31: replaces the cap's 1.5 mm outer collar, which flexed
@@ -93,7 +100,8 @@ CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom fra
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 6.0, 3.0, 7.0, 2.0   # mass trim 2026-10-31 (was 8 / 4 / 9): pick the
                                     # final slabs in the drop series
-SLAB_FILL, PAD_FILL = 0.20, 0.10    # TPU gyroid infill: bumper slabs (was 30 %), cap pad (was 15 %), mass trim 2026-10-31
+SLAB_FILL, PAD_FILL = 0.30, 0.10    # TPU gyroid infill: bumper slabs (20 % in the mass trim bottomed the port-end slab out
+                                    # at 1 m: 2685 g; 30 %: 569 g, drop analysis 2026-10-31), cap pad (was 15 %)
 BUMP_WALL_BOT = 1.0                 # bottom band over the cup's thick mouth (the 2.4 mm PA12 under it is the edge's backbone)
 # Wrap label (label plan 2026-10-27, art in hardware/label/): printed vinyl round the whole cup, its top and bottom edges
 # TUCKed under the bumpers. The bottom bumper grows a lip over the label's lower edge; the top band is relieved over it.
@@ -169,7 +177,19 @@ def cup():
         m = m - MF.extrude(usb_bore(py), 4).translate((0, 0, Z_TOP0 - 1))
         m = m - pz(usb_pocket(py), Z_TOP0 - 1, Z_POCKET)
         m = m - MF.batch_hull([pz(usb_pocket(py), Z_POCKET - 0.01, Z_POCKET), pz(usb_bore(py), Z_POCKET + POCKET_LEAD - 0.01, Z_POCKET + POCKET_LEAD)])
-    return m - cyly(SCREW_X, SCREW_Z, SCREW_HOLE_R, -(YI + MOUTH_T + 0.5), YI + MOUTH_T + 0.5)
+    e = YI + MOUTH_T; m = m - wall_pockets()
+    m = m - cyly(SCREW_X, SCREW_Z, SCREW_CBORE[0], -(e + 1), -(e - SCREW_CBORE[1])) - cyly(SCREW_X, SCREW_Z, SCREW_CBORE[0], e - SCREW_CBORE[1], e + 1)
+    return m - cyly(SCREW_X, SCREW_Z, SCREW_HOLE_R, -(e + 0.5), e + 0.5)
+def wall_pockets():
+    """pockets WALL_POCKET deep in the board-face wall's inside over POCKET_PARTS (from the real board; none without it)"""
+    B = P.real_board()
+    if B is None: return MF()
+    out = []
+    for k in POCKET_PARTS:
+        V = B[k].reshape(-1, 3); m_ = POCKET_MARGIN
+        sec = rrect(V[:, 1].min() - m_, V[:, 1].max() + m_, V[:, 2].min() - m_, V[:, 2].max() + m_ + BOARD_ZFLOAT, 1.0)
+        out.append(px_(sec, X_IN - 0.01, X_IN + WALL_POCKET))
+    return U(*out)
 def cap():
     plate = pz(cs_mouth, Z_MOUTH - CAP_T, Z_MOUTH)
     skirt = pz(CS.batch_boolean([cs_in.offset(-0.1, ROUND), cs_in.offset(-0.1 - SKIRT_T, ROUND)], M3.OpType.Subtract), Z_MOUTH - 0.01, Z_SKIRT1)
@@ -181,9 +201,10 @@ def cap():
     return m - cyly(SCREW_X, SCREW_Z, PILOT_R, -(YI + 1), -d) - cyly(SCREW_X, SCREW_Z, PILOT_R, d, YI + 1)
 def oring(): return pz(CS.batch_boolean([cs_in, cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), GROOVE_Z[0] + 0.3, GROOVE_Z[1] - 0.3)
 def screws():
-    e = YI + MOUTH_T; t = YI - 0.1 - BOSS_DEPTH + PILOT_SOLID   # head on the mouth band, tip short of the pilot end
-    return U(cyly(SCREW_X, SCREW_Z, 1.0, -e, -(t + 0.2)), cyly(SCREW_X, SCREW_Z, 1.9, -(e + 1.3), -e),
-             cyly(SCREW_X, SCREW_Z, 1.0, t + 0.2, e), cyly(SCREW_X, SCREW_Z, 1.9, e, e + 1.3))
+    e = YI + MOUTH_T - SCREW_CBORE[1]; t = e - SCREW_L    # head in the counterbore; tip SCREW_L in (short of the pilot end)
+    r, h = SCREW_HEAD
+    return U(cyly(SCREW_X, SCREW_Z, 1.0, -e, -t), cyly(SCREW_X, SCREW_Z, r, -(e + h), -e),
+             cyly(SCREW_X, SCREW_Z, 1.0, t, e), cyly(SCREW_X, SCREW_Z, r, e, e + h))
 def pad():
     """TPU pad on the cap plate, drawn as installed (it is printed PAD_PROUD taller): pockets for the overtravel posts,
     the screw bosses, and PAD_RELIEF under the C1 / C4 windows and the wire notches so it never bears on the PACK pads"""
@@ -491,6 +512,11 @@ def checks():
         'O-ring groove inside the skirt (z)': min(GROOVE_Z[0] - Z_MOUTH, Z_SKIRT1 - GROOVE_Z[1]) - 1.0 + 1e-9,
         'screws below the O-ring (outside the seal, z)': (GROOVE_Z[0] - 0.3) - (SCREW_Z + SCREW_HOLE_R),
         'screw holes: ligament under them in the cup wall (z, >= 1.2)': (SCREW_Z - SCREW_HOLE_R - Z_MOUTH) - 1.2,
+        'screw tips stop >= 0.2 short of the pilot ends (y)': (YI + MOUTH_T - SCREW_CBORE[1] - SCREW_L) - (YI - 0.1 - BOSS_DEPTH + PILOT_SOLID) - 0.2,
+        'screw thread in the boss >= 1.4 x d (y)': (YI - 0.1) - (YI + MOUTH_T - SCREW_CBORE[1] - SCREW_L) - 2.8,
+        'screw heads sit inside the bottom bumper band (y, >= 0.1)': (YI + MOUTH_T + BUMP_WALL_BOT) - (YI + MOUTH_T - SCREW_CBORE[1] + SCREW_HEAD[1]) - 0.1,
+        'counterbores inside the mouth band (z) and leave >= 1.5 wall (y)': min(SCREW_Z - SCREW_CBORE[0] - Z_MOUTH - 0.2,
+                                                       (Z_MOUTH + MOUTH_H - MOUTH_TAPER) - (SCREW_Z + SCREW_CBORE[0]), MOUTH_T - SCREW_CBORE[1] - 1.5),
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
         'thick mouth band covers the O-ring band before its taper (z)': (Z_MOUTH + MOUTH_H - MOUTH_TAPER) - GROOVE_Z[1],
@@ -564,6 +590,8 @@ def board_checks():
     top = {k: B[k][..., 0].max() for k in refs if k not in ('J401', 'J501')}; k = max(top, key=top.get)
     out[f'real board: tallest part under the board-face wall at 25 kPa (x, >= 0.05; {k} {top[k] - S.sb_xb1:.2f} tall)'] = \
         X_IN - top[k] - wall_deflection(WALL_BF, 25) - 0.05
+    for k in POCKET_PARTS:
+        out[f'real board: {k} clears its wall pocket after the board-face drop bow (x, >= 0.3)'] = X_IN + WALL_POCKET - B[k][..., 0].max() - DROP_BOW - 0.3
     cupm, railm = mech['cup'], mech['rails']
     zr = np.arange(Z_TOP1 - S.USB_RING_D[1] + 0.05, Z_TOP1 - S.USB_RING_D[0] - 0.04, 0.1)    # ring band
     zh = np.arange(Z_HOUSING0 + 0.02, Z_TOP1 - S.USB_RING_D[1] - 0.01, 0.05)                    # housing, under the ring
