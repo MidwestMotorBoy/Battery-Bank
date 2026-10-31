@@ -22,8 +22,8 @@ Writes STEP files into Production/3dmodels/ with step_mesh.py (pure Python) and 
         J115 / J116 sense wires), 2026-10-29: the pack wires come up from the cells, so these hang below B.Cu (z -1.6):
         the PTFE stub across the SB_BCU_H gap (2.3 mm, B.Cu to the 0.3 mm insulator on the front cells; the wire turns
         along the gap there, mechanical/monolith_shell.py sb_wire_runs), 0.3 mm of bare conductor under B.Cu, the
-        conductor through the hole and a 0.5 mm solder fillet and tip on F.Cu. 18 AWG: M22759/11-18, 1.8 mm OD
-        (SB_PWIRE_OD), 19/30 strand ~1.22 mm. 28 AWG: M16878/6 Type ET, 0.75 mm OD (SB_KWIRE_OD), ~0.38 mm conductor.
+        conductor through the hole and a 0.5 mm solder fillet and tip on F.Cu. 18 AWG: TE 100G0111-1.00-0, 1.8 mm OD
+        (SB_PWIRE_OD), 19/0.25 strand ~1.22 mm. 28 AWG: TE 55A0111-28-9, 0.75 mm OD (SB_KWIRE_OD), ~0.38 mm conductor.
       - Peg_PA12_TPU_sleeve.step (H101-H104), 2026-10-29: the carrier's peg post through its slot (mechanical/
         monolith_cup.py rails(): Ø2.0 CUP_PEG_D, from the rail on B.Cu to POST_GAP 0.3 under the board-face wall, i.e.
         SB_OUT_H 3.2 + 0.5 - 0.3 = 3.4 mm above F.Cu; monolith_shell.py's CUP_PEG_PROUD 0.6 predates the posts reaching

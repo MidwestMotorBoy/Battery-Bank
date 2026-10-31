@@ -9,7 +9,7 @@ How a Monolith P0 goes together, from the mechanical model in `hardware/mechanic
 ## The idea
 
 The cells, their PA12 carrier and the board become **one rigid power module, built and tested on the bench**:
-- **Every connection is a wire** (Logan, 2026-10-24): the two PACK leads are 18 AWG PTFE, and the five sense leads (CELL1–CELL3, the 1N / 4P Kelvin leads) are 28 AWG PTFE, each soldered into a plated hole on F.Cu. No nickel goes into the board, and there's no connector or spring contact.
+- **Every connection is a wire** (Logan, 2026-10-24): the two PACK leads are 18 AWG (TE 100G0111-1.00-0), and the five sense leads (CELL1–CELL3, the 1N / 4P Kelvin leads) are 28 AWG XL-ETFE (TE 55A0111-28-9), each soldered into a plated hole on F.Cu. No nickel goes into the board, and there's no connector or spring contact.
 - The board sits on four clip-on rail blocks that key into the carrier's frames, so cells and board move together; the wires only take up tolerance, not drops. The rails' peg posts run through the board to just under the cup's board-face wall, so a hit on that face goes into the cells, not the parts.
 - The board is powered and programmed on its own first (step 0), then joined to the pack, tested at 100 W with everything open, and only then goes into the cup.
 - Nothing is soldered in the cup.
@@ -22,19 +22,19 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 
 | Connection | From | Lead | Hole (KiCad x, y) |
 |---|---|---|---|
-| PACK− | C1 bottom (can) | 0.2 × 7 nickel pad + 18 AWG PTFE wire, through the C1 notch | J108, Ø1.5 at (86.97, 135.73) |
-| 1N (gauge Kelvin) | PACK− pad | 28 AWG PTFE wire, same notch | J115, Ø0.8 at (91.28, 135.48) |
-| CELL2 | middle of the C2+ / C3− strip, bottom | 28 AWG PTFE wire, along the channel in the bottom frame | J110, Ø0.8 at (100.00, 135.45) |
-| 4P (gauge Kelvin) | PACK+ pad | 28 AWG PTFE wire, through the C4 notch | J116, Ø0.8 at (108.72, 135.48) |
-| PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 18 AWG PTFE wire, same notch | J112, Ø1.5 at (113.03, 135.73) |
-| CELL1 | C1+ / C2− strip, top | 28 AWG PTFE wire from the strip's tongue, down behind the board | J109, Ø0.8 at (86.10, 69.48) |
+| PACK− | C1 bottom (can) | 0.2 × 7 nickel pad + 18 AWG wire, through the C1 notch | J108, Ø1.5 at (86.97, 135.73) |
+| 1N (gauge Kelvin) | PACK− pad | 28 AWG XL-ETFE wire, same notch | J115, Ø0.8 at (91.28, 135.48) |
+| CELL2 | middle of the C2+ / C3− strip, bottom | 28 AWG XL-ETFE wire, along the channel in the bottom frame | J110, Ø0.8 at (100.00, 135.45) |
+| 4P (gauge Kelvin) | PACK+ pad | 28 AWG XL-ETFE wire, through the C4 notch | J116, Ø0.8 at (108.72, 135.48) |
+| PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 18 AWG wire, same notch | J112, Ø1.5 at (113.03, 135.73) |
+| CELL1 | C1+ / C2− strip, top | 28 AWG XL-ETFE wire from the strip's tongue, down behind the board | J109, Ø0.8 at (86.10, 69.48) |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | J111, Ø0.8 at (113.90, 69.48) |
 
 The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanical/monolith_shell.py`. The five sense holes sit where the plated slots for the old nickel tails were, each Ø0.8 in a 1.5 × 1.4 mm pad (2026-10-24: the old 4.2 mm oval pads at J109 / J111 overlapped the USB-C courtyards, and nothing was routed to them yet). They're on the `SENSE_WIRE_HOLES` / `SENSE_WIRE_PADS` layers of `monolith_side_pcb.dxf`.
 
 **Details:**
-- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG PTFE power wire and a 28 AWG PTFE Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so both run through one notch per side in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`; two notches left a loose chip of frame between them), cross the 2.6 mm gap and go into the board. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
-- **Sense wires (2026-10-24).** 28 AWG silver-plated PTFE (0.74 mm OD at most), the same wire as the Kelvin leads.
+- **PACK wire tails (option C, 2026-10-24).** Each PACK end is a 0.2 × 7 mm nickel pad welded to the cell inside the weld window, with two wires soldered to it on the bench before welding: an 18 AWG power wire and a 28 AWG Kelvin wire. No wire fits the 0.25 mm gap between the frame and the cell end, so both run through one notch per side in the carrier's bottom frame (`wire_notches()` in `monolith_cup.py`; two notches left a loose chip of frame between them), cross the 2.6 mm gap and go into the board. The Kelvin wire carries no current, so it gives the gauge a true sense at the pad. 1N and 4P must stay separate nets on the board, routed to VC0 / SRN side and VC4.
+- **Sense wires (2026-10-24).** 28 AWG XL-ETFE (TE 55A0111-28-9, 0.74 mm OD at most), the same wire as the Kelvin leads.
     - **CELL1 / CELL3:** the top strip runs on past its cell as a 3 mm wide tongue, out to 1.45 mm past the top frame (`SB_TONGUE_X`). Solder the wire under the tongue's end on the bench, before the strip goes in; the wire drops about 6 mm down the gap behind the board and turns into its hole.
     - **CELL2:** solder the wire to the middle of the bottom strip on the bench (that spot is under the frame, between C2 and C3, not under a window). The wire runs in a 1.0 × 0.95 mm channel in the bottom frame's cell-side face along y = 0, with a 3 mm pocket under the joint, between the C1 and C4 rims, out past the frame and up into its hole. About 40 mm long.
     - The wires take up cell-length tolerance and board movement by bending, with no kink to form and no bending jig.
@@ -60,7 +60,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Nickel:**
     - 0.2 × 10 mm pure nickel for the three series strips (loss cut 4). The top two run on past their cells as 3 mm wide tongues for the CELL1 / CELL3 wires.
     - 0.2 × 7 mm pure nickel for the two PACK pads, about 10 mm long.
-- **Wire:** 18 AWG silver-plated PTFE for the two PACK power leads (M22759/11-18, 19/30 strand, 1.68–1.78 mm OD per AWC; the frame notches and B.Cu keep-outs are sized for 1.8 mm since 2026-10-24); 28 AWG thin-wall PTFE for the five sense leads (M16878/6 Type ET, BCE 19/40 or BCB 7/36, 0.64–0.74 mm OD). Anything thicker than 1.8 / 0.75 mm doesn't fit. About 25 mm each, 45 mm for CELL2.
+- **Wire (2026-10-31, Logan):** TE **100G0111-1.00-0** for the two PACK power leads (Zerohal 100G, VG 95218-20 Type E: 1.00 mm² / 18 AWG, 19/0.25 tinned copper, 1.17–1.26 mm conductor, 1.69–1.80 mm OD, 20.0 Ω/km max, 125 °C, black; the frame notches and B.Cu keep-outs are sized for 1.8 mm since 2026-10-24, so it sits at the limit); TE **55A0111-28-9** for the five sense leads (Raychem Spec 55, the twin of M22759/32-28: 7/36 tinned copper, radiation cross-linked ETFE, 0.64–0.74 mm OD, 150 °C, white). The 100G insulation is a halogen-free polymer blend, not a fluoropolymer: solder it quickly and keep the iron off the jacket, and try one scrap joint first. Fallback for 18 AWG: TE 55A0111-18 / M22759/32-18 (19/30, 1.47–1.57 mm OD, 150 °C XL-ETFE, sold in 10 ft cuts). The old picks, M22759/11-18 and M16878/6 Type ET, fit the same holes. Anything thicker than 1.8 / 0.75 mm doesn't fit. About 25 mm each, 45 mm for CELL2.
     - Source, and how to check the nickel is real: `spot-welding.md`.
 - **Insulation:** four 0.2 mm fish-paper rings for the + ends (self-adhesive "barley" rings, cut to fit the measured + cap). Kapton tape.
 - **Foam:** silicone foam sheet (about 1 and 1.6 mm), cut into four preload rings.

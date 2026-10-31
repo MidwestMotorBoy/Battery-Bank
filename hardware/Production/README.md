@@ -104,8 +104,8 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
     - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
 - **Pack wires:**
-    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG PTFE wires (up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
-    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG PTFE sense wires in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG wires (TE 100G0111-1.00-0, up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
+    - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG sense wires (TE 55A0111-28-9) in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103). Later replaced by the J302 Tag-Connect (see below).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
@@ -440,7 +440,7 @@ The board has **no screw holes**. In the cup it rides on the PA12 carrier (`hard
 
 ## Pack wire holes and the 1N / 4P Kelvin nets (2026-10-21; all wires 2026-10-24)
 
-Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG PTFE sense wires** (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PTFE PACK power wires** in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
+Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG sense wires** (TE 55A0111-28-9 since 2026-10-31) (CELL1–CELL3 and the 1N / 4P Kelvin leads) in Ø0.8 mm plated holes, and **two 18 AWG PACK power wires** (TE 100G0111-1.00-0 since 2026-10-31; the footprint names still say PTFE, from the earlier wire) in Ø1.5 mm plated holes (`docs/production/p0-assembly.md`). `tools/make_production.py` generates both from the model: the sense pads from `sb_slots()` as `MonolithDev:SolderWire-28AWG_PTFE_1x01_D0.8mm_Pad<L>x1.4mm` (a round Ø0.8 hole in the old slot's oval pad, so the routed copper is unchanged; no paste), the PACK holes from `sb_pack_holes()` as `MonolithDev:SolderWire-18AWG_PTFE_1x01_D1.5mm_OD2.3mm` (Ø1.5 mm finished, 0.4 mm ring, no paste). `make_board.py --mech` places and locks all seven. The five sense pads were plated slots for nickel tails until 2026-10-24; only their drills changed (oval 3.4 / 1.6 × 0.6 to round Ø0.8).
 
 | Hole | Ref | Net | KiCad (x, y), pad length or Ø |
 |---|---|---|---|
