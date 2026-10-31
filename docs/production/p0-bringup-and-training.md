@@ -26,16 +26,62 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 | J109–J111 | Cell taps CELL1–CELL3: Ø0.8 mm plated holes for 28 AWG sense wires (TE 55A0111-28-9) |
 | J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG wires (TE 55A0111-28-9) |
 | J105 / J106 | Back-cell NTC wires (C2 / C3). The front-cell NTCs are TH101 / TH104 on the board |
-| J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge |
+| J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge, and the bench-supply input for bring-up without cells |
 | TP113 (WAKE) + TP106 (PACK_P) | Gauge wake: bridge the two pads with tweezers. TP113 is CELL_P through R118 4.7 kΩ. |
 | TP109, TP301 | GND, 3V3 |
 | Per port: TP401–TP406, TP412 (5xx on port 2) | VBUS, PPHV, PP5V, REGN, SW1, SW2, GND (1.0 mm pads) |
 
 A wrong plug is harmless: if the SWD cable goes onto J302, the probe drives only CHG_INH and NRST, and its other pins are inputs. **Never put a probe on TP113**: it sits behind 4.7 kΩ to the 16.8 V cell stack.
 
+## 0. Bare board without cells
+
+_Worked out 2026-10-31 from the master netlist and TI's documents (BQ25756, TPS25751, BQ40Z50-R2 TRM SLUUBK0, BQ25756EVM SLUUCT7). Not yet tried on hardware._
+
+**USB-C alone doesn't power the board.** Everything except the two TPS25751s runs from PACK_P (the TPS62177 has VIN and EN on PACK_P), and with no cells only a BQ25756 or a supply on J113 can drive PACK_P.
+
+| Block | USB-C only, blank board | USB-C only, EEPROMs and MCU programmed | Bench supply on J113 |
+|---|---|---|---|
+| TPS25751 U401 / U501 | Boots from VBUS (dead battery), finds no patch, sits in PTCH. The ADCIN straps are SafeMode, so the sink switch to PPHV stays open | Loads the EEPROM, closes the sink path, sets up its BQ25756 | Runs from 3V3; the MCU can load the patch and write the EEPROM |
+| BQ25756 U403 / U503 | Off (PPHV = 0) | On, and charging is enabled because CE_N's 47k pull-up goes to the dead 3V3 rail. With no battery it charges the PACK_P MLCCs to 16.9 V (FB 100k / 10k on 1.536 V), terminates, sags and restarts | I2C alive from SRN; REGN off until VAC appears |
+| 3V3, CC2340 | Off | Follow PACK_P. A blank MCU leaves CHG_INH floating, R417 pulls CE_N high, charging stops and 3V3 drops again: a power-cycling loop | On |
+| BQ40Z50 | Off | Wakes on VCC (Q102 body diode from PACK_P), but VC1–VC4 float | Same |
+| Q101 / Q102 | Off | Off: a factory gauge has Mfg Status Init 0x0000 (`FET_EN` = 0), and its charge pump needs BAT ≥ 2.2 V | Off until the cell simulator is on and BQStudio toggles them |
+| 9 V drive U406 / U506 | Off | Off unless the config drives GPIO6 low; needs REGN | Off (no REGN without VAC) |
+| BQ294700 | Off | Off | Off until the cell simulator is on |
+
+TI's EVM guide tests the BQ25756 without a battery only with a two-quadrant supply or an electronic load in CV mode, plus about 2,000 µF across the battery terminals. Never debug from USB alone.
+
+**Stages** (R124 / R126 stay off throughout):
+
+1. **Unpowered.** R124 / R126 not fitted. Resistance to GND on PACK_P, 3V3, both VBUS, PPHV, PP5V and REGN; CELL_P (J112) to CELL_N (J108) and each tap hole. Fit 10 kΩ resistors on J117–J120 (TS2 / TS3) or the wired NTCs: the default Temperature Enable is 0x06 (TS1 + TS2), so an open input reads very cold.
+2. **USB-C smoke test (optional).** A 5 V charger through a USB power meter, nothing else connected. Expect 3.3 V on that port's LDO_3V3, 0 V on PPHV and PACK_P, a few mA.
+3. **Bench supply on J113 (+) / J114 (−).** 12 V at 50 mA, then 14.4 V at 100 mA. Check 3V3 at TP301 and LDO_3V3 on both ports. Flash the CC2340 (target-supplied power), load the TPS25751 patch and write both EEPROMs, read both BQ25756s through `I2Cr`. The gauge answers on J302, but its cell readings mean nothing yet: don't write data flash.
+4. **Cell simulator** (`p0-assembly.md`, Materials) on the seven holes, connected with its supply off, all pins at once.
+    - Taps at 3.6 V on a DMM, then in BQStudio; voltage calibration.
+    - **FET test:** toggle DSG on (MAC 0x0020), then lift the J113 lead. PACK_P should stay up, about 0.5 V below CELL_P, through Q101's body diode. Toggle CHG on (0x001F) and the drop goes. CHG_G and DSG_G sit about 11.5 V above their sources. Raise the simulator's current limit first, since the board's load now comes through J112.
+    - **Second-level OVP (optional):** raise the simulator to 17.6 V (4.4 V per cell). U102 OUT, on R124's empty pad, goes high after its delay. F102 can't blow with R124 off. Go no higher.
+    - **Current calibration:** a 2 A or larger supply on J112 / J108 with the ladder still on the taps, both FETs on, and the DC load on J113 / J114, so the current flows through RS101.
+5. **USB-C with a "battery" on PACK_P.** CHG FET off (toggle or gauge reset), so the charger can't push the ladder up. On J113 / J114 put an electronic load in CV mode at 14.4 V with about 2,000 µF, or the bench supply at 14.4 V plus the CC load set above the ICHG you program (the charger then holds CC and the supply covers the rest). CHG_INH low from firmware, or J302 pin 2 held low with the MCU in reset.
+    - PD contracts at 5 / 9 / 15 / 20 V; charging at 0.5 A, then 3.25 A per port.
+    - 9 V drive: GPIO6 low, DRV_SUP steps from REGN (about 5 V) to about 8.7 V. Needs PACK_P ≥ 10 V.
+    - Switch nodes on the scope at low power.
+    - Source (reverse) mode with the J113 supply as the battery: 20 V at 3 A out takes about 4.5 A from 14.4 V. 100 W runs wait for the cells or a supply of 150 W or more.
+6. **Cells:** section 1 below.
+
+**Risks and rules:**
+
+| Risk | Rule |
+|---|---|
+| J113 bypasses the gauge's OCD / SCD, Q101 / Q102 and F102 | The supply's current limit is the only protection: start at 50 mA, check polarity there, raise it only when a test needs it |
+| PACK_P caps are 25 V parts, the TPS62177 28 V | Keep PACK_P ≤ 17 V |
+| Permanent fail: a factory gauge has Enabled PF A–D = 0x00 and `PF_EN` = `FUSE_EN` = 0, so the simulator can't latch a PF. Once they're on, a floating tap or back-fed ladder can, clearing it needs full access, and a fuse PF also tries to blow F102 | Leave `PF_EN`, `FUSE_EN` and the PF enables off until the board is on real cells with R124 / R126 fitted |
+| Floating or partly connected taps | Connect the simulator with its supply off, all seven pins at once |
+| With CHG on, a J113 supply above the simulator, or the charger, drives the ladder (16.9 V = 4.22 V per cell) | Keep CHG off whenever something else drives PACK_P |
+| Gauge balancing (behind 100 Ω) pulls a 1 kΩ ladder tap well down | Static checks only; use four supplies or a 100 Ω ladder for balancing tests |
+
 ## 1. Assembly
 
-1. **Bare board first** (`p0-assembly.md` step 0): check R124 and R126 are not fitted, power the board from the cell simulator through the seven holes, flash it and check the gauge talks, before it meets the cells.
+1. **Bare board first** (`p0-assembly.md` step 0, and section 0 below): check R124 and R126 are not fitted, power PACK_P from a bench supply on J113 / J114, flash it, add the cell simulator and check the gauge talks, before it meets the cells.
 2. **Pack:** with USB unplugged, solder PACK− (J108), then 1N (J115) and CELL1–CELL3 (J109–J111) bottom-up, then 4P (J116), then PACK+ (J112). A floating tap can trip U102, which blows F102 once R124 / R126 are fitted (gauge sheet notes 15 and 16).
 3. **Fit R124 and R126** (5.1 kΩ 0402, F.Cu) only after all seven voltages read right at the pads: each step one cell, 2.5–4.2 V.
 4. **NTCs:** the front-cell NTCs (TS1, TS4) are TH101 / TH104 on the board, under the gap filler (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). The back-cell NTCs (TS2, TS3) are taped at mid-height, facing the pack centre. Insulated sensors only.

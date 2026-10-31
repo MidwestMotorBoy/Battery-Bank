@@ -73,7 +73,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the J302 "GAUGE" Tag-Connect, XDS110 on J301, one TC2030-IDC-NL cable for both), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
-- **Cell simulator** (for step 0): a bench supply at 14.0–14.8 V, current-limited to 100 mA, and a ladder of four equal resistors (1 kΩ) across it, with pins that drop into the seven holes: PACK− and 1N on the supply's −, the three taps on the ladder's joints, 4P and PACK+ on its +.
+- **Cell simulator** (for step 0): a bench supply at 14.0–14.8 V, current-limited to 100 mA, and a ladder of four equal resistors (1 kΩ) across it, with pins that drop into the seven holes: PACK− and 1N on the supply's −, the three taps on the ladder's joints, 4P and PACK+ on its +. It powers the gauge's cell inputs and the BQ294700, not the board: the board's rails run from PACK_P, fed on J113 / J114 (step 0.2).
 
 ## Steps
 
@@ -84,9 +84,10 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 ![Step 0](../../hardware/mechanical/assembly_steps/step0.png)
 
 1. **Inspect** the hand-fitted B.Cu parts (19, including the CC2340 module) under a loupe, and check that R124 and R126 are not fitted.
-2. **Power it from the cell simulator** through the seven holes. Check the current draw, then 3V3 at TP301.
-3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks through J302 (wake it from USB or TP113 per `p0-bringup-and-training.md`).
-4. If anything is wrong, fix it now: once the board is on the pack it can't come off without desoldering seven wires, and it is bedded in gel.
+2. **Power PACK_P from the bench supply on J113 (+) / J114 (−)**, 12 V at a 50 mA limit, then 14.4 V at 100 mA. Check the current draw, then 3V3 at TP301. The cell simulator alone can't do this: it only reaches CELL_P, and a factory gauge keeps Q101 / Q102 off (`FET_EN` = 0) until BQStudio toggles them, which needs 3V3 up first.
+3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks through J302.
+4. **Add the cell simulator** on the seven holes, then check the cell readings, the FET toggles and the rest of stages 4–5 in `p0-bringup-and-training.md` (Bare board without cells).
+5. If anything is wrong, fix it now: once the board is on the pack it can't come off without desoldering seven wires, and it is bedded in gel.
 
 ### 1. Cells into the carrier and welded, on the bench
 
