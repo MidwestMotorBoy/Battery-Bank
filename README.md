@@ -68,19 +68,31 @@ Everything for the board is in [`hardware/Production/`](hardware/Production/), K
 
 The board outline, peg holes, wire holes and keep-outs come from the enclosure model (`hardware/mechanical/monolith_shell.py`) through `tools/make_board.py`, so mechanical changes go there first. Reference designators follow the sheets: 1xx cells and gauge, 2xx 3V3 rail, 3xx MCU, 4xx port 1, 5xx port 2.
 
-### Schematics and plots
+### Schematics, renders and plots
 
 - [`docs/hardware/monolith-p0-schematic.pdf`](docs/hardware/monolith-p0-schematic.pdf): all six sheets (2026-10-30).
-- [`docs/hardware/monolith-p0-layers.pdf`](docs/hardware/monolith-p0-layers.pdf): every copper layer (F.Cu, In1–In4, B.Cu) and the silkscreens, one page each.
+- [`docs/hardware/monolith-p0-layers.pdf`](docs/hardware/monolith-p0-layers.pdf): front and back (copper, mask, silk), then every copper layer (F.Cu, In1–In4, B.Cu), one page each, from the approved board (master 50c5625).
 - A 3-D STEP of the whole assembly can be generated with `hardware/mechanical/monolith_step.py`.
+
+#### The approved P0 board
+
+Raytraced in KiCad 10 (`kicad-cli pcb render`, all 3-D models) from the board as approved on 2026-10-30 (master 50c5625):
+
+<p align="center"><a href="docs/hardware/monolith-p0-render-iso-top.png"><img src="docs/hardware/monolith-p0-render-iso-top.png" alt="Raytraced 3-D render of the P0 board, top side, with the two USB-C ports at the front" width="80%"></a></p>
+
+| Top (F.Cu side, faces the cup wall) | Bottom (B.Cu side, faces the cells) |
+|---|---|
+| [<img src="docs/hardware/monolith-p0-render-top.png" alt="P0 board render, top">](docs/hardware/monolith-p0-render-top.png) | [<img src="docs/hardware/monolith-p0-render-bottom.png" alt="P0 board render, bottom">](docs/hardware/monolith-p0-render-bottom.png) |
+
+<p align="center"><a href="docs/hardware/monolith-p0-render-iso-bottom.png"><img src="docs/hardware/monolith-p0-render-iso-bottom.png" alt="Raytraced 3-D render of the P0 board, bottom side" width="60%"></a></p>
 
 #### Board plots
 
-| Front (F.Cu, mask, silk) | Back (B.Cu, mask, silk) |
+| Front (F.Cu, mask, silk) | Back (B.Cu, mask, silk, mirrored) |
 |---|---|
 | [<img src="docs/hardware/monolith-p0-board-front.png" alt="P0 board front plot">](docs/hardware/monolith-p0-board-front.png) | [<img src="docs/hardware/monolith-p0-board-back.png" alt="P0 board back plot">](docs/hardware/monolith-p0-board-back.png) |
 
-The USB-C ports are at the top edge, the cell wire holes (PACK−, PACK+ and the Kelvin senses) at the bottom tab, and the two power stages fill the middle; the boxes on the back are the gap-filler pads that couple the stages to the cells.
+The USB-C ports are at the top edge of the plots (the right edge of the flat renders), the cell wire holes (PACK−, PACK+ and the Kelvin senses) at the bottom tab, and the two power stages fill the middle: USB1's stage (L401) toward +y and USB2's (L501) toward −y. The bare copper boxes on the back are the gap-filler pads that couple the stages to the cells.
 
 ### Per port
 
@@ -100,6 +112,42 @@ Datasheets and app notes the design was checked against are in `datasheets/`: [`
 ### Earlier bench design
 
 `hardware/DevBoard/` and `docs/devboard/` hold the bench "dev board" (rev A8) that P0 was derived from: its four schematic reviews, circuit description and budgets. It was never ordered (P0 is the first build since 2026-10-18) and is kept only as the reviewed reference and history.
+
+## Analysis
+
+Model studies of the whole pack, each in its own folder under [`docs/analysis/`](docs/analysis/) with the scripts, the numbers as JSON and every figure. They use the approved P0 board and the current cup (master 50c5625, including the mechanical polish of PR #46 and #47). Every number is a model value until the bench tests.
+
+### Thermal: USB1 at 25 W and USB2 at 20 W together
+
+[`docs/analysis/2026-10-31-thermal-25w-20w/`](docs/analysis/2026-10-31-thermal-25w-20w/README.md). Both ports deliver from full to empty (45 W, USB1 at 15 V, USB2 at 9 V) in the 3-D pack model with the routed-board copper losses and the firmware derate in the loop.
+
+- **At 25 °C** the pack runs the whole battery at 45 W (118 min, 88.4 Wh) and cuts to 40 W only for the last 3 minutes. The hottest board part peaks at 51 °C, the hottest point in any cell at 45.7 °C, the outside at 46.6 °C.
+- **At 35 °C** the derate starts at 20 min and settles at 30 W (USB1 down to 10 W, USB2 kept at 20 W); the hottest part reaches 56 °C and the cells 51 °C. At 40 °C USB1 is cut to 0 W for most of the run.
+- **Heat** at 45 W is 2.4 W: 0.8 W in the USB1 stage, 1.0 W in the USB2 stage, 0.5 W in the cells. The 6-layer board keeps itself within 3.6 K end to end.
+- Even with the derate switched off at 35 °C (a firmware failure) the cells stop at 55.4 °C, under their 60 °C discharge limit.
+
+<p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-timeline.png" alt="Delivered power and temperatures against time at 25, 35 and 40 °C" width="100%"></p>
+<p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-board-on-render.png" alt="Board temperature laid over the KiCad render" width="100%"></p>
+<p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-std25-pack.png" alt="Pack temperature in 3-D and in section at 25 °C" width="100%"></p>
+
+### Drop: 1 m onto concrete, six poses
+
+[`docs/analysis/2026-10-31-drop-1m/`](docs/analysis/2026-10-31-drop-1m/README.md). Flat on each end, flat on the board face, flat on a narrow side, and on a corner at each end, at 4.43 m/s (3.84 J), with the bumpers' crush, a finite-element model of the cup and its contents, and a plate model of the routed board.
+
+| Pose | Peak g on cells and board | Bumper crush | Worst issue |
+|---|---|---|---|
+| Flat on the port end | 2685 g | 4.8 of 6 mm | the 20 % gyroid slab bottoms out (272 g at 0.75 m) |
+| Flat on the cap end | 1222 g | 2.2 mm | slab bottoms out, the pad and posts catch it |
+| Flat on the board face | 2405 g | 0.4 mm | board bows 0.68 mm, 0.02 mm left over L401 / L501 |
+| Flat on a narrow side | 3321 g | 0.5 mm | M2 screw heads 0.3 mm proud of the bumper hit first |
+| Corner, port end | 2432 g | 5.1 mm | local stress in the cup under the corner |
+| Corner, cap end | 1535 g | 2.7 mm | local stress in the cup and cap under the corner |
+
+Two changes come out of it before a real drop test: print the port-end slab at **30 % gyroid** (572 g at 1 m and 641 g at 1.5 m, about 2 g more), and **counterbore the cup mouth 0.5 mm under the two M2 heads** so they sit below the bumper band. A soft pad on the board-face wall over the two inductors would also take the edge off the board-face drop.
+
+<p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-poses.png" alt="The six drop poses at first touch" width="100%"></p>
+<p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-stress.png" alt="Stress in the nylon parts for the six drops" width="100%"></p>
+<p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-board.png" alt="Board deflection, strain and part clearance in the board-face drop" width="100%"></p>
 
 ## Firmware
 
@@ -124,6 +172,7 @@ Datasheets and app notes the design was checked against are in `datasheets/`: [`
 ├── docs/
 │   ├── spec.md            The current design spec: the single source of truth
 │   ├── reviews/           Board reviews with figures (latest: 2026-10-30-routed-board/)
+│   ├── analysis/          Whole-pack model studies: thermal at 25 W + 20 W, 1 m drop
 │   ├── hardware/          Schematic and layer PDFs and board plots exported from KiCad
 │   ├── production/        P0 assembly (the cup), spot welding, bring-up and gauge training
 │   ├── firmware/          Charge and thermal policy, TPS25751 EEPROM programming
