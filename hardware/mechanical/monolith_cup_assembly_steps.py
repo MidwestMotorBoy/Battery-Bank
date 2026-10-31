@@ -250,7 +250,7 @@ def step6(P):
              side_notes=['Fit print first, to -50 kPa (a warm pack at 4300 m):', 'side flats measured before and after.'])
     st.panel('6.2  Pressure vent on the cap', built, L(P, 'vent', o=(0, 0, -12)), (0.9, -1.0, -0.6),
              arrows=[((vx, vy, vz - 14), (vx, vy, vz - 2))],
-             notes=[((vx, vy, vz - 12), 'Gore VE80308 over the 3 mm hole:\ntape off, clean with IPA,\npress 5 s, keep the membrane dry')])
+             notes=[((vx, vy, vz - 12), '12 mm ePTFE patch over the 3 mm hole:\ntape off, clean with IPA,\npress 5 s, keep the membrane dry')])
     st.panel('6.3  Bumpers on', built + L(P, 'vent'),
              L(P, 'bumpt_band', 'bumpt_slab', o=(0, 0, 22)) + L(P, 'bumpb_band', 'bumpb_slab', o=(0, 0, -22)), (1.0, -1.1, 0.35),
              arrows=[((0, -30, 115), (0, -30, 100)), ((0, -30, -40), (0, -30, -25))],

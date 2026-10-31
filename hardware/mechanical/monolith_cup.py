@@ -70,8 +70,9 @@ MOUTH_T, MOUTH_H, MOUTH_TAPER = 2.4, SKIRT_L, 0.8   # cup wall at the mouth, thi
 MOUTH_LEAD = 0.8                   # lead-in at the cup mouth for the O-ring (0.3 deep over this height)
 OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6)]   # overtravel posts (x, y)
 VENT_XY, VENT_HOLE_R = (25.6, 0.0), 1.5   # ePTFE pressure vent (2026-10-31, Logan: behind a bumper, no label hole): a 3 mm hole
-VENT_D, VENT_T = 7.6, 0.26         # through the cap plate in the free strip between the cells and the board, with a Gore VE80308
-VENT_POCKET_R = 4.15               # (7.6 mm adhesive, 3.3 mm membrane; Takachi sells 8-packs) on the plate's outside, in a pocket
+VENT_D, VENT_T = 12.0, 1.0         # through the cap plate in the free strip between the cells and the board, with a 12 mm ePTFE patch
+VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE80308, 7.6 mm, fits the same hole and pocket) on the
+                                   # plate's outside, in a pocket
                                    # through the bottom bumper slab;
 VENT_GROOVE = (1.2, 0.8)           # a groove (width, depth) in the slab's base runs from the pocket to the +x edge so it breathes on a table
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
@@ -119,6 +120,7 @@ LIP_WALL, LIP_FLOOR = 1.0, 0.8      # bottom-bumper lip over the label: wall, an
 PORT_DIGITS = ((S.SB_PORT_Y, '1'), (-S.SB_PORT_Y, '2'))   # raised on the top bumper beside each port (USB1 at +y, as in the
                                     # thermal model's port labels)
 DIGIT_H, DIGIT_RAISE, BASE_TEXT, BASE_TEXT_H, BASE_TEXT_D = 4.0, 0.4, '91 Wh', 7.0, 0.6   # bottom: debossed rating
+BASE_TEXT_DX = -2.5                # the rating moved off-centre (-x) to clear the vent pocket
 PORT_X, PORT_YS = S.sb_port_x, (-S.SB_PORT_Y, S.SB_PORT_Y)
 LABEL_Z = (Z_MOUTH + MOUTH_H + LABEL_GAP, Z_TOP1 - BUMP_BAND + LABEL_TUCK)   # label edges on the cup
 LIP_TOP, RELIEF_TOP = LABEL_Z[0] + LABEL_TUCK, LABEL_Z[1] + RELIEF_UP          # bottom lip top; top band relief top
@@ -343,13 +345,13 @@ def bumper(top):
         band = U(band, floor, lip)
         zb = z0 - BUMP_T_BOT                              # rating debossed in the base, reads from below
         bx0, by0, bx1, by1 = out.bounds()
-        slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
+        slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2 + BASE_TEXT_DX, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
         w, d = VENT_GROOVE                                # vent pocket, and its breather groove out to the board-face edge
         slab = slab - pz(circ(*VENT_XY, VENT_POCKET_R), zb - 1, z0 + 1) - pz(rect(VENT_XY[0], bx1 + 1, VENT_XY[1] - w/2, VENT_XY[1] + w/2), zb - 1, zb + d)
     return band, slab
 def base_text_bounds():
     out = cs_mouth.offset(BUMP_WALL_BOT, ROUND); bx0, by0, bx1, by1 = out.bounds()
-    return text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2, (by0 + by1) / 2, mirror=True).bounds()
+    return text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2 + BASE_TEXT_DX, (by0 + by1) / 2, mirror=True).bounds()
 def lead_in(z, sense):
     """conical chamfer on a bumper's inner edge at height z, opening downwards (sense +1) or upwards (-1); cs_out is convex,
     so the hull of the two end sections is the exact chamfer"""
@@ -441,7 +443,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
-         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE, Gore VE80308', 'vent')]
+         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE patch, 12 mm', 'vent')]
 NUM = {k: n for n, _, _, k in PARTS}
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9,
            insul=1.1, foam=0.3, sleeve=1.2, label=1.35, vent=1.0)
@@ -533,6 +535,9 @@ def checks():
         'vent hole: inside the free strip, clear of the pad and the skirt (x, >= 0.5)': min((VENT_XY[0] - VENT_HOLE_R) - (PR + CR - 0.4) - 0.5,
                                                        (X_IN - 0.1 - SKIRT_T) - (VENT_XY[0] + VENT_HOLE_R) - 0.5),
         'vent: disc clear of its pocket in the bumper slab (r, >= 0.3)': VENT_POCKET_R - VENT_D / 2 - 0.3,
+        'vent: patch inside the cap plate, clear of its edge (x, >= 0.8)': (X_IN + WALL_BF) - (VENT_XY[0] + VENT_D / 2) - 0.8,
+        'vent: slab wall left outside the pocket (x, >= 0.8)': (X_IN + WALL_BF + BUMP_WALL_BOT) - (VENT_XY[0] + VENT_POCKET_R) - 0.8,
+        'base rating text inside the slab (x, >= 2)': base_text_bounds()[0] - cs_mouth.offset(BUMP_WALL_BOT, ROUND).bounds()[0] - 2,
         'vent: pocket and groove clear of the base rating text (x, >= 1.0)': (VENT_XY[0] - VENT_POCKET_R) - base_text_bounds()[2] - 1.0,
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
