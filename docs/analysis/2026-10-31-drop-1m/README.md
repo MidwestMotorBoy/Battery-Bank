@@ -59,6 +59,31 @@ The TPU properties matter less than the build: halving or raising the solid TPU 
 
 The board only bends when the drop pushes it across its thickness, which happens in the board-face drop and the two corners (they hit at an angle). In the corners the deflection is 0.35 mm (port end) and 0.20 mm (cap end) with at least 0.31 and 0.44 mm left over every part, and the strain half or less of the board-face case. In the end and narrow-side drops the board is loaded in its own plane, held at the pegs and the USB-C receptacles; the heaviest parts are the two receptacles, about 1 g each, so 12 to 33 N on each at the peak depending on the pose.
 
+## PEBA instead of TPU (2026-10-31)
+
+Logan asked how PEBA bumpers would compare. JLC3DP prints PEBA by FDM at 85A and 1.0 g/cm³. `peba.py` re-runs the same six poses with the bumpers in PEBA and the cap pad left in TPU. The PEBA properties are estimates, because there is no PEBA compression data yet:
+- 0.45 × the stiffness of TPU 95A (range 0.3–0.6);
+- 17 % lighter at the same build;
+- bouncier on unloading;
+- 1.3 × stiffer at −20 °C, against about 2.5 × for TPU.
+
+The table gives the peak g on the cells and board, at 1 m unless marked.
+
+| Bumpers (both slabs) | Mass | Port end | Port end 1.5 m | Port end −20 °C | Cap end | Board face | Narrow side | Narrow side −20 °C | Corner, port end |
+|---|---|---|---|---|---|---|---|---|---|
+| TPU 95A, 20 % (now) | 12.1 g | **2685** | 6129 | 602 | 1222 | 2406 | 3321 | 3769 | 2430 |
+| TPU 95A, 30 % | 15.2 g | **569** | 639 | 1128 | 1070 | 2429 | 3359 | 3781 | 2466 |
+| PEBA 85A, 20 % | 10.1 g | 4660 | 6458 | 4393 | 1821 | 2172 | 2959 | 3040 | 2128 |
+| PEBA 85A, 30 % | 12.6 g | 2919 | 4867 | 1851 | 1478 | 2166 | 2955 | 3036 | 2023 |
+| PEBA 85A, 40 % | 15.2 g | 1780 | 3914 | 618 | 1446 | 2160 | 2953 | 3056 | 2079 |
+
+- **Port end (the slab that bottoms out):** PEBA is worse. It is softer, so the gyroid gives way at a lower load and runs out of stroke sooner. Even PEBA at 40 %, which is the same mass as TPU at 30 %, still sits near the cliff: 1780 g at 1 m and 3914 g at 1.5 m. Across the stiffness range it gives anything from 628 to 2758 g at 1 m. TPU at 30 % stays under 650 g up to 1.5 m.
+- **Solid bands (board face, narrow side, corners):** PEBA is about 10–15 % gentler, because a softer solid band spreads the hit. At −20 °C the gap grows to about 20 %, since TPU stiffens and PEBA barely does.
+- **Cap end:** TPU is better (1070 g against 1478 g at 30 %).
+- **Cold, port end:** cold actually helps TPU at 20 %. The stiffer lattice no longer bottoms out (602 g), but at 30 % cold makes the hit harder (1128 g).
+
+**Verdict:** stay with TPU 95A and print the slabs at 30 %. PEBA only wins on the band hits, by 10–20 %. Matching TPU on the port end would take 40 % infill or more, and that is no lighter and not as safe. Its stiffness is also the least certain number in the model. If the real drop tests show the band hits as the problem, a thicker TPU band is the simpler fix.
+
 ## Method
 
 1. **Geometry.** The cup assembly is meshed from `monolith_cup.py` (`geom.py`, cached). Each part has a mass, so the model knows the centre of mass and splits the pack into a 52 g "shell" (the bumpers, label and outer skin that hit first) and a 339 g "core" (cells, carrier, board and everything inside the cup).
@@ -86,6 +111,7 @@ The board only bends when the drop pushes it across its thickness, which happens
 | `drop.py` | The six drops: `python drop.py` → `out/drop.json` and `cache/<pose>.npz` (about 10 min) |
 | `board_flex.py` | Board plate model and per-part clearance |
 | `sens.py` | Height, material and slab-build sweeps → `out/sens.json` |
+| `peba.py` | PEBA 85A bumpers against TPU 95A at 20–40 %, 1 m, 1.5 m and −20 °C → `out/peba.json` |
 | `poses.py`, `figs.py` | The figures here and `out/checks.json` (stress percentiles, board results) |
 | `out/` | The results as JSON |
 
