@@ -10,7 +10,7 @@ are the same as the side tray's: the tray-only parts (wedge, ring carrier, TPU c
 fish paper, EVA hold-downs, crush caps) are not used.
 Needs numpy, pillow, manifold3d (the mechanical venv).
 Run: python monolith_cup.py [all|stl|exploded|sections|compare]
--> monolith_cup_*.stl, monolith_cup_exploded.png, monolith_cup_sections.png, monolith_cup_vs_tray.png"""
+-> stl/<material>/monolith_cup_*.stl, monolith_cup_exploded.png, monolith_cup_sections.png, monolith_cup_vs_tray.png"""
 import os, sys, struct, math, numpy as np
 import manifold3d as M3
 from PIL import Image
@@ -456,6 +456,14 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
          (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE patch, 12 mm', 'vent')]
 NUM = {k: n for n, _, _, k in PARTS}
+# STL folders by what each part is made from (stl/README.md): MJF PA12 from JLC3DP, TPU 95A on an FDM printer, and the
+# bought / cut / dispensed parts, which are only there for fit checks and CAD
+STL_DIR = os.path.join(HERE, 'stl')
+STL_MAT = dict(cup='MJF_PA12', cap='MJF_PA12', carrier='MJF_PA12', rails='MJF_PA12',
+               bumpb='TPU_95A', bumpt='TPU_95A', pad='TPU_95A', sleeve='TPU_95A',
+               oring='not_printed', foam='not_printed', filler='not_printed', vent='not_printed')
+def stl_path(k):
+    d = os.path.join(STL_DIR, STL_MAT[k]); os.makedirs(d, exist_ok=True); return os.path.join(d, f'monolith_cup_{k}.stl')
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9,
            insul=1.1, foam=0.3, sleeve=1.2, label=1.35, vent=1.0)
 def masses(A):
@@ -804,10 +812,10 @@ if __name__ == '__main__':
     print('total', round(sum(m.values()), 1), 'g   size (x, y, z)', np.round(size(A), 1))
     if which in ('all', 'stl'):
         for k in ('cup', 'cap', 'carrier', 'rails', 'sleeve', 'foam', 'pad', 'oring', 'filler', 'vent'):
-            write_stl(os.path.join(HERE, f'monolith_cup_{k}.stl'), np.vstack([V for kk, V, _ in A if kk == k]))
+            write_stl(stl_path(k), np.vstack([V for kk, V, _ in A if kk == k]))
         for top in (False, True):                        # each bumper is ONE TPU print: the band and the slab only differ
-            write_stl(os.path.join(HERE, f"monolith_cup_{'bumpt' if top else 'bumpb'}.stl"), tris(U(*bumper(top))))   # by infill
-        print('wrote monolith_cup_*.stl')
+            write_stl(stl_path('bumpt' if top else 'bumpb'), tris(U(*bumper(top))))   # by infill
+        print('wrote stl/<material>/monolith_cup_*.stl')
     if which in ('all', 'exploded'): sheet_exploded(A, m)
     if which in ('all', 'sections'): sheet_sections(A)
     if which in ('all', 'compare'): sheet_compare(A, m)
