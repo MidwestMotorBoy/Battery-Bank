@@ -40,7 +40,7 @@ def ladder():
 MOUTH_H, LID_T = 14.0, 1.5                    # cup section above the mouth, lid on top
 def mouth():
     z1 = K.Z_MOUTH + MOUTH_H
-    sec = K.cup() ^ pz(K.cs_out.offset(1, M3.JoinType.Round), K.Z_MOUTH - 1, z1)
+    sec = K.cup() ^ pz(K.cs_mouth.offset(1, M3.JoinType.Round), K.Z_MOUTH - 1, z1)
     return sec + pz(K.cs_out, z1 - 0.01, z1 + LID_T) - pz(K.text_cs('B', 5.0, 0, 0), z1 + LID_T - 0.5, z1 + LID_T + 1)
 
 def coupons():
