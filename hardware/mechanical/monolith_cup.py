@@ -69,6 +69,10 @@ MOUTH_T, MOUTH_H, MOUTH_TAPER = 2.4, SKIRT_L, 0.8   # cup wall at the mouth, thi
                                    # off the cap plate; plate model in docs/reviews/2026-10-31-mouth-band/)
 MOUTH_LEAD = 0.8                   # lead-in at the cup mouth for the O-ring (0.3 deep over this height)
 OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6)]   # overtravel posts (x, y)
+VENT_XY, VENT_HOLE_R = (25.0, 0.0), 1.0   # ePTFE pressure vent (2026-10-31, Logan: behind a bumper, no label hole): a 2 mm hole
+VENT_D, VENT_T = 5.0, 0.4          # through the cap plate in the free strip between the cells and the board, with a Gore VE70205
+VENT_POCKET_R = 3.0                # (5 mm adhesive, 2 mm hole) on the plate's outside, in a pocket through the bottom bumper slab;
+VENT_GROOVE = (1.2, 0.8)           # a groove (width, depth) in the slab's base runs from the pocket to the +x edge so it breathes on a table
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
 PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (10 % gyroid since 2026-10-31): roughly
                                    # 8-40 N of preload on the core (~15-80 N at 15 %); check the core can't rattle
@@ -198,7 +202,9 @@ def cap():
     m = U(plate, skirt, *bosses, *posts)
     m = m - pz(CS.batch_boolean([cs_in.offset(0.5, ROUND), cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), *GROOVE_Z)
     d = YI - 0.1 - BOSS_DEPTH + PILOT_SOLID                                                       # blind pilots
+    m = m - pz(circ(*VENT_XY, VENT_HOLE_R), Z_MOUTH - CAP_T - 1, Z_MOUTH + 1)                      # vent hole
     return m - cyly(SCREW_X, SCREW_Z, PILOT_R, -(YI + 1), -d) - cyly(SCREW_X, SCREW_Z, PILOT_R, d, YI + 1)
+def vent(): return pz(circ(*VENT_XY, VENT_D / 2), Z_MOUTH - CAP_T - VENT_T, Z_MOUTH - CAP_T)
 def oring(): return pz(CS.batch_boolean([cs_in, cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), GROOVE_Z[0] + 0.3, GROOVE_Z[1] - 0.3)
 def screws():
     e = YI + MOUTH_T - SCREW_CBORE[1]; t = e - SCREW_L    # head in the counterbore; tip SCREW_L in (short of the pilot end)
@@ -337,7 +343,12 @@ def bumper(top):
         zb = z0 - BUMP_T_BOT                              # rating debossed in the base, reads from below
         bx0, by0, bx1, by1 = out.bounds()
         slab = slab - pz(text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2, (by0 + by1) / 2, mirror=True), zb - 1, zb + BASE_TEXT_D)
+        w, d = VENT_GROOVE                                # vent pocket, and its breather groove out to the board-face edge
+        slab = slab - pz(circ(*VENT_XY, VENT_POCKET_R), zb - 1, z0 + 1) - pz(rect(VENT_XY[0], bx1 + 1, VENT_XY[1] - w/2, VENT_XY[1] + w/2), zb - 1, zb + d)
     return band, slab
+def base_text_bounds():
+    out = cs_mouth.offset(BUMP_WALL_BOT, ROUND); bx0, by0, bx1, by1 = out.bounds()
+    return text_cs(BASE_TEXT, BASE_TEXT_H, (bx0 + bx1) / 2, (by0 + by1) / 2, mirror=True).bounds()
 def lead_in(z, sense):
     """conical chamfer on a bumper's inner edge at height z, opening downwards (sense +1) or upwards (-1); cs_out is convex,
     so the hull of the two end sections is the exact chamfer"""
@@ -386,7 +397,7 @@ def label_tex(parts_keys, offset=(0, 0, 0), dpmm=12):
 
 # ---------------- assembly and masses ----------------
 C = dict(RR.C, cup=(214, 214, 208), cap=(170, 186, 200), carrier=(196, 190, 150), filler=(232, 150, 200), oring=(200, 60, 60),
-         screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80),
+         screw=(110, 110, 116), vent=(240, 240, 240), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80),
          rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50), label=(96, 160, 196),
          parts=(64, 64, 70), usb=(150, 150, 156))
 def assembly():
@@ -399,7 +410,7 @@ def assembly():
           ('insul', tris(insul_rings()), C['insul']), ('foam', tris(foam()), C['foam']), ('sleeve', tris(sleeves()), C['sleeve']),
           *board_parts(),
           ('pad', tris(pad()), C['pad']), ('oring', tris(oring()), C['oring']), ('cap', tris(cap()), C['cap']),
-          ('screw', tris(screws()), C['screw']),
+          ('screw', tris(screws()), C['screw']), ('vent', tris(vent()), C['vent']),
           ('label', tris(label()), C['label'])]
     for top in (False, True):
         b, s = bumper(top); k = 'bumpt' if top else 'bumpb'
@@ -423,15 +434,16 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (8, 'Gap filler, board to the front cells (dispensed)', 'GEL 30, 3.1 g/cm3', 'filler'),
          (9, 'Board 1.6 mm with its parts (routed P0, from KiCad)', 'FR4, 6 layers', 'board'),
          (10, 'Retaining sleeves on the posts (4)', 'TPU 95A', 'sleeve'),
-         (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', 'MJF PA12, 1.2 / 1.8', 'cup'),
+         (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', f'MJF PA12, {WALL} / {WALL_BF}', 'cup'),
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 10 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, skirt, posts', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
-         (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label')]
+         (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
+         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE, Gore VE70205', 'vent')]
 NUM = {k: n for n, _, _, k in PARTS}
 RHO = dict(cup=1.01, cap=1.01, carrier=1.01, rails=1.01, screw=7.9, oring=1.15, filler=3.1, nickel=8.9, tails=8.9,
-           insul=1.1, foam=0.3, sleeve=1.2, label=1.35)
+           insul=1.1, foam=0.3, sleeve=1.2, label=1.35, vent=1.0)
 def masses(A):
     m = {}
     for k, V, _ in A:
@@ -517,6 +529,10 @@ def checks():
         'screw heads sit inside the bottom bumper band (y, >= 0.1)': (YI + MOUTH_T + BUMP_WALL_BOT) - (YI + MOUTH_T - SCREW_CBORE[1] + SCREW_HEAD[1]) - 0.1,
         'counterbores inside the mouth band (z) and leave >= 1.5 wall (y)': min(SCREW_Z - SCREW_CBORE[0] - Z_MOUTH - 0.2,
                                                        (Z_MOUTH + MOUTH_H - MOUTH_TAPER) - (SCREW_Z + SCREW_CBORE[0]), MOUTH_T - SCREW_CBORE[1] - 1.5),
+        'vent hole: inside the free strip, clear of the pad and the skirt (x, >= 0.5)': min((VENT_XY[0] - VENT_HOLE_R) - (PR + CR - 0.4) - 0.5,
+                                                       (X_IN - 0.1 - SKIRT_T) - (VENT_XY[0] + VENT_HOLE_R) - 0.5),
+        'vent: disc clear of its pocket in the bumper slab (r, >= 0.3)': VENT_POCKET_R - VENT_D / 2 - 0.3,
+        'vent: pocket and groove clear of the base rating text (x, >= 1.0)': (VENT_XY[0] - VENT_POCKET_R) - base_text_bounds()[2] - 1.0,
         'screw holes clear of the mouth lead-in (z)': (SCREW_Z - SCREW_HOLE_R) - (Z_MOUTH + MOUTH_LEAD),
         'blind pilots: solid behind them in the bosses (>= 1.2)': PILOT_SOLID - 1.2 + 1e-9,
         'thick mouth band covers the O-ring band before its taper (z)': (Z_MOUTH + MOUTH_H - MOUTH_TAPER) - GROOVE_Z[1],
@@ -635,7 +651,7 @@ def sheet_exploded(A, m):
                 475, 'r', 150)
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(cell=(0, 0, -75), carrier=(0, 0, -75), nickel=(0, 0, -75), tails=(0, 0, -75), board=(16, 0, -75), ble=(16, 0, -75),
-              filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152),
+              filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152), vent=(0, 0, -167),
               rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), sleeve=(22, 0, -75), label=(0, 0, 25))
     ex, gid = [], []
     for k, V, c in A:
@@ -738,7 +754,7 @@ def sheet_compare(A, m):
     rows_w = [('Cells, board, nickel', ('cell', 'board', 'nickel', 'tails'), ('cell', 'board', 'nickel', 'tails')),
               ('Tray / cup (+ wedge)', ('shell', 'wedge'), ('cup',)), ('Cover / cap (+ standoffs)', ('cover', 'stand'), ('cap',)),
               ('Cell holder (+ pad)', ('cage', 'frame', 'holder'), ('carrier', 'pad')), ('Bumpers / crush caps', ('capb', 'capt'), ('bumpb', 'bumpt')),
-              ('Seal + fasteners', ('unmodelled',), ('oring', 'screw')), ('Thermal interface', ('gappad',), ('filler',)),
+              ('Seal + fasteners', ('unmodelled',), ('oring', 'screw', 'vent')), ('Thermal interface', ('gappad',), ('filler',)),
               ('Insulation sheet + hold-downs', ('insul', 'rings', 'hold'), ())]
     rows = [[n, f'{cat(mt, a):.1f}', f'{cat(m, b):.1f}', f'{cat(m, b) - cat(mt, a):+.1f}'] for n, a, b in rows_w]
     rows.append(['Pack total', f'{tt:.1f}', f'{tc:.1f}', f'{tc - tt:+.1f}'])
