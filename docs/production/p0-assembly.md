@@ -160,8 +160,8 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
 
 ## Open items
 - **Board:** run KiCad DRC on the `Production` board after the sense-hole and DNP changes, and set the DNP flags in the JLC BOM export.
-- **Fit (coupons before the full cup):**
-    - USB-C bore ladder: a 1.85 mm wall printed in the cup's orientation, with the housing pocket (`usb_pocket()`, 0.47 mm deep) under each bore, bores at ring − 0.1 to − 0.5 mm per axis, rounded-rectangle like the ring. Pick the one that gives 0.12–0.18 mm squeeze and passes a 1 m dunk with a connector pushed in blind. Measure the rings on 5 connectors from the batch first.
+- **Fit (coupons before the full cup):** print files in `hardware/mechanical/coupons/` (`monolith_coupons.py`, 2026-10-31): A the seal-bore ladder, B the cup mouth (lidded) with the real cap, C the real carrier, rail blocks and sleeves.
+    - USB-C bore ladder: a 1.85 mm wall printed in the cup's orientation, with the housing pocket (`usb_pocket()`, 0.47 mm deep) under each bore, bores at ring − 0.1 to − 0.5 mm per axis (squeeze 0.05–0.25 a side, debossed 05–25 beside each bore), rounded-rectangle like the ring. Push a loose connector in from the pocket side. Pick the one that gives 0.12–0.18 mm squeeze and passes a 1 m dunk with a connector pushed in blind. Measure the rings on 5 connectors from the batch first.
     - Cup mouth + collar cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.
     - Carrier + rail blocks with real cells: load all four cells, check the key slots and the foam, and fit a bare board on the posts.
     - How hard the module pushes home.
