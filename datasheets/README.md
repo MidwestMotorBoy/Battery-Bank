@@ -52,7 +52,8 @@ Use: **P0** = on the production board schematic, **Dev** = on the dev board sche
 | `aps0730.pdf` | Coilank APS-F series | P0, Dev | APS0530M3R3H: L402/L502 5 V buck inductor. APS0730M2R2F: L401/L501 land pattern and A/B alternate (fitted: Coilcraft XGL7030-332MEC, not held) |
 | `tps62933.pdf` | TI TPS62933 | P0, Dev | U404/U504 5 V PP5V buck |
 | `tpd6s300.pdf` | TI TPD6S300 | P0 | U405/U505 CC/SBU port protector |
-| `tvs2200.pdf` | TI TVS2200 | P0, Dev | D401/D501 VBUS flat-clamp TVS |
+| `tvs2200.pdf` | TI TVS2200 | P0, Dev | D401/D501 VBUS flat-clamp TVS (reference part; P0 fits the Maxinmicro clone below) |
+| `maxinmicro-tvs2200drvr.pdf` | Wuxi Maxinmicro TVSXX00DRVR family (V1.0, Chinese/English) | P0 | D401/D501 as fitted since 2026-10-31 (LCSC C55616459), pin-compatible with the TI part |
 | `lrb520s-40t1g.pdf` | LRC LRB520S-40T1G | P0, Dev | D404/D405/D410/D411 (and 5xx) |
 | `usb-c-16pcb1.6-ip68.pdf` | Shou Han TYPE-C 16PCB1.6 IP68 | P0, Dev | J401/J501 USB-C (1.6 mm board) |
 | `gmk325bj226mm.pdf` | Taiyo Yuden GMK325BJ226MM-P | P0, Dev | 22 uF 35 V 1210 caps (C208-C213, C420 and others) |

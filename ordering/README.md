@@ -22,7 +22,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 
 ## Order plan
 
-1. **Now, the board (JLCPCB).** Upload the files in [`hardware/Production/jlc/`](../hardware/Production/jlc/) (top-side assembly only, see `ORDER-NOTES.md`). Sort out B02–B07 in the same order, or JLC leaves those parts off: TPS25751 (U401/U501), SiZ240DT (Q401/Q402/Q501/Q502) and the TVS2200 shortfall (D401/D501) through global sourcing; Coilcraft XGL7030-332MEC (L401/L501) and the CC2340 module (U301) consigned or global-sourced; and C49248023 picked by hand on the L402/L502 line.
+1. **Now, the board (JLCPCB).** Upload the files in [`hardware/Production/jlc/`](../hardware/Production/jlc/) (top-side assembly only, see `ORDER-NOTES.md`). Sort out B02–B07 in the same order, or JLC leaves those parts off: TPS25751 (U401/U501), SiZ240DT (Q401/Q402/Q501/Q502) through global sourcing (D401/D501 are now the in-stock Maxinmicro TVS2200DRVR, C55616459); Coilcraft XGL7030-332MEC (L401/L501) and the CC2340 module (U301) consigned or global-sourced; and C49248023 picked by hand on the L402/L502 line.
 2. **Now, LCSC.** The 12 bottom-side parts for hand-soldering, plus R124/R126 (left off at JLC on purpose, fitted after the pack voltages check): L01–L04.
 3. **Now, the fit coupons (H01)**, so the full housing order isn't held up. They test the USB-C bores, O-ring squeeze, cap screws and rail clips.
 4. **Now, the long-lead small stuff:** gap filler (C07), stickers (H12), vent patches (H10), O-rings, screws, grease, foam and punches, nickel strip, wire, fish-paper rings.
@@ -44,7 +44,7 @@ What goes in each pack, and why, lives in [`docs/production/p0-assembly.md`](../
 _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not this table._
 
 **Status:** To order 29 · Decide 1 · Hold 7 · Check 5 · Have 1  
-**Known prices:** $471.90 listed so far (most lines have no price yet), $0.00 ordered.
+**Known prices:** $473.25 listed so far (most lines have no price yet), $0.00 ordered.
 
 ### Board
 
@@ -53,7 +53,7 @@ _Generated from `parts-tracker.csv` by `update_readme.py`; edit the CSV, not thi
 | B01 | P0 board: PCB + top-side assembly<br><sub>6 layers, 43.25 x 74.43 x 1.6 mm, ENIG, 2 oz outer / 0.5 oz inner, epoxy-filled capped vias, SAC305 paste</sub> | 5 boards | [JLCPCB](https://cart.jlcpcb.com/quote) |  | **To order** |  | Upload from hardware/Production/jlc/: Monolith_gerbers_JLC.zip, Monolith_BOM_JLC_top.csv, Monolith_CPL_JLC_top.csv (top side only; 249 parts). Rotations and F102 offset already checked in JLC preview (ORDER-NOTES.md). PCBA minimum is 2: assemble 2 first or all 5. Lines B02-B07 must be resolved in the same order or JLC leaves those parts off. |
 | B02 | TPS25751DREFR (U401, U501)<br><sub>USB-C PD controller, WQFN-38</sub> | 10 | [JLC global sourcing](https://www.lcsc.com/product-detail/C30169739.html) |  | **To order** |  | LCSC C30169739 out of stock on 2026-10-30; critical part, no substitute. |
 | B03 | SiZ240DT-T1-GE3 (Q401, Q402, Q501, Q502)<br><sub>Vishay dual N-FET, PowerPAIR 3x3S</sub> | 20 | [JLC global sourcing](https://www.lcsc.com/product-detail/C3289403.html) |  | **To order** |  | LCSC C3289403 had only 2 in stock on 2026-10-30; need 4 per board. |
-| B04 | TVS2200DRVR (D401, D501)<br><sub>TI 22 V TVS, WSON-6</sub> | 10 | [JLC global sourcing](https://www.lcsc.com/product-detail/C523793.html) |  | **To order** |  | LCSC C523793 short for the full order on 2026-10-30; source the shortfall. |
+| B04 | TVS2200DRVR (D401, D501)<br><sub>Wuxi Maxinmicro 22 V flat-clamp TVS, DFN-6 2x2 (pin-compatible with TI TVS2200)</sub> | 10 | [JLC parts library](https://www.lcsc.com/product-detail/C55616459.html) | 1.35 | **To order** |  | Switched 2026-10-31 from TI C523793 (short at JLC) to Maxinmicro C55616459 (LCSC stock 3000, extended part). In the JLC BOM now; check the pin-1 rotation of D401/D501 in the JLC preview. |
 | B05 | Coilcraft XGL7030-332MEC (L401, L501)<br><sub>3.3 uH, 7 x 7 x 3 mm</sub> | 12 | [DigiKey / Coilcraft, consigned to JLC](https://www.digikey.com/en/products/result?keywords=XGL7030-332MEC) |  | **To order** |  | No LCSC part. Consign (ship to JLC) or let JLC global sourcing buy it from DigiKey/Mouser. 10 + 2 spare. |
 | B06 | TI CC2340R5MODAN0MHAR (U301)<br><sub>BLE module, 7 x 10 mm</sub> | 6 | [DigiKey / TI, consigned to JLC](https://www.digikey.com/en/products/result?keywords=CC2340R5MODAN0MHAR) |  | **To order** |  | No LCSC part (ORDER-NOTES.md). Consign or global sourcing, same as B05. 5 + 1 spare. |
 | B07 | ABC EHE05023R3MFB (L402, L502)<br><sub>3.3 uH, 5.5 x 5.2 x 2.0 mm</sub> | 10 | [JLC parts library](https://www.lcsc.com/product-detail/C49248023.html) |  | **To order** |  | In the JLC BOM, but the selection did not stick last time: pick C49248023 on that line by hand. |

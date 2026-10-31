@@ -155,7 +155,7 @@ TEXTS = {
             "   No liquid detection and no SBU use on production (IP68 connectors, potted board): the connector SBU pins are",
             "   no-connects; GPIO4, 5 and 7 are tied to GND (note 2). U405 FLT -> GPIO3 = Fault_Input_Event (SBU_FLT, R441):",
             "   a CC short to VBUS forces error recovery.",
-            "   D401 = TVS2200 flat clamp on VBUS (28 V at 40 A 8/20 us; TI's pick for the TPS25751).",
+            "   D401 = TVS2200 flat clamp on VBUS (TI's pick for the TPS25751, 28 V at 40 A 8/20 us); fitted as Maxinmicro TVS2200DRVR C55616459.",
             "4. Kelvin-route ACP/ACN from R424 and SRP/SRN from R427; filter parts at the IC.",
             "5. Low-profile bulk, all <= 3.1 mm (the inductor height). Two MLCCs of each bank plus C430/C438 at the FETs, the",
             "   rest one row back. USB side: 4 x 22u 35V 1210 (C420 C423 C424 C427) + 2 x 47u 35V CA55 polymer tantalum",
