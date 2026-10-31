@@ -13,7 +13,7 @@ CELL_L      = 71.1    # 70.95 +-0.2 mm; Batemo measures 71.1. A 71.15 maximum ce
                       # Was the EVE 58E, 21.5 x 70.8, until 2026-10-21
 CELL_D_58E  = 21.5    # the board outline is still derived from the 58E-era pocket (see pocket_r), so it doesn't change
 CELL_CLEAR  = 0.30    # diametral clearance per cell pocket
-WALL        = 1.20
+WALL        = 1.60    # 1.6 since 2026-10-31 (Logan): side flats at +25 kPa 15.5 -> 8.7 MPa, +4.8 g (was 1.2)
 PCB_RECESS  = 2.0     # bottom PCB sits this far inside the rim
 PCB_T       = 1.6
 PCB_CLEAR   = 0.15    # gap between PCB edge and tube wall

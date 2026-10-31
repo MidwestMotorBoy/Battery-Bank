@@ -26,7 +26,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), Infineon BSC007N04LS6 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner copper, ENIG, filled and capped vias; JLCPCB assembly of F.Cu, B.Cu parts hand-fitted |
-| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.7 × 52.9 × 95.9 mm, about 391.2 g (modelled) |
+| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.9 × 52.7 × 95.5 mm, about 398.8 g (modelled) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app on the `app` branch) |
 
 ## Status
@@ -37,7 +37,7 @@ Nothing has been built, assembled or bench-tested yet; every number in this repo
 
 - **P0 schematic:** 283 parts, 6 sheets. Derived by script from an earlier bench design that went through four schematic reviews, with a netlist check that every surviving pin kept its net. Loss cuts, the BAK 65E cell change and the cup changes are in.
 - **P0 layout:** placed (2026-10-28, with a placement review), fully routed (2026-10-30, 0 unconnected), first routed review done and its schematic bugs fixed (TPD6S300 CC1 on GND, the 9 V gate-drive enable). Second routed review: [`docs/reviews/2026-10-30-routed-board/`](docs/reviews/2026-10-30-routed-board/README.md).
-- **Mechanical:** parametric cup enclosure with drop, thermal-expansion, vibration and assembly-clearance checks, STL/STEP/DXF outputs and renders ([`docs/mechanical-design.md`](docs/mechanical-design.md)); mechanical review fixes applied 2026-10-24; vent removed 2026-10-28 (vacuum-jar leak test instead).
+- **Mechanical:** parametric cup enclosure with drop, thermal-expansion, vibration and assembly-clearance checks, STL/STEP/DXF outputs and renders ([`docs/mechanical-design.md`](docs/mechanical-design.md)); mechanical review fixes applied 2026-10-24; vent removed 2026-10-28, back on 2026-10-31 on the cap under the bottom bumper (no label hole).
 - **Thermal and loss models:** a 3-D model of the BAK 65E pack in the cup with the firmware policy in the loop ([`research_notes/Pack thermal BAK 65E/`](research_notes/Pack%20thermal%20BAK%2065E/README.md)), now including the routed copper losses, and a loss-reduction study ([summary](research_notes/Loss%20reduction/summary.md)) whose four cuts were adopted.
 - **Cells and pack build:** BAK N21700CX-65E, BSC007N04LS6 protection FETs sized for its short-circuit current ([options](research_notes/protection-fets/options.md)), P20B spot welding with 0.2 × 10 mm pure nickel and wire PACK tails ([welding](docs/production/spot-welding.md), [assembly](docs/production/p0-assembly.md)), Parker GEL 30 gap filler, front-cell NTCs as SMD parts on the board under the gap filler (TH101 / TH104).
 - **Firmware policy:** charge current and discharge power as linear ramps on the hottest cell temperature ([policy](docs/firmware/charge-and-thermal-policy.md)); a LaunchPad build of the firmware skeleton and TI's `basic_ble` runs.
@@ -143,7 +143,7 @@ Model studies of the whole pack, each in its own folder under [`docs/analysis/`]
 | Corner, port end | 2432 g | 5.1 mm | local stress in the cup under the corner |
 | Corner, cap end | 1535 g | 2.7 mm | local stress in the cup and cap under the corner |
 
-Two changes come out of it before a real drop test: print the port-end slab at **30 % gyroid** (572 g at 1 m and 641 g at 1.5 m, about 2 g more), and **counterbore the cup mouth 0.5 mm under the two M2 heads** so they sit below the bumper band. A soft pad on the board-face wall over the two inductors would also take the edge off the board-face drop.
+Three fixes came out of it and are now in the model: the bumper slabs at **30 % gyroid** (port end 2685 → 569 g), the two M2 heads **counterbored 0.8 mm** into the cup mouth so they sit below the bumper band, and **0.5 mm pockets in the board-face wall** over the two inductors (0.51 mm left after the board's bow, was 0.02 mm). The rerun is in the analysis README.
 
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-poses.png" alt="The six drop poses at first touch" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-stress.png" alt="Stress in the nylon parts for the six drops" width="100%"></p>

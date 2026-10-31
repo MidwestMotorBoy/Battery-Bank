@@ -141,7 +141,7 @@ def box_union(fn):
 def cells():
     c = P.cell_solid(); return np.vstack([K.mv(c, (x, y, S.sb_z_cell0)) for x, y in K.CELLS])
 def bumper_parts(top):
-    b, s = K.bumper(top); return [('band', mf(b)), (f'slab ({K.SLAB_FILL:.0%} infill)', mf(s))]
+    return [('bumper', mf(K.U(*K.bumper(top))))]   # one TPU print; the slab's infill is a slicer setting
 # file name, description (from monolith_cup.PARTS), colour key, [(body name, (pts, tris))]
 def part_list():
     D = {k: name + ', ' + mat for _, name, mat, k in K.PARTS}
@@ -167,7 +167,8 @@ def part_list():
          ('14_cap', 'cap', [('cap', mf(K.cap()))]),
          ('15_screws_M2', 'screw', [('screw', mf(K.screws()))]),
          ('16_bumper_bottom', 'bumpb', bumper_parts(False)),
-         ('17_bumper_top', 'bumpt', bumper_parts(True))]
+         ('17_bumper_top', 'bumpt', bumper_parts(True)),
+         ('19_vent', 'vent', [('vent', mf(K.vent()))])]
     return [(f, D.get(k, k), k, b) for f, k, b in L]
 COLOUR = dict(K.C, bumpb=K.C['bump'], bumpt=K.C['bump'], tails=K.C['tail'], pwire=K.C['wire'], swire=K.C['wire'])
 

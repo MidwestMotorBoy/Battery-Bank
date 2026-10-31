@@ -61,6 +61,7 @@ E_TPU = 40.0          # TPU 95A, impact-rate modulus (quasi-static ~26 MPa for F
 CONF = 3.0            # apparent stiffening of a solid TPU band squeezed through its thickness (shape factor ~1.2-1.8)
 E_PA12 = 1700.0       # MJF PA12
 GYROID = {0.20: dict(E=2.0, pl=0.30), 0.10: dict(E=0.6, pl=0.10)}   # TPU gyroid: initial modulus, plateau stress (MPa)
+GYROID[0.30] = dict(E=GYROID[0.20]['E'] * 1.5**2, pl=GYROID[0.20]['pl'] * 1.5**2)   # elastomer lattice ~ rho^2 (as sens.py)
 SCALE = dict(tpu=1.0, gyroid=1.0)     # sensitivity multipliers
 
 def solid_tpu(eps):

@@ -240,18 +240,22 @@ def step5(P):
 
 def step6(P):
     built = L(P, 'cup', 'cap', 'screw')
-    st = Step(6, '6   Leak test, bumpers',
-              'No vent: the pack is sealed for good. Soap the joints, pull a vacuum round the pack in a jar, then press the bumpers on.', 2)
+    vx, vy = K.VENT_XY; vz = K.Z_MOUTH - K.CAP_T
+    st = Step(6, '6   Leak test, vent, bumpers',
+              'Tape over the vent hole and bubble-test the closed pack in a vacuum jar; then stick the vent on and press the bumpers on.', 3)
     st.panel('6.1  Vacuum-jar bubble test', L(P, 'cup'), L(P, 'cap', 'screw'), (1.0, -0.7, 0.3),
              notes=[((K.X_OUT, -K.YI, K.Z_MOUTH + 3), 'Soap film on the cap seam\nand the two screw heads'),
                     ((S.sb_port_x, S.SB_PORT_Y, K.Z_TOP1), 'Soap film on both USB-C ports'),
-                    ((K.X_OUT, 0, 40), 'Pull -20 kPa, watch 5 min:\ngrowing bubbles = a leak')],
+                    ((K.X_OUT, 0, 40), 'Kapton over the vent hole,\npull -20 kPa, watch 5 min:\ngrowing bubbles = a leak')],
              side_notes=['Fit print first, to -50 kPa (a warm pack at 4300 m):', 'side flats measured before and after.'])
-    st.panel('6.2  Bumpers on', built,
+    st.panel('6.2  Pressure vent on the cap', built, L(P, 'vent', o=(0, 0, -12)), (0.9, -1.0, -0.6),
+             arrows=[((vx, vy, vz - 14), (vx, vy, vz - 2))],
+             notes=[((vx, vy, vz - 12), '12 mm ePTFE patch over the 3 mm hole:\ntape off, clean with IPA,\npress 5 s, keep the membrane dry')])
+    st.panel('6.3  Bumpers on', built + L(P, 'vent'),
              L(P, 'bumpt_band', 'bumpt_slab', o=(0, 0, 22)) + L(P, 'bumpb_band', 'bumpb_slab', o=(0, 0, -22)), (1.0, -1.1, 0.35),
              arrows=[((0, -30, 115), (0, -30, 100)), ((0, -30, -40), (0, -30, -25))],
              notes=[((S.sb_port_x, S.SB_PORT_Y, 88.6 + 22), 'Top bumper: port well\nover the USB-C'),
-                    ((0, -26.6, -9.9 - 22), 'Bottom bumper over the mouth,\npockets over the screw heads')])
+                    ((0, -26.6, -9.9 - 22), 'Bottom bumper over the mouth,\npockets over the screw heads\nand the vent')])
     st.save()
 
 STEPS = [step0, step1, step2, step3, step4, step5, step6]

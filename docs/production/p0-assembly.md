@@ -65,11 +65,11 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Insulation:** four 0.2 mm fish-paper rings for the + ends (self-adhesive "barley" rings, cut to fit the measured + cap). Kapton tape.
 - **Foam:** silicone foam sheet (about 1 and 1.6 mm), cut into four preload rings.
 - **Printed parts:**
-    - the cup (1.2 mm walls, 2.0 mm on the board face, 1.85 mm top wall) and the bottom cap (MJF PA12);
+    - the cup (1.6 mm side walls, 2.0 mm on the board face, 1.85 mm top wall, 2.4 mm mouth band) and the bottom cap (MJF PA12);
     - the cell carrier (MJF PA12): two frames, spines and the front-back webs;
     - the four board-rail blocks (MJF PA12);
-    - in TPU: the pad (inside the cap, 10 % gyroid), the bumper slabs at 20 % gyroid, the four post sleeves, and the two bumpers.
-- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 6 mm thread-forming screws for plastic (the mouth wall and boss stack is 6.1 mm in the model), silicone grease. No vent: the pack is sealed for good (2026-10-28).
+    - in TPU 95A: the pad (inside the cap, 10 % gyroid), the four post sleeves, and the two bumpers. Each bumper is a single print, outer end face on the bed, with 5 walls, 4 top and bottom layers and 30 % gyroid: the bands come out solid and the slab gets the gyroid.
+- **Seal and fixings:** a 2.0 mm silicone O-ring (60A, ~25 % squeeze in the skirt groove), 2 × M2 × 5 mm pan-head thread-forming screws for plastic (heads in 0.8 mm counterbores; 3.3 mm of thread in each boss), silicone grease, and one 12 mm adhesive ePTFE vent patch (VOSAREA lamp vent; a Gore VE80308 also fits) for the 3 mm hole in the cap (2026-10-31).
 - **Thermal:** Parker Chomerics THERM-A-GAP GEL 30, one 10 cc syringe (65-00-GEL30-0010), about 4.5 g between the board and the two front cells. A 0.01 g scale and a 14–16 gauge tapered tip.
 - **Other:** conformal coat.
 - **Tools:** an AWithZ P20B spot welder with handheld pens (`spot-welding.md`), soldering iron, a multimeter, calipers, the gauge and programming setup (EV2400 on the J302 "GAUGE" Tag-Connect, XDS110 on J301, one TC2030-IDC-NL cable for both), a current-limited bench supply and a cell simulator for step 0, and a clear vacuum jar with a hand pump and gauge (a food-vacuum or resin-degassing pot) plus leak-detection fluid or soapy water for the leak test.
@@ -146,9 +146,10 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 ![Step 6](../../hardware/mechanical/assembly_steps/step6.png)
 
-1. **Leak test** in a vacuum jar. There is no vent, so the closed pack keeps its own air and a vacuum round it loads the seals the way altitude does. Brush leak-detection fluid or soapy water over the cap seam, both screw heads and both USB-C ports, stand the pack in the dry jar and pull **−20 kPa** (about an airliner cabin). Watch for 5 min: a bubble or foam that keeps growing at a joint is a leak. Let the air back in slowly and wipe the pack dry. Don't submerge the pack for this test: if a seal leaks, the jar's water is pulled in when the air goes back in.
+1. **Leak test** in a vacuum jar, before the vent goes on. Put a square of Kapton over the 3 mm vent hole in the cap so the closed pack keeps its own air and a vacuum round it loads the seals. Brush leak-detection fluid or soapy water over the cap seam, both screw heads and both USB-C ports, stand the pack in the dry jar and pull **−20 kPa** (about an airliner cabin). Watch for 5 min: a bubble or foam that keeps growing at a joint is a leak. Let the air back in slowly and wipe the pack dry. Don't submerge the pack for this test: if a seal leaks, the jar's water is pulled in when the air goes back in.
 2. **First pack only:** take the empty fit print (cup, cap, O-ring and screws, no core) to **−50 kPa** (a warm pack at 4300 m) for 10 min. Measure across both side flats before and after, and look for cracks round the screw holes. If the flats take a set, thicken the side walls before building more.
-3. Press the TPU bumpers on, top (port well) and bottom (over the thick mouth, pockets over the screw heads).
+3. **Vent:** peel the Kapton, clean round the hole with IPA and let it dry, then press the vent patch on, centred over the hole, for 5 s with a flat tool on its rim. Don't touch the membrane or get it wet or oily.
+4. Press the TPU bumpers on, top (port well) and bottom (over the thick mouth, pockets over the screw heads and the vent).
 
 ## Working on the live pack
 

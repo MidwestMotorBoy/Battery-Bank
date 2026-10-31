@@ -11,6 +11,7 @@ H_DROP, G = 1.0, 9.81
 V0 = np.sqrt(2 * G * H_DROP)                    # 4.43 m/s at impact
 SHELL = ('cup', 'cap', 'label', 'bumpb', 'bumpt', 'screw', 'oring')
 A, MASS, PRM = geom.load()
+C.MAT['bumpt_slab'] = C.MAT['bumpb_slab'] = f"gyroid{round(PRM.get('SLAB_FILL', 0.2) * 100)}"   # the slabs as built in the model
 M_ALL = sum(MASS.values()) / 1000; M_SHELL = sum(MASS[k] for k in SHELL) / 1000; M_CORE = M_ALL - M_SHELL
 
 def cg():

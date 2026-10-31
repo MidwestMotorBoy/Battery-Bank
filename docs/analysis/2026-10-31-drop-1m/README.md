@@ -84,6 +84,41 @@ The table gives the peak g on the cells and board, at 1 m unless marked.
 
 **Verdict:** stay with TPU 95A and print the slabs at 30 %. PEBA only wins on the band hits, by 10–20 %. Matching TPU on the port end would take 40 % infill or more, and that is no lighter and not as safe. Its stiffness is also the least certain number in the model. If the real drop tests show the band hits as the problem, a thicker TPU band is the simpler fix.
 
+## After the fixes (2026-10-31)
+
+Logan approved the three housing fixes this analysis pointed to:
+- **Slabs:** both bumper slabs are back at 30 % gyroid.
+- **Screws:** the M2 heads sit in 0.8 mm counterbores in the mouth band, 0.5 mm below the bumper band. The screws are now M2 × 5. A first try at 0.5 mm still let the heads touch at the end of the narrow-side crush.
+- **Inductors:** the board-face wall has 0.5 mm pockets on its inside over L401 / L501.
+
+`drop.py` now reads the slab infill from the model, and a rerun on the fixed geometry (394.1 g, 60.7 × 52.3 × 95.9 mm) is in `out/drop-after-fixes.json`. `out/drop.json` keeps the original run.
+
+| Pose | Before | After | Note |
+|---|---|---|---|
+| Flat on the port end | 2685 g | **569 g** | the 30 % slab no longer bottoms out (3.0 of 6 mm) |
+| Flat on the cap end | 1222 g | 1069 g | |
+| Flat on the board face | 2405 g | 2433 g | 0.51 mm left over L401 / L501 after the 0.61 mm bow (was 0.02 mm) |
+| Flat on a narrow side | 3321 g | 3875 g | the heads no longer touch; the 1 mm bottom band and the top band take it alone |
+| Corner, port end | 2432 g | 2550 g | |
+| Corner, cap end | 1535 g | 1522 g | |
+
+The narrow-side number went up because the first run let the steel heads crush like nylon for their first 0.3 mm, which made the stop look softer than it is. The 3875 g figure is the honest one. If it matters, the fix is a thicker bottom band at the sides: it is 1.0 mm of solid TPU there.
+
+### With 1.6 mm side walls (2026-10-31)
+
+Logan then took the cup's side walls from 1.2 to 1.6 mm, so the sealed pack doesn't creep at altitude (side flats 8.7 MPa at +25 kPa, was 15.5). That makes the pack 398.8 g and 60.9 × 52.7 × 95.9 mm. The rerun is in `out/drop-wall-1p6.json`. Core g changes by 4 % or less:
+
+| Pose | 1.2 mm walls | 1.6 mm walls |
+|---|---|---|
+| Flat on the port end | 569 g | 573 g |
+| Flat on the cap end | 1069 g | 1107 g |
+| Flat on the board face | 2433 g | 2539 g |
+| Flat on a narrow side | 3875 g | 4018 g |
+| Corner, port end | 2550 g | 2443 g |
+| Corner, cap end | 1522 g | 1549 g |
+
+The board-face bow scales with the core g, to about 0.64 mm. That is still inside the 0.68 mm the L401 / L501 pocket check allows for.
+
 ## Method
 
 1. **Geometry.** The cup assembly is meshed from `monolith_cup.py` (`geom.py`, cached). Each part has a mass, so the model knows the centre of mass and splits the pack into a 52 g "shell" (the bumpers, label and outer skin that hit first) and a 339 g "core" (cells, carrier, board and everything inside the cup).
@@ -111,6 +146,7 @@ The table gives the peak g on the cells and board, at 1 m unless marked.
 | `drop.py` | The six drops: `python drop.py` → `out/drop.json` and `cache/<pose>.npz` (about 10 min) |
 | `board_flex.py` | Board plate model and per-part clearance |
 | `sens.py` | Height, material and slab-build sweeps → `out/sens.json` |
+| `out/drop-after-fixes.json` | `drop.py` rerun after the 30 % slabs, counterbores and wall pockets |
 | `peba.py` | PEBA 85A bumpers against TPU 95A at 20–40 %, 1 m, 1.5 m and −20 °C → `out/peba.json` |
 | `poses.py`, `figs.py` | The figures here and `out/checks.json` (stress percentiles, board results) |
 | `out/` | The results as JSON |
