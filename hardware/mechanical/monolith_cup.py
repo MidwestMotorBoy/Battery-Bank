@@ -33,7 +33,14 @@ TOP_T = 1.85                        # top wall, thickened inward (#8): the USB-C
 Z_TOP1 = S.SB_H                     # top edge is a 0.1 mm backstop under it
 Z_TOP0 = Z_TOP1 - TOP_T
 USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.12-0.18 radial target: pick from the bore-ladder
-                                    # coupon); USB_LEAD x 45 deg lead-in on the inside face for the blind push-in
+                                    # coupon), a rounded rectangle like the ring (USB_RING_R), not a stadium
+# Housing pocket (real-board check, 2026-10-30): the connector's hard front housing (d 1.5-2.5 behind the face) reaches
+# 0.35 into the top wall and is wider than the seal bore at its corners (~0.5 mm), so the wall's inside face is pocketed
+# round it up to just under the ring (plus the board's z float), and the ring's lead-in starts there. USB_LEAD is now
+# the peg-slot y float the old 45 deg lead-in had to cover; the pocket covers it.
+HOUSING_CLR = 0.15                  # pocket round the housing, each side
+POCKET_LEAD = 0.25                  # loft from the pocket up to the seal bore (the ring squeezes in over it)
+BOARD_ZFLOAT = 0.1                  # board top edge to the top wall (it can rise this much before it stops)
 FR_B0 = S.cup_fr_b0; FR_B1 = FR_B0 + 1.6                            # carrier bottom frame, under the bottom strips
 FR_T0, FR_T1 = S.sb_z_cell1 + S.TAB_T, Z_TOP0                       # carrier top frame, bears on the top wall
 # Cap end (#1, #2, #7). The skirt top stays SKIRT_GAP under the carrier frame, so no rigid contact crosses the groove;
@@ -72,13 +79,13 @@ KEY_RIB = (0.25, 0.5, 0.4)         # crush rib on each side face of a tongue (20
                                    # the clearance), width (z), lead-in length at the tip. Holds the blocks in on the bench
                                    # until the board is soldered; the cup captures them after that
 POST_GAP = 0.3                     # peg posts stop this far under the board-face wall at nominal
-SLEEVE = (2.0, 0.85, 1.0)          # TPU retaining sleeve pushed down each post onto F.Cu: outer r, bore r, height (pushed
+SLEEVE = (1.9, 0.85, 1.0)          # TPU retaining sleeve pushed down each post onto F.Cu: outer r, bore r, height (pushed
                                     # down to touch, not clamp, so the board can still float in the board's peg slots)
 # Cells (#3, #6). An insulator ring on every + end (C1 / C3 top, C2 / C4 bottom) under the nickel, so a strip pushed
 # into a frame window lands on paper, not on the cell's own - shoulder; a foam ring in a pocket in the bottom frame
 # pushes each cell up onto the top frame, so the cells can't float on the welds.
 INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure the BAK + cap first), thickness
-FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 0.4), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
+FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 1.2), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
 CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
@@ -136,13 +143,26 @@ cs_col0 = cs_out.offset(COLLAR_CLR, ROUND); cs_col1 = cs_col0.offset(COLLAR_T, R
 X_OUT = X_IN + WALL_BF
 
 # ---------------- parts ----------------
+Z_RING0 = Z_TOP1 - S.USB_RING_D[1]                                # ring's back edge, board at nominal (ports flush)
+Z_HOUSING0 = Z_TOP1 - S.USB_HOUSING[3]                             # housing's back edge
+Z_POCKET = Z_RING0 + BOARD_ZFLOAT + 0.02                           # top of the housing pocket in the top wall
+def usb_bore(py, grow=0.0):
+    """seal bore section: the A4 ring less USB_SQ each side, same rounded-rectangle shape (grow = offset outward)"""
+    bw, bh, r = S.USB_RING_W - 2*USB_SQ + 2*grow, S.USB_RING_H - 2*USB_SQ + 2*grow, S.USB_RING_R - USB_SQ + grow
+    return rrect(PORT_X - bh/2, PORT_X + bh/2, py - bw/2, py + bw/2, r)
+def usb_housing(py, grow=0.0):
+    w, h, r, _ = S.USB_HOUSING
+    return rrect(PORT_X - h/2 - grow, PORT_X + h/2 + grow, py - w/2 - grow, py + w/2 + grow, r + grow)
+def usb_pocket(py):
+    """housing pocket section: clears the housing and lets the free ring through (convex, so the lead-in is a hull)"""
+    return hull(usb_housing(py, HOUSING_CLR), usb_bore(py, USB_SQ))
 def cup():
     m = pz(cs_out, Z_MOUTH, Z_TOP1) - pz(cs_in, Z_MOUTH - 1, Z_TOP0)
     m = m - pz(cs_in.offset(0.3, ROUND), Z_MOUTH - 1, Z_MOUTH + MOUTH_LEAD)                     # mouth lead-in
     for py in PORT_YS:
-        bw, bh = S.USB_RING_W - 2*USB_SQ, S.USB_RING_H - 2*USB_SQ
-        m = m - MF.extrude(stad(PORT_X, py, bh, bw), 4).translate((0, 0, Z_TOP0 - 1))
-        m = m - pz(stad(PORT_X, py, bh + 2*USB_LEAD, bw + 2*USB_LEAD), Z_TOP0 - 1, Z_TOP0 + USB_LEAD)
+        m = m - MF.extrude(usb_bore(py), 4).translate((0, 0, Z_TOP0 - 1))
+        m = m - pz(usb_pocket(py), Z_TOP0 - 1, Z_POCKET)
+        m = m - MF.batch_hull([pz(usb_pocket(py), Z_POCKET - 0.01, Z_POCKET), pz(usb_bore(py), Z_POCKET + POCKET_LEAD - 0.01, Z_POCKET + POCKET_LEAD)])
     return m - cyly(SCREW_X, SCREW_Z, SCREW_HOLE_R, -(YI + WALL + 0.5), YI + WALL + 0.5)
 def crush_ribs():
     """crush ribs on the collar's inside, three per flat, CRUSH into the cup's outside"""
@@ -226,7 +246,14 @@ def rails():
         keep = rect(RAIL_X0, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))
         m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [cylx(y, z, S.CUP_PEG_D / 2, S.sb_xb0 - 0.5, X_IN - POST_GAP) for y, z in S.CUP_PEGS]
-    return U(*m, *key_slots(0.0), *key_ribs())
+    return U(*m, *key_slots(0.0), *key_ribs()) - U(*rail_usb_relief())
+def rail_usb_relief():
+    """the USB-C front housings hang 0.32 below B.Cu in the board notches, over the top rail blocks (real-board check
+    2026-10-30): notch the blocks' board-side corner there, 0.2 clear plus the board's z float"""
+    w, h, _, _ = S.USB_HOUSING; out = []
+    for py in PORT_YS:
+        out.append(pz(rect(PORT_X - h/2 - 0.2, S.sb_xb0 + 0.1, py - w/2 - 0.25, py + w/2 + 0.25), Z_HOUSING0 - 0.2 - BOARD_ZFLOAT, FR_T1 + 1))
+    return out
 def sleeves():
     return U(*[cylx(y, z, SLEEVE[0], S.sb_xb1, S.sb_xb1 + SLEEVE[2]) - cylx(y, z, SLEEVE[1], S.sb_xb1 - 1, S.sb_xb1 + SLEEVE[2] + 1)
                for y, z in S.CUP_PEGS])
@@ -243,17 +270,21 @@ def wire_notches():
 def sense_channel():
     """CELL2 sense wire (#9): a channel along y = 0 in the bottom frame's cell-side face, from under the middle of the
     C2-C3 strip (with a wider pocket there for the solder joint) out past the frame's board-side edge"""
-    ch = CS.batch_boolean([rect(-PR - 1.5, PR + CR + 0.1, -CH_W/2, CH_W/2), rect(-PR - 1.5, -PR + 1.5, -1.5, 1.5)], M3.OpType.Add)
+    ch = CS.batch_boolean([rect(-PR - 1.5, PR + CR + 0.1, -CH_W/2, CH_W/2), rect(-PR - 1.5, -PR + 1.5, -2.0, 2.0)], M3.OpType.Add)
+    # (solder pocket +-2.0, was +-1.5: it now runs into the C2 / C3 foam pockets instead of leaving a 0.2 mm wall, 2026-10-30)
     return pz(ch, FR_B1 - CH_D, FR_B1 + 0.1)
-def foam_rings():
-    """foam preload rings (one per cell, under its bottom end), as 2-D sections"""
-    out = []
+def foam_rings(r0=None, r1=None, grow=0.0):
+    """foam preload rings (one per cell, under its bottom end), as 2-D sections; other radii / grown for the pockets"""
+    out = []; r0 = FOAM_R[0] if r0 is None else r0; r1 = FOAM_R[1] if r1 is None else r1
     for x, y in CELLS:
-        r = CS.batch_boolean([circ(x, y, FOAM_R[1]), circ(x, y, FOAM_R[0])], M3.OpType.Subtract)
-        if x > 0: r = CS.batch_boolean([r, rect(x - CR - 1, x - 1.0, y - CR - 1, y + CR + 1)], M3.OpType.Intersect)   # C1 / C4: away from the PACK pads
+        r = CS.batch_boolean([circ(x, y, r1), circ(x, y, r0)], M3.OpType.Subtract)
+        if x > 0: r = CS.batch_boolean([r, rect(x - CR - 1, x - 1.0 + grow, y - CR - 1, y + CR + 1)], M3.OpType.Intersect)   # C1 / C4: away from the PACK pads
         out.append(r)
     return CS.batch_boolean(out, M3.OpType.Add)
-def foam_pockets(): return [pz(foam_rings().offset(0.2, ROUND), FR_B1 - FOAM_POCKET, FR_B1 + 0.1)]
+def foam_pockets():
+    """pockets for the foam rings: open into the weld windows (an inner lip there would be 0.1 mm, too thin for MJF) and
+    stopping 1.0 inside the frame's outer edge (polish pass 2026-10-30: the old ring left a 0.2 mm skin there)"""
+    return [pz(foam_rings(WIN_R - 0.3, FOAM_R[1] + 0.2, 0.2), FR_B1 - FOAM_POCKET, FR_B1 + 0.1)]
 def foam():
     """silicone foam rings, drawn as installed: pocket floor up to the strips / cell bottoms"""
     return pz(foam_rings(), FR_B1 - FOAM_POCKET, S.sb_z_tail_b - S.SB_TAB_T) - pz(rect(-PR - 1.5, PR + CR + 1, -CH_W, CH_W), FR_B0, FR_B1 + 1)
@@ -306,7 +337,8 @@ def label():
 # ---------------- assembly and masses ----------------
 C = dict(RR.C, cup=(214, 214, 208), cap=(170, 186, 200), carrier=(196, 190, 150), filler=(232, 150, 200), oring=(200, 60, 60),
          screw=(110, 110, 116), pad=(236, 156, 80), bump=(118, 72, 50), bslab=(236, 156, 80),
-         rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50), label=(96, 160, 196))
+         rails=(170, 160, 110), insul=(200, 40, 40), foam=(120, 120, 130), sleeve=(118, 72, 50), label=(96, 160, 196),
+         parts=(64, 64, 70), usb=(150, 150, 156))
 def assembly():
     A = [('cup', tris(cup()), C['cup'])]
     cell = P.cell_solid()
@@ -315,7 +347,7 @@ def assembly():
           ('nickel', P.nickel_strips('strips'), C['nickel']), ('tails', P.nickel_strips('tails'), C['tail']),
           ('tails_wire', P.pack_wires(), C['wire']), ('tails_sense', P.sense_wires(), C['wire']),
           ('insul', tris(insul_rings()), C['insul']), ('foam', tris(foam()), C['foam']), ('sleeve', tris(sleeves()), C['sleeve']),
-          ('board', P.side_board_dummy(), C['board']), ('ble', P.ble_module(), C['ble']),
+          *board_parts(),
           ('pad', tris(pad()), C['pad']), ('oring', tris(oring()), C['oring']), ('cap', tris(cap()), C['cap']),
           ('screw', tris(screws()), C['screw']),
           ('label', tris(label()), C['label'])]
@@ -323,6 +355,15 @@ def assembly():
         b, s = bumper(top); k = 'bumpt' if top else 'bumpb'
         A += [(k + '_band', tris(b), C['bump']), (k + '_slab', tris(s), C['bslab'])]
     return A
+def board_parts():
+    """the real routed board (KiCad STEP via board/board_from_step.py): the PCB, its parts and the BLE module (U301, on
+    F.Cu), or the old slab + USB-C envelopes and B.Cu BLE envelope if the board mesh hasn't been made"""
+    B = P.real_board()
+    if B is None: return [('board', P.side_board_dummy(), C['board']), ('ble', P.ble_module(), C['ble'])]
+    refs = [k for k in B if not k.startswith('_') and k not in ('PCB', 'U301') + P.BENCH_ONLY]
+    usb = [k for k in refs if k in ('J401', 'J501')]
+    return [('board', B['PCB'], C['board']), ('board', np.vstack([B[k] for k in refs if k not in usb]), C['parts']),
+            ('board', np.vstack([B[k] for k in usb]), C['usb']), ('ble', B['U301'], C['ble'])]
 def group(k): return k.split('_')[0]
 PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carrier'),
          (2, 'Board rails (4, clip-on) with the peg posts', 'MJF PA12', 'rails'),
@@ -330,7 +371,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (4, 'Insulator rings on the + ends (4)', 'fish paper 0.2', 'insul'), (5, 'Preload rings under the cells (4)', 'silicone foam', 'foam'),
          (6, 'Nickel series strips (3)', 'nickel 0.2 x 10', 'nickel'), (7, 'PACK pads, CELL1/3 tongues; 18 / 28 AWG wires', 'nickel; PTFE wire', 'tails'),
          (8, 'Gap filler, board to the front cells (dispensed)', 'GEL 30, 3.1 g/cm3', 'filler'),
-         (9, 'Board 1.6 mm, thermal vias under the power stages', 'FR4, 6 layers', 'board'),
+         (9, 'Board 1.6 mm with its parts (routed P0, from KiCad)', 'FR4, 6 layers', 'board'),
          (10, 'Retaining sleeves on the posts (4)', 'TPU 95A', 'sleeve'),
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', 'MJF PA12, 1.2 / 1.8', 'cup'),
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
@@ -348,8 +389,17 @@ def masses(A):
         r = RHO.get(g, 1.2*0.15 if g == 'pad' else 1.2*0.30 if k.endswith('_slab') else (1.2 if k.endswith('_band') else None))
         if r is None: continue
         m[g] = m.get(g, 0) + vol(V) * r
-    m['board'] = board_g(S.sb_board_area, S.SB_PCB_T); m['cell'] = 4 * CELL_G
+    m['board'] = board_g(S.sb_board_area, S.SB_PCB_T) + board_parts_g(); m['cell'] = 4 * CELL_G
     return m
+PARTS_RHO = 3.0                     # g/cm3 over each part's convex hull: a rough mix of ferrite / metal-powder inductors,
+                                    # USB-C shells, ceramic caps and moulded ICs (the real board's parts, 2026-10-30)
+def board_parts_g():
+    """estimated mass of the parts on the real board (0 without the board mesh)"""
+    B = P.real_board()
+    if B is None: return 0.0
+    refs = [k for k in B if not k.startswith('_') and k != 'PCB' and k not in P.BENCH_ONLY
+            and not str(B['_model_' + k]).startswith(('Peg_', 'SolderWire'))]
+    return sum(MF.hull_points(B[k].reshape(-1, 3)).volume() for k in refs) / 1000 * PARTS_RHO
 def size(A):
     V = np.vstack([V for _, V, _ in A]).reshape(-1, 3); return V.max(0) - V.min(0)
 def wall_deflection(t, p_kpa, a=37.5, b=80.0):
@@ -388,13 +438,17 @@ def checks():
         'board-face wall at 25 kPa (simply supported bound) stays off the parts (x)': (X_IN - (S.sb_xb1 + S.SB_OUT_H)) - wall_deflection(WALL_BF, 25) - 0.05,
         'peg posts under the board-face wall (x, gap 0.1-0.5)': min(X_IN - POST_GAP - (S.sb_xb1 + 0.1), POST_GAP - 0.1, 0.5 - POST_GAP),
         'retaining sleeves under the board-face wall (x)': X_IN - (S.sb_xb1 + SLEEVE[2]) - 0.5,
-        'peg-slot float lets the seal bores centre the ports (y, float >= bore lead-in)': (S.CUP_PEG_SLOT[0] - S.CUP_PEG_D)/2 - USB_LEAD + 1e-9,
-        'peg slots keep the seal rings in the top wall (z, ring 0.35 in - float >= 0.2)': (TOP_T - 1.5) - (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D)/2 - 0.2 + 1e-9,
+        'peg-slot float lets the seal bores centre the ports (y, float >= the pocket over the bore)': (S.CUP_PEG_SLOT[0] - S.CUP_PEG_D)/2
+                                                       - USB_LEAD + 1e-9,
+        'seal band after the pocket lead-in, board at full rise (z, >= 0.6)': (Z_TOP1 - S.USB_RING_D[0] + BOARD_ZFLOAT)
+                                                       - (Z_POCKET + POCKET_LEAD) - 0.6,
+        'housing pocket clears the housing at full rise (z, >= 0)': Z_POCKET - (Z_RING0 + BOARD_ZFLOAT),
+        'housing pocket clears the housing at full y float (y, >= 0)': HOUSING_CLR - 0.0 + 1e-9,
         'retaining sleeves cover the peg slots at full float (y, >= 0.3)': SLEEVE[0] - (S.CUP_PEG_SLOT[0] - S.CUP_PEG_D)/2 - S.CUP_PEG_SLOT[0]/2 - 0.3 + 1e-9,
-        'USB-C ring ends inside the top wall (z, ring band 1.5, >= 0.3)': TOP_T - 1.5 - 0.3 + 1e-9,
         'board top edge is a backstop under the top wall (z, 0.05-0.2)': min(Z_TOP0 - S.sb_zb1 - 0.05, 0.2 - (Z_TOP0 - S.sb_zb1)),
         'USB-C seal squeeze per side (0.12-0.18)': min(USB_SQ - 0.12, 0.18 - USB_SQ),
         'seal bores fit the top wall beside the board (y)': (S.SB_STOP_Y0 - (S.SB_PORT_Y + bw/2 + USB_LEAD)),
+        'housing pockets: wall left between the two ports (y, >= 1.5)': 2 * S.SB_PORT_Y - (S.USB_RING_W + 2 * HOUSING_CLR) - 1.5,
         'carrier top frame >= 0.9 thick (z)': (FR_T1 - FR_T0) - 0.9,
         'cap skirt top under the carrier frame (z, >= 0.5 at -3 sigma)': (FR_B0 - Z_SKIRT1) - 0.5 - 0.5,
         'overtravel posts stop before the skirt touches (z)': (FR_B0 - Z_SKIRT1) - OT_GAP - 0.3,
@@ -417,7 +471,6 @@ def checks():
                                                        LIP_TOP - LABEL_Z[0]) - LEAD_IN[0] / math.tan(math.radians(LEAD_IN[1])) - 1.5,
         'label: bumpers clear the two-layer seam (radial, >= 0.1)': LABEL_RELIEF - 2 * LABEL_T - 0.1 + 1e-9,
         'label: top band wall left at the lead-in (radial, >= 0.8)': BUMP_WALL - LABEL_RELIEF - LEAD_IN[0] - 0.8 + 1e-9,
-        'board rails clear of the BLE module (y)': S.sb_ant_y[0] - S.SB_BAR_Y[1] - 0.3,
         'board rails clear of the PACK pads (y, rail stub to the pad edge)': min(abs(y0) for n in ('PACK-', 'PACK+')
                                                        for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
         'bottom key slots clear of the wire notch (y, web >= 0.6)': (abs(S.sb_slots()['4P'][0]) - S.SB_KWIRE_OD/2 - WIRE_NOTCH_CLR)
@@ -431,12 +484,69 @@ def checks():
         'CELL2 channel clear of the C1 / C4 rims (y)': (PR - CR) - CH_W/2,
         'CELL2 channel: frame left under it (z, >= 0.6)': (FR_B1 - FR_B0) - CH_D - 0.6,
         'foam pockets: frame left under them (z, >= 0.8)': (FR_B1 - FR_B0) - FOAM_POCKET - 0.8,
+        'foam pockets: frame left outside them (r, >= 0.8)': CR - (FOAM_R[1] + 0.2) - 0.8,
         'insulator rings inside the can (r)': CR - INSUL[0] - 0.2,
         'board rails clear of the PACK pads (z, rail above the pads)': S.SB_BAR_Z0 - (S.sb_z_tail_b + 0.5),
-        'gap filler below the BLE module (z)': (S.sb_ant_zc - S.SB_ANT_MOD[0]/2) - FILL_Z[1] - 1.0,
         'webs: room between front and back cells (gap - 2 x clearance)': (2*PR - 2*CR) - 2*WEB_CLR,
         'bore corner radius >= 2 x O-ring cord': R_FRONT - 2*ORING_CS,
+        **board_checks(),
     }
+# ---------------- the real board against the enclosure ----------------
+CLEAR = dict(cup=0.3, rails=0.2, sleeves=0.15, carrier=0.3, cells=0.3, cap=0.5, pad=0.5)   # minimum gap, part hull to each
+SKIP = dict(cells=('J108', 'J112', 'J109', 'J110', 'J111', 'J115', 'J116', 'J117', 'J118', 'J119', 'J120'))   # wire stubs:
+# the KiCad stand-ins are straight 28 / 18 AWG stubs off B.Cu; the real wires bend away along the rails (P.sense_wires)
+def slice_pts(T, z):
+    """points where the triangle soup T (n, 3, 3) crosses the plane z"""
+    a = T[..., 2] - z; out = []
+    for i, j in ((0, 1), (1, 2), (2, 0)):
+        m = (a[:, i] * a[:, j]) < 0
+        t = a[m, i] / (a[m, i] - a[m, j]); out.append(T[m, i] + t[:, None] * (T[m, j] - T[m, i]))
+    return np.concatenate(out)
+def penetration(T, m, zs):
+    """deepest point of the mesh T inside the solid m (mm, 0 if none), over the planes zs"""
+    import shapely
+    deep = 0.0
+    for z in zs:
+        p = slice_pts(T, z)
+        if not len(p): continue
+        g = None
+        for c in m.slice(z).to_polygons():
+            if len(c) < 3: continue
+            q = shapely.Polygon(c); g = q if g is None else g.symmetric_difference(q)
+        if g is None: continue
+        inside = shapely.contains_xy(g, p[:, 0], p[:, 1])
+        if inside.any(): deep = max(deep, shapely.distance(g.boundary, shapely.points(p[inside, :2])).max())
+    return float(deep)
+def board_checks():
+    """every part of the real board against the cup, rails, sleeves, carrier, cells and cap (convex hull of each part, so
+    the gaps are lower bounds), the tallest part under the board-face wall, and the USB-C connectors in the seal bores
+    (sliced: the ring's squeeze, and nothing hard in the wall or the rails)"""
+    B = P.real_board()
+    if B is None: return {'real board mesh present (board/board_from_step.py)': -1.0}
+    cells = U(*[pz(circ(x, y, CR), S.sb_z_cell0, S.sb_z_cell1) for x, y in CELLS])
+    mech = dict(cup=cup(), rails=rails(), sleeves=sleeves(), carrier=carrier(), cells=cells, cap=cap(), pad=pad())
+    refs = [k for k in B if not k.startswith('_') and k != 'PCB' and k not in P.BENCH_ONLY and not str(B['_model_' + k]).startswith('Peg_')]
+    hulls = {k: MF.hull_points(B[k].reshape(-1, 3)) for k in refs}
+    out = {}
+    for n, m in mech.items():
+        g = {k: h.min_gap(m, 2.0) for k, h in hulls.items() if k not in ('J401', 'J501') + SKIP.get(n, ())}
+        k = min(g, key=g.get)
+        out[f'real board: every part clears the {n} (>= {CLEAR[n]}; worst {k})'] = g[k] - CLEAR[n]
+    top = {k: B[k][..., 0].max() for k in refs if k not in ('J401', 'J501')}; k = max(top, key=top.get)
+    out[f'real board: tallest part under the board-face wall at 25 kPa (x, >= 0.05; {k} {top[k] - S.sb_xb1:.2f} tall)'] = \
+        X_IN - top[k] - wall_deflection(WALL_BF, 25) - 0.05
+    cupm, railm = mech['cup'], mech['rails']
+    zr = np.arange(Z_TOP1 - S.USB_RING_D[1] + 0.05, Z_TOP1 - S.USB_RING_D[0] - 0.04, 0.1)    # ring band
+    zh = np.arange(Z_HOUSING0 + 0.02, Z_TOP1 - S.USB_RING_D[1] - 0.01, 0.05)                    # housing, under the ring
+    zl = np.arange(Z_TOP1 - S.USB_RING_D[0] + 0.02, Z_TOP1 - 0.01, 0.1)                         # shell lip, in front of it
+    for k in ('J401', 'J501'):
+        sq = penetration(B[k], cupm, zr)
+        out[f'real board: {k} ring squeeze in the seal bore (0.08-0.25 per side)'] = min(sq - 0.08, 0.25 - sq)
+        for up in (0.0, BOARD_ZFLOAT):                                                           # nominal, and at full rise
+            T = B[k] + np.array([0, 0, up])
+            out[f'real board: {k} housing and lip clear the top wall (board +{up:.1f} z)'] = -penetration(T, cupm, np.r_[zh, zl] + up)
+        out[f'real board: {k} housing clears the top rail block'] = -penetration(B[k], railm, zh)
+    return out
 
 # ---------------- sheets ----------------
 SS, INK, MUTED, RULE, ACCENT = RR.SS, RR.INK, RR.MUTED, RR.RULE, RR.ACCENT
@@ -481,7 +591,7 @@ def sheet_exploded(A, m):
     rows = [[str(n), name, mat, f'{m.get(k, 0):.1f}' if m.get(k, 0) >= 0.05 else '<0.1'] for n, name, mat, k in PARTS]
     rows.append(['', 'Pack total', '', f'{total:.1f}'])
     y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [36, 344, 200, 70], 13, bold_last=True, rh=26)
-    for i, s in enumerate(('Board mass is estimated (FR4 + 6-layer copper); parts on it are not included.',
+    for i, s in enumerate(('Board mass is estimated: FR4 + 6-layer copper, parts at 3 g/cm3 over their 3D models.',
                            'TPU pad 15 % and bumper slabs 30 % gyroid; bumper bands solid. Cells 75 g each (datasheet max).',
                            'Label drawn on the cup; board thermal vias not drawn. Pad drawn as installed (printed 1.2 mm taller).')):
         sh.text(x0, y + 14 + 24*i, s, 13, fill=MUTED)
@@ -491,8 +601,8 @@ def sheet_exploded(A, m):
 def sheet_sections(A):
     core = [(k, V, c) for k, V, c in A if not k.startswith('bump')]
     sh = RR.Sheet(2700, 1300)
-    sh.header('Monolith cup: sections', 'Cut from the same meshes as the STLs. Board and USB-C are envelopes; parts on the board are not drawn. '
-              'The O-ring is drawn as squeezed.')
+    sh.header('Monolith cup: sections', 'Cut from the same meshes as the STLs. The board and its parts are the routed P0 board from KiCad '
+              '(board/board_from_step.py). The O-ring is drawn as squeezed.')
     z_a = 40.0; pxa = 10.0
     sh.panel_title(40, 128, f'A-A   across the pack through the gap filler (z = {z_a:.0f} mm), from the port end', 1380)
     oa = (600, 600); tp = sh.section(core, 2, z_a, 0, 1, oa, pxa)
@@ -532,6 +642,21 @@ def sheet_sections(A):
                  (td(10, Z_MOUTH - CAP_T/2), 'Cap plate'),
                  (td(0, Z_MOUTH + 4.0), 'TPU pad'),
                  (td(-10, FR_B0 + 0.8), 'Carrier frame, cells above')], DX + dw + 40, 'r', DY, size=14)
+    # D-D: the USB-C in the top wall, through the port centre and near the housing corner (real-board check 2026-10-30)
+    pxu, (x0, x1, z0, z1) = 40.0, (21.8, 31.4, 76.9, 80.9); uw, uh = int((x1 - x0)*pxu), int((z1 - z0)*pxu)
+    sh.panel_title(40, 960, 'D-D   USB-C in the top wall: port centre, and 0.3 mm in from the housing corner', 1380)
+    for i, (dy, lab) in enumerate(((0.02, 'centre'), (S.USB_HOUSING[0]/2 - S.USB_HOUSING[2] - 0.3, 'corner'))):
+        u = RR.Sheet(uw, uh); ou = (-x0*pxu, z1*pxu)
+        u.section(core, 1, PORT_YS[1] + dy, 0, 2, ou, pxu)
+        UX, UY = 60 + i*(uw + 330), 1000
+        sh.img.paste(u.img, (UX*SS, UY*SS)); sh.rect(UX, UY, UX + uw, UY + uh, outline=RULE, width=1)
+        tu = lambda x, z: (UX + ou[0] + pxu*x, UY + ou[1] - pxu*z)
+        sh.text(UX + uw/2, UY + uh + 14, lab, 14, fill=MUTED, anchor='mm')
+        sh.callouts([(tu(PORT_X + S.USB_RING_H/2 - 0.1, Z_TOP1 - 1.0), 'Seal ring in the bore'),
+                     (tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing pocket: clears\nthe hard front housing'),
+                     (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Rail block notched under\nthe housing (0.32 below B.Cu)')]
+                    if i == 0 else [(tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing corner in\nthe pocket, 0.15 clear')],
+                    UX + uw + 30, 'r', UY, size=13)
     sh.line([(40, 1240), (2660, 1240)], RULE, 1.5); sh.legend(LEG, 40, 1256, 14)
     save(sh, 'monolith_cup_sections.png')
 

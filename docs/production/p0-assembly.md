@@ -44,7 +44,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **Cell preload:** the carrier's frames are a fixed 71.95 mm apart, and the 65E is 71.0 mm at most, so the cells would float 0.55 mm or more on their welds. A silicone foam ring in a 0.6 mm pocket under each cell's bottom end pushes the cells up onto the top frame. On C1 and C4 only the half away from the PACK pads gets foam. Measure the gap with the cells in and pick the foam thickness so it compresses about 30 %.
 - **Behind B.Cu:** the sense wires cross the gap in the old tail-run areas (`BCU_TAIL_RUNS`, the board's `KO_B_tail_*`), about 1 mm behind B.Cu: only low parts (≤ 0.6 mm) there. The PACK and Kelvin wires cross in the `BCU_WIRE_RUNS` areas: no B.Cu parts at all there.
 - **Board rails (2026-10-24):** four clip-on PA12 blocks, bottom and top on each side, each with a tongue that slides into a key slot in the frame's board-side face. Two crush ribs on each tongue (0.15 mm into the slot walls, 2026-10-28) hold the blocks in until the board is soldered; in the cup, the board-face wall, the top wall and the cap pad capture them. As part of the carrier they blocked the front cells from going in. They stand 0.15 mm off the front cans and carry the board's four peg posts. Below z 7.3 the bottom blocks keep only a stub at |y| ≤ 7.6 mm (`RAIL_RELIEF_Y`), clear of the PACK wires.
-- **Posts and sleeves:** the Ø2 peg posts run through the board's 2.6 × 2.2 mm slots to 0.3 mm under the board-face wall, which is now 2.0 mm thick. A small Ø4 TPU sleeve pushed down each post onto F.Cu holds the board on the rails; in the cup the board-face wall sits 0.5 mm over the sleeves, so the board can't come off the posts even if a sleeve slips. The slots (2026-10-24, were Ø2.2 holes) give the board ±0.3 mm of float across its width, so the USB-C seal bores centre the ports along the rings' long side when the cup goes on. They stay ±0.1 mm along the board's length, so a cable push can't slide the board down and pull the rings out of the top wall. Push the sleeves down until they touch F.Cu, not hard enough to clamp the board.
+- **Posts and sleeves:** the Ø2 peg posts run through the board's 2.6 × 2.2 mm slots to 0.3 mm under the board-face wall, which is now 2.0 mm thick. A small Ø3.8 TPU sleeve (Ø4 until 2026-10-30) pushed down each post onto F.Cu holds the board on the rails; in the cup the board-face wall sits 0.5 mm over the sleeves, so the board can't come off the posts even if a sleeve slips. The slots (2026-10-24, were Ø2.2 holes) give the board ±0.3 mm of float across its width, so the USB-C seal bores centre the ports along the rings' long side when the cup goes on. They stay ±0.1 mm along the board's length, so a cable push can't slide the board down and pull the rings out of the top wall. Push the sleeves down until they touch F.Cu, not hard enough to clamp the board.
 
 **Board changes (on the `Production` branch):**
 - Five sense holes, Ø0.8 in 1.5 × 1.4 mm pads: J109–J111 (CELL1–CELL3), J115 / J116 (1N / 4P). Done 2026-10-24; DRC still to run.
@@ -52,7 +52,7 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
 - **R124 and R126 are DNP** (gauge sheet note 16, 2026-10-24). They connect the BQ294700 output and the gauge FUSE pin to Q104's gate. With them off, nothing can blow F102 while the pack is being wired; fit them by hand after the seven voltages read right (step 3.1).
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
-- Four slots for the peg posts (2.6 × 2.2 mm NPTH, long across the board, H101–H104 at y ±8.6, z 14 and 68). The Ø4 sleeves reach 2.3 mm from a slot's centre across the board at full float. H101–H103 have nothing on F.Cu that close, but U405's pins 16–20 are 2.0 mm from H104 as placed on 2026-10-24: move U405 about 0.6 mm in −x (KiCad), which also clears the H104 courtyard (±1.8 mm in x).
+- Four slots for the peg posts (2.6 × 2.2 mm NPTH, long across the board, H101–H104 at y ±8.6, z 14 and 68). The Ø3.8 sleeves reach 2.2 mm from a slot's centre across the board at full float. H101–H103 have nothing on F.Cu that close, but U405's pins 16–20 are 2.0 mm from H104 as placed on 2026-10-24: move U405 about 0.6 mm in −x (KiCad), which also clears the H104 courtyard (±1.8 mm in x).
 
 ## Materials and tools
 
@@ -122,7 +122,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 ![Step 3](../../hardware/mechanical/assembly_steps/step3.png)
 
 1. **Check the seven voltages** at the pads against PACK−: each step should be one cell (2.5–4.2 V). Only then **fit R124 and R126** (5.1 kΩ 0402, F.Cu).
-2. **Program and set up:** load the BQ40Z50 golden file and run gauge training through J302 (`p0-bringup-and-training.md`).
+2. **Program and set up:** load the BQ40Z50 golden file and run gauge training through J302 (`p0-bringup-and-training.md`). Then unsolder the J113 / J114 learning-load wires and leave the pads flat: the board-face wall is only 3.7 mm above F.Cu, and the real-board check (`monolith_cup.py`) leaves them out because they're bench-only.
 3. **Function test:** charge and discharge on each port, the 100 W thermal run (thermocouples on a front and a back cell), the gauge readings, and BLE.
 4. **Conformal coat**, last. Keep the coat off the antenna end, the J301 / J302 Tag-Connect pads, the gap-filler zone and the USB-C seal rings (mask the rings).
 
@@ -130,7 +130,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 ![Step 4](../../hardware/mechanical/assembly_steps/step4.png)
 
-1. Port end first, push the module up into the cup from the bottom. The carrier's frames guide it to ±0.2 mm; the bores' lead-ins take the USB-C seal rings in. Keep it square so both rings enter together.
+1. Port end first, push the module up into the cup from the bottom. The carrier's frames guide it to ±0.2 mm; the USB-C housings go into their pockets in the top wall's inside face and the seal rings squeeze into the bores over a 0.25 mm lead-in at the top of each pocket. Keep it square so both rings enter together.
 2. Push home until the carrier's top frame bears on the top wall. The board's top edge then sits 0.1 mm under the top wall, as a backstop for the rings.
 
 ### 5. Cap
@@ -160,8 +160,8 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
 
 ## Open items
 - **Board:** run KiCad DRC on the `Production` board after the sense-hole and DNP changes, and set the DNP flags in the JLC BOM export.
-- **Fit (coupons before the full cup):**
-    - USB-C bore ladder: a 1.85 mm wall printed in the cup's orientation, bores at ring − 0.1 to − 0.5 mm per axis. Pick the one that gives 0.12–0.18 mm squeeze and passes a 1 m dunk with a connector pushed in blind. Measure the rings on 5 connectors from the batch first.
+- **Fit (coupons before the full cup):** print files in `hardware/mechanical/coupons/` (`monolith_coupons.py`, 2026-10-31): A the seal-bore ladder, B the cup mouth (lidded) with the real cap, C the real carrier, rail blocks and sleeves.
+    - USB-C bore ladder: a 1.85 mm wall printed in the cup's orientation, with the housing pocket (`usb_pocket()`, 0.47 mm deep) under each bore, bores at ring − 0.1 to − 0.5 mm per axis (squeeze 0.05–0.25 a side, debossed 05–25 beside each bore), rounded-rectangle like the ring. Push a loose connector in from the pocket side. Pick the one that gives 0.12–0.18 mm squeeze and passes a 1 m dunk with a connector pushed in blind. Measure the rings on 5 connectors from the batch first.
     - Cup mouth + collar cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.
     - Carrier + rail blocks with real cells: load all four cells, check the key slots and the foam, and fit a bare board on the posts.
     - How hard the module pushes home.

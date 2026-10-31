@@ -167,6 +167,12 @@ USB_FACE_OUT, USB_ZC, USB_DEPTH = 1.949, 1.632 - SB_PCB_T - 0.005, 7.45
 USB_SHELL_W, USB_SHELL_H, USB_UP, USB_DN = 9.64, 3.87, 1.939, 1.632
 USB_SEAL_W, USB_SEAL_H = 10.25, 4.45  # seal ring, sits in the top-wall hole (old drawing; the retired tray's holes)
 USB_RING_W, USB_RING_H = 10.35, 4.57  # seal ring, drawing rev A4 (2025-08-18), +-0.30: the cup's bores (monolith_cup.py)
+USB_RING_R = 1.97                    # its corner radius: the rev A5 (0.8 mm) ring's R1.907 grown with the A4 ring; the ring is a
+                                     # rounded rectangle, not a stadium (real-board check 2026-10-30)
+USB_RING_D = (0.5, 1.5)              # ring band, depth from the mating face (A4: 1.00 wide, back edge 1.50)
+USB_HOUSING = (10.05, 3.868, 0.51, 2.5)   # hard front housing behind the ring, d 1.5-2.5: width (y), height (x), corner
+                                     # radius, back depth (make_3d_usbc.py, measured): wider than the seal bore at its
+                                     # corners, and it hangs 0.32 below B.Cu in the board notch
 # drop protection, cooling and venting (2026-10-18, reports/Battery pack potting and drop protection.md).
 # Hobby build, sheet stock limited to 1 mm EVA foam, 0.2 mm mica and 0.2 mm fish paper; everything else is printed.
 # nothing is potted. The tray, cells and board form one stiff core; TPU end caps outside it are the crush zone.

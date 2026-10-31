@@ -4,9 +4,14 @@ The model is a mesh model (manifold3d / numpy), so the STEP bodies are faceted B
 merged into single planar faces, but round faces (cells, bores, O-ring, wires) stay as flat facets at the model's 48
 segments per circle. Good for fit checks, sections, drawings and placing features; not true cylinders to dimension from.
 Needs the mechanical venv plus cadquery-ocp (pip install cadquery-ocp).
+The board (part 09) is the routed P0 board straight from KiCad (board/Monolith_board.step, see board/board_from_step.py),
+true B-rep with every part's model, names and colours, moved into the pack frame; without that file it falls back to
+the old slab + USB-C envelopes and the B.Cu BLE envelope.
 Run: python monolith_step.py [outdir]   -> outdir/parts/*.step, outdir/monolith_pack_assembly.step (default ./step)"""
 import os, sys, numpy as np
-from OCP.gp import gp_Pnt
+from OCP.gp import gp_Pnt, gp_Trsf
+from OCP.STEPCAFControl import STEPCAFControl_Reader
+from OCP.TDF import TDF_LabelSequence
 from OCP.TopoDS import TopoDS_Shell, TopoDS_Compound, TopoDS
 from OCP.BRep import BRep_Builder
 from OCP.BRepBuilderAPI import BRepBuilderAPI_MakeVertex, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire, \
@@ -29,6 +34,8 @@ from OCP.TDataStd import TDataStd_Name
 from OCP.Quantity import Quantity_Color, Quantity_TOC_RGB
 from OCP.IFSelect import IFSelect_RetDone
 import manifold3d as M3
+for _n in ('Edge', 'Shell', 'Face'):              # OCP 7.x names these TopoDS.Edge_s ...; 8.x TopoDS.Edge ...
+    if not hasattr(TopoDS, _n): setattr(TopoDS, _n, getattr(TopoDS, _n + '_s'))
 import monolith_cup as K, monolith_shell as S, monolith_parts as P
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -150,8 +157,9 @@ def part_list():
          ('07b_pack_wires_18awg_kelvin_28awg', 'pwire', [('wire', soup(P.pack_wires()))]),
          ('07c_sense_wires_28awg', 'swire', [('wire', box_union(P.sense_wires))]),
          ('08_gap_filler', 'filler', [('filler', mf(K.filler()))]),
-         ('09a_board_dummy', 'board', [('board', soup(P.side_board_dummy()))]),
-         ('09b_ble_module_envelope', 'ble', [('ble', soup(P.ble_module()))]),
+         *([] if os.path.exists(KICAD_STEP) else
+           [('09a_board_dummy', 'board', [('board', soup(P.side_board_dummy()))]),
+            ('09b_ble_module_envelope', 'ble', [('ble', soup(P.ble_module()))])]),
          ('10_retaining_sleeves', 'sleeve', [('sleeve', mf(K.sleeves()))]),
          ('11_cup', 'cup', [('cup', mf(K.cup()))]),
          ('12_cap_pad', 'pad', [('pad', mf(K.pad()))]),
@@ -162,6 +170,30 @@ def part_list():
          ('17_bumper_top', 'bumpt', bumper_parts(True))]
     return [(f, D.get(k, k), k, b) for f, k, b in L]
 COLOUR = dict(K.C, bumpb=K.C['bump'], bumpt=K.C['bump'], tails=K.C['tail'], pwire=K.C['wire'], swire=K.C['wire'])
+
+# ---------------- the real board ----------------
+KICAD_STEP = os.path.join(HERE, 'board', 'Monolith_board.step')
+def board_trsf():
+    """KiCad STEP frame -> pack frame (board/board_from_step.py)"""
+    t = gp_Trsf(); t.SetValues(0, 0, 1, S.sb_xb0, 1, 0, 0, -100.0, 0, 1, 0, S.sb_z_mid + 100.0); return t
+def add_kicad_board(doc, st):
+    """read the KiCad board STEP into doc (names and colours kept) and return its root label, unplaced"""
+    r = STEPCAFControl_Reader(); r.SetNameMode(True); r.SetColorMode(True)
+    before = TDF_LabelSequence(); st.GetFreeShapes(before)
+    assert r.ReadFile(KICAD_STEP) == IFSelect_RetDone and r.Transfer(doc), KICAD_STEP
+    after = TDF_LabelSequence(); st.GetFreeShapes(after)
+    old = {before.Value(i + 1).Tag() for i in range(before.Length())}
+    new = [after.Value(i + 1) for i in range(after.Length()) if after.Value(i + 1).Tag() not in old]
+    assert len(new) == 1, len(new); return new[0]
+def write_board(path, aroot=None, ast=None):
+    """parts/09_board_kicad.step: the KiCad board placed in the pack frame; and the same board in the assembly"""
+    doc, st, _ = new_doc(); lab = add_kicad_board(doc, st)
+    top = st.NewShape(); TDataStd_Name.Set_s(top, TCollection_ExtendedString('board_kicad'))
+    st.AddComponent(top, lab, TopLoc_Location(board_trsf())); st.UpdateAssemblies()
+    write(doc, path, '09_board_kicad')
+    if ast is not None:
+        alab = add_kicad_board(ast[0], ast[1])
+        TDataStd_Name.Set_s(ast[1].AddComponent(aroot, alab, TopLoc_Location(board_trsf())), TCollection_ExtendedString('board_kicad'))
 
 # ---------------- STEP ----------------
 def new_doc():
@@ -205,6 +237,10 @@ if __name__ == '__main__':
         bad += not ok
         print(f"{'ok ' if ok else 'BAD'} {fname:36s} bodies {len(bs):2d}  faces {sum(count(s, TopAbs_FACE) for _, s, _ in bs):5d}  "
               f"vol {v_step:9.1f} mm3 (mesh {v_mesh:9.1f})  {desc}")
+    if os.path.exists(KICAD_STEP):
+        write_board(os.path.join(out, 'parts', '09_board_kicad.step'), top, (adoc, ast))
+        print('ok  09_board_kicad                      the routed P0 board from KiCad, every part (board/Monolith_board.step)')
+    else: print('no board/Monolith_board.step: the board is the old slab + envelopes')
     ast.UpdateAssemblies()
     write(adoc, os.path.join(out, 'monolith_pack_assembly.step'), 'Monolith pack')
     print('wrote', out, '' if not bad else f'({bad} part(s) failed the checks)')
