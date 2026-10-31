@@ -62,7 +62,8 @@ CRUSH_W, CRUSH = 1.0, 0.15         # crush ribs inside the collar (3 per flat): 
 MOUTH_LEAD = 0.8                   # lead-in at the cup mouth for the O-ring (0.3 deep over this height)
 OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6)]   # overtravel posts (x, y)
 OT_R, OT_GAP = 1.5, 0.6            # post radius; gap to the frame underside at nominal
-PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (15 % gyroid): ~15-80 N of preload on the core
+PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (10 % gyroid since 2026-10-31): roughly
+                                   # 8-40 N of preload on the core (~15-80 N at 15 %); check the core can't rattle
 PAD_RELIEF = 1.5                   # pad pocketed this deep under the C1 / C4 windows and the wire notches (PACK pads, wires)
 WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
@@ -89,7 +90,9 @@ FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 1.2), 0.6   # foam ring radii, its pock
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
 CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
-BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 8.0, 4.0, 9.0, 2.0
+BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 6.0, 3.0, 7.0, 2.0   # mass trim 2026-10-31 (was 8 / 4 / 9): pick the
+                                    # final slabs in the drop series
+SLAB_FILL, PAD_FILL = 0.20, 0.10    # TPU gyroid infill: bumper slabs (was 30 %), cap pad (was 15 %), mass trim 2026-10-31
 BUMP_WALL_BOT = 1.0                 # bottom band over the cap's collar (the PA12 collar under it is the edge protection's backbone)
 # Wrap label (label plan 2026-10-27, art in hardware/label/): printed vinyl round the whole cup, its top and bottom edges
 # TUCKed under the bumpers. The bottom bumper grows a lip over the label's lower edge; the top band is relieved over it.
@@ -374,7 +377,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (9, 'Board 1.6 mm with its parts (routed P0, from KiCad)', 'FR4, 6 layers', 'board'),
          (10, 'Retaining sleeves on the posts (4)', 'TPU 95A', 'sleeve'),
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', 'MJF PA12, 1.2 / 1.8', 'cup'),
-         (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
+         (12, 'Pad on the cap: preloads the core', 'TPU 95A, 10 % gyroid', 'pad'),
          (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, collar, skirt, posts', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, collar + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
@@ -386,7 +389,7 @@ def masses(A):
     m = {}
     for k, V, _ in A:
         g = group(k)
-        r = RHO.get(g, 1.2*0.15 if g == 'pad' else 1.2*0.30 if k.endswith('_slab') else (1.2 if k.endswith('_band') else None))
+        r = RHO.get(g, 1.2*PAD_FILL if g == 'pad' else 1.2*SLAB_FILL if k.endswith('_slab') else (1.2 if k.endswith('_band') else None))
         if r is None: continue
         m[g] = m.get(g, 0) + vol(V) * r
     m['board'] = board_g(S.sb_board_area, S.SB_PCB_T) + board_parts_g(); m['cell'] = 4 * CELL_G
@@ -573,7 +576,7 @@ def sheet_exploded(A, m):
     sh.render([(V, c) for _, V, c in A], R, o1, pxs); pj = RR.proj(R, o1, pxs)
     sh.callouts([(pj((PORT_X, 9, Z_TOP1 + BUMP_T_TOP)), 'Port well through the top bumper'),
                  (pj((X_OUT, -8, 50)), 'Board face: 2.0 mm PA12 under the\nwrap label (seam on the back)'),
-                 (pj((X_OUT + 2, -YI, Z_MOUTH - CAP_T - BUMP_T_BOT + 1)), '4 mm bottom bumper over the cap and its collar\n(the pad inside adds the rest of the stroke)')],
+                 (pj((X_OUT + 2, -YI, Z_MOUTH - CAP_T - BUMP_T_BOT + 1)), f'{BUMP_T_BOT:.0f} mm bottom bumper over the cap and its collar\n(the pad inside adds the rest of the stroke)')],
                 475, 'r', 150)
     sh.panel_title(780, 128, 'Exploded, in assembly order', 1180)
     EX = dict(cell=(0, 0, -75), carrier=(0, 0, -75), nickel=(0, 0, -75), tails=(0, 0, -75), board=(16, 0, -75), ble=(16, 0, -75),
@@ -592,7 +595,7 @@ def sheet_exploded(A, m):
     rows.append(['', 'Pack total', '', f'{total:.1f}'])
     y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [36, 344, 200, 70], 13, bold_last=True, rh=26)
     for i, s in enumerate(('Board mass is estimated: FR4 + 6-layer copper, parts at 3 g/cm3 over their 3D models.',
-                           'TPU pad 15 % and bumper slabs 30 % gyroid; bumper bands solid. Cells 75 g each (datasheet max).',
+                           f'TPU pad {PAD_FILL:.0%} and bumper slabs {SLAB_FILL:.0%} gyroid; bumper bands solid. Cells 75 g each (datasheet max).',
                            'Label drawn on the cup; board thermal vias not drawn. Pad drawn as installed (printed 1.2 mm taller).')):
         sh.text(x0, y + 14 + 24*i, s, 13, fill=MUTED)
     sh.line([(40, 1330), (2660, 1330)], RULE, 1.5); sh.legend(LEG, 40, 1350, 14)
