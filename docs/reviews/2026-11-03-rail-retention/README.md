@@ -9,6 +9,7 @@ Logan didn't trust the rail blocks' glued, crush-rib tongue joint to the cell ca
 | Tongue joint, 1 m narrow-side drop | About 200 N per peg. A 2-D FE of the top block puts the tongue at 150 MPa (p95) and 310 MPa (p99) against PA12's 48 MPa. Glue doesn't help: the problem is the bending moment from a peg 8 to 10 mm off a 1 to 1.6 mm frame plate. |
 | Ø2 PA12 posts, same drop | About 57 to 71 MPa shear and about 200 MPa root bending. A gap-impact run with the 4013 g pulse suggests the peg load could reach about 560 N once the board rattles across its 0.3 mm slot float. |
 | Board-face drop, whole core | About 300 g at about 2500 g is roughly 7.5 kN. Nothing stopped the core except the four post tips (about 1.9 kN each). In the model the cells and carrier could move 7.5 mm toward the board face without touching the cup. The 2026-10-31 drop FE missed this because its 1 mm voxels bonded the cells to the walls. |
+| Cap-end drop (found after the PR went up) | About 250 N of board, rail blocks and spacers at the 1182 g of the cap-end drop hung on the pegs, and the rail blocks are held along z only by their tongues' crush ribs (the key slots are open top and bottom). The board could slide down until its corners hit the cap skirt 1.15 mm lower, and 0.63 mm of slide pulls the USB-C seal rings out of their bores. |
 | USB-C | The housings (0.15 mm off their pockets) and shell lips (0.20 mm off the bore) were the first sideways stop, inside the 0.3 mm peg float. |
 
 Printing the rail blocks in one piece with the carrier doesn't work either: they sit in the front cells' only loading path.
@@ -39,9 +40,10 @@ Printing the rail blocks in one piece with the carrier doesn't work either: they
 - **Opened USB-C pockets**: housing clearance 0.15 → 0.35 mm in y, and 0.25 mm relief in front of the seal ring band. The lands now stop the board before the connectors do. Seal squeeze is unchanged.
 - **Slimmer posts**: 1.8 (y) × 2.0 (z) obround, so they never touch the slot walls sideways (land gap + 0.09 mm deflection < peg float).
 - **PA12 post spacers** replace the TPU sleeves: Ø4 tubes with crush-rib bores, from F.Cu up to 0.4 mm under the wall. They still cover the slots by ≥ 0.3 mm at ±0.4 mm float and clear R313 and C207.
+- **Board feet** on the cap: four PA12 ribs on the skirt's inside face, 0.2 mm under the board's bottom edge at |y| 3–6 and 14.4–16.2. The board stops on the cap after 0.2 mm in a cap-end drop (the core stops on the overtravel posts after 0.3), with about 26 MPa on the board edge if only the inner two bear, and 0.43 mm of seal ring band left in the bore.
 - **Unchanged**: carrier, rail blocks and tongues (no glue now), cell loading, welding, board.
 
-All 113 model checks pass, including the insertion sweep of every board part past the new ribs (≥ 0.2 mm) and a 0.4 mm board lift. Pack mass is 401.6 g (+2.0 g), size 60.9 × 52.7 × 95.5 mm.
+All 123 model checks pass, including the insertion sweep of every board part past the new ribs (≥ 0.2 mm) and a 0.4 mm board lift. Pack mass is 401.8 g (+2.2 g), size 60.9 × 52.7 × 95.5 mm.
 
 ![Sections with the new lands, lips and cradles](../../../hardware/mechanical/monolith_cup_sections.png)
 

@@ -80,6 +80,12 @@ VENT_GRILLE = (1.0, 0.8, 2.4)      # cross-hatch grille over the pocket at the s
                                    # cut the bars into slivers that JLC flagged as thin walls)
 OT_R, OT_GAP = 1.5, 0.3            # post radius; gap to the frame underside at nominal (0.6 until 2026-10-31: a hard plug-in
                                    # could push the core far enough to pull the USB-C rings out of the full bore)
+FOOT_GAP = 0.2                     # board feet (2026-11-03): PA12 ribs on the cap skirt's inside face under the board's bottom
+FOOT_Y = ((3.0, 6.0), (14.4, 16.2))  # edge, this far below it at nominal, at these |y| spans (clear of the vent hole, CELL2, the
+FOOT_X0 = S.sb_xb0 - 0.3           # Kelvin and PACK wires). A cap-end drop (~1180 g, ~250 N of board, rails and spacers) stops
+                                   # the board on the cap, not on the pegs and the rail tongues' crush ribs (the key slots are
+                                   # open top and bottom); OT_GAP - peg float <= FOOT_GAP <= OT_GAP + peg float, so the board and
+                                   # the core stop together within the peg float
 PAD_PROUD = 1.2                    # TPU pad printed this much taller than drawn (15 % gyroid): roughly 15-80 N of preload on
                                    # the core, above a normal USB-C plug-in (5-20 N); check the core can't rattle
 PAD_RELIEF = 1.5                   # pad pocketed this deep under the C1 / C4 windows and the wire notches (PACK pads, wires)
@@ -256,11 +262,16 @@ def cap():
     skirt = pz(CS.batch_boolean([cs_in.offset(-0.1, ROUND), cs_in.offset(-0.1 - SKIRT_T, ROUND)], M3.OpType.Subtract), Z_MOUTH - 0.01, Z_SKIRT1)
     bosses = [cyly(SCREW_X, SCREW_Z, 2.6, -(YI - 0.1), -(YI - 0.1 - BOSS_DEPTH)), cyly(SCREW_X, SCREW_Z, 2.6, YI - 0.1 - BOSS_DEPTH, YI - 0.1)]
     posts = [pz(circ(x, y, OT_R), Z_MOUTH - 0.01, FR_B0 - OT_GAP) for x, y in OT_POSTS]
-    m = U(plate, skirt, *bosses, *posts)
+    m = U(plate, skirt, *bosses, *posts, board_feet())
     m = m - pz(CS.batch_boolean([cs_in.offset(0.5, ROUND), cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), *GROOVE_Z)
     d = YI - 0.1 - BOSS_DEPTH + PILOT_SOLID                                                       # blind pilots
     m = m - pz(circ(*VENT_XY, VENT_HOLE_R), Z_MOUTH - CAP_T - 1, Z_MOUTH + 1)                      # vent hole
     return m - cyly(SCREW_X, SCREW_Z, PILOT_R, -(YI + 1), -d) - cyly(SCREW_X, SCREW_Z, PILOT_R, d, YI + 1)
+def board_feet():
+    """PA12 ribs on the cap skirt's inside face, up under the board's bottom edge (FOOT_GAP below it)"""
+    xs = X_IN - 0.1 - SKIRT_T + 0.3                                                               # 0.3 into the skirt
+    return U(*[pz(rect(FOOT_X0, xs, s*y0, s*y1) if s > 0 else rect(FOOT_X0, xs, -y1, -y0), Z_MOUTH - 0.01, S.sb_zb0 - FOOT_GAP)
+               for y0, y1 in FOOT_Y for s in (-1, 1)])
 def vent(): return pz(circ(*VENT_XY, VENT_D / 2), Z_MOUTH - CAP_T - VENT_T, Z_MOUTH - CAP_T)
 def oring(): return pz(CS.batch_boolean([cs_in, cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), GROOVE_Z[0] + 0.3, GROOVE_Z[1] - 0.3)
 def screws():
@@ -516,7 +527,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (10, 'Post spacers (4), crush-rib bores', 'MJF PA12', 'spacer'),
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', f'MJF PA12, {WALL} / {WALL_BF}', 'cup'),
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
-         (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, skirt, posts', 'MJF PA12', 'cap'),
+         (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, skirt, posts, feet', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
@@ -612,6 +623,11 @@ def checks():
         'carrier top frame >= 0.9 thick (z)': (FR_T1 - FR_T0) - 0.9,
         'cap skirt top under the carrier frame (z, >= 0.5 at -3 sigma)': (FR_B0 - Z_SKIRT1) - 0.5 - 0.5,
         'overtravel posts stop before the skirt touches (z)': (FR_B0 - Z_SKIRT1) - OT_GAP - 0.3,
+        'board feet: the board lands on them before its pegs bear (z)': OT_GAP + (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D)/2 - FOOT_GAP,
+        'board feet: seal ring band left in the bore with the board on them (>= 0.3)':
+            (Z_TOP1 - S.USB_RING_D[0] - FOOT_GAP) - (Z_POCKET + POCKET_LEAD) - 0.3,
+        'board feet: edge bearing, cap-end drop on the two inner feet (MPa, <= 40)':
+            40 - 0.0215 * 1182 * 9.81 / (2 * S.SB_PCB_T * (FOOT_Y[0][1] - FOOT_Y[0][0])),
         'overtravel posts under frame material, not a window or notch': min(
             min(np.hypot(x - cx, y - cy) for cx, cy in CELLS) - WIN_R - OT_R for x, y in OT_POSTS),
         'USB-C rings stay in the full bore when a plug pushes the core onto the overtravel posts (z, >= 0.2)':
@@ -683,6 +699,14 @@ def rib_checks():
     for n, V in (('nickel strips', P.nickel_strips('strips')), ('nickel tails and tongues', P.nickel_strips('tails')),
                  ('PACK wires', P.pack_wires()), ('sense wires', P.sense_wires())):
         out[f'cup lands / lips / cradles clear the {n} (>= 0.3)'] = min(h.min_gap(rb, 3.0) for h in zslabs(V)) - 0.3
+    ft = board_feet()
+    for n, m in (('rails', rails()), ('carrier', carrier()), ('TPU pad', pad())):
+        out[f'board feet clear the {n} (>= 0.3)'] = m.min_gap(ft, 2.0) - 0.3
+    out['board feet clear the vent hole (>= 0.5)'] = pz(circ(*VENT_XY, VENT_HOLE_R), Z_MOUTH - 1, Z_MOUTH + 1).min_gap(ft, 2.0) - 0.5
+    for n, V in (('nickel tails and tongues', P.nickel_strips('tails')), ('PACK wires', P.pack_wires()), ('sense wires', P.sense_wires())):
+        T = np.asarray(V).reshape(-1, 3, 3); yc = T[:, :, 1].mean(1)                              # each side on its own:
+        out[f'board feet clear the {n} (>= 0.3)'] = min(h.min_gap(ft, 3.0) for sd in (yc < 0, yc >= 0) if sd.sum()   # one hull
+                                                        for h in zslabs(T[sd])) - 0.3                                    # spans the feet
     return out
 # ---------------- the real board against the enclosure ----------------
 CLEAR = dict(cup=0.3, rails=0.2, spacers=0.15, carrier=0.3, cells=0.3, cap=0.5, pad=0.5)   # minimum gap, part hull to each
