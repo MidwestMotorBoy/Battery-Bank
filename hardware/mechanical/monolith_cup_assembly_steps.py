@@ -167,21 +167,21 @@ def step2(P):
     mod = L(P, 'carrier', 'foam', 'strip_bot', 'w_cell2', 'cells', 'insul', 'strip_top', 'tongues', 'w_top', 'pads', 'tails_wire', 'w_kelvin', 'rails')
     st = Step(2, '2   Gap filler and board on, on the bench',
               'About 4.5 g of GEL 30 on the two front cells, then the board down onto the posts with every '
-              'wire through its hole, sleeves on, and the seven wires soldered from F.Cu in order.', 3)
+              'wire through its hole, spacers on, and the seven wires soldered from F.Cu in order.', 3)
     st.panel('2.1 / 2.2  Gap filler on the front cells', mod, L(P, 'filler'), (1.0, -0.55, 0.35),
              notes=[((24.0, -11.5, 40.0), 'About 2.3 g GEL 30 per zone,\na little proud (|y| 7-16, z 27-53)'),
                     ((24.0, -15.5, 29.0), 'Cover the zone\'s bottom corner too:\nthe C1 / C4 NTCs (TH101 / TH104)\nsit there on B.Cu')],
              side_notes=['Weigh it: tare the module on the scale.', 'No cure. Rework: peel, IPA, fresh gel.'])
     sl, ph = S.sb_slots(), S.sb_pack_holes()
-    st.panel('2.3  Board onto the posts, then the sleeves', mod + L(P, 'filler'),
-             L(P, 'board', 'ble', o=(22, 0, 0)) + L(P, 'sleeve', o=(40, 0, 0)), ISO,
+    st.panel('2.3  Board onto the posts, then the spacers', mod + L(P, 'filler'),
+             L(P, 'board', 'ble', o=(22, 0, 0)) + L(P, 'spacer', o=(40, 0, 0)), ISO,
              arrows=[((62, 0, 80), (50, 0, 80)), ((70, 8.6, 14), (60, 8.6, 14))],
              notes=[((22 + 26.9, -8.6, 68.0), 'Peg slots 2.6 x 2.2: the board\nfloats across, located along'),
-                    ((40 + 27.4, 8.6, 14.0), 'TPU sleeve down each post\nuntil it touches F.Cu (no clamp)'),
+                    ((40 + 27.4, 8.6, 14.0), 'PA12 spacer down each post\nonto F.Cu (crush ribs hold it)'),
                     ((22 + 26.9, -13.0, 6.0), 'Guide the seven pack wires\ninto their holes')])
     order = [(ph['PACK-'], '1  PACK-'), (sl['1N'], '2  1N'), (sl['CELL1'], '3  CELL1'), (sl['CELL2'], '4  CELL2'),
              (sl['CELL3'], '5  CELL3'), (sl['4P'], '6  4P'), (ph['PACK+'], '7  PACK+')]
-    st.panel('2.4  Solder on F.Cu, in this order', mod + L(P, 'filler', 'ble'), L(P, 'board', 'sleeve'), FACE,
+    st.panel('2.4  Solder on F.Cu, in this order', mod + L(P, 'filler', 'ble'), L(P, 'board', 'spacer'), FACE,
              notes=[(hole_xyz(p[0], p[1]), t) for p, t in order],
              side_notes=['USB unplugged. Trim each wire', 'about 0.5 mm proud.'])
     st.save()
@@ -192,14 +192,14 @@ def step3(P):
     st = Step(3, '3   Test the module, on the bench',
               'Everything is still open: check the voltages, fit R124 / R126, program, run the function and 100 W thermal tests, then coat.', 2)
     sl, ph = S.sb_slots(), S.sb_pack_holes()
-    st.panel('3.1  Seven voltages, then fit R124 / R126', mod, L(P, 'board', 'sleeve'), FACE,
+    st.panel('3.1  Seven voltages, then fit R124 / R126', mod, L(P, 'board', 'spacer'), FACE,
              notes=[(hole_xyz(*ph['PACK-'][:2]), 'Reference: PACK-'),
                     (hole_xyz(*sl['CELL1'][:2]), 'CELL1: one cell up'),
                     (hole_xyz(*sl['CELL2'][:2]), 'CELL2: two cells'),
                     (hole_xyz(*sl['CELL3'][:2]), 'CELL3: three cells'),
                     (hole_xyz(*ph['PACK+'][:2]), 'PACK+ and 4P: four cells')],
              side_notes=['Each step 2.5-4.2 V. Only then fit', 'R124 and R126 (5.1 kOhm 0402, F.Cu).'])
-    st.panel('3.3 / 3.4  Function test, then conformal coat', mod, L(P, 'board', 'sleeve'), ISO,
+    st.panel('3.3 / 3.4  Function test, then conformal coat', mod, L(P, 'board', 'spacer'), ISO,
              notes=[((S.sb_port_x, -S.SB_PORT_Y, 78.6), 'Mask the USB-C seal rings'),
                     ((25.3, 16.6, 60.0), 'Keep coat off the antenna end'),
                     ((18.8, -19.8, 45.0), 'Thermocouple on a front cell\n(and one on a back cell)'),
@@ -209,7 +209,7 @@ def step3(P):
 
 def step4(P):
     mod = L(P, 'carrier', 'foam', 'strip_bot', 'w_cell2', 'cells', 'insul', 'strip_top', 'tongues', 'w_top', 'pads', 'tails_wire',
-            'w_kelvin', 'rails', 'filler', 'board', 'ble', 'sleeve')
+            'w_kelvin', 'rails', 'filler', 'board', 'ble', 'spacer')
     st = Step(4, '4   Module into the cup',
               'Port end first, from the bottom. The carrier frames guide it; the bores\' lead-ins take the USB-C rings in.', 1)
     st.panel('4.1 / 4.2  Push it home, square', L(P, 'cup'), [(V, c, (0, 0, -112)) for V, c, _ in mod], (1.0, -1.1, 0.35),

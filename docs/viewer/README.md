@@ -8,7 +8,7 @@
 What it does:
 
 - **Parts**: every part of the pack (cup, label with the print art, bumpers, cap, O-ring, screws, vent, carrier, rails,
-  sleeves, pad, foam, insulator rings, gap filler, cells, nickel, PACK tails and wires, PCB, components, USB-C, BLE module)
+  post spacers, pad, foam, insulator rings, gap filler, cells, nickel, PACK tails and wires, PCB, components, USB-C, BLE module)
   with a show/hide box and an opacity slider each, a box per group, and presets (core only, enclosure only, board and cells,
   ghost the shell).
 - **Section planes** on X, Y and Z, each with a position slider in mm and a flip box; they combine. Cut faces are drawn

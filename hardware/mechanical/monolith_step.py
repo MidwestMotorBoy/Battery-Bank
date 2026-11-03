@@ -160,7 +160,7 @@ def part_list():
          *([] if os.path.exists(KICAD_STEP) else
            [('09a_board_dummy', 'board', [('board', soup(P.side_board_dummy()))]),
             ('09b_ble_module_envelope', 'ble', [('ble', soup(P.ble_module()))])]),
-         ('10_retaining_sleeves', 'sleeve', [('sleeve', mf(K.sleeves()))]),
+         ('10_post_spacers', 'spacer', [('spacer', mf(K.spacers()))]),
          ('11_cup', 'cup', [('cup', mf(K.cup()))]),
          ('12_cap_pad', 'pad', [('pad', mf(K.pad()))]),
          ('13_oring', 'oring', [('oring', mf(K.oring()))]),
