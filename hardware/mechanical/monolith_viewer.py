@@ -18,7 +18,7 @@ OUT = os.path.join(ROOT, 'docs', 'viewer', 'monolith_viewer.html')
 # explode offsets (mm), as monolith_cup.sheet_exploded: the core drops out of the cup, the closure stack below it
 EX = dict(cell=(0, 0, -75), carrier=(0, 0, -75), nickel=(0, 0, -75), tails=(0, 0, -75), board=(16, 0, -75), ble=(16, 0, -75),
           filler=(8, 0, -75), cup=(0, 0, 25), pad=(0, 0, -118), oring=(0, 0, -136), cap=(0, 0, -152), screw=(0, 0, -152),
-          vent=(0, 0, -167), rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), sleeve=(22, 0, -75), label=(0, 0, 25),
+          vent=(0, 0, -167), rails=(9, 0, -75), insul=(0, 0, -75), foam=(0, 0, -75), spacer=(22, 0, -75), label=(0, 0, 25),
           bumpb=(0, 0, -182), bumpt=(0, 0, 50))
 
 # (id, section, display name, part number in monolith_cup.PARTS, mesh keys in assembly())
@@ -32,7 +32,7 @@ UI = [('cup', 'Enclosure', 'Cup', 11, ['cup']),
       ('vent', 'Enclosure', 'Vent patch', 19, ['vent']),
       ('carrier', 'Core', 'Cell carrier', 1, ['carrier']),
       ('rails', 'Core', 'Board rails', 2, ['rails']),
-      ('sleeve', 'Core', 'Post sleeves', 10, ['sleeve']),
+      ('spacer', 'Core', 'Post spacers', 10, ['spacer']),
       ('pad', 'Core', 'Cap pad', 12, ['pad']),
       ('foam', 'Core', 'Preload foam', 5, ['foam']),
       ('insul', 'Core', 'Insulator rings', 4, ['insul']),
