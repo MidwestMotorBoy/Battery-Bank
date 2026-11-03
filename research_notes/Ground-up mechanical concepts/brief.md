@@ -1,6 +1,6 @@
 # Ground-up mechanical concept — shared brief
 
-This is a THOUGHT EXPERIMENT: a clean-sheet mechanical design for a hobby trail battery bank. You may read the existing design for facts (repo `C:\Users\Logan\Documents\BatteryBank`, `mechanical/monolith_shell.py`, `README.md`, `Production/README.md`, `reports/`), but do NOT copy it by default and do NOT edit any repo file. Write only to your output file named below.
+This is a THOUGHT EXPERIMENT: a clean-sheet mechanical design for a hobby trail battery bank. You may read the existing design for facts (this repo, `mechanical/monolith_shell.py`, `README.md`, `Production/README.md`, `reports/`), but do NOT copy it by default and do NOT edit any repo file. Write only to your output file named below.
 
 ## Fixed facts
 - 4 × EVE INR21700-58E cylindrical cells (21.5 mm Ø × 70.8 mm, ~70 g each), wired **4S1P** (14.4 V nominal, 82 Wh). The BMS needs PACK+, PACK−, and three mid-tap sense lines (CELL1–3); a Kelvin pair on the stack ends is nice to have. Pack current up to ~7 A (100 W).

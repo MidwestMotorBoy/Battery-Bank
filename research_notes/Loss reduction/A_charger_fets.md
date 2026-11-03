@@ -1,7 +1,7 @@
 # A — Charger FET conduction losses
 
 Researcher A, 2026-10-21. This is research only: nothing in the repo was changed. The model copy and the variant script are in the scratchpad:
-- `C:\Users\Logan\AppData\Local\Temp\claude\C--Users-Logan-Documents-BatteryBank\e185e067-8e49-4b1c-9840-e0e47a30eac1\scratchpad\a\heat_sources.py`
+- `<scratchpad>/a/heat_sources.py`
 - `...\scratchpad\a\fet_variants.py`, which sets a FET for each switch position and the gate-drive source.
 
 ## 1. The current parts and what they really lose

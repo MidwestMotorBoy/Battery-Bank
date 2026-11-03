@@ -1,7 +1,7 @@
 # B — Switching frequency and the inductor
 
 Researcher B, 2026-10-21. This is research only: nothing in the repo was changed.
-- Model copy: `C:\Users\Logan\AppData\Local\Temp\claude\C--Users-Logan-Documents-BatteryBank\e185e067-8e49-4b1c-9840-e0e47a30eac1\scratchpad\model\freq_ind_B.py`. It imports `heat_sources_B.py`, an untouched copy of the model. The output is in `out.txt` beside it.
+- Model copy: `<scratchpad>/model/freq_ind_B.py`. It imports `heat_sources_B.py`, an untouched copy of the model. The output is in `out.txt` beside it.
 - Cap-sim sweep: `...\scratchpad\sims\hardware\Production\tools\fsweep.py`. It runs `low_profile_sims.py` from d994c3a with FSW and L changed.
 
 ## 1. What is there today, and what it really loses

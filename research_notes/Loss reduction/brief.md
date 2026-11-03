@@ -3,12 +3,12 @@
 The Monolith is a 4S1P, 82 Wh USB-C PD power bank (4 × EVE INR21700-58E) with two ports. Each port has a TI BQ25756 4-switch buck-boost charger and a TPS25751 PD controller; a BQ40Z50 gauge runs the pack protection. The owner wants to **cut the electrical losses** before any more thermal or mechanical modelling. You are one of five researchers, each owning one area. **Research and recommend only: do not edit any schematic, board, script or doc in the repo.** Write only your own output file.
 
 ## Where things are
-- Repo: `C:\Users\Logan\Documents\BatteryBank` (branch `Production`). The local checkout is **behind** `origin/Production`; read the newest design files with `git show d994c3a:<path>`, for example:
+- Repo: this repo (branch `Production`). The local checkout is **behind** `origin/Production`; read the newest design files with `git show d994c3a:<path>`, for example:
   - `git show d994c3a:hardware/Production/README.md` (production design log: parts, trade-offs, the board)
   - `git show d994c3a:hardware/Production/power.kicad_sch`, `usb_port.kicad_sch`, `gauge.kicad_sch` (schematics, text)
   - `git show d994c3a:docs/devboard/circuit-description.md`, `docs/devboard/schematic-review-4-2026-10-14.md`, `docs/devboard/review4/*.md`, `docs/devboard/review2/*.md` (loss and FET reviews)
 - Datasheets: `datasheets/` (bq25756.pdf, siz240dt.pdf, aps0730.pdf, agm404ap1.pdf, tps25751.pdf, bq40z50-r2.pdf, eve-inr21700-58e.pdf, pa2010-5mohm.pdf, …). `pdftotext -layout` is installed (Git Bash).
-- The current loss model: `research_notes/Ground-up mechanical concepts/model/heat_sources.py`. Read it; to test a change, **copy it to your scratch area** and edit the copy. Run it with the Python at `C:\Users\Logan\AppData\Local\Temp\claude\C--Users-Logan-Documents-BatteryBank\5a6957a1-6049-4783-85aa-a109da28ab92\scratchpad\venv\Scripts\python.exe` (`heat_sources.py nochart` prints the table).
+- The current loss model: `research_notes/Ground-up mechanical concepts/model/heat_sources.py`. Read it; to test a change, **copy it to your scratch area** and edit the copy. Run it with the Python at the Python in a local venv (`heat_sources.py nochart` prints the table).
 - Parts sourcing: the board is assembled by **JLCPCB**, so LCSC part numbers, stock and price matter (a part JLC doesn't stock must be hand-supplied: say so). You may have JLC search tools (`mcp__kicad__search_jlcpcb_parts`, `mcp__kicad__get_jlcpcb_part`; load them with ToolSearch) and web search. Cite datasheet pages/figures for every resistance, charge or rating you use.
 
 ## Current losses (estimates, `heat_sources.py`, nominal 14.4 V pack)
