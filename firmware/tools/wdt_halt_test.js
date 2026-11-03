@@ -6,7 +6,7 @@ const WDTCNT = 0x40001300, WDTTEST = 0x40001304;
 const t = () => new Date().toISOString().slice(11, 23);
 const ds = initScripting();
 ds.setScriptingTimeout(30000);
-ds.configure("C:/Users/Logan/Documents/BatteryBank/firmware/targets/lp_em_cc2340r53_xds110.ccxml");
+ds.configure(require("path").resolve(__dirname, "../targets/lp_em_cc2340r53_xds110.ccxml"));
 const session = ds.openSession(/cortex/i);
 session.target.connect();
 if (!session.target.isHalted()) session.target.halt();

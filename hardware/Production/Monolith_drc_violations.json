@@ -1,5 +1,5 @@
 {
-  "board": "C:\\Users\\Logan\\Documents\\BatteryBank\\hardware\\Production\\Monolith.kicad_pcb",
+  "board": "hardware/Production/Monolith.kicad_pcb",
   "timestamp": "2026-10-30T14:36:52",
   "total_violations": 5,
   "violation_counts": {
