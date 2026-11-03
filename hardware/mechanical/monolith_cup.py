@@ -454,7 +454,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
-         (19, 'Pressure vent on the cap, under the bottom bumper (after the leak test)', 'ePTFE patch, 12 mm', 'vent')]
+         (19, 'Vent patch on the cap, fitted after the leak test', 'ePTFE, 12 mm', 'vent')]
 NUM = {k: n for n, _, _, k in PARTS}
 # STL folders by what each part is made from (stl/README.md): MJF PA12 from JLC3DP, TPU 95A on an FDM printer, and the
 # bought / cut / dispensed parts, which are only there for fit checks and CAD
@@ -693,7 +693,7 @@ def sheet_exploded(A, m):
     x0 = 2010; sh.panel_title(x0, 128, 'Parts', 650)
     rows = [[str(n), name, mat, f'{m.get(k, 0):.1f}' if m.get(k, 0) >= 0.05 else '<0.1'] for n, name, mat, k in PARTS]
     rows.append(['', 'Pack total', '', f'{total:.1f}'])
-    y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [36, 344, 200, 70], 13, bold_last=True, rh=26)
+    y = sh.table(x0, 176, ['#', 'Part', 'Material', '>g'], rows, [36, 374, 170, 70], 13, bold_last=True, rh=26)
     for i, s in enumerate(('Board mass is estimated: FR4 + 6-layer copper, parts at 3 g/cm3 over their 3D models.',
                            f'TPU pad {PAD_FILL:.0%} and bumper slabs {SLAB_FILL:.0%} gyroid; bumper bands solid. Cells 75 g each (datasheet max).',
                            'Label drawn on the cup; board thermal vias not drawn. Pad drawn as installed (printed 1.2 mm taller).')):
