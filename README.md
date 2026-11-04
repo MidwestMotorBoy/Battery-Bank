@@ -164,6 +164,7 @@ Three fixes came out of it and are now in the model: the bumper slabs at **30 % 
 .
 ├── README.md
 ├── LICENSE
+├── .claude/skills/        Electrical design techniques from this project as skills for AI agents (index: README.md)
 ├── hardware/
 │   ├── Production/        KiCad 10 project "Monolith" (P0): schematic, routed board, libraries, generator scripts
 │   ├── mechanical/        Enclosure models (Python → STL/STEP/DXF) and renders for the cup
