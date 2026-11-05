@@ -3,7 +3,7 @@
   {
    "part": "board parts striking the cup",
    "check": "force of the F.Cu parts on the wall (impact model, board rigid)",
-   "value": 2200.5,
+   "value": 1891.3,
    "unit": "N",
    "limit": 100.0,
    "pose": "back",
@@ -13,179 +13,157 @@
   },
   {
    "part": "cup + cap: cup_walls",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 783.13,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "top_back_side",
    "title": "Corner: port end, back face, narrow side",
    "margin": 0.06,
-   "note": "max 1274 MPa at [-18.3, 22.2, 73.7]"
+   "note": "max 1274 MPa at [-18.3, 22.2, 73.7]; with the bearing under the contacts 783 MPa"
+  },
+  {
+   "part": "carrier: webs",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
+   "value": 683.92,
+   "unit": "MPa",
+   "limit": 48.0,
+   "pose": "top_back",
+   "title": "Edge: port end / back face",
+   "margin": 0.07,
+   "note": "max 1393 MPa at [0.9, 15.0, 75.8]; with the bearing under the contacts 850 MPa"
   },
   {
    "part": "cup + cap: lips",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 581.27,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "top_board",
    "title": "Edge: port end / board face",
    "margin": 0.08,
-   "note": "max 583 MPa at [27.5, 21.5, 78.2]"
+   "note": "max 583 MPa at [27.5, 21.5, 78.2]; with the bearing under the contacts 581 MPa"
   },
   {
    "part": "cup + cap: cradles",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 526.33,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "top_board_side",
    "title": "Corner: port end, board face, narrow side",
    "margin": 0.09,
-   "note": "max 567 MPa at [21.5, 17.0, 77.4]"
+   "note": "max 567 MPa at [21.5, 17.0, 77.4]; with the bearing under the contacts 526 MPa"
   },
   {
    "part": "rail blocks: ends",
-   "check": "von Mises, 99.9th percentile (FE)",
-   "value": 524.09,
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
+   "value": 517.25,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "bottom",
    "title": "Flat on the cap end",
    "margin": 0.09,
-   "note": "max 547 MPa at [22.4, 7.2, 5.7]"
+   "note": "max 533 MPa at [22.3, -7.0, 5.5]; with the bearing under the contacts 517 MPa"
   },
   {
    "part": "cup + cap: feet",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 458.99,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "bottom_board_side",
    "title": "Corner: cap end, board face, narrow side",
    "margin": 0.1,
-   "note": "max 494 MPa at [27.5, 15.5, 3.2]"
+   "note": "max 494 MPa at [27.5, 15.5, 3.2]; with the bearing under the contacts 459 MPa"
   },
   {
    "part": "cup + cap: lands",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 398.51,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "top_board_side",
    "title": "Corner: port end, board face, narrow side",
    "margin": 0.12,
-   "note": "max 400 MPa at [26.7, 22.2, 69.9]"
+   "note": "max 400 MPa at [26.7, 22.2, 69.9]; with the bearing under the contacts 399 MPa"
   },
   {
    "part": "cup + cap: cap",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 397.84,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "bottom_board_side",
    "title": "Corner: cap end, board face, narrow side",
    "margin": 0.12,
-   "note": "max 639 MPa at [32.7, 12.5, -5.8]"
-  },
-  {
-   "part": "M2 screws (2): pull-out from the cap bosses",
-   "check": "cap pulled off the cup, both screws",
-   "value": 3301.94,
-   "unit": "N",
-   "limit": 400.0,
-   "pose": "bottom_back",
-   "title": "Edge: cap end / back face",
-   "margin": 0.12,
-   "note": "estimate: the core still pushing on the cap after the floor force has gone"
+   "note": "max 639 MPa at [32.7, 12.5, -5.8]; with the bearing under the contacts 398 MPa"
   },
   {
    "part": "rail blocks: blocks",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 359.82,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "bottom_board_side",
    "title": "Corner: cap end, board face, narrow side",
    "margin": 0.13,
-   "note": "max 722 MPa at [22.7, 10.9, 55.3]"
-  },
-  {
-   "part": "carrier: webs",
-   "check": "von Mises, 99.9th percentile (FE)",
-   "value": 343.95,
-   "unit": "MPa",
-   "limit": 48.0,
-   "pose": "top_back",
-   "title": "Edge: port end / back face",
-   "margin": 0.14,
-   "note": "max 553 MPa at [-22.4, 0.8, 5.9]"
-  },
-  {
-   "part": "USB-C receptacles (2)",
-   "check": "housing pushed by its pocket, per receptacle",
-   "value": 402.85,
-   "unit": "N",
-   "limit": 60.0,
-   "pose": "bottom_board_side",
-   "title": "Corner: cap end, board face, narrow side",
-   "margin": 0.15,
-   "note": "limit: typical mid-mount receptacle shell-tab retention ~50-100 N (no datasheet value); a load here also rocks the solder joints"
+   "note": "max 722 MPa at [22.7, 10.9, 55.3]; with the bearing under the contacts 360 MPa"
   },
   {
    "part": "cup + cap: ot_posts",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 276.31,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "bottom_board_side",
    "title": "Corner: cap end, board face, narrow side",
    "margin": 0.17,
-   "note": "max 284 MPa at [1.2, 0.5, -3.6]"
+   "note": "max 284 MPa at [1.2, 0.5, -3.6]; with the bearing under the contacts 276 MPa"
   },
   {
    "part": "rail blocks: posts",
-   "check": "von Mises, 99.9th percentile (FE)",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
    "value": 275.29,
    "unit": "MPa",
    "limit": 48.0,
    "pose": "board_side",
    "title": "Edge: board face / narrow side (long edge)",
    "margin": 0.17,
-   "note": "max 276 MPa at [28.7, 8.0, 13.6]"
-  },
-  {
-   "part": "carrier: frames",
-   "check": "von Mises, 99.9th percentile (FE)",
-   "value": 235.67,
-   "unit": "MPa",
-   "limit": 48.0,
-   "pose": "top_back",
-   "title": "Edge: port end / back face",
-   "margin": 0.2,
-   "note": "max 369 MPa at [-22.4, 0.8, 5.1]"
-  },
-  {
-   "part": "cap: board feet (4)",
-   "check": "board edge bearing, all four feet",
-   "value": 241.52,
-   "unit": "MPa",
-   "limit": 55.0,
-   "pose": "bottom_board_side",
-   "title": "Corner: cap end, board face, narrow side",
-   "margin": 0.23,
-   "note": "3710 N"
+   "note": "max 276 MPa at [28.7, 8.0, 13.6]; with the bearing under the contacts 275 MPa"
   },
   {
    "part": "board (FR4, parts)",
    "check": "surface strain, 99th percentile",
-   "value": 7546.77,
+   "value": 8912.06,
    "unit": "ue",
    "limit": 2000.0,
    "pose": "board",
    "title": "Flat on the board face",
-   "margin": 0.27,
-   "note": "bow 1.19 mm; max 24707 ue at the point supports; worst parts J501, J401, D401, D501"
+   "margin": 0.22,
+   "note": "bow 1.28 mm; max 28052 ue at the point supports; worst parts J501, J401, D501, D401"
+  },
+  {
+   "part": "USB-C receptacles (2)",
+   "check": "housing pushed by its pocket, per receptacle",
+   "value": 235.85,
+   "unit": "N",
+   "limit": 60.0,
+   "pose": "board",
+   "title": "Flat on the board face",
+   "margin": 0.25,
+   "note": "limit: typical mid-mount receptacle shell-tab retention ~50-100 N (no datasheet value); a load here also rocks the solder joints"
+  },
+  {
+   "part": "carrier: frames",
+   "check": "von Mises away from the contact patches, 99.9th pct (FE)",
+   "value": 185.69,
+   "unit": "MPa",
+   "limit": 48.0,
+   "pose": "top_back_side",
+   "title": "Corner: port end, back face, narrow side",
+   "margin": 0.26,
+   "note": "max 268 MPa at [-22.4, 0.1, 5.1]; with the bearing under the contacts 186 MPa"
   },
   {
    "part": "board (FR4, parts)",
@@ -234,13 +212,13 @@
   {
    "part": "board (FR4, parts)",
    "check": "surface strain, 99th percentile",
-   "value": 4657.24,
+   "value": 4331.35,
    "unit": "ue",
    "limit": 2000.0,
-   "pose": "top_back",
-   "title": "Edge: port end / back face",
-   "margin": 0.43,
-   "note": "bow 0.69 mm; max 17160 ue at the point supports; worst parts J501, J401, U501, U401"
+   "pose": "back",
+   "title": "Flat on the back (cell) face",
+   "margin": 0.46,
+   "note": "bow 0.43 mm; max 15238 ue at the point supports; worst parts J501, J401, D401, D501"
   },
   {
    "part": "board (FR4, parts)",
@@ -252,17 +230,6 @@
    "title": "Edge: cap end / back face",
    "margin": 0.47,
    "note": "bow 0.33 mm; max 15416 ue at the point supports; worst parts J401, J501, D401, D501"
-  },
-  {
-   "part": "board (FR4, parts)",
-   "check": "surface strain, 99th percentile",
-   "value": 4206.44,
-   "unit": "ue",
-   "limit": 2000.0,
-   "pose": "back",
-   "title": "Flat on the back (cell) face",
-   "margin": 0.48,
-   "note": "bow 0.15 mm; max 14955 ue at the point supports; worst parts J501, J401, D401, D501"
   },
   {
    "part": "board (FR4, parts)",
@@ -298,15 +265,26 @@
    "note": "bow 0.49 mm; max 17240 ue at the point supports; worst parts J501, J401, D501, D401"
   },
   {
+   "part": "M2 screws (2): pull-out from the cap bosses",
+   "check": "cap pulled off the cup, both screws",
+   "value": 735.25,
+   "unit": "N",
+   "limit": 400.0,
+   "pose": "bottom",
+   "title": "Flat on the cap end",
+   "margin": 0.54,
+   "note": "estimate: the core still pushing on the cap after the floor force has gone"
+  },
+  {
    "part": "cap: overtravel posts (4 x r1.5)",
    "check": "mean bearing on the 4 tips",
-   "value": 79.24,
+   "value": 94.45,
    "unit": "MPa",
    "limit": 55.0,
    "pose": "bottom",
    "title": "Flat on the cap end",
-   "margin": 0.69,
-   "note": "2240 N on the posts"
+   "margin": 0.58,
+   "note": "2670 N on the posts"
   },
   {
    "part": "board parts vs the board-face wall",
@@ -331,6 +309,17 @@
    "note": "bow 0.09 mm; max 9845 ue at the point supports; worst parts J501, J401, D401, D501"
   },
   {
+   "part": "cap: board feet (4)",
+   "check": "board edge bearing, all four feet",
+   "value": 62.48,
+   "unit": "MPa",
+   "limit": 55.0,
+   "pose": "bottom",
+   "title": "Flat on the cap end",
+   "margin": 0.88,
+   "note": "960 N"
+  },
+  {
    "part": "board parts vs the board-face wall",
    "check": "clearance left (mm, lower is worse)",
    "value": 0.22,
@@ -350,40 +339,29 @@
    "pose": "board",
    "title": "Flat on the board face",
    "margin": 1.04,
-   "note": "C1-C2 strip, 444 um in-plane differential"
+   "note": "C1-C2 strip, 310 um in-plane differential"
+  },
+  {
+   "part": "board (FR4, parts)",
+   "check": "surface strain, 99th percentile",
+   "value": 1769.64,
+   "unit": "ue",
+   "limit": 2000.0,
+   "pose": "top_back",
+   "title": "Edge: port end / back face",
+   "margin": 1.13,
+   "note": "bow 0.33 mm; max 6647 ue at the point supports; worst parts J501, J401, U401, R414"
   },
   {
    "part": "board parts vs the board-face wall",
    "check": "clearance left (mm, lower is worse)",
-   "value": 0.16,
+   "value": 0.17,
    "unit": "mm under 0.2",
    "limit": 0.2,
    "pose": "board",
    "title": "Flat on the board face",
-   "margin": 1.27,
-   "note": "L201 0.04 mm"
-  },
-  {
-   "part": "gap filler (GEL 30)",
-   "check": "peak stretch across the board-cell gap",
-   "value": 37.32,
-   "unit": "%",
-   "limit": 50.0,
-   "pose": "back",
-   "title": "Flat on the back (cell) face",
-   "margin": 1.34,
-   "note": "debond risk, thermal not structural"
-  },
-  {
-   "part": "post spacers (4, PA12)",
-   "check": "axial stress, load shared by 4",
-   "value": 40.6,
-   "unit": "MPa",
-   "limit": 55.0,
-   "pose": "bottom_board",
-   "title": "Edge: cap end / board face",
-   "margin": 1.35,
-   "note": "1456 N"
+   "margin": 1.18,
+   "note": "C434 0.03 mm"
   },
   {
    "part": "board (FR4, parts)",
@@ -397,6 +375,17 @@
    "note": "bow 0.32 mm; max 4652 ue at the point supports; worst parts J501, J401, D401, D501"
   },
   {
+   "part": "gap filler (GEL 30)",
+   "check": "peak stretch across the board-cell gap",
+   "value": 34.82,
+   "unit": "%",
+   "limit": 50.0,
+   "pose": "back",
+   "title": "Flat on the back (cell) face",
+   "margin": 1.44,
+   "note": "debond risk, thermal not structural"
+  },
+  {
    "part": "board parts vs the board-face wall",
    "check": "clearance left (mm, lower is worse)",
    "value": 0.13,
@@ -408,15 +397,26 @@
    "note": "C531 0.07 mm"
   },
   {
-   "part": "cup: edge lands",
-   "check": "board edge bearing over the land length",
-   "value": 31.59,
+   "part": "post spacers (4, PA12)",
+   "check": "axial stress, load shared by 4",
+   "value": 32.76,
    "unit": "MPa",
    "limit": 55.0,
-   "pose": "top_back_side",
-   "title": "Corner: port end, back face, narrow side",
-   "margin": 1.74,
-   "note": "2616 N"
+   "pose": "board_side",
+   "title": "Edge: board face / narrow side (long edge)",
+   "margin": 1.68,
+   "note": "1175 N"
+  },
+  {
+   "part": "cup: top wall over the board edge",
+   "check": "board edge bearing (43 mm edge)",
+   "value": 29.74,
+   "unit": "MPa",
+   "limit": 55.0,
+   "pose": "top",
+   "title": "Flat on the port end",
+   "margin": 1.85,
+   "note": "2055 N (board top edge on the top wall, or rebound)"
   },
   {
    "part": "O-ring (silicone 60A, 2.0 cord)",
@@ -428,17 +428,6 @@
    "title": "Flat on a narrow side (USB1, +y)",
    "margin": 2.0,
    "note": "squeeze 25 % at rest, 20-30 % for the instant; no load path through it"
-  },
-  {
-   "part": "cup: top wall over the board edge",
-   "check": "board edge bearing (43 mm edge)",
-   "value": 23.75,
-   "unit": "MPa",
-   "limit": 55.0,
-   "pose": "top",
-   "title": "Flat on the port end",
-   "margin": 2.32,
-   "note": "1642 N (board top edge on the top wall, or rebound)"
   },
   {
    "part": "board parts vs the board-face wall",
@@ -463,59 +452,48 @@
    "note": "C1; limit is the crush-test level, not a design load"
   },
   {
-   "part": "cells: axial (ends on the frames / tongues)",
-   "check": "force on one cell",
-   "value": 3667.5,
-   "unit": "N",
-   "limit": 13000.0,
-   "pose": "bottom_back",
-   "title": "Edge: cap end / back face",
-   "margin": 3.54,
-   "note": "C2; limit is the crush-test level, not a design load"
+   "part": "cup: edge lands",
+   "check": "board edge bearing over the land length",
+   "value": 15.06,
+   "unit": "MPa",
+   "limit": 55.0,
+   "pose": "side",
+   "title": "Flat on a narrow side (USB1, +y)",
+   "margin": 3.65,
+   "note": "1247 N"
   },
   {
    "part": "cells",
    "check": "peak deceleration",
-   "value": 4888.74,
+   "value": 4180.33,
    "unit": "g",
    "limit": 20000.0,
-   "pose": "top_back_side",
-   "title": "Corner: port end, back face, narrow side",
-   "margin": 4.09,
+   "pose": "top_board",
+   "title": "Edge: port end / board face",
+   "margin": 4.78,
    "note": "a bare cell dropped 1 m on concrete (IEC 62133-2) sees ~10^4 g on its can"
   },
   {
-   "part": "board parts vs the board-face wall",
-   "check": "clearance left (mm, lower is worse)",
-   "value": 0.03,
-   "unit": "mm under 0.2",
-   "limit": 0.2,
-   "pose": "top_back",
-   "title": "Edge: port end / back face",
-   "margin": 7.41,
-   "note": "L201 0.17 mm"
+   "part": "cells: axial (ends on the frames / tongues)",
+   "check": "force on one cell",
+   "value": 2525.3,
+   "unit": "N",
+   "limit": 13000.0,
+   "pose": "top_board",
+   "title": "Edge: port end / board face",
+   "margin": 5.15,
+   "note": "C2; limit is the crush-test level, not a design load"
   },
   {
    "part": "cup: F.Cu lips",
    "check": "line load on the lips",
-   "value": 7.3,
+   "value": 7.71,
    "unit": "N/mm",
    "limit": 150.0,
    "pose": "board",
    "title": "Flat on the board face",
-   "margin": 20.54,
-   "note": "756 N; limit = lip bending to ~PA12 yield (est.)"
-  },
-  {
-   "part": "cap: skirt top (carrier frame lands on it)",
-   "check": "force",
-   "value": 8657.0,
-   "unit": "N",
-   "limit": 1000000000.0,
-   "pose": "bottom_back",
-   "title": "Edge: cap end / back face",
-   "margin": 115513.46,
-   "note": "not meant to touch: 1.1 mm gap"
+   "margin": 19.44,
+   "note": "798 N; limit = lip bending to ~PA12 yield (est.)"
   }
  ]
 }

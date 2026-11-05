@@ -1,186 +1,152 @@
 {
  "pose": "top_back",
  "part": "carrier",
- "H": 0.75,
+ "H": 1.0,
  "snapshots": [
   {
-   "t_ms": 1.404,
+   "t_ms": 1.395,
    "loads": [
     [
      "C1",
      "carrier/frames",
      "+",
-     1617.0
+     1686.4
     ],
     [
      "C1",
      "carrier/webs",
      "+",
-     660.1
-    ],
-    [
-     "C3",
-     "carrier/frames",
-     "+",
-     713.7
+     701.9
     ],
     [
      "C2",
      "carrier/frames",
      "+",
-     713.7
+     752.1
     ],
     [
+     "C3",
      "carrier/frames",
-     "rails_tp/ends",
-     "-",
-     69.0
-    ],
-    [
-     "carrier/frames",
-     "rails_bp/ends",
-     "-",
-     72.4
-    ],
-    [
-     "carrier/frames",
-     "rails_bn/ends",
-     "-",
-     72.6
-    ],
-    [
-     "carrier/frames",
-     "rails_tn/ends",
-     "-",
-     69.0
+     "+",
+     752.1
     ],
     [
      "C4",
      "carrier/frames",
      "+",
-     1617.0
+     1686.4
     ],
     [
      "C4",
      "carrier/webs",
      "+",
-     660.1
-    ],
-    [
-     "carrier/frames",
-     "shell/cup_walls",
-     "+",
-     115.3
+     701.9
     ],
     [
      "carrier/webs",
      "shell/cup_walls",
      "+",
-     6350.8
+     6441.5
     ]
    ],
-   "its": 29,
-   "rel_res": 9.629036008826093e-08
+   "its": 19,
+   "rel_res": 4.947666405411158e-08,
+   "spin_rad_s2": [
+    891865.0,
+    -41748163.0,
+    1488445.0
+   ],
+   "unbalanced_g": 287.0
   },
   {
-   "t_ms": 1.409,
+   "t_ms": 1.401,
    "loads": [
     [
      "C1",
      "carrier/frames",
      "+",
-     1615.4
+     1689.3
     ],
     [
      "C1",
      "carrier/webs",
      "+",
-     658.4
-    ],
-    [
-     "C3",
-     "carrier/frames",
-     "+",
-     728.3
+     702.4
     ],
     [
      "C2",
      "carrier/frames",
      "+",
-     728.3
+     773.2
     ],
     [
+     "C3",
      "carrier/frames",
-     "rails_tp/ends",
-     "-",
-     77.4
-    ],
-    [
-     "carrier/frames",
-     "rails_bp/ends",
-     "-",
-     75.0
-    ],
-    [
-     "carrier/frames",
-     "rails_bn/ends",
-     "-",
-     75.2
-    ],
-    [
-     "carrier/frames",
-     "rails_tn/ends",
-     "-",
-     77.4
+     "+",
+     773.2
     ],
     [
      "C4",
      "carrier/frames",
      "+",
-     1615.4
+     1689.3
     ],
     [
      "C4",
      "carrier/webs",
      "+",
-     658.4
-    ],
-    [
-     "carrier/frames",
-     "shell/cup_walls",
-     "+",
-     114.4
+     702.4
     ],
     [
      "carrier/webs",
      "shell/cup_walls",
      "+",
-     6333.0
+     6427.0
     ]
    ],
-   "its": 29,
-   "rel_res": 9.639801934176033e-08
+   "its": 19,
+   "rel_res": 4.90146306048257e-08,
+   "spin_rad_s2": [
+    893352.0,
+    -41956200.0,
+    1491010.0
+   ],
+   "unbalanced_g": 163.0
   }
  ],
  "regions": {
   "carrier/frames": {
-   "p99": 96.18400454816074,
-   "p999": 235.674947919107,
-   "max": 368.6392309391467,
+   "p99": 107.0941982650699,
+   "p999": 234.58123335045204,
+   "max": 256.99372830280424,
    "at": [
-    -22.4,
-    0.8,
-    5.1
+    -22.0,
+    -0.1,
+    5.8
+   ],
+   "p999_far": 145.0342608426649,
+   "max_far": 152.21931915281837,
+   "at_far": [
+    -21.0,
+    -0.1,
+    4.8
    ]
   },
   "carrier/webs": {
-   "p99": 127.05078685565768,
-   "p999": 343.9486874873376,
-   "max": 553.4314303012746,
+   "p99": 316.96745106116805,
+   "p999": 849.7145287282922,
+   "max": 2863.1403511763087,
    "at": [
-    -22.4,
-    0.8,
-    5.9
+    0.9,
+    15.0,
+    76.8
+   ],
+   "p999_far": 683.9215789116845,
+   "max_far": 1392.895895385105,
+   "at_far": [
+    0.9,
+    15.0,
+    75.8
    ]
   }
  }

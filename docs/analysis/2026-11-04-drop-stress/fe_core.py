@@ -72,7 +72,7 @@ def stress(M, T, S, part, tag=''):
     cs = part_contacts(T, S, part); cols = [names.index(f'{a}|{b}|{s}') for a, b, s, _, _ in cs]
     if not cs: return None
     tot = R['F'][:, cols].sum(1); idx = {int(tot.argmax()), int(R['F'][:, cols[int(np.argmax([R['F'][:, j].max() for j in cols]))]].argmax())}
-    env = np.zeros(len(M.el)); snaps = []
+    env = np.zeros(len(M.el)); snaps = []; near = []
     weak = [(M.surf, K_WEAK, None)]
     ip = dyn.BODIES.index(part)
     for i in sorted(idx):
@@ -82,17 +82,13 @@ def stress(M, T, S, part, tag=''):
             if F < 1.0: continue
             nodes = patch(M, a, b, s, deltas(R, i, a, b, s), d, side > 0)
             if nodes is None: continue
-            f += M.patch_force(nodes, -side * F * d * (1 if s == '+' else -1)); loads.append((a, b, s, round(float(F), 1)))
+            f += M.patch_force(nodes, -side * F * d * (1 if s == '+' else -1)); loads.append((a, b, s, round(float(F), 1))); near.append(nodes)
+        f, al, a_res = M.relieve(f)                          # free part: inertia relief, the weak springs only pin it
         u, its, rr = M.solve(f, weak)
         sig, vm = M.stress(u); env = np.maximum(env, vm)
-        snaps.append(dict(t_ms=round(float(R['t'][i] * 1e3), 4), loads=loads, its=its, rel_res=float(rr)))
-    out = dict(pose=pose, part=part, H=M.g['H'], snapshots=snaps, regions={})
-    for li, k in enumerate(M.g['labels']):
-        s_ = env[M.elab == li]
-        if len(s_) == 0: continue
-        imax = np.flatnonzero(M.elab == li)[int(s_.argmax())]
-        out['regions'][k] = dict(p99=float(np.percentile(s_, 99)), p999=float(np.percentile(s_, 99.9)), max=float(s_.max()),
-                                 at=np.round(M.Xe[imax], 1).tolist())
+        snaps.append(dict(t_ms=round(float(R['t'][i] * 1e3), 4), loads=loads, its=its, rel_res=float(rr),
+                          spin_rad_s2=np.round(al, 0).tolist(), unbalanced_g=round(float(np.linalg.norm(a_res)) / 9810, 1)))
+    out = dict(pose=pose, part=part, H=M.g['H'], snapshots=snaps, regions=fem.region_stats(M, env, near))
     np.save(os.path.join(CACHE, f'{part}_vm_{pose}{tag}.npy'), env.astype(np.float32))
     return out
 

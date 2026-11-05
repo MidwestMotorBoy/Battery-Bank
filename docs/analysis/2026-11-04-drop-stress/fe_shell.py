@@ -125,8 +125,9 @@ def patch(M, a, b, sense, delta, d):
     if pts is None: return None
     return M.patch_nodes(pts)
 
-def load_case(M, T, R, sc, i):
-    """nodal forces at instant i: the shell's inertia + every shell contact force on its patch"""
+def load_case(M, T, R, sc, i, floor=None):
+    """nodal forces at instant i: the shell's inertia + every shell contact force on its patch, with inertia relief of
+    the moment about the floor footprint (fem.Model.relieve) when the floor is given"""
     d = np.asarray(T['d'], float); names = list(R['names'])
     f = M.inertia(-R['a'][i, 0] * d); loads, pt = [], {}
     for a, b, s, _ in sc:
@@ -137,6 +138,10 @@ def load_case(M, T, R, sc, i):
         nodes = patch(M, a, b, s, max(delta, 0.0), d)
         if nodes is None: continue
         f += M.patch_force(nodes, F * d * (1 if s == '+' else -1)); loads.append((a, b, s, round(float(F), 1))); pt[(a, b, s)] = (nodes, F)
+    if floor is not None:
+        kf = np.broadcast_to(np.asarray(floor[0][1], float), floor.foot.shape)          # the footprint's resultant point
+        f, al, _ = M.relieve(f, about=(M.X[floor.foot] * kf[:, None]).sum(0) / kf.sum())
+        pt['_alpha'] = al
     return f, loads, pt
 
 def compliance(M, T, S, floor):
@@ -148,7 +153,7 @@ def compliance(M, T, S, floor):
     sc = shell_contacts(T, S); by_i = {}
     for a, b, s, Fpk in sc: by_i.setdefault(int(R['F'][:, names.index(f'{a}|{b}|{s}')].argmax()), []).append((a, b, s, Fpk))
     for i, cs in sorted(by_i.items()):
-        f, loads, pt = load_case(M, T, R, sc, i)
+        f, loads, pt = load_case(M, T, R, sc, i, floor)
         u, (its, rr, nact, nit) = solve_floor(M, f, floor)
         ref = float((u[floor.foot] @ d).mean())
         for a, b, s, Fpk in cs:
@@ -169,20 +174,16 @@ def stress(M, T, S, floor, tag=''):
     cols = [names.index(f'{a}|{b}|{s}') for a, b, s, _ in sc]
     tot = R['F'][:, cols].sum(1); t_idx = {int(tot.argmax())}
     t_idx.add(int(R['F'][:, cols[int(np.argmax([R['F'][:, j].max() for j in cols]))]].argmax()))
-    env = np.zeros(len(M.el)); snaps = []
+    env = np.zeros(len(M.el)); snaps = []; near = [floor.foot]
     for i in sorted(t_idx):
-        f, loads, _ = load_case(M, T, R, sc, i)
+        f, loads, pt = load_case(M, T, R, sc, i, floor)
         u, (its, rr, nact, nit) = solve_floor(M, f, floor)
         sig, vm = M.stress(u); env = np.maximum(env, vm)
+        near.extend([v[0] for k, v in pt.items() if k != '_alpha'])
         snaps.append(dict(t_ms=round(float(R['t'][i] * 1e3), 4), loads=loads, its=its, skin_on_floor=nact,
+                          spin_rad_s2=np.round(pt['_alpha'], 0).tolist(),
                           max_push_mm=round(float((u[M.surf] @ d).max() - (u[floor.foot] @ d).mean()), 3)))
-    out = dict(pose=pose, H=M.g['H'], snapshots=snaps, regions={})
-    for li, k in enumerate(M.g['labels']):
-        s = env[M.elab == li]
-        if len(s) == 0: continue
-        imax = np.flatnonzero(M.elab == li)[int(s.argmax())]
-        out['regions'][k] = dict(p99=float(np.percentile(s, 99)), p999=float(np.percentile(s, 99.9)), max=float(s.max()),
-                                 at=np.round(M.Xe[imax], 1).tolist())
+    out = dict(pose=pose, H=M.g['H'], snapshots=snaps, regions=fem.region_stats(M, env, near))
     np.save(os.path.join(CACHE, f'shell_vm_{pose}{tag}.npy'), env.astype(np.float32))
     return out
 

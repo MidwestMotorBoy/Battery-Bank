@@ -4,7 +4,33 @@ The 2026-10-31 study (`../2026-10-31-drop-1m`) treated the bank as two masses wi
 not see the inside parts hitting each other. This one keeps every part that can move as its own body, finds where they
 touch on the real master geometry, and runs the impact in 17 orientations from 1 m onto concrete.
 
-Results and the ranked list of weak parts: see `out/checks.json` and the figures in `figs/` (written by the run on the PC).
+## Results (1 m onto concrete)
+
+The five flat drops are where the model is exact (no rotation needed). Stresses are linear-elastic: past about
+48-55 MPa a PA12 part yields or crushes there, so read the numbers as "how far over", not as the stress it sees.
+Inside loads move about +-20 % with the contact stiffness, cell stiffness and damping (x0.5 to x2), and a 1.5 m drop
+adds about 20 % (`sens.py` -> `out/sensitivity.json`).
+
+![face drops](figs/fig_faces.png)
+
+| Part | Worst drop | Demand | Limit | What happens |
+|---|---|---|---|---|
+| Rail blocks (all four) | cap end, port end, side | front-can rims push the tongues 0.45-1.1 kN; block bodies 100-196 MPa away from the contact | 48 MPa | the tiny blocks can crack; tongues crush |
+| Cap overtravel posts (4 x r1.5) | cap end | 2.2-2.9 kN on the posts, ~80-95 MPa bearing | ~55 MPa | tips crush; the front half of the bottom frame also bends onto the cap skirt (1.1 mm gap, ~2.7 kN) |
+| Board | board face | bows 1.28 mm, surface strain 8900 ue (99th pct), F.Cu parts 0.03 mm off the wall (C434, C531, L501, C420, C524) | 1000-2000 ue | MLCC cracking, USB-C solder joints (J401 / J501 see ~190-250 N each) |
+| C421 / C556 (7343 bulk caps on B.Cu) | back face | the core moves ~1 mm toward the back wall; the caps (0.88 mm off the cradle tops) hit them, ~1.9 kN (rigid estimate, high) | ~50-100 N | the caps or their joints break; cradles 245 MPa there |
+| Rail post tips | board face | ~300 N each on the wall | ~55 MPa (bearing ~85) | tips crush |
+| Carrier webs | port end, side, board face | the cells squeeze the webs 1.4-1.8 kN | 48 MPa | 134-192 MPa, mostly bearing in the cusps: dents |
+| Cup side wall | narrow side | 140 MPa near the cap end (coarse mesh: 1-2 bricks through the wall) | 48 MPa | likely local yield, watch item |
+
+Fine: cells (up to 4.4 kN radial and 4900 g against a 13 kN crush test and ~10^4 g for a bare cell), nickel strips
+(may yield a little, ductile; the welds sit at about their shear strength, so pull-test them), the O-ring, the gel
+filler (35 % stretch), the PA12 post spacers, the F.Cu lips, the cup walls and cap in the end drops.
+
+Edges and corners (`out/*_<edge|corner>.json` from the PC run, before the inertia relief): the inside parts there
+can only move along the drop direction, so a core stopped in one direction can't slide on in the other, and the cup
+pivoted on its corner footprint in the FE. Their contact forces are upper bounds (carrier webs up to ~6 kN on the back
+wall in a port-end / back edge) and their stresses are not usable yet; that needs a 3-DOF version of `dyn.py`.
 
 ## Model
 
@@ -39,6 +65,8 @@ Results and the ranked list of weak parts: see `out/checks.json` and the figures
 ```
 python run_all.py --nproc N --h 0.75      # all 17 poses; ~2 GB per worker at H 0.75, ~3-4 GB at H 0.5
 python figs.py                            # figs/*.png
+python facefig.py                         # figs/fig_faces.png (the five flat drops)
+python sens.py                            # out/sensitivity.json
 ```
 
 `run_all.py` builds the contact tables if they are missing (`cache/`, not committed), then per pose: impact with a

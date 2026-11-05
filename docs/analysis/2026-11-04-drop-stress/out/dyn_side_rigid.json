@@ -201,7 +201,7 @@
   },
   {
    "a": "carrier/frames",
-   "b": "rails_tn/ends",
+   "b": "rails_tp/ends",
    "sense": "-",
    "g0": 0.1001,
    "peak_N": 83.4,
@@ -210,7 +210,7 @@
   },
   {
    "a": "carrier/frames",
-   "b": "rails_tp/ends",
+   "b": "rails_tn/ends",
    "sense": "-",
    "g0": 0.1001,
    "peak_N": 83.4,
@@ -237,7 +237,7 @@
   },
   {
    "a": "carrier/frames",
-   "b": "rails_tn/ends",
+   "b": "rails_tp/ends",
    "sense": "+",
    "g0": 0.1001,
    "peak_N": 32.0,
@@ -246,7 +246,7 @@
   },
   {
    "a": "carrier/frames",
-   "b": "rails_tp/ends",
+   "b": "rails_tn/ends",
    "sense": "+",
    "g0": 0.1001,
    "peak_N": 32.0,
@@ -273,5 +273,5 @@
   }
  ],
  "k_w": 680.0,
- "runtime_s": 0.5
+ "runtime_s": 0.4
 }

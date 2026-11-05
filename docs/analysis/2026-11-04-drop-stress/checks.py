@@ -46,10 +46,11 @@ def main():
         for f in glob.glob(os.path.join(OUT, f'{files}_*.json')):
             r = L(f); p = r['pose']
             for k, v in r['regions'].items():
-                k2 = k.split('/')[-1]
-                if v['p999'] > reg.get(k2, (0,))[0]: reg[k2] = (v['p999'], p, v['max'], v['at'])
-        for k, (s, p, mx, at) in reg.items():
-            add(f'{part}: {k}', 'von Mises, 99.9th percentile (FE)', s, 'MPa', PA12_T, p, f'max {mx:.0f} MPa at {at}')
+                k2 = k.split('/')[-1]; s_ = v.get('p999_far', v['p999'])
+                if s_ > reg.get(k2, (0,))[0]: reg[k2] = (s_, p, v.get('max_far', v['max']), v.get('at_far', v['at']), v['p999'])
+        for k, (s, p, mx, at, pall) in reg.items():
+            add(f'{part}: {k}', 'von Mises away from the contact patches, 99.9th pct (FE)', s, 'MPa', PA12_T, p,
+                f'max {mx:.0f} MPa at {at}; with the bearing under the contacts {pall:.0f} MPa')
     # ---- small features from the contact forces
     r_ot = prm['OT_R']
     F, p = contact_peak(D, lambda a, b: b == 'shell/ot_posts')

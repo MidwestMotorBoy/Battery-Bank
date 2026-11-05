@@ -78,6 +78,35 @@ class Model:
         for c in range(8): np.add.at(f, self.conn[sel, c], w * np.asarray(a_vec_g, float)[None])
         return f.ravel()
 
+    def node_mass(self):
+        """lumped nodal masses (kg)"""
+        if getattr(self, '_mn', None) is None:
+            mn = np.zeros(self.nnode); np.add.at(mn, self.conn.ravel(), self.rho * self.g['H']**3 / 8 * 1e-6); self._mn = mn
+        return self._mn
+
+    def relieve(self, f, about=None):
+        """Inertia relief. The drop model has no rotation, so its loads leave a moment on the part; in the drop that moment
+        spins the part up instead. Adds the d'Alembert loads of the rotational (and, for a free part, translational)
+        acceleration that balance it: about=None for a free part (net force and moment about its centre of mass go to
+        zero), about=c for a part held at a small floor patch around c (the moment about c goes to zero; the patch keeps
+        the net force). Returns (f, alpha in rad/s^2, linear a in mm/s^2)."""
+        mn = self.node_mass(); X = self.X; F = f.reshape(-1, 3)
+        xg = (mn[:, None] * X).sum(0) / mn.sum(); a = np.zeros(3)
+        if about is None:
+            a = F.sum(0) / mn.sum() * 1e3                                    # N/kg = 1e3 mm/s2
+            F = F - mn[:, None] * a[None] * 1e-3
+            c = xg
+        else: c = np.asarray(about, float)
+        M = np.cross(X - c, F).sum(0)
+        r, s = X - xg, X - c                                                 # J alpha = sum m s x (alpha x r)
+        J = np.zeros((3, 3))
+        for k in range(3):
+            e = np.zeros(3); e[k] = 1.0
+            J[:, k] = (mn[:, None] * np.cross(s, np.cross(e[None], r))).sum(0) * 1e-3     # N mm per (rad/s2) / 1e3
+        al = np.linalg.solve(J, M)
+        F = F - mn[:, None] * np.cross(al[None], r) * 1e-3
+        return F.ravel(), al, a
+
     def patch_nodes(self, pts, r=None):
         """surface nodes within r (default 0.75 H) of the points (a contact overlap's vertices and face centres)"""
         r = 0.75 * self.g['H'] if r is None else r
@@ -118,6 +147,28 @@ class Model:
         sx, sy, sz, txy, tyz, txz = sig.T
         vm = np.sqrt(0.5 * ((sx - sy)**2 + (sy - sz)**2 + (sz - sx)**2) + 3 * (txy**2 + tyz**2 + txz**2))
         return sig, vm
+
+R_NEAR = 1.5     # mm: elements this close to a loaded patch or a floor support are the contact's bearing zone
+
+def region_stats(M, env, near_nodes):
+    """per label: p99 / p99.9 / max of the von Mises envelope, over all elements and over the elements away from the
+    contact patches and supports ('far': the part's own bending / shear, not the local bearing under a contact)"""
+    from scipy.spatial import cKDTree as KD
+    nn = np.unique(np.concatenate([np.asarray(n, int) for n in near_nodes])) if near_nodes else np.array([], int)
+    far = np.ones(len(M.el), bool)
+    if len(nn): far = KD(M.X[nn]).query(M.Xe, distance_upper_bound=R_NEAR)[0] > R_NEAR
+    out = {}
+    for li, k in enumerate(M.g['labels']):
+        sel = M.elab == li; s = env[sel]
+        if len(s) == 0: continue
+        imax = np.flatnonzero(sel)[int(s.argmax())]
+        r = dict(p99=float(np.percentile(s, 99)), p999=float(np.percentile(s, 99.9)), max=float(s.max()), at=np.round(M.Xe[imax], 1).tolist())
+        sf = env[sel & far]
+        if len(sf) > 20:
+            jf = np.flatnonzero(sel & far)[int(sf.argmax())]
+            r.update(p999_far=float(np.percentile(sf, 99.9)), max_far=float(sf.max()), at_far=np.round(M.Xe[jf], 1).tolist())
+        out[k] = r
+    return out
 
 def overlap_points(a, b, d, delta, extra=0.0):
     """points on the contact overlap of a moved delta (+ extra, so a just-touching pair still gives a patch) along d into b"""

@@ -165,23 +165,23 @@
   },
   {
    "a": "board/pcb",
-   "b": "rails_tn/posts",
-   "sense": "+",
-   "g0": 0.1017,
-   "peak_N": 8.9,
-   "t_ms": 0.216,
-   "kind": "rigid"
-  },
-  {
-   "a": "board/pcb",
    "b": "rails_tp/posts",
    "sense": "+",
    "g0": 0.1015,
    "peak_N": 8.9,
    "t_ms": 0.216,
    "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tn/posts",
+   "sense": "+",
+   "g0": 0.1017,
+   "peak_N": 8.9,
+   "t_ms": 0.216,
+   "kind": "rigid"
   }
  ],
  "k_w": 680.0,
- "runtime_s": 2.5
+ "runtime_s": 1.9
 }
