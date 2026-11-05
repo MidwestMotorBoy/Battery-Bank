@@ -121,6 +121,7 @@ python run_all.py --nproc 4 --h 1.0 side board back bottom top   # the five flat
 python figs.py                            # figs/*.png
 python facefig.py                         # figs/fig_faces.png (the five flat drops)
 python sens.py                            # out/sensitivity.json
+python board_anim.py board back           # cache/board-flex.html: the animated board-flex page (~3.6 MB)
 ```
 
 `run_all.py` builds the contact tables if they are missing (`cache/`, not committed), then per pose: impact with a

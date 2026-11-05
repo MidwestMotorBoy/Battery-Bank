@@ -137,7 +137,8 @@ def supports(P, parts):
         out.append(('bcu:' + k + ':' + q['by'], n, K_PART / len(n), q['gap'], -1))
     return out
 
-def run(pose, B=None, rails_body='rails_tp'):
+def run(pose, B=None, rails_body='rails_tp', record=None, rec_every=200):
+    """record: a list to fill with snapshots every rec_every steps (t, modal q, support forces, cup acceleration)"""
     B = B or setup()
     T = dyn.load(pose); d = np.asarray(T['d'], float); dx = d[0]
     if abs(dx) < 0.05: return None
@@ -157,7 +158,7 @@ def run(pose, B=None, rails_body='rails_tp'):
     nm = len(lam); q = np.zeros(nm); qd = np.zeros(nm)
     ts = np.arange(0, t[-1], DT)
     env_curv = np.zeros(B['curv'].shape[2]); wmax_t = np.full(W.shape[0], -1e9); wmin_t = np.full(W.shape[0], 1e9)
-    Fsup = {i: 0.0 for i in range(len(B['sup']))}; rec = []
+    Fsup = {i: 0.0 for i in range(len(B['sup']))}; rec = []; Fnow = np.zeros(len(B['sup']))
     for k_, tt in enumerate(ts):
         a = np.interp(tt, t, a_shell) * dx                          # cup's acceleration across the board, mm/s2
         w = W @ q                                                   # mm
@@ -171,12 +172,15 @@ def run(pose, B=None, rails_body='rails_tp'):
                 pen = np.maximum(uc - w[n] - gap, 0); fn = k * pen; f[n] += fn
             else:
                 pen = np.maximum(sgn * w[n] - gap, 0); fn = k * pen; f[n] -= sgn * fn
-            tot = fn.sum()
+            tot = fn.sum(); Fnow[i] = tot
             if tot > Fsup[i]: Fsup[i] = tot
         # modal forces: support forces (N) + the cup frame's pseudo-force -m a (kg * mm/s2 = 1e-3 N)
         Q = W.T @ f - gm * a * 1e-3
         qdd = Q * 1e3 - 2 * ZETA * om * qd - om**2 * q             # (N/kg = 1e3 mm/s2)
         qd += qdd * DT; q += qd * DT
+        if record is not None and k_ % rec_every == 0:
+            record.append(dict(t=tt, q=q.copy(), F=Fnow.copy(), a_g=a / dx / (G * 1e3) if dx else 0.0,
+                               uc={c: float(np.interp(tt, t, ux[c])) for c in ux}))
         if k_ % 50 == 0:
             w = W @ q; wmax_t = np.maximum(wmax_t, w); wmin_t = np.minimum(wmin_t, w)
             c = np.tensordot(q, B['curv'], axes=(0, 0))             # (3, el)
