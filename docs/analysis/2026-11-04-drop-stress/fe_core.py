@@ -7,6 +7,8 @@ import os, sys, json, time, numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); CACHE = os.path.join(HERE, 'cache'); OUT = os.path.join(HERE, 'out')
 import bodies, fem, dyn
 from fe_shell import geometry, F_MIN
+PATCH_MIN = 0.1                                  # mm: least overlap used to find a contact patch's nodes
+H_CARRIER = 0.5                                  # mm, most: the 0.95 mm top frame vanishes from a 1.0 mm grid
 K_HOLD = 2e4; K_WEAK = 2.0                      # N/mm per node: holding patches; weak surface springs
 
 PARTS = {'carrier': ('carrier/frames', 'carrier/webs'), **{r: (f'{r}/ends', f'{r}/posts', f'{r}/blocks') for r in bodies.RAILS}}
@@ -29,6 +31,7 @@ def part_contacts(T, S, part):
 
 def patch(M, a, b, sense, delta, d, part_is_a):
     CP = geometry()['CP']; dd = np.asarray(d, float) * (1 if sense == '+' else -1)
+    delta = max(delta, PATCH_MIN)                           # a just-touching sliver gives a few stray nodes, not the face
     pts = fem.overlap_points(CP[a][1], CP[b][1], dd, delta)
     if pts is None: pts = fem.overlap_points(CP[a][1], CP[b][1], dd, delta, extra=0.02)
     if pts is None: return None
@@ -40,7 +43,12 @@ def deltas(R, i, a, b, sense):
     return max((1 if sense == '+' else -1) * (R['x'][i, ia] - R['x'][i, ib]), 0.0)
 
 def compliance(M, T, S, part='carrier'):
-    """carrier patches on the shell: 1 N there, the carrier held at its cell patches at the same instant"""
+    """Secant compliance of the carrier where it bears on the shell, at the instant of that contact's peak (rigid run).
+    Both sides are taken as rigid flats: the cells' patches on the carrier that are bearing then are held (stiff
+    springs), and the shell patch is pushed in by a small set displacement through stiff springs; the stiffness is the
+    reaction over the patch's travel. A set force spread evenly over either patch instead (as before 2026-11-05) bends
+    the parts of a wide patch that the other side doesn't back, which the real contact never loads (it puts its pressure
+    where the part is stiff); a frame lying flat on the top wall came out ~100 N/mm that way."""
     d = np.asarray(T['d'], float); pose = T['pose']
     R = np.load(os.path.join(CACHE, f'dyn_{pose}.npz')); names = list(R['names'])
     cs = part_contacts(T, S, part); out = {}
@@ -57,11 +65,16 @@ def compliance(M, T, S, part='carrier'):
             n2 = patch(M, a2, b2, s2, deltas(R, i, a2, b2, s2), d, side2 > 0)
             if n2 is not None: hold.append(n2)
         if not hold: continue
-        hold = np.unique(np.concatenate(hold))
-        springs = [(hold, K_HOLD, d), (hold, 0.1 * K_HOLD, None)]
+        hold = np.setdiff1d(np.unique(np.concatenate(hold)), nodes)
+        if not len(hold): continue
         push = -d * (1 if s == '+' else -1)                # the shell pushes back on the carrier
-        u, its, rr = M.solve(M.patch_force(nodes, push), springs, reuse=False)
-        c = float((u[nodes] @ push).mean() - (u[hold] @ push).mean())
+        dlt, kd = 1e-3, 1.1 * K_HOLD                       # set push (mm); along d the patch springs add to 1.1 K_HOLD
+        springs = [(hold, K_HOLD, d), (hold, 0.1 * K_HOLD, None), (nodes, K_HOLD, d), (nodes, 0.1 * K_HOLD, None)]
+        f = M.patch_force(nodes, push * kd * dlt * len(nodes))
+        u, its, rr = M.solve(f, springs, reuse=False)
+        un = u[nodes] @ push
+        F = float(kd * (dlt - un).sum())                   # reaction on the patch (N)
+        c = float(un.mean() - (u[hold] @ push).mean()) / max(F, 1e-12)
         out[f'{a}|{b}|{s}'] = dict(c_mm_per_N=c, k_N_per_mm=1 / max(c, 1e-9), nodes=len(nodes), hold=len(hold), peak_N=Fpk)
         print(f'    {a:16s} {s} {b:18s} k {1 / max(c, 1e-9):9.0f} N/mm  ({len(nodes)} nodes, held on {len(hold)}, {its} its)', flush=True)
     return out
@@ -95,14 +108,14 @@ def stress(M, T, S, part, tag=''):
 if __name__ == '__main__':
     mode, H, todo = sys.argv[1], float(sys.argv[2]), sys.argv[3:] or dyn.poses.ORDER
     if mode == 'compliance':
-        M = build_model('carrier', H)
+        M = build_model('carrier', min(H, H_CARRIER))
         for pose in todo:
             T = dyn.load(pose); S = json.load(open(os.path.join(OUT, f'dyn_{pose}.json')))
             print(pose, flush=True); C = compliance(M, T, S)
             json.dump(C, open(os.path.join(CACHE, f'corec_{pose}.json'), 'w'), indent=1)
     else:
         for part in PARTS:
-            M = build_model(part, H if part == 'carrier' else H / 2)
+            M = build_model(part, min(H, H_CARRIER) if part == 'carrier' else H / 2)
             np.savez_compressed(os.path.join(CACHE, f'{part}_grid.npz'), Xe=M.Xe, elab=M.elab, labels=np.array(M.g['labels']))
             for pose in todo:
                 T = dyn.load(pose); S = json.load(open(os.path.join(OUT, f'dyn_{pose}.json')))

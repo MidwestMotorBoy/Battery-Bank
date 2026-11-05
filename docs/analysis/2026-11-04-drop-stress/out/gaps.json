@@ -13,22 +13,14 @@
   "+y": null,
   "-y": null,
   "+z": null,
-  "-z": 0.45
+  "-z": 0.75
  },
  "C1 -> rails_tn": {
   "+x": 0.172,
   "-x": null,
   "+y": 1.101,
   "-y": null,
-  "+z": 0.4,
-  "-z": null
- },
- "C1 -> board": {
-  "+x": 0.952,
-  "-x": null,
-  "+y": null,
-  "-y": null,
-  "+z": null,
+  "+z": 0.7,
   "-z": null
  },
  "C1 -> shell/cup_walls": {
@@ -93,22 +85,14 @@
   "+y": null,
   "-y": null,
   "+z": null,
-  "-z": 0.45
+  "-z": 0.75
  },
  "C4 -> rails_tp": {
   "+x": 0.172,
   "-x": null,
   "+y": null,
   "-y": 1.101,
-  "+z": 0.4,
-  "-z": null
- },
- "C4 -> board": {
-  "+x": 0.995,
-  "-x": null,
-  "+y": null,
-  "-y": null,
-  "+z": null,
+  "+z": 0.7,
   "-z": null
  },
  "C4 -> shell/cup_walls": {
@@ -301,14 +285,6 @@
   "+y": 0.343,
   "-y": 0.343,
   "+z": 0.099,
-  "-z": null
- },
- "board -> shell/cradles": {
-  "+x": null,
-  "-x": 0.88,
-  "+y": null,
-  "-y": null,
-  "+z": null,
   "-z": null
  },
  "board -> shell/lands": {

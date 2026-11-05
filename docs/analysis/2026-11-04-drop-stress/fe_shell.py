@@ -9,6 +9,7 @@ sys.path.append(os.path.normpath(os.path.join(HERE, '..', '2026-10-31-drop-1m'))
 import contact as FC
 SHELL_PARTS = ('cup_walls', 'cradles', 'lands', 'lips', 'cap', 'ot_posts', 'feet')
 K_FLOOR = 2e4                     # N/mm per footprint node (the floor through the crushed bumper: stiff next to the cup)
+PATCH_MIN = 0.1                   # mm: least overlap used to find a contact patch's nodes (a just-touching sliver gives a few)
 F_MIN = 20.0                      # N: contacts below this peak are left out
 _G = {}
 
@@ -119,7 +120,7 @@ def shell_contacts(T, S):
 def patch(M, a, b, sense, delta, d):
     """nodes of the shell part b where body a meets it at relative motion delta (sense '+': a moved +d into b)"""
     CP = geometry()['CP']; A, Bm = CP[a][1], CP[b][1]
-    dd = np.asarray(d, float) * (1 if sense == '+' else -1)
+    dd = np.asarray(d, float) * (1 if sense == '+' else -1); delta = max(delta, PATCH_MIN)
     pts = fem.overlap_points(A, Bm, dd, delta, extra=0.0)
     if pts is None: pts = fem.overlap_points(A, Bm, dd, delta, extra=0.02)
     if pts is None: return None

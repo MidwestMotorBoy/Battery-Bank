@@ -15,7 +15,7 @@ def models(H):
     import fe_shell, fe_core
     if 'shell' not in _M:
         _M['shell'] = fe_shell.build_model(H)
-        _M['carrier'] = fe_core.build_model('carrier', H)
+        _M['carrier'] = fe_core.build_model('carrier', min(H, fe_core.H_CARRIER))
         for r in fe_core.PARTS:
             if r != 'carrier': _M[r] = fe_core.build_model(r, H / 2)
         for k in ['shell', 'carrier'] + [r for r in fe_core.PARTS if r != 'carrier']:          # element centres for figs.py

@@ -6,52 +6,52 @@
   0.0,
   -1.0
  ],
- "floor_peak_N": 11370.378126592015,
- "crush_mm": 1.7723317848926898,
+ "floor_peak_N": 2492.1641829802948,
+ "crush_mm": 1.7147798133357788,
  "bodies": {
   "shell": {
-   "peak_g": 16049.314889011252,
+   "peak_g": 2469.888485281498,
    "travel_mm": 0.0
   },
   "C1": {
-   "peak_g": 1817.7936798057428,
-   "travel_mm": 1.5536750572556324
+   "peak_g": 1798.3653926332247,
+   "travel_mm": 1.1722779141968027
   },
   "C2": {
-   "peak_g": 1637.0770368064718,
-   "travel_mm": 1.526701050220364
+   "peak_g": 1348.66878881371,
+   "travel_mm": 1.1349233451809178
   },
   "C3": {
-   "peak_g": 1637.0770368064648,
-   "travel_mm": 1.526701050220363
+   "peak_g": 1348.6687888137108,
+   "travel_mm": 1.1349233451809178
   },
   "C4": {
-   "peak_g": 1817.7895488334061,
-   "travel_mm": 1.5536748230489779
+   "peak_g": 1798.3704568252044,
+   "travel_mm": 1.1722778901315387
   },
   "carrier": {
-   "peak_g": 12825.694303695664,
-   "travel_mm": 1.0636049117716433
+   "peak_g": 13485.936629213957,
+   "travel_mm": 0.6736219703992401
   },
   "rails_tp": {
-   "peak_g": 18910.611998056993,
-   "travel_mm": 0.6833736123501546
+   "peak_g": 24689.736092410963,
+   "travel_mm": 0.7849974178884926
   },
   "rails_tn": {
-   "peak_g": 18837.16509468028,
-   "travel_mm": 0.6833886937067335
+   "peak_g": 23709.80440520938,
+   "travel_mm": 0.7958767148645509
   },
   "rails_bp": {
-   "peak_g": 37183.65847688312,
-   "travel_mm": 0.6764957014912611
+   "peak_g": 47390.885538214185,
+   "travel_mm": 0.7204932948649385
   },
   "rails_bn": {
-   "peak_g": 37186.846043507845,
-   "travel_mm": 0.6764991825335727
+   "peak_g": 47402.64820737014,
+   "travel_mm": 0.7204482742667873
   },
   "board": {
-   "peak_g": 4174.3234402101525,
-   "travel_mm": 0.5005905411088046
+   "peak_g": 6080.735736166465,
+   "travel_mm": 0.6199620469349074
   }
  },
  "contacts": [
@@ -60,17 +60,44 @@
    "b": "shell/ot_posts",
    "sense": "+",
    "g0": 0.3,
-   "peak_N": 2670.4,
-   "t_ms": 0.582,
+   "peak_N": 3367.9,
+   "t_ms": 0.495,
    "kind": "rigid+FE"
+  },
+  {
+   "a": "board/pcb",
+   "b": "shell/feet",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 1344.9,
+   "t_ms": 0.916,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "C1",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.0505,
+   "peak_N": 1273.6,
+   "t_ms": 0.464,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "C4",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.0505,
+   "peak_N": 1273.6,
+   "t_ms": 0.464,
+   "kind": "cell_axial"
   },
   {
    "a": "C2",
    "b": "carrier/frames",
    "sense": "+",
    "g0": 0.1,
-   "peak_N": 1196.6,
-   "t_ms": 0.7,
+   "peak_N": 982.6,
+   "t_ms": 0.615,
    "kind": "cell_axial"
   },
   {
@@ -78,53 +105,35 @@
    "b": "carrier/frames",
    "sense": "+",
    "g0": 0.1,
-   "peak_N": 1196.6,
-   "t_ms": 0.7,
+   "peak_N": 982.6,
+   "t_ms": 0.615,
    "kind": "cell_axial"
   },
   {
    "a": "board/pcb",
-   "b": "shell/feet",
-   "sense": "+",
-   "g0": 0.2005,
-   "peak_N": 959.7,
-   "t_ms": 0.306,
+   "b": "shell/cup_walls",
+   "sense": "-",
+   "g0": 0.099,
+   "peak_N": 382.6,
+   "t_ms": 0.609,
    "kind": "rigid+FE"
-  },
-  {
-   "a": "C1",
-   "b": "carrier/frames",
-   "sense": "+",
-   "g0": 0.0505,
-   "peak_N": 898.4,
-   "t_ms": 0.515,
-   "kind": "cell_axial"
-  },
-  {
-   "a": "C4",
-   "b": "carrier/frames",
-   "sense": "+",
-   "g0": 0.0505,
-   "peak_N": 898.4,
-   "t_ms": 0.515,
-   "kind": "cell_axial"
   },
   {
    "a": "C1",
    "b": "rails_bn/ends",
    "sense": "+",
-   "g0": 0.4501,
-   "peak_N": 459.5,
-   "t_ms": 0.585,
+   "g0": 0.7501,
+   "peak_N": 277.6,
+   "t_ms": 0.583,
    "kind": "cell_axial"
   },
   {
    "a": "C4",
    "b": "rails_bp/ends",
    "sense": "+",
-   "g0": 0.4501,
-   "peak_N": 459.5,
-   "t_ms": 0.585,
+   "g0": 0.7501,
+   "peak_N": 277.6,
+   "t_ms": 0.583,
    "kind": "cell_axial"
   },
   {
@@ -132,8 +141,8 @@
    "b": "rails_bn/posts",
    "sense": "-",
    "g0": 0.1019,
-   "peak_N": 455.7,
-   "t_ms": 0.563,
+   "peak_N": 273.1,
+   "t_ms": 0.608,
    "kind": "rigid"
   },
   {
@@ -141,35 +150,26 @@
    "b": "rails_bp/posts",
    "sense": "-",
    "g0": 0.1018,
-   "peak_N": 455.7,
-   "t_ms": 0.563,
+   "peak_N": 273.1,
+   "t_ms": 0.608,
    "kind": "rigid"
   },
   {
-   "a": "C2",
-   "b": "carrier/frames",
+   "a": "board/usb",
+   "b": "shell/cup_walls",
    "sense": "-",
-   "g0": 0.05,
-   "peak_N": 206.1,
-   "t_ms": 1.446,
-   "kind": "cell_axial"
-  },
-  {
-   "a": "C3",
-   "b": "carrier/frames",
-   "sense": "-",
-   "g0": 0.05,
-   "peak_N": 206.1,
-   "t_ms": 1.446,
-   "kind": "cell_axial"
+   "g0": 0.2903,
+   "peak_N": 101.2,
+   "t_ms": 0.609,
+   "kind": "usb"
   },
   {
    "a": "board/pcb",
    "b": "rails_tp/posts",
    "sense": "-",
    "g0": 0.1017,
-   "peak_N": 59.1,
-   "t_ms": 0.885,
+   "peak_N": 88.2,
+   "t_ms": 1.229,
    "kind": "rigid"
   },
   {
@@ -177,80 +177,17 @@
    "b": "rails_tn/posts",
    "sense": "-",
    "g0": 0.1018,
-   "peak_N": 58.8,
-   "t_ms": 0.886,
+   "peak_N": 87.5,
+   "t_ms": 1.236,
    "kind": "rigid"
-  },
-  {
-   "a": "carrier/frames",
-   "b": "shell/pad",
-   "sense": "+",
-   "g0": 0.0,
-   "peak_N": 55.4,
-   "t_ms": 0.454,
-   "kind": "pad"
-  },
-  {
-   "a": "board/pcb",
-   "b": "rails_tn/posts",
-   "sense": "+",
-   "g0": 0.1017,
-   "peak_N": 44.3,
-   "t_ms": 0.561,
-   "kind": "rigid"
-  },
-  {
-   "a": "board/pcb",
-   "b": "rails_tp/posts",
-   "sense": "+",
-   "g0": 0.1016,
-   "peak_N": 43.7,
-   "t_ms": 0.561,
-   "kind": "rigid"
-  },
-  {
-   "a": "C1",
-   "b": "carrier/webs",
-   "sense": "+",
-   "g0": 0.2005,
-   "peak_N": 31.2,
-   "t_ms": 1.04,
-   "kind": "cell_radial"
-  },
-  {
-   "a": "C4",
-   "b": "carrier/webs",
-   "sense": "+",
-   "g0": 0.2005,
-   "peak_N": 31.2,
-   "t_ms": 1.04,
-   "kind": "cell_radial"
-  },
-  {
-   "a": "C2",
-   "b": "carrier/webs",
-   "sense": "+",
-   "g0": 0.2005,
-   "peak_N": 27.9,
-   "t_ms": 0.367,
-   "kind": "cell_radial"
-  },
-  {
-   "a": "C3",
-   "b": "carrier/webs",
-   "sense": "+",
-   "g0": 0.2005,
-   "peak_N": 27.9,
-   "t_ms": 0.367,
-   "kind": "cell_radial"
   },
   {
    "a": "rails_tp/ends",
    "b": "shell/cup_walls",
    "sense": "-",
    "g0": 0.0,
-   "peak_N": 12.2,
-   "t_ms": 0.556,
+   "peak_N": 46.4,
+   "t_ms": 0.651,
    "kind": "rigid+FE"
   },
   {
@@ -258,17 +195,98 @@
    "b": "shell/cup_walls",
    "sense": "-",
    "g0": 0.0,
-   "peak_N": 11.5,
-   "t_ms": 0.556,
+   "peak_N": 43.9,
+   "t_ms": 0.652,
    "kind": "rigid+FE"
+  },
+  {
+   "a": "carrier/frames",
+   "b": "shell/pad",
+   "sense": "+",
+   "g0": 0.0,
+   "peak_N": 40.6,
+   "t_ms": 0.403,
+   "kind": "pad"
+  },
+  {
+   "a": "C1",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 36.5,
+   "t_ms": 0.325,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C4",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 36.5,
+   "t_ms": 0.325,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C2",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 34.3,
+   "t_ms": 0.327,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C3",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 34.3,
+   "t_ms": 0.327,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tn/posts",
+   "sense": "+",
+   "g0": 0.1017,
+   "peak_N": 32.1,
+   "t_ms": 1.832,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tp/posts",
+   "sense": "+",
+   "g0": 0.1016,
+   "peak_N": 27.0,
+   "t_ms": 1.844,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bn/posts",
+   "sense": "+",
+   "g0": 0.1017,
+   "peak_N": 19.7,
+   "t_ms": 1.906,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bp/posts",
+   "sense": "+",
+   "g0": 0.1016,
+   "peak_N": 19.7,
+   "t_ms": 1.906,
+   "kind": "rigid"
   },
   {
    "a": "rails_bp/ends",
    "b": "shell/pad",
    "sense": "+",
    "g0": 0.0,
-   "peak_N": 0.6,
-   "t_ms": 0.414,
+   "peak_N": 0.5,
+   "t_ms": 1.128,
    "kind": "pad"
   },
   {
@@ -276,11 +294,11 @@
    "b": "shell/pad",
    "sense": "+",
    "g0": 0.0,
-   "peak_N": 0.6,
-   "t_ms": 0.414,
+   "peak_N": 0.5,
+   "t_ms": 1.128,
    "kind": "pad"
   }
  ],
  "k_w": 680.0,
- "runtime_s": 1.7
+ "runtime_s": 4.8
 }

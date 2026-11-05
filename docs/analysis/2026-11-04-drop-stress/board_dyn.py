@@ -19,6 +19,7 @@ K_SPACER = 4.5e3     # N/mm per spacer: PA12 tube, ~8.7 mm2 over 3.3 mm
 K_LIP = 300.0        # N/mm per mm of edge: 1.8 mm PA12 ledge reaching 1.85 mm off the side wall
 K_USB = 3.0e3        # N/mm per receptacle (shell tabs and pins)
 K_RAIL = 2.0e4       # N/mm per rail block under B.Cu
+K_PART = 3.0e3       # N/mm: a B.Cu part landing on a can or a cradle top (the part's body and joints)
 RAIL_Y, RAIL_Z = (6.5, 11.3), ((7.3, 25.0), (55.0, 78.75))
 LIP_Y, LIP_Z = 20.9, 27.0
 N_MODES, ZETA, DT = 60, 0.02, 5e-8
@@ -70,6 +71,27 @@ def setup():
     sup = supports(P, parts)
     return dict(m=m, parts=parts, P=P, lam=lam, W=W, curv=curv, g_modal=g_modal, sup=sup, mass_kg=float(ones @ (M @ ones)))
 
+def bcu_gaps():
+    """every B.Cu part within 3 mm of a can or a cradle top along -x at nominal: {ref: dict(y0, y1, z0, z1, gap, by)}
+    with by = the cell it meets (moves with the core) or 'cradles' (the cup). Cached in cache/board_bcu.json."""
+    p = os.path.join(CACHE, 'board_bcu.json')
+    if os.path.exists(p): return json.load(open(p))
+    import bodies, contacts as C
+    MF = bodies.MF; B, sub, m, prm, A = bodies.build(); RB = bodies.P.real_board(); xb0 = BF.X_F - 1.6
+    stops = {c: B[c]['m'] for c in ('C1', 'C2', 'C3', 'C4')}; stops['cradles'] = sub['cradles']; out = {}
+    for k, V in RB.items():
+        if k.startswith('_') or k == 'PCB' or str(RB.get('_model_' + k, '')).startswith(('Peg_', 'SolderWire')): continue
+        P = V.reshape(-1, 3)
+        if P[:, 0].mean() > xb0: continue                                    # F.Cu side
+        h = MF.hull_points(P); best = None
+        for nm, sm in stops.items():
+            g = C.first_gap(h, sm, (-1.0, 0.0, 0.0), dmax=3.0)
+            if g is not None and (best is None or g < best[0]): best = (g, nm)
+        if best: out[k] = dict(y0=float(P[:, 1].min()), y1=float(P[:, 1].max()), z0=float(P[:, 2].min()), z1=float(P[:, 2].max()),
+                               gap=round(best[0], 3), by=best[1])
+    json.dump(out, open(p, 'w'), indent=1)
+    return out
+
 RAIL_BLOCK = {(-1, 0): 'rails_bn', (-1, 1): 'rails_tn', (1, 0): 'rails_bp', (1, 1): 'rails_tp'}   # (side of y, z band)
 
 def flex(B=None):
@@ -82,7 +104,7 @@ def flex(B=None):
     fl = lam > 1.0                                                           # drop the three rigid-body modes
     groups = {}
     for kind, n, k, gap, sgn in B['sup']:
-        g = {'spacer': 'spacers', 'lip': 'lips', 'usb_f': 'usb', 'usb_b': None, 'rail': None}[kind]
+        g = {'spacer': 'spacers', 'lip': 'lips', 'usb_f': 'usb'}.get(kind)
         if g: groups.setdefault(g, []).append(n)
     ri = 0
     for s in (-1, 1):
@@ -109,6 +131,10 @@ def supports(P, parts):
         for z0, z1 in RAIL_Z:
             n = np.where((s * y >= RAIL_Y[0]) & (s * y <= RAIL_Y[1]) & (z >= z0) & (z <= z1))[0]
             out.append(('rail', n, K_RAIL / len(n), 0.0, -1))
+    for k, q in bcu_gaps().items():                                          # B.Cu parts onto the cans / cradle tops
+        n = np.where((y >= q['y0']) & (y <= q['y1']) & (z >= q['z0']) & (z <= q['z1']))[0]
+        if len(n) == 0: n = np.array([np.argmin((y - (q['y0'] + q['y1']) / 2)**2 + (z - (q['z0'] + q['z1']) / 2)**2)])
+        out.append(('bcu:' + k + ':' + q['by'], n, K_PART / len(n), q['gap'], -1))
     return out
 
 def run(pose, B=None, rails_body='rails_tp'):
@@ -125,6 +151,7 @@ def run(pose, B=None, rails_body='rails_tp'):
             Frail[dyn.body_of(b)] = Frail.get(dyn.body_of(b), 0) + R['F'][:, j] * (-1 if sn == '+' else 1) * dx
     ri = [i for i, s_ in enumerate(B['sup']) if s_[0] == 'rail']; rail_of = {}
     for (s_, zb), i in zip([(s_, zb) for s_ in (-1, 1) for zb in (0, 1)], ri): rail_of[i] = RAIL_BLOCK[(s_, zb)]
+    ux = {c: (R['x'][:, dyn.BODIES.index(c)] - R['x'][:, 0]) * dx for c in ('C1', 'C2', 'C3', 'C4')}   # cells along +x, mm
     lam, W, gm = B['lam'], B['W'], B['g_modal']
     om = np.sqrt(lam * 1e3)                                         # rad/s (lam in N/(mm kg))
     nm = len(lam); q = np.zeros(nm); qd = np.zeros(nm)
@@ -139,6 +166,9 @@ def run(pose, B=None, rails_body='rails_tp'):
             if kind == 'rail':                                       # the core's push, spread over the block's nodes
                 Fr = np.interp(tt, t, Frail[rail_of[i]]) if rail_of[i] in Frail else 0.0
                 fn = np.full(len(n), max(Fr, 0.0) / len(n)); f[n] += fn
+            elif kind.startswith('bcu:'):                             # gap = nominal + bow toward the wall - the cell's own x
+                uc = np.interp(tt, t, ux[kind.split(':')[2]]) if not kind.endswith(':cradles') else 0.0
+                pen = np.maximum(uc - w[n] - gap, 0); fn = k * pen; f[n] += fn
             else:
                 pen = np.maximum(sgn * w[n] - gap, 0); fn = k * pen; f[n] -= sgn * fn
             tot = fn.sum()
@@ -162,13 +192,16 @@ def run(pose, B=None, rails_body='rails_tp'):
         es = (ce[0] >= p['y0'] - 0.5) & (ce[0] <= p['y1'] + 0.5) & (ce[1] >= p['z0'] - 0.5) & (ce[1] <= p['z1'] + 0.5)
         parts[k] = dict(side=p['side'], strain_ue=float(strain[es].max() * 1e6) if es.any() else 0.0,
                         w_max=float(wmax_t[sel].max()), clear_mm=float(BF.X_IN + POCKET.get(k, 0) - p['top'] - wmax_t[sel].max()) if p['side'] == 'F' else None)
-    names = [f"{s[0]}{i}" for i, s in enumerate(B['sup'])]
+    names = [f"{s[0]}{i}" for i, s in enumerate(B['sup']) if not s[0].startswith('bcu:')]
     groups = {}
-    for i, s in enumerate(B['sup']): groups[s[0]] = groups.get(s[0], 0) + Fsup[i]
+    for i, s in enumerate(B['sup']):
+        g = 'bcu' if s[0].startswith('bcu:') else s[0]; groups[g] = groups.get(g, 0) + Fsup[i]
+    strikes = sorted([dict(ref=s[0].split(':')[1], on=s[0].split(':')[2], gap_mm=s[3], peak_N=round(Fsup[i], 1))
+                      for i, s in enumerate(B['sup']) if s[0].startswith('bcu:') and Fsup[i] > 0.5], key=lambda r: -r['peak_N'])
     worst = sorted([(v['clear_mm'], k) for k, v in parts.items() if v['clear_mm'] is not None])[:5]
     out = dict(pose=pose, dx=dx, w_toward_wall_max=float(wmax_t.max()), w_toward_cells_max=float(-wmin_t.min()),
                strain_max_ue=float(strain.max() * 1e6), strain_p99_ue=float(np.percentile(strain, 99) * 1e6),
-               support_peak_N={n: round(Fsup[i], 1) for i, n in enumerate(names)}, support_groups_sum_of_peaks_N={k: round(v, 1) for k, v in groups.items()},
+               support_peak_N={n: round(Fsup[i], 1) for i, n in enumerate(names)}, bcu_strikes=strikes, support_groups_sum_of_peaks_N={k: round(v, 1) for k, v in groups.items()},
                closest_parts=[dict(ref=k, clear_mm=round(c, 3), strain_ue=round(parts[k]['strain_ue'])) for c, k in worst],
                highest_strain_parts=sorted([dict(ref=k, strain_ue=round(v['strain_ue']), side=v['side']) for k, v in parts.items()], key=lambda r: -r['strain_ue'])[:8])
     np.save(os.path.join(CACHE, f'board_strain_{pose}.npy'), strain.astype(np.float32))

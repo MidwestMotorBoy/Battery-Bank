@@ -1,100 +1,102 @@
 {
  "pose": "back",
  "dx": -1.0,
- "w_toward_wall_max": 0.432434409180104,
- "w_toward_cells_max": 9.17063081145627,
- "strain_max_ue": 15237.803013387163,
- "strain_p99_ue": 4331.34762226478,
+ "w_toward_wall_max": 0.9994630694417965,
+ "w_toward_cells_max": 2.0131821487164836,
+ "strain_max_ue": 24962.291952671017,
+ "strain_p99_ue": 8122.534290435803,
  "support_peak_N": {
   "spacer0": 0.0,
-  "spacer1": 0.0,
+  "spacer1": 54.2,
   "spacer2": 0.0,
-  "spacer3": 0.0,
-  "lip4": 0.0,
-  "lip5": 0.0,
-  "usb_f6": 33.8,
-  "usb_b7": 146.6,
-  "usb_f8": 52.4,
-  "usb_b9": 145.7,
-  "rail10": 52.6,
-  "rail11": 92.8,
-  "rail12": 51.8,
-  "rail13": 92.5
+  "spacer3": 59.1,
+  "lip4": 127.1,
+  "lip5": 91.9,
+  "usb_f6": 176.7,
+  "usb_b7": 180.6,
+  "usb_f8": 175.2,
+  "usb_b9": 179.1,
+  "rail10": 98.1,
+  "rail11": 177.9,
+  "rail12": 96.5,
+  "rail13": 177.4
  },
+ "bcu_strikes": [],
  "support_groups_sum_of_peaks_N": {
-  "spacer": 0.0,
-  "lip": 0.0,
-  "usb_f": 86.2,
-  "usb_b": 292.3,
-  "rail": 289.7
+  "spacer": 113.3,
+  "lip": 219.0,
+  "usb_f": 352.0,
+  "usb_b": 359.7,
+  "rail": 549.8,
+  "bcu": 0.0
  },
  "closest_parts": [
   {
+   "ref": "C444",
+   "clear_mm": 0.488,
+   "strain_ue": 7396
+  },
+  {
+   "ref": "C434",
+   "clear_mm": 0.574,
+   "strain_ue": 6373
+  },
+  {
+   "ref": "C531",
+   "clear_mm": 0.575,
+   "strain_ue": 6262
+  },
+  {
    "ref": "L201",
-   "clear_mm": 0.72,
-   "strain_ue": 2276
+   "clear_mm": 0.586,
+   "strain_ue": 3817
   },
   {
-   "ref": "L401",
-   "clear_mm": 1.12,
-   "strain_ue": 3076
-  },
-  {
-   "ref": "L501",
-   "clear_mm": 1.12,
-   "strain_ue": 3175
-  },
-  {
-   "ref": "J401",
-   "clear_mm": 1.16,
-   "strain_ue": 13592
-  },
-  {
-   "ref": "J501",
-   "clear_mm": 1.186,
-   "strain_ue": 15238
+   "ref": "C544",
+   "clear_mm": 0.688,
+   "strain_ue": 5941
   }
  ],
  "highest_strain_parts": [
   {
    "ref": "J501",
-   "strain_ue": 15238,
+   "strain_ue": 24962,
    "side": "F"
   },
   {
    "ref": "J401",
-   "strain_ue": 13592,
-   "side": "F"
-  },
-  {
-   "ref": "D401",
-   "strain_ue": 4811,
-   "side": "F"
-  },
-  {
-   "ref": "D501",
-   "strain_ue": 4738,
-   "side": "F"
-  },
-  {
-   "ref": "R414",
-   "strain_ue": 4668,
-   "side": "F"
-  },
-  {
-   "ref": "U501",
-   "strain_ue": 4500,
+   "strain_ue": 22747,
    "side": "F"
   },
   {
    "ref": "U401",
-   "strain_ue": 4353,
+   "strain_ue": 9052,
    "side": "F"
   },
   {
-   "ref": "C301",
-   "strain_ue": 4016,
+   "ref": "U501",
+   "strain_ue": 8514,
    "side": "F"
+  },
+  {
+   "ref": "R414",
+   "strain_ue": 8477,
+   "side": "F"
+  },
+  {
+   "ref": "R428",
+   "strain_ue": 8393,
+   "side": "F"
+  },
+  {
+   "ref": "R433",
+   "strain_ue": 8150,
+   "side": "F"
+  },
+  {
+   "ref": "C210",
+   "strain_ue": 8150,
+   "side": "B"
   }
  ]
 }

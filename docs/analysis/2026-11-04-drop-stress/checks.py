@@ -54,7 +54,8 @@ def main():
     # ---- small features from the contact forces
     r_ot = prm['OT_R']
     F, p = contact_peak(D, lambda a, b: b == 'shell/ot_posts')
-    add('cap: overtravel posts (4 x r1.5)', 'mean bearing on the 4 tips', F / (4 * math.pi * r_ot**2), 'MPa', PA12_C, p, f'{F:.0f} N on the posts')
+    n_ot = len(prm.get('OT_POSTS', [None] * 4))
+    add(f'cap: overtravel posts ({n_ot} x r{r_ot:g})', f'mean bearing on the {n_ot} tips', F / (n_ot * math.pi * r_ot**2), 'MPa', PA12_C, p, f'{F:.0f} N on the posts')
     F, p = contact_peak(D, lambda a, b: b == 'shell/cap' and a.startswith('carrier'))
     if F: add('cap: skirt top (carrier frame lands on it)', 'force', F, 'N', 1e9, p, 'not meant to touch: 1.1 mm gap')
     lf = 2 * ((prm['FOOT_Y'][0][1] - prm['FOOT_Y'][0][0]) + (prm['FOOT_Y'][1][1] - prm['FOOT_Y'][1][0]))

@@ -170,9 +170,16 @@ def region_stats(M, env, near_nodes):
         out[k] = r
     return out
 
-def overlap_points(a, b, d, delta, extra=0.0):
+def overlap_points(a, b, d, delta, extra=0.0, step=0.4):
     """points on the contact overlap of a moved delta (+ extra, so a just-touching pair still gives a patch) along d into b"""
     o = a.translate(tuple(np.asarray(d) * (delta + extra))) ^ b
     if o.is_empty(): return None
     M = o.to_mesh(); V = np.asarray(M.vert_properties)[:, :3]; T = np.asarray(M.tri_verts)
-    return np.vstack([V, V[T].mean(1)])
+    # sample every triangle on a grid of about `step` mm: a broad flat contact meshes as a few big triangles, whose
+    # vertices and centres alone would pick only a handful of the face's nodes
+    P = [V, V[T].mean(1)]; A, B, C = V[T[:, 0]], V[T[:, 1]], V[T[:, 2]]
+    L = np.maximum(np.linalg.norm(B - A, axis=1), np.maximum(np.linalg.norm(C - B, axis=1), np.linalg.norm(A - C, axis=1)))
+    for t in np.flatnonzero(L > step):
+        k = int(np.ceil(L[t] / step)); ij = np.array([(i, j) for i in range(k + 1) for j in range(k + 1 - i)]) / k
+        P.append(A[t] + ij[:, :1] * (B[t] - A[t]) + ij[:, 1:] * (C[t] - A[t]))
+    return np.vstack(P)
