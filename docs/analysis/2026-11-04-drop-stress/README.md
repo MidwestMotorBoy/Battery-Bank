@@ -122,7 +122,13 @@ python figs.py                            # figs/*.png
 python facefig.py                         # figs/fig_faces.png (the five flat drops)
 python sens.py                            # out/sensitivity.json
 python board_anim.py board back           # cache/board-flex.html: the animated board-flex page (~3.6 MB)
+python anim.py --tag _1105 --label "..."  # figs/anim_*_back_*: C421 / C556 over the cradles in the back-face drop
 ```
+
+The C421 / C556 animations (`anim.py`, from `cache/dyn_back.npz`, every body at its computed position, true scale):
+`figs/anim_1_back_section_1104.gif` and `figs/anim_2_back_board_1104.gif` are the 11-04 PC run, where the 2.9 mm
+caps closed a 0.88 mm gap and took 2200 N on the cradles. `figs/anim_1_back_section_1105.gif` and
+`figs/anim_2_back_board_1105.gif` are the same drop on the 11-05 geometry (caps at 2.0 mm, cradle relief).
 
 `run_all.py` builds the contact tables if they are missing (`cache/`, not committed), then per pose: impact with a
 rigid structure, the FE compliance, the impact again with the structure's give, the FE stress, the board, and at the
