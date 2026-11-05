@@ -1,0 +1,163 @@
+{
+ "pose": "side",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 0.469,
+   "loads": [
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     1792.2
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     1764.5
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "-",
+     581.0
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "+",
+     173.5
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     173.5
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     230.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "+",
+     230.4
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     929.7
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     133.3
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     1341.9
+    ]
+   ],
+   "its": 30,
+   "rel_res": 8.530719259048487e-08
+  },
+  {
+   "t_ms": 0.488,
+   "loads": [
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     1805.9
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     1775.2
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "-",
+     770.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "+",
+     114.3
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     114.3
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     157.6
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "+",
+     157.6
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     915.6
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     129.6
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     1323.2
+    ]
+   ],
+   "its": 30,
+   "rel_res": 8.624002416766343e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 46.0827816481963,
+   "p999": 85.4017645187504,
+   "max": 206.17330855601222,
+   "at": [
+    20.3,
+    -6.7,
+    4.4
+   ]
+  },
+  "carrier/webs": {
+   "p99": 95.303826989771,
+   "p999": 223.89757728854428,
+   "max": 388.21572148034755,
+   "at": [
+    -1.4,
+    -7.4,
+    6.6
+   ]
+  }
+ }
+}

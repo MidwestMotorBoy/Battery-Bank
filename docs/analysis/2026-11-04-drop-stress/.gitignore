@@ -1,2 +1,3 @@
 cache/
 out/test_*.log
+.venv/

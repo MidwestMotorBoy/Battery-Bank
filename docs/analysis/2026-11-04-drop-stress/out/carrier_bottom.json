@@ -1,0 +1,175 @@
+{
+ "pose": "bottom",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 0.55,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1152.1
+    ],
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     19.5
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     431.4
+    ],
+    [
+     "C3",
+     "carrier/webs",
+     "+",
+     19.6
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     431.4
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     19.6
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     1152.1
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     19.5
+    ],
+    [
+     "carrier/frames",
+     "shell/cap",
+     "+",
+     2664.4
+    ],
+    [
+     "carrier/frames",
+     "shell/ot_posts",
+     "+",
+     2216.8
+    ],
+    [
+     "carrier/frames",
+     "shell/pad",
+     "+",
+     52.1
+    ]
+   ],
+   "its": 30,
+   "rel_res": 5.701072660330179e-08
+  },
+  {
+   "t_ms": 0.589,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1732.2
+    ],
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     18.3
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     494.2
+    ],
+    [
+     "C3",
+     "carrier/webs",
+     "+",
+     18.9
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     494.2
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     18.9
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     1732.2
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     18.3
+    ],
+    [
+     "carrier/frames",
+     "shell/cap",
+     "+",
+     2575.0
+    ],
+    [
+     "carrier/frames",
+     "shell/ot_posts",
+     "+",
+     2202.9
+    ],
+    [
+     "carrier/frames",
+     "shell/pad",
+     "+",
+     50.5
+    ]
+   ],
+   "its": 30,
+   "rel_res": 6.682001920769797e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 47.6368495785263,
+   "p999": 73.39641580206782,
+   "max": 77.15946905293086,
+   "at": [
+    0.1,
+    0.8,
+    4.4
+   ]
+  },
+  "carrier/webs": {
+   "p99": 40.716923057605996,
+   "p999": 56.76166734379554,
+   "max": 79.5060087355666,
+   "at": [
+    -17.9,
+    0.8,
+    5.9
+   ]
+  }
+ }
+}

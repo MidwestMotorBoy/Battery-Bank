@@ -1,0 +1,101 @@
+{
+ "pose": "board",
+ "part": "rails_bp",
+ "H": 0.375,
+ "snapshots": [
+  {
+   "t_ms": 0.6,
+   "loads": [
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     158.2
+    ],
+    [
+     "board/pcb",
+     "rails_bp/ends",
+     "-",
+     27.7
+    ],
+    [
+     "board/pcb",
+     "rails_bp/posts",
+     "-",
+     32.5
+    ],
+    [
+     "rails_bp/posts",
+     "shell/cup_walls",
+     "+",
+     100.3
+    ]
+   ],
+   "its": 12,
+   "rel_res": 4.195499442193807e-08
+  },
+  {
+   "t_ms": 0.604,
+   "loads": [
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     158.1
+    ],
+    [
+     "board/pcb",
+     "rails_bp/ends",
+     "-",
+     27.9
+    ],
+    [
+     "board/pcb",
+     "rails_bp/posts",
+     "-",
+     32.7
+    ],
+    [
+     "rails_bp/posts",
+     "shell/cup_walls",
+     "+",
+     100.0
+    ]
+   ],
+   "its": 12,
+   "rel_res": 4.192056328494172e-08
+  }
+ ],
+ "regions": {
+  "rails_bp/ends": {
+   "p99": 65.27779621904666,
+   "p999": 73.92084842747768,
+   "max": 74.71217095681526,
+   "at": [
+    20.9,
+    5.7,
+    5.7
+   ]
+  },
+  "rails_bp/posts": {
+   "p99": 26.061167206846292,
+   "p999": 29.06486251677984,
+   "max": 29.312573300793762,
+   "at": [
+    29.1,
+    9.1,
+    13.2
+   ]
+  },
+  "rails_bp/blocks": {
+   "p99": 17.431088290132262,
+   "p999": 37.10578707088941,
+   "max": 53.908912407510016,
+   "at": [
+    22.7,
+    6.8,
+    6.1
+   ]
+  }
+ }
+}

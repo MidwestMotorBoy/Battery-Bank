@@ -1,0 +1,226 @@
+{
+ "pose": "board",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 0.533,
+   "loads": [
+    [
+     "C1",
+     "shell/cradles",
+     "+",
+     1473.8
+    ],
+    [
+     "C4",
+     "shell/cradles",
+     "+",
+     1103.7
+    ],
+    [
+     "board/pcb",
+     "shell/lips",
+     "+",
+     47.9
+    ],
+    [
+     "rails_tn/posts",
+     "shell/cup_walls",
+     "+",
+     113.6
+    ],
+    [
+     "rails_bp/posts",
+     "shell/cup_walls",
+     "+",
+     102.4
+    ],
+    [
+     "board/spacers",
+     "shell/cup_walls",
+     "+",
+     59.4
+    ],
+    [
+     "rails_bn/posts",
+     "shell/cup_walls",
+     "+",
+     102.2
+    ],
+    [
+     "rails_tp/posts",
+     "shell/cup_walls",
+     "+",
+     112.8
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     936.8
+    ],
+    [
+     "board/parts",
+     "shell/cup_walls",
+     "+",
+     155.7
+    ],
+    [
+     "board/usb",
+     "shell/cup_walls",
+     "+",
+     58.2
+    ]
+   ],
+   "its": 57,
+   "skin_on_floor": 0,
+   "max_push_mm": 2.077
+  },
+  {
+   "t_ms": 0.593,
+   "loads": [
+    [
+     "C1",
+     "shell/cradles",
+     "+",
+     1498.6
+    ],
+    [
+     "C4",
+     "shell/cradles",
+     "+",
+     1086.8
+    ],
+    [
+     "board/pcb",
+     "shell/lips",
+     "+",
+     42.6
+    ],
+    [
+     "rails_tn/posts",
+     "shell/cup_walls",
+     "+",
+     111.2
+    ],
+    [
+     "rails_bp/posts",
+     "shell/cup_walls",
+     "+",
+     100.7
+    ],
+    [
+     "board/spacers",
+     "shell/cup_walls",
+     "+",
+     53.9
+    ],
+    [
+     "rails_bn/posts",
+     "shell/cup_walls",
+     "+",
+     100.5
+    ],
+    [
+     "rails_tp/posts",
+     "shell/cup_walls",
+     "+",
+     110.5
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     923.0
+    ],
+    [
+     "board/parts",
+     "shell/cup_walls",
+     "+",
+     128.1
+    ],
+    [
+     "board/usb",
+     "shell/cup_walls",
+     "+",
+     53.9
+    ]
+   ],
+   "its": 57,
+   "skin_on_floor": 0,
+   "max_push_mm": 2.041
+  }
+ ],
+ "regions": {
+  "cup_walls": {
+   "p99": 26.842541580730597,
+   "p999": 41.811279762528486,
+   "max": 71.89072996709767,
+   "at": [
+    22.2,
+    23.0,
+    4.7
+   ]
+  },
+  "cradles": {
+   "p99": 57.62583553214974,
+   "p999": 77.64452878975943,
+   "max": 96.53152557711667,
+   "at": [
+    21.5,
+    22.2,
+    5.4
+   ]
+  },
+  "lands": {
+   "p99": 25.659783853126562,
+   "p999": 26.39345674351777,
+   "max": 26.47734122143972,
+   "at": [
+    26.7,
+    -22.0,
+    73.7
+   ]
+  },
+  "lips": {
+   "p99": 23.629510961826,
+   "p999": 28.19918534614806,
+   "max": 28.31911161356463,
+   "at": [
+    29.0,
+    -21.3,
+    73.7
+   ]
+  },
+  "cap": {
+   "p99": 23.180510616016136,
+   "p999": 41.081954739258364,
+   "max": 51.91317362218298,
+   "at": [
+    19.2,
+    22.2,
+    2.4
+   ]
+  },
+  "ot_posts": {
+   "p99": 5.92175320209969,
+   "p999": 7.239653892462816,
+   "max": 7.368623971956083,
+   "at": [
+    -19.0,
+    -1.0,
+    -4.3
+   ]
+  },
+  "feet": {
+   "p99": 4.630263639590146,
+   "p999": 5.701736328611334,
+   "max": 5.921605227401985,
+   "at": [
+    25.2,
+    14.7,
+    -4.3
+   ]
+  }
+ }
+}

@@ -1,0 +1,187 @@
+{
+ "pose": "top_back",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 1.404,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1617.0
+    ],
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     660.1
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     713.7
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     713.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "-",
+     69.0
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "-",
+     72.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "-",
+     72.6
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "-",
+     69.0
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     1617.0
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     660.1
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     115.3
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     6350.8
+    ]
+   ],
+   "its": 29,
+   "rel_res": 9.629036008826093e-08
+  },
+  {
+   "t_ms": 1.409,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1615.4
+    ],
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     658.4
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     728.3
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     728.3
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "-",
+     77.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "-",
+     75.0
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "-",
+     75.2
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "-",
+     77.4
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     1615.4
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     658.4
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     114.4
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     6333.0
+    ]
+   ],
+   "its": 29,
+   "rel_res": 9.639801934176033e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 96.18400454816074,
+   "p999": 235.674947919107,
+   "max": 368.6392309391467,
+   "at": [
+    -22.4,
+    0.8,
+    5.1
+   ]
+  },
+  "carrier/webs": {
+   "p99": 127.05078685565768,
+   "p999": 343.9486874873376,
+   "max": 553.4314303012746,
+   "at": [
+    -22.4,
+    0.8,
+    5.9
+   ]
+  }
+ }
+}

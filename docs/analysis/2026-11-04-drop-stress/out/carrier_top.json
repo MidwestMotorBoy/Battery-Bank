@@ -1,0 +1,103 @@
+{
+ "pose": "top",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 0.489,
+   "loads": [
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     428.0
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     428.0
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     1733.6
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     177.4
+    ]
+   ],
+   "its": 30,
+   "rel_res": 6.640823026073491e-08
+  },
+  {
+   "t_ms": 0.512,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     269.5
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     1012.0
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     1012.0
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     218.7
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     1091.9
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     164.9
+    ]
+   ],
+   "its": 31,
+   "rel_res": 9.384717758149512e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 69.93699439120041,
+   "p999": 89.61313468532485,
+   "max": 107.14766149528502,
+   "at": [
+    -4.4,
+    -8.9,
+    78.6
+   ]
+  },
+  "carrier/webs": {
+   "p99": 38.544442805664644,
+   "p999": 78.76564885998906,
+   "max": 95.84044823008851,
+   "at": [
+    -0.7,
+    12.1,
+    77.1
+   ]
+  }
+ }
+}

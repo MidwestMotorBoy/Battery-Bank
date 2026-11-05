@@ -1,0 +1,90 @@
+{
+ "pose": "board",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 0.538,
+   "loads": [
+    [
+     "C1",
+     "carrier/webs",
+     "-",
+     1090.1
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     1554.0
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     193.2
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "-",
+     535.6
+    ],
+    [
+     "C3",
+     "carrier/webs",
+     "+",
+     1554.0
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     144.5
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "+",
+     193.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "+",
+     145.2
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     937.0
+    ]
+   ],
+   "its": 32,
+   "rel_res": 6.070393121782635e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 33.126328941076416,
+   "p999": 38.63382899529501,
+   "max": 46.366107104326076,
+   "at": [
+    9.1,
+    18.8,
+    78.6
+   ]
+  },
+  "carrier/webs": {
+   "p99": 31.82470766343796,
+   "p999": 60.780441767758646,
+   "max": 95.66275504174845,
+   "at": [
+    -1.4,
+    15.8,
+    6.6
+   ]
+  }
+ }
+}

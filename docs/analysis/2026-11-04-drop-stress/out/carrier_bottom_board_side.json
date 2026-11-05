@@ -1,0 +1,211 @@
+{
+ "pose": "bottom_board_side",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 1.109,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     2.0
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     239.8
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     1035.0
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     198.6
+    ],
+    [
+     "C3",
+     "carrier/webs",
+     "+",
+     995.6
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     17.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "+",
+     306.0
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/blocks",
+     "+",
+     50.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     305.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     303.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/blocks",
+     "+",
+     49.1
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "+",
+     338.7
+    ],
+    [
+     "carrier/frames",
+     "shell/cap",
+     "+",
+     409.8
+    ],
+    [
+     "carrier/frames",
+     "shell/ot_posts",
+     "+",
+     1045.5
+    ],
+    [
+     "carrier/frames",
+     "shell/pad",
+     "+",
+     40.7
+    ]
+   ],
+   "its": 32,
+   "rel_res": 7.322015277653954e-08
+  },
+  {
+   "t_ms": 1.128,
+   "loads": [
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     255.4
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     1094.3
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     212.7
+    ],
+    [
+     "C3",
+     "carrier/webs",
+     "+",
+     1062.8
+    ],
+    [
+     "C4",
+     "carrier/frames",
+     "+",
+     14.8
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "+",
+     304.1
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/blocks",
+     "+",
+     49.2
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "+",
+     302.9
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     299.6
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/blocks",
+     "+",
+     46.8
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "+",
+     339.8
+    ],
+    [
+     "carrier/frames",
+     "shell/ot_posts",
+     "+",
+     1040.2
+    ],
+    [
+     "carrier/frames",
+     "shell/pad",
+     "+",
+     40.4
+    ]
+   ],
+   "its": 32,
+   "rel_res": 7.31033493767767e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 61.67859455289502,
+   "p999": 93.16384161849142,
+   "max": 154.18285034601166,
+   "at": [
+    20.3,
+    -5.9,
+    5.1
+   ]
+  },
+  "carrier/webs": {
+   "p99": 28.51441138671511,
+   "p999": 53.19525365132884,
+   "max": 87.50870239290252,
+   "at": [
+    0.1,
+    17.3,
+    6.6
+   ]
+  }
+ }
+}
