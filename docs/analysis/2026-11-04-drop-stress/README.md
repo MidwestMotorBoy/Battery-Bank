@@ -76,7 +76,11 @@ change is the model, not the cup:
 The board plate model (`board_dyn.py`) also gained the B.Cu side: every B.Cu part within 3 mm of a can or a cradle top
 (`cache/board_bcu.json`) is a one-sided stop, with the cans moving with the core. None land in the flat drops.
 
-POSTGAP_PLACEHOLDER
+**Post-tip gap 0.5 (variant, not adopted).** Opening the rail post tips to 0.5 mm under the board-face wall means the
+post spacers go to 0.5 too (they must stop at or below the tips). In the board-face drop that takes the tips from
+269 to 223 N each (69 to 57 MPa) but lets the board travel further: it bows 1.82 mm (was 1.20), strain 9300 ue (was
+7800), and L201, C531 and L501 reach the wall (L201 by 0.18 mm). The tips are the smaller problem, so the gaps stay at
+0.3 / 0.4.
 
 ## Model
 
