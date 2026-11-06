@@ -21,6 +21,7 @@ _ap = argparse.ArgumentParser(); _ap.add_argument('--tag', default=''); _ap.add_
 ARGS, _ = _ap.parse_known_args()
 INK, INK2, GRID, SURF = '#0b0b0b', '#52514e', '#e4e3df', '#fcfcfb'
 BLUE, ORANGE, AQUA, YELLOW, GREEN, VIOLET, RED = '#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#008300', '#6250d6', '#c8102e'
+GEL = '#f2b8dc'                                   # GEL 30 is pink
 plt.rcParams.update({'figure.facecolor': SURF, 'axes.facecolor': SURF, 'savefig.facecolor': SURF, 'text.color': INK,
                      'axes.labelcolor': INK2, 'xtick.color': INK2, 'ytick.color': INK2, 'axes.edgecolor': GRID,
                      'axes.spines.top': False, 'axes.spines.right': False, 'font.size': 9, 'axes.titlesize': 10,
@@ -44,6 +45,7 @@ def geometry():
     G = dict(shell={k: polys(sub[k].slice(Z_CUT)) for k in ('cup_walls', 'cradles', 'lands', 'lips')},
              cells={k: polys(B[k]['m'].slice(Z_CUT)) for k in ('C1', 'C2', 'C3', 'C4')},
              carrier=polys(B['carrier']['m'].slice(Z_CUT)),
+             gel=polys(BD.K.filler().slice(Z_CUT)),
              pcb=polys(B['board']['pcb'].slice(Z_CUT)),
              parts=polys((B['board']['parts'] - BD.K.U(*caps.values())).slice(Z_CUT)),
              caps={k: polys(v.slice(Z_CUT)) for k, v in caps.items()})
@@ -54,6 +56,7 @@ def geometry():
     face = lambda M_, x: [np.c_[p[:, 1], -p[:, 0]] for p in rot(M_).slice(x).to_polygons()]
     G['b_outline'] = face(B['board']['pcb'], 26.1)
     G['b_cradles'] = face(sub['cradles'], 21.4)
+    G['b_gel'] = face(BD.K.filler(), BD.S.sb_xb0 - 0.3)
     bparts = {}
     for k in RB:
         if k.startswith('_') or k == 'PCB': continue
@@ -114,6 +117,7 @@ def section_anim(G, H):
         for k, (fc, ec) in style.items(): add(ax, G['shell'][k], 'shell', fc, ec, z=1)
         for k, P in G['cells'].items(): add(ax, P, k, '#cfe9de', AQUA, lw=0.8)
         add(ax, G['carrier'], 'carrier', '#dcd8f5', VIOLET)
+        add(ax, G['gel'], 'gel', GEL, '#b8579a', lw=0.6, z=2.5)
         add(ax, G['pcb'], 'board', '#9fcf9f', GREEN)
         add(ax, G['parts'], 'board', '#6b6a66', INK, lw=0.4, z=3)
         for k, P in G['caps'].items():
@@ -128,6 +132,8 @@ def section_anim(G, H):
              bbox=dict(fc=SURF, ec='none', pad=1))
     lab = dict(fontsize=8, color=INK2, zorder=9)
     axA.annotate('cells', (-20, 2), (-30.5, 9), arrowprops=dict(arrowstyle='-', color=INK2, lw=0.6), **lab)
+    axA.annotate('GEL 30 gap filler', (-10, 23.6), (-17, 35.5), color='#b8579a', fontsize=8, zorder=9,
+                 arrowprops=dict(arrowstyle='-', color='#b8579a', lw=0.6))
     axA.annotate('board (PCB)', (0, 26.1), (6, 35), arrowprops=dict(arrowstyle='-', color=INK2, lw=0.6), **lab)
     axA.annotate('cell cradles\n(part of the cup)', (21, 17.5), (24.2, 5), arrowprops=dict(arrowstyle='-', color=INK2, lw=0.6), **lab)
     cy = {k: G['cap_xy'][k][0] for k in CAPS}
@@ -153,6 +159,8 @@ def section_anim(G, H):
     cur = axC.axvline(0, color=INK, lw=0.8); dot, = axC.plot([], [], 'o', color=ORANGE, ms=6, zorder=5)
     peak_txt = axC.text(0.02, 0.88, '', transform=axC.transAxes, fontsize=9, fontweight='bold', color=RED)
     clock = axA.text(0.0, 1.0, '', transform=axA.transAxes, fontsize=10, fontweight='bold', va='top')
+    fig.text(0.05, 0.035, 'GEL 30 is drawn between B.Cu and the front cells, squeezed by their motion; the impact model carries it as mass only (no load path).',
+             fontsize=7.5, color=INK2)
     fig.text(0.05, 0.015, f'Impact model: rigid bodies, no rotation, board rigid. Caps as this model has them: {G["cap_h"]:.1f} mm off B.Cu '
              f'(the BOM part, KEMET T593V 7343-20, is 2.0 mm). First-touch gap to the cradles {G["cap_gap"]:.2f} mm.', fontsize=7.5, color=INK2)
     if ARGS.label: fig.text(0.97, 0.955, ARGS.label, fontsize=11, fontweight='bold', ha='right', color=BLUE)
@@ -162,6 +170,10 @@ def section_anim(G, H):
     def update(k):
         t_ = T[k]
         for pa, body, p in art:
+            if body == 'gel':                                # B.Cu side rides with the board, can side with its cell
+                on_b = p[:, 1] > BD.S.sb_xb0 - 0.05
+                dc = np.where(p[:, 0] < 0, disp(H, 'C1', t_), disp(H, 'C4', t_))
+                pa.set_xy(p - np.c_[np.zeros(len(p)), np.where(on_b, disp(H, 'board', t_), dc)]); continue
             dx = disp(H, body, t_)
             pa.set_xy(p - [0, dx])                          # travel toward the floor (-x) moves down on screen
         f = float(np.interp(t_, t, F)) if t_ >= 0 else 0.0
@@ -187,9 +199,11 @@ def board_anim(G, H):
     T, tp = frames(H)
     fig, (ax, axg) = plt.subplots(1, 2, figsize=(10.5, 7.2), gridspec_kw=dict(width_ratios=[1.5, 1], wspace=0.25, left=0.04, right=0.96, top=0.86, bottom=0.08))
     fig.suptitle('Check 1: where it happens on the board (back-face drop)', fontweight='bold', fontsize=13, x=0.04, ha='left')
-    fig.text(0.04, 0.895, "The board's B.Cu side, seen from the cells. Grey bands: the cup's cell cradles under the board.", fontsize=9, color=INK2)
+    fig.text(0.04, 0.895, "The board's B.Cu side, seen from the cells. Grey bands: the cup's cell cradles under the board. Pink: the GEL 30 zones.", fontsize=9, color=INK2)
     for p in G['b_cradles']: ax.add_patch(Polygon(p, fc='#cfccc4', ec='#8f8b82', lw=0.6, zorder=1))
     for p in G['b_outline']: ax.add_patch(Polygon(p, fc='#9fcf9f', ec=GREEN, lw=1, alpha=0.55, zorder=2))
+    for p in G['b_gel']: ax.add_patch(Polygon(p, fc=GEL, ec='#b8579a', lw=0.6, alpha=0.9, zorder=2.5))
+    ax.text(-11.5, 29, 'GEL 30', fontsize=7, color='#b8579a', ha='center', zorder=6)
     cap_patch = {}
     for k, p in G['b_parts'].items():
         hot = k in CAPS

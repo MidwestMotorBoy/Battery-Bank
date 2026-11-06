@@ -128,7 +128,37 @@ python anim.py --tag _1105 --label "..."  # figs/anim_*_back_*: C421 / C556 over
 The C421 / C556 animations (`anim.py`, from `cache/dyn_back.npz`, every body at its computed position, true scale):
 `figs/anim_1_back_section_1104.gif` and `figs/anim_2_back_board_1104.gif` are the 11-04 PC run, where the 2.9 mm
 caps closed a 0.88 mm gap and took 2200 N on the cradles. `figs/anim_1_back_section_1105.gif` and
-`figs/anim_2_back_board_1105.gif` are the same drop on the 11-05 geometry (caps at 2.0 mm, cradle relief).
+`figs/anim_2_back_board_1105.gif` are the same drop on the 11-05 geometry (caps at 2.0 mm, cradle relief). The GEL 30
+is drawn in them (pink), squeezed between the board and the cells' computed motions; it carries no load there.
+
+## GEL 30 as a load path (`gel_sens.py`, 2026-11-05)
+
+The drop model carries the gap filler as mass only. `gel_sens.py` adds it to the board plate model over the two fill
+zones (|y| 7-16, z 27-53, bond line 2.75-3.8 mm) as a compression-only spring plus a squeeze film (strip 9 mm wide,
+both ways, tension capped at 0.1 MPa), with the cells moving as `dyn.py` has them, and brackets it. As a spring it is
+nothing (datasheet: 40 % deflection at 1 psi, ~0.14 MPa tangent near 50 %). As a squeeze film it is not: the paste's
+flow rate puts it near 1200 Pa s at slow shear, and it shear-thins at drop rates, so 50-1200 Pa s brackets it.
+
+| Drop | GEL 30 | strain p99 | USB-C tabs | bow to cells / wall | gel push | F.Cu closest to the wall |
+|---|---|---|---|---|---|---|
+| back | mass only (as run) | 7960 ue | 21.8 / 24.1k ue | 2.12 / 0.79 mm | 0 | C444 0.68 mm |
+| back | spring 0.14 MPa | 7830 | 21.7 / 24.0k | 2.09 / 0.76 | 17 N | C444 0.54 |
+| back | + film 50 Pa s | 6540 | 21.0 / 23.3k | 1.62 / 1.19 | 122 N | C444 0.08 |
+| back | + film 160 Pa s | 6560 | 21.1 / 23.4k | 1.30 / 1.31 | 237 N | C434 -0.06 |
+| back | 1.4 MPa + 500 Pa s | 6850 | 26.8 / 29.5k | 1.24 / 1.55 | 379 N | C434 -0.28 |
+| back | 1.4 MPa + 1220 Pa s | 7190 | 28.5 / 31.3k | 1.32 / 1.69 | 568 N | C531 -0.41 |
+| board | mass only (as run) | 7800 | 27.4 / 28.9k | 1.29 / 1.21 | 0 | C434 0.06 |
+| board | spring 0.14 MPa | 7770 | 24.2 / 26.0k | 1.29 / 1.21 | 29 N | C434 0.06 |
+| board | + film 50 Pa s | 7780 | 23.0 / 24.9k | 1.27 / 1.22 | 255 N | L501 0.04 |
+| board | + film 160 Pa s | 7970 | 23.0 / 25.0k | 1.26 / 1.39 | 441 N | C531 -0.13 |
+| board | 1.4 MPa + 500 Pa s | 8280 | 23.2 / 25.1k | 1.30 / 1.63 | 662 N | C531 -0.39 |
+| board | 1.4 MPa + 1220 Pa s | 8460 | 23.3 / 25.2k | 1.33 / 1.85 | 846 N | C531 -0.60 |
+
+The gel props the middle of the board in the back-face drop (bow toward the cells 2.1 -> 1.2-1.6 mm, strain about
+-18 %), but it does not help the USB-C tabs, and through it the cells (300 g) drag the board back toward the
+board-face wall in the rebound. From about 160 Pa s up, C434, C531, L501 and C524 on F.Cu reach the wall in both face
+drops (by up to 0.4-0.6 mm), where they clear it without the gel. The gel's viscosity at drop rates is the unknown; a
+drop test with witness paint on the wall over those parts, or a gel squeeze test at speed, would settle it.
 
 `run_all.py` builds the contact tables if they are missing (`cache/`, not committed), then per pose: impact with a
 rigid structure, the FE compliance, the impact again with the structure's give, the FE stress, the board, and at the
