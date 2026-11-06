@@ -11,7 +11,7 @@ calls run()). PARTS selects what to (re)build; a part that exists is deleted and
 design must be a Hybrid or Assembly design (the script switches a Part design to Hybrid).
 Reference check: import the STEPs from hardware/mechanical/step/ (monolith_step.py) and compare volumes; the cup came
 out 32496.5 mm3 against the mesh model's 32484.6 (true arcs vs 48-gon facets, <= 0.03 mm everywhere)."""
-import adsk.core, adsk.fusion
+import adsk.core, adsk.fusion, math
 
 PARTS = ['cup', 'cap']
 
@@ -126,7 +126,36 @@ PARAMS = [  # name, expression, comment (order matters: a parameter may use the 
     ('SleeveR', '1.9 mm', 'TPU retaining sleeve outer radius'),
     ('SleeveBore', '0.85 mm', 'sleeve bore radius (grips the post)'),
     ('SleeveH', '1 mm', 'sleeve height above F.Cu'),
+    # TPU 95A bumpers (top over the ports, bottom over the cap) and the wrap label they tuck
+    ('BumpWall', '2 mm', 'top bumper band wall'),
+    ('BumpWallBot', '1 mm', 'bottom bumper band wall over the mouth band'),
+    ('BumpBand', '7 mm', 'top band height down the cup'),
+    ('BumpTTop', '6 mm', 'top slab thickness'),
+    ('BumpTBot', '3 mm', 'bottom slab thickness'),
+    ('LabelRelief', '0.45 mm', 'band inside off the cup over the label'),
+    ('LabelTuck', '3 mm', 'label edge under each bumper'),
+    ('LabelGap', '0.6 mm', 'label bottom edge above the mouth band'),
+    ('ReliefUp', '1.5 mm', 'top band relief past the label top edge'),
+    ('LeadD', '0.6 mm', 'bumper lead-in chamfer depth'),
+    ('LeadH', '0.6 mm / tan(30 deg)', 'bumper lead-in chamfer height (30 deg off the axis)'),
+    ('LipWall', '1 mm', 'bottom bumper lip over the label: wall'),
+    ('LipFloor', '0.8 mm', 'ledge joining the lip to the band'),
+    ('PortWellHX', '4.5 mm', 'top slab port well half-size (x)'),
+    ('PortWellHY', '14 mm', 'top slab port well half-size (y)'),
+    ('PortWellR', '2 mm', 'port well corner radius'),
+    ('DigitH', '4 mm', 'port number cap height'),
+    ('DigitD', '0.4 mm', 'port number deboss depth'),
+    ('DigitDX', '3.6 mm', 'port numbers: centre this far outside the well (-x)'),
+    ('BaseTextH', '7 mm', 'rating text cap height (bottom)'),
+    ('BaseTextD', '0.6 mm', 'rating deboss depth'),
+    ('BaseTextDX', '-2.5 mm', 'rating text offset from the slab centre (x)'),
+    ('VentPocketR', '6.35 mm', 'vent pocket radius through the bottom slab'),
+    ('GrilleT', '1 mm', 'vent grille thickness (at the slab base)'),
+    ('GrilleBar', '0.8 mm', 'vent grille bar width'),
+    ('GrillePitch', '2.4 mm', 'vent grille pitch (45 deg cross-hatch)'),
+    ('ScrewPocketR', '2.3 mm', 'bottom band pockets over the M2 heads'),
 ]
+CAP_HEIGHT = 1.0        # Fusion sketch-text height came out as the cap height (digits: 5.61 mm glyphs at 5.59), as in the script
 WALL_POCKETS = [(7.9608, 15.6608, 44.9671, 52.7671), (-15.0650, -7.3650, 44.9607, 52.7607)]   # L401, L501 (y0, y1, z0, z1)
 POCKET_MARGIN, POCKET_R = 0.5, 1.0
 
@@ -671,7 +700,150 @@ def sleeves(des):
     return p
 
 
-BUILD = dict(cup=cup, cap=cap, carrier=carrier, rails=rails, sleeves=sleeves)
+def out_off(p, sk, k):
+    """the cup's outside section (cs_out) grown by expression k"""
+    return p.outline(sk, 'Wall + %s' % k, 'WallBF + %s' % k, 'Wall + %s' % k, 'Wall + %s' % k, 'Wall + %s' % k)
+
+
+def lead_in(p, z_wide, z_narrow, name):
+    """conical lead-in on a bumper's inner edge: loft-cut from cs_out + LabelRelief + LeadD at z_wide to
+    cs_out + LabelRelief at z_narrow"""
+    s0 = p.sketch(p.zplane(z_wide, name + ' wide'), name + ' wide')
+    out_off(p, s0, '(LabelRelief + LeadD)')
+    s1 = p.sketch(p.zplane(z_narrow, name + ' narrow'), name + ' narrow')
+    out_off(p, s1, 'LabelRelief')
+    p.loft(p.biggest(s0), p.biggest(s1), CUT, name)
+
+
+def text(p, sk, s, hexpr, x, y, mirror=False):
+    """bold Arial text centred at world (x, y) in an XY-offset sketch, cap height hexpr"""
+    T = sk.sketchTexts
+    ti = T.createInput2(s, cm(p.ev(hexpr) / CAP_HEIGHT))
+    try:
+        ti.height2 = VI('(%s) / %s' % (hexpr, CAP_HEIGHT))        # parameter-driven when the API takes it
+    except Exception:
+        pass
+    w = 0.9 * len(s) * p.ev(hexpr) / CAP_HEIGHT
+    h = p.ev(hexpr) / CAP_HEIGHT
+    ti.setAsMultiLine(P3(x - w / 2, y - h / 2), P3(x + w / 2, y + h / 2), adsk.core.HorizontalAlignments.CenterHorizontalAlignment,
+                      adsk.core.VerticalAlignments.MiddleVerticalAlignment, 0)
+    ti.fontName = 'Arial'
+    ti.textStyle = adsk.fusion.TextStyles.TextStyleBold
+    if mirror:
+        ti.isHorizontalFlip = True
+    t = T.add(ti)
+    for cv in sk.sketchCurves:                                   # the text's box: placed, not driven
+        cv.isFixed = True
+    return t
+
+
+def deboss(p, pl, s, hexpr, x, y, depth, name, mirror=False):
+    """text in its own sketch on plane pl, cut upward by depth (its own sketch: a second text in the same sketch
+    breaks the first cut's profile reference)"""
+    sk = p.sketch(pl, name)
+    t = text(p, sk, s, hexpr, x, y, mirror)
+    ei = p.ext.createInput(t, CUT)
+    ei.setDistanceExtent(False, VI(depth))
+    ei.participantBodies = [p.body]
+    f = p.ext.add(ei)
+    f.name = name
+    return f
+
+
+def bumper_top(des):
+    p = Part(des, 'Bumper top (parametric)')
+    zb = 'ZTop - BumpBand'
+    # band round the cup's top, relieved over the label up to RELIEF_TOP, lead-in at its bottom inner edge
+    sk = p.sketch(p.zplane(zb, 'Band bottom'), 'Band section')
+    out_off(p, sk, 'BumpWall'); out_off(p, sk, '0 mm')
+    p.extrude(p.ring(sk), 'BumpBand', NEW, 'Band'); p.body.name = 'Bumper top'
+    sk = p.sketch(p.zplane(zb + ' - 1 mm', 'Relief bottom'), 'Label relief')
+    out_off(p, sk, 'LabelRelief')
+    p.extrude(p.biggest(sk), 'LabelTuck + ReliefUp + 1 mm', CUT, 'Label relief')    # up to the relief top
+    lead_in(p, zb + ' - 0.01 mm', zb + ' + LeadH', 'Band lead-in')
+    # slab over the top, port well through it, port numbers debossed in its face
+    pl_top = p.zplane('ZTop', 'Cup top')
+    sk = p.sketch(pl_top, 'Slab section'); out_off(p, sk, 'BumpWall')
+    p.extrude(p.biggest(sk), 'BumpTTop', JOIN, 'Slab')
+    sk = p.sketch(pl_top, 'Port well')
+    X, HX, HY, R = p.ev('PortX'), p.ev('PortWellHX'), p.ev('PortWellHY'), p.ev('PortWellR')
+    p.rrect(sk, X - HX, X + HX, -HY, HY, (R,) * 4, ['PortX - PortWellHX', 'PortX + PortWellHX', 'PortWellHY', 'PortWellHY'] + ['PortWellR'] * 4)
+    p.extrude(p.biggest(sk), 'BumpTTop + 1 mm', CUT, 'Port well')
+    pl_d = p.zplane('ZTop + BumpTTop - DigitD', 'Digit floor')
+    for s, d in ((1, '1'), (-1, '2')):                      # USB1 at +y
+        deboss(p, pl_d, d, 'DigitH', X - HX - p.ev('DigitDX'), s * p.ev('PortY'), 'DigitD + 1 mm', 'Port number ' + d)
+    p.report(19428.1)
+    return p
+
+
+def bumper_bottom(des):
+    p = Part(des, 'Bumper bottom (parametric)')
+    z0, zc = 'ZMouth - CapT', 'ZMouth + MouthH'
+    lip_top = 'ZMouth + MouthH + LabelGap + LabelTuck'
+    # band over the cup's mouth band and the cap plate
+    pl0 = p.zplane(z0, 'Cap underside')
+    sk = p.sketch(pl0, 'Band section'); p.outline_off(sk, 'MouthT + BumpWallBot'); p.outline_off(sk, 'MouthT')
+    p.extrude(p.ring(sk), 'CapT + MouthH', NEW, 'Band'); p.body.name = 'Bumper bottom'
+    # floor ledge and lip over the label's lower edge (lead-in at the lip top)
+    plc = p.zplane(zc, 'Mouth band top')
+    sk = p.sketch(plc, 'Lip floor section'); p.outline_off(sk, 'MouthT + BumpWallBot'); out_off(p, sk, 'LabelRelief')
+    p.extrude(p.ring(sk), 'LipFloor', JOIN, 'Lip floor')
+    sk = p.sketch(plc, 'Lip section'); out_off(p, sk, '(LabelRelief + LipWall)'); out_off(p, sk, 'LabelRelief')
+    p.extrude(p.ring(sk), 'LabelGap + LabelTuck', JOIN, 'Lip')
+    lead_in(p, lip_top + ' + 0.01 mm', lip_top + ' - LeadH', 'Lip lead-in')
+    # slab under the cap plate
+    sk = p.sketch(p.zplane(z0 + ' - BumpTBot', 'Bumper base'), 'Slab section'); p.outline_off(sk, 'MouthT + BumpWallBot')
+    p.extrude(p.biggest(sk), 'BumpTBot', JOIN, 'Slab')
+    # pockets over the M2 heads
+    for s in (1, -1):
+        side = '+y' if s > 0 else '-y'
+        mid = '(YI + MouthT + 1.45 mm)'
+        sk = p.sketch(p.yplane(mid if s > 0 else '-' + mid, 'Head pocket mid ' + side), 'Head pocket ' + side)
+        screw_circle(p, sk, s * p.ev(mid), 'ScrewPocketR')
+        p.extrude(p.biggest(sk), '1.55 mm', CUT, 'Head pocket ' + side, symmetric=True)
+    # vent pocket through the slab, then the 45 deg cross-hatch grille at its base
+    zb = z0 + ' - BumpTBot'
+    plb = p.zplane(zb + ' - 1 mm', 'Below the base')
+    sk = p.sketch(plb, 'Vent pocket')
+    p.circle_s(sk, 'VentX', '0 mm', 'VentPocketR')
+    p.extrude(p.biggest(sk), 'BumpTBot + 2 mm', CUT, 'Vent pocket')
+    sk = p.sketch(p.zplane(zb, 'Grille base'), 'Vent grille')
+    VX, R = p.ev('VentX'), p.ev('VentPocketR') + 0.2
+    t, bw, pitch = p.ev('GrilleT'), p.ev('GrilleBar'), p.ev('GrillePitch')
+    n = int((R + 0.1) / pitch) + 1
+    L = R + 1.0
+    lines = sk.sketchCurves.sketchLines
+    for ang in (45, -45):
+        ca, sa = math.cos(math.radians(ang)), math.sin(math.radians(ang))
+        for k in range(-n, n + 1):
+            for off in (k * pitch - bw / 2, k * pitch + bw / 2):
+                a = (-L, off); b = (L, off)
+                rot = lambda q: (VX + q[0] * ca - q[1] * sa, q[0] * sa + q[1] * ca)
+                lines.addByTwoPoints(P3(*rot(a)), P3(*rot(b)))
+    sk.sketchCurves.sketchCircles.addByCenterRadius(P3(VX, 0), cm(R))
+    for cv in sk.sketchCurves:
+        cv.isFixed = True
+
+    def in_bar(pr):
+        c = pr.areaProperties().centroid
+        x, y = c.x * 10 - VX, c.y * 10
+        if x * x + y * y > R * R:
+            return False
+        for ang in (45, -45):
+            v = -x * math.sin(math.radians(ang)) + y * math.cos(math.radians(ang))
+            k = round(v / pitch)
+            if abs(v - k * pitch) < bw / 2 and abs(k) <= n:
+                return True
+        return False
+    p.extrude(all_profiles(sk, in_bar), 'GrilleT', JOIN, 'Vent grille')
+    # rating debossed in the base, mirrored so it reads from below
+    cx = (-p.ev('YI + MouthT + BumpWallBot') + p.ev('XIn + MouthT + BumpWallBot')) / 2 + p.ev('BaseTextDX')
+    deboss(p, plb, '91 Wh', 'BaseTextH', cx, 0.0, '1 mm + BaseTextD', 'Rating', mirror=True)
+    p.report(11234.7)
+    return p
+
+
+BUILD = dict(cup=cup, cap=cap, carrier=carrier, rails=rails, sleeves=sleeves, bumper_top=bumper_top, bumper_bottom=bumper_bottom)
 
 
 def run(_context: str):
