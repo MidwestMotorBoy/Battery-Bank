@@ -2958,7 +2958,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92); no reset button.\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N.\n   Spare (no-connect): DIO12, DIO18, DIO20, the dev board's LED and UART pins (docs/devboard/cc2340-pin-budget.md).\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain. One pull-up: R314 47k.\n   Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. J301 = Tag-Connect TC2030-NL pads (no part fitted): XDS110 through a TC2030-IDC-NL cable. J302 (GAUGE) uses the same cable.\n   SWO (pin 6) not used. The debugger drives NRST. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R304/R305 SMBus pull-ups go to 3V3. Gauge work on J302 only with 3V3 up and U301 off the bus: hold NRST low (J302 pin 3)\n    and ground CHG_INH (J302 pin 2) to keep charging enabled; an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V).\n11. DIO24 = CHG_INH: LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n12. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n13. Temps: gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37).\n14. TP301 3V3 is a 1.0 mm probe pad."
+	(text "NOTES\n1. U301 antenna end at a board edge, ground 10-20 mm each side; keep-out in the footprint (fig. 9-2).\n2. C301-C303 at the VDDS pads. R302 + C304 = power-on reset (SWRS349A fig. 9-1 R1/C92); no reset button.\n3. C313 = CA1. R321/C314/C315 = Z61/Z60/Z62 pi match (TI: 0R, DNP, 1 pF); retune on the board.\n4. No 32 kHz crystal: LFOSC calibrated against the 48 MHz crystal. DIO3/DIO4 are GPIOs.\n5. Pins: DIO6 SCL, DIO8 SDA, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N.\n   DIO18 = UART_TX (UART0TXD, mux 3) to J301 pin 6 for bring-up logs (2026-11-07). Spare (no-connect): DIO12, DIO20.\n6. IRQ_N = TPS25751 IRQ x2 + gauge BTP (Q103), all open-drain. One pull-up: R314 47k.\n   Firmware polls each source to find which.\n7. Diamonds are PWR_FLAGs (ERC only, no part) where a rail is sourced through a passive part.\n8. J301 = Tag-Connect TC2030-NL pads (no part fitted): XDS110 through a TC2030-IDC-NL cable. J302 (GAUGE) uses the same cable.\n   Pin 6 (SWO on the Cortex pinout) carries UART_TX: tap it with a 3.3 V USB-UART RX. Don't plug the J302 EV2400 cable into J301 (pin 6 = SCL there). The debugger drives NRST. Bootloader: ROM bootloader on a blank part or the CCFG backdoor pin.\n9. R313 220k holds 3V3_SLEEP high in reset (pins float; TPS62177 pulls down 1.4 uA typ).\n   Costs 15 uA while driven low in S2. DIO21 is also the default ROM-bootloader pin:\n   disable or move that trigger in the CCFG before the first flash (review 4 A-1).\n10. R304/R305 SMBus pull-ups go to 3V3. Gauge work on J302 only with 3V3 up and U301 off the bus: hold NRST low (J302 pin 3)\n    and ground CHG_INH (J302 pin 2) to keep charging enabled; an unpowered CC2340 can't take bus voltage (VDDS + 0.3 V).\n11. DIO24 = CHG_INH: LOW allows charging. High or hi-Z stops both chargers\n    (R417/R517 pull CE up), so reset/hang/unprogrammed stops charging.\n12. Watchdog: CC2340 WDT runs in active, idle and standby and can't be stopped once enabled.\n    GPIOs latch in standby; IRQ_N wakes it on an edge (SWRS349A 8.6, 8.11).\n13. Temps: gauge DAStatus2 (cells, FETs); charger NTCs via TPS25751 'I2Cr' (BQ25756 REG0x37).\n14. TP301 3V3 is a 1.0 mm probe pad."
 		(exclude_from_sim no)
 		(at 40.64 201.93 0)
 		(effects
@@ -3054,10 +3054,6 @@
 		(uuid "a1996513-d43c-499b-b2e6-53f3b962b82b")
 	)
 	(no_connect
-		(at 130.81 81.28)
-		(uuid "1de94b2c-5e2f-4a50-aa6d-ee79001016d4")
-	)
-	(no_connect
 		(at 130.81 86.36)
 		(uuid "950015f3-4b22-4e60-a7fc-102a4e1bfc68")
 	)
@@ -3068,10 +3064,6 @@
 	(no_connect
 		(at 130.81 83.82)
 		(uuid "d78ff7f1-d4be-471f-945c-922af72dc48b")
-	)
-	(no_connect
-		(at 203.2 60.96)
-		(uuid "e80b8952-eb18-4fc5-ac77-a48196dc7d93")
 	)
 	(wire
 		(pts
@@ -3232,6 +3224,26 @@
 			(type default)
 		)
 		(uuid "fe291510-1e18-46ea-9bb7-95d57cbc58e6")
+	)
+	(label "UART_TX"
+		(at 130.81 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "09726bd6-ea97-40bd-9924-b757ea29ecf0")
+	)
+	(label "UART_TX"
+		(at 203.2 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "301079f6-0801-4633-8b4a-805e718372de")
 	)
 	(label "SWCLK"
 		(at 203.2 55.88 0)

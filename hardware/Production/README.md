@@ -7,10 +7,10 @@ KiCad 10 project `Monolith`: the P0 board, the design of record. Since 2026-10-3
 The current design is in `docs/spec.md`, which wins where this file disagrees; its *P0 board changes still to apply* list is the to-do list. The sections below are a dated design log. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-10-29:
 
 - **Cells:** four BAK N21700CX-65E (6500 mAh) in 4S1P, 14.0 V nominal, 91 Wh (since 2026-10-23; the FEB 21700G section below is history).
-- **Enclosure:** the MJF PA12 cup, with no vent since 2026-10-28 (the side tray, its aluminium cover and the top-cap tube are retired; their outputs were removed on 2026-10-29 and are in git history at `5cf521e`).
+- **Enclosure:** the MJF PA12 cup, vented by a 12 mm ePTFE patch on the cap since 2026-10-31 (no hole in the cup or label; the side tray, its aluminium cover and the top-cap tube are retired; their outputs were removed on 2026-10-29 and are in git history at `5cf521e`).
 - **Loss cuts:** Q101/Q102 BSC007N04LS6, a 9 V gate drive per port (U406/U506), L401/L501 XGL7030-332 at 500 kHz.
 - **Front-cell NTCs:** SMD TH101 / TH104 on B.Cu (since 2026-10-28; they replace the J102 / J107 wire pads).
-- **Charge ceiling:** R413/R513 are to become 0 Ω (decided 2026-10-23, register-only limit); the schematic still has 11.8k.
+- **Charge ceiling:** R413/R513 stay 11.8k (decided 2026-11-07, replacing the 2026-10-23 plan for 0 Ω) with `EN_ICHG_PIN = 0`, so firmware sets the limit and the pin is only the no-host fallback.
 
 ## Tools
 
@@ -492,7 +492,7 @@ Fit all 19 before the first power-up: the chargers need both bulk banks.
 
 ## FEB 21700G cells (2026-10-21)
 
-_Superseded on 2026-10-23 by the BAK N21700CX-65E (91 Wh; `docs/spec.md`, Cells and pack); kept as history. R413/R513 are to become 0 Ω (spec, *Decided: the charge-ceiling resistor*)._
+_Superseded on 2026-10-23 by the BAK N21700CX-65E (91 Wh; `docs/spec.md`, Cells and pack); kept as history. R413/R513 stay 11.8k with `EN_ICHG_PIN = 0` (spec, *Decided: the charge-ceiling resistor*, 2026-11-07)._
 
 The pack's cell is now the **FEB 21700G (68E) 6500 mAh**: 93.6 Wh instead of 82 Wh. Why and how: `docs/archive/feb-21700g-datasheet-notes.md`, `research_notes/Loss reduction/G_feb_21700g.md`, `docs/firmware/charge-and-thermal-policy.md`.
 
@@ -516,4 +516,4 @@ The side tray and its aluminium cover are retired; the enclosure is now **the cu
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this at P0 bring-up.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Finish the board.** Placement is done (2026-10-28). Still to do (full list in `docs/spec.md`, *P0 board changes still to apply*): run ERC, `check_netlist.py` and DRC in KiCad (the 2026-10-28 schematic changes were checked by script only), change R413/R513 to 0 Ω, check the TDSON footprint against the BSC007N04LS6 drawing, look up R412/R512's LCSC code, make C302–C304 0402, remove the stranded VBUS traces, then route, with the gap-filler copper and thermal vias by hand.
+3. **Finish the board.** Done: approved 2026-10-30 (PR #44), reviewed again 2026-11-07; the list below is history, and R413/R513 stay 11.8k. Placement is done (2026-10-28). Still to do (full list in `docs/spec.md`, *P0 board changes still to apply*): run ERC, `check_netlist.py` and DRC in KiCad (the 2026-10-28 schematic changes were checked by script only), change R413/R513 to 0 Ω, check the TDSON footprint against the BSC007N04LS6 drawing, look up R412/R512's LCSC code, make C302–C304 0402, remove the stranded VBUS traces, then route, with the gap-filler copper and thermal vias by hand.

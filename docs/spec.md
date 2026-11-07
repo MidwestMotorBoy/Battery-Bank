@@ -1,6 +1,6 @@
 # Monolith Battery Bank: Current Design Spec
 
-Last updated 2026-10-28. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
+Last updated 2026-11-07. This file is the single source of truth for the Monolith design; it replaces `docs/project/monolith-next-actions.md`. Update it when a decision changes.
 
 ## Overview
 
@@ -53,11 +53,11 @@ A TI BQ40Z50-R2 gauge is the pack's authority on cell voltage, current, temperat
 
 | Layer | What | Trips on |
 | --- | --- | --- |
-| 1. Gauge | BQ40Z50-R2 (SMBus 0x0B), BSC007N04LS6 CHG/DSG FETs, 1 mΩ 1206 shunt | OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell |
-| 2. Hardware | BQ294700 per-cell OVP firing a TLC WSFB1514 15 A chemical fuse (F102) through Q104 | Cell overvoltage, independent of the gauge |
+| 1. Gauge | BQ40Z50-R2 (SMBus 0x0B), BSC007N04LS6 CHG/DSG FETs, 1 mΩ 1206 shunt | COV 4.25 V per cell (TI default 4.30 V is past BAK's 4.25 V absolute limit), OTC 45 °C, UTC 0 °C, OTD 60 °C, OCC ≈ 5 A, OCD1 ≈ 12 A, OCD2 ≈ 14 A, CUV at ≥ 2.8 V per cell. Full P0 data-flash list: `docs/production/p0-bringup-and-training.md` section 3 |
+| 2. Hardware | BQ294700 per-cell OVP firing a TLC WSFB1514 15 A chemical fuse (F102) through Q104 | Cell overvoltage at 4.35 V ± 24 mV, independent of the gauge. Kept on 2026-11-07 although BAK's absolute limit is 4.25 V: it is TI's usual pairing for 4.2 V cells, the gauge COV at 4.25 V acts first, and the 4.25 V BQ294701 would nuisance-blow F102 (about 5 mV of margin at 60 °C). BQ294702 (4.30 V) and BQ294703 (4.325 V) fit the same footprint if this changes |
 | 3. Firmware | MCU cross-checks and the charge/thermal policy | Everything above, with smoother limits |
 
-- **Temperature inputs:** four 10k NTCs, one per cell, on TS1–TS4 (the front cells' are SMD on the board, the back cells' are wired), plus the gauge's FET temperature and die. The policy acts on the hottest cell, which in the cup is a front cell.
+- **Temperature inputs:** four 10k NTCs, one per cell, on TS1–TS4 (the front cells' are SMD on the board, the back cells' are wired), plus the gauge's die temperature as the FET sensor (Temperature Mode = 0x01; the default 0x04 would make TS2 a FET sensor). The policy acts on the hottest cell, which in the cup is a front cell.
 - **Front-cell NTCs (2026-10-28, `research_notes/Pack thermal BAK 65E/smd-ntc.md`):** TS1 (C1) and TS4 (C4) are SMD 0402 NTCs on B.Cu, TH101 / TH104 (NCP15XH103F03RC), in the outer bottom corner of each gap-filler zone at |y| 15.5 mm, z 29 mm, outboard of port 1's BQ25756 and under the gel. They read the board there, which the model puts 0.6–3.8 K above the hottest point of that cell's can in every case and never below it. Next to the FETs or inductor the board read up to 8–10 K high, with an error that changes with load, so the spot has to be rechecked if the port stage moves (`smd.py`, `SMD_LAYOUT=p0b`). They replace the wired beads on the cans' hot stripe of 2026-10-24 (`ntc-placement.md`), which read within 0.3 K but needed foam caps, taped leads and the J102 / J107 pads. The back-cell NTCs (TS2, TS3) stay wired at mid-length facing the pack centre. The gauge's over-temperature checks use the hottest of TS1–TS4 and its under-temperature checks the coldest (TRM §2.8); set `Temperature()` (which the charge ranges use) to the hottest, `DA Configuration[CTEMP1:0]` = 0, 0.
 - **JEITA ranges in data flash:** T1 0 / T2 5 / T3 15 / T4 44 / T5 45 °C with 650 / 3250 / 4550 / 2275 mA. T4 moved from 40 to 44 °C on 2026-10-24 so the gauge's warm current stays under the firmware ramp instead of cutting in with a step. OTC recovery 42 °C.
 - **Ship mode:** gauge SHUTDOWN, pack drains 3–4 µA. Entered from the app, after two weeks idle, or at RSOC ≤ 5 %, never with a cable attached. Wakes when a charger is plugged in (wake-on-USB is unproven; TP113 to TP106 is the manual wake).
@@ -74,7 +74,7 @@ Each USB-C port is an identical, self-contained power stage, so either port can 
 | Function | Part | Notes |
 | --- | --- | --- |
 | PD controller | TPS25751D | I2C 0x20 (USB1) / 0x21 (USB2), SafeMode dead-battery strap, own 512 Kbit EEPROM. It is the I2C master for its charger; the MCU reaches the BQ25756 through `I2Cr`/`I2Cw` |
-| Buck-boost charger | BQ25756 | 500 kHz (R412 49.9k), ICHG pin 0 Ω to PGND with EN\_ICHG\_PIN = 0 (charge limit set by ICHG\_REG only), DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
+| Buck-boost charger | BQ25756 | 500 kHz (R412 49.9k), R413 11.8 kΩ on ICHG (4.07–4.45 A hardware ceiling) with EN\_ICHG\_PIN = 0 written by the configuration, so the charge limit is set by ICHG\_REG; a watchdog reset falls back to the pin ceiling (decided 2026-11-07, see Decided: resistor). VFB\_REG 0x0F / 0x0E for 16.80–16.82 V with the 100k / 10k FB divider. DIS\_STAT\_PINS = 1, own TS NTC on the FET copper |
 | Power FETs | 2 × Vishay SiZ240DT | 40 V half-bridge per leg. LCSC had only 2 in stock on 10-19; supply them to JLC yourself |
 | Inductor | Coilcraft XGL7030-332MEC, 3.3 µH (loss cut 3) | 3.1 mm, on the APS0730 pads; consigned (not at JLC). P0 A/B against the APS0730M2R2F |
 | Sense resistors | 5 mΩ RAC (0805) and RBAT (1206) | TI fixes RBAT at 5 mΩ |
@@ -147,7 +147,8 @@ The MCU is a TI CC2340R5MODA Bluetooth LE module (Cortex-M0+, 512 KB flash / 64 
 | CHG\_INH | DIO24 | 47k pull-up, so reset, hang or a blank MCU stops charging. MCU drives it low to allow charging |
 | EN\_5V1 / EN\_5V2 | DIO3 / DIO4 | Per-port TPS62933 enables |
 | 3V3\_SLEEP | DIO21 | TPS62177 sleep mode. CCFG bootloader trigger on DIO21 is off |
-| Free on P0 | DIO12, DIO18, DIO20 | LED, reset button and UART headers were dev-board only |
+| UART\_TX | DIO18 | UART0 TX to J301 pin 6 (SWO position on the Tag-Connect) for bring-up logs; added 2026-11-07 |
+| Free on P0 | DIO12, DIO20 | LED, reset button and UART headers were dev-board only |
 
 - **Debug:** SWD over a Tag-Connect TC2030 (J301) with the XDS110 on an LP-MSPM0G3519 LaunchPad. Use a `.ccxml` set to "Target supplied power"; the default drives 3.3 V into the board's rail (measured 2026-10-20).
 - **Toolchain:** LPF3 SDK 9.23, TI Arm Clang, SysConfig and gmake from CCS 21, UniFlash. Board files exist for the LaunchPad and the dev board; there is no P0 board file yet.
@@ -158,14 +159,14 @@ The MCU is a TI CC2340R5MODA Bluetooth LE module (Cortex-M0+, 512 KB flash / 64 
 
 ## Boards and enclosure
 
-The production P0 board is the design of record and the first board planned to be built. It is fully routed (Logan's `8fd8b74`, 2026-10-30) and in review: [`docs/reviews/2026-10-30-routed-board/`](reviews/2026-10-30-routed-board/README.md) is the current list of what to fix before fab, and supersedes the pre-routing items in the checklist below.
+The production P0 board is the design of record and the first board planned to be built. It was approved on 2026-10-30 (PR #44) after the routed-board reviews ([`docs/reviews/2026-10-30-routed-board/`](reviews/2026-10-30-routed-board/README.md)); the JLC order files are in `hardware/Production/jlc/`. The 2026-11-07 pre-order review ([doc](https://claude.ai/artifact/PYN63oXeA49ij6e9uw4tzM)) found no wiring error; two board edits came out of it: silk labels at the pack / NTC wire holes and a UART\_TX trace to J301 pin 6. The checklist below is history from before routing.
 
 | Board | State (repo, 2026-10-30) | Key facts |
 | --- | --- | --- |
-| Production P0 (`hardware/Production/`) | Schematic generated and netlist-checked; routed 2026-10-30, 0 unconnected, in review (fixes listed in the review) | 283 parts, 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu; 19 B.Cu parts are hand-fitted, including the CC2340 module by hot air |
+| Production P0 (`hardware/Production/`) | Approved 2026-10-30 (PR #44); order files in `hardware/Production/jlc/` | 301 schematic parts (261 placed), 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu (CC2340 module consigned); the 12 B.Cu parts (C208–C213, the four T593V, TH101 / TH104) are hand-fitted |
 | Dev board MonolithDev rev A8 (`hardware/DevBoard/`) | Routed, DRC clean, fab files generated. Repo says it was skipped on 10-18 and never ordered (see Contradictions) | 196 × 115 mm, about 430 parts, cell holders, test points, sleep-current section |
 
-**P0 board changes still to apply:**
+**P0 board changes before routing (history; all applied or superseded by the routed board):**
 
 - [x] PACK− / PACK+ wire holes (option C, 2026-10-24, on the `Production` branch): J108 / J112 are Ø1.5 mm plated holes with a 0.4 mm ring at KiCad (86.975, 135.7255) and (113.025, 135.7255), locked, and the four `KO_B_wire_*` keep-outs (`BCU_WIRE_RUNS`) replace the old PACK / Kelvin finger tail keep-outs. The five sense holes already sit at the 6500 mAh positions
 - [ ] Run KiCad DRC on the `Production` board after the wire-hole change (so far only a script check: outline, 0.25 mm edge rule, ring, courtyards of the placed parts, B.Cu parts in the wire runs)
@@ -201,7 +202,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 | 1 | Dev board built? | Chat 10-20 and memory: dev board in hand, LEDs lit, probe measured 3.3 V back-feed | README and P0 docs: dev board skipped 10-18, never ordered | **Skipped (decided 10-23)** |
 | 2 | Port sharing | Project notes, GATT `usb2_min_w`: USB1 priority, USB2 guaranteed 20 W (10–30 W setting) | Thermal policy: the port with the higher contract gives way first | **User setting, both modes (10-23)** |
 | 3 | Charge rate and fast mode | Project notes, GATT `fast_charge`: 0.5C default, opt-in 1C at 20–80 %. Bring-up checklist: single port 5.5 A by default | Thermal policy: temperature ramp to 4.55 A, no fast mode mentioned | Ramp; fast toggle **kept, clamped to the cell table (10-23)** |
-| 4 | Charge ceiling resistor | Thermal policy: R\_ICHG 11.5 kΩ | README, P0 README, FEB notes: 11.8 kΩ | 0 Ω, register only (decided 10-23); **see Decided: resistor** |
+| 4 | Charge ceiling resistor | Thermal policy: R\_ICHG 11.5 kΩ | README, P0 README, FEB notes: 11.8 kΩ | 11.8 kΩ kept, EN\_ICHG\_PIN = 0 (2026-11-07; 0 Ω was decided on 10-23); **see Decided: resistor** |
 | 5 | Output and throttle | Project notes, GATT: 100 W thermally limited; when hot every port drops to 20 W; full power while 3 of 4 board sensors work | Thermal policy: 100 W burst, linear ramp to \~40 W sustained on the hottest cell | Ramp |
 | 6 | Board temperature sensors | Project notes, GATT Temperatures 5–9: TMP1075 T1–T3 (+T4/T5 DNP) | Dev board rev A8 (10-17): TMP1075s removed; gauge and charger TS only; USB-C receptacles unmonitored | Rev A8 |
 | 7 | LED and button | GATT: `led_mode`, `IDENTIFY`, ship mode woken "by a charger or the button" | P0: LED, reset and wake buttons all removed | P0 |
@@ -231,7 +232,10 @@ Today: a NoRTOS skeleton (banner, reset reason, heartbeat, IRQ\_N logging) with 
 - [ ] Move to FreeRTOS with the BLE5 stack; supervision loop on an RTC wake, watchdog that can't be stopped
 - [ ] Gauge driver: SBS reads, `DAStatus2`, Lifetime Data via `ManufacturerBlockAccess()`
 - [ ] TPS25751 driver: 4CC commands, `I2Cr`/`I2Cw` passthrough to the BQ25756, `GPsh`/`GPsl`, IRQ\_N decode and event masks
-- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 0, GPIO6 = DRV9\_OFF: output, initial value high, so the 9 V gate drive starts off); EEPROM self-programming and repair on every boot
+- [ ] TPS25751 patch bundle from TI's Application Customization Tool (4S, bidirectional, 5–20 V / 5 A, BQ25756 ICHG\_REG default 3.25 A with EN\_ICHG\_PIN = 0, VFB\_REG 0x0F / 0x0E, EN\_JEITA = 0, GPIO6 = DRV9\_OFF: output, initial value high, so the 9 V gate drive starts off; full list in `docs/production/p0-bringup-and-training.md` section 3a); EEPROM self-programming and repair on every boot. **Needed before bring-up stage 3**, with a host-side I2C loader on J302 (no TPS25751 code exists yet)
+- [ ] BQ25756 watchdog: feed it (WD\_RST) or set WATCHDOG = 00; EN\_CHG\_BIT\_RESET\_BEHAVIOR (REG0x17 bit 3) = 0; rewrite ICHG\_REG after any WD\_FLAG. Below the 0.4 A ICHG\_REG floor use EN\_CHG / CHG\_INH
+- [ ] Unexplained-current check: if the gauge's Current() stays above about 50 mA with no contract for about 10 s, open DSG, log it and alert in the app (a cracked PACK\_P MLCC is a resistive short no protection trips)
+- [ ] Keep automatic ship mode off until wake-on-USB and ship-mode hold pass on P0
 - [ ] Charge loop per the 10-21 policy; read back ICHG\_REG, EN\_ICHG\_PIN and EN\_CHG every second and before releasing CHG\_INH, rewriting the value or inhibiting charge on a mismatch; dual-port split; solar MPPT and dropout ride-through; pass-through; max SOC hold and recharge point; balancing charge; loop detection
 - [ ] Discharge `P_allow` with Source Capability re-advertising, hysteresis, and both port-sharing modes (USB1 priority, Balanced)
 - [ ] Gate-drive LDO sequencing: enable converter, then `GPsl` (only with PACK\_P ≥ 10 V and a contract ≥ 45 W); `GPsh` before disable or on charge-done/fault
@@ -319,6 +323,8 @@ Logan answered the open questions on 2026-10-23. He approved all four loss cuts 
 | Vent (10-31) | Back, on the cap under the bottom bumper | A 12 mm adhesive ePTFE patch (VOSAREA car-lamp vent, 100 for about $13; not IP-rated, so dunk-test it; a Gore VE80308, 7.6 mm and IP67, fits the same hole and pocket) over a 3 mm hole on the outside of the cap plate, in the free strip between the cells and the board, sitting in a pocket through the bottom bumper slab behind a 45° cross-hatch TPU grille (0.8 mm bars, 1.6 mm openings, 1 mm thick, printed flush with the base). No label hole and no PCB change. Fitted after the leak test |
 
 ## Decided: the charge-ceiling resistor (R413 / R513)
+
+**Decision (2026-11-07, Logan): keep 11.8 kΩ, as in the schematic and the JLC BOM, with EN\_ICHG\_PIN = 0 written by the configuration.** The 2026-11-07 pre-order review found that the BQ25756 watchdog (40 s at power-on) resets ICHG\_REG to 20 A and EN\_ICHG\_PIN to 1. Bring-up section 3 holds the MCU in reset on purpose, so a charger with no host is a normal state, not a double fault. With 0 Ω only the ~5.6 A input limit remains then; with 11.8 kΩ the pin caps it at 4.07–4.45 A. Software control is unchanged: with EN\_ICHG\_PIN = 0 the charger ignores the pin, so a future cell is still a software change; only the no-host fallback stays at the pin value. The 10-23 text below is kept as history.
 
 Original recommendation: keep **11.8 kΩ**. It is the only value of the two that stays under the cell's 4.55 A limit at every tolerance corner, and it costs well under a minute of charge time. Decision (2026-10-23): fit 0 Ω (ICHG pin to PGND) with EN\_ICHG\_PIN = 0, so a future cell needs only a software change. A charger overcurrent then needs two faults at once (a charger register reset while the MCU holds CHG\_INH low, and firmware failing to catch it), and the input-current limit caps it at about 6.5–8 A into the cells. Conditions: firmware reads back ICHG\_REG every second and before releasing CHG\_INH; the TPS25751 configuration loads ICHG\_REG = 3.25 A; gauge OCC ≈ 5 A is the hardware backstop. The comparison below is kept for reference.
 
