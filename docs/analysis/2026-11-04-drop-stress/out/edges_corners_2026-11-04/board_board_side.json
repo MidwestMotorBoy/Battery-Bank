@@ -1,0 +1,100 @@
+{
+ "pose": "board_side",
+ "dx": 0.7976533327179652,
+ "w_toward_wall_max": 1.2660377037883612,
+ "w_toward_cells_max": 0.7220716939553347,
+ "strain_max_ue": 18760.069569891093,
+ "strain_p99_ue": 5667.456535660809,
+ "support_peak_N": {
+  "spacer0": 251.7,
+  "spacer1": 325.4,
+  "spacer2": 213.9,
+  "spacer3": 384.1,
+  "lip4": 258.7,
+  "lip5": 316.9,
+  "usb_f6": 140.0,
+  "usb_b7": 70.1,
+  "usb_f8": 157.9,
+  "usb_b9": 66.2,
+  "rail10": 149.1,
+  "rail11": 186.6,
+  "rail12": 136.7,
+  "rail13": 292.9
+ },
+ "support_groups_sum_of_peaks_N": {
+  "spacer": 1175.1,
+  "lip": 575.6,
+  "usb_f": 298.0,
+  "usb_b": 136.3,
+  "rail": 765.3
+ },
+ "closest_parts": [
+  {
+   "ref": "L501",
+   "clear_mm": -0.019,
+   "strain_ue": 4557
+  },
+  {
+   "ref": "C531",
+   "clear_mm": -0.014,
+   "strain_ue": 4696
+  },
+  {
+   "ref": "C434",
+   "clear_mm": -0.007,
+   "strain_ue": 4824
+  },
+  {
+   "ref": "C524",
+   "clear_mm": -0.001,
+   "strain_ue": 4752
+  },
+  {
+   "ref": "L401",
+   "clear_mm": 0.002,
+   "strain_ue": 4180
+  }
+ ],
+ "highest_strain_parts": [
+  {
+   "ref": "J501",
+   "strain_ue": 18760,
+   "side": "F"
+  },
+  {
+   "ref": "J401",
+   "strain_ue": 17805,
+   "side": "F"
+  },
+  {
+   "ref": "D401",
+   "strain_ue": 6926,
+   "side": "F"
+  },
+  {
+   "ref": "U401",
+   "strain_ue": 6382,
+   "side": "F"
+  },
+  {
+   "ref": "R119",
+   "strain_ue": 6235,
+   "side": "F"
+  },
+  {
+   "ref": "U501",
+   "strain_ue": 6191,
+   "side": "F"
+  },
+  {
+   "ref": "D501",
+   "strain_ue": 6092,
+   "side": "F"
+  },
+  {
+   "ref": "R313",
+   "strain_ue": 5378,
+   "side": "F"
+  }
+ ]
+}

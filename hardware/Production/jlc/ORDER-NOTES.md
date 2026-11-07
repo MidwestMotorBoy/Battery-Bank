@@ -1,5 +1,14 @@
 # Monolith P0: JLC order files (2026-10-30, from Logan's 22:41 save)
 
+## Before checkout (2026-11-07 pre-order review, Logan's answers)
+
+- [ ] **Regenerate the gerber zip** after the two board edits approved on 2026-11-07: silk labels at the pack / NTC wire holes, and the new UART_TX trace (U301 pad 16 DIO18 to J301 pad 6; schematic in PR). Keep the BOM and CPL files here as they are: no part or position changes, and they carry the hand-made fixes below (do not regenerate them from the board, whose footprint fields still hold the old TVS, bulk caps and inductor).
+- [ ] **TVS2200 pin 1 (D401 / D501, Maxinmicro C55616459):** confirm in JLC's placement preview that the pin-1 mark sits on pad 1, the GND side. The TVS swap (10-31) came after the 10-30 rotation check; at 180 deg the GND pins and EP land on VBUS, a VBUS-GND short on both ports.
+- [x] SiZ240DT (Q401/Q402/Q501/Q502) and TPS25751DREFR (U401/U501): pre-ordered at JLC by Logan (2026-11-07).
+- [ ] Remarks: fill and cap all 0.3 mm holes, including the 24 component holes inside the U401/U501 and U405/U505 exposed pads (separate ComponentDrill tool, not vias). Edge rails / fiducials added by JLC on the two long sides only; no tabs on the USB-C edge (J401/J501 overhang it by 2.5 mm) or the bottom wire row. Solder the J401/J501 shell legs if possible (no paste aperture; Logan hand-solders them otherwise).
+- R413/R513 stay 11.8k (Logan, 2026-11-07). U102 stays BQ294700 (4.35 V; gauge COV goes to 4.25 V).
+- The 12 bottom parts stay hand-soldered (Logan, 2026-11-07); preheat the board for the 1210 MLCCs (p0-assembly step 0.0).
+
 Files
 - Monolith_gerbers_JLC.zip: 6 copper layers, mask, paste, silk, Edge.Cuts, PTH + NPTH Excellon (mm), job file. Inner files renamed (no spaces).
 - Monolith_BOM_JLC.csv: 76 lines, 261 placed parts (Comment, Designator, Footprint, LCSC Part #, MPN, Qty). Test pads, wire pads and DNP parts (C314, R124, R126) left out.

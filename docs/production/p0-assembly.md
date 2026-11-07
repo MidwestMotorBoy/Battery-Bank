@@ -32,6 +32,10 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 | PACK+ | C4 bottom (+ cap) | 0.2 × 7 nickel pad + 18 AWG wire, same notch | J112, Ø1.5 at (113.03, 135.73) |
 | CELL1 | C1+ / C2− strip, top | 28 AWG XL-ETFE wire from the strip's tongue, down behind the board | J109, Ø0.8 at (86.10, 69.48) |
 | CELL3 | C3+ / C4− strip, top | the same, mirrored | J111, Ø0.8 at (113.90, 69.48) |
+| TS3 / TS3 return | back-cell NTC | insulated NTC leads | J119 / J120, Ø0.8 at (103.63, 136.14) / (105.41, 136.14) |
+| TS2 / TS2 return | back-cell NTC | insulated NTC leads | J117 / J118, Ø0.8 at (114.05, 127.76) / (112.27, 127.76) |
+
+**Get the holes right.** The holes all look alike (silk labels are being added for P0, 2026-11-07; until then use this table as a 1:1 map). A 4P Kelvin wire in J118 or J120 (CELL_1N) shorts the whole stack through 28 AWG wire with no fuse in the path. Both NTC pairs sit on the +y side of the board; the gauge doesn't care which back cell is TS2, so wire the +y back cell (C3) to whichever pair gives the shorter run, and route the TS2 leads clear of the right-bottom rail block and of the gel zone near TH104. The NTC routes are not in the model yet.
 
 The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanical/monolith_shell.py`. The five sense holes sit where the plated slots for the old nickel tails were, each Ø0.8 in a 1.5 × 1.4 mm pad (2026-10-24: the old 4.2 mm oval pads at J109 / J111 overlapped the USB-C courtyards, and nothing was routed to them yet). They're on the `SENSE_WIRE_HOLES` / `SENSE_WIRE_PADS` layers of `monolith_side_pcb.dxf`.
 
@@ -94,9 +98,10 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 ![Step 0](../../hardware/mechanical/assembly_steps/step0.png)
 
-1. **Inspect** the hand-fitted B.Cu parts (19, including the CC2340 module) under a loupe, and check that R124 and R126 are not fitted.
+0. **Fit the 12 B.Cu parts by hand** (JLC assembles F.Cu only): C208–C213 (22 µF 1210, PACK_P), C421 / C456 / C521 / C556 (KEMET T593V 68 µF; the + band goes to pad 1, AC_SNS_N, the closed end of the silk outline) and TH101 / TH104 (0402 NTCs). **Preheat the board on a hot plate to 120–150 °C first**: a 1210 MLCC cracked by an iron on the 2 oz PACK_P plane becomes a resistive short across the pack that no protection trips. Iron on the pad only, never on the ceramic, ≤ 350 °C for ≤ 3 s. Then measure PACK_P–GND and AC_SNS_N–GND on both ports, and TS1 / TS4 to CELL_1N (about 10 kΩ at 25 °C).
+1. **Inspect** the 12 B.Cu parts and the USB-C shell legs (4 per connector; solder them from B.Cu if JLC left them dry) under a loupe, and check that R124 and R126 are not fitted.
 2. **Power PACK_P from the bench supply on J113 (+) / J114 (−)**, 12 V at a 50 mA limit, then 14.4 V at 100 mA. Check the current draw, then 3V3 at TP301. The cell simulator alone can't do this: it only reaches CELL_P, and a factory gauge keeps Q101 / Q102 off (`FET_EN` = 0) until BQStudio toggles them, which needs 3V3 up first.
-3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration, and check the gauge talks through J302.
+3. **Flash the CC2340**, load the BQ25756 and TPS25751 configuration (I2C loader on J302, `p0-bringup-and-training.md` Equipment and section 3a), and check the gauge talks through J302. Bring-up logs come out on J301 pin 6 (UART_TX).
 4. **Add the cell simulator** on the seven holes, then check the cell readings, the FET toggles and the rest of stages 4–5 in `p0-bringup-and-training.md` (Bare board without cells).
 5. If anything is wrong, fix it now: once the board is on the pack it can't come off without desoldering seven wires, and it is bedded in gel.
 
@@ -106,6 +111,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 1. **Check the cells.** Measure each cell's voltage, AC resistance, diameter and length; reject outliers. Measure a + cap's diameter and height above the shoulder.
 2. **Insulator rings** on the four + ends (they are the + ends at C1 and C3 top, C2 and C4 bottom).
+    - **Side strips (2026-11-07 review):** the C1 can (PACK−) and the C4 can (three cells up, to 12.6 V) face each other across a 1.4 mm gap with no web, and the cradles push them together in a board-face drop. Lay a 0.1–0.2 mm fish-paper or Kapton strip along the C1–C4 and C2–C3 facing lines, check the cradle fit still closes on the first fit print, and inspect every sleeve under a loupe for nicks.
 3. **Prepare the strips and pads on the bench,** with no cell present (strip and tin each wire, solder it, let it cool):
     - CELL2: the wire under the middle of the bottom strip, about 3 mm of lap, pointing +x.
     - CELL1 / CELL3: the wire under the end of each top strip's tongue, about 1.5 mm of lap, pointing down.
@@ -118,13 +124,13 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
     - the top strips, slid into the gap between the cell ends and the top frame, tongues and wires toward the board side: C1+ → C2−, C3+ → C4−;
     - the PACK pads, with their wires already soldered: PACK− on the C1 bottom, PACK+ on the C4 bottom. Keep every weld spot at least 3 mm from the solder, and lay both wires in the frame notch.
     - From the first strip on, the pack is live (see *Working on the live pack* below).
-8. **Rail blocks on:** press the four blocks' tongues into the frame key slots, posts pointing +x, until each block's face is flat on the frame. The crush ribs should make it a firm push. If a block is loose (the print came out small), put a drop of CA glue in its slot; if it won't go in, shave the ribs with a blade rather than forcing it. Even with the board soldered on, never lift the module by the board.
+8. **Rail blocks on:** press the four blocks' tongues into the frame key slots, posts pointing +x, until they stop (the tongue bottoms in its slot with the block body about 0.1 mm off the frame). The crush ribs should make it a firm push. If a block is loose (the print came out small), put a drop of CA glue in its slot; if it won't go in, shave the ribs with a blade rather than forcing it. Even with the board soldered on, never lift the module by the board.
 
 ### 2. Gap filler and board on, on the bench
 
 ![Step 2](../../hardware/mechanical/assembly_steps/step2.png)
 
-1. **NTCs:** the front cells' NTCs (TH101 on C1 / TS1, TH104 on C4 / TS4) are SMD parts on B.Cu since 2026-10-28, so there is nothing to fit on C1 and C4 (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before.
+1. **NTCs:** the front cells' NTCs (TH101 on C1 / TS1, TH104 on C4 / TS4) are SMD parts on B.Cu since 2026-10-28, so there is nothing to fit on C1 and C4 (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). Back cells (C2, C3): NTC at mid-length, facing the pack centre, as before. Use insulated or Kapton-wrapped beads: a bare bead on C3 puts up to 8.4 V on TS3.
 2. **Dispense the gap filler** on the two front cells where the rails stop (|y| 7–16 mm, z 27–53 mm), a little proud, so the board squeezes it. Take it right into the zone's bottom outer corner (|y| 14–16 mm, z 27–31 mm): TH101 / TH104 sit there and read the cell through the gel. Tare the module on the scale and lay about 2.3 g of GEL 30 per zone. It is stiff, so push the syringe by hand through a wide tip. It needs no cure. To rework, peel it off, wipe the rest with IPA and use fresh gel.
 3. **Board on:** lower it onto the peg posts, guiding the seven pack wires into their holes from B.Cu. Push the four PA12 spacers down the posts until they touch F.Cu.
 4. **Solder on F.Cu,** USB unplugged, in the gauge sheet's note-15 order: PACK− first, then 1N and the taps bottom-up (CELL1, CELL2, CELL3), then 4P, and PACK+ last. Trim each wire about 0.5 mm proud. With R124 / R126 off, a wire touching its barrel out of order can't blow F102, but keep to the order anyway.
@@ -134,9 +140,9 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 ![Step 3](../../hardware/mechanical/assembly_steps/step3.png)
 
 1. **Check the seven voltages** at the pads against PACK−: each step should be one cell (2.5–4.2 V). Only then **fit R124 and R126** (5.1 kΩ 0402, F.Cu).
-2. **Program and set up:** load the BQ40Z50 golden file and run gauge training through J302 (`p0-bringup-and-training.md`). Then unsolder the J113 / J114 learning-load wires and leave the pads flat: the board-face wall is only 3.7 mm above F.Cu, and the real-board check (`monolith_cup.py`) leaves them out because they're bench-only.
+2. **Program and set up:** on the first board, run gauge training through J302 and export the golden image (`p0-bringup-and-training.md` section 3); on later boards, load that golden image and calibrate. Then unsolder the J113 / J114 learning-load wires and leave the pads flat: the board-face wall is only 3.7 mm above F.Cu, and the real-board check (`monolith_cup.py`) leaves them out because they're bench-only.
 3. **Function test:** charge and discharge on each port, the 100 W thermal run (thermocouples on a front and a back cell), the gauge readings, and BLE.
-4. **Conformal coat**, last. Keep the coat off the antenna end, the J301 / J302 Tag-Connect pads, the gap-filler zone and the USB-C seal rings (mask the rings).
+4. **Conformal coat**, last, F.Cu only (B.Cu is against the cells and gel by now). Keep the coat off the antenna end, the J301 / J302 Tag-Connect pads, the gap-filler zone and the USB-C seal rings (mask the rings).
 
 ### 4. Module into the cup
 
@@ -149,7 +155,7 @@ Each step has a sheet of pictures, numbered to match the sub-steps below. Each p
 
 ![Step 5](../../hardware/mechanical/assembly_steps/step5.png)
 
-1. Measure the cap: the gap from the cup rim to the carrier frame's underside, with calipers, against the pad's printed height. The pad should be about 1.2 mm proud; shim or trim it if not.
+1. Measure the cap: the gap from the cup rim to the carrier frame's underside, with calipers, against the pad's printed height (9.8 mm off the printer; the STL already carries the 1.2 mm proud since 2026-11-07). The pad should be about 1.2 mm proud; shim or trim it if not. Then check the preload on a kitchen scale: with the core on the scale, push the cap plate down the 1.2 mm with the pad between them and read at least about 15 N (1.5 kg). Check one pad again after 24 h at 45 °C; if it falls under about 10 N, print the pads at 1.5 mm proud or 20 % gyroid.
 2. O-ring (NBR) into the skirt groove, lightly greased with Super Lube 21030 (PTFE in synthetic PAO oil; Krytox GPL 205 also works). Not a petroleum grease on anything EPDM, and not a silicone-oil grease near the silicone USB-C rings.
 3. TPU pad onto the cap, then push the cap in until the plate lands on the cup rim (hard stop). The pad preloads the core against the top wall.
 4. Drive the two M2 thread-forming screws through the thick cup mouth into the blind skirt bosses. Snug, not tight: they are below the O-ring, and the pilots stop 1.2 mm short of the inside.

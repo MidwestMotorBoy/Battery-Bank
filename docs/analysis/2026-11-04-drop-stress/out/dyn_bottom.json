@@ -1,0 +1,304 @@
+{
+ "pose": "bottom",
+ "title": "Flat on the cap end",
+ "d": [
+  0.0,
+  0.0,
+  -1.0
+ ],
+ "floor_peak_N": 2492.1641829802948,
+ "crush_mm": 1.7147798133357788,
+ "bodies": {
+  "shell": {
+   "peak_g": 2469.888485281498,
+   "travel_mm": 0.0
+  },
+  "C1": {
+   "peak_g": 1798.3653926332247,
+   "travel_mm": 1.1722779141968027
+  },
+  "C2": {
+   "peak_g": 1348.66878881371,
+   "travel_mm": 1.1349233451809178
+  },
+  "C3": {
+   "peak_g": 1348.6687888137108,
+   "travel_mm": 1.1349233451809178
+  },
+  "C4": {
+   "peak_g": 1798.3704568252044,
+   "travel_mm": 1.1722778901315387
+  },
+  "carrier": {
+   "peak_g": 13485.936629213957,
+   "travel_mm": 0.6736219703992401
+  },
+  "rails_tp": {
+   "peak_g": 24689.736092410963,
+   "travel_mm": 0.7849974178884926
+  },
+  "rails_tn": {
+   "peak_g": 23709.80440520938,
+   "travel_mm": 0.7958767148645509
+  },
+  "rails_bp": {
+   "peak_g": 47390.885538214185,
+   "travel_mm": 0.7204932948649385
+  },
+  "rails_bn": {
+   "peak_g": 47402.64820737014,
+   "travel_mm": 0.7204482742667873
+  },
+  "board": {
+   "peak_g": 6080.735736166465,
+   "travel_mm": 0.6199620469349074
+  }
+ },
+ "contacts": [
+  {
+   "a": "carrier/frames",
+   "b": "shell/ot_posts",
+   "sense": "+",
+   "g0": 0.3,
+   "peak_N": 3367.9,
+   "t_ms": 0.495,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "board/pcb",
+   "b": "shell/feet",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 1344.9,
+   "t_ms": 0.916,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "C1",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.0505,
+   "peak_N": 1273.6,
+   "t_ms": 0.464,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "C4",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.0505,
+   "peak_N": 1273.6,
+   "t_ms": 0.464,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "C2",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.1,
+   "peak_N": 982.6,
+   "t_ms": 0.615,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "C3",
+   "b": "carrier/frames",
+   "sense": "+",
+   "g0": 0.1,
+   "peak_N": 982.6,
+   "t_ms": 0.615,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "board/pcb",
+   "b": "shell/cup_walls",
+   "sense": "-",
+   "g0": 0.099,
+   "peak_N": 382.6,
+   "t_ms": 0.609,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "C1",
+   "b": "rails_bn/ends",
+   "sense": "+",
+   "g0": 0.7501,
+   "peak_N": 277.6,
+   "t_ms": 0.583,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "C4",
+   "b": "rails_bp/ends",
+   "sense": "+",
+   "g0": 0.7501,
+   "peak_N": 277.6,
+   "t_ms": 0.583,
+   "kind": "cell_axial"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bn/posts",
+   "sense": "-",
+   "g0": 0.1019,
+   "peak_N": 273.1,
+   "t_ms": 0.608,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bp/posts",
+   "sense": "-",
+   "g0": 0.1018,
+   "peak_N": 273.1,
+   "t_ms": 0.608,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/usb",
+   "b": "shell/cup_walls",
+   "sense": "-",
+   "g0": 0.2903,
+   "peak_N": 101.2,
+   "t_ms": 0.609,
+   "kind": "usb"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tp/posts",
+   "sense": "-",
+   "g0": 0.1017,
+   "peak_N": 88.2,
+   "t_ms": 1.229,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tn/posts",
+   "sense": "-",
+   "g0": 0.1018,
+   "peak_N": 87.5,
+   "t_ms": 1.236,
+   "kind": "rigid"
+  },
+  {
+   "a": "rails_tp/ends",
+   "b": "shell/cup_walls",
+   "sense": "-",
+   "g0": 0.0,
+   "peak_N": 46.4,
+   "t_ms": 0.651,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "rails_tn/ends",
+   "b": "shell/cup_walls",
+   "sense": "-",
+   "g0": 0.0,
+   "peak_N": 43.9,
+   "t_ms": 0.652,
+   "kind": "rigid+FE"
+  },
+  {
+   "a": "carrier/frames",
+   "b": "shell/pad",
+   "sense": "+",
+   "g0": 0.0,
+   "peak_N": 40.6,
+   "t_ms": 0.403,
+   "kind": "pad"
+  },
+  {
+   "a": "C1",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 36.5,
+   "t_ms": 0.325,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C4",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 36.5,
+   "t_ms": 0.325,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C2",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 34.3,
+   "t_ms": 0.327,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "C3",
+   "b": "carrier/webs",
+   "sense": "+",
+   "g0": 0.2005,
+   "peak_N": 34.3,
+   "t_ms": 0.327,
+   "kind": "cell_radial"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tn/posts",
+   "sense": "+",
+   "g0": 0.1017,
+   "peak_N": 32.1,
+   "t_ms": 1.832,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_tp/posts",
+   "sense": "+",
+   "g0": 0.1016,
+   "peak_N": 27.0,
+   "t_ms": 1.844,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bn/posts",
+   "sense": "+",
+   "g0": 0.1017,
+   "peak_N": 19.7,
+   "t_ms": 1.906,
+   "kind": "rigid"
+  },
+  {
+   "a": "board/pcb",
+   "b": "rails_bp/posts",
+   "sense": "+",
+   "g0": 0.1016,
+   "peak_N": 19.7,
+   "t_ms": 1.906,
+   "kind": "rigid"
+  },
+  {
+   "a": "rails_bp/ends",
+   "b": "shell/pad",
+   "sense": "+",
+   "g0": 0.0,
+   "peak_N": 0.5,
+   "t_ms": 1.128,
+   "kind": "pad"
+  },
+  {
+   "a": "rails_bn/ends",
+   "b": "shell/pad",
+   "sense": "+",
+   "g0": 0.0,
+   "peak_N": 0.5,
+   "t_ms": 1.128,
+   "kind": "pad"
+  }
+ ],
+ "k_w": 680.0,
+ "runtime_s": 4.8
+}

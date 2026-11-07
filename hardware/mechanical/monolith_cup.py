@@ -69,7 +69,9 @@ MOUTH_T, MOUTH_H, MOUTH_TAPER = 2.4, SKIRT_L, 0.8   # cup wall at the mouth, thi
                                    # back to WALL at the top (2026-10-31: replaces the cap's 1.5 mm outer collar, which flexed
                                    # off the cap plate; plate model in docs/reviews/2026-10-31-mouth-band/)
 MOUTH_LEAD = 0.8                   # lead-in at the cup mouth for the O-ring (0.3 deep over this height)
-OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6)]   # overtravel posts (x, y)
+OT_POSTS = [(-(PR + CR) + 2.6, 0.0), (0.0, 0.0), (0.0, -(PR + CR) + 2.6), (0.0, PR + CR - 2.6), (PR + CR - 2.6, 0.0)]   # overtravel
+                                   # posts (x, y); the fifth, under the front cells (2026-11-05), keeps the front half of the bottom
+                                   # frame off the cap skirt in a cap-end drop (docs/analysis/2026-11-04-drop-stress)
 VENT_XY, VENT_HOLE_R = (25.6, 0.0), 1.5   # ePTFE pressure vent (2026-10-31, Logan: behind a bumper, no label hole): a 3 mm hole
 VENT_D, VENT_T = 12.0, 1.0         # through the cap plate in the free strip between the cells and the board, with a 12 mm ePTFE patch
 VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE80308, 7.6 mm, fits the same hole and pocket) on the
@@ -78,7 +80,8 @@ VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE8
 VENT_GRILLE = (1.0, 0.8, 2.4)      # cross-hatch grille over the pocket at the slab's base (thick, bar width, pitch; 45 deg): it
                                    # prints on the bed and the patch sits 1 mm above it (no breather groove since 2026-10-31: it
                                    # cut the bars into slivers that JLC flagged as thin walls)
-OT_R, OT_GAP = 1.5, 0.3            # post radius; gap to the frame underside at nominal (0.6 until 2026-10-31: a hard plug-in
+OT_R, OT_GAP = 2.5, 0.3            # post radius (1.5 until 2026-11-05: 2.2-2.9 kN in a cap-end drop crushed the r1.5 tips at
+                                   # ~80-95 MPa); gap to the frame underside at nominal (0.6 until 2026-10-31: a hard plug-in
                                    # could push the core far enough to pull the USB-C rings out of the full bore)
 FOOT_GAP = 0.2                     # board feet (2026-11-03): PA12 ribs on the cap skirt's inside face under the board's bottom
 FOOT_Y = ((3.0, 6.0), (14.4, 16.2))  # edge, this far below it at nominal, at these |y| spans (clear of the vent hole, CELL2, the
@@ -100,6 +103,11 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
+TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far behind the frame's (2026-11-05): the front cans'
+                                   # rims landed on them in cap-end drops (0.45-1.1 kN each, blocks 100-196 MPa); now the frame
+                                   # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
+                                   # 2026-11-07: on the 0.95 mm top frame it left a 0.65 mm tongue (under JLC's 1.0 mm MJF
+                                   # wall), and the port-end tongue load was a model error; a top tongue is backed by the top wall
 KEY_RIB = (0.25, 0.5, 0.4)         # crush rib on each side face of a tongue (2026-10-28): height (0.15 into the slot wall past
                                    # the clearance), width (z), lead-in length at the tip. Holds the blocks in on the bench
                                    # until the board is soldered; the cup captures them after that
@@ -123,6 +131,9 @@ HOUSING_CLR_Y = 0.35                # USB-C housing pocket, y clearance (0.15 un
 LIP_RELIEF = (0.25, 0.49)           # seal bore opened this much per side over this depth from the face, in front of the ring
                                     # band (0.5-1.5 deep), so the connector's shell lip isn't a y stop either
 CRADLE_GAP, CRADLE_X, CRADLE_LEAD = 0.15, (12.6, 21.5), 1.0    # front-can cradles: radial gap, x span, lead-in
+CRADLE_CAP_RELIEF = (20.5, (15.8, 21.3), (40.8, 50.1))         # cradle tops cut to x <= 20.5 under C421 / C556 (2026-11-05):
+                                    # those 7343 caps on B.Cu sat 0.88 mm off the cradles and hit them in a back-face drop
+                                    # (x from, |y| span, z span; 1.88 mm left)
 CRADLE_BANDS = ((5.0, 17.0), (35.0, 47.0), (65.0, None))       # z bands along the cans (None = up to the top wall). In a
                                     # board-face drop the whole core (about 7.5 kN) stopped only on the four post tips before
 # Cells (#3, #6). An insulator ring on every + end (C1 / C3 top, C2 / C4 bottom) under the nickel, so a strip pushed
@@ -229,7 +240,8 @@ def cradles():
             z1 = Z_TOP0 + 0.01 if z1 is None else z1
             lead = MF.batch_hull([pz(circ(cx, cy, CR + CRADLE_GAP + CRADLE_LEAD), z0 - 0.01, z0), pz(circ(cx, cy, CR + CRADLE_GAP), z0 + CRADLE_LEAD, z0 + CRADLE_LEAD + 0.01)])
             out.append(pz(sec, z0, z1) - lead)
-    return U(*out)
+    x0, (ya, yb), (za, zb) = CRADLE_CAP_RELIEF
+    return U(*out) - U(*[pz(rect(x0, CRADLE_X[1] + 1, *sorted((s*ya, s*yb))), za, zb) for s in (-1, 1)])
 def cup_ribs():
     """everything the 2026-11-03 retention change adds inside the cup, clipped to the cup's inside"""
     return (lands() + cradles()) ^ pz(cs_in.offset(0.02, ROUND), Z_MOUTH - 1, Z_TOP0 + 0.02)
@@ -279,14 +291,18 @@ def screws():
     r, h = SCREW_HEAD
     return U(cyly(SCREW_X, SCREW_Z, 1.0, -e, -t), cyly(SCREW_X, SCREW_Z, r, -(e + h), -e),
              cyly(SCREW_X, SCREW_Z, 1.0, t, e), cyly(SCREW_X, SCREW_Z, r, e, e + h))
-def pad():
-    """TPU pad on the cap plate, drawn as installed (it is printed PAD_PROUD taller): pockets for the overtravel posts,
-    the screw bosses, and PAD_RELIEF under the C1 / C4 windows and the wire notches so it never bears on the PACK pads"""
-    m = pz(CS.batch_boolean([cs_cells.offset(-0.4, ROUND), cs_in.offset(-0.1 - SKIRT_T - 0.3, ROUND)], M3.OpType.Intersect), Z_MOUTH, FR_B0)
+def pad(printed=False):
+    """TPU pad on the cap plate: pockets for the overtravel posts, the screw bosses, and PAD_RELIEF under the C1 / C4
+    windows and the wire notches so it never bears on the PACK pads. The assembly draws it as installed (top at FR_B0);
+    printed=True is the part to print, PAD_PROUD taller (2026-11-07: the STL used to be the installed shape, so it would
+    have printed with no preload). The relief floors stay at the same height above the cap, so the printed pockets are
+    PAD_RELIEF + PAD_PROUD deep and still PAD_RELIEF deep once the pad is squeezed"""
+    top = FR_B0 + (PAD_PROUD if printed else 0.0)
+    m = pz(CS.batch_boolean([cs_cells.offset(-0.4, ROUND), cs_in.offset(-0.1 - SKIRT_T - 0.3, ROUND)], M3.OpType.Intersect), Z_MOUTH, top)
     m = m - U(cyly(SCREW_X, SCREW_Z, 3.0, -YI, -(YI - BOSS_DEPTH - 0.5)), cyly(SCREW_X, SCREW_Z, 3.0, YI - BOSS_DEPTH - 0.5, YI))
-    m = m - U(*[pz(circ(x, y, OT_R + 0.4), Z_MOUTH - 1, FR_B0 + 1) for x, y in OT_POSTS])
+    m = m - U(*[pz(circ(x, y, OT_R + 0.4), Z_MOUTH - 1, top + 1) for x, y in OT_POSTS])
     rel = [circ(x, y, WIN_R + 1.0) for (x, y) in CELLS if x > 0] + [rect(PR, PR + CR + 1, 7.5, 16.0), rect(PR, PR + CR + 1, -16.0, -7.5)]
-    return m - pz(CS.batch_boolean(rel, M3.OpType.Add), FR_B0 - PAD_RELIEF, FR_B0 + 1)
+    return m - pz(CS.batch_boolean(rel, M3.OpType.Add), FR_B0 - PAD_RELIEF, top + 1)
 def webs():
     """full-length PA12 webs in the front-back gaps (C1-C2, C4-C3): they share the board-heated front pair's heat
     with the back pair. Cells load sideways: the front pair from the board side, the back pair from the back."""
@@ -294,13 +310,20 @@ def webs():
     w = [pz(rect(-WEB_X, WEB_X, *sorted((s*(PR - WEB_IN), s*(PR + WEB_IN)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
     w += [pz(rect(-WEB_LINK, WEB_LINK, *sorted((s*(PR + WEB_IN - 0.5), s*(PR + CR)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
     return U(*w) - cells
+def zspan(m):
+    b = m.bounding_box(); return b[5] - b[2]
+def tongue_h(end):
+    """z height of one rail-block tongue (the 'bottom' or 'top' pair)"""
+    return zspan(key_slots(0)[0 if end == 'bottom' else 1])
 def key_slots(clr=KEY_CLR):
     """the rail blocks' tongues (clr=0) or their key slots in the frames' board-side faces (clr=KEY_CLR)"""
     out, xe = [], PR + CR
     for s in (-1, 1):
         for end, (z0, z1) in (('bottom', (FR_B0, FR_B1)), ('top', (FR_T0, FR_T1))):
             y0, y1 = KEY_Y[end]
-            out.append(pz(rect(xe - KEY_DEPTH - clr, RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0 - (1 if clr else 0), z1 + (1 if clr else 0)))
+            if clr: z0, z1 = z0 - 1, z1 + 1                                               # slots run through the frame
+            elif end == 'bottom': z1 = z1 - TONGUE_SETBACK                                 # bottom tongues stay off the cans
+            out.append(pz(rect(xe - KEY_DEPTH - clr, RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0, z1))
     return out
 def key_ribs():
     """the crush ribs on the rail blocks' tongues: one on each side face (y), along x, ramped up over KEY_RIB[2] from the
@@ -308,7 +331,7 @@ def key_ribs():
     out, xe = [], PR + CR; h, w, lead = KEY_RIB
     x0 = xe - KEY_DEPTH + 0.1
     for s in (-1, 1):
-        for end, (z0, z1) in (('bottom', (FR_B0, FR_B1)), ('top', (FR_T0, FR_T1))):
+        for end, (z0, z1) in (('bottom', (FR_B0, FR_B1 - TONGUE_SETBACK)), ('top', (FR_T0, FR_T1))):
             for yf, d in ((s*KEY_Y[end][0], -s), (s*KEY_Y[end][1], s)):   # inner and outer face, rib grows away from the tongue
                 yb = yf - d*0.05                                                  # root 0.05 inside the tongue
                 pts = [(x0, yb), (x0 + lead, yf + d*h), (xe, yf + d*h), (xe, yb)]
@@ -591,7 +614,8 @@ def checks():
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
         'board rails: four bodies (clip-on blocks)': 4 - len(rails().decompose()) + 0.0,
         'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
-        'crush ribs fit the thin top frame (z, >= 0.2 each side)': (FR_T1 - FR_T0 - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
+        'crush ribs fit the thinnest tongue (z, >= 0.2 each side)': (min(FR_T1 - FR_T0, FR_B1 - TONGUE_SETBACK - FR_B0) - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
+        'rail tongues: top full frame height, bottom >= 1.0 (JLC MJF wall)': min(tongue_h('top') - (FR_T1 - FR_T0), tongue_h('bottom') - 1.0) + 1e-9,
         'cap is one body': 1 - len(cap().decompose()) + 0.0,
         'board fits the bore (y, per side)': YI - S.sb_board_w/2 - 0.3,
         'tallest part under the board-face wall (x)': X_IN - (S.sb_xb1 + S.SB_OUT_H) - 0.3,
@@ -633,6 +657,7 @@ def checks():
         'USB-C rings stay in the full bore when a plug pushes the core onto the overtravel posts (z, >= 0.2)':
             (Z_TOP1 - S.USB_RING_D[0]) - (OT_GAP + (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D) / 2) - (Z_POCKET + POCKET_LEAD) - 0.2,
         'pad preload: printed proud 1.0-1.5': min(PAD_PROUD - 1.0, 1.5 - PAD_PROUD),
+        'pad STL is printed PAD_PROUD taller than installed (z)': 0.01 - abs(zspan(pad(True)) - zspan(pad()) - PAD_PROUD),
         'pad relief under the PACK pads deeper than the proud (z)': PAD_RELIEF - PAD_PROUD - 0.2,
         'skirt root behind the groove >= 1.2': SKIRT_T - GROOVE_D - 1.2 + 1e-9,
         'carrier bottom frame below the bottom strips (z)': (S.sb_z_tail_b - S.SB_PACK_T) - FR_B1,
@@ -945,8 +970,9 @@ if __name__ == '__main__':
         print(f'  sealed, +{p_kpa} kPa inside: ' + ', '.join(f'{k} {v:.1f}' for k, v in sealed_pressure(p_kpa).items()))
     print('total', round(sum(m.values()), 1), 'g   size (x, y, z)', np.round(size(A), 1))
     if which in ('all', 'stl'):
-        for k in ('cup', 'cap', 'carrier', 'rails', 'spacer', 'foam', 'pad', 'oring', 'filler', 'vent'):
+        for k in ('cup', 'cap', 'carrier', 'rails', 'spacer', 'foam', 'oring', 'filler', 'vent'):
             write_stl(stl_path(k), np.vstack([V for kk, V, _ in A if kk == k]))
+        write_stl(stl_path('pad'), tris(pad(printed=True)))   # printed PAD_PROUD taller than the installed pad in A
         for top in (False, True):                        # each bumper is ONE TPU print: the band and the slab only differ
             write_stl(stl_path('bumpt' if top else 'bumpb'), tris(U(*bumper(top))))   # by infill
         print('wrote stl/<material>/monolith_cup_*.stl')

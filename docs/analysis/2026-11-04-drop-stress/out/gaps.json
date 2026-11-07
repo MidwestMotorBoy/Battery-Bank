@@ -1,0 +1,314 @@
+{
+ "C1 -> carrier": {
+  "+x": null,
+  "-x": 0.05,
+  "+y": 0.113,
+  "-y": 0.113,
+  "+z": 0.05,
+  "-z": 0.05
+ },
+ "C1 -> rails_bn": {
+  "+x": 0.172,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.75
+ },
+ "C1 -> rails_tn": {
+  "+x": 0.172,
+  "-x": null,
+  "+y": 1.101,
+  "-y": null,
+  "+z": 0.7,
+  "-z": null
+ },
+ "C1 -> shell/cup_walls": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": 0.2,
+  "+z": 1.0,
+  "-z": null
+ },
+ "C1 -> shell/cradles": {
+  "+x": 0.167,
+  "-x": null,
+  "+y": null,
+  "-y": 0.15,
+  "+z": null,
+  "-z": null
+ },
+ "C2 -> carrier": {
+  "+x": 0.05,
+  "-x": null,
+  "+y": 0.113,
+  "-y": 0.113,
+  "+z": 0.05,
+  "-z": 0.1
+ },
+ "C2 -> shell/cup_walls": {
+  "+x": null,
+  "-x": 0.2,
+  "+y": null,
+  "-y": 0.2,
+  "+z": 1.0,
+  "-z": null
+ },
+ "C3 -> carrier": {
+  "+x": 0.05,
+  "-x": null,
+  "+y": 0.113,
+  "-y": 0.113,
+  "+z": 0.05,
+  "-z": 0.1
+ },
+ "C3 -> shell/cup_walls": {
+  "+x": null,
+  "-x": 0.2,
+  "+y": 0.2,
+  "-y": null,
+  "+z": 1.0,
+  "-z": null
+ },
+ "C4 -> carrier": {
+  "+x": null,
+  "-x": 0.05,
+  "+y": 0.113,
+  "-y": 0.113,
+  "+z": 0.05,
+  "-z": 0.05
+ },
+ "C4 -> rails_bp": {
+  "+x": 0.172,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.75
+ },
+ "C4 -> rails_tp": {
+  "+x": 0.172,
+  "-x": null,
+  "+y": null,
+  "-y": 1.101,
+  "+z": 0.7,
+  "-z": null
+ },
+ "C4 -> shell/cup_walls": {
+  "+x": null,
+  "-x": null,
+  "+y": 0.2,
+  "-y": null,
+  "+z": 1.0,
+  "-z": null
+ },
+ "C4 -> shell/cradles": {
+  "+x": 0.167,
+  "-x": null,
+  "+y": 0.15,
+  "-y": null,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> rails_bn": {
+  "+x": 0.1,
+  "-x": null,
+  "+y": 0.1,
+  "-y": 0.1,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> rails_tn": {
+  "+x": 0.1,
+  "-x": null,
+  "+y": 0.1,
+  "-y": 0.1,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> rails_bp": {
+  "+x": 0.1,
+  "-x": null,
+  "+y": 0.1,
+  "-y": 0.1,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> rails_tp": {
+  "+x": 0.1,
+  "-x": null,
+  "+y": 0.1,
+  "-y": 0.1,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> shell/cup_walls": {
+  "+x": null,
+  "-x": 0.2,
+  "+y": 0.2,
+  "-y": 0.2,
+  "+z": 0.0,
+  "-z": null
+ },
+ "carrier -> shell/cradles": {
+  "+x": 0.167,
+  "-x": null,
+  "+y": 0.15,
+  "-y": 0.15,
+  "+z": null,
+  "-z": null
+ },
+ "carrier -> shell/cap": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 1.1
+ },
+ "carrier -> shell/ot_posts": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.3
+ },
+ "carrier -> shell/pad": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.0
+ },
+ "rails_bn -> board": {
+  "+x": 0.0,
+  "-x": null,
+  "+y": 0.366,
+  "-y": 0.366,
+  "+z": 0.102,
+  "-z": 0.102
+ },
+ "rails_bn -> shell/cup_walls": {
+  "+x": 0.3,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": null
+ },
+ "rails_bn -> shell/feet": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": null
+ },
+ "rails_bn -> shell/pad": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.0
+ },
+ "rails_tn -> board": {
+  "+x": 0.0,
+  "-x": null,
+  "+y": 0.366,
+  "-y": 0.366,
+  "+z": 0.102,
+  "-z": 0.102
+ },
+ "rails_tn -> shell/cup_walls": {
+  "+x": 0.3,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": 0.0,
+  "-z": null
+ },
+ "rails_bp -> board": {
+  "+x": 0.0,
+  "-x": null,
+  "+y": 0.366,
+  "-y": 0.366,
+  "+z": 0.102,
+  "-z": 0.102
+ },
+ "rails_bp -> shell/cup_walls": {
+  "+x": 0.3,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": null
+ },
+ "rails_bp -> shell/feet": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": null
+ },
+ "rails_bp -> shell/pad": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.0
+ },
+ "rails_tp -> board": {
+  "+x": 0.0,
+  "-x": null,
+  "+y": 0.366,
+  "-y": 0.366,
+  "+z": 0.102,
+  "-z": 0.102
+ },
+ "rails_tp -> shell/cup_walls": {
+  "+x": 0.3,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": 0.0,
+  "-z": null
+ },
+ "board -> shell/cup_walls": {
+  "+x": 0.198,
+  "-x": 0.169,
+  "+y": 0.343,
+  "-y": 0.343,
+  "+z": 0.099,
+  "-z": null
+ },
+ "board -> shell/lands": {
+  "+x": null,
+  "-x": null,
+  "+y": 0.12,
+  "-y": 0.12,
+  "+z": null,
+  "-z": null
+ },
+ "board -> shell/lips": {
+  "+x": 0.5,
+  "-x": null,
+  "+y": 1.479,
+  "-y": 1.004,
+  "+z": null,
+  "-z": null
+ },
+ "board -> shell/feet": {
+  "+x": null,
+  "-x": null,
+  "+y": null,
+  "-y": null,
+  "+z": null,
+  "-z": 0.201
+ }
+}
