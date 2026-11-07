@@ -267,10 +267,10 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 ### Enclosure
 
 - [ ] Fit print of the cup, cap and carrier (JLC3DP MJF) and check the board and cells fit
-- [ ] Three coupons before the full print: the cup mouth on its cap (O-ring squeeze and screw hold), a clip-on rail block, and a USB-C bore with the connector's ring
+- [x] ~~Three coupons before the full print~~ dropped 2026-11-07 (Logan): the real parts are ordered directly and checked on the first build (O-ring squeeze and screw hold, rail blocks, USB-C bores)
 - [ ] Drop series on the fit print: board face, top, bottom, a corner (watch the front cans squeezing toward each other on the cradles in the board-face drop)
 - [ ] First cup: 43.40 / 43.80 mm FR4 go / no-go strips between the edge lands and a Ø22.15 mm rod through the cradles
-- [ ] O-ring dunk coupon and vacuum-jar leak test (soap film on the joints, −20 kPa; the empty fit print to −50 kPa, side flats measured before and after)
+- [ ] O-ring dunk on the first cup and cap, and vacuum-jar leak test (soap film on the joints, −20 kPa; the empty fit print to −50 kPa, side flats measured before and after)
 - [ ] IP67: a 1 m / 30 min dunk of the sealed pack
 - [ ] Gap-filler dispense pattern (GEL 30, about 2.3 g per zone, dispensed by weight)
 - [ ] Outside label: 91 Wh, 14.0 V, USB1 / USB2, ratings
