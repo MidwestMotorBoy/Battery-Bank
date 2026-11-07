@@ -583,7 +583,13 @@ def real_board():
     """the routed P0 board from KiCad (board/board_from_step.py), in the pack frame: {'PCB': tris, refdes: tris} plus
     '_model_<ref>' names, or None if board/monolith_board.npz hasn't been made"""
     if not os.path.exists(BOARD_NPZ): return None
-    d = np.load(BOARD_NPZ); return {k: d[k] if k.startswith('_') else d[k].astype(float) for k in d.files}
+    d = np.load(BOARD_NPZ); out = {k: d[k] if k.startswith('_') else d[k].astype(float) for k in d.files}
+    for k, h in PART_H.items():                       # the BOM part is lower than KiCad's 3D model: trim it to its height
+        if k in out:
+            V = out[k]; xb = V[..., 0].max(); V[..., 0] = np.maximum(V[..., 0], xb - h)   # B.Cu parts hang toward -x
+    return out
+PART_H = dict(C421=2.0, C456=2.0, C521=2.0, C556=2.0)   # KEMET T593V686M035APE070, EIA-7343-20 V case (2.0 mm) on the
+                                                        # 7343 land; KiCad's model is the 2.8 mm AVX 7343-30 (2026-11-05)
 def ble_module():
     """BLE module envelope on B.Cu at the right edge (render only)"""
     y0, y1 = sorted((S.SB_ANT_SIDE*S.sb_ant_y[0], S.SB_ANT_SIDE*S.sb_ant_y[1]))

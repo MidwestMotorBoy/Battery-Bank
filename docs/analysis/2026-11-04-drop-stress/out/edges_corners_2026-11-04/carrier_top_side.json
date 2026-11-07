@@ -1,0 +1,139 @@
+{
+ "pose": "top_side",
+ "part": "carrier",
+ "H": 0.75,
+ "snapshots": [
+  {
+   "t_ms": 1.357,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1909.2
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     1880.2
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     22.7
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     38.3
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     355.1
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     3916.0
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     87.8
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     224.6
+    ]
+   ],
+   "its": 30,
+   "rel_res": 8.664398410715449e-08
+  },
+  {
+   "t_ms": 1.363,
+   "loads": [
+    [
+     "C1",
+     "carrier/frames",
+     "+",
+     1915.6
+    ],
+    [
+     "C2",
+     "carrier/frames",
+     "+",
+     1902.4
+    ],
+    [
+     "C2",
+     "carrier/webs",
+     "+",
+     25.4
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "+",
+     39.2
+    ],
+    [
+     "C3",
+     "carrier/frames",
+     "+",
+     347.5
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     3909.7
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     87.6
+    ],
+    [
+     "carrier/frames",
+     "shell/cradles",
+     "+",
+     223.9
+    ]
+   ],
+   "its": 30,
+   "rel_res": 8.700946211518783e-08
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 112.76453654046148,
+   "p999": 155.48378022083975,
+   "max": 298.3330561889358,
+   "at": [
+    0.1,
+    21.8,
+    5.1
+   ]
+  },
+  "carrier/webs": {
+   "p99": 88.54914644264979,
+   "p999": 250.5066793562961,
+   "max": 444.3674000907818,
+   "at": [
+    0.8,
+    21.8,
+    53.1
+   ]
+  }
+ }
+}

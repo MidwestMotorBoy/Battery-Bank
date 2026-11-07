@@ -1,0 +1,198 @@
+{
+ "board": {
+  "base": {
+   "floor_kN": 7.06,
+   "shell_g": 9152,
+   "cell_g": 1919,
+   "max_cell_contact_N": 1424,
+   "OT posts (N)": 0,
+   "cradles (N)": 2462,
+   "lips (N)": 160,
+   "board parts on the wall (N)": 1222,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "K_W x0.5": {
+   "floor_kN": 7.07,
+   "shell_g": 9152,
+   "cell_g": 1900,
+   "max_cell_contact_N": 1410,
+   "OT posts (N)": 0,
+   "cradles (N)": 2515,
+   "lips (N)": 166,
+   "board parts on the wall (N)": 734,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "K_W x2": {
+   "floor_kN": 7.0,
+   "shell_g": 9152,
+   "cell_g": 2012,
+   "max_cell_contact_N": 1494,
+   "OT posts (N)": 0,
+   "cradles (N)": 2406,
+   "lips (N)": 157,
+   "board parts on the wall (N)": 1964,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "cells x0.5": {
+   "floor_kN": 6.95,
+   "shell_g": 9152,
+   "cell_g": 1893,
+   "max_cell_contact_N": 1405,
+   "OT posts (N)": 0,
+   "cradles (N)": 2142,
+   "lips (N)": 163,
+   "board parts on the wall (N)": 1305,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "cells x2": {
+   "floor_kN": 7.12,
+   "shell_g": 9152,
+   "cell_g": 2320,
+   "max_cell_contact_N": 1521,
+   "OT posts (N)": 0,
+   "cradles (N)": 2709,
+   "lips (N)": 159,
+   "board parts on the wall (N)": 1175,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "damping 5 %": {
+   "floor_kN": 7.5,
+   "shell_g": 9152,
+   "cell_g": 2001,
+   "max_cell_contact_N": 1486,
+   "OT posts (N)": 0,
+   "cradles (N)": 2454,
+   "lips (N)": 161,
+   "board parts on the wall (N)": 1841,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "damping 20 %": {
+   "floor_kN": 6.55,
+   "shell_g": 9152,
+   "cell_g": 1883,
+   "max_cell_contact_N": 1398,
+   "OT posts (N)": 0,
+   "cradles (N)": 2448,
+   "lips (N)": 184,
+   "board parts on the wall (N)": 700,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "1.5 m": {
+   "floor_kN": 8.52,
+   "shell_g": 11568,
+   "cell_g": 2504,
+   "max_cell_contact_N": 1859,
+   "OT posts (N)": 0,
+   "cradles (N)": 2944,
+   "lips (N)": 190,
+   "board parts on the wall (N)": 1845,
+   "rail tongues (ends) (N)": 0,
+   "carrier frames on cap skirt (N)": 0
+  }
+ },
+ "bottom": {
+  "base": {
+   "floor_kN": 11.36,
+   "shell_g": 16064,
+   "cell_g": 1818,
+   "max_cell_contact_N": 1197,
+   "OT posts (N)": 2671,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 919,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "K_W x0.5": {
+   "floor_kN": 2.47,
+   "shell_g": 3556,
+   "cell_g": 1803,
+   "max_cell_contact_N": 1138,
+   "OT posts (N)": 2437,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 627,
+   "carrier frames on cap skirt (N)": 1623
+  },
+  "K_W x2": {
+   "floor_kN": 15.3,
+   "shell_g": 22739,
+   "cell_g": 1753,
+   "max_cell_contact_N": 889,
+   "OT posts (N)": 2553,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 1318,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "cells x0.5": {
+   "floor_kN": 11.43,
+   "shell_g": 16193,
+   "cell_g": 1784,
+   "max_cell_contact_N": 1076,
+   "OT posts (N)": 2684,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 917,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "cells x2": {
+   "floor_kN": 11.18,
+   "shell_g": 15755,
+   "cell_g": 1838,
+   "max_cell_contact_N": 1260,
+   "OT posts (N)": 2699,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 920,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "damping 5 %": {
+   "floor_kN": 13.75,
+   "shell_g": 19801,
+   "cell_g": 2058,
+   "max_cell_contact_N": 1215,
+   "OT posts (N)": 2704,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 1022,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "damping 20 %": {
+   "floor_kN": 6.13,
+   "shell_g": 7461,
+   "cell_g": 1615,
+   "max_cell_contact_N": 1072,
+   "OT posts (N)": 2640,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 791,
+   "carrier frames on cap skirt (N)": 0
+  },
+  "1.5 m": {
+   "floor_kN": 20.36,
+   "shell_g": 27371,
+   "cell_g": 2756,
+   "max_cell_contact_N": 1572,
+   "OT posts (N)": 2874,
+   "cradles (N)": 0,
+   "lips (N)": 0,
+   "board parts on the wall (N)": 0,
+   "rail tongues (ends) (N)": 999,
+   "carrier frames on cap skirt (N)": 2476
+  }
+ }
+}

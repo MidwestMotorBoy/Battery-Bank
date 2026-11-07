@@ -1,0 +1,398 @@
+<title>Board Flex in a Drop</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a bench-test readout. Controls bar, then the 3D board beside a live readout panel, then stacked time traces that share one time axis. */
+:root {
+  --bg: #eef0ec; --panel: #ffffff; --ink: #161a17; --ink2: #555c57; --rule: #d8ddd7;
+  --accent: #1f6f8b; --hot: #c4501a; --ok: #2f7a3e; --warn: #a86a00; --stage1: #f6f7f4; --stage2: #dfe4de;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111412; --panel: #1a1e1b; --ink: #e8ebe7; --ink2: #a2aaa4; --rule: #2d332f;
+  --accent: #6cb6d1; --hot: #f08a52; --ok: #79c389; --warn: #e2a440; --stage1: #232925; --stage2: #121513; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111412; --panel: #1a1e1b; --ink: #e8ebe7; --ink2: #a2aaa4; --rule: #2d332f;
+  --accent: #6cb6d1; --hot: #f08a52; --ok: #79c389; --warn: #e2a440; --stage1: #232925; --stage2: #121513; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 14px/1.5 var(--f-body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 22px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 16px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font: 500 0.72rem var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); }
+h1 { font: 700 1.9rem/1.1 var(--f-display); margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+h2 { font: 600 1.05rem var(--f-display); margin: 0; letter-spacing: 0.02em; }
+p { margin: 0; max-width: 72ch; }
+.note { color: var(--ink2); font-size: 0.88rem; }
+.bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; background: transparent; color: var(--ink); font: 500 0.85rem var(--f-body); padding: 6px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--panel); }
+.btn { border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 6px; padding: 6px 12px; font: 500 0.85rem var(--f-body); cursor: pointer; min-width: 74px; }
+.btn:hover, .seg button:hover:not([aria-pressed="true"]) { background: var(--stage1); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+label.ctl { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--ink2); }
+label.ctl input[type=range] { width: 110px; accent-color: var(--accent); }
+select { font: 0.85rem var(--f-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 5px 6px; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: stretch; }
+@media (max-width: 820px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.stage { position: relative; min-width: 0; height: min(62vh, 560px); min-height: 340px; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 25%, var(--stage1), var(--stage2)); }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.stage .tag { position: absolute; font: 500 0.72rem var(--f-mono); color: var(--ink2); background: color-mix(in srgb, var(--panel) 80%, transparent);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 2px 6px; pointer-events: none; }
+.stage .clock { left: 10px; top: 10px; font-size: 0.85rem; color: var(--ink); }
+.stage .floor { right: 10px; top: 10px; }
+.stage .views { position: absolute; left: 10px; bottom: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.stage .views button { font: 500 0.75rem var(--f-body); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer; }
+.stage .legend { position: absolute; right: 10px; bottom: 10px; display: grid; gap: 3px; background: color-mix(in srgb, var(--panel) 88%, transparent);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 6px 8px; font: 0.7rem var(--f-mono); color: var(--ink2); }
+.legend .ramp { width: 170px; height: 10px; border-radius: 2px; }
+.legend .ticks { display: flex; justify-content: space-between; width: 170px; }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--ink2); }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: 0.86rem; }
+.kv dt { color: var(--ink2); } .kv dd { margin: 0; text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.state { display: inline-block; font: 600 0.7rem var(--f-mono); letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; }
+.state.bad { color: var(--hot); } .state.mid { color: var(--warn); } .state.ok { color: var(--ok); }
+.forces { display: grid; gap: 5px; }
+.frow { display: grid; grid-template-columns: 1fr 64px; gap: 8px; align-items: center; font-size: 0.8rem; }
+.frow .lab { color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.frow .track { grid-column: 1 / -1; height: 6px; background: var(--stage1); border-radius: 3px; overflow: hidden; }
+.frow .fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0; }
+.frow .val { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.traces { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px 6px; display: grid; gap: 4px; position: relative; }
+.traces canvas { display: block; width: 100%; height: 300px; cursor: ew-resize; touch-action: none; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 4px 8px;
+  font: 0.75rem var(--f-mono); color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.15); white-space: nowrap; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.cols > div { display: grid; gap: 6px; align-content: start; min-width: 0; }
+ul { margin: 0; padding-left: 1.15em; display: grid; gap: 4px; }
+table { border-collapse: collapse; font-size: 0.82rem; width: 100%; }
+td, th { text-align: left; padding: 3px 8px 3px 0; border-bottom: 1px solid var(--rule); }
+th { color: var(--ink2); font-weight: 500; }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.fallback[hidden] { display: none; }
+@media (max-width: 600px) { .stage .legend { bottom: 84px; } #floorTag { left: 10px; right: auto; top: 42px; } .legend .ramp, .legend .ticks { width: 130px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Battery bank · 1 m drop study · board plate model · cup fixes of 2026-11-05</div>
+  <h1>Board flex in a drop</h1>
+  <p class="note">The routed P0 board in the first millisecond after the bank lands flat from 1 m. It is held at its post spacers, F.Cu lips, rail blocks and USB-C housings, but nothing props its middle, so the middle keeps going after the cup stops. Colour is the surface strain; MLCCs and solder joints crack in drop tests from about 1,000 to 2,000 µε.</p>
+</header>
+
+<div class="bar" role="group" aria-label="Animation controls">
+  <div class="seg" id="pose" role="group" aria-label="Drop">
+    <button type="button" data-pose="board" aria-pressed="true">Flat on the board face</button>
+    <button type="button" data-pose="back" aria-pressed="false">Flat on the back face</button>
+  </div>
+  <button type="button" class="btn" id="play">Pause</button>
+  <label class="ctl" for="speed">Speed
+    <select id="speed"><option value="2">1 ms in 2 s</option><option value="4" selected>1 ms in 4 s</option><option value="8">1 ms in 8 s</option></select>
+  </label>
+  <label class="ctl" for="exag">Bend × <input type="range" id="exag" min="1" max="10" step="1" value="4"><span class="mono" id="exag-v">4</span></label>
+  <label class="ctl" for="parts"><input type="checkbox" id="parts" checked> Parts</label>
+  <label class="ctl" for="wall"><input type="checkbox" id="wall" checked> Wall and cans</label>
+</div>
+
+<div class="main">
+  <div class="stage" id="stage">
+    <div class="tag clock mono" id="clock">t = 0 µs</div>
+    <div class="tag floor" id="floorTag"></div>
+    <div class="views" role="group" aria-label="Camera">
+      <button type="button" data-view="iso">Iso</button>
+      <button type="button" data-view="end">End-on (from the ports)</button>
+      <button type="button" data-view="side">Side-on</button>
+      <button type="button" data-view="top">Wall side</button>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <div>surface strain, µε</div>
+      <canvas class="ramp" id="ramp" width="170" height="10"></canvas>
+      <div class="ticks"><span>0</span><span>1k</span><span>2k</span><span>3k</span><span>4k+</span></div>
+    </div>
+    <div class="fallback" id="fallback" hidden>The 3D view needs WebGL, which this browser has turned off. The readouts and time traces below still play.</div>
+  </div>
+  <aside class="panel" aria-live="off">
+    <h2 id="poseTitle">Flat on the board face</h2>
+    <dl class="kv">
+      <dt>Time after touch-down</dt><dd id="r-t">0 µs</dd>
+      <dt>Cup deceleration</dt><dd id="r-g">0 g</dd>
+      <dt>Board strain, 99th pct</dt><dd id="r-e">0 µε</dd>
+      <dt></dt><dd><span class="state ok" id="r-es">under 1,000</span></dd>
+      <dt>Bow toward the wall</dt><dd id="r-ww">0.00 mm</dd>
+      <dt>Bow toward the cells</dt><dd id="r-wc">0.00 mm</dd>
+      <dt>Front cans' travel</dt><dd id="r-uc">0.00 mm</dd>
+      <dt>Closest part to the wall</dt><dd id="r-cf">–</dd>
+    </dl>
+    <h2>Support forces now</h2>
+    <div class="forces" id="forces"></div>
+    <p class="note" id="peakNote"></p>
+  </aside>
+</div>
+
+<div class="traces" id="traces">
+  <h2>Over the hit</h2>
+  <canvas id="chart" aria-label="Time traces: board strain, closest part to the wall, cup deceleration. Drag to scrub."></canvas>
+  <div class="tip" id="tip" hidden></div>
+  <p class="note">Drag or tap the traces to scrub. The traces share one time axis; each has its own scale.</p>
+</div>
+
+<div class="cols">
+  <div>
+    <h2>What you're seeing</h2>
+    <ul>
+      <li><b>Board face:</b> the cup stops first. The board slides 0.4 mm onto its post spacers, its middle carries on toward the wall (up in the Iso view), and F.Cu parts come within about 0.06 mm of it. Then it springs back toward the cells.</li>
+      <li><b>Back face:</b> the cans move away from the board and the rail blocks pull it along at four corners. The unsupported middle sags toward the cells by up to 2 mm and rings.</li>
+      <li>The strain peaks at the USB-C receptacles' tabs and around the spacers, which are point supports. The 99th-percentile number in the panel leaves those spikes out.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Worst numbers in each drop</h2>
+    <table id="sumTable"><thead><tr><th>Item</th><th>Board face</th><th>Back face</th></tr></thead><tbody></tbody></table>
+  </div>
+  <div>
+    <h2>How to read it</h2>
+    <ul>
+      <li>Depth across the board (wall to cells) is stretched by the Bend slider, measured from each board face, so contacts still read true. The board's own 1.6 mm thickness is drawn true. The surface colour is lightly smoothed; the numbers are not. The cans keep their true round shape, so only their crowns sit at true distance.</li>
+      <li>Linear plate model with 60 modes, 2 % damping, driven by the cup's motion from the contact drop model. It is a guide to where the board bends, not a crack predictor.</li>
+      <li>Source: <span class="mono">docs/analysis/2026-11-04-drop-stress/board_anim.py</span> (PR #63).</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<script type="application/json" id="data">@@DATA@@</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+'use strict';
+const D = JSON.parse(document.getElementById('data').textContent);
+const b64 = (s, T) => { const bin = atob(s); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new T(u.buffer); };
+const NY = D.ny, NZ = D.nz, NP = NY * NZ, STEP = D.step, G = D.geom;
+const inside = b64(D.inside, Uint8Array);
+// the plate's strain is constant per element, which reads as streaks on a 1 mm grid: a 3x3 mean over the board (colour only)
+function smooth(e) { const NYg = D.ny, NZg = D.nz, n = NYg * NZg, ins = b64(D.inside, Uint8Array), out = new Uint16Array(e.length);
+  for (let f = 0; f < e.length / n; f++) for (let iz = 0; iz < NZg; iz++) for (let iy = 0; iy < NYg; iy++) { let s = 0, c = 0;
+    for (let dz = -1; dz <= 1; dz++) for (let dy = -1; dy <= 1; dy++) { const y = iy + dy, z = iz + dz; if (y < 0 || z < 0 || y >= NYg || z >= NZg) continue; const j = z * NYg + y; if (!ins[j]) continue; s += e[f * n + j]; c++; }
+    out[f * n + iz * NYg + iy] = c ? s / c : 0; }
+  return out; }
+const P = {};
+for (const k in D.poses) { const p = D.poses[k]; P[k] = { frames: p.frames, w: b64(p.w, Int16Array), e: smooth(b64(p.e, Uint16Array)), s: p.summary }; }
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// strain ramp: one hue, light to dark (0 -> 4000 ue)
+const RAMP = [[0, [233, 238, 232]], [0.25, [247, 205, 160]], [0.5, [236, 132, 64]], [0.75, [196, 80, 26]], [1, [110, 38, 12]]];
+function ramp(u) { u = Math.max(0, Math.min(1, u)); for (let i = 1; i < RAMP.length; i++) { const [a, ca] = RAMP[i - 1], [b, cb] = RAMP[i];
+  if (u <= b) { const f = (u - a) / (b - a); return [0, 1, 2].map(j => (ca[j] + (cb[j] - ca[j]) * f) / 255); } } return RAMP[RAMP.length - 1][1].map(v => v / 255); }
+(function () { const c = document.getElementById('ramp'), x = c.getContext('2d'); for (let i = 0; i < 170; i++) { const [r, g, b] = ramp(i / 169); x.fillStyle = `rgb(${r * 255},${g * 255},${b * 255})`; x.fillRect(i, 0, 1, 10); } })();
+
+let pose = 'board', fpos = 0, playing = !reduce, speed = 4, exag = 4, last = null;
+const peakIdx = k => { const f = P[k].frames; let m = 0; for (let i = 1; i < f.length; i++) if (f[i].emax > f[m].emax) m = i; return m; };
+fpos = peakIdx(pose);
+
+// ---------- readouts ----------
+const GROUPS = [['spacer', 'Post spacers'], ['lip', 'F.Cu lips'], ['usb_f', 'USB-C, wall side'], ['usb_b', 'USB-C, cell side'], ['rail', 'Rail blocks (core push)'], ['bcu', 'B.Cu parts on cans']];
+const forcesEl = document.getElementById('forces');
+const fEls = GROUPS.map(([k, lab]) => { const d = document.createElement('div'); d.className = 'frow';
+  d.innerHTML = `<span class="lab">${lab}</span><span class="val">0 N</span><div class="track"><div class="fill"></div></div>`; forcesEl.appendChild(d);
+  return { k, val: d.querySelector('.val'), fill: d.querySelector('.fill') }; });
+const fmt = (v, d = 0) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+function groupForces(fr) { const g = {}; D.supports.forEach((s, i) => { g[s.kind] = (g[s.kind] || 0) + fr.F[i]; }); return g; }
+const gmax = {}; for (const k in P) { gmax[k] = {}; P[k].frames.forEach(fr => { const g = groupForces(fr); for (const n in g) gmax[k][n] = Math.max(gmax[k][n] || 0, g[n]); }); }
+function lerpFrame(i0, f) { const fr = P[pose].frames; const a = fr[i0], b = fr[Math.min(i0 + 1, fr.length - 1)]; return { a, b, f }; }
+function readouts() {
+  const fr = P[pose].frames, i0 = Math.floor(fpos), f = fpos - i0, a = fr[i0], b = fr[Math.min(i0 + 1, fr.length - 1)];
+  const L = (x, y) => x + (y - x) * f;
+  const t = L(a.t, b.t), e = L(a.emax, b.emax);
+  document.getElementById('clock').textContent = `t = ${fmt(t)} µs`;
+  document.getElementById('r-t').textContent = `${fmt(t)} µs`;
+  document.getElementById('r-g').textContent = `${fmt(Math.abs(L(a.g, b.g)))} g`;
+  document.getElementById('r-e').textContent = `${fmt(e)} µε`;
+  const es = document.getElementById('r-es'); es.className = 'state ' + (e >= 2000 ? 'bad' : e >= 1000 ? 'mid' : 'ok');
+  es.textContent = e >= 2000 ? 'over 2,000' : e >= 1000 ? '1,000 to 2,000' : 'under 1,000';
+  document.getElementById('r-ww').textContent = `${fmt(Math.max(0, L(a.wmax, b.wmax)), 2)} mm`;
+  document.getElementById('r-wc').textContent = `${fmt(Math.max(0, -L(a.wmin, b.wmin)), 2)} mm`;
+  document.getElementById('r-uc').textContent = `${fmt(L(a.uc, b.uc), 2)} mm`;
+  const cf = (f < 0.5 ? a : b).cf; document.getElementById('r-cf').textContent = `${cf[1]} ${fmt(L(a.cf[0], b.cf[0]), 2)} mm`;
+  const ga = groupForces(a), gb = groupForces(b);
+  fEls.forEach(o => { const v = L(ga[o.k] || 0, gb[o.k] || 0), m = Math.max(1, ...Object.keys(P).map(k => gmax[k][o.k] || 0));
+    o.val.textContent = `${fmt(v)} N`; o.fill.style.width = `${Math.min(100, 100 * v / m)}%`; });
+}
+
+// ---------- summary table ----------
+(function () { const tb = document.querySelector('#sumTable tbody'), s = k => P[k].s;
+  const rows = [['Strain, 99th pct', k => `${fmt(s(k).strain_p99)} µε`], ['Bow toward the wall', k => `${s(k).bow_wall.toFixed(2)} mm`],
+    ['Bow toward the cells', k => `${s(k).bow_cells.toFixed(2)} mm`], ['Closest F.Cu part', k => `${s(k).closest[0].ref} ${s(k).closest[0].clear_mm.toFixed(2)} mm`],
+    ['USB-C tab strain', k => `${fmt(s(k).hot[0].strain_ue)} µε`], ['Spacers, peak sum', k => `${fmt(s(k).supports.spacer || 0)} N`]];
+  rows.forEach(([lab, fn]) => { const tr = document.createElement('tr'); tr.innerHTML = `<td>${lab}</td><td class="n">${fn('board')}</td><td class="n">${fn('back')}</td>`; tb.appendChild(tr); });
+})();
+
+// ---------- traces ----------
+const chart = document.getElementById('chart'), tip = document.getElementById('tip');
+const TR = [
+  { key: 'emax', lab: 'Board strain, 99th pct (µε)', lo: 0, hi: 9000, ref: [[2000, '2,000']] },
+  { key: 'cf', lab: 'Closest part to the wall (mm)', lo: 0, hi: 1.5, get: fr => fr.cf[0], ref: [[0.2, 'design 0.2']] },
+  { key: 'g', lab: 'Cup deceleration (g)', lo: 0, hi: 12000, get: fr => Math.abs(fr.g) } ];
+function drawChart() {
+  const dpr = window.devicePixelRatio || 1, W = chart.clientWidth, H = chart.clientHeight;
+  if (chart.width !== W * dpr) { chart.width = W * dpr; chart.height = H * dpr; }
+  const x = chart.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+  const fr = P[pose].frames, t1 = fr[fr.length - 1].t, L = 56, R = 12, top = 6, gap = 18, bandH = (H - top - 22 - gap * 2) / 3;
+  const X = t => L + (W - L - R) * t / t1;
+  x.font = '11px ' + css('--f-mono'); const ink2 = css('--ink2'), rule = css('--rule'), acc = css('--accent'), hot = css('--hot');
+  TR.forEach((tr, k) => {
+    const y0 = top + k * (bandH + gap), Y = v => y0 + bandH * (1 - (v - tr.lo) / (tr.hi - tr.lo));
+    x.strokeStyle = rule; x.lineWidth = 1; x.beginPath(); x.moveTo(L, y0 + bandH + 0.5); x.lineTo(W - R, y0 + bandH + 0.5); x.stroke();
+    x.fillStyle = ink2; x.textAlign = 'left'; x.fillText(tr.lab, L, y0 + 10);
+    x.textAlign = 'right'; x.fillText(fmt(tr.hi, tr.hi < 10 ? 1 : 0), L - 6, y0 + 8); x.fillText(fmt(tr.lo), L - 6, y0 + bandH);
+    (tr.ref || []).forEach(([v, lab]) => { x.setLineDash([3, 3]); x.strokeStyle = ink2; x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(W - R, Y(v)); x.stroke(); x.setLineDash([]);
+      x.textAlign = 'right'; x.fillText(lab, W - R, Y(v) - 3); });
+    x.strokeStyle = k === 0 ? hot : acc; x.lineWidth = 2; x.lineJoin = 'round'; x.beginPath();
+    fr.forEach((f, i) => { const v = tr.get ? tr.get(f) : f[tr.key]; const px = X(f.t), py = Y(Math.max(tr.lo, Math.min(tr.hi, v))); i ? x.lineTo(px, py) : x.moveTo(px, py); }); x.stroke();
+  });
+  x.fillStyle = ink2; x.textAlign = 'center';
+  for (let t = 0; t <= t1; t += 200) x.fillText(`${t} µs`, X(t), H - 6);
+  const tc = fr[Math.floor(fpos)].t + (fr[Math.min(Math.floor(fpos) + 1, fr.length - 1)].t - fr[Math.floor(fpos)].t) * (fpos - Math.floor(fpos));
+  x.strokeStyle = css('--ink'); x.lineWidth = 1.5; x.beginPath(); x.moveTo(X(tc), top); x.lineTo(X(tc), H - 20); x.stroke();
+  chart._X = X; chart._L = L; chart._R = R; chart._t1 = t1;
+}
+function scrubAt(ev) {
+  const r = chart.getBoundingClientRect(), px = ev.clientX - r.left, fr = P[pose].frames;
+  const t = Math.max(0, Math.min(chart._t1, (px - chart._L) / (r.width - chart._L - chart._R) * chart._t1));
+  fpos = Math.min(fr.length - 1, t / chart._t1 * (fr.length - 1)); setPlaying(false); render();
+}
+let dragging = false;
+chart.addEventListener('pointerdown', e => { dragging = true; chart.setPointerCapture(e.pointerId); scrubAt(e); });
+chart.addEventListener('pointermove', e => {
+  if (dragging) scrubAt(e);
+  const r = chart.getBoundingClientRect(), px = e.clientX - r.left, fr = P[pose].frames;
+  const i = Math.round(Math.max(0, Math.min(1, (px - chart._L) / (r.width - chart._L - chart._R))) * (fr.length - 1)), f = fr[i];
+  tip.hidden = false; tip.textContent = `${fmt(f.t)} µs · ${fmt(f.emax)} µε · ${f.cf[1]} ${f.cf[0].toFixed(2)} mm · ${fmt(Math.abs(f.g))} g`;
+  const tr = document.getElementById('traces').getBoundingClientRect(); tip.style.left = Math.min(tr.width - tip.offsetWidth - 8, Math.max(8, px + 14)) + 'px'; tip.style.top = (chart.offsetTop + 8) + 'px';
+});
+chart.addEventListener('pointerup', () => { dragging = false; });
+chart.addEventListener('pointerleave', () => { tip.hidden = true; });
+
+// ---------- 3D ----------
+let three = null;
+const ZMID = (D.z0 + (NZ - 1) * STEP / 2), XMID = G.X_F - G.T / 2;           // board centre, board mid-plane
+function wAt(arr, base, iy, iz) { return arr[base + iz * NY + iy] / 1000; }
+function setup3D() {
+  const stage = document.getElementById('stage');
+  if (!window.THREE) { document.getElementById('fallback').hidden = false; return; }
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (err) { document.getElementById('fallback').hidden = false; return; }
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); stage.prepend(renderer.domElement);
+  const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(32, 1, 1, 2000);
+  const ctl = new THREE.OrbitControls(cam, renderer.domElement); ctl.enableDamping = true; ctl.target.set(0, 0, 0);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x6b6f6a, 0.9)); const dl = new THREE.DirectionalLight(0xffffff, 0.7); dl.position.set(40, 80, 60); scene.add(dl);
+  // board: world X = board y, world Z = -(board z - ZMID), world Y = (x - XMID) * exag
+  const idx = [];
+  for (let iz = 0; iz < NZ - 1; iz++) for (let iy = 0; iy < NY - 1; iy++) {
+    const a = iz * NY + iy, b = a + 1, c = a + NY, d = c + 1;
+    if (inside[a] && inside[b] && inside[c] && inside[d]) idx.push(a, c, b, b, c, d);
+  }
+  function surf(sign) {
+    const g = new THREE.BufferGeometry(), pos = new Float32Array(NP * 3), col = new Float32Array(NP * 3);
+    for (let iz = 0; iz < NZ; iz++) for (let iy = 0; iy < NY; iy++) { const i = iz * NY + iy; pos[3 * i] = D.y0 + iy * STEP; pos[3 * i + 2] = -(D.z0 + iz * STEP - ZMID); }
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.setIndex(sign > 0 ? idx : idx.slice().reverse());
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.75, metalness: 0.0, side: THREE.DoubleSide }));
+    scene.add(m); return m;
+  }
+  const topS = surf(1), botS = surf(-1);
+  // parts
+  const partsGrp = new THREE.Group(); scene.add(partsGrp);
+  const matF = new THREE.MeshStandardMaterial({ color: 0x3b4240, roughness: 0.6 }), matB = new THREE.MeshStandardMaterial({ color: 0x5d6461, roughness: 0.6 });
+  const matHot = new THREE.MeshStandardMaterial({ color: 0x1f6f8b, roughness: 0.5, emissive: 0x0a2a36 });
+  const parts = D.parts.map(p => { const geo = new THREE.BoxGeometry(Math.max(0.3, p.y1 - p.y0), 1, Math.max(0.3, p.z1 - p.z0));
+    const m = new THREE.Mesh(geo, p.side === 'F' ? matF : matB); m.position.x = (p.y0 + p.y1) / 2; m.position.z = -((p.z0 + p.z1) / 2 - ZMID);
+    const iy = Math.max(0, Math.min(NY - 1, Math.round(((p.y0 + p.y1) / 2 - D.y0) / STEP))), iz = Math.max(0, Math.min(NZ - 1, Math.round(((p.z0 + p.z1) / 2 - D.z0) / STEP)));
+    partsGrp.add(m); return { p, m, iy, iz, base: m.material }; });
+  // wall (board-face wall inside) and the two front cans
+  const wallGrp = new THREE.Group(); scene.add(wallGrp);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(50, 82), new THREE.MeshStandardMaterial({ color: 0x9fb3bd, transparent: true, opacity: 0.22, side: THREE.DoubleSide, depthWrite: false }));
+  wall.rotation.x = -Math.PI / 2; wallGrp.add(wall);
+  const wallEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(50, 82)), new THREE.LineBasicMaterial({ color: 0x6c8592 })); wallEdge.rotation.x = -Math.PI / 2; wallGrp.add(wallEdge);
+  const canMat = new THREE.MeshStandardMaterial({ color: 0x8c9aa3, transparent: true, opacity: 0.35, roughness: 0.4, metalness: 0.3, depthWrite: false });
+  const cans = [-1, 1].map(s => { const c = new THREE.Mesh(new THREE.CylinderGeometry(G.CR, G.CR, G.z_cell[1] - G.z_cell[0], 48, 1, true), canMat);
+    c.rotation.x = Math.PI / 2; c.position.x = s * G.PR; c.position.z = -((G.z_cell[0] + G.z_cell[1]) / 2 - ZMID); wallGrp.add(c); return c; });
+  // spacers (tubes from F.Cu up to their stop) and rail blocks (under B.Cu)
+  const supGrp = new THREE.Group(); scene.add(supGrp);
+  const supMeshes = D.supports.map((s, i) => { if (!['spacer', 'rail', 'lip'].includes(s.kind)) return null;
+    const geo = s.kind === 'spacer' ? new THREE.CylinderGeometry(2, 2, 1, 20) : new THREE.BoxGeometry(Math.max(0.8, s.y1 - s.y0), 1, s.z1 - s.z0);
+    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xb9c2bc, roughness: 0.7, transparent: true, opacity: 0.85 }));
+    m.position.x = (s.y0 + s.y1) / 2; m.position.z = -((s.z0 + s.z1) / 2 - ZMID); supGrp.add(m); return { s, m, i }; });
+  three = { matHot, renderer, scene, cam, ctl, topS, botS, parts, wall, wallEdge, cans, supMeshes, partsGrp, wallGrp };
+  function size() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+  new ResizeObserver(size).observe(stage); size(); view('iso');
+}
+function view(v) {
+  if (!three) return; const { cam, ctl } = three; const d = three.renderer.domElement.clientWidth < 500 ? 260 : 205;
+  const at = { iso: [0.75, 0.55, 0.85], end: [0, 0.02, 1], side: [1, 0.02, 0.001], top: [0.001, 1, 0.02] }[v];
+  const n = Math.hypot(...at); cam.position.set(at[0] / n * d, at[1] / n * d, at[2] / n * d); cam.up.set(0, 1, 0); ctl.target.set(0, 0, 0); ctl.update();
+}
+document.querySelectorAll('.views button').forEach(b => b.addEventListener('click', () => { view(b.dataset.view); render(); }));
+function update3D() {
+  if (!three) return;
+  const p = P[pose], i0 = Math.floor(fpos), i1 = Math.min(i0 + 1, p.frames.length - 1), f = fpos - i0, b0 = i0 * NP, b1 = i1 * NP, k = exag;
+  const tp = three.topS.geometry.attributes.position.array, bp = three.botS.geometry.attributes.position.array, tc = three.topS.geometry.attributes.color.array, bc = three.botS.geometry.attributes.color.array;
+  const w = new Float32Array(NP);
+  for (let i = 0; i < NP; i++) {
+    const wi = (p.w[b0 + i] * (1 - f) + p.w[b1 + i] * f) / 1000; w[i] = wi;
+    const e = (p.e[b0 + i] * (1 - f) + p.e[b1 + i] * f) * 10; const [r, g, bb] = ramp(e / 4000);
+    tp[3 * i + 1] = G.T / 2 + wi * k; bp[3 * i + 1] = -G.T / 2 + wi * k;
+    tc[3 * i] = r; tc[3 * i + 1] = g; tc[3 * i + 2] = bb; bc[3 * i] = r * 0.8; bc[3 * i + 1] = g * 0.8; bc[3 * i + 2] = bb * 0.8;
+  }
+  ['topS', 'botS'].forEach(n => { const a = three[n].geometry.attributes; a.position.needsUpdate = true; a.color.needsUpdate = true; three[n].geometry.computeVertexNormals(); });
+  const fr = p.frames[f < 0.5 ? i0 : i1], closest = fr.cf[1];
+  three.parts.forEach(o => { const wi = w[o.iz * NY + o.iy], s = o.p.side === 'F' ? 1 : -1;
+    o.m.scale.y = o.p.h * k; o.m.position.y = s * G.T / 2 + (wi + s * o.p.h / 2) * k;
+    o.m.material = (o.p.ref === closest && fr.cf[0] < 0.2) ? three.matHot : o.base; });
+  three.wall.position.y = three.wallEdge.position.y = G.T / 2 + (G.X_IN - G.X_F) * k;
+  const uc = p.frames[i0].uc * (1 - f) + p.frames[i1].uc * f;
+  three.cans.forEach(c => { c.position.y = -G.T / 2 + (G.PR + G.CR + uc - (G.X_F - G.T)) * k - G.CR; });
+  const F0 = p.frames[i0].F, F1 = p.frames[i1].F;
+  three.supMeshes.forEach(o => { if (!o) return; const s = o.s, F = F0[o.i] * (1 - f) + F1[o.i] * f, on = F > 1;
+    o.m.material.color.set(on ? (css('--hot') || '#c4501a') : '#b9c2bc');
+    const iy = Math.max(0, Math.min(NY - 1, Math.round(((s.y0 + s.y1) / 2 - D.y0) / STEP))), iz = Math.max(0, Math.min(NZ - 1, Math.round(((s.z0 + s.z1) / 2 - D.z0) / STEP))), wi = w[iz * NY + iy];
+    if (s.kind === 'spacer') { const h = G.X_IN - s.gap - G.X_F; o.m.scale.y = h * k; o.m.position.y = G.T / 2 + (wi + h / 2) * k; }
+    else if (s.kind === 'lip') { const y = G.T / 2 + (G.X_IN - s.gap - G.X_F) * k; o.m.scale.y = 1.8 * k * 0.25; o.m.position.y = y + o.m.scale.y / 2; }
+    else { const h = 2.0; o.m.scale.y = h * k; o.m.position.y = -G.T / 2 + (wi - h / 2) * k; } });
+  three.partsGrp.visible = document.getElementById('parts').checked; three.wallGrp.visible = document.getElementById('wall').checked;
+}
+function render() { readouts(); drawChart(); update3D(); if (three) { three.ctl.update(); three.renderer.render(three.scene, three.cam); } }
+
+// ---------- controls ----------
+function setPlaying(v) { playing = v; document.getElementById('play').textContent = v ? 'Pause' : 'Play'; last = null; }
+document.getElementById('play').addEventListener('click', () => setPlaying(!playing));
+document.getElementById('speed').addEventListener('change', e => { speed = +e.target.value; });
+document.getElementById('exag').addEventListener('input', e => { exag = +e.target.value; document.getElementById('exag-v').textContent = exag; render(); });
+['parts', 'wall'].forEach(id => document.getElementById(id).addEventListener('change', render));
+const TITLES = { board: 'Flat on the board face', back: 'Flat on the back face' };
+const FLOOR = { board: 'floor is beyond the wall (up)', back: 'floor is beyond the cells (down)' };
+function setPose(k) { pose = k; fpos = peakIdx(k);
+  document.querySelectorAll('#pose button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pose === k)));
+  document.getElementById('poseTitle').textContent = TITLES[k]; document.getElementById('floorTag').textContent = 'Lands on the ' + (k === 'board' ? 'board face: ' : 'back face: ') + FLOOR[k];
+  const s = P[k].s; document.getElementById('peakNote').textContent = `Peak over the hit: ${fmt(s.strain_p99)} µε (99th pct), ${s.closest[0].ref} within ${s.closest[0].clear_mm.toFixed(2)} mm of the wall, USB-C tabs ${fmt(s.hot[0].strain_ue)} µε.`;
+  render(); }
+document.querySelectorAll('#pose button').forEach(b => b.addEventListener('click', () => setPose(b.dataset.pose)));
+function tick(ts) {
+  if (playing) { if (last != null) { const fr = P[pose].frames, dt_us = (ts - last) / 1000 * 1000 / speed, per = fr[1].t - fr[0].t;
+      fpos += dt_us / per; if (fpos >= fr.length - 1) fpos = 0; } last = ts; render(); }
+  else if (three) { three.ctl.update(); three.renderer.render(three.scene, three.cam); }
+  requestAnimationFrame(tick);
+}
+try { setup3D(); } catch (err) { console.error(err); document.getElementById('fallback').hidden = false; }
+setPose('board'); setPlaying(playing); requestAnimationFrame(tick);
+window.addEventListener('resize', drawChart);
+})();
+</script>
