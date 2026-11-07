@@ -42,7 +42,10 @@ are upper bounds and their stresses are not usable; that needs a 3-DOF version o
 Logan picked the cup-side fixes from the 11-04 results (`hardware/mechanical/monolith_cup.py`, 402.1 g):
 
 * Rail tongues set back 0.3 mm from the frame faces (`TONGUE_SETBACK`): the cell-to-tongue gap goes 0.40-0.45 to
-  0.70-0.75 mm.
+  0.70-0.75 mm. Since 2026-11-07 the bottom tongues only: on the 0.95 mm top frame the setback left a 0.65 mm tongue,
+  under JLC's 1.0 mm MJF wall, and the port-end tongue load was the model error described below. A top tongue sits
+  against the top wall, so a can pushing on it loads it in compression. The top tongues are back to 0.95 mm, the full
+  frame height; the bottom ones are 1.30 mm.
 * Overtravel posts r1.5 to r2.5 (`OT_R`), plus a fifth post under the front cells (`OT_POSTS`).
 * Cradle tops cut to x <= 20.5 under C421 / C556 (`CRADLE_CAP_RELIEF`).
 * The 0.5 mm post-tip gap was run as a variant (see below) and is not in the model.

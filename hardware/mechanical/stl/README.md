@@ -32,7 +32,7 @@ is 0.1–0.2 mm thick, which is more than the USB-C seal bores and the O-ring gr
 |---|---|---|---|
 | `monolith_cup_bumpb.stl` | Bottom bumper with the vent grille (16) | 1 | One print, face down: 5 walls, 4 top and 4 bottom layers, 30 % gyroid. |
 | `monolith_cup_bumpt.stl` | Top bumper with the port numbers (17) | 1 | Same as the bottom bumper. |
-| `monolith_cup_pad.stl` | Cap pad (12) | 1 | 15 % gyroid. |
+| `monolith_cup_pad.stl` | Cap pad (12) | 1 | 15 % gyroid. Printed height 9.8 mm: the file is 1.2 mm taller than the installed pad (`PAD_PROUD`, since 2026-11-07), and that is the core's preload. Don't scale it. |
 
 ## `not_printed/`: bought, cut or dispensed (for fit checks and CAD only)
 
