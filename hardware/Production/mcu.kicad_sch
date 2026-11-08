@@ -3225,26 +3225,6 @@
 		)
 		(uuid "fe291510-1e18-46ea-9bb7-95d57cbc58e6")
 	)
-	(label "UART_TX"
-		(at 130.81 81.28 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "09726bd6-ea97-40bd-9924-b757ea29ecf0")
-	)
-	(label "UART_TX"
-		(at 203.2 60.96 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "301079f6-0801-4633-8b4a-805e718372de")
-	)
 	(label "SWCLK"
 		(at 203.2 55.88 0)
 		(effects
@@ -3255,6 +3235,16 @@
 		)
 		(uuid "079531c5-2cf2-498c-a261-15a935d4d138")
 	)
+	(label "UART_TX"
+		(at 130.81 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "09726bd6-ea97-40bd-9924-b757ea29ecf0")
+	)
 	(label "RFIO"
 		(at 100.33 55.88 180)
 		(effects
@@ -3264,6 +3254,16 @@
 			(justify right bottom)
 		)
 		(uuid "1baba0a1-2f25-4de3-9fcb-4d528c633966")
+	)
+	(label "UART_TX"
+		(at 203.2 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "301079f6-0801-4633-8b4a-805e718372de")
 	)
 	(label "NRST"
 		(at 97.79 78.74 180)
