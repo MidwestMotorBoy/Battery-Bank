@@ -16,7 +16,7 @@ move them by hand: the scripts put each part in its material's folder (`STL_MAT`
 | `monolith_cup_carrier.stl` | Cell carrier (1) | 1 | |
 | `monolith_cup_rails.stl` | Board rail blocks (2) | 4 | All four in one file. |
 | `monolith_cup_spacer.stl` | Post spacers (10) | 4 | All four in one file. Ø4 × 3.3 mm with crush ribs in the bore (2026-11-03; TPU sleeves before). |
-| `coupons/monolith_coupon_A_seal_bore_ladder.stl` | Fit coupon A | 1 set | Print the coupons first. |
+| `coupons/monolith_coupon_A_seal_bore_ladder.stl` | Fit coupon A | 1 set | Not ordered (Logan, 2026-11-07: the real parts are ordered directly); kept for a reprint question. |
 | `coupons/monolith_coupon_B1_cup_mouth.stl` | Fit coupon B1 | 1 set | |
 | `coupons/monolith_coupon_B2_cap.stl` | Fit coupon B2 (the real cap) | 1 set | |
 | `coupons/monolith_coupon_C1_carrier.stl` | Fit coupon C1 (the real carrier) | 1 set | |
@@ -32,7 +32,7 @@ is 0.1–0.2 mm thick, which is more than the USB-C seal bores and the O-ring gr
 |---|---|---|---|
 | `monolith_cup_bumpb.stl` | Bottom bumper with the vent grille (16) | 1 | One print, face down: 5 walls, 4 top and 4 bottom layers, 30 % gyroid. |
 | `monolith_cup_bumpt.stl` | Top bumper with the port numbers (17) | 1 | Same as the bottom bumper. |
-| `monolith_cup_pad.stl` | Cap pad (12) | 1 | 15 % gyroid. |
+| `monolith_cup_pad.stl` | Cap pad (12) | 1 | 15 % gyroid. Printed height 9.8 mm: the file is 1.2 mm taller than the installed pad (`PAD_PROUD`, since 2026-11-07), and that is the core's preload. Don't scale it. |
 
 ## `not_printed/`: bought, cut or dispensed (for fit checks and CAD only)
 

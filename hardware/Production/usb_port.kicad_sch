@@ -21906,7 +21906,7 @@
 				)
 			)
 		)
-		(property "Notes" "ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; TPS25751 config default ICHG_REG 2.8 A; MCU raises the only charging port). EN_CHG_BIT_RESET_BEHAVIOR = 0 so a watchdog expiry stops charging instead of falling back to this pin"
+		(property "Notes" "ICHG pin 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %). Kept at 11.8k on 2026-11-07 (BAK 65E; the 0 Ohm plan was dropped): config sets EN_ICHG_PIN = 0, so ICHG_REG is the limit and firmware keeps both ports at 4.55 A total on the cell-temperature ramp (docs/firmware/charge-and-thermal-policy.md). This pin only caps current if a watchdog reset or power cycle restores EN_ICHG_PIN = 1 with no host. EN_CHG_BIT_RESET_BEHAVIOR = 0"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

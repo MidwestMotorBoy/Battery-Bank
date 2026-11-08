@@ -25,7 +25,7 @@ BAK's datasheet (A/00, `datasheets/bak-n21700cx-65e.pdf`) gives only the outer l
 
 **Loop (once a second):** `ICHG_REG = min(gauge ChargingCurrent(), ramp(hottest cell), 4.55 A)`, written to each BQ25756 through its TPS25751 (`I2Cr`/`I2Cw`). With both ports sinking, split it so the sum stays under the ramp. The ramp is the charge table in the spec.
 
-**Readback.** R_ICHG is 0 Ω (ICHG pin to PGND, `EN_ICHG_PIN = 0`), so the register is the only charger-level limit. Every second, and before releasing CHG_INH, read back `ICHG_REG`, `EN_ICHG_PIN` and `EN_CHG`. On a mismatch, rewrite the value or inhibit charging.
+**Readback.** R413/R513 stay 11.8 kΩ (decided 2026-11-07) with `EN_ICHG_PIN = 0`, so the register is the charger-level limit and a future cell is still a software change. The pin value (4.07–4.45 A) only applies if a watchdog reset or a power cycle restores `EN_ICHG_PIN = 1` with no host to rewrite it. Every second, and before releasing CHG_INH, read back `ICHG_REG`, `EN_ICHG_PIN` and `EN_CHG`. On a mismatch, rewrite the value or inhibit charging.
 
 **Backstops:**
 - The TPS25751 configuration loads `ICHG_REG = 3.25 A` at power-up, before the MCU runs.

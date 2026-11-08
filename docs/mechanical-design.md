@@ -34,7 +34,7 @@ All of these come from the Python models in `hardware/mechanical/`. Re-run the s
 - **Sense wires (2026-10-24):** the three cell taps are 28 AWG XL-ETFE wires too, into Ø0.8 mm plated holes in 1.5 × 1.4 mm pads (`sb_slots()`). CELL1 and CELL3 solder to a flat tongue on their top strip (`_top_tongue()`); CELL2 solders to the middle of the bottom strip and runs in a 1.0 × 0.95 mm channel in the bottom frame (`sense_channel()`). Details: [`production/p0-assembly.md`](production/p0-assembly.md).
 - **Board:** same outline and cell-tap positions as the tray. New: sense-wire holes in place of the tab slots, four peg slots (H101–H104, the former cover-standoff references), the gap-filler zone on B.Cu with thermal vias, the rails split at z 25–55 mm, the PACK wire holes; the cover standoffs are gone.
 - **Label:** a printed vinyl wrap label (Borderlands bear art, 2026-10-28) in the cup's label relief; art and order files in [`hardware/label/`](../hardware/label/README.md).
-- **Open:** the three coupons (cup mouth on its cap, a clip-on rail block, a USB-C bore with its housing pocket), the drop series (with the 2026-11-03 cradles: check how much the front cans squeeze toward each other), the push-in force, and go / no-go strips for the 0.12 mm land gap on the first cup.
+- **Open:** the fit checks on the first real parts (cup mouth on its cap, the clip-on rail blocks, the USB-C bores; no coupons since 2026-11-07), the drop series (with the 2026-11-03 cradles: check how much the front cans squeeze toward each other), the push-in force, and go / no-go strips for the 0.12 mm land gap on the first cup.
 
 ## The real board in the model (2026-10-30)
 

@@ -1,0 +1,165 @@
+{
+ "pose": "back",
+ "part": "carrier",
+ "H": 0.5,
+ "snapshots": [
+  {
+   "t_ms": 0.367,
+   "loads": [
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     1812.3
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     1812.3
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "-",
+     169.0
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "-",
+     169.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "-",
+     100.1
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "-",
+     101.5
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     4108.2
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     250.9
+    ]
+   ],
+   "its": 26,
+   "rel_res": 8.232674834486302e-08,
+   "spin_rad_s2": [
+    2257.0,
+    15049576.0,
+    -492172.0
+   ],
+   "unbalanced_g": 43.1
+  },
+  {
+   "t_ms": 0.378,
+   "loads": [
+    [
+     "C1",
+     "carrier/webs",
+     "+",
+     1793.4
+    ],
+    [
+     "C4",
+     "carrier/webs",
+     "+",
+     1793.4
+    ],
+    [
+     "carrier/frames",
+     "rails_tp/ends",
+     "-",
+     170.0
+    ],
+    [
+     "carrier/frames",
+     "rails_tn/ends",
+     "-",
+     170.4
+    ],
+    [
+     "carrier/frames",
+     "rails_bp/ends",
+     "-",
+     100.2
+    ],
+    [
+     "carrier/frames",
+     "rails_bn/ends",
+     "-",
+     101.3
+    ],
+    [
+     "carrier/frames",
+     "shell/cup_walls",
+     "+",
+     4127.0
+    ],
+    [
+     "carrier/webs",
+     "shell/cup_walls",
+     "+",
+     249.2
+    ]
+   ],
+   "its": 26,
+   "rel_res": 8.234374805600984e-08,
+   "spin_rad_s2": [
+    2285.0,
+    15124034.0,
+    -501674.0
+   ],
+   "unbalanced_g": 54.9
+  }
+ ],
+ "regions": {
+  "carrier/frames": {
+   "p99": 21.622074094200144,
+   "p999": 29.723377936971936,
+   "max": 42.88652452641586,
+   "at": [
+    22.2,
+    7.7,
+    4.5
+   ],
+   "p999_far": 16.375606006420863,
+   "max_far": 17.676932738438246,
+   "at_far": [
+    18.7,
+    6.7,
+    4.5
+   ]
+  },
+  "carrier/webs": {
+   "p99": 5.4304344310940635,
+   "p999": 11.179281482960944,
+   "max": 22.585435995285277,
+   "at": [
+    -0.3,
+    17.2,
+    77.0
+   ],
+   "p999_far": 10.114763806803827,
+   "max_far": 22.585435995285277,
+   "at_far": [
+    -0.3,
+    17.2,
+    77.0
+   ]
+  }
+ }
+}
