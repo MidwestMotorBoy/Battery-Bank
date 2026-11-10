@@ -14,8 +14,17 @@ b = pcbnew.LoadBoard(src)
 tr = {t.m_Uuid.AsString(): t for t in b.GetTracks() if t.GetClass() == "PCB_TRACK"}
 if os.path.exists(planf):
     plan = json.load(open(planf))
+    # pcbnew re-nets a track / via that a too-wide track of another net overlapped (net propagation on load): put it back,
+    # so the short shows up in the next DRC and the wide track is lowered instead
+    fixed = 0
+    for t in b.GetTracks():
+        want = plan["nets"].get(t.m_Uuid.AsString())
+        if want is not None and t.GetNetname() != want:
+            t.SetNet(b.FindNet(want)); fixed += 1
+    if fixed:
+        print("nets restored", fixed)
 else:
-    plan = {"orig": {}, "step": {}}
+    plan = {"orig": {}, "step": {}, "nets": {t.m_Uuid.AsString(): t.GetNetname() for t in b.GetTracks()}}
     for u, t in tr.items():
         w = MM(t.GetWidth())
         cls = [c for c in TARGET if c in t.GetNetClassName()]
@@ -31,6 +40,16 @@ if drc:
             for it in v["items"]:
                 if it["uuid"] in plan["step"]:
                     flag.add(it["uuid"])
+    for un in drc.get("unconnected_items", []):           # a widened track pinched a pour neck: lower the widened tracks near it
+        for it in un["items"]:
+            if it["description"].startswith("Zone"):
+                continue
+            px, py = it["pos"]["x"], it["pos"]["y"]
+            for u, i in plan["step"].items():
+                if u in tr and STEPS[i] is not None and STEPS[i] > plan["orig"][u] + 1e-9:
+                    t = tr[u]
+                    if min(abs(MM(p.x) - px) + abs(MM(p.y) - py) for p in (t.GetStart(), t.GetEnd(), t.GetPosition())) < 2.0:
+                        flag.add(u)
     for u in flag:
         plan["step"][u] = len(STEPS) - 1 if os.environ.get("WIDEN_LAST") else min(plan["step"][u] + 1, len(STEPS) - 1)
 hist = {}
