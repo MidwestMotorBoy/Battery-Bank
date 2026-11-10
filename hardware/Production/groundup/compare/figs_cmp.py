@@ -5,7 +5,7 @@ from matplotlib.patches import Polygon
 from matplotlib.colors import LinearSegmentedColormap, PowerNorm
 from peec import Model, padpoly, LAYERS, FP, SEG, ZON, REF
 TAG=os.environ['TAG']; OUT='img'; os.makedirs(OUT,exist_ok=True)
-LABEL={'base':'Current board','new':'Ground-up board'}[TAG]
+LABEL={'base':'Current board','new':'Ground-up board, first version','fix':'Ground-up board'}.get(TAG,TAG)
 plt.rcParams.update({'font.family':'DejaVu Sans','font.size':9,'figure.facecolor':'#fcfcfb','axes.facecolor':'#fcfcfb'})
 HEAT = LinearSegmentedColormap.from_list('h', [(1,0.95,0.85,0),(0.98,0.75,0.45,0.55),(0.93,0.42,0.18,0.85),(0.7,0.15,0.05,1),(0.35,0.02,0.0,1)])
 allnets=sorted(set([p['net'] for fp in FP for p in fp['pads'] if p['net']]+[s['net'] for s in SEG if s['net']]+[z['net'] for z in ZON if z['net']]))

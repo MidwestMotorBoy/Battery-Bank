@@ -8,7 +8,7 @@ import rc
 d = json.load(open(sys.argv[1])); log = open(sys.argv[2]).read(); out, title = sys.argv[3], sys.argv[4]
 fails = [tuple(map(float, m)) for m in re.findall(r"FAILED .*? (-?[\d.]+),(-?[\d.]+) \(.*?\) -> (-?[\d.]+),(-?[\d.]+) \(", log)]
 x0, y0, x1, y1 = 78.5, 63.5, 122.5, 137.5
-layers = ('F', 'In2', 'In3', 'B'); names = {'F': 'Front', 'In2': 'Inner 2 (PACK+ plane, vertical signals)', 'In3': 'Inner 3 (3V3 plane, horizontal signals)', 'B': 'Back'}
+layers = tuple(sys.argv[5].split(',')) if len(sys.argv) > 5 else ('F', 'In2', 'In3', 'B'); names = {'F': 'Front', 'In1': 'Inner 1 (ground plane)', 'In2': 'Inner 2 (PACK+ plane, vertical signals)', 'In3': 'Inner 3 (3V3 plane, horizontal signals)', 'In4': 'Inner 4 (ground plane, slow signals added in the fix pass)', 'B': 'Back'}
 scale = 15; n = len(layers)
 W, H = (x1 - x0) * scale / 100 * n, (y1 - y0) * scale / 100 + 0.6
 fig = plt.figure(figsize=(W, H), dpi=100)

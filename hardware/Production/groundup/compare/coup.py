@@ -123,6 +123,23 @@ def run(name, nets, vsw):
     q = np.bincount(n, weights=w * x[a], minlength=len(m.nets) + 1) + direct          # victims: induced charge per volt
     qself = float((w * (1 - x[a]))[agg[n]].sum())
     C = {m.nets[i-1]: float(q[i] * E0) for i in range(1, len(m.nets) + 1) if not agg[i] and q[i] * E0 > 0.2e-15}
+    if os.environ.get('WHERE'):                 # where on each listed victim the charge sits: 0.5 mm bins, top few
+        kk, ii, jj = np.nonzero(free); B5 = int(round(0.5 / H))
+        for vn in os.environ['WHERE'].split(','):
+            ids = [i for i in range(1, len(m.nets) + 1) if m.nets[i-1].endswith(vn)]
+            for vi in ids:
+                sel = n == vi
+                if not sel.any(): continue
+                qq = w[sel] * x[a[sel]] * E0 * 1e15; ka = kk[a[sel]]; ia = ii[a[sel]] // B5; ja = jj[a[sel]] // B5
+                tot = {}; lay = {}
+                for q1, k1, i1, j1 in zip(qq, ka, ia, ja):
+                    tot[(i1, j1)] = tot.get((i1, j1), 0) + q1; z = ZS[k1]
+                    L = 'F' if z < 0.17 else 'In1' if z < 0.43 else 'In2' if z < 0.79 else 'In3' if z < 1.15 else 'In4' if z < 1.42 else 'B'
+                    lay[(i1, j1, L)] = lay.get((i1, j1, L), 0) + q1
+                print(f"   WHERE {m.nets[vi-1]} from {name}: {qq.sum():.1f} fF", flush=True)
+                for (i1, j1), q1 in sorted(tot.items(), key=lambda kv: -kv[1])[:10]:
+                    ls = ', '.join(f"{L} {v:.1f}" for (i2, j2, L), v in sorted(lay.items(), key=lambda kv: -kv[1]) if (i2, j2) == (i1, j1) and v > 0.05 * q1)
+                    print(f"      x {box[0] + (j1 + 0.5) * 0.5:.2f} y {box[2] + (i1 + 0.5) * 0.5:.2f}: {q1:5.1f} fF  ({ls})", flush=True)
     out = dict(name=name, nets=nets, vsw=vsw, box=box, h=H, unknowns=nf, iters=len(res), C_self_pF=qself * E0 * 1e12, C=C,
                t=time.time() - t0)
     top = sorted(C.items(), key=lambda kv: -kv[1])

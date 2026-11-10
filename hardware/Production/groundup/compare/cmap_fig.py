@@ -5,7 +5,7 @@ from matplotlib.patches import Patch
 from peec import Model, LAYERS, FP, SEG, VIA, ZON
 from victims import category
 from coup import GROUPS, allnets
-TAG=os.environ['TAG']; LABEL={'base':'Current board','new':'Ground-up board'}[TAG]
+TAG=os.environ['TAG']; LABEL={'base':'Current board','new':'Ground-up board, first version','fix':'Ground-up board'}.get(TAG,TAG)
 box=(78.2,121.8,62.6,137.4); h=0.05
 agg=set(n for _,ns,_ in GROUPS for n in ns)
 ANA={'Current sense','Charger analog','Regulator feedback','Gauge analog'}

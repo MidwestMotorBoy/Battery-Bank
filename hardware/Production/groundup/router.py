@@ -676,7 +676,8 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
     hb = None
     if "hist" in globals():
         ln = np.where(lane_n[y0:y1, x0:x1] != net, lane_c[y0:y1, x0:x1], 0).astype(np.uint16)
-        hb = [np.ascontiguousarray(np.minimum(h_[y0:y1, x0:x1] + (ln if i_ == 0 else 0), 250).astype(np.uint8)).tobytes() for i_, h_ in enumerate(hist)]
+        _av = AVD is not None and net not in AVN
+        hb = [np.ascontiguousarray(np.minimum(h_[y0:y1, x0:x1] + (ln if i_ == 0 else 0) + (AVD[i_][y0:y1, x0:x1] if _av else 0), 250).astype(np.uint8)).tobytes() for i_, h_ in enumerate(hist)]
         lnb = ln.astype(np.uint8).tobytes()
     if ghost:                                             # cells / via sites that only a rip-able route blocks: passable at a price
         fa_ = [((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in grid]
@@ -1076,6 +1077,32 @@ if "nopre" not in OPT and not CONT:                       # fan every fine-pitch
 FIXEDN = [0]
 hist = [np.zeros((NY, NX), dtype=np.uint8) for _ in LAYERS]   # cells routes were pulled from: dearer for everyone afterwards
 HINC, HW = int(OPT.get("hinc", 16)), 0.5
+# --avoid=<netregex>:<mm>:<cost>: every other net pays <cost> per cell to run within <mm> of this copper on the same layer,
+# or over / under it on the In2 / In3 pair (the two layers no ground plane separates)
+AVD, AVN = None, set()
+if "avoid" in OPT:
+    from PIL import ImageFilter
+    _rx, _rad, _cst = OPT["avoid"].rsplit(":", 2)
+    _rx, _cst = re.compile(_rx), int(_cst)
+    AVN = {c_ for c_, n_ in board.GetNetsByNetcode().items() if _rx.search(n_.GetNetname())}
+    _cd = np.array(sorted(AVN))
+
+    def _dil(m_, r_):
+        im_ = Image.fromarray(m_.astype(np.uint8) * 255)
+        while r_ > 0:
+            k_ = min(r_, 4); im_ = im_.filter(ImageFilter.MaxFilter(2 * k_ + 1)); r_ -= k_
+        return np.array(im_) > 0
+    _ms = [np.isin(c_, _cd) for c_ in copper]
+    _r = int(float(_rad) / G)
+    _near = [_dil(m_, _r) for m_ in _ms]
+    _ov = [_dil(m_, max(_r // 3, 4)) for m_ in _ms]
+    AVD = []
+    for _i in range(len(LAYERS)):
+        _a = _near[_i].astype(np.uint16) * _cst
+        if _i in (1, 2):
+            _a = np.maximum(_a, _ov[3 - _i].astype(np.uint16) * _cst)
+        AVD.append(_a)
+    print("avoid: %d nets, cells %s" % (len(AVN), [int(a_.astype(bool).sum()) for a_ in AVD]), flush=True)
 # fan-out lanes: the strip in front of every fine-pitch signal pin is dear for other nets (tracks and, more so, vias)
 lane_c = np.zeros((NY, NX), dtype=np.uint8)
 lane_n = np.full((NY, NX), EMPTY, dtype=np.int32)

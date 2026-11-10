@@ -7,7 +7,8 @@ box=(77,123,61,138); IB,IU=7.64,5.0
 CM=LinearSegmentedColormap.from_list('s',['#f3efe6','#f6cf9c','#eb8a4a','#c9431d','#7a1408','#2b0300'])
 fig,axs=plt.subplots(1,4,figsize=(15.5,6.6))
 tot={}
-for j,(tag,port) in enumerate((('base',1),('new',1),('base',2),('new',2))):
+NT=os.environ.get('NTAG','new')
+for j,(tag,port) in enumerate((('base',1),(NT,1),('base',2),(NT,2))):
     P=np.load(f'k/lossmap_{tag}_cub{port}.npy')*IB**2+np.load(f'k/lossmap_{tag}_cuu{port}.npy')*IU**2+np.load(f'k/lossmap_{tag}_pack.npy')*IB**2
     H,W=P.shape; b=5; Pb=P[:H//b*b,:W//b*b].reshape(H//b,b,W//b,b).sum((1,3))/(0.5*0.5)*1e3     # mW/mm2
     tot[(tag,port)]=P.sum()
@@ -18,6 +19,6 @@ for j,(tag,port) in enumerate((('base',1),('new',1),('base',2),('new',2))):
     ax.set_title(f"{'Current board' if tag=='base' else 'Ground-up board'}, port {port}",fontsize=10,loc='left',weight='bold')
 cb=fig.colorbar(im,ax=axs,orientation='horizontal',fraction=0.035,pad=0.06,aspect=60); cb.set_label('Copper loss density, mW per mm² of board (all layers summed), log scale',fontsize=9)
 fig.suptitle('Where the copper loss sits at 100 W out, pack at 50 % (7.6 A battery side, 5 A USB side)',x=0.01,ha='left',fontsize=12,weight='bold')
-fn='img/lossmap.png'; fig.savefig(fn,dpi=120,bbox_inches='tight'); plt.close(fig)
+fn=f'img/lossmap_{NT}.png'; fig.savefig(fn,dpi=120,bbox_inches='tight'); plt.close(fig)
 from PIL import Image
 im=Image.open(fn).convert('RGB').quantize(128,method=Image.Quantize.MEDIANCUT,dither=Image.Dither.NONE); im.save(fn,optimize=True); print(fn,os.path.getsize(fn),{k:round(v*1e3) for k,v in tot.items()})

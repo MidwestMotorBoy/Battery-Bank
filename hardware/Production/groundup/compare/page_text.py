@@ -28,8 +28,8 @@ a100, b100 = _l('100 W', 1, 0.5), _l('100 W', 2, 0.5)
 a15 = _l('15 W', 1, 0.5); a100lo = _l('100 W', 1, 0.1)
 kb = [abs(r['b']) for r in D['kelvin'][:4]]; kn = [abs(r['n']) for r in D['kelvin'][:4]]
 pa_b = sum(r['b']['area'] for r in D['pairs']); pa_n = sum(r['n']['area'] for r in D['pairs'])
-tb, tn, tk = _t('base', 'dis100'), _t('new', 'dis100'), _t('new_k38', 'dis100')
-tb2, tn2 = _t('base', 'dis100u2'), _t('new', 'dis100u2')
+tb, tn, tk = _t('base', 'dis100'), _t(N, 'dis100'), _t(N + '_k38', 'dis100')
+tb2, tn2 = _t('base', 'dis100u2'), _t(N, 'dis100u2')
 
 def ahead(b, n, tol=0.05, lower_better=True):
     if abs(n - b) <= tol * max(abs(b), abs(n), 1e-12): return 'l'

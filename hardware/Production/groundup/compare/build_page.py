@@ -5,7 +5,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 def J(p): return json.load(open(os.path.join(HERE, p)))
 def img(p): return 'data:image/png;base64,' + base64.b64encode(open(os.path.join(HERE, p), 'rb').read()).decode()
 D = {'img': {}}
-B, N = 'base', 'new'
+B, N = 'base', os.environ.get('NTAG', 'fix')
+KT = {B: 'base', N: 'new'}          # picture keys the template uses
 
 # ---- hot loops ----
 hot = {t: J(f'hot_{t}.json') for t in (B, N)}
@@ -22,7 +23,7 @@ for i, k in enumerate(hot[B]):
     dev = k.split('(')[1][:-1]; ch = dev.startswith('Q')
     D['hot'].append(dict(name=LONG[k], short=SHORT[k], sub=f"{dev}, {len(hot[B][k]['caplist'])} capacitor{'s' if len(hot[B][k]['caplist'])>1 else ''}" if len(hot[B][k]['caplist']) == len(hot[N][k]['caplist'])
                          else f"{dev}, {len(hot[B][k]['caplist'])} / {len(hot[N][k]['caplist'])} capacitors in reach", b=hrow(hot[B][k], ch), n=hrow(hot[N][k], ch)))
-    for t in (B, N): D['img'][f'hot_{i}_{t}'] = img(f'img/hot_{i}_{t}.png')
+    for t in (B, N): D['img'][f'hot_{i}_{KT[t]}'] = img(f'img/hot_{i}_{t}.png')
 
 # ---- switch-node copper + coupling ----
 cs = {t: J(f'coup_sum_{t}.json') for t in (B, N)}
@@ -38,7 +39,7 @@ for n in nets:
     a, b = cs[B]['victims'].get(n), cs[N]['victims'].get(n); m = a or b
     D['coup_all'].append(dict(label=m['label'], cat=m['cat'], cn=m['c_node_pF'], b=cv(a), n=cv(b)))
 D['coup'] = [r for r in D['coup_all'] if max((r['b'] or {}).get('mv', 0), (r['n'] or {}).get('mv', 0)) >= 0.01][:26]
-D['img']['cmap_base'] = img('img/cmap_base.png'); D['img']['cmap_new'] = img('img/cmap_new.png')
+D['img']['cmap_base'] = img('img/cmap_base.png'); D['img']['cmap_new'] = img(f'img/cmap_{N}.png')
 
 # ---- gate loops ----
 gate = {t: J(f'gate3_{t}.json') for t in (B, N)}; gr = {t: J(f'groute_{t}.json') for t in (B, N)}
@@ -49,12 +50,12 @@ for i, k in enumerate(gate[B]):
     D['gate'].append(dict(name=f"Port {p} {'high' if hs else 'low'} side, leg {leg}", short=f"P{p} {'HS' if hs else 'LS'} {leg}", sub=f"{q}, track {gr[B][k]['total']:.0f} / {gr[N][k]['total']:.0f} mm",
                           b=dict(L=gate[B][k]['L'] * 1e9, area=float(np.linalg.norm(gate[B][k]['area'])), route=rt(gr[B][k])),
                           n=dict(L=gate[N][k]['L'] * 1e9, area=float(np.linalg.norm(gate[N][k]['area'])), route=rt(gr[N][k]), h=gate[N][k].get('h', 0.15))))
-    for t in (B, N): D['img'][f'gate_{i}_{t}'] = img(f'img/gate_{i}_{t}.png')
+    for t in (B, N): D['img'][f'gate_{i}_{KT[t]}'] = img(f'img/gate_{i}_{t}.png')
 
 # ---- losses ----
-ll = J('thermal/lossload.json'); D['loss'] = []
+ll = J(f'thermal/lossload_{N}.json'); D['loss'] = []
 for i in range(0, len(ll), 2):
-    a, b = ll[i], ll[i + 1]; assert a['board'] == 'base' and b['board'] == 'new'
+    a, b = ll[i], ll[i + 1]; assert a['board'] == 'base' and b['board'] == N
     D['loss'].append(dict(load=a['load'], port=a['port'], soc=a['soc'], ib=a['i_bat'], iu=a['i_usb'],
                           b=dict(cu=a['cu_total'], cub=a['cu_batt'], cuu=a['cu_usb'], tot=a['total']), n=dict(cu=b['cu_total'], cub=b['cu_batt'], cuu=b['cu_usb'], tot=b['total'])))
 cu = {t: J(f'k/cu_{t}.json') for t in (B, N)}
@@ -68,7 +69,7 @@ for p in (1, 2):
         k = f'P{p} {key}'; D['paths'].append(dict(port=p, name=nm, sub=sub, b=cu[B]['paths'][k]['R'] * 1e3, n=cu[N]['paths'][k]['R'] * 1e3, bl=lay(cu[B]['paths'][k]), nl=lay(cu[N]['paths'][k])))
 for k, nm, sub in (('CELL_P fuse to Q101', 'CELL_P', 'fuse to protection FET'), ('CELL_P_RAW J112 to fuse', 'CELL_P_RAW', 'pack + wire pad to fuse'), ('CELL_N J108 to shunt', 'CELL_N', 'pack − wire pad to shunt')):
     D['paths'].append(dict(port=0, name=nm, sub=sub, b=cu[B]['paths'][k]['R'] * 1e3, n=cu[N]['paths'][k]['R'] * 1e3, bl=lay(cu[B]['paths'][k]), nl=lay(cu[N]['paths'][k])))
-D['img']['lossmap'] = img('img/lossmap.png')
+D['img']['lossmap'] = img(f'img/lossmap_{N}.png')
 
 # ---- thermals ----
 th = J('thermal/summary_pc.json')
@@ -76,10 +77,10 @@ CASES = [('dis100', '100 W, port 1', 60, 65, 120, [0, 10, 20, 30, 40, 50, 60]), 
          ('dis100x2', '65 W + 35 W, both ports', 60, 65, 120, [0, 10, 20, 30, 40, 50, 60]), ('dis60', '60 W, port 1', 100, 65, 120, [0, 20, 40, 60, 80, 100]),
          ('chg1', 'Charging, port 1', 100, 65, 120, [0, 20, 40, 60, 80, 100])]
 def ser(r): return {k: r[k] for k in ('s_t', 's_p', 's_part', 's_can')}
-D['thermal'] = dict(cases=[dict(key=k, label=l, xmax=xm, tmax=tm, pmax=pm, xt=xt, base=ser(th[f'base/{k}']), new=ser(th[f'new/{k}'])) for k, l, xm, tm, pm, xt in CASES])
+D['thermal'] = dict(cases=[dict(key=k, label=l, xmax=xm, tmax=tm, pmax=pm, xt=xt, base=ser(th[f'base/{k}']), new=ser(th[f'{N}/{k}'])) for k, l, xm, tm, pm, xt in CASES])
 rows = []
 for k, l, *_ in CASES:
-    for b, bl in (('base', 'Current'), ('new', 'Ground-up'), ('new_k38', 'Ground-up, no credit for extra copper')):
+    for b, bl in (('base', 'Current'), (N, 'Ground-up'), (N + '_k38', 'Ground-up, no credit for extra copper')):
         r = th.get(f'{b}/{k}')
         if not r: continue
         chg = k == 'chg1'
@@ -91,8 +92,8 @@ D['thermal']['rows'] = rows
 st = {t: J(f'custats_{t}.json') for t in (B, N)}
 D['thermal']['note'] = (f"Model inputs that differ between the boards: part positions, copper loss tiles, vias in the two gap-filler zones "
     f"({st[B]['fill1']['vias']} and {st[B]['fill2']['vias']} on the current board, {st[N]['fill1']['vias']} and {st[N]['fill2']['vias']} on the ground-up board, "
-    f"so through-board conductivity there is set to 8.0 and 4.8 W/mK), and copper cover round the power stages "
-    f"({st[B]['stage1']['k_in']:.0f} against {st[N]['stage1']['k_in']:.0f} W/mK in-plane by copper area, so the model uses 38 and 45.6 W/mK). "
+    f"so through-board conductivity there is set to 8.0 and {0.45 + 7.55 * (st[N]['fill1']['vias'] + st[N]['fill2']['vias']) / (st[B]['fill1']['vias'] + st[B]['fill2']['vias']):.1f} W/mK), and copper cover round the power stages "
+    f"({st[B]['stage1']['k_in']:.0f} against {st[N]['stage1']['k_in']:.0f} W/mK in-plane by copper area, so the model uses 38 and {38 * {'new': 1.20, 'fix': 1.27}[N]:.1f} W/mK). "
     f"The third row takes that copper-cover credit away again. 25 °C ambient, still air, d44 derate policy, steps of 10 s.")
 
 # ---- kelvin ----
@@ -128,9 +129,10 @@ def uniq(t, lim): return len({(v['x'], v['y']) for o in via[t].values() for v in
 D['via_sum'] = {t: dict(max=max(v['i'] for o in via[t].values() for v in o['top']), over2=uniq(t, 2.0), over3=uniq(t, 3.0)) for t in (B, N)}
 # ---- renders and work log ----
 for t in (B, N):
-    for s in ('top', 'bottom'): D['img'][f'render_{t}_{s}'] = 'data:image/jpeg;base64,' + base64.b64encode(open(os.path.join(HERE, f'img/render_{t}_{s}.jpg'), 'rb').read()).decode()
+    for s in ('top', 'bottom'): D['img'][f'render_{KT[t]}_{s}'] = 'data:image/jpeg;base64,' + base64.b64encode(open(os.path.join(HERE, f'img/render_{t}_{s}.jpg'), 'rb').read()).decode()
 D['cost'] = J('worklog.json')
 D['passes'] = J('passes.json'); D['tools'] = J('tools.json')
+exec(open(os.path.join(HERE, 'page_fix.py')).read())            # D['fix'], M (three boards)
 
 json.dump({k: v for k, v in D.items() if k != 'img'}, open(os.path.join(HERE, 'page_data.json'), 'w'), indent=1)
 exec(open(os.path.join(HERE, 'page_text.py')).read())          # defines TEXT and SCORE from D

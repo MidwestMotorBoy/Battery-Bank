@@ -1,9 +1,10 @@
 """Loss at several loads for both boards: the thermal model's part-loss model (same parts on both boards) plus each
-board's routed copper (DC grid solver).  Cells at 25 C.  -> lossload.json"""
+board's routed copper (DC grid solver).  Cells at 25 C.  -> lossload_<NTAG>.json"""
 import os, json
 os.environ['SMD_LAYOUT'] = 'p0f'
 import pack3d as P, smd as S
-CU = {b: json.load(open(f'cu_{b}.json')) for b in ('base', 'new')}
+NT = os.environ.get('NTAG', 'new')          # the board compared with the current one
+CU = {b: json.load(open(f'cu_{b}.json')) for b in ('base', NT)}
 P0 = P.P0
 def solve(board, port, mode, p_usb, v_usb, soc, i_chg=4.55):
     cu = CU[board]; RB, RU, RP = cu[f'cub{port}']['R'], cu[f'cuu{port}']['R'], cu['pack']['R']
@@ -32,9 +33,9 @@ for soc in (1.0, 0.5, 0.1):
     for name, mode, pw, vu in LOADS:
         if mode == 'snk' and soc == 1.0: continue
         for port in (1, 2):
-            for b in ('base', 'new'):
+            for b in ('base', NT):
                 r = solve(b, port, mode, pw, vu, soc); r['load'] = name; out.append(r)
-json.dump(out, open('lossload.json', 'w'), indent=1)
+json.dump(out, open(f'lossload_{NT}.json', 'w'), indent=1)
 print(f"{'load':22s} soc port   Ibat  Iusb | copper mW  current board : ground-up   (batt/usb/pack)        | all losses W")
 for i in range(0, len(out), 2):
     a, b = out[i], out[i+1]

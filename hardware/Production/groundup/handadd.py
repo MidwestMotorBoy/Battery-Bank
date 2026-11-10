@@ -5,7 +5,7 @@ With {"lift": net} every router-laid item of that net (not in the keep ids) is r
 import sys, json, pcbnew
 mm = pcbnew.FromMM
 b = pcbnew.LoadBoard(sys.argv[1]); spec = json.load(open(sys.argv[3]))
-L = {"F": pcbnew.F_Cu, "In2": pcbnew.In2_Cu, "In3": pcbnew.In3_Cu, "B": pcbnew.B_Cu}
+L = {"F": pcbnew.F_Cu, "In1": pcbnew.In1_Cu, "In2": pcbnew.In2_Cu, "In3": pcbnew.In3_Cu, "In4": pcbnew.In4_Cu, "B": pcbnew.B_Cu}
 ids = []
 MM = pcbnew.ToMM
 near = lambda p, q: abs(MM(p.x) - q[0]) < 0.02 and abs(MM(p.y) - q[1]) < 0.02
