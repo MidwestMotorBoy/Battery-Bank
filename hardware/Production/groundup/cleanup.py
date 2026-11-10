@@ -23,4 +23,4 @@ for u in gone:
 pcbnew.ZONE_FILLER(b).Fill(b.Zones())
 b.Save(dst)
 import collections
-print("removed", len(gone), dict(collections.Counter(gone.values())))
+open(dst + ".cleanup.txt", "w").write("removed %d %s\n" % (len(gone), dict(collections.Counter(gone.values()))))

@@ -1,13 +1,15 @@
 #!/bin/bash
-# finish.sh <board under new/> : DRC, drop flagged router copper until the report is quiet -> new/<name>_c.kicad_pcb
-b=${1%.kicad_pcb}
-cp new/$b.kicad_pcb new/${b}_c.kicad_pcb
-for k in 1 2 3 4 5 6; do
-  ./kc kicad-cli pcb drc --schematic-parity --severity-all --format json -o /w/new/drc_${b}_c.json /w/new/${b}_c.kicad_pcb > new/drc.log 2>&1
-  r=$(./kc python3 /w/cleanup.py /w/new/${b}_c.kicad_pcb /w/new/${b}_c.kicad_pcb /w/new/drc_${b}_c.json /w/new/Monolith.kicad_pcb --errors | tail -1)
+# finish.sh <board under new/> [--errors]: full-rule DRC in fin/ (project name Monolith, so the custom rules apply), drop the
+# router copper the report flags (dangling ends; with --errors also clearance / hole / edge / keep-out offenders), repeat
+# until quiet -> new/<name>_c.kicad_pcb
+b=${1%.kicad_pcb}; e=$2
+cp new/$b.kicad_pcb fin/Monolith.kicad_pcb
+for k in 1 2 3 4 5 6 7 8; do
+  ./drc.sh fin > fin/sum.txt
+  ./kc python3 /w/cleanup.py /w/fin/Monolith.kicad_pcb /w/fin/Monolith.kicad_pcb /w/fin/drc.json /w/new/Monolith.kicad_pcb $e > fin/cleanup.log 2>&1
+  r=$(cat fin/Monolith.kicad_pcb.cleanup.txt)
   echo "round $k: $r"
   case "$r" in "removed 0 "*) break;; esac
 done
-cp base/Monolith.kicad_pro new/Monolith.kicad_pro
-./kc kicad-cli pcb drc --schematic-parity --severity-all --format json -o /w/new/drc_${b}_c.json /w/new/${b}_c.kicad_pcb > new/drc.log 2>&1
-python3 drcsum.py new/drc_${b}_c.json
+./drc.sh fin
+cp fin/Monolith.kicad_pcb new/${b}_c.kicad_pcb; cp base/Monolith.kicad_pro new/${b}_c.kicad_pro

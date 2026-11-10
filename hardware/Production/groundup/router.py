@@ -38,6 +38,37 @@ SEALED = [("R425", "1"), ("R426", "1"), ("R428", "1"), ("R429", "1"), ("R525", "
 mm = pcbnew.FromMM
 MM = pcbnew.ToMM
 board = pcbnew.LoadBoard(PCB)
+# ---- continuation (--cont --keep=<board before signal routing> --orig=<its DRC json>): nets with open connections, DRC
+# errors or dangling ends lose their routed copper and are routed afresh; the routed copper of every other net stays but
+# may be pulled (a whole net at a time) to make room, and is then routed afresh too.
+CONT = "cont" in OPT
+LAIDU, CONT_ITEMS, RENETS = set(), {}, set()
+if CONT:
+    _keepu = {t.m_Uuid.AsString() for t in pcbnew.LoadBoard(OPT["keep"]).GetTracks()}
+    board = pcbnew.LoadBoard(PCB)
+    _laid = {t.m_Uuid.AsString(): t for t in list(board.GetTracks()) if t.m_Uuid.AsString() not in _keepu}
+    _dj = json.load(open(RPT))
+    _nm = lambda d_: (re.search(r"\[(.*?)\]", d_) or [None, None])[1]
+    for _v in _dj.get("unconnected_items", []):
+        for _it in _v["items"]:
+            RENETS.add(_nm(_it["description"]))
+    for _v in _dj.get("violations", []):
+        if _v["severity"] == "error" or _v["type"] in ("track_dangling", "via_dangling"):
+            for _it in _v["items"]:
+                if _it["uuid"] in _laid:
+                    RENETS.add(_nm(_it["description"]))
+    for _x in OPT.get("renets", "").split(";"):
+        if _x:
+            RENETS.add(_x)
+    RENETS -= {None, "GND", "PACK_P", "3V3"}
+    _nrem = 0
+    for _u, _t in _laid.items():
+        _n = str(_t.GetNetname())
+        if _n in RENETS:
+            board.Remove(_t); _nrem += 1
+        elif _n not in ("GND", "PACK_P", "3V3"):
+            LAIDU.add(_u); CONT_ITEMS.setdefault(_t.GetNetCode(), []).append(_t)
+    print("continuation: %d nets routed afresh (%d items lifted), %d nets keep their copper but may be pulled" % (len(RENETS), _nrem, len(CONT_ITEMS)), flush=True)
 bb = board.GetBoardEdgesBoundingBox()
 X0, Y0 = MM(bb.GetLeft()), MM(bb.GetTop())
 NX, NY = int(MM(bb.GetWidth()) / G) + 2, int(MM(bb.GetHeight()) / G) + 2
@@ -52,6 +83,18 @@ DEST = [grid]
 FIX = {}                                  # snapshot of the grids without the rip-able routes
 HC = re.compile(r"(^PACK_P$|^CELL_N$|/Cells and Gauge/CELL|/FET_MID|/PPHV|/VBUS$|/SW[12]$|/AC_SNS_N|/BAT_SNS_P)")
 hc = {board.FindNet(str(nm)).GetNetCode() for nm in board.GetNetsByName().keys() if HC.search(str(nm))}
+# the DRC rule "HighCurrent copper to small signals" (0.25 mm, pads excepted) by real net class: HCN = HighCurrent nets,
+# SMALL = nets in no class. gridh / gridvh hold the 0.1 mm wider halo of SMALL tracks and vias; HCN routes respect them.
+HCN, SMALL = set(), set()
+for _nm, _ni in board.GetNetsByName().items():
+    _cl = str(_ni.GetNetClassName())
+    if "HighCurrent" in _cl:
+        HCN.add(_ni.GetNetCode())
+    elif not any(k_ in _cl for k_ in ("Power", "GND", "GateDrive", "Kelvin")):
+        SMALL.add(_ni.GetNetCode())
+hc |= HCN
+gridh = [np.full((NY, NX), EMPTY, dtype=np.int32) for _ in LAYERS]
+gridvh = [np.full((NY, NX), EMPTY, dtype=np.int32) for _ in LAYERS]
 
 
 def cell(x, y):
@@ -159,6 +202,9 @@ def mark_seg(li, net, a, b, half):
     if DEST[0] is grid:
         xseg(grid, li, net, a, b, half)
         xseg(gridv, li, net, a, b, half + VGROW)
+        if net in SMALL:
+            xseg(gridh, li, net, a, b, half + 0.1)
+            xseg(gridvh, li, net, a, b, half + VGROW + 0.1)
     else:
         xseg(DEST[0], li, net, a, b, half)
 
@@ -205,6 +251,8 @@ for dest, k in ((grid, 1.0), (copper, 0.0)):
                     mark_poly2(li, n, p.GetEffectivePolygon(LAYERS[li], pcbnew.ERROR_INSIDE), growp(n) - hcx(n))
     for t in board.GetTracks():
         n = t.GetNetCode()
+        if CONT and t.m_Uuid.AsString() in LAIDU:
+            continue                                      # laid in after the snapshot, as rip-able routes
         if t.GetClass() == "PCB_VIA":
             c = t.GetPosition()
             for li in range(len(LAYERS)):
@@ -365,35 +413,49 @@ KELV = re.compile(r"(ACP_F|ACN_F|SRP_F|SRN_F|/Cells and Gauge/SR[PN]$)")
 GATE = re.compile(r"/(HIDRV|LODRV)\d$")
 FINEPIN = re.compile(r"[Pp]ad \S+ \[.*?\] of (U\d+|J401|J501|J301|J302)\b")
 PRIO = [l.rstrip("\n") for l in open(OPT["prio"])] if "prio" in OPT and os.path.exists(OPT["prio"]) else []
-for u in json.load(open(RPT))["unconnected_items"]:
-    it = u["items"]
-    if len(it) < 2:
-        continue
-    A = (it[0]["pos"]["x"], it[0]["pos"]["y"], it[0]["description"])
-    B = (it[1]["pos"]["x"], it[1]["pos"]["y"], it[1]["description"])
-    if A[2].startswith("Zone") and not B[2].startswith("Zone"):
-        A, B = B, A
-    netm = re.search(r"\[(.*?)\]", A[2])
-    if not netm:
-        continue
-    name = netm.group(1)
-    if (ONLY and not ONLY.search(name)) or (SKIP and SKIP.search(name)):
-        continue
-    if A[2].startswith("Zone") and B[2].startswith("Zone"):
-        continue
-    d = math.hypot(A[0] - B[0], A[1] - B[1])
-    if name in PLANE_NETS or name == "GND":
-        for I in (A, B):
-            if not I[2].startswith("Zone") and I[2] not in SEEN:
-                SEEN.add(I[2])
-                edges.append((2 + PRIO.index(name + "@" + I[2]) / 10000.0 if name + "@" + I[2] in PRIO else 4, 0.5, name, I, (I[0], I[1], "Zone plane")))
-        continue
-    if B[2].startswith("Zone"):
-        d, B = 0.5, (A[0], A[1], B[2])
-    fine = any(FINEPIN.search(I[2]) for I in (A, B))
-    rank = 0 if KELV.search(name) else (1 if GATE.search(name) else (2 + PRIO.index(name) / 10000.0 if name in PRIO else (3 if fine else 4)))
-    edges.append((rank, d, name, A, B))
-LONG = float(OPT.get("long", 18))            # nets with a connection longer than this go right after the gate drives, longest first
+def parse_edges(items, want=None):
+    out = []
+    for u in items:
+        it = u["items"]
+        if len(it) < 2:
+            continue
+        A = (it[0]["pos"]["x"], it[0]["pos"]["y"], it[0]["description"])
+        B = (it[1]["pos"]["x"], it[1]["pos"]["y"], it[1]["description"])
+        if A[2].startswith("Zone") and not B[2].startswith("Zone"):
+            A, B = B, A
+        netm = re.search(r"\[(.*?)\]", A[2])
+        if not netm:
+            continue
+        name = netm.group(1)
+        if (ONLY and not ONLY.search(name)) or (SKIP and SKIP.search(name)) or (want is not None and not want(name)):
+            continue
+        if A[2].startswith("Zone") and B[2].startswith("Zone"):
+            continue
+        d = math.hypot(A[0] - B[0], A[1] - B[1])
+        if name in PLANE_NETS or name == "GND":
+            for I in (A, B):
+                if not I[2].startswith("Zone") and I[2] not in SEEN:
+                    SEEN.add(I[2])
+                    out.append((2 + PRIO.index(name + "@" + I[2]) / 10000.0 if name + "@" + I[2] in PRIO else 4, 0.5, name, I, (I[0], I[1], "Zone plane")))
+            continue
+        if B[2].startswith("Zone"):
+            d, B = 0.5, (A[0], A[1], B[2])
+        fine = any(FINEPIN.search(I[2]) for I in (A, B))
+        rank = 0 if KELV.search(name) else (1 if GATE.search(name) else (2 + PRIO.index(name) / 10000.0 if name in PRIO else (3 if fine else 4)))
+        out.append((rank, d, name, A, B))
+    return out
+
+
+if CONT:
+    ORIG = {}
+    for _e in parse_edges(json.load(open(OPT["orig"]))["unconnected_items"], lambda nm: nm not in ("GND",) + PLANE_NETS):
+        ORIG.setdefault(_e[2], []).append(_e)
+    edges = parse_edges(json.load(open(RPT))["unconnected_items"], lambda nm: nm not in RENETS)
+    for _nm2 in sorted(RENETS):
+        edges += ORIG.get(_nm2, [])
+else:
+    edges = parse_edges(json.load(open(RPT))["unconnected_items"])
+LONG = float(OPT.get("long", 1e9))            # nets with a connection longer than this go right after the gate drives, longest first
 _maxd = {}
 for _e in edges:
     _maxd[_e[2]] = max(_maxd.get(_e[2], 0.0), _e[1])
@@ -546,6 +608,10 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
     A = ww * hh
     fmn = [((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in (FIX["grid"] if ghost else grid)]
     viam = np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in (FIX["gridv"] if ghost else gridv)])
+    if net in HCN:
+        for i_, g in enumerate(FIX["gridh"] if ghost else gridh):
+            fmn[i_] &= ((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net))
+        viam &= np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in (FIX["gridvh"] if ghost else gridvh)])
     fm = [m.tobytes() for m in fmn]
     vm = viam.tobytes()
     hb = None
@@ -554,8 +620,14 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
         hb = [np.ascontiguousarray(np.minimum(h_[y0:y1, x0:x1] + (ln if i_ == 0 else 0), 250).astype(np.uint8)).tobytes() for i_, h_ in enumerate(hist)]
         lnb = ln.astype(np.uint8).tobytes()
     if ghost:                                             # cells / via sites that only a rip-able route blocks: passable at a price
-        fa = [((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)).tobytes() for g in grid]
-        va = np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in gridv]).tobytes()
+        fa_ = [((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in grid]
+        va_ = np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in gridv])
+        if net in HCN:
+            for i_, g in enumerate(gridh):
+                fa_[i_] &= ((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net))
+            va_ &= np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in gridvh])
+        fa = [m.tobytes() for m in fa_]
+        va = va_.tobytes()
     pvb = np.ascontiguousarray(padv[y0:y1, x0:x1]).tobytes()
     gp = (viam & GNDPLANE[y0:y1, x0:x1]).tobytes() if gndvia else None
     hbox = None
@@ -807,7 +879,7 @@ WHY = [None]
 def exact_clear(a, b, net, li, width, clr=CLR):
     """True if a straight track a-b of this width on routing layer li keeps clr to every other net's pads, tracks, vias
     and hard pours (exact geometry, not the grid)."""
-    need = clr + width / 2 + 0.005
+    need = clr + width / 2 + 0.002
     lo = (min(a[0], b[0]) - need - 3, min(a[1], b[1]) - need - 3, max(a[0], b[0]) + need + 3, max(a[1], b[1]) + need + 3)
     for n2, lays, rc in PADRECTS:
         if n2 != net and li in lays and rc[2] > lo[0] and rc[0] < lo[2] and rc[3] > lo[1] and rc[1] < lo[3] and _seg_rect(a, b, rc) < need:
@@ -818,10 +890,11 @@ def exact_clear(a, b, net, li, width, clr=CLR):
     for t in board.GetTracks():
         if t.GetNetCode() == net:
             continue
+        px_ = 0.1 if ((net in HCN and t.GetNetCode() in SMALL) or (net in SMALL and t.GetNetCode() in HCN)) else 0.0
         if t.GetClass() == "PCB_VIA":
             v = t.GetPosition()
             vx, vy = MM(v.x), MM(v.y)
-            if lo[0] < vx < lo[2] and lo[1] < vy < lo[3] and _seg_pt(a[0], a[1], b[0], b[1], vx, vy) < need + MM(t.GetWidth(pcbnew.F_Cu)) / 2:
+            if lo[0] < vx < lo[2] and lo[1] < vy < lo[3] and _seg_pt(a[0], a[1], b[0], b[1], vx, vy) < need + px_ + MM(t.GetWidth(pcbnew.F_Cu)) / 2:
                 return False
         elif t.GetLayer() == LAYERS[li]:
             s0, s1 = t.GetStart(), t.GetEnd()
@@ -829,7 +902,7 @@ def exact_clear(a, b, net, li, width, clr=CLR):
             if max(sx0, sx1) < lo[0] or min(sx0, sx1) > lo[2] or max(sy0, sy1) < lo[1] or min(sy0, sy1) > lo[3]:
                 continue
             w2 = MM(t.GetWidth()) / 2
-            if min(_seg_pt(sx0, sy0, sx1, sy1, px, py) for px, py in samples) < need + w2:
+            if min(_seg_pt(sx0, sy0, sx1, sy1, px, py) for px, py in samples) < need + px_ + w2:
                 WHY[0] = ("track", t.GetNetname(), sx0, sy0, sx1, sy1)
                 return False
     rr = int(math.ceil((need + 0.1 + 0.05) / G))
@@ -928,7 +1001,7 @@ def escape(desc, x, y, net, added, pre=False):
 added, failed, done = [], [], 0
 failkeys = []
 STUBS, ALLSTUBS, PRE = [], [], set()
-if "nopre" not in OPT:                                    # fan every fine-pitch signal pin out before anything is routed
+def lay_prestubs():
     for rank, dist, name, A, B in edges[:MAX_EDGES]:
         if name == "GND" or name in PLANE_NETS or board.FindNet(name) is None:
             continue
@@ -937,6 +1010,10 @@ if "nopre" not in OPT:                                    # fan every fine-pitch
                 PRE.add(I[2])
                 escape(I[2], I[0], I[1], board.FindNet(name).GetNetCode(), added, pre=True)
     print("fan-out stubs:", len(ALLSTUBS))
+
+
+if "nopre" not in OPT and not CONT:                       # fan every fine-pitch signal pin out before anything is routed
+    lay_prestubs()
 FIXEDN = [0]
 hist = [np.zeros((NY, NX), dtype=np.uint8) for _ in LAYERS]   # cells routes were pulled from: dearer for everyone afterwards
 HINC, HW = int(OPT.get("hinc", 16)), 0.5
@@ -985,24 +1062,35 @@ def add_hist(items, n):
             reg[m] = np.minimum(reg[m].astype(np.int32) + HINC, 240).astype(np.uint8)
 
 
+FIX0, BAKEDR, PHASE = {}, {}, [0]          # first snapshot; routes laid for good (kept so a later phase can free them)
+
+
 def snapshot():
     FIX["grid"] = [g.copy() for g in grid]
     FIX["gridv"] = [g.copy() for g in gridv]
+    FIX["gridh"] = [g.copy() for g in gridh]
+    FIX["gridvh"] = [g.copy() for g in gridvh]
     FIX["copper"] = [g.copy() for g in copper]
     FIXEDN[0] += len(ROUTES)
     ROUTES.clear()
+    for k_ in ("grid", "gridv", "copper", "gridh", "gridvh"):
+        FIX0[k_] = [g.copy() for g in FIX[k_]]
 
 
 def bake(eid):
     """A route that has been pulled too often stays: lay it into the snapshot."""
     R = ROUTES.pop(eid)
     BAKED.add(eid)
+    BAKEDR[eid] = R
     n = R["net"]
     FIXEDN[0] += 1
     for obj, kind, li, a, b, half in R["items"]:
         for lj in ([li] if kind == "T" else range(len(LAYERS))):
             xseg(FIX["grid"], lj, n, a, b, half + grow(n))
             xseg(FIX["gridv"], lj, n, a, b, half + grow(n) + VGROW)
+            if n in SMALL:
+                xseg(FIX["gridh"], lj, n, a, b, half + grow(n) + 0.1)
+                xseg(FIX["gridvh"], lj, n, a, b, half + grow(n) + VGROW + 0.1)
             if kind == "T":
                 xseg(FIX["copper"], lj, n, a, b, half)
             else:
@@ -1031,6 +1119,8 @@ def rebuild(box):
     for li in range(len(LAYERS)):
         grid[li][cy0:cy1, cx0:cx1] = FIX["grid"][li][cy0:cy1, cx0:cx1]
         gridv[li][cy0:cy1, cx0:cx1] = FIX["gridv"][li][cy0:cy1, cx0:cx1]
+        gridh[li][cy0:cy1, cx0:cx1] = FIX["gridh"][li][cy0:cy1, cx0:cx1]
+        gridvh[li][cy0:cy1, cx0:cx1] = FIX["gridvh"][li][cy0:cy1, cx0:cx1]
         copper[li][cy0:cy1, cx0:cx1] = FIX["copper"][li][cy0:cy1, cx0:cx1]
     for R in ROUTES.values():
         near = [it for it in R["items"] if min(it[3][0], it[4][0]) < box[2] + 1.0 and max(it[3][0], it[4][0]) > box[0] - 1.0
@@ -1125,7 +1215,7 @@ def blockers(path, n):
     for eid, R in ROUTES.items():
         if R["net"] == n:
             continue
-        extra = 0.1 if R["net"] in hc else 0.0
+        extra = 0.1 if (R["net"] in hc or (n in HCN and R["net"] in SMALL)) else 0.0
         hit = False
         for obj, kind, li, a, b, half in R["items"]:
             dx, dy = b[0] - a[0], b[1] - a[1]
@@ -1186,7 +1276,7 @@ def route_edge(eid, ghost=False):
         gm = [(zc[li] == n) & ((gsrc[li] == n) | (gsrc[li] == EMPTY)) for li in range(len(LAYERS))]
         if any(g[win[1]:win[3], win[0]:win[2]].any() for g in gm):
             goals, gmask = [], gm
-    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (2.2, 3 * NODE_CAP))
+    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (1.9, (3 if PHASE[0] else 2) * NODE_CAP))
     if ghost and dist < 30:
         CAP = CAP // 2
     path, boxed = None, False
@@ -1226,66 +1316,118 @@ def route_edge(eid, ghost=False):
 
 from collections import deque
 FAILINFO, RIPS, LASTPULL, WHYFAIL = {}, {}, {}, {}
+PSEUDO = {}                                               # route id -> net name, for the copper a continuation starts with
+if CONT:
+    snapshot()                                            # the fixed world: hand copper, pads, pours
+    for _k, (_n, _ts) in enumerate(sorted(CONT_ITEMS.items())):
+        _items = []
+        for _t in _ts:
+            if _t.GetClass() == "PCB_VIA":
+                _c = _t.GetPosition()
+                _items.append((_t, "V", -1, (MM(_c.x), MM(_c.y)), (MM(_c.x), MM(_c.y)), MM(_t.GetWidth(pcbnew.F_Cu)) / 2))
+            elif _t.GetLayer() in LAYERS:
+                _a, _b = _t.GetStart(), _t.GetEnd()
+                _items.append((_t, "T", LAYERS.index(_t.GetLayer()), (MM(_a.x), MM(_a.y)), (MM(_b.x), MM(_b.y)), MM(_t.GetWidth()) / 2))
+        ROUTES[10 ** 6 + _k] = dict(net=_n, items=_items, rips=0)
+        PSEUDO[10 ** 6 + _k] = str(board.FindNet(_n).GetNetname()) if board.FindNet(_n) else None
+        remark(_items, _n)
+    if "nopre" not in OPT:
+        lay_prestubs()
+        for _uid, _t, _pc in ALLSTUBS:                    # the new fan-out stubs belong to the fixed world
+            _a, _b, _n = _t.GetStart(), _t.GetEnd(), _t.GetNetCode()
+            _li, _h = LAYERS.index(_t.GetLayer()), MM(_t.GetWidth()) / 2
+            _pa, _pb = (MM(_a.x), MM(_a.y)), (MM(_b.x), MM(_b.y))
+            xseg(FIX["grid"], _li, _n, _pa, _pb, _h + grow(_n)); xseg(FIX["gridv"], _li, _n, _pa, _pb, _h + grow(_n) + VGROW)
+            xseg(FIX["copper"], _li, _n, _pa, _pb, _h)
+            if _n in SMALL:
+                xseg(FIX["gridh"], _li, _n, _pa, _pb, _h + grow(_n) + 0.1); xseg(FIX["gridvh"], _li, _n, _pa, _pb, _h + grow(_n) + VGROW + 0.1)
+        for k_ in ("grid", "gridv", "copper", "gridh", "gridvh"):
+            FIX0[k_] = [g.copy() for g in FIX[k_]]
 RIP_BUDGET = [int(OPT.get("rips", 600))]
 RIPTIME = float(OPT.get("riptime", 1500))                 # seconds of rip-up work at most
 MAXRIP = int(OPT.get("maxrip", 4))                        # times one route may be pulled before it stays
 import time
 edges = edges[:MAX_EDGES]
+for _k, _nm3 in PSEUDO.items():
+    if _nm3 and KELV.search(_nm3):
+        RIPS[_k] = MAXRIP - 1                             # Kelvin copper from the earlier pass gives way once at most
 queue = deque(range(len(edges)))
 nrip, nstep, t_rip = 0, 0, 0.0
-while queue:
-    eid = queue.popleft()
-    rank = edges[eid][0]
-    nstep += 1
-    if nstep % 40 == 0:
-        print("  progress: step %d, queue %d, routed %d, failing %d, pulled %d" % (nstep, len(queue), FIXEDN[0] + len(ROUTES), len(FAILINFO), nrip), flush=True)
-    if rank == 0 and eid not in RIPS:
-        RIPS[eid] = MAXRIP - 1                            # a Kelvin route gives way once at most
-    if not FIX and (rank > 0 or "ripkelvin" in OPT):
-        snapshot()                                        # fan-out stubs (and, without --ripkelvin, Kelvin routes) are never pulled
-    if route_edge(eid):
-        FAILINFO.pop(eid, None)
-        continue
-    if not FIX or RIP_BUDGET[0] <= 0 or t_rip > RIPTIME or "norip" in OPT:
-        continue
-    t0 = time.time()
-    n_e = board.FindNet(edges[eid][2]).GetNetCode()
-    gp, bl = None, []
-    for attempt in range(3):
-        gp = route_edge(eid, ghost=True)
-        if gp is None:
-            break
-        bl = blockers(gp, n_e)
-        frozen = [b for b in bl if RIPS.get(b, 0) >= MAXRIP or pinned(b)]
-        if not frozen:
-            break
-        for b in frozen:
-            bake(b)
-        gp = None
-    WHYFAIL[eid] = "no way even with every other route gone" if gp is None and not bl else ("blocked by routes that have been pulled too often" if gp is None else ("ghost path found no blocker" if not bl else "pulled " + str(len(bl))))
-    if gp is not None and bl:
-        RIP_BUDGET[0] -= 1
-        pulled = []
-        for b in bl:
-            if b not in ROUTES:                           # went with an earlier one it hung on
-                continue
-            RIPS[b] = RIPS.get(b, 0) + 1
-            if LASTPULL.get(b) == eid:                    # the two keep pulling each other: make the spot dearer faster
-                add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
-                add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
-            LASTPULL[eid] = b
-            unroute(b, pulled)
-        nrip += len(pulled)
-        ok = route_edge(eid)
-        if ok:
+NPH = int(OPT.get("phases", 3))
+while True:
+    while queue:
+        eid = queue.popleft()
+        rank = edges[eid][0]
+        nstep += 1
+        if nstep % 40 == 0:
+            print("  progress: step %d, queue %d, routed %d, failing %d, pulled %d" % (nstep, len(queue), FIXEDN[0] + len(ROUTES), len(FAILINFO), nrip), flush=True)
+        if rank == 0 and eid not in RIPS:
+            RIPS[eid] = MAXRIP - 1                            # a Kelvin route gives way once at most
+        if not FIX and (rank > 0 or "ripkelvin" in OPT):
+            snapshot()                                        # fan-out stubs (and, without --ripkelvin, Kelvin routes) are never pulled
+        if route_edge(eid):
             FAILINFO.pop(eid, None)
-        for b in reversed(pulled):
-            if b in queue:
-                queue.remove(b)
-            queue.appendleft(b)
-        if "debug" in OPT:
-            print("  rip", edges[eid][2], "pulled", [edges[b][2] for b in bl], "->", ok, flush=True)
-    t_rip += time.time() - t0
+            continue
+        if not FIX or RIP_BUDGET[0] <= 0 or t_rip > RIPTIME or "norip" in OPT:
+            continue
+        t0 = time.time()
+        n_e = board.FindNet(edges[eid][2]).GetNetCode()
+        gp, bl = None, []
+        for attempt in range(3):
+            gp = route_edge(eid, ghost=True)
+            if gp is None:
+                break
+            bl = blockers(gp, n_e)
+            frozen = [b for b in bl if RIPS.get(b, 0) >= MAXRIP or pinned(b)]
+            if not frozen:
+                break
+            for b in frozen:
+                bake(b)
+            gp = None
+        WHYFAIL[eid] = "no way even with every other route gone" if gp is None and not bl else ("blocked by routes that have been pulled too often" if gp is None else ("ghost path found no blocker" if not bl else "pulled " + str(len(bl))))
+        if gp is not None and bl:
+            RIP_BUDGET[0] -= 1
+            pulled = []
+            for b in bl:
+                if b not in ROUTES:                           # went with an earlier one it hung on
+                    continue
+                RIPS[b] = RIPS.get(b, 0) + 1
+                if LASTPULL.get(b) == eid:                    # the two keep pulling each other: make the spot dearer faster
+                    add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
+                    add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
+                LASTPULL[eid] = b
+                unroute(b, pulled)
+            nrip += len(pulled)
+            ok = route_edge(eid)
+            if ok:
+                FAILINFO.pop(eid, None)
+            for b in reversed(pulled):
+                if b in PSEUDO:                           # copper from the earlier pass: its net is routed afresh
+                    new_ = list(range(len(edges), len(edges) + len(ORIG.get(PSEUDO[b], []))))
+                    edges.extend(ORIG.get(PSEUDO[b], []))
+                    queue.extendleft(reversed(new_))
+                    continue
+                if b in queue:
+                    queue.remove(b)
+                queue.appendleft(b)
+            if "debug" in OPT:
+                print("  rip", edges[eid][2], "pulled", [PSEUDO.get(b) or edges[b][2] for b in bl], "->", ok, flush=True)
+        t_rip += time.time() - t0
+    if PHASE[0] >= NPH or not FAILINFO or not FIX0:
+        break
+    # next phase: every route laid for good is free to be pulled again, the open connections are tried once more
+    PHASE[0] += 1
+    for k_ in ("grid", "gridv", "copper", "gridh", "gridvh"):
+        FIX[k_] = [g.copy() for g in FIX0[k_]]
+    FIXEDN[0] -= len(BAKEDR)
+    ROUTES.update(BAKEDR)
+    BAKEDR.clear(); BAKED.clear(); RIPS.clear(); LASTPULL.clear()
+    for e_ in range(len(edges)):
+        if edges[e_][0] == 0:
+            RIPS[e_] = MAXRIP - 1
+    RIP_BUDGET[0], t_rip = int(OPT.get("rips", 600)), 0.0
+    queue = deque(sorted(FAILINFO))
+    print("phase %d: %d open connections tried again with every route free to move" % (PHASE[0], len(queue)), flush=True)
 done = FIXEDN[0] + len(ROUTES)
 for eid in sorted(FAILINFO):
     name, ad = edges[eid][2], edges[eid][3][2]
