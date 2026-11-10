@@ -17,7 +17,7 @@ placed again and all copper was drawn again. `jlc/` still holds the fab files of
 | DRC warnings | 20 (10 narrow connections, 9 silkscreen, 1 text height) | 16 (15 silkscreen, 1 text height) |
 | Cup fit, `board_checks()` in `monolith_cup.py` | 26 of 26 pass | 26 of 26 pass |
 | Tracks / vias / track length | 5099 / 875 / 3733 mm | 2007 / 862 / 2609 mm |
-| Summed copper loss of the 16 solver cases | 1.03 W | 0.99 W |
+| Summed copper loss of the 16 solver cases | 1.04 W | 0.99 W |
 
 Copper resistance, same solver and cases as the 2026-10-30 review (`docs/reviews/2026-10-30-routed-board/tools/run2.py`),
 port 1 / port 2 in milliohm:
@@ -25,10 +25,10 @@ port 1 / port 2 in milliohm:
 | Path | Ground-up | Current |
 |---|---|---|
 | PACK_P, Q102 to battery sense resistor | 2.64 / 1.59 | 1.94 / 1.35 |
-| CELL_P, fuse to Q101 | 1.42 | 1.30 |
+| CELL_P, fuse to Q101 | 1.48 | 1.30 |
 | CELL_P_RAW, J112 to fuse | 0.16 | 0.25 |
 | CELL_N, J108 to shunt | 0.20 | 0.32 |
-| VBUS, connector to TPS25751 | 1.96 / 1.84 | 1.22 / 1.11 |
+| VBUS, connector to TPS25751 | 1.97 / 1.84 | 1.22 / 1.11 |
 | AC_SNS_N, sense resistor to Q401/Q501 | 0.96 / 0.85 | 2.88 / 2.65 |
 | BAT_SNS_P, sense resistor to Q402/Q502 | 0.58 / 0.58 | 0.62 / 0.53 |
 | PPHV, TPS25751 to sense resistor | 0.18 / 0.17 | 0.37 / 0.33 |
@@ -44,6 +44,9 @@ the GND plane layers 0 / 3, via rows that slot a plane 65 / 52, signal vias with
 
 Pictures: `results/layers.png` (four routing layers), `results/render_top.png`.
 
+A detailed comparison (hot loops, gate loops, loss at each load, thermals, Kelvin taps, switch-node coupling) is in
+`compare/README.md`.
+
 ## Known weaknesses
 
 1. The In2 PACK_P plane and the In3 3V3 plane were cut into pieces by signal routes and are held together
@@ -52,7 +55,9 @@ Pictures: `results/layers.png` (four routing layers), `results/render_top.png`.
 2. The shunt's ground end (RS101 pad 2) has three vias, about 3 A each at 9 A. Signals routed under the pad
    leave no room for more. Ground resistance to the buck FETs is about 20 % higher than on the current board.
 3. Inner layers are not Manhattan. The router was allowed any direction on In2 and In3, and most signal vias
-   have no ground via beside them. No loop-area, EMC or thermal review has been done on this board.
+   have no ground via beside them. The loop, coupling and thermal comparison in `compare/` shows the cost:
+   gate loops 49 % more inductance, charger hot loops 20 to 60 % more, and 14 signals that take over 10 mV from
+   a switch-node edge against 2 on the current board.
 4. Vias sit in pads at C409.1 (PPHV), U301.5, C549.2, RS101.2 and several ground pads.
 5. Kelvin pairs were auto-routed and are not tightly paired. Port 1 FSW is 0.15 mm wide.
 6. C449 and C549 are about 4 mm from the TPS25751 PPHV pins.
