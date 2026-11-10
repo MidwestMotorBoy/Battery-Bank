@@ -6949,30 +6949,43 @@
    },
    {
     "name": "Cost, renders and via currents",
-    "note": "this update, up to the moment the page was built",
-    "hours": 0.14016777777777778,
+    "note": "second update of this page",
+    "hours": 0.15046444444444446,
     "start": "2026-11-10T14:48:17.980000+00:00",
-    "end": "2026-11-10T14:56:42.584000+00:00",
-    "usd": 3.2476627999999996,
-    "turns": 20,
-    "output_tokens": 28136,
-    "cache_read_input_tokens": 5934114,
-    "cache_creation_input_tokens": 58442,
-    "input_tokens": 41
+    "end": "2026-11-10T14:57:19.652000+00:00",
+    "usd": 3.6589924000000003,
+    "turns": 23,
+    "output_tokens": 30517,
+    "cache_read_input_tokens": 6930922,
+    "cache_creation_input_tokens": 65735,
+    "input_tokens": 46
+   },
+   {
+    "name": "Tools and workflow write-up",
+    "note": "this update, up to the moment the page was built",
+    "hours": 0.037255833333333335,
+    "start": "2026-11-10T15:11:12.781000+00:00",
+    "end": "2026-11-10T15:13:26.902000+00:00",
+    "usd": 1.1939526,
+    "turns": 6,
+    "output_tokens": 11494,
+    "cache_read_input_tokens": 2074803,
+    "cache_creation_input_tokens": 19945,
+    "input_tokens": 14
    }
   ],
   "total": {
    "name": "Total",
    "note": "",
-   "hours": 13.183202777777778,
+   "hours": 13.124403333333333,
    "start": "2026-11-09T22:41:59.406000+00:00",
-   "end": "2026-11-10T14:56:42.584000+00:00",
-   "usd": 159.462037,
-   "turns": 936,
-   "output_tokens": 1439259,
-   "cache_read_input_tokens": 230630305,
-   "cache_creation_input_tokens": 3484414,
-   "input_tokens": 1874
+   "end": "2026-11-10T15:13:26.902000+00:00",
+   "usd": 161.0673192,
+   "turns": 945,
+   "output_tokens": 1453134,
+   "cache_read_input_tokens": 233701916,
+   "cache_creation_input_tokens": 3511652,
+   "input_tokens": 1893
   },
   "rate": {
    "output_tokens": 40.0,
@@ -6981,10 +6994,133 @@
    "input_tokens": 8.0
   },
   "counter": {
-   "usd": 120.46681339999994,
-   "api_h": 3.1452594444444446,
-   "tool_h": 7.8783775,
-   "total_h": 11.114059722222223
+   "usd": 124.12580579999994,
+   "api_h": 3.228079722222222,
+   "tool_h": 7.945108333333334,
+   "total_h": 11.2544025
   }
- }
+ },
+ "passes": [
+  {
+   "name": "Pass 1",
+   "t": "00:57",
+   "open": 76,
+   "note": "First router run, after the power pours and Kelvin taps were drawn from coordinates."
+  },
+  {
+   "name": "Pass 2",
+   "t": "01:18",
+   "open": 70,
+   "note": "Same placement, failed nets routed first."
+  },
+  {
+   "name": "Pass 3",
+   "t": "01:18",
+   "open": 80,
+   "note": "Another net order. Conclusion: order is not the problem, the parts sit too tight for pins to reach a via."
+  },
+  {
+   "name": "Pass 4",
+   "t": "01:31",
+   "open": 58,
+   "note": "Parts placed again with a clear ring round each fine-pitch IC. Inner layers allowed to jog off their preferred direction."
+  },
+  {
+   "name": "Pass 5",
+   "t": "02:39",
+   "open": 28,
+   "note": "Rip-up and re-route added to the router."
+  },
+  {
+   "name": "Pass 6",
+   "t": "03:27",
+   "open": 12,
+   "note": "Placement fixed at the PD EEPROM, the second protector and a few charger pins, where fixed parts boxed nets in."
+  },
+  {
+   "name": "Pass 7",
+   "t": "05:26",
+   "open": 5,
+   "note": "Long top-to-bottom nets routed first. The full rule check then found 71 spacing errors: the router applied the high-current rule one way round only."
+  },
+  {
+   "name": "Pass 8",
+   "t": "06:42",
+   "open": 10,
+   "note": "Router fixed and those tracks laid again (71 errors down to 3), which opened ten connections again. A pour was covering the only via site for one pad."
+  },
+  {
+   "name": "Pass 9",
+   "t": "10:17",
+   "open": 0,
+   "note": "Last nets with hand-specified routes, the cut-up planes joined again. Then widening, silkscreen, final rule check and cup fit by 10:39."
+  }
+ ],
+ "tools": [
+  [
+   "KiCad 10 in a Docker container",
+   "Loads and saves the board through its Python interface, refills zones, runs the rule check with the project's own rules and the schematic parity check, renders the pictures.",
+   "Stock KiCad. No autorouter product was used."
+  ],
+  [
+   "Placement scripts",
+   "Part positions kept as one JSON file and applied to the board, so a placement can be changed and replayed.",
+   "Written for this job"
+  ],
+  [
+   "Cup-fit check",
+   "Moves each part's 3D mesh to its new position and runs the 26 checks of the mechanical model after every placement change.",
+   "The checks were in the repo; the runner is new"
+  ],
+  [
+   "Copper scripts",
+   "Draw the power pours, via fields and Kelvin taps from coordinates I worked out per net.",
+   "Written for this job"
+  ],
+  [
+   "Router",
+   "A* maze router on a 0.05 mm grid over the front, back and two inner layers. Knows the clearance classes, escapes fine-pitch pins, rips up and re-routes, adds ground stitching. 1,641 lines.",
+   "Written for this job"
+  ],
+  [
+   "Plane island finder",
+   "Finds pieces of the GND, 3V3 and PACK_P planes that a new track cut off. KiCad only shows those as one airwire.",
+   "Written for this job"
+  ],
+  [
+   "Hand-fix specs",
+   "Small JSON files with exact tracks and vias for the spots the router could not solve, plus helpers that list free via sites and draw a zoomed picture of a pocket.",
+   "Written for this job"
+  ],
+  [
+   "DC copper solver",
+   "Path resistance, loss maps, via currents and Kelvin tap error from the real copper.",
+   "From the board review of 2026-10-30"
+  ],
+  [
+   "Partial-inductance solver",
+   "Hot-loop and gate-loop inductance in 3-D.",
+   "From the loop study of 2026-11-06"
+  ],
+  [
+   "Field solver",
+   "Coupling capacitance from each switch node to every other net.",
+   "Written for this comparison"
+  ],
+  [
+   "Loss and pack thermal model",
+   "Loss at each load and the temperature runs. The 12 thermal runs ran on your PC.",
+   "Already in the project"
+  ],
+  [
+   "Layout skill in the repo",
+   "The layout rules I started from and the routing-discipline checker.",
+   "Already in the repo"
+  ],
+  [
+   "Python with numpy, scipy, pyamg, Pillow, matplotlib; a headless browser",
+   "All the solvers and pictures; the browser to look at this page before publishing it.",
+   "Stock"
+  ]
+ ]
 }

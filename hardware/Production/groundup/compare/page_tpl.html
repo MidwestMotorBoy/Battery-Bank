@@ -70,6 +70,12 @@ td.t{text-align:left;white-space:normal}
 .plate img{display:block;max-width:100%;height:auto;min-width:min(100%,640px)}
 .plate.wide img{min-width:860px}
 .pairimg{display:flex;flex-direction:column;gap:10px}
+.barcell{min-width:190px;text-align:left}
+.bar{display:flex;align-items:center;gap:8px}
+.bar i{display:block;height:12px;border-radius:0 4px 4px 0;background:var(--accent);min-width:2px;flex:none}
+#pass-table th,#tool-table th,#pass-table td{text-align:left}
+.bar span{color:var(--ink);font-variant-numeric:tabular-nums}
+#tool-table td:first-child,#pass-table td:first-child{white-space:nowrap;min-width:0}
 .tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:7px;padding:8px 10px;font-size:12.5px;line-height:1.4;max-width:280px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .tip b{font-weight:600;font-variant-numeric:tabular-nums}
 .tip .tl{opacity:.75}
@@ -170,6 +176,13 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <p class="note">Step = switch-node swing × coupling capacitance ÷ (coupling + the signal's own capacitance). Coupling capacitance comes from a 3-D field solve of the real copper round each switch node. The signal's own capacitance is its capacitors plus 4 pF per IC pin and 0.1 pF per mm of track.</p></div>
   <div class="card"><h3>Where switching copper runs next to signals</h3>
     <div class="pairimg"><div class="plate wide"><img id="img-cmap-b" alt="Switching copper and signal nets, current board"></div><div class="plate wide"><img id="img-cmap-n" alt="Switching copper and signal nets, ground-up board"></div></div></div>
+</section>
+
+<section id="s-flow">
+  <div class="finding"><div class="eyebrow">How it was made</div><h2>Tools and workflow</h2><div id="flow-find"></div></div>
+  <div class="card"><h3>Open connections after each routing pass <small>of about 350 to 375 signal connections</small></h3><div class="tw" id="pass-table"></div>
+  <p class="note" id="pass-note"></p></div>
+  <div class="card"><h3>Tools</h3><div class="tw" id="tool-table"></div></div>
 </section>
 
 <section id="s-cost">
@@ -341,6 +354,13 @@ para($('via-find'),T.via);
 hbars($('via-chart'),DATA.via.map(r=>({label:r.name,sub:r.sub,b:r.b.i,n:r.n.i})),{unit:'A',d:2,labelW:215,aria:'Highest via current per power path, both boards'});
 table($('via-table'),['Path','Hottest via, current A','Hottest via, ground-up A','Where, current','Where, ground-up','Vias over 1 A (cur / new)','Vias over 2 A (cur / new)','Vias sharing the current (cur / new)'],
   DATA.via.map(r=>[r.name+' ('+r.sub+')',fmt(r.b.i,2),fmt(r.n.i,2),r.b.at,r.n.at,r.b.o1+' / '+r.n.o1,r.b.o2+' / '+r.n.o2,r.b.car+' / '+r.n.car]));
+/* workflow */
+para($('flow-find'),T.flow);
+(function(){const el=$('pass-table'); const tb=h('table',{},el); const tr=h('tr',{},h('thead',{},tb)); ['Pass','Time, UTC','Still open','What changed'].forEach(c=>h('th',{},tr,c)); const body=h('tbody',{},tb);
+  const mx=Math.max(...DATA.passes.map(p=>p.open));
+  DATA.passes.forEach(p=>{const r=h('tr',{},body); h('td',{},r,p.name); h('td',{},r,p.t); const c=h('td',{class:'barcell'},r); const w=h('div',{class:'bar'},c); const f=h('i',{},w); f.style.width=(p.open/mx*78)+'%'; h('span',{},w,String(p.open)); h('td',{class:'t'},r,p.note);});
+  $('pass-note').textContent=T.pass_note;
+  const tt=$('tool-table'); table(tt,['Tool','What it did','Where it came from'],DATA.tools); tt.querySelectorAll('td').forEach(td=>td.classList.add('t'));})();
 /* cost */
 para($('cost-find'),T.cost);
 (function(){const M=v=>v>=1e6?fmt(v/1e6,2)+' M':fmt(v/1e3,0)+' k'; const H=v=>v>=1?fmt(v,1)+' h':v*60<1?'under 1 min':fmt(v*60,0)+' min';

@@ -130,6 +130,7 @@ D['via_sum'] = {t: dict(max=max(v['i'] for o in via[t].values() for v in o['top'
 for t in (B, N):
     for s in ('top', 'bottom'): D['img'][f'render_{t}_{s}'] = 'data:image/jpeg;base64,' + base64.b64encode(open(os.path.join(HERE, f'img/render_{t}_{s}.jpg'), 'rb').read()).decode()
 D['cost'] = J('worklog.json')
+D['passes'] = J('passes.json'); D['tools'] = J('tools.json')
 
 json.dump({k: v for k, v in D.items() if k != 'img'}, open(os.path.join(HERE, 'page_data.json'), 'w'), indent=1)
 exec(open(os.path.join(HERE, 'page_text.py')).read())          # defines TEXT and SCORE from D
