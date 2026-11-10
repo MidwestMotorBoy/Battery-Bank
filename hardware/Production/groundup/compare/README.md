@@ -18,6 +18,7 @@ go through the same code. Nothing here is measured.
 | Kelvin tap error, charger sense resistors | within 0.58 % | within 0.55 %, port 2 input +1.18 % | current |
 | Kelvin tap error, gauge shunt | +1.47 % | +1.17 % | ground-up |
 | Area enclosed by the five sense pairs | 46 mm² | 74 mm² | current |
+| Highest current in one via (9 A battery side, 5 A USB side) | 2.6 A, none over 3 A | 4.3 A, 8 vias over 3 A | current |
 | Switch-node copper capacitance, four charger nodes | 72 pF | 70 pF | level |
 | Coupling from all switch nodes into listed signal nets | 0.36 pF | 2.4 pF | current |
 | Signals that take over 10 mV from one switch-node edge | 2 (both charger TS pins) | 14 | current |
@@ -26,7 +27,8 @@ The ground-up board is level on everything that depends on the amount of copper 
 on where fast edges run. Before it could be built it would need: the high-side gate drives re-routed beside their
 switch-node returns (port 2 leg A runs 26 mm round the charger IC), signals moved away from the switch nodes (port 2
 charger FB takes 204 mV, I2C up to 153 mV), the 100 nF capacitors and more vias closer to the pack-leg FETs, and more
-vias under the gap-filler pads (86 and 77 against 141 and 139).
+vias under the gap-filler pads (86 and 77 against 141 and 139), and more vias where PACK_P, CELL_P and the ground
+return change layer (3.2 to 4.3 A per via against 1.1 to 2.6 A).
 
 ## Files
 
@@ -41,8 +43,10 @@ vias under the gap-filler pads (86 and 77 against 141 and 139).
 | Loss at each load | `thermal/lossload.py` | `thermal/lossload.json` |
 | Thermal runs (on the PC) | `thermal/run_cmp.py`, `thermal/analyze_cmp.py` | `thermal/summary_pc.json` |
 | Copper cover and via counts | `custats.py` | `custats_<tag>.json` |
+| Per-via current on every power path | `k/viacur.py` | `k/via_<tag>.json` |
+| Time and tokens of the work, from the session logs | `worklog.py` | `worklog.json` |
 | Field coupling (3-D electrostatic, 0.05 mm) | `coup.py`, `victims.py`, `coup_post.py` | `coup_<tag>.json`, `coup_sum_<tag>.json` |
-| Pictures | `figs_cmp.py`, `cmap_fig.py`, `lossfig.py` | `img/` |
+| Pictures | `figs_cmp.py`, `cmap_fig.py`, `lossfig.py`; `kicad-cli pcb render` for `img/render_*.jpg` | `img/` |
 | Page | `build_page.py` with `page_tpl.html`, `page_text.py`, `page_words.py` | one self-contained HTML |
 
 `peec.py`, `loops.py`, `board.py`, `sx.py`, `run_all_defs.py` are the tools of the 2026-11-06 loop study; `k/solve.py`

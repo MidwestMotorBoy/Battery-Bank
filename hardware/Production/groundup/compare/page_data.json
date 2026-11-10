@@ -6651,5 +6651,340 @@
     "lay": "F 17 mm, In2 6 mm, In3 3 mm"
    }
   }
- ]
+ ],
+ "via": [
+  {
+   "name": "Port 1 PACK_P",
+   "sub": "protection FET to sense resistor, 9 A",
+   "b": {
+    "i": 1.1037256997434173,
+    "at": "x 95.1, y 116.3, F-In1",
+    "o1": 7,
+    "o2": 0,
+    "n": 70,
+    "car": 32
+   },
+   "n": {
+    "i": 3.221527672329483,
+    "at": "x 118.0, y 105.7, In4-B",
+    "o1": 5,
+    "o2": 3,
+    "n": 48,
+    "car": 18
+   }
+  },
+  {
+   "name": "Port 1 BAT_SNS_P",
+   "sub": "sense resistor to pack-leg FET, 9 A",
+   "b": {
+    "i": 0.9885163486014701,
+    "at": "x 118.9, y 101.6, F-In1",
+    "o1": 0,
+    "o2": 0,
+    "n": 14,
+    "car": 7
+   },
+   "n": {
+    "i": 8.366911933321062e-12,
+    "at": "no via in the path",
+    "o1": 0,
+    "o2": 0,
+    "n": 3,
+    "car": 0
+   }
+  },
+  {
+   "name": "Port 1 GND",
+   "sub": "shunt to VBUS-leg FET source, 9 A",
+   "b": {
+    "i": 2.489620374911045,
+    "at": "x 108.0, y 98.6, F-In1",
+    "o1": 4,
+    "o2": 4,
+    "n": 232,
+    "car": 20
+   },
+   "n": {
+    "i": 4.274796486173971,
+    "at": "x 107.8, y 97.9, F-In1",
+    "o1": 6,
+    "o2": 6,
+    "n": 202,
+    "car": 21
+   }
+  },
+  {
+   "name": "Port 1 VBUS",
+   "sub": "connector to TPS25751, 5 A",
+   "b": {
+    "i": 1.4308346152280758,
+    "at": "x 104.1, y 69.1, F-In1",
+    "o1": 4,
+    "o2": 0,
+    "n": 16,
+    "car": 13
+   },
+   "n": {
+    "i": 1.5768344888510089,
+    "at": "x 108.7, y 80.9, In1-In2",
+    "o1": 3,
+    "o2": 0,
+    "n": 15,
+    "car": 15
+   }
+  },
+  {
+   "name": "Port 1 AC_SNS_N",
+   "sub": "sense resistor to VBUS-leg FET, 5 A",
+   "b": {
+    "i": 1.0989590849618678,
+    "at": "x 112.5, y 81.2, In4-B",
+    "o1": 2,
+    "o2": 0,
+    "n": 28,
+    "car": 26
+   },
+   "n": {
+    "i": 1.123948272085114,
+    "at": "x 110.2, y 98.9, In1-In2",
+    "o1": 3,
+    "o2": 0,
+    "n": 21,
+    "car": 14
+   }
+  },
+  {
+   "name": "Port 2 PACK_P",
+   "sub": "protection FET to sense resistor, 9 A",
+   "b": {
+    "i": 1.0997574628192694,
+    "at": "x 95.1, y 116.3, F-In1",
+    "o1": 2,
+    "o2": 0,
+    "n": 70,
+    "car": 31
+   },
+   "n": {
+    "i": 3.170693549697624,
+    "at": "x 95.9, y 105.7, In1-In2",
+    "o1": 5,
+    "o2": 3,
+    "n": 48,
+    "car": 15
+   }
+  },
+  {
+   "name": "Port 2 BAT_SNS_P",
+   "sub": "sense resistor to pack-leg FET, 9 A",
+   "b": {
+    "i": 1.2162751956426032,
+    "at": "x 96.0, y 101.6, F-In1",
+    "o1": 1,
+    "o2": 0,
+    "n": 16,
+    "car": 8
+   },
+   "n": {
+    "i": 4.5419035411334e-13,
+    "at": "no via in the path",
+    "o1": 0,
+    "o2": 0,
+    "n": 3,
+    "car": 0
+   }
+  },
+  {
+   "name": "Port 2 GND",
+   "sub": "shunt to VBUS-leg FET source, 9 A",
+   "b": {
+    "i": 2.6119647317796195,
+    "at": "x 84.8, y 100.1, F-In1",
+    "o1": 4,
+    "o2": 3,
+    "n": 232,
+    "car": 18
+   },
+   "n": {
+    "i": 4.179656068290033,
+    "at": "x 84.7, y 97.9, F-In1",
+    "o1": 6,
+    "o2": 6,
+    "n": 202,
+    "car": 19
+   }
+  },
+  {
+   "name": "Port 2 VBUS",
+   "sub": "connector to TPS25751, 5 A",
+   "b": {
+    "i": 1.4294022841104583,
+    "at": "x 91.1, y 69.1, F-In1",
+    "o1": 4,
+    "o2": 0,
+    "n": 16,
+    "car": 13
+   },
+   "n": {
+    "i": 1.5121374534898893,
+    "at": "x 87.2, y 80.9, In1-In2",
+    "o1": 4,
+    "o2": 0,
+    "n": 15,
+    "car": 15
+   }
+  },
+  {
+   "name": "Port 2 AC_SNS_N",
+   "sub": "sense resistor to VBUS-leg FET, 5 A",
+   "b": {
+    "i": 0.8572239345920012,
+    "at": "x 94.5, y 94.0, In4-B",
+    "o1": 0,
+    "o2": 0,
+    "n": 30,
+    "car": 26
+   },
+   "n": {
+    "i": 1.0626510541113479,
+    "at": "x 87.2, y 98.9, In1-In2",
+    "o1": 1,
+    "o2": 0,
+    "n": 21,
+    "car": 14
+   }
+  },
+  {
+   "name": "CELL_P",
+   "sub": "fuse to protection FET, 9 A",
+   "b": {
+    "i": 1.391146618589428,
+    "at": "x 108.2, y 120.8, In4-B",
+    "o1": 5,
+    "o2": 0,
+    "n": 20,
+    "car": 20
+   },
+   "n": {
+    "i": 3.3325489939940147,
+    "at": "x 104.0, y 128.5, In2-In3",
+    "o1": 9,
+    "o2": 3,
+    "n": 11,
+    "car": 9
+   }
+  },
+  {
+   "name": "FET_MID",
+   "sub": "between the protection FETs, 9 A",
+   "b": {
+    "i": 0.23514044387457828,
+    "at": "x 100.6, y 119.6, F-In1",
+    "o1": 0,
+    "o2": 0,
+    "n": 50,
+    "car": 4
+   },
+   "n": {
+    "i": 0.25438392236929286,
+    "at": "x 104.9, y 126.6, F-In1",
+    "o1": 0,
+    "o2": 0,
+    "n": 20,
+    "car": 9
+   }
+  }
+ ],
+ "via_sum": {
+  "base": {
+   "max": 2.6119647317796195,
+   "over2": 7,
+   "over3": 0
+  },
+  "new": {
+   "max": 4.274796486173971,
+   "over2": 18,
+   "over3": 8
+  }
+ },
+ "cost": {
+  "phases": [
+   {
+    "name": "Ground-up layout",
+    "note": "placement, router, nine routing passes, rule check, cup fit, write-up",
+    "hours": 11.95668888888889,
+    "start": "2026-11-09T22:41:59.406000+00:00",
+    "end": "2026-11-10T10:39:23.486000+00:00",
+    "usd": 129.1472876,
+    "turns": 785,
+    "output_tokens": 1229130,
+    "cache_read_input_tokens": 195634758,
+    "cache_creation_input_tokens": 2552658,
+    "input_tokens": 1576
+   },
+   {
+    "name": "First comparison file",
+    "note": "posting the summary; most of the cost is re-reading the conversation after a pause",
+    "hours": 0.006825555555555555,
+    "start": "2026-11-10T13:11:46.407000+00:00",
+    "end": "2026-11-10T13:12:10.979000+00:00",
+    "usd": 5.4512098,
+    "turns": 3,
+    "output_tokens": 2090,
+    "cache_read_input_tokens": 784289,
+    "cache_creation_input_tokens": 325669,
+    "input_tokens": 6
+   },
+   {
+    "name": "Detailed comparison",
+    "note": "loop, coupling, Kelvin, loss and thermal solves on both boards, this page",
+    "hours": 0.9731686111111112,
+    "start": "2026-11-10T13:18:33.846000+00:00",
+    "end": "2026-11-10T14:16:57.253000+00:00",
+    "usd": 21.6158768,
+    "turns": 128,
+    "output_tokens": 179903,
+    "cache_read_input_tokens": 28277144,
+    "cache_creation_input_tokens": 547645,
+    "input_tokens": 251
+   },
+   {
+    "name": "Cost, renders and via currents",
+    "note": "this update, up to the moment the page was built",
+    "hours": 0.14016777777777778,
+    "start": "2026-11-10T14:48:17.980000+00:00",
+    "end": "2026-11-10T14:56:42.584000+00:00",
+    "usd": 3.2476627999999996,
+    "turns": 20,
+    "output_tokens": 28136,
+    "cache_read_input_tokens": 5934114,
+    "cache_creation_input_tokens": 58442,
+    "input_tokens": 41
+   }
+  ],
+  "total": {
+   "name": "Total",
+   "note": "",
+   "hours": 13.183202777777778,
+   "start": "2026-11-09T22:41:59.406000+00:00",
+   "end": "2026-11-10T14:56:42.584000+00:00",
+   "usd": 159.462037,
+   "turns": 936,
+   "output_tokens": 1439259,
+   "cache_read_input_tokens": 230630305,
+   "cache_creation_input_tokens": 3484414,
+   "input_tokens": 1874
+  },
+  "rate": {
+   "output_tokens": 40.0,
+   "cache_read_input_tokens": 0.19999999999999998,
+   "cache_creation_input_tokens": 16.0,
+   "input_tokens": 8.0
+  },
+  "counter": {
+   "usd": 120.46681339999994,
+   "api_h": 3.1452594444444446,
+   "tool_h": 7.8783775,
+   "total_h": 11.114059722222223
+  }
+ }
 }

@@ -90,3 +90,22 @@ TEXT = dict(
  ],
  foot="Scripts and result files are on the branch in hardware/Production/groundup/compare/. The ground-up board is an experiment and is not merged.",
 )
+
+VS = D['via_sum']; cw = D['cost']; ct = cw['total']; cl = cw['phases'][0]; cd = cw['phases'][2]
+vg = max((r for r in D['via'] if 'GND' in r['name']), key=lambda r: r['n']['i']); vgb = max((r for r in D['via'] if 'GND' in r['name']), key=lambda r: r['b']['i'])
+vp = max((r for r in D['via'] if 'PACK_P' in r['name']), key=lambda r: r['n']['i']); vc = next(r for r in D['via'] if r['name'] == 'CELL_P')
+vp1 = next(r for r in D['via'] if r['name'] == 'Port 1 PACK_P'); vg1 = next(r for r in D['via'] if r['name'] == 'Port 1 GND')
+SCORE.insert(5, ['Highest current in one via', f"{VS[B]['max']:.1f} A", f"{VS[N]['max']:.1f} A", 'b' if VS[B]['max'] < VS[N]['max'] else 'n'])
+TEXT['rend'] = ["Both boards rendered by KiCad from the same view. The outline, holes, USB-C connectors, wire pads, antenna module, the two large inductors and the back-side parts are in the same place on both, so either board fits the cup. Parts with no 3D model in the project library show as bare pads on both."]
+TEXT['via'] = [
+ f"**The current board is ahead.** Its hottest via carries {VS[B]['max']:.1f} A, in the ground return at the {vgb['name'].split(' GND')[0].lower()} VBUS-leg FET. On the ground-up board that return carries {vg['n']['i']:.1f} A in one via, and three other places sit near 3 A per via: PACK_P into each stage ({vp['n']['i']:.1f} A, {vp['b']['i']:.1f} A on the current board), CELL_P at the fuse ({vc['n']['i']:.1f} against {vc['b']['i']:.1f} A) and the shunt's ground pad. {VS[N]['over2']} vias carry over 2 A on the ground-up board and {VS[B]['over2']} on the current board; over 3 A it is {VS[N]['over3']} against {VS[B]['over3']}.",
+ f"The cause is fewer vias at each layer change, so fewer share the current: PACK_P has {vp1['n']['n']} vias on the ground-up board and {vp1['b']['n']} on the current board, CELL_P {vc['n']['n']} against {vc['b']['n']}, and the ground net {vg1['n']['n']} against {vg1['b']['n']}.",
+ "All of these are 0.3 mm vias. A via of that size is usually budgeted at 1 to 2 A. Inside a pour it tolerates more, because the copper round it carries the heat away and one via segment at 4.3 A dissipates only about 4 mW. So this is a margin point, not a heat problem: if one barrel cracks, its neighbours take the current. On the ground-up board I would add vias at these four places before building it.",
+]
+TEXT['cost'] = [
+ f"**About {ct['hours']:.0f} hours of working time and {ct['output_tokens']/1e6:.1f} million output tokens, roughly ${round(ct['usd'], -1):.0f} at API rates.** The layout itself took {cl['hours']:.0f} hours and {cl['usd']/ct['usd']*100:.0f} % of the cost. The detailed comparison took about {cd['hours']*60:.0f} minutes and ${cd['usd']:.0f}.",
+ f"Most of the layout time was tools running, not the model: of the {cw['counter']['total_h']:.0f} hours the session counter covers, {cw['counter']['api_h']:.1f} hours were model time and {cw['counter']['tool_h']:.1f} hours were the router, rule checks and solvers. The input side is large because every model call re-reads the conversation so far; {(ct['cache_read_input_tokens'])/(ct['cache_read_input_tokens']+ct['cache_creation_input_tokens']+ct['input_tokens'])*100:.0f} % of the input tokens were cached re-reads, which are billed at a small fraction of the normal rate.",
+]
+TEXT['cost_note'] = (f"Counted from the session logs: {ct['turns']} model calls between {cl['start'][:16].replace('T', ' ')} and {cw['phases'][-1]['end'][:16].replace('T', ' ')} UTC. Working time leaves out the pauses of more than 20 minutes while waiting for a reply. "
+    f"The dollar figure uses the rates that reproduce the session's own cost counter (${cw['rate']['output_tokens']:.0f} per million output tokens, ${cw['rate']['cache_creation_input_tokens']:.0f} per million cache-write tokens, ${cw['rate']['cache_read_input_tokens']:.2f} per million cache-read tokens); "
+    "what is actually charged depends on the plan. Not counted: the 15-minute thermal batch on the PC, which ran in its own session, and the few minutes after this page was built.")

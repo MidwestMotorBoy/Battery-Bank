@@ -1,0 +1,81 @@
+{
+ "phases": [
+  {
+   "name": "Ground-up layout",
+   "note": "placement, router, nine routing passes, rule check, cup fit, write-up",
+   "hours": 11.95668888888889,
+   "start": "2026-11-09T22:41:59.406000+00:00",
+   "end": "2026-11-10T10:39:23.486000+00:00",
+   "usd": 129.1472876,
+   "turns": 785,
+   "output_tokens": 1229130,
+   "cache_read_input_tokens": 195634758,
+   "cache_creation_input_tokens": 2552658,
+   "input_tokens": 1576
+  },
+  {
+   "name": "First comparison file",
+   "note": "posting the summary; most of the cost is re-reading the conversation after a pause",
+   "hours": 0.006825555555555555,
+   "start": "2026-11-10T13:11:46.407000+00:00",
+   "end": "2026-11-10T13:12:10.979000+00:00",
+   "usd": 5.4512098,
+   "turns": 3,
+   "output_tokens": 2090,
+   "cache_read_input_tokens": 784289,
+   "cache_creation_input_tokens": 325669,
+   "input_tokens": 6
+  },
+  {
+   "name": "Detailed comparison",
+   "note": "loop, coupling, Kelvin, loss and thermal solves on both boards, this page",
+   "hours": 0.9731686111111112,
+   "start": "2026-11-10T13:18:33.846000+00:00",
+   "end": "2026-11-10T14:16:57.253000+00:00",
+   "usd": 21.6158768,
+   "turns": 128,
+   "output_tokens": 179903,
+   "cache_read_input_tokens": 28277144,
+   "cache_creation_input_tokens": 547645,
+   "input_tokens": 251
+  },
+  {
+   "name": "Cost, renders and via currents",
+   "note": "this update, up to the moment the page was built",
+   "hours": 0.14016777777777778,
+   "start": "2026-11-10T14:48:17.980000+00:00",
+   "end": "2026-11-10T14:56:42.584000+00:00",
+   "usd": 3.2476627999999996,
+   "turns": 20,
+   "output_tokens": 28136,
+   "cache_read_input_tokens": 5934114,
+   "cache_creation_input_tokens": 58442,
+   "input_tokens": 41
+  }
+ ],
+ "total": {
+  "name": "Total",
+  "note": "",
+  "hours": 13.183202777777778,
+  "start": "2026-11-09T22:41:59.406000+00:00",
+  "end": "2026-11-10T14:56:42.584000+00:00",
+  "usd": 159.462037,
+  "turns": 936,
+  "output_tokens": 1439259,
+  "cache_read_input_tokens": 230630305,
+  "cache_creation_input_tokens": 3484414,
+  "input_tokens": 1874
+ },
+ "rate": {
+  "output_tokens": 40.0,
+  "cache_read_input_tokens": 0.19999999999999998,
+  "cache_creation_input_tokens": 16.0,
+  "input_tokens": 8.0
+ },
+ "counter": {
+  "usd": 120.46681339999994,
+  "api_h": 3.1452594444444446,
+  "tool_h": 7.8783775,
+  "total_h": 11.114059722222223
+ }
+}

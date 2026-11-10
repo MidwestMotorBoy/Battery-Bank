@@ -39,6 +39,7 @@ code,.ref{font-family:var(--mono);font-size:.9em}
 .sw{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
 .sw.b{background:var(--s1)} .sw.n{background:var(--s2)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h3 .sw{margin-right:6px;vertical-align:-1px}
 .card h3 small{font-family:var(--body);font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));gap:16px}
 .note{font-size:13px;color:var(--muted);max-width:80ch}
@@ -94,6 +95,15 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <p class="note">Same schematic, parts, stack-up and outline on both boards. Every number on this page comes from the same solver run on both board files.</p></div>
 </header>
 
+<section id="s-rend">
+  <div class="finding"><div class="eyebrow">The two boards</div><h2>Renders</h2><div id="rend-find"></div></div>
+  <div class="seg" id="rend-sel"><span class="lab">Side</span></div>
+  <div class="grid2">
+    <div class="card"><h3><i class="sw b"></i> Current board <small>master, hand-routed</small></h3><div class="plate"><img id="rend-b" alt="Render of the current board"></div></div>
+    <div class="card"><h3><i class="sw n"></i> Ground-up board <small>script-built</small></h3><div class="plate"><img id="rend-n" alt="Render of the ground-up board"></div></div>
+  </div>
+</section>
+
 <section id="s-hot">
   <div class="finding"><div class="eyebrow">Switch nodes</div><h2>Hot-loop inductance</h2><div id="hot-find"></div></div>
   <div class="grid2">
@@ -127,6 +137,11 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <div class="card"><h3>Where the copper loss sits</h3><div class="plate wide"><img id="img-lossmap" alt="Copper loss density maps of both boards at 100 W"></div></div>
 </section>
 
+<section id="s-via">
+  <div class="finding"><div class="eyebrow">Vias</div><h2>Highest current in one via</h2><div id="via-find"></div></div>
+  <div class="card"><h3>Hottest via on each power path <small>A, at 9 A battery side and 5 A USB side</small></h3><div id="via-chart"></div><details open><summary>Table</summary><div class="tw" id="via-table"></div></details></div>
+</section>
+
 <section id="s-th">
   <div class="finding"><div class="eyebrow">Thermals</div><h2>Temperatures in the cup</h2><div id="th-find"></div></div>
   <div class="filters"><div class="seg" id="th-case"><span class="lab">Case</span></div></div>
@@ -155,6 +170,11 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <p class="note">Step = switch-node swing × coupling capacitance ÷ (coupling + the signal's own capacitance). Coupling capacitance comes from a 3-D field solve of the real copper round each switch node. The signal's own capacitance is its capacitors plus 4 pF per IC pin and 0.1 pF per mm of track.</p></div>
   <div class="card"><h3>Where switching copper runs next to signals</h3>
     <div class="pairimg"><div class="plate wide"><img id="img-cmap-b" alt="Switching copper and signal nets, current board"></div><div class="plate wide"><img id="img-cmap-n" alt="Switching copper and signal nets, ground-up board"></div></div></div>
+</section>
+
+<section id="s-cost">
+  <div class="finding"><div class="eyebrow">Effort</div><h2>Time and tokens this took</h2><div id="cost-find"></div></div>
+  <div class="card"><div class="tw" id="cost-table"></div><p class="note" id="cost-note"></p></div>
 </section>
 
 <section id="s-method">
@@ -312,6 +332,21 @@ dumbbell($('c-chart'),DATA.coup.map(r=>({label:r.label,cat:r.cat,b:r.b?r.b.mv:nu
 table($('c-table'),['Signal','Group','Own capacitance pF','Coupling current fF','Coupling ground-up fF','Step current mV','Step ground-up mV','Worst switch node (cur / new)'],
   DATA.coup.map(r=>[r.label,r.cat,r.cn>=1000?fmt(r.cn/1000,0)+' nF':fmt(r.cn,0),r.b?fmt(r.b.c,1):'<0.2',r.n?fmt(r.n.c,1):'<0.2',r.b?(r.b.mv>=0.1?fmt(r.b.mv,1):fmt(r.b.mv,4)):'n/a',r.n?(r.n.mv>=0.1?fmt(r.n.mv,1):fmt(r.n.mv,4)):'n/a',(r.b?r.b.w:'n/a')+' / '+(r.n?r.n.w:'n/a')]));
 $('img-cmap-b').src=DATA.img.cmap_base; $('img-cmap-n').src=DATA.img.cmap_new;
+/* renders */
+para($('rend-find'),T.rend);
+function setRend(s){$('rend-b').src=DATA.img['render_base_'+s]; $('rend-n').src=DATA.img['render_new_'+s];}
+seg($('rend-sel'),[['top','Top'],['bottom','Bottom']],'top',setRend); setRend('top');
+/* vias */
+para($('via-find'),T.via);
+hbars($('via-chart'),DATA.via.map(r=>({label:r.name,sub:r.sub,b:r.b.i,n:r.n.i})),{unit:'A',d:2,labelW:215,aria:'Highest via current per power path, both boards'});
+table($('via-table'),['Path','Hottest via, current A','Hottest via, ground-up A','Where, current','Where, ground-up','Vias over 1 A (cur / new)','Vias over 2 A (cur / new)','Vias sharing the current (cur / new)'],
+  DATA.via.map(r=>[r.name+' ('+r.sub+')',fmt(r.b.i,2),fmt(r.n.i,2),r.b.at,r.n.at,r.b.o1+' / '+r.n.o1,r.b.o2+' / '+r.n.o2,r.b.car+' / '+r.n.car]));
+/* cost */
+para($('cost-find'),T.cost);
+(function(){const M=v=>v>=1e6?fmt(v/1e6,2)+' M':fmt(v/1e3,0)+' k'; const H=v=>v>=1?fmt(v,1)+' h':v*60<1?'under 1 min':fmt(v*60,0)+' min';
+  const row=p=>[p.name,H(p.hours),String(p.turns),M(p.output_tokens),M(p.cache_read_input_tokens+p.cache_creation_input_tokens+p.input_tokens),'$'+fmt(p.usd,0)];
+  table($('cost-table'),['Part of the work','Working time','Model calls','Output tokens','Input tokens (mostly cached re-reads)','Cost at API rates'],DATA.cost.phases.map(row).concat([row(DATA.cost.total)]));
+  $('cost-note').textContent=T.cost_note;})();
 /* method */
 (function(){const u=$('method'); T.method.forEach(t=>{const li=h('li',{},u); t.split('**').forEach((s,i)=>{if(i%2) h('strong',{},li,s); else li.appendChild(document.createTextNode(s));});}); $('foot').textContent=T.foot;})();
 </script>

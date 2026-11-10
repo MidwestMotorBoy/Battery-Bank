@@ -111,6 +111,26 @@ def pr(o): return dict(area=o['area'], lp=o['len_plus'], lm=o['len_minus'], plus
                        lay=', '.join(f"{k.replace('.C','')} {v:.0f} mm" for k, v in o['layers'].items()))
 D['pairs'] = [dict(name=PNAME[a['name']][0], sub=PNAME[a['name']][1], b=pr(a), n=pr(b)) for a, b in zip(sp[B], sp[N])]
 
+# ---- via currents ----
+via = {t: J(f'k/via_{t}.json') for t in (B, N)}
+VSUB = {'PACK_P': 'protection FET to sense resistor', 'BAT_SNS_P': 'sense resistor to pack-leg FET', 'GND': 'shunt to VBUS-leg FET source', 'VBUS': 'connector to TPS25751',
+        'AC_SNS_N': 'sense resistor to VBUS-leg FET', 'CELL_P': 'fuse to protection FET', 'FET_MID': 'between the protection FETs', 'PPHV': 'TPS25751 to sense resistor'}
+def vrow(o):
+    t = o['top'][0] if o['top'] else None
+    return dict(i=t['i'] if t else 0.0, at=f"x {t['x']:.1f}, y {t['y']:.1f}, {t['seg']}" if t and t['i'] > 0.05 else 'no via in the path', o1=o['over1'], o2=o['over2'], n=o['n_vias'], car=o['carrying'])
+D['via'] = []
+for k in via[B]:
+    a, c = via[B][k], via[N][k]
+    if max([v['i'] for v in a['top']] + [v['i'] for v in c['top']] + [0]) < 0.05: continue
+    w = k.split(' '); port = int(w[0][1]) if w[0] in ('P1', 'P2') else 0; net = w[1] if port else w[0]
+    D['via'].append(dict(name=(f'Port {port} ' if port else '') + net, sub=f"{VSUB[net]}, {a['I']:.0f} A", b=vrow(a), n=vrow(c)))
+def uniq(t, lim): return len({(v['x'], v['y']) for o in via[t].values() for v in o['top'] if v['i'] >= lim})
+D['via_sum'] = {t: dict(max=max(v['i'] for o in via[t].values() for v in o['top']), over2=uniq(t, 2.0), over3=uniq(t, 3.0)) for t in (B, N)}
+# ---- renders and work log ----
+for t in (B, N):
+    for s in ('top', 'bottom'): D['img'][f'render_{t}_{s}'] = 'data:image/jpeg;base64,' + base64.b64encode(open(os.path.join(HERE, f'img/render_{t}_{s}.jpg'), 'rb').read()).decode()
+D['cost'] = J('worklog.json')
+
 json.dump({k: v for k, v in D.items() if k != 'img'}, open(os.path.join(HERE, 'page_data.json'), 'w'), indent=1)
 exec(open(os.path.join(HERE, 'page_text.py')).read())          # defines TEXT and SCORE from D
 D['text'] = TEXT; D['score'] = SCORE
