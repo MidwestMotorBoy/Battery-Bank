@@ -67,6 +67,7 @@ import os
 KEEPV=[(x-0.4,y-0.4,x+0.4,y+0.4) for x,y in json.load(open('keep_vias.json'))] if os.path.exists('keep_vias.json') else []   # hand-placed via spots: no automatic part on them
 GHOST=[]      # extra blocked boxes (port 1 spots whose port 2 copy would land on a part)
 GAP=float(os.environ.get('GAP','0')); RING=float(os.environ.get('RING','0'))
+RINGS={}   # per-part clear band (mm) round an IC, overrides RING; small ICs (5..12 pads) only get a band through this
 def _auto(P,ref,at=None,pins=None,rots=(0,90,180,270),R=4.0,grid=0.05,gap=None,box=None,wpull=0.15,big=(),verbose=True):
     """place ref at the free spot that minimises the Manhattan distance of its pads to their nets on placed parts.
     at=(x,y) or 'REF.pad': search centre (default: centroid of the connected pads). pins={padnum:'REF.pad' or (x,y)}:
@@ -95,7 +96,8 @@ def _auto(P,ref,at=None,pins=None,rots=(0,90,180,270),R=4.0,grid=0.05,gap=None,b
     others+=[('ghost',b) for b in GHOST]
     others+=[('via',b) for b in KEEPV]
     if gap is None: gap=GAP if re.match(r'(R|C|D|TH|Q[^4-5])',ref) else 0.0
-    others=[(r,(b[0]-RING,b[1]-RING,b[2]+RING,b[3]+RING) if re.match(r'U\d+$',r) and len(db.fp[r]['pads'])>12 else b) for r,b in others]
+    _rg=lambda r: RINGS.get(r,RING if (re.match(r'U\d+$',r) and len(db.fp[r]['pads'])>12) else 0.0)
+    others=[(r,(b[0]-_rg(r),b[1]-_rg(r),b[2]+_rg(r),b[3]+_rg(r))) for r,b in others]
     ob=np.array([b for _,b in others]) if others else np.zeros((0,4))
     best=None
     for rot in rots:

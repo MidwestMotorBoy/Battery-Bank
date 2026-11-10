@@ -82,6 +82,11 @@ def grow(net):
     return CLR + W / 2 + TOLX + (0.1 if net in hc else 0.0)
 
 
+def hcx(net):
+    """The extra 0.1 mm round high-current copper does not apply to pads (the DRC rule excludes them)."""
+    return 0.1 if net in hc else 0.0
+
+
 def growp(net):
     return grow(net) + TOL - TOLX
 
@@ -186,13 +191,18 @@ for dest, k in ((grid, 1.0), (copper, 0.0)):
             for li in pad_layers(p):
                 if dest is copper:
                     mark_poly(li, n, p.GetEffectivePolygon(LAYERS[li], pcbnew.ERROR_INSIDE), 0.0)
-                elif p.GetShape(LAYERS[li]) in RECTSHAPES and abs(p.GetOrientationDegrees() % 90) < 0.01:
+                elif p.GetShape(LAYERS[li]) in RECTSHAPES and abs(p.GetOrientationDegrees() % 90) < 0.01 and p.GetAttribute() != pcbnew.PAD_ATTRIB_NPTH:
                     bq = p.GetBoundingBox()
                     rc = (MM(bq.GetLeft()), MM(bq.GetTop()), MM(bq.GetRight()), MM(bq.GetBottom()))
-                    xrect(grid, li, n, rc, grow(n))
-                    xrect(gridv, li, n, rc, grow(n) + VGROW)
+                    xrect(grid, li, n, rc, grow(n) - hcx(n))
+                    xrect(gridv, li, n, rc, grow(n) - hcx(n) + VGROW)
+                elif p.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:      # a bare hole counts as board edge: 0.25 mm
+                    c_, d_ = p.GetPosition(), p.GetDrillSize()
+                    r_ = max(MM(d_.x), MM(d_.y)) / 2
+                    for arr_, g_ in ((grid, 0.27 + W / 2 + TOLX), (gridv, 0.27 + VIA_D / 2 + TOLX)):
+                        xseg(arr_, li, MULTI, (MM(c_.x), MM(c_.y)), (MM(c_.x), MM(c_.y)), r_ + g_)
                 else:
-                    mark_poly2(li, n, p.GetEffectivePolygon(LAYERS[li], pcbnew.ERROR_INSIDE), growp(n))
+                    mark_poly2(li, n, p.GetEffectivePolygon(LAYERS[li], pcbnew.ERROR_INSIDE), growp(n) - hcx(n))
     for t in board.GetTracks():
         n = t.GetNetCode()
         if t.GetClass() == "PCB_VIA":
@@ -224,6 +234,12 @@ for z in board.Zones():
                 mark_poly(li, z.GetNetCode(), z.GetFilledPolysList(lay), 0.0)
 DEST[0] = grid
 gnd = board.FindNet("GND").GetNetCode()
+for _fp in board.GetFootprints():
+    for z in _fp.Zones():
+        if z.GetIsRuleArea() and (z.GetDoNotAllowTracks() or z.GetDoNotAllowVias()):
+            for li, lay in enumerate(LAYERS):
+                if z.IsOnLayer(lay):
+                    mark_poly2(li, MULTI, z.Outline(), growp(0))
 for z in board.Zones():
     if z.GetIsRuleArea():
         for li, lay in enumerate(LAYERS):
@@ -377,8 +393,13 @@ for u in json.load(open(RPT))["unconnected_items"]:
     fine = any(FINEPIN.search(I[2]) for I in (A, B))
     rank = 0 if KELV.search(name) else (1 if GATE.search(name) else (2 + PRIO.index(name) / 10000.0 if name in PRIO else (3 if fine else 4)))
     edges.append((rank, d, name, A, B))
+LONG = float(OPT.get("long", 18))            # nets with a connection longer than this go right after the gate drives, longest first
+_maxd = {}
+for _e in edges:
+    _maxd[_e[2]] = max(_maxd.get(_e[2], 0.0), _e[1])
+edges = [((2 + (200 - _maxd[e[2]]) / 100000.0) if (e[0] >= 2 and _maxd[e[2]] > LONG) else e[0],) + tuple(e[1:]) for e in edges]
 edges.sort()
-print("edges to route:", len(edges))
+print("edges to route: %d (%d on long nets)" % (len(edges), sum(1 for e in edges if 2 <= e[0] < 2.01)))
 
 
 CUR = [None]                              # items of the route being laid: (object, "T"/"V", layer, a, b, half width)
@@ -495,6 +516,21 @@ def net_cells(net, x0, y0, x1, y1):
 STAT = [0]
 RIPCOST = 12.0
 from scipy import ndimage as _ndi
+# a via whose ring touches a small SMD pad (via-in-pad) is allowed but dear: it is used only where nothing else works
+PADVIA = float(OPT.get("padvia", 60))
+padv = np.zeros((NY, NX), dtype=np.uint8)
+for _fp in board.GetFootprints():
+    for _q in _fp.Pads():
+        if _q.HasHole():
+            continue
+        _bq = _q.GetBoundingBox()
+        if min(MM(_bq.GetWidth()), MM(_bq.GetHeight())) > 1.6:
+            continue                                      # big pads (exposed pads, FET tabs, inductors) take vias anyway
+        _m = VIA_D / 2 - 0.02
+        (_cx0, _cy0), (_cx1, _cy1) = cell(MM(_bq.GetLeft()) - _m, MM(_bq.GetTop()) - _m), cell(MM(_bq.GetRight()) + _m, MM(_bq.GetBottom()) + _m)
+        padv[max(_cy0, 0):_cy1 + 1, max(_cx0, 0):_cx1 + 1] = 1
+
+
 _DIRS = ((1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0), (1, 1, 1.414), (1, -1, 1.414), (-1, 1, 1.414), (-1, -1, 1.414))
 
 
@@ -502,7 +538,7 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
     """A* over (layer, x, y) inside the window. Free cells, via sites and goals are precomputed as byte masks, the
     open set is keyed by one integer per cell (memory stays bounded by cap). The bend cost uses the direction the
     best path arrived by; a via needs VIA_GAP_PATH steps since the last one."""
-    cap = min(cap or NODE_CAP, 6000000)
+    cap = min(cap or NODE_CAP, 12000000)
     x0, y0, x1, y1 = win
     ww, hh = x1 - x0, y1 - y0
     if ww <= 0 or hh <= 0 or not starts or (not goals and gmask is None and not gndvia):
@@ -520,6 +556,7 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
     if ghost:                                             # cells / via sites that only a rip-able route blocks: passable at a price
         fa = [((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)).tobytes() for g in grid]
         va = np.logical_and.reduce([((g[y0:y1, x0:x1] == EMPTY) | (g[y0:y1, x0:x1] == net)) for g in gridv]).tobytes()
+    pvb = np.ascontiguousarray(padv[y0:y1, x0:x1]).tobytes()
     gp = (viam & GNDPLANE[y0:y1, x0:x1]).tobytes() if gndvia else None
     hbox = None
     if gmask is not None:
@@ -599,7 +636,7 @@ def astar(net, starts, goals, win, wh=1.0, cap=None, gmask=None, gndvia=False, g
                 info[ni] = (nc, idx, kk, sv1)
                 push(openq, (nc + wh * h(X, Y), nc, ni))
         if sv >= VIA_GAP_PATH and vm[r] and via_spacing_ok(X0 + (x + x0) * G, Y0 + (y + y0) * G, net):
-            nc = gc + VIA_COST
+            nc = gc + VIA_COST + PADVIA * pvb[r]
             if hb is not None:
                 nc += 4.0 * lnb[r]
             if ghost and not va[r]:
@@ -673,13 +710,15 @@ def emit(net_obj, path, added):
     ca, cb = snap(pts[0], n), snap(pts[-1], n)
     if ca:
         d0 = math.hypot(ca[0] - pts[0][0], ca[1] - pts[0][1])
-        if d0 > 0.35:
+        via0 = len(pts) > 1 and pts[1][2] != pts[0][2]
+        if d0 > 0.35 or (via0 and d0 > 0.02):
             pts.insert(0, (ca[0], ca[1], pts[0][2]))
         elif d0 > 0.02 and len(pts) > 1:
             pts[0] = (ca[0], ca[1], pts[0][2])
     if cb:
         d1 = math.hypot(cb[0] - pts[-1][0], cb[1] - pts[-1][1])
-        if d1 > 0.35:
+        via1 = len(pts) > 1 and pts[-2][2] != pts[-1][2]
+        if d1 > 0.35 or (via1 and d1 > 0.02):
             pts.append((cb[0], cb[1], pts[-1][2]))
         elif d1 > 0.02 and len(pts) > 1:
             pts[-1] = (cb[0], cb[1], pts[-1][2])
@@ -957,6 +996,7 @@ def snapshot():
 def bake(eid):
     """A route that has been pulled too often stays: lay it into the snapshot."""
     R = ROUTES.pop(eid)
+    BAKED.add(eid)
     n = R["net"]
     FIXEDN[0] += 1
     for obj, kind, li, a, b, half in R["items"]:
@@ -1019,10 +1059,57 @@ def drop_items(items, n):
         rebuild(box)
 
 
-def unroute(eid):
+DEPS, BAKED = {}, set()                      # route -> routes of the same net that end on its copper; routes laid for good
+
+
+def note_deps(eid):
+    """Record which other routes of the net this route's free ends land on (not inside a pad): if one of those is
+    pulled later, this one would be left hanging, so it is pulled with it."""
+    R = ROUTES[eid]
+    n, items = R["net"], R["items"]
+    cnt = {}
+    for obj, kind, li, a, b, half in items:
+        for p in ((a,) if kind == "V" else (a, b)):
+            k = (round(p[0], 3), round(p[1], 3))
+            cnt[k] = cnt.get(k, 0) + 1
+    ends = []
+    for obj, kind, li, a, b, half in items:
+        for p in ((a,) if kind == "V" else (a, b)):
+            if cnt[(round(p[0], 3), round(p[1], 3))] > 1:
+                continue
+            if any(n2 == n and (kind == "V" or li in lays) and rc[0] - 0.05 <= p[0] <= rc[2] + 0.05 and rc[1] - 0.05 <= p[1] <= rc[3] + 0.05
+                   for n2, lays, rc in PADRECTS):
+                continue
+            ends.append((p, kind, li, half))
+    if not ends:
+        return
+    for e2, R2 in ROUTES.items():
+        if e2 == eid or R2["net"] != n:
+            continue
+        for p, kind, li, half in ends:
+            if any((kind == "V" or k2 == "V" or l2 == li) and _seg_pt(a2[0], a2[1], b2[0], b2[1], p[0], p[1]) <= half + h2 + G
+                   for o2, k2, l2, a2, b2, h2 in R2["items"]):
+                DEPS.setdefault(e2, set()).add(eid)
+                break
+
+
+def pinned(b, depth=0):
+    """True when a route laid for good hangs (directly or through others) on route b."""
+    deps = DEPS.get(b, ())
+    return bool(set(deps) & BAKED) or (depth < 6 and any(pinned(d, depth + 1) for d in deps if d in ROUTES))
+
+
+def unroute(eid, out=None):
+    """Pull a route and, with it, the routes that end on its copper. Returns every edge id pulled."""
+    out = [] if out is None else out
     R = ROUTES.pop(eid)
+    out.append(eid)
     add_hist(R["items"], R["net"])
     drop_items(R["items"], R["net"])
+    for d in sorted(DEPS.pop(eid, ())):
+        if d in ROUTES:
+            unroute(d, out)
+    return out
 
 
 def blockers(path, n):
@@ -1089,6 +1176,7 @@ def route_edge(eid, ghost=False):
                 add_track(net_obj, (A[0], A[1]), (B[0], B[1]), 0, wtry, added)
                 ROUTES[eid] = dict(net=n, items=CUR[0], rips=ROUTES.get(eid, {}).get("rips", 0))
                 CUR[0] = None
+                note_deps(eid)
                 return True
     gmask, gndvia = None, False
     if name == "GND":
@@ -1098,8 +1186,8 @@ def route_edge(eid, ghost=False):
         gm = [(zc[li] == n) & ((gsrc[li] == n) | (gsrc[li] == EMPTY)) for li in range(len(LAYERS))]
         if any(g[win[1]:win[3], win[0]:win[2]].any() for g in gm):
             goals, gmask = [], gm
-    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (1.9, 2 * NODE_CAP))
-    if ghost:
+    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (2.2, 3 * NODE_CAP))
+    if ghost and dist < 30:
         CAP = CAP // 2
     path, boxed = None, False
     if goals and gmask is None and not gndvia and starts:  # short look from the far end first: finds a boxed-in end at once
@@ -1118,6 +1206,7 @@ def route_edge(eid, ghost=False):
         if ea and ESC_HIT[0]:
             ROUTES[eid] = dict(net=n, items=CUR[0], rips=0)
             CUR[0] = None
+            note_deps(eid)
             return True
         eb = None if (gndvia or gmask is not None) else escape(bd, B[0], B[1], n, added)
         if ea or eb:
@@ -1130,6 +1219,7 @@ def route_edge(eid, ghost=False):
     emit(net_obj, path, added)
     ROUTES[eid] = dict(net=n, items=CUR[0], rips=0)
     CUR[0] = None
+    note_deps(eid)
     FAILINFO.pop(eid, None)
     return True
 
@@ -1149,8 +1239,10 @@ while queue:
     nstep += 1
     if nstep % 40 == 0:
         print("  progress: step %d, queue %d, routed %d, failing %d, pulled %d" % (nstep, len(queue), FIXEDN[0] + len(ROUTES), len(FAILINFO), nrip), flush=True)
-    if rank > 0 and not FIX:
-        snapshot()                                        # Kelvin routes and fan-out stubs are never pulled
+    if rank == 0 and eid not in RIPS:
+        RIPS[eid] = MAXRIP - 1                            # a Kelvin route gives way once at most
+    if not FIX and (rank > 0 or "ripkelvin" in OPT):
+        snapshot()                                        # fan-out stubs (and, without --ripkelvin, Kelvin routes) are never pulled
     if route_edge(eid):
         FAILINFO.pop(eid, None)
         continue
@@ -1164,7 +1256,7 @@ while queue:
         if gp is None:
             break
         bl = blockers(gp, n_e)
-        frozen = [b for b in bl if RIPS.get(b, 0) >= MAXRIP]
+        frozen = [b for b in bl if RIPS.get(b, 0) >= MAXRIP or pinned(b)]
         if not frozen:
             break
         for b in frozen:
@@ -1173,18 +1265,23 @@ while queue:
     WHYFAIL[eid] = "no way even with every other route gone" if gp is None and not bl else ("blocked by routes that have been pulled too often" if gp is None else ("ghost path found no blocker" if not bl else "pulled " + str(len(bl))))
     if gp is not None and bl:
         RIP_BUDGET[0] -= 1
-        nrip += len(bl)
+        pulled = []
         for b in bl:
+            if b not in ROUTES:                           # went with an earlier one it hung on
+                continue
             RIPS[b] = RIPS.get(b, 0) + 1
             if LASTPULL.get(b) == eid:                    # the two keep pulling each other: make the spot dearer faster
                 add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
                 add_hist(ROUTES[b]["items"], ROUTES[b]["net"])
             LASTPULL[eid] = b
-            unroute(b)
+            unroute(b, pulled)
+        nrip += len(pulled)
         ok = route_edge(eid)
         if ok:
             FAILINFO.pop(eid, None)
-        for b in reversed(bl):
+        for b in reversed(pulled):
+            if b in queue:
+                queue.remove(b)
             queue.appendleft(b)
         if "debug" in OPT:
             print("  rip", edges[eid][2], "pulled", [edges[b][2] for b in bl], "->", ok, flush=True)
@@ -1295,7 +1392,7 @@ for uid, t, pc in ALLSTUBS:
     L = math.hypot(bx - ax, by - ay)
     tmax = -1.0
     for x, y, u in _pts.get(t.GetNetCode(), ()):
-        if u != uid and _seg_pt(ax, ay, bx, by, x, y) < 0.04:
+        if u != uid and _seg_pt(ax, ay, bx, by, x, y) < MM(t.GetWidth()) / 2 + 0.06:
             tt = ((x - ax) * (bx - ax) + (y - ay) * (by - ay)) / (L * L)
             if tt * L > 0.2:
                 tmax = max(tmax, min(tt, 1.0))

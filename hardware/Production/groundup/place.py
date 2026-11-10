@@ -3,6 +3,8 @@ P=start()
 EXPL=globals().get('EXPL',{})   # hand-placed parts, recorded on the first run and reserved on the second
 P.update(globals().get('RESERVE',{}))
 def put(ref,x,y,rot=0): P[ref]=(round(x,3),round(y,3),rot); EXPL[ref]=P[ref]
+import placelib as _plr
+_plr.RINGS.update({'U401':1.2,'U501':1.2,'U102':0.9,'U101':0.6,'U404':0.5,'U504':0.5,'U405':0.6,'U505':0.6})
 # ---------------- port 1 power stage (port 2 = translate by DX2) ----------------
 DX2=88.785-111.811
 S={}   # port-1 stage parts that port 2 copies by translation

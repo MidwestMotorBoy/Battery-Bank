@@ -31,6 +31,17 @@ def render(d,out,box,scale=40,layers=('F','In2','In3','B'),labels=True):
             if L in p['L'] and p['L'][L] and x0-2<p['x']<x1+2 and y0-2<p['y']<y1+2:
                 ax.add_patch(Polygon(p['L'][L],fc=col(p['net']),ec='k',lw=0.3))
                 if labels and scale>=50 and p['net']: ax.text(p['x'],p['y'],p['net'].split('/')[-1][:8],fontsize=scale*0.06,ha='center',va='center')
+        if labels and scale>=50:
+            cen={}
+            for p in d['pads']:
+                if L in p['L'] and p['L'][L]: cen.setdefault(p['ref'],[]).append((p['x'],p['y'],p['n']))
+            for r,ps in cen.items():
+                cx=sum(q[0] for q in ps)/len(ps); cy=sum(q[1] for q in ps)/len(ps)
+                if x0<cx<x1 and y0<cy<y1:
+                    ax.text(cx,cy,r,fontsize=scale*0.075,ha='center',va='center',color='#0000aa',weight='bold',bbox=dict(fc='w',ec='none',alpha=0.6,pad=0.5))
+                    if len(ps)>4:
+                        for q in ps:
+                            if x0<q[0]<x1 and y0<q[1]<y1: ax.text(q[0],q[1]+0.12,q[2],fontsize=scale*0.045,ha='center',va='center',color='#aa0000')
         for v in d['vias']:
             if x0<v['x']<x1 and y0<v['y']<y1:
                 ax.add_patch(Circle((v['x'],v['y']),v['d']/2,fc=col(v['net']),ec='k',lw=0.4)); ax.add_patch(Circle((v['x'],v['y']),v['drill']/2,fc='w',ec='none'))
