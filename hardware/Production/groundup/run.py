@@ -1,7 +1,9 @@
 import sys
-exec(open('place.py').read())
-for f in sys.argv[1].split(','):
-    if f: exec(open(f).read())
+for _pass in (0,1):
+    exec(open('place.py').read())
+    for f in sys.argv[1].split(','):
+        if f: exec(open(f).read())
+    RESERVE=dict(EXPL)
 errs,missing=check(P)
 if len(sys.argv)>2:
     box=tuple(map(float,sys.argv[3:7])); sc=float(sys.argv[7]) if len(sys.argv)>7 else 40

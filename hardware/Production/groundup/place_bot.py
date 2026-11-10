@@ -1,3 +1,5 @@
+import placelib as _pl, os
+_g0=(_pl.GAP,_pl.RING); _pl.GAP=float(os.environ.get('GAPB',_pl.GAP)); _pl.RING=float(os.environ.get('RINGB',_pl.RING))   # the gauge corner is fuller: smaller gaps
 # bottom: protection FETs, fuse, gauge, protector, 3V3 buck, MCU bits
 A=lambda *a,**k: auto(P,*a,**k)
 put('Q102',103.4,118.5,270)      # DSG FET, PACK_P source pins on top, under the PACK_P bus
@@ -36,8 +38,8 @@ A('R115',pins={'1':'U101.19'},at=(99.9,121.6))
 A('R116',pins={'1':'U101.18'},at=(99.9,122.4))
 A('Q103',pins={'1':'U101.15'},at=(98.6,125.6))
 A('R117',pins={'1':'U101.15'},at=(96.6,124.2))
-A('R107',pins={'1':'RS101.1'},at=(87.2,131.3))
-A('R108',pins={'1':'RS101.2'},at=(90.0,131.3))
+put('R107',87.65,131.3,0)       # Kelvin filter resistors: fixed, the sense taps are drawn to them
+put('R108',90.1,130.85,90)
 # cell protector under the gauge
 put('U102',99.2,131.5,0)
 A('R123',pins={'1':'U102.1'},at=(96.6,130.3))
@@ -65,3 +67,5 @@ A('TP301',pins={'1':'L201.2'},at=(89.8,126.3))
 # test points
 put('TP412',117.5,66.2,0); put('TP512',82.5,66.2,0)
 put('TP106',100.3,92.3,0); put('TP109',100.3,89.9,0)
+
+_pl.GAP,_pl.RING=_g0

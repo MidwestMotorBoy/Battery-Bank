@@ -63,7 +63,11 @@ def auto(P,ref,at=None,**k):
         try: return _auto(P,ref,at,R=R,**k)
         except RuntimeError as e: err=e
     raise err
-def _auto(P,ref,at=None,pins=None,rots=(0,90,180,270),R=4.0,grid=0.05,gap=0.0,box=None,wpull=0.15,big=(),verbose=True):
+import os
+KEEPV=[(x-0.4,y-0.4,x+0.4,y+0.4) for x,y in json.load(open('keep_vias.json'))] if os.path.exists('keep_vias.json') else []   # hand-placed via spots: no automatic part on them
+GHOST=[]      # extra blocked boxes (port 1 spots whose port 2 copy would land on a part)
+GAP=float(os.environ.get('GAP','0')); RING=float(os.environ.get('RING','0'))
+def _auto(P,ref,at=None,pins=None,rots=(0,90,180,270),R=4.0,grid=0.05,gap=None,box=None,wpull=0.15,big=(),verbose=True):
     """place ref at the free spot that minimises the Manhattan distance of its pads to their nets on placed parts.
     at=(x,y) or 'REF.pad': search centre (default: centroid of the connected pads). pins={padnum:'REF.pad' or (x,y)}:
     explicit per-pad targets (replace the automatic ones). big: nets from BIG to pull to anyway. box=(x0,y0,x1,y1) limit."""
@@ -88,6 +92,10 @@ def _auto(P,ref,at=None,pins=None,rots=(0,90,180,270),R=4.0,grid=0.05,gap=0.0,bo
     xs=np.arange(-R,R+1e-9,grid); gx,gy=np.meshgrid(xs,xs); gx=gx.ravel()+round(at[0]/grid)*grid; gy=gy.ravel()+round(at[1]/grid)*grid
     lay=f['layer']
     others=[(r,db.world(r,*P[r])['bb']) for r in P if r!=ref and db.fp[r]['layer']==lay]
+    others+=[('ghost',b) for b in GHOST]
+    others+=[('via',b) for b in KEEPV]
+    if gap is None: gap=GAP if re.match(r'(R|C|D|TH|Q[^4-5])',ref) else 0.0
+    others=[(r,(b[0]-RING,b[1]-RING,b[2]+RING,b[3]+RING) if re.match(r'U\d+$',r) and len(db.fp[r]['pads'])>12 else b) for r,b in others]
     ob=np.array([b for _,b in others]) if others else np.zeros((0,4))
     best=None
     for rot in rots:

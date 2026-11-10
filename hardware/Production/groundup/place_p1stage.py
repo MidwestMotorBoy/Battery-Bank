@@ -1,5 +1,7 @@
 # port 1 charger controller passives (translated to port 2 at the end)
 _before=set(P)
+import placelib as _pl
+_pl.GHOST[:]=[(b[0]-DX2,b[1],b[2]-DX2,b[3]) for b in (db.world(r,*P[r])['bb'] for r in P if db.fp[r]['layer']=='F.Cu')]
 def A(ref,**k):
     auto(P,ref,**k)
 # kelvin filter resistors at the battery sense resistor
@@ -9,7 +11,7 @@ A('C417',pins={'1':'U403.14','2':'U403.13'},rots=(90,270),at=(115.6,111.7))
 A('C418',pins={'1':'U403.14'},at=(116.3,110.3))
 A('C419',pins={'1':'U403.13'},at=(116.3,113.0))
 A('R419',pins={'1':'U403.12','2':'U403.11'},at=(115.6,113.6))
-A('R418',pins={'2':'U403.12'},at=(116.8,113.6))
+A('R418',pins={'2':'U403.12'},at=(116.8,113.6),box=(105.0,103.0,119.3,118.5))
 A('C414',pins={'1':'U403.30','2':'U403.29'},rots=(90,270),at=(106.8,109.7))
 A('C416',pins={'1':'U403.29'},at=(105.4,109.3))
 A('C415',pins={'1':'U403.30'},at=(106.3,110.3))
@@ -32,4 +34,5 @@ STAGE1=set(P)-_before
 # translate the controller passives to port 2
 for r in list(P):
     if re.match(r'[A-Z]+4\d\d$',r) and port2(r) not in P and r in STAGE1:
-        x,y,rot=P[r]; put(port2(r),x+DX2,y,rot)
+        x,y,rot=P[r]; P[port2(r)]=(round(x+DX2,3),y,rot)
+_pl.GHOST[:]=[]

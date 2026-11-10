@@ -62,7 +62,7 @@ def via_ok(net,x,y,d=0.45,clr=0.2,vv=0.2):
 def V(net,x,y,d=0.45,drill=0.3,dx=0,check=True):
     x+=dx
     if check and not via_ok(net,x,y,d):
-        return False
+        print('  via dropped (no room):',net,round(x,3),round(y,3)); return False
     VIAS.append((x,y,d,net)); _V0(net,x,y,d,drill); return True
 def VG(net,x0,y0,x1,y1,px=1.0,py=None,d=0.45,drill=0.3,dx=0,stagger=False):
     py=py or px; nx=int((x1-x0)/px+1e-6)+1; ny=int((y1-y0)/py+1e-6)+1; n=0
