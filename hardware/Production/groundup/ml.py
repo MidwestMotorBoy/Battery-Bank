@@ -71,6 +71,13 @@ def xblock(m):
         c0, r0 = [int(v) for v in px(XB[i], XB[i + 1])]; c1, r1 = [int(v) for v in px(XB[i + 2], XB[i + 3])]; m[max(r0, 0):max(r1, 0), max(c0, 0):max(c1, 0)] = True
     return m
 ok = {L: ~xblock(blocked(L, W / 2)) for L in RL}
+CORR = None
+if 'corridor' in OPT:       # --corridor=file.json:r  only cells within r mm of the polylines in the file may be used (follow a partner net)
+    _f, _r = OPT['corridor'].rsplit(':', 1); _pl = json.load(open(_f))
+    def _c(dr):
+        for pl in _pl: dr.line([px(*q) for q in pl], fill=255, width=1)
+    CORR = dil(ras(_c), float(_r))
+    for L in RL: ok[L] &= CORR
 viaok = np.ones((NY, NX), bool)
 for L in ALL: viaok &= ~blocked(L, VR)
 def holes(dr):
@@ -79,6 +86,7 @@ def holes(dr):
     for p in d['pads']:
         if p.get('hole', 0) > 0 and inb(p['x'], p['y'], 6): disc(dr, p['x'], p['y'], p['hole'] / 2 + 0.25 + 0.15 + MARG)
 viaok &= ~ras(holes); viaok = ~xblock(~viaok)
+if CORR is not None: viaok &= CORR
 ownm = {L: own(L) for L in RL}
 yy, xx = np.mgrid[0:NY, 0:NX]; gx = X0 + xx * G; gy = Y0 + yy * G
 insb = (gx >= SB[0]) & (gx <= SB[2]) & (gy >= SB[1]) & (gy <= SB[3])

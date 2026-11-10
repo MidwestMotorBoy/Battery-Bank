@@ -9,12 +9,75 @@ file, design rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs,
 back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
 placed again and all copper was drawn again. `jlc/` still holds the fab files of master's board.
 
-## Fix pass (2026-11-10, afternoon)
+## Second fix pass (2026-11-10, evening)
+
+The board on this branch is now the third version. The second pass took the four open items of the first fix pass
+(commit ffb0dde): the charger feedback pins, four other signals over 10 mV per edge, the sense pairs, and the two
+long tracks in the In4 ground plane. Three were closed and the fourth was tested and left.
+
+| Check | Current board (master) | Ground-up, first version | After fix pass 1 | After fix pass 2 |
+|---|---|---|---|---|
+| DRC errors / unconnected / parity | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+| DRC warnings | 16 | 20 | 23 | 22 (12 narrow connections, 9 silkscreen, 1 text height) |
+| Vias / ground vias | 862 / 232 | 875 / 202 | 960 / 219 | 949 / 219 |
+| Charger hot loops, four | 0.54 to 0.67 nH | 0.66 to 1.03 nH | 0.50 to 0.56 nH | 0.50 to 0.56 nH |
+| Gate-drive loops, sum of eight | 49 nH (3.0 to 8.6) | 72 nH (5.0 to 14.1) | 44 nH (3.3 to 8.0) | 44 nH (3.3 to 8.0) |
+| Coupling from all switch nodes into signals | 0.36 pF | 2.43 pF | 0.53 pF | 0.39 pF |
+| Signals that take over 10 mV from one edge | 2 | 14 | 8 | 2 |
+| Charger feedback pins, step per edge, port 1 / port 2 | under 0.1 / under 0.1 mV | 41 / 204 mV | 24 / 17 mV | 1.2 / under 0.1 mV |
+| Area enclosed by the five sense pairs | 46 mm² | 74 mm² | 74 mm² | 29 mm² |
+| Kelvin tap error, four charger resistors | within 0.58 % | within 1.18 % | within 1.04 % | within 0.95 % |
+| Highest current in one via | 2.6 A, 0 over 3 A | 4.3 A, 8 over 3 A | 2.3 A, 0 over 3 A | 2.3 A, 0 over 3 A |
+| Vias under the two gap-filler pads | 141 and 139 | 86 and 77 | 134 and 125 | 133 and 122 |
+| PACK_P to the stage, port 1 / port 2 | 1.94 / 1.35 mΩ | 2.64 / 1.59 mΩ | 2.40 / 1.36 mΩ | 2.42 / 1.38 mΩ |
+| Ground return, port 1 / port 2 | 1.60 / 1.53 mΩ | 1.91 / 1.80 mΩ | 1.44 / 1.30 mΩ | 1.42 / 1.27 mΩ |
+| Copper loss at 100 W, half charge, port 1 / port 2 | 469 / 415 mW | 490 / 416 mW | 435 / 359 mW | 435 / 358 mW |
+| Signal track cut into the ground planes | 34 mm | 0 mm | 258 mm | 258 mm |
+
+What was done:
+
+- Feedback pins: R418 moved 0.6 mm and its via 1 mm; R518 moved 5.1 mm towards U503 so the port 2 feedback net runs
+  on F only, 8 mm, with no via. These are the only two parts that moved. Cup fit checked again: 0 failed checks.
+- EN_5V1, port 1 I2CC_SCL, port 2 SBU_FLT and TS4: each was one via or a short stretch beside switching copper.
+- Sense pairs: port 1 input pair as a stack (ACP_F on In2 over ACN_F on In3, 40 to 7.4 mm²), port 2 input pair with
+  ACN_F on F following ACP_F on In2 (13 to 0.6 mm²), port 2 input minus tap from the other side of the pad
+  (+1.04 to +0.95 %). The port 2 battery pair (10 mm²) and the gauge pair (6.5 mm²) could not be tightened without
+  moving parts.
+- EN_5V2 (78 mm) and SDA (56 mm) stay on In4. Their path is free on In3 for 60 and 45 mm (`lfree.py`), the rest is
+  where nine east-west In3 tracks cross the centre column, and there is no legal via site between y 101 and 107
+  (U506, C531 on F, C211 on B). The only complete signal-layer route runs through the port 1 charger stage and the
+  2 mm gap that joins the two halves of the In2 PACK_P plane. An east-edge In4 route would be about 70 mm per net
+  with a 14 to 17 mm east-west slot across the port 1 input return. In4 is unchanged: 258 mm, 28 crossing nets (the
+  new one is port 1 ACN_F on In3, which also lies over the CHG_INT and PPHV tracks for 3.3 mm).
+
+Two side effects, both found by the solvers in `compare/` and not by DRC, the open-connection check or the plane
+check:
+
+- A new ACN_F via at (106.05, 107.3) sat in a 0.85 mm neck of the B.Cu PACK_P bus. Port 1 PACK_P went from 2.6 to
+  4.5 mΩ on the 0.05 mm grid; the 0.1 mm grid bridged the cut-out. Repaired in `hand3/s12.json` (no via, ACN_F stays
+  on In3).
+- The new EN_5V1 hop on In2 at U404 closed the last gap in the In2 PACK_P plane between U404's input vias and the
+  vias of its bulk capacitor C444. The net stayed in one piece through other layers, so nothing flagged it; the
+  hot-loop solver showed C444's loop going from 1.45 nH to not connected inside the solver box. Repaired in
+  `hand3/s13.json` (hop on B.Cu); C444 is now at 0.95 nH and port 1 PACK_P at 2.42 mΩ.
+
+Rules that follow: check new vias as well as new tracks against pour necks (`ml.py` and `vsite.py` treat plane pours
+as free space); after every edit near power copper run `RES=0.05 python compare/k/pk.py` and the hot-loop solver and
+compare the per-capacitor list with the run before; `piecepic.py` draws the pieces of a plane in different colours.
+Do not start two `dk.sh` commands at the same time: the first to finish stops the Docker daemon of the other.
+
+Hand specs and helpers of this pass are in `hand3/`: `s1` to `s6b` for the signals, `p1in_*` and `mk_pair.py` for
+the port 1 input pair, `s9` to `s13` for the pairs and the two repairs, each applied with `step.sh`. Some steps in
+between were one-off commands, so `hand3/` is a record and not a one-command rebuild; the board file is the
+reference. New tools: `lfree.py` (where a track could change layer unchanged, and what blocks it), `piecepic.py`,
+`netpath.py`, `zoomf.py`, `pathfill.py`, `seglib.py`, `cyd.py`, `ml.py --corridor`.
+DRC report: `results/drc_groundup_fix2.json`. Picture: `results/layers_fix2.png`.
+
+## First fix pass (2026-11-10, afternoon)
 
 The first version (commit 6aaa778) lost the detailed comparison on everything that depends on where fast edges run.
 A targeted fix pass reworked the gate drives, the 100 nF capacitors and vias at the pack-leg FETs, the layer-change
-and gap-filler vias, and the slow signals that ran beside switching copper. The board on this branch is now that
-second version. Same placement except four 0402 capacitors (C430, C438, C530, C538), so the cup fit is unchanged.
+and gap-filler vias, and the slow signals that ran beside switching copper. That second version is commit ffb0dde. Same placement except four 0402 capacitors (C430, C438, C530, C538), so the cup fit is unchanged.
 
 | Check | Current board (master) | Ground-up, first version | Ground-up, after the fix pass |
 |---|---|---|---|
@@ -38,7 +101,8 @@ port 1 PPHV sense 36.7, port 1 CHG_INT 35.5, port 2 TS 7.0), mostly down the cen
 stages and only 8.9 mm of it within 3 mm of a board edge. 27 nets on In3 and B cross one of those slots (2 on the
 current board). In1 has no track. `in4fig.py` and `in4cross.py` produce the picture and the crossing list.
 
-Still behind the current board: six signals besides the charger TS pins take over 10 mV per edge (EN_5V1 28,
+Still behind the current board after this first pass (see the second pass above for what changed): six signals
+besides the charger TS pins took over 10 mV per edge (EN_5V1 28,
 port 1 I2CC_SCL 26, port 2 SBU_FLT 25, port 1 FB 24, TS4 23, port 2 FB 17 mV), the five sense pairs enclose 74 mm²
 against 46 mm², the port 2 input sense tap reads +1.04 %, port 1 PACK_P is 2.40 against 1.94 mΩ, and three more vias
 sit in 0402 pads. Weaknesses 1, 2 and 3 in the list below are reduced, not gone; the others are unchanged.

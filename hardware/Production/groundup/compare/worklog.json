@@ -66,31 +66,44 @@
    "input_tokens": 21
   },
   {
-   "name": "Fix pass",
-   "note": "gate drives, capacitors, vias, signals off the switch nodes, two faults found and corrected, full comparison run again, this update",
-   "hours": 3.3993897222222222,
+   "name": "Fix pass 1",
+   "note": "gate drives, capacitors, vias, signals off the switch nodes, two faults found and corrected, full comparison run again",
+   "hours": 3.4642019444444445,
    "start": "2026-11-10T15:15:03.833000+00:00",
-   "end": "2026-11-10T19:02:09.062000+00:00",
-   "usd": 63.8728556,
-   "turns": 410,
-   "output_tokens": 529405,
-   "cache_read_input_tokens": 102139518,
-   "cache_creation_input_tokens": 1391391,
-   "input_tokens": 812
+   "end": "2026-11-10T19:06:02.386000+00:00",
+   "usd": 66.2059498,
+   "turns": 429,
+   "output_tokens": 552087,
+   "cache_read_input_tokens": 104708669,
+   "cache_creation_input_tokens": 1448372,
+   "input_tokens": 848
+  },
+  {
+   "name": "Fix pass 2",
+   "note": "feedback pins, four signals, sense pairs, ground-plane tracks tested, two side effects found and repaired, full comparison run again, this update",
+   "hours": 1.5224930555555556,
+   "start": "2026-11-10T20:01:07.485000+00:00",
+   "end": "2026-11-10T21:32:28.460000+00:00",
+   "usd": 35.4568042,
+   "turns": 223,
+   "output_tokens": 304090,
+   "cache_read_input_tokens": 56628701,
+   "cache_creation_input_tokens": 747743,
+   "input_tokens": 447
   }
  ],
  "total": {
   "name": "Total",
   "note": "",
-  "hours": 16.54897638888889,
+  "hours": 18.13628166666667,
   "start": "2026-11-09T22:41:59.406000+00:00",
-  "end": "2026-11-10T19:02:09.062000+00:00",
-  "usd": 225.4826838,
-  "turns": 1359,
-  "output_tokens": 1986197,
-  "cache_read_input_tokens": 337281299,
-  "cache_creation_input_tokens": 4909803,
-  "input_tokens": 2712
+  "end": "2026-11-10T21:32:28.460000+00:00",
+  "usd": 263.2725822,
+  "turns": 1601,
+  "output_tokens": 2312969,
+  "cache_read_input_tokens": 396479151,
+  "cache_creation_input_tokens": 5714527,
+  "input_tokens": 3195
  },
  "rate": {
   "output_tokens": 40.0,
@@ -99,9 +112,9 @@
   "input_tokens": 8.0
  },
  "counter": {
-  "usd": 124.12580579999994,
-  "api_h": 3.228079722222222,
-  "tool_h": 7.945108333333334,
-  "total_h": 11.2544025
+  "usd": 195.11284179999987,
+  "api_h": 5.056579722222223,
+  "tool_h": 9.499774166666667,
+  "total_h": 15.147953333333334
  }
 }

@@ -27,7 +27,8 @@ ph = [phase('Ground-up layout', '2026-11-09T22:00', '2026-11-10T13:00', 'placeme
       phase('Detailed comparison', '2026-11-10T13:18:30', '2026-11-10T14:48', 'loop, coupling, Kelvin, loss and thermal solves on both boards, this page'),
       phase('Cost, renders and via currents', '2026-11-10T14:48', '2026-11-10T15:11', 'second update of this page'),
       phase('Tools and workflow write-up', '2026-11-10T15:11', '2026-11-10T15:15', 'third update of this page'),
-      phase('Fix pass', '2026-11-10T15:15', '2027', 'gate drives, capacitors, vias, signals off the switch nodes, two faults found and corrected, full comparison run again, this update')]
+      phase('Fix pass 1', '2026-11-10T15:15', '2026-11-10T19:20', 'gate drives, capacitors, vias, signals off the switch nodes, two faults found and corrected, full comparison run again'),
+      phase('Fix pass 2', '2026-11-10T19:20', '2027', 'feedback pins, four signals, sense pairs, ground-plane tracks tested, two side effects found and repaired, full comparison run again, this update')]
 tot = phase('Total', '2026', '2027')
 for k in ('hours', 'usd', 'turns', 'output_tokens', 'cache_read_input_tokens', 'cache_creation_input_tokens', 'input_tokens'): tot[k] = sum(p[k] for p in ph)
 s = max(snaps, key=lambda d: d['totalCostUSD']) if snaps else None

@@ -4,7 +4,7 @@ import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch
 from matplotlib.path import Path
-BO = [('Current board', 'base/cubase.json'), ('Ground-up board after the fix pass', 'new/cur1_c.json')]
+BO = [('Current board', 'base/cubase.json'), ('Ground-up board after the fix pass', 'new/cus13_c.json')]
 PAL = ['#2a78d6', '#d1495b', '#1b998b', '#e08e0b', '#7b4fbf', '#4d6a2a', '#b0387d', '#6b6f76']
 x0, y0, x1, y1 = 78.5, 63.5, 122.5, 137.5; sc = 0.115
 fig = plt.figure(figsize=((x1 - x0) * sc * 2 + 0.3, (y1 - y0) * sc + 0.9), dpi=150); fig.patch.set_facecolor('white')

@@ -58,7 +58,7 @@ th{font-weight:500;color:var(--muted);font-size:12px}
 td.t{text-align:left;white-space:normal}
 .score td,.score th{padding:9px 10px}
 .score td:nth-child(2),.score td:nth-child(3),.score th:nth-child(2),.score th:nth-child(3){text-align:right}
-#fix-table td:nth-child(4),#fix-table th:nth-child(4){text-align:right}
+#fix-table td:nth-child(4),#fix-table th:nth-child(4),#fix-table td:nth-child(5),#fix-table th:nth-child(5){text-align:right}
 .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:2px 10px 2px 8px;font-size:12.5px;background:var(--wash);color:var(--ink);white-space:nowrap}
 .chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .chip.b i{background:var(--s1)} .chip.n i{background:var(--s2)} .chip.l i{background:var(--muted)}
@@ -97,14 +97,14 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <div class="eyebrow">Monolith P0 · layout experiment · 2026-11-10</div>
   <h1>Ground-up board against the current board</h1>
   <p class="lede" id="lede"></p>
-  <div class="key"><span><i class="sw b"></i>Current board (master, hand-routed)</span><span><i class="sw n"></i>Ground-up board (script-built, after the fix pass, branch only)</span></div>
+  <div class="key"><span><i class="sw b"></i>Current board (master, hand-routed)</span><span><i class="sw n"></i>Ground-up board (script-built, after the second fix pass, branch only)</span></div>
   <div class="card"><div class="tw"><table class="score" id="score"></table></div>
-  <p class="note">Same schematic, parts, stack-up and outline on both boards. The ground-up column is the board after the fix pass; the next section shows what the pass changed. Every number on this page comes from the same solver run on each board file.</p></div>
+  <p class="note">Same schematic, parts, stack-up and outline on both boards. The ground-up column is the board after the second fix pass; the next section shows what the two passes changed. Every number on this page comes from the same solver run on each board file.</p></div>
 </header>
 
 <section id="s-fix">
-  <div class="finding"><div class="eyebrow">Second attempt · fix pass</div><h2>What the fix pass changed</h2><div id="fix-find"></div></div>
-  <div class="card"><h3>Before and after the fix pass <small>against the current board</small></h3><div class="tw"><table class="score" id="fix-table"></table></div>
+  <div class="finding"><div class="eyebrow">Second and third attempt · fix passes</div><h2>What the two fix passes changed</h2><div id="fix-find"></div></div>
+  <div class="card"><h3>Before and after each fix pass <small>against the current board</small></h3><div class="tw"><table class="score" id="fix-table"></table></div>
   <p class="note" id="fix-note"></p></div>
   <div class="card"><h3>What was changed on the board</h3><ul class="plain" id="fix-list"></ul></div>
   <div class="card"><h3>Signal tracks cut into the ground plane <small>inner layer 4, both boards</small></h3><div class="plate wide"><img id="in4-img" alt="Inner layer 4 of both boards with the signal tracks cut into the ground plane"></div>
@@ -112,7 +112,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <div class="seg" id="fix-sel"><span class="lab">Picture</span></div>
   <div class="grid2">
     <div class="card"><h3>Ground-up board <small>first version</small></h3><div class="plate"><img id="fix-img-o" alt="First version of the ground-up board"></div></div>
-    <div class="card"><h3><i class="sw n"></i> Ground-up board <small>after the fix pass</small></h3><div class="plate"><img id="fix-img-n" alt="Ground-up board after the fix pass"></div></div>
+    <div class="card"><h3><i class="sw n"></i> Ground-up board <small>after the second fix pass</small></h3><div class="plate"><img id="fix-img-n" alt="Ground-up board after the second fix pass"></div></div>
   </div>
 </section>
 
@@ -121,7 +121,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
   <div class="seg" id="rend-sel"><span class="lab">Side</span></div>
   <div class="grid2">
     <div class="card"><h3><i class="sw b"></i> Current board <small>master, hand-routed</small></h3><div class="plate"><img id="rend-b" alt="Render of the current board"></div></div>
-    <div class="card"><h3><i class="sw n"></i> Ground-up board <small>script-built, after the fix pass</small></h3><div class="plate"><img id="rend-n" alt="Render of the ground-up board"></div></div>
+    <div class="card"><h3><i class="sw n"></i> Ground-up board <small>script-built, after the second fix pass</small></h3><div class="plate"><img id="rend-n" alt="Render of the ground-up board"></div></div>
   </div>
 </section>
 
@@ -300,8 +300,8 @@ $('lede').textContent=T.lede;
   DATA.score.forEach(r=>{const x=h('tr',{},tb); h('td',{},x,r[0]); h('td',{},x,r[1]); h('td',{},x,r[2]); const c=h('td',{},x); const ch=h('span',{class:'chip '+r[3]},c); h('i',{},ch); ch.appendChild(document.createTextNode({b:'Current board',n:'Ground-up',l:'Level'}[r[3]]));});})();
 /* fix pass */
 para($('fix-find'),T.fix);
-(function(){const t=$('fix-table'); const tr=h('tr',{},h('thead',{},t)); ['','Current board','Ground-up, first version','Ground-up, after the fix pass','Against the current board now'].forEach(c=>h('th',{},tr,c)); const tb=h('tbody',{},t);
-  DATA.fix.rows.forEach(r=>{const x=h('tr',{},tb); r.slice(0,4).forEach(c=>h('td',{},x,c)); const c=h('td',{},x); const ch=h('span',{class:'chip '+r[4]},c); h('i',{},ch); ch.appendChild(document.createTextNode({b:'Current board',n:'Ground-up',l:'Level'}[r[4]]));});})();
+(function(){const t=$('fix-table'); const tr=h('tr',{},h('thead',{},t)); ['','Current board','Ground-up, first version','After fix pass 1','After fix pass 2','Against the current board now'].forEach(c=>h('th',{},tr,c)); const tb=h('tbody',{},t);
+  DATA.fix.rows.forEach(r=>{const x=h('tr',{},tb); r.slice(0,5).forEach(c=>h('td',{},x,c)); const c=h('td',{},x); const ch=h('span',{class:'chip '+r[5]},c); h('i',{},ch); ch.appendChild(document.createTextNode({b:'Current board',n:'Ground-up',l:'Level'}[r[5]]));});})();
 $('fix-note').textContent=DATA.fix.note;
 DATA.fix.list.forEach(s=>h('li',{},$('fix-list'),s));
 function setFix(i){$('fix-img-o').src=DATA.img['fx_'+i+'_old']; $('fix-img-n').src=DATA.img['fx_'+i+'_new'];}

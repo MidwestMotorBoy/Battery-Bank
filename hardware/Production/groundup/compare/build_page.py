@@ -73,6 +73,9 @@ D['img']['lossmap'] = img(f'img/lossmap_{N}.png')
 
 # ---- thermals ----
 th = J('thermal/summary_pc.json')
+if N == 'fix2':                      # no new thermal runs for the second fix pass (signal re-routes, copper loss within 4 mW): reuse the runs of the first
+    for k in list(th):
+        if k.startswith('fix/') or k.startswith('fix_k38/'): th[k.replace('fix', 'fix2', 1)] = th[k]
 CASES = [('dis100', '100 W, port 1', 60, 65, 120, [0, 10, 20, 30, 40, 50, 60]), ('dis100u2', '100 W, port 2', 60, 65, 120, [0, 10, 20, 30, 40, 50, 60]),
          ('dis100x2', '65 W + 35 W, both ports', 60, 65, 120, [0, 10, 20, 30, 40, 50, 60]), ('dis60', '60 W, port 1', 100, 65, 120, [0, 20, 40, 60, 80, 100]),
          ('chg1', 'Charging, port 1', 100, 65, 120, [0, 20, 40, 60, 80, 100])]
@@ -90,10 +93,11 @@ for k, l, *_ in CASES:
 D['thermal']['head'] = ['Case', 'Board', 'Minutes at full power', 'Wh out in 40 min', 'Hottest part °C', 'Hottest FET °C', 'Inductor °C', 'Board at input sense resistor °C', 'Hottest can °C', 'Cup skin °C', 'Board heat, first 4 min W', 'Run ends, min']
 D['thermal']['rows'] = rows
 st = {t: J(f'custats_{t}.json') for t in (B, N)}
+stT = J('custats_fix.json') if N == 'fix2' else st[N]      # the board the thermal runs were made on
 D['thermal']['note'] = (f"Model inputs that differ between the boards: part positions, copper loss tiles, vias in the two gap-filler zones "
-    f"({st[B]['fill1']['vias']} and {st[B]['fill2']['vias']} on the current board, {st[N]['fill1']['vias']} and {st[N]['fill2']['vias']} on the ground-up board, "
-    f"so through-board conductivity there is set to 8.0 and {0.45 + 7.55 * (st[N]['fill1']['vias'] + st[N]['fill2']['vias']) / (st[B]['fill1']['vias'] + st[B]['fill2']['vias']):.1f} W/mK), and copper cover round the power stages "
-    f"({st[B]['stage1']['k_in']:.0f} against {st[N]['stage1']['k_in']:.0f} W/mK in-plane by copper area, so the model uses 38 and {38 * {'new': 1.20, 'fix': 1.27}[N]:.1f} W/mK). "
+    f"({st[B]['fill1']['vias']} and {st[B]['fill2']['vias']} on the current board, {stT['fill1']['vias']} and {stT['fill2']['vias']} on the ground-up board as it was run, "
+    f"so through-board conductivity there is set to 8.0 and {0.45 + 7.55 * (stT['fill1']['vias'] + stT['fill2']['vias']) / (st[B]['fill1']['vias'] + st[B]['fill2']['vias']):.1f} W/mK), and copper cover round the power stages "
+    f"({st[B]['stage1']['k_in']:.0f} against {stT['stage1']['k_in']:.0f} W/mK in-plane by copper area, so the model uses 38 and {38 * {'new': 1.20, 'fix': 1.27, 'fix2': 1.27}[N]:.1f} W/mK). "
     f"The third row takes that copper-cover credit away again. 25 °C ambient, still air, d44 derate policy, steps of 10 s.")
 
 # ---- kelvin ----
