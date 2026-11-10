@@ -150,3 +150,24 @@ loop it produced a board that was legal and clearly worse than the hand-routed o
 
 Limits met in a 4-core, 14 GB cloud container: the dense inductance matrix needs about 8 bytes × branches², a
 run above roughly 27 000 branches is killed without a message, and two large loops cannot run side by side.
+
+## 7. Methods to test next
+
+Nothing in this section has been tried. Each entry is a method the board's owner or a review proposed. When a
+run tests one, move it into the sections above with its picture and its numbers before and after, or delete it
+with the reason. Test on one block first (one charger stage, one buck), not on the whole board.
+
+- **Block first, then the links between blocks** (Logan, 2026-11-10; his hand method, done with KiCad's
+  push-and-shove router and a few tear-ups afterwards). Finish each subsection as far as it goes: the IC with its
+  decoupling, feedback divider, sense filter, gate drives and local returns. Only then route the connections
+  between subsections. This matches §5 steps 5 and 6 in spirit, but §5 hand-finished only the hot-loop
+  capacitors and gate drives and gave every other link to the board-wide router, which is where slow signals
+  ended up crossing power stages. Three additions for a scripted version:
+  - a block mode in the router that routes one subsection alone and runs steps 4 to 8 of the loop on that block;
+  - each finished block lists where its outgoing signals leave and on which layer, which is the corridor
+    reservation of §5 step 2 made concrete;
+  - an automatic tear-up in place of push-and-shove: slide a track or via sideways inside its clearance where
+    that frees the lane, rip up and re-route where it does not, and run steps 1 to 5 after each one.
+- **Many versions of one block, scored by the solvers.** A script can route a feedback divider, a gate drive or
+  a hot-loop capacitor group many ways and keep the version with the best loop inductance, coupling and tap
+  error. Identical circuits (the two charger stages) can share the winning block.
