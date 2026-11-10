@@ -28,6 +28,10 @@ fixed = []
 for d in b.GetDrawings():
     if d.GetClass() == 'PCB_TEXT' and 'Silk' in d.GetLayerName():
         fixed.append(d)
+for f in b.GetFootprints():                 # labels drawn inside footprints (wire-pad names) are handled like board texts
+    for g in f.GraphicalItems():
+        if g.GetClass() == 'PCB_TEXT' and 'Silk' in g.GetLayerName() and g.IsVisible():
+            fixed.append(g)
 def free(r, fr, own=None, courts=False):
     if not in_board(r): return False
     if any(hit(r, p) for p in PADS[fr]) or any(hit(r, t) for t in TEXTS[fr]): return False
@@ -38,12 +42,26 @@ wake = next((p for f in b.GetFootprints() for p in f.Pads() if p.GetNetname().en
 for d in fixed:
     fr = d.GetLayerName().startswith('F')
     t = d.GetText()
-    if t == 'WAKE' and wake is not None:
-        c = wake.GetPosition(); done = False
-        for dx, dy in ((0, 1.6), (0, -1.6), (2.8, 0), (-2.8, 0), (0, 2.2), (0, -2.2)):
-            d.SetPosition(pcbnew.VECTOR2I(c.x + mm(dx), c.y + mm(dy)))
-            if free(box(d.GetBoundingBox(), 0.05), fr, courts=True): done = True; break
-        print('WAKE label', 'moved' if done else 'NOT placed')
+    if not t.startswith('Monolith'):
+        # labels stay where they are when that spot is still clear; otherwise the nearest clear spot (WAKE: nearest to its pad)
+        c = wake.GetPosition() if (t == 'WAKE' and wake is not None) else d.GetPosition()
+        a0 = d.GetTextAngle().AsDegrees()
+        if t == 'WAKE' or not free(box(d.GetBoundingBox(), 0.05), fr, courts=False):
+            best = None
+            for ang in (a0, 90.0 if abs(a0) < 1 else 0.0):
+                d.SetTextAngle(pcbnew.EDA_ANGLE(ang, pcbnew.DEGREES_T))
+                for i in range(-20, 21):
+                    for j in range(-20, 21):
+                        dx, dy = i * 0.25, j * 0.25
+                        r2 = dx * dx + dy * dy + (0.0 if ang == a0 else 4.0)
+                        if best is not None and r2 >= best[0]: continue
+                        d.SetPosition(pcbnew.VECTOR2I(c.x + mm(dx), c.y + mm(dy)))
+                        if free(box(d.GetBoundingBox(), 0.08), fr, courts=False): best = (r2, dx, dy, ang)
+            if best:
+                d.SetTextAngle(pcbnew.EDA_ANGLE(best[3], pcbnew.DEGREES_T)); d.SetPosition(pcbnew.VECTOR2I(c.x + mm(best[1]), c.y + mm(best[2])))
+            else:
+                d.SetTextAngle(pcbnew.EDA_ANGLE(a0, pcbnew.DEGREES_T)); d.SetPosition(c)
+            print('label', t, 'moved %.2f mm' % (best[0] ** 0.5) if best else 'NOT placed')
     elif t.startswith('Monolith'):
         best = None
         for ang in (90, 0):
@@ -77,7 +95,7 @@ for f in sorted(b.GetFootprints(), key=lambda f: f.GetReference()):
             ref.SetTextAngle(pcbnew.EDA_ANGLE(ang, pcbnew.DEGREES_T)); ref.SetPosition(pcbnew.VECTOR2I(mm(cx), mm(cyy)))
             tb = box(ref.GetBoundingBox()); tw, th = (tb[2] - tb[0]) / 2, (tb[3] - tb[1]) / 2
             cands = []
-            for ex in (0.15, 0.6, 1.1, 1.8, 2.6):
+            for ex in (0.15, 0.6, 1.1, 1.8, 2.6, 3.5, 4.5):
                 cands += [(cx, cb[1] - th - ex), (cx, cb[3] + th + ex), (cb[0] - tw - ex, cyy), (cb[2] + tw + ex, cyy),
                           (cb[0] + tw, cb[1] - th - ex), (cb[2] - tw, cb[1] - th - ex), (cb[0] + tw, cb[3] + th + ex), (cb[2] - tw, cb[3] + th + ex),
                           (cb[0] - tw - ex, cb[1] + th), (cb[0] - tw - ex, cb[3] - th), (cb[2] + tw + ex, cb[1] + th), (cb[2] + tw + ex, cb[3] - th)]

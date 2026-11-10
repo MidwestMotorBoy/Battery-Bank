@@ -45,6 +45,8 @@ CONT = "cont" in OPT
 LAIDU, CONT_ITEMS, RENETS = set(), {}, set()
 if CONT:
     _keepu = {t.m_Uuid.AsString() for t in pcbnew.LoadBoard(OPT["keep"]).GetTracks()}
+    if "keepu" in OPT:                                    # ids of hand-drawn copper added after the keep board was made
+        _keepu |= set(open(OPT["keepu"]).read().split())
     board = pcbnew.LoadBoard(PCB)
     _laid = {t.m_Uuid.AsString(): t for t in list(board.GetTracks()) if t.m_Uuid.AsString() not in _keepu}
     _dj = json.load(open(RPT))
@@ -61,10 +63,13 @@ if CONT:
         if _x:
             RENETS.add(_x)
     RENETS -= {None, "GND", "PACK_P", "3V3"}
+    RENETS -= set(OPT.get("norenets", "").split(";"))
     _nrem = 0
     for _u, _t in _laid.items():
         _n = str(_t.GetNetname())
-        if _n in RENETS:
+        if _n in RENETS and "keepre" in OPT:
+            pass                                          # --keepre: the open nets keep what they have (fixed); only their open connections are routed
+        elif _n in RENETS:
             board.Remove(_t); _nrem += 1
         elif _n not in ("GND", "PACK_P", "3V3"):
             LAIDU.add(_u); CONT_ITEMS.setdefault(_t.GetNetCode(), []).append(_t)
@@ -93,6 +98,7 @@ for _nm, _ni in board.GetNetsByName().items():
     elif not any(k_ in _cl for k_ in ("Power", "GND", "GateDrive", "Kelvin")):
         SMALL.add(_ni.GetNetCode())
 hc |= HCN
+print("net classes: %d high-current nets, %d small-signal nets" % (len(HCN), len(SMALL)), flush=True)
 gridh = [np.full((NY, NX), EMPTY, dtype=np.int32) for _ in LAYERS]
 gridvh = [np.full((NY, NX), EMPTY, dtype=np.int32) for _ in LAYERS]
 
@@ -221,6 +227,16 @@ def mark_poly2(li, net, poly, g):
     DEST[0] = grid
 
 
+def mark_ko(li, z):
+    """A keep-out: closed to tracks and vias, or (tracks allowed) to vias only."""
+    if z.GetDoNotAllowTracks():
+        mark_poly2(li, MULTI, z.Outline(), growp(0))
+    else:
+        DEST[0] = gridv
+        mark_poly(li, MULTI, z.Outline(), growp(0) + VGROW)
+        DEST[0] = grid
+
+
 RECTSHAPES = (pcbnew.PAD_SHAPE_RECTANGLE, pcbnew.PAD_SHAPE_ROUNDRECT)
 
 
@@ -282,17 +298,59 @@ for z in board.Zones():
                 mark_poly(li, z.GetNetCode(), z.GetFilledPolysList(lay), 0.0)
 DEST[0] = grid
 gnd = board.FindNet("GND").GetNetCode()
+ZLAB = {}
+ISO = {}
+ZALL = {}
+if "pieces" in OPT:                       # plane goals: only the pieces of a plane / pour that are joined to the main body (isl.py)
+    _LN = {"F.C": 0, "In2": 1, "In3": 2, "B.C": 3}
+    for _nm, _pcs in json.load(open(OPT["pieces"])).items():
+        if _nm.endswith("@iso"):          # pads, tracks and vias of the cut-off groups: not goals
+            _n = board.FindNet(_nm[:-4]).GetNetCode()
+            _im4 = [Image.new("1", (NX, NY), 0) for _ in LAYERS]
+            _c = lambda v_, o_: (v_ - o_) / G
+            for _it in _pcs:
+                if _it[0] == "P":
+                    for _l in _it[1]:
+                        if _l in _LN:
+                            ImageDraw.Draw(_im4[_LN[_l]]).rectangle([_c(_it[2], X0) - 2, _c(_it[3], Y0) - 2, _c(_it[4], X0) + 2, _c(_it[5], Y0) + 2], fill=1)
+                elif _it[0] == "V":
+                    for _d in _im4:
+                        ImageDraw.Draw(_d).ellipse([_c(_it[2] - 0.35, X0), _c(_it[3] - 0.35, Y0), _c(_it[2] + 0.35, X0), _c(_it[3] + 0.35, Y0)], fill=1)
+                elif _it[1] in _LN:
+                    _d = ImageDraw.Draw(_im4[_LN[_it[1]]]); _hw = _it[6] + 0.1
+                    _d.line([_c(_it[2], X0), _c(_it[3], Y0), _c(_it[4], X0), _c(_it[5], Y0)], fill=1, width=max(1, int(round(2 * _hw / G))))
+                    for _x, _y in ((_it[2], _it[3]), (_it[4], _it[5])):
+                        _d.ellipse([_c(_x - _hw, X0), _c(_y - _hw, Y0), _c(_x + _hw, X0), _c(_y + _hw, Y0)], fill=1)
+            ISO[_n] = [np.array(_i, dtype=bool) for _i in _im4]
+            continue
+        _n = board.FindNet(_nm).GetNetCode()
+        _ims = {}
+        for _p in _pcs:
+            if _p[1] not in _LN or len(_p[6]) < 3:
+                continue
+            _k = (_p[0], _LN[_p[1]])
+            if _k not in _ims:
+                _ims[_k] = Image.new("1", (NX, NY), 0)
+            ImageDraw.Draw(_ims[_k]).polygon([((x_ - X0) / G, (y_ - Y0) / G) for x_, y_ in _p[6]], fill=1)
+        for (_gi, li), _im in _ims.items():
+            ZLAB[(_n, _gi, li)] = np.array(_im, dtype=bool)
+        ZALL[_n] = [zc[li] == _n for li in range(len(LAYERS))]
+        for li in range(len(LAYERS)):
+            _mainm = ZLAB.get((_n, 0, li), np.zeros((NY, NX), dtype=bool))
+            _drop = (zc[li] == _n) & ~_mainm
+            zc[li][_drop] = EMPTY
+            print("main %s layer %d: %d cells dropped, %d kept" % (_nm, li, int(_drop.sum()), int((zc[li] == _n).sum())))
 for _fp in board.GetFootprints():
     for z in _fp.Zones():
         if z.GetIsRuleArea() and (z.GetDoNotAllowTracks() or z.GetDoNotAllowVias()):
             for li, lay in enumerate(LAYERS):
                 if z.IsOnLayer(lay):
-                    mark_poly2(li, MULTI, z.Outline(), growp(0))
+                    mark_ko(li, z)
 for z in board.Zones():
     if z.GetIsRuleArea():
         for li, lay in enumerate(LAYERS):
             if z.IsOnLayer(lay) and (z.GetDoNotAllowTracks() or z.GetDoNotAllowVias()):
-                mark_poly2(li, MULTI, z.Outline(), growp(0))
+                mark_ko(li, z)
         continue
     n = z.GetNetCode()
     for li, lay in enumerate(LAYERS):
@@ -450,9 +508,10 @@ if CONT:
     ORIG = {}
     for _e in parse_edges(json.load(open(OPT["orig"]))["unconnected_items"], lambda nm: nm not in ("GND",) + PLANE_NETS):
         ORIG.setdefault(_e[2], []).append(_e)
-    edges = parse_edges(json.load(open(RPT))["unconnected_items"], lambda nm: nm not in RENETS)
+    edges = parse_edges(json.load(open(RPT))["unconnected_items"], lambda nm: "keepre" in OPT or nm not in RENETS)
     for _nm2 in sorted(RENETS):
-        edges += ORIG.get(_nm2, [])
+        if "keepre" not in OPT:
+            edges += ORIG.get(_nm2, [])
 else:
     edges = parse_edges(json.load(open(RPT))["unconnected_items"])
 LONG = float(OPT.get("long", 1e9))            # nets with a connection longer than this go right after the gate drives, longest first
@@ -990,7 +1049,7 @@ def escape(desc, x, y, net, added, pre=False):
                 if "debug" in OPT: print("   esc", m.group(2), m.group(1), d, ext, "exact check failed", WHY)
                 break
             b = (X0 + ex * G, Y0 + ey * G)
-            ESC_HIT[0] = bool(copper[li][ey, ex] == net) and not (abs(b[0] - px) <= hw and abs(b[1] - py) <= hh)
+            ESC_HIT[0] = bool(copper[li][ey, ex] == net) and not (abs(b[0] - px) <= hw and abs(b[1] - py) <= hh) and not (net in ISO and bool(ISO[net][li][ey, ex]))
             t = add_track(net_obj, a, b, li, ew, added)
             STUBS.append(t)
             ALLSTUBS.append((t.m_Uuid.AsString(), t, (px, py)))
@@ -1157,15 +1216,21 @@ def note_deps(eid):
     pulled later, this one would be left hanging, so it is pulled with it."""
     R = ROUTES[eid]
     n, items = R["net"], R["items"]
-    cnt = {}
+    cnt, lay_at = {}, {}
     for obj, kind, li, a, b, half in items:
         for p in ((a,) if kind == "V" else (a, b)):
             k = (round(p[0], 3), round(p[1], 3))
             cnt[k] = cnt.get(k, 0) + 1
+            if kind == "T":
+                lay_at.setdefault(k, set()).add(li)
     ends = []
     for obj, kind, li, a, b, half in items:
         for p in ((a,) if kind == "V" else (a, b)):
-            if cnt[(round(p[0], 3), round(p[1], 3))] > 1:
+            k = (round(p[0], 3), round(p[1], 3))
+            if kind == "V":                               # a via the route reaches on one layer only ends on someone else's copper
+                if len(lay_at.get(k, ())) > 1:
+                    continue
+            elif cnt[k] > 1:
                 continue
             if any(n2 == n and (kind == "V" or li in lays) and rc[0] - 0.05 <= p[0] <= rc[2] + 0.05 and rc[1] - 0.05 <= p[1] <= rc[3] + 0.05
                    for n2, lays, rc in PADRECTS):
@@ -1173,7 +1238,7 @@ def note_deps(eid):
             ends.append((p, kind, li, half))
     if not ends:
         return
-    for e2, R2 in ROUTES.items():
+    for e2, R2 in list(ROUTES.items()) + list(BAKEDR.items()):
         if e2 == eid or R2["net"] != n:
             continue
         for p, kind, li, half in ends:
@@ -1244,13 +1309,21 @@ def route_edge(eid, ghost=False):
     ax, ay, ad = A
     bx, by, bd = B
     pad = 6.0 if dist < 10 else (12.0 if dist < 30 else 30.0)
+    pad = max(pad, float(OPT.get("pad", 0)))
     wx0, wy0 = cell(min(A[0], B[0]) - pad, min(A[1], B[1]) - pad)
     wx1, wy1 = cell(max(A[0], B[0]) + pad, max(A[1], B[1]) + pad)
     win = (max(wx0, 0), max(wy0, 0), min(wx1, NX), min(wy1, NY))
     if ghost:                                             # ends as they would be with the rip-able routes gone
         keep = [grid, copper]
         globals()["grid"], globals()["copper"] = FIX["grid"], FIX["copper"]
-    starts = item_cells(ad, A[0], A[1], n)
+    if ad.startswith("PlanePiece"):                       # a cut-off piece of a plane: the route may leave it anywhere
+        _gi = int(ad.split()[2][1:]); starts = []
+        for _li in range(len(LAYERS)):
+            if (n, _gi, _li) in ZLAB:
+                _ys, _xs = np.nonzero(ZLAB[(n, _gi, _li)] & ((grid[_li] == n) | (grid[_li] == EMPTY)))
+                starts += [(_li, int(x_), int(y_)) for x_, y_ in zip(_xs, _ys)]
+    else:
+        starts = item_cells(ad, A[0], A[1], n)
     goals = item_cells(bd, B[0], B[1], n)
     if ghost:
         globals()["grid"], globals()["copper"] = keep
@@ -1274,9 +1347,12 @@ def route_edge(eid, ghost=False):
     elif name in PLANE_NETS or bd.startswith("Zone") or not goals:
         gsrc = FIX["grid"] if ghost else grid
         gm = [(zc[li] == n) & ((gsrc[li] == n) | (gsrc[li] == EMPTY)) for li in range(len(LAYERS))]
+        if n in ISO:                                      # tracks, vias and pads already joined to the main body count too
+            gm = [gm[li] | ((copper[li] == n) & (gsrc[li] == n) & ~ISO[n][li] & ~ZALL[n][li]) for li in range(len(LAYERS))]
         if any(g[win[1]:win[3], win[0]:win[2]].any() for g in gm):
             goals, gmask = [], gm
-    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (1.9, (3 if PHASE[0] else 2) * NODE_CAP))
+    WH, CAP = (1.15, NODE_CAP) if dist < 15 else ((1.5, NODE_CAP) if dist < 30 else (1.9, (5 if PHASE[0] else 2) * NODE_CAP))
+    CAP = int(CAP * float(OPT.get("capx", 1)))
     if ghost and dist < 30:
         CAP = CAP // 2
     path, boxed = None, False
@@ -1306,6 +1382,9 @@ def route_edge(eid, ghost=False):
         drop_items(items, n)                              # escape stubs of the failed try
         FAILINFO[eid] = "%s %.2f,%.2f (%s) -> %.2f,%.2f (%s) starts %d goals %d seen %d" % (name, A[0], A[1], ad.split("[")[0] + ad.split("]")[-1][:9], B[0], B[1], bd.split("[")[0] + bd.split("]")[-1][:9], len(starts), len(goals), STAT[0])
         return False
+    if "dbg" in OPT:
+        _e = path[-1]; _s = path[0]
+        print("DBG %s start %s end %s (%.3f,%.3f) zc %s copper %s iso %s len %d" % (name, _s, _e, X0 + _e[1] * G, Y0 + _e[2] * G, zc[_e[0]][_e[2], _e[1]] == n, copper[_e[0]][_e[2], _e[1]] == n, ISO[n][_e[0]][_e[2], _e[1]] if n in ISO else None, len(path)))
     emit(net_obj, path, added)
     ROUTES[eid] = dict(net=n, items=CUR[0], rips=0)
     CUR[0] = None
@@ -1553,7 +1632,7 @@ if "dump" in OPT:
         a_, b_, c_, d_ = [float(v) for v in wtxt.split(",")]
         (cx0, cy0), (cx1, cy1) = cell(a_, b_), cell(c_, d_)
         np.savez_compressed(OUT + ".dump%d.npz" % i, grid=np.array([g[cy0:cy1, cx0:cx1] for g in grid]), gridv=np.array([g[cy0:cy1, cx0:cx1] for g in gridv]),
-                            copper=np.array([g[cy0:cy1, cx0:cx1] for g in copper]), box=np.array([X0 + cx0 * G, Y0 + cy0 * G, G]),
+                            copper=np.array([g[cy0:cy1, cx0:cx1] for g in copper]), gridh=np.array([g[cy0:cy1, cx0:cx1] for g in gridh]), gridvh=np.array([g[cy0:cy1, cx0:cx1] for g in gridvh]), box=np.array([X0 + cx0 * G, Y0 + cy0 * G, G]),
                             nets=np.array([[str(k), v.GetNetCode()] for k, v in board.GetNetsByName().items()]))
 print("routed %d edges, %d failed, items added %d" % (done, len(failed), len(added)))
 for f in failed:

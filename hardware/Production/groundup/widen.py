@@ -32,7 +32,7 @@ if drc:
                 if it["uuid"] in plan["step"]:
                     flag.add(it["uuid"])
     for u in flag:
-        plan["step"][u] = min(plan["step"][u] + 1, len(STEPS) - 1)
+        plan["step"][u] = len(STEPS) - 1 if os.environ.get("WIDEN_LAST") else min(plan["step"][u] + 1, len(STEPS) - 1)
 hist = {}
 for u, i in plan["step"].items():
     if u not in tr:
