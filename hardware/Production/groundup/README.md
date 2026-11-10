@@ -1,13 +1,18 @@
 # Ground-up layout experiment
 
-An experimental, script-built re-layout of the Monolith P0 board. It exists only on the branch
-`claude/project-thread-ploune`. `master` still holds the approved, hand-routed board, and nothing here
-should be merged without a review.
+An experimental, script-built re-layout of the Monolith P0 board. It is NOT the board to build:
+`hardware/Production/Monolith.kicad_pcb` is the approved, hand-routed board, and `jlc/` holds its fab files.
 
-On this branch `hardware/Production/Monolith.kicad_pcb` is the ground-up board. The schematic, project
-file, design rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs, antenna module, the
-back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
-placed again and all copper was drawn again. `jlc/` still holds the fab files of master's board.
+The ground-up board is `groundup/Monolith_groundup.kicad_pcb`. It uses the same schematic, project file, design
+rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs, antenna module, back-side parts and L401/L501,
+so it drops into the same cup. Every other part was placed again and all copper was drawn again. To open it in
+KiCad with the project's rules, or to run a full-rule DRC, copy `hardware/Production` to a scratch folder and put
+this file there as `Monolith.kicad_pcb` (the `.kicad_pro` and `.kicad_dru` are found by that name).
+
+History: the experiment was built on branch `claude/project-thread-ploune`, where the ground-up board sat in place
+of `Monolith.kicad_pcb`. PR #66 merged that branch to master on 2026-11-10, and the follow-up PR put the
+hand-routed board back and moved the ground-up board to this folder. "The board on this branch" in the sections
+below means `Monolith_groundup.kicad_pcb`.
 
 ## Second fix pass (2026-11-10, evening)
 
