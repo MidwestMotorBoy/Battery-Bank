@@ -47,7 +47,7 @@ Map each path's loss density into the thermal model's tiles in its own coordinat
 
 ## Pitfalls
 - **The box clips the net.** A box that cuts off part of a pour forces the current into a narrower path. It gave 2.84 mΩ where the full net gives 1.87 mΩ.
-- **The grid bridges gaps.** At 0.1 mm, a 0.08 mm gap between a keep-out and a via conducts in the model but not on the board. Re-run those regions at 0.03 mm.
+- **The grid bridges gaps.** At 0.1 mm, a 0.08 mm gap between a keep-out and a via conducts in the model but not on the board. Re-run those regions at 0.03 mm. A via cut-out in a narrow pour neck is the same case: one signal via in a 0.85 mm neck took a battery path from 2.6 to 4.5 mΩ, and the 0.1 mm grid showed no change. Re-solve at 0.05 mm after any via or track is added near a neck.
 - **Stale fills.** The `filled_polygon` data is whatever was saved last. Refill a copy first.
 - **Pad layers.** A pad with `*.Cu` is on all copper layers; an SMD pad is on its own layer only. Through-hole pads get barrel links like vias.
 - **Islands and wrong nets.** Check that the source and sink pads actually landed on cells of that net (`NO NODES` means a pad number or layer is wrong).

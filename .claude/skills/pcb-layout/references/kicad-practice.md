@@ -205,6 +205,10 @@ fill in KiCad 10's python/kicad-cli fills — set the connection on the pad/foot
 - When one connection has no clean layer on its current path (In2 is a pour, B.Cu is a pour, In3 crosses
   another net), the answer is a different path (over the top, from the net's other end), not forcing the plane
   layer; the A* router also fails there because the zone fills are obstacles, so map the corridor by hand.
+- **A real DRC is necessary and still not enough.** A legal signal via in a pour neck, or a short signal hop on a
+  power-plane layer, can pinch or cut a power path while every rule, the open-connection count and the
+  plane-island check stay clean. After every scripted change near power copper run the solver loop in
+  `solver-verified-layout.md`, and make the link search test new vias and tracks against the pours they land in.
 - A router that can't finish a net reports the two *groups* it couldn't join; list the whole net's tracks,
   vias and pads first (`GetTracks()` filtered by net) so you know which ends are free.
 

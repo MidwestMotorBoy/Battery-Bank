@@ -1,5 +1,12 @@
 # Monolith P0: JLC order files (2026-10-30, from Logan's 22:41 save)
 
+> **These files are for the hand-routed board, not for the board now on master (2026-11-10).** Since PR #66,
+> `../Monolith.kicad_pcb` is the ground-up re-layout (`../groundup/README.md`). Every file in this folder was made from
+> the hand-routed board (the same file at commit `8dd9eb6`) and is a matching set for that board. Do not mix the two:
+> gerbers made from today's board with the CPL in this folder would place almost every part in the wrong spot. To order the
+> ground-up board, regenerate gerbers, drill, BOM and CPL together, carry the hand-made BOM fixes below across, and check
+> rotations in JLC's preview again. The ground-up board has not been reviewed in KiCad.
+
 ## Before checkout (2026-11-07 pre-order review, Logan's answers)
 
 - [ ] **Regenerate the gerber zip** after the two board edits approved on 2026-11-07: silk labels at the pack / NTC wire holes, and the new UART_TX trace (U301 pad 16 DIO18 to J301 pad 6; schematic in PR). Keep the BOM and CPL files here as they are: no part or position changes, and they carry the hand-made fixes below (do not regenerate them from the board, whose footprint fields still hold the old TVS, bulk caps and inductor).

@@ -35,6 +35,7 @@ decisions about where the return current will flow — so ask that question firs
 | Routing discipline (house rules) | `references/routing-discipline.md` | **Before any routing**: inner Manhattan layer pair, outer layers local only, fan-out first with 1.5 mm clear, planes untouchable, GND via at every layer change |
 | KiCad practice and scripting | `references/kicad-practice.md` | Zones, net classes, custom rules, net ties, python/pcbnew automation, DRC |
 | Review checklist | `references/review-checklist.md` | Before routing, after routing, before ordering, when asked to review a board |
+| Solver-verified layout | `references/solver-verified-layout.md` | **Before any scripted routing pass and after any edit near power copper**: the check loop that finds what DRC cannot (cut or pinched power paths, Kelvin taps, loop inductance, coupling), the order of work for a scripted layout, and the solver tools in this repo |
 
 3. Use the scripts in `scripts/` for things that should be deterministic (see **Scripts**).
 
@@ -82,9 +83,14 @@ Read `routing-discipline.md` first; its rules hold at every step below.
 
 Run DRC and `check_routing_rules.py` after each stage, not only at the end, and render the result. Each stage changes what the next one can do.
 
+After any stage or hand edit that puts a track or via within a few millimetres of power copper, also run the
+check loop in `solver-verified-layout.md` (plane pieces, power-path resistance on the fine grid, Kelvin taps, then
+loop inductance and coupling after each pass). A legal signal via can pinch a power pour, and no rule reports it.
+
 ### 4. Review and fix
 
-Walk `review-checklist.md`. Fix in the order: electrical correctness (shorts, opens, parity) → hot loops and
+Walk `review-checklist.md` and run the full solver loop of `solver-verified-layout.md` on the finished file,
+comparing every number with the previous run. Fix in the order: electrical correctness (shorts, opens, parity) → hot loops and
 returns → current capacity → sensitive signals → DFM → cosmetics/silkscreen. After a round of the user's own
 hand routing, check and report only (`kicad-practice.md` §10); they decide what moves.
 
@@ -125,6 +131,12 @@ These are summaries; the reference files give the reasoning, numbers and sources
 - **TVS/ESD**: at the connector, in the path (no stub), with a short fat ground to the plane.
 - **Antenna modules**: board edge, no copper on any layer under the antenna, solid ground either side.
 - **Respect the fab's minimums but don't design at them**; relax wherever density allows.
+- **A clean DRC is not a correct board.** Four real faults in one scripted layout passed DRC, parity and the
+  open-connection count: a cut power bus, a pinched one, Kelvin taps reading plane drop, and a bulk capacitor cut
+  off from its regulator. Each was a legal track or via of *another* net. Solve the power paths, the taps and the
+  loops after every edit near them, and compare with the run before (`solver-verified-layout.md`).
+- **Reserve signal corridors at placement.** Slow signals that must pass between power stages need a lane and a
+  via site on a signal layer before the stages close around them, or they end up cut into a ground plane.
 
 ## Working with the user
 
@@ -148,6 +160,10 @@ All scripts run with KiCad's bundled python (it has `pcbnew`, `PIL`, `numpy`):
 | `scripts/drc_summary.py board.kicad_pcb [--baseline report.rpt]` | Runs `kicad-cli pcb drc --schematic-parity`, restores the `.kicad_pro` (kicad-cli rewrites it), prints violation counts by type, and the difference from a baseline report. |
 | `scripts/check_routing_rules.py board.kicad_pcb [--vertical In2.Cu --horizontal In3.Cu --planes In1.Cu,In4.Cu]` | Checks `routing-discipline.md`: inner-layer direction, tracks/other-net zones/via-row slots on the planes, long outer-layer signal runs, signal vias without a GND via within 1 mm, and parts inside the fan-out ring of dense ICs (1.5 mm; 1 mm for small fine-pitch parts). Run it on the placement (fan-out room) and after every routing stage. |
 | `scripts/net_extents.py board.kicad_pcb [regex]` | Pad count, bounding box and refs per net: the starting point for a pour plan and for sizing high-current paths. |
+
+The field solvers (copper resistance, Kelvin taps, via current, loop inductance, coupling) and the scripted-edit
+helpers are not in this folder. They are in `hardware/Production/groundup/` and its `compare/` folder, with tables
+written for the Monolith board; `solver-verified-layout.md` §6 lists them and what to fill in for another board.
 
 Read `kicad-practice.md` before scripting board edits: KiCad's python has sharp edges (saves rewrite the project
 file, mass removals kill wrappers, `GetWidth()` on a via without a layer hangs).

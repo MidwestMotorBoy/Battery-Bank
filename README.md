@@ -76,7 +76,8 @@ The board outline, peg holes, wire holes and keep-outs come from the enclosure m
 
 #### The approved P0 board
 
-Raytraced in KiCad 10 (`kicad-cli pcb render`, all 3-D models) from the board as approved on 2026-10-30 (master 50c5625):
+Raytraced in KiCad 10 (`kicad-cli pcb render`, all 3-D models) from the board as approved on 2026-10-30 (master 50c5625).
+Since 2026-11-10 (PR #66) `hardware/Production/Monolith.kicad_pcb` is an experimental script-built re-layout; the renders, plots, reviews, analysis and JLC order files here still show the approved hand-routed board, which is that file at commit `8dd9eb6` ([`hardware/Production/groundup/`](hardware/Production/groundup/README.md)):
 
 <p align="center"><a href="docs/hardware/monolith-p0-render-iso-top.png"><img src="docs/hardware/monolith-p0-render-iso-top.png" alt="Raytraced 3-D render of the P0 board, top side, with the two USB-C ports at the front" width="80%"></a></p>
 

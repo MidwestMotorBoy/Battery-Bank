@@ -6,7 +6,7 @@ These are the electrical design, schematic and board-review techniques used to b
 
 | Skill | Use it when |
 |---|---|
-| [pcb-layout](pcb-layout/SKILL.md) | Laying out a board: stack-up, placement, hot loops, return paths, routing discipline, DFM (with reference files and scripts) |
+| [pcb-layout](pcb-layout/SKILL.md) | Laying out a board: stack-up, placement, hot loops, return paths, routing discipline, DFM, and the solver check loop for scripted layouts (with reference files and scripts) |
 | [schematic-design-review](schematic-design-review/SKILL.md) | Reviewing a schematic or netlist: pin-by-pin, net-by-net, ratings, derating, state and fault tables, config defaults, challenge round |
 | [kicad-schematic-scripting](kicad-schematic-scripting/SKILL.md) | Editing `.kicad_sch` / `.kicad_sym` by script, with a netlist diff to prove the change |
 | [pcb-layout-review](pcb-layout-review/SKILL.md) | Reviewing a placed or routed board read-only, with fix coordinates for the layout owner |

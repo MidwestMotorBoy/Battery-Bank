@@ -1,8 +1,9 @@
 # Ground-up board against the current board: detailed comparison
 
-Run on 2026-11-10. `base` is master's `Monolith.kicad_pcb`, `new` is the first version of the ground-up board
+Run on 2026-11-10. `base` is the hand-routed board (`Monolith.kicad_pcb` at commit 8dd9eb6, master's board
+until PR #66), `new` is the first version of the ground-up board
 (commit 6aaa778), `fix` is the ground-up board after the first fix pass (commit ffb0dde) and `fix2` is the board
-after the second fix pass, which is the board on this branch now. Every tool reads the board from the `PCB`
+after the second fix pass (commit dd34285), which is master's `Monolith.kicad_pcb` since PR #66. Every tool reads the board from the `PCB`
 environment variable and tags its output with `TAG`, so all boards go through the same code. Nothing here is measured.
 
 ## Result

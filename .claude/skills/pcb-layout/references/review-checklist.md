@@ -50,6 +50,19 @@ Electrical:
 - [ ] Differential pairs: impedance, matching, symmetric vias, continuous reference.
 - [ ] Fills stitched; slivers and islands removed; board-edge stitching where planned.
 
+Solved, not only rule-checked (`solver-verified-layout.md`; compare each number with the previous revision):
+- [ ] Every plane net is one group over all layers, and each plane is one piece on its own layer wherever a part
+      draws current from it (draw the pieces in different colours).
+- [ ] Every power path's resistance on the fine grid (0.05 mm) is what it was before the last edit, or the change
+      is explained. No via or track of another net sits in a pour neck.
+- [ ] Every Kelvin tap reads within about 1 % on the 0.05 mm grid.
+- [ ] Hot loops: effective inductance and the per-capacitor list match the previous run; no capacitor has
+      dropped out of its loop.
+- [ ] Gate loops solved; none several times larger than its neighbours.
+- [ ] Coupling from switching copper: every signal over about 10 mV per edge is known and accepted (thermistor
+      nodes at the FETs) or its via or stretch has been moved.
+- [ ] No via carries more than its budget on any power path.
+
 Manufacturing:
 - [ ] Clearances and widths ≥ fab minimums with margin (2 oz outer layers!).
 - [ ] Vias: standard sizes; via-in-pad only filled/capped; tented where under parts.
