@@ -24,6 +24,10 @@ BOARDS = {
     prot=[(3.40, 15.47, 2.6, 3.0), (3.40, 22.97, 2.6, 3.0)], fuse=(13.79, 9.64), shunt=(-11.40, 8.47)),
 }
 BOARDS['new_k38'] = dict(BOARDS['new'], k_in=38.0, cu='new')          # bracket: no credit for the extra copper cover
+# ground-up board after the fix pass: same part positions (four 0402 capacitors moved), its own loss tiles, 134 + 125 vias
+# in the filler zones against 141 + 139 (0.925), stage copper cover 41.6 against 32.65 W/mK by area (1.27)
+BOARDS['fix'] = dict(BOARDS['new'], k_in=38.0 * 1.27, k_vias=0.45 + 7.55 * 0.925, cu='fix')
+BOARDS['fix_k38'] = dict(BOARDS['fix'], k_in=38.0)
 CFG = [None]
 def src_boxes():
     cfg = CFG[0]; b = S._orig_src_boxes()
