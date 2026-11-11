@@ -96,7 +96,9 @@ WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = S.CUP_RAIL_GAP          # board rails stop here so the filler reaches the cell tangents
 WIRE_NOTCH_CLR = 0.2               # PACK / Kelvin wire notch through the bottom frame: clearance each side of the wires
-RAIL_RELIEF_Y = 7.6                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK and Kelvin wires pass
+RAIL_RELIEF_Y = 7.4                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK and Kelvin wires pass;
+                                   # 7.4 (was 7.6, 2026-11-11) puts the stub's outer face flush with its tongue's, inside the
+                                   # key slot, so the stub never bears on a 0.1 mm sliver of the frame face (3D drop run 6)
 RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they keep the cells off the board)
 # Board rails (#5): clip-on PA12 blocks (bottom and top, each side; joined into one rail per side by the 2026-11-11 spines), not part of the carrier, so the front cells can
 # go into the carrier from the board side. Each has a tongue that slides into a key slot in the frame's board-side face;
@@ -665,6 +667,7 @@ def checks():
     return {
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
         'board rails: two bodies (one clip-on rail per side, spine across the filler gap)': -abs(2 - len(rails().decompose())) + 0.0,
+        'bottom rail stubs sit over their key slots, off the frame face (y, >= 0.05)': (KEY_Y['bottom'][1] + KEY_CLR) - RAIL_RELIEF_Y - 0.05 + 1e-9,
         'rails land on the front cans before a tongue tip bottoms in its slot (x, >= 0.1)': KEY_TIP_CLR - (RAIL_X0 - (PR + CR)) - 0.1 + 1e-9,
         'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
         'crush ribs fit the thinnest tongue (z, >= 0.2 each side)': (min(FR_T1 - FR_T0, FR_B1 - TONGUE_SETBACK - FR_B0) - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
