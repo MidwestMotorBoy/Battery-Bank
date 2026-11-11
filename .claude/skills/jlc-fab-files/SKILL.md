@@ -68,3 +68,18 @@ JLC's library footprints don't always share KiCad's zero orientation. Go through
 ## 6. After a late part swap
 - Update the schematic fields, then the JLC BOM (full and top-only), the hand-solder list if it applies, and the tracker.
 - If the land pattern stayed the same, keep the footprint and say so. If not, the layout owner updates the PCB first and the files are regenerated.
+
+## 7. Order files belong to one board file
+
+Gerbers, drill, BOM and placement file are one set, made from one saved board. On this project a second,
+script-built layout replaced the board file on the main branch while the order folder still held the package of
+the reviewed, hand-routed board. Nothing looked wrong: the folder was complete and the board passed DRC.
+
+- Write the board's commit (or a hash of the board file) into the order notes and at the top of the BOM and
+  placement files.
+- When the board file changes, either regenerate the whole set or put a warning at the top of the order notes
+  the same day: which board the files are for, and that gerbers from the newer board must not be mixed in.
+- A regenerated gerber zip is checked in a viewer before it replaces the old one (an early zip here printed pads
+  as silkscreen).
+- Renders, layer plots and reviews go stale the same way. Say which board each one shows.
+

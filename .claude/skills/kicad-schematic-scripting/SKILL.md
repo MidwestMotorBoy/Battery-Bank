@@ -49,3 +49,13 @@ KiCad files are S-expressions. An agent can edit them as text, which works in a 
 2. **ERC.** Run `kicad-cli sch erc` (or ask the person to). Compare the count with the previous run; new items must be explained.
 3. **Netlist against board** (after the layout owner updates the PCB). Every schematic pin should match a board pad on the same net. Only intentional board-less items (test points that were removed on purpose) may differ.
 4. **Report** which sheet(s) changed, which instances it affects, where the backup is, and what the layout owner still has to do (Update PCB, reroute pins X/Y, ERC/DRC).
+
+## Fields that let placement and routing be automatic
+
+A scripted placer and router need to know things that only the schematic's author knows: which nets switch,
+which two pads are a Kelvin tap, which capacitor serves which pin, which pads close a hot loop, which parts are
+fixed, which sheets are copies of each other. On this project those were typed into the layout tools as lists
+and regular expressions, which is why the tools do not move to another board unchanged. When a schematic is
+written for an automated flow, put them in symbol fields and net classes from the start. The list of
+declarations and what each one feeds is in the `pcb-proto-flow` skill, section 3.
+
