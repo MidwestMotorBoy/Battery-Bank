@@ -6,7 +6,7 @@ feature, not a redraw.
      loose connector in from the pocket side; pick the bore that seals (1 m dunk) and still lets the board float.
   B  Cup mouth + cap: the bottom 14 mm of the cup, closed by a lid, with the real cap, O-ring and M2 screws. Squeeze in
      the middle of each flat (clay or feelers), dunk at 1 m / 30 min, pull-test the cap, -50 kPa jar test.
-  C  Core: the real carrier, the four clip-on rail blocks and the four PA12 post spacers (no coupon: the parts themselves).
+  C  Core: the real carrier, the two clip-on rails (four blocks before the 2026-11-11 spines) and the four PA12 post spacers (no coupon: the parts themselves).
 Run: python monolith_coupons.py   -> stl/MJF_PA12/coupons/*.stl, stl/TPU_95A/coupons/*.stl, monolith_coupons.png"""
 import os, numpy as np
 import manifold3d as M3
