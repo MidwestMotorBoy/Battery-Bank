@@ -105,11 +105,11 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
-KEY_TIP_CLR = {'bottom': 1.0, 'top': 0.3}   # slot bottom to the tongue tip (2026-11-11; was KEY_CLR, then 0.3): the
+KEY_TIP_CLR = {'bottom': 1.3, 'top': 0.3}   # slot bottom to the tongue tip (2026-11-11; was KEY_CLR, then 0.3): the
                                    # tongue only locates the block, so its tip must never bottom. The top blocks bear on the frame
                                    # face either side of their slots at 0.15, so 0.3 is enough there; the bottom stubs don't. In the 3D back drop the cans (and the rails on them)
                                    # move > 0.3 mm toward the frame's slot bottoms, and 50-60 N through the bottom tongue's tip
-                                   # yielded its root (runs 4-6); 1.0 covers that travel
+                                   # yielded its root (runs 4-6). Run 6: free travel ~0.85-0.87 (cans 0.70 into the carrier + 0.15), so 1.3
 TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far behind the frame's (2026-11-05): the front cans'
                                    # rims landed on them in cap-end drops (0.45-1.1 kN each, blocks 100-196 MPa); now the frame
                                    # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
