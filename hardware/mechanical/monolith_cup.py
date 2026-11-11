@@ -155,7 +155,7 @@ RAIL_SPINE_Y, SPINE_CAN_GAP = (7.0, 8.2), 0.15   # mid-board prop (2026-11-11, 3
                                     # filler, 0.25 off C456 / C521), flush with the rails under B.Cu and following the front can
                                     # SPINE_CAN_GAP off. A back-face drop bowed the board 1.2 mm into the cells there (5,500 ue);
                                     # the spine stops it on the cans. Costs ~12 % of the filler's B.Cu-to-can conductance
-BCU_LAND = (0.45, 16.4, 50.0, 58.0)   # run 8 (2026-11-11): 0.25 -> 0.45 so the board edges touch later (runs 5-7 peaked ~4,000 ue bending over the land)
+BCU_LAND = (0.25, 16.4, 50.0, 58.0)   # 0.45 tried in run 8 (2026-11-11): edge peak unchanged (~4,000 ue), cradles yielded, C524 grazed the wall
 BCU_LAND_RAMP = (4.0, 0.5)         # the lands' lower end ramps off B.Cu over this z length to this extra gap, on a parabola that
                                    # meets the land tangent (run 5: the board's long edges peaked at ~4,200 ue at the lands' square
                                    # lower end; run 6's 2 mm straight ramp only moved that peak to its upper kink) # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
@@ -165,9 +165,9 @@ INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure 
 FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 1.2), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
 CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
-WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 1.0   # front-back webs (heat sharing), link out to the side spine
-                                    # (half-thickness; 0.6 until run 8, 2026-11-11: the link's root at the spine yielded, 24 % peak in run 7,
-                                    # so it is thicker and gets a foot down onto the bottom frame next to the spine)
+WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
+                                    # (run 8, 2026-11-11, tried 1.0 + a foot onto the bottom frame: 2 % volume -18 %, but a
+                                    # 54 % hot spot at the foot's end; back to 0.6 until a tapered foot is checked)
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 6.0, 3.0, 7.0, 2.0   # mass trim 2026-10-31 (was 8 / 4 / 9): pick the
                                     # final slabs in the drop series
 SLAB_FILL, PAD_FILL = 0.30, 0.15    # TPU gyroid infill: bumper slabs (20 % in the mass trim bottomed the port-end slab out
@@ -351,8 +351,6 @@ def webs():
     cells = U(*[pz(circ(x, y, CR + WEB_CLR), S.sb_z_cell0 - 1, S.sb_z_cell1 + 1) for x, y in CELLS])
     w = [pz(rect(-WEB_X, WEB_X, *sorted((s*(PR - WEB_IN), s*(PR + WEB_IN)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
     w += [pz(rect(-WEB_LINK, WEB_LINK, *sorted((s*(PR + WEB_IN - 0.5), s*(PR + CR)))), S.sb_z_cell0, S.sb_z_cell1) for s in (-1, 1)]
-    w += [pz(rect(-WEB_LINK, WEB_LINK, *sorted((s*(PR + WEB_IN - 0.5), s*(PR + CR - 5.2 + 0.01)))), FR_B1 - 0.01, S.sb_z_cell0 + 0.01)
-          for s in (-1, 1)]                                                       # link foot onto the bottom frame (run 8)
     return U(*w) - cells
 def zspan(m):
     b = m.bounding_box(); return b[5] - b[2]
