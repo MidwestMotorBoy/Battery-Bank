@@ -103,6 +103,9 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
+KEY_TIP_CLR = 0.3                  # slot bottom to the tongue tip (2026-11-11; was KEY_CLR): more than RAIL_X0's 0.15 off the
+                                   # front cans, so a board load toward the cells lands the rail on the can, not the tongue tip
+                                   # on the slot bottom (30-50 N through the 2.0 x 1.3 mm bottom tongue yielded its root in 3D)
 TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far behind the frame's (2026-11-05): the front cans'
                                    # rims landed on them in cap-end drops (0.45-1.1 kN each, blocks 100-196 MPa); now the frame
                                    # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
@@ -147,7 +150,9 @@ RAIL_SPINE_Y, SPINE_CAN_GAP = (7.0, 8.2), 0.15   # mid-board prop (2026-11-11, 3
                                     # filler, 0.25 off C456 / C521), flush with the rails under B.Cu and following the front can
                                     # SPINE_CAN_GAP off. A back-face drop bowed the board 1.2 mm into the cells there (5,500 ue);
                                     # the spine stops it on the cans. Costs ~12 % of the filler's B.Cu-to-can conductance
-BCU_LAND = (0.25, 16.4, 50.0, 58.0) # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
+BCU_LAND = (0.25, 16.4, 50.0, 58.0)
+BCU_LAND_RAMP = (2.0, 0.5)         # the lands' lower end ramps off B.Cu over this z length to this extra gap (run 5: the board's
+                                   # long edges peaked at ~4,200 ue right where they met the lands' square lower end) # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
                                     # front-can cradles up to the board's long edges on the B.Cu side, outboard of the filler (|y| <= 16); above C421 / C556 (z <= 49.1)
                                     # because the core slides in along +z and every B.Cu part must pass under them
 INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure the BAK + cap first), thickness
@@ -263,7 +268,12 @@ def bcu_lands():
         sec = CS.batch_boolean([sec, circ(cx, cy, CR + CRADLE_GAP)], M3.OpType.Subtract)
         lead = MF.batch_hull([pz(circ(cx, cy, CR + CRADLE_GAP + CRADLE_LEAD), z0 - 0.01, z0), pz(circ(cx, cy, CR + CRADLE_GAP), z0 + CRADLE_LEAD, z0 + CRADLE_LEAD + 0.01)])
         out.append(pz(sec, z0, z1) - lead)
-    return U(*out)
+    L, e = BCU_LAND_RAMP; xt = S.sb_xb0 - g                                     # land top (x)
+    tri = CS([[(z0 - 0.01, xt - e), (z0 + L, xt + 0.01), (z0 - 0.01, xt + 0.01)]])  # section (z, x), cut above the ramp
+    tri = tri if tri.area() > 0 else CS([[(z0 - 0.01, xt - e), (z0 - 0.01, xt + 0.01), (z0 + L, xt + 0.01)]])
+    cuts = [MF.extrude(tri, YI + 2 - y_in + 0.5).transform([[0, 1, 0, 0], [0, 0, 1, y_in - 0.5], [1, 0, 0, 0]]),
+            MF.extrude(tri, YI + 2 - y_in + 0.5).transform([[0, 1, 0, 0], [0, 0, 1, -(YI + 2)], [1, 0, 0, 0]])]
+    return U(*out) - U(*cuts)
 def cup_ribs():
     """everything the 2026-11-03 retention change adds inside the cup, clipped to the cup's inside"""
     return (lands() + cradles() + bcu_lands()) ^ pz(cs_in.offset(0.02, ROUND), Z_MOUTH - 1, Z_TOP0 + 0.02)
@@ -345,7 +355,7 @@ def key_slots(clr=KEY_CLR):
             y0, y1 = KEY_Y[end]
             if clr: z0, z1 = z0 - 1, z1 + 1                                               # slots run through the frame
             elif end == 'bottom': z1 = z1 - TONGUE_SETBACK                                 # bottom tongues stay off the cans
-            out.append(pz(rect(xe - KEY_DEPTH - clr, RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0, z1))
+            out.append(pz(rect(xe - KEY_DEPTH - (KEY_TIP_CLR if clr else 0.0), RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0, z1))
     return out
 def key_ribs():
     """the crush ribs on the rail blocks' tongues: one on each side face (y), along x, ramped up over KEY_RIB[2] from the
@@ -655,6 +665,7 @@ def checks():
     return {
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
         'board rails: two bodies (one clip-on rail per side, spine across the filler gap)': -abs(2 - len(rails().decompose())) + 0.0,
+        'rails land on the front cans before a tongue tip bottoms in its slot (x, >= 0.1)': KEY_TIP_CLR - (RAIL_X0 - (PR + CR)) - 0.1 + 1e-9,
         'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
         'crush ribs fit the thinnest tongue (z, >= 0.2 each side)': (min(FR_T1 - FR_T0, FR_B1 - TONGUE_SETBACK - FR_B0) - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
         'rail tongues: top full frame height, bottom >= 1.0 (JLC MJF wall)': min(tongue_h('top') - (FR_T1 - FR_T0), tongue_h('bottom') - 1.0) + 1e-9,
