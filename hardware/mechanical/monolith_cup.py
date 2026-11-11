@@ -41,9 +41,10 @@ USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.
 HOUSING_CLR = 0.15                  # pocket round the housing, each side
 POCKET_LEAD = 0.25                  # loft from the pocket up to the seal bore (the ring squeezes in over it)
 BOARD_ZFLOAT = 0.1                  # board top edge to the top wall (it can rise this much before it stops)
-WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.5, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
+WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.7, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
                                     # 3.3 uH inductors: the board bows 0.68 mm toward the wall in a board-face drop and
-                                    # had 0.02 mm left over them (drop analysis 2026-10-31); depth, parts, margin round each
+                                    # had 0.02 mm left over them (drop analysis 2026-10-31); depth, parts, margin round each. 0.5 -> 0.7
+                                    # (2026-11-11): the 3D back drop with the rails riding the cans (run 7) put both 0.01-0.03 into 0.5 pockets
 DROP_BOW = 0.68                     # that bow (docs/analysis/2026-10-31-drop-1m, board-face drop)
 DROP_BOW_LIPS = 0.33                # the same bow with the F.Cu lips holding the board's long edges (plate model, 2026-11-03)
 FR_B0 = S.cup_fr_b0; FR_B1 = FR_B0 + 1.6                            # carrier bottom frame, under the bottom strips
@@ -105,11 +106,11 @@ RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they k
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
-KEY_TIP_CLR = {'bottom': 1.3, 'top': 0.3}   # slot bottom to the tongue tip (2026-11-11; was KEY_CLR, then 0.3): the
+KEY_TIP_CLR = {'bottom': 1.5, 'top': 0.3}   # slot bottom to the tongue tip (2026-11-11; was KEY_CLR, then 0.3): the
                                    # tongue only locates the block, so its tip must never bottom. The top blocks bear on the frame
                                    # face either side of their slots at 0.15, so 0.3 is enough there; the bottom stubs don't. In the 3D back drop the cans (and the rails on them)
                                    # move > 0.3 mm toward the frame's slot bottoms, and 50-60 N through the bottom tongue's tip
-                                   # yielded its root (runs 4-6). Run 6: free travel ~0.85-0.87 (cans 0.70 into the carrier + 0.15), so 1.3
+                                   # yielded its root (runs 4-6). Run 6: free travel ~0.85-0.87 (cans 0.70 into the carrier + 0.15); run 7 at 1.3 travelled ~1.3 once the cans took the board load (tip 5 N), so 1.5
 TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far behind the frame's (2026-11-05): the front cans'
                                    # rims landed on them in cap-end drops (0.45-1.1 kN each, blocks 100-196 MPa); now the frame
                                    # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
