@@ -108,6 +108,9 @@ TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far beh
                                    # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
                                    # 2026-11-07: on the 0.95 mm top frame it left a 0.65 mm tongue (under JLC's 1.0 mm MJF
                                    # wall), and the port-end tongue load was a model error; a top tongue is backed by the top wall
+KEY_ROOT_CHAMFER = 0.5             # 45 deg chamfer in the bottom tongues' root corner (top face to the block's cell-side
+                                   # face, |y| 6.5-7.4; 2026-11-11): the 3D drop yielded that sharp corner to 13 % at impact
+                                   # and 37 % when the can pinched the block against the board on the rebound
 KEY_RIB = (0.25, 0.5, 0.4)         # crush rib on each side face of a tongue (2026-10-28): height (0.15 into the slot wall past
                                    # the clearance), width (z), lead-in length at the tip. Holds the blocks in on the bench
                                    # until the board is soldered; the cup captures them after that
@@ -376,7 +379,17 @@ def rails():
         keep = rect(RAIL_X0, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))
         m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [px_(post_cs(y, z), S.sb_xb0 - 0.5, X_IN - POST_GAP) for y, z in S.CUP_PEGS]
-    return U(*m, rail_spines(), *key_slots(0.0), *key_ribs()) - U(*rail_usb_relief())
+    return U(*m, rail_spines(), *key_slots(0.0), *key_ribs(), *tongue_root_chamfers()) - U(*rail_usb_relief())
+def tongue_root_chamfers():
+    """KEY_ROOT_CHAMFER in the bottom tongues' root corner, where the tongue's top face meets the block's cell-side face
+    (only where the block stands over the tongue, |y| from the block's inner edge to the tongue's outer edge)"""
+    c, z1 = KEY_ROOT_CHAMFER, FR_B1 - TONGUE_SETBACK
+    tri = CS([[(z1 - 0.01, RAIL_X0 - c), (z1 + c, RAIL_X0 + 0.02), (z1 - 0.01, RAIL_X0 + 0.02)]])   # section (z, x)
+    out = []
+    for s in (-1, 1):
+        y0, y1 = sorted((s*S.SB_BAR_Y[0], s*KEY_Y['bottom'][1]))
+        out.append(MF.extrude(tri, y1 - y0).transform([[0, 1, 0, 0], [0, 0, 1, y0], [1, 0, 0, 0]]))
+    return out
 def rail_spines():
     """mid-board prop (2026-11-11): a spine joining each side's bottom and top rail blocks across RAIL_GAP, RAIL_SPINE_Y
     wide, from the front can (SPINE_CAN_GAP off) up to B.Cu"""
@@ -641,7 +654,7 @@ def checks():
     pk_y = [abs(S.sb_pack_holes()[n][0]) for n in ('PACK-', 'PACK+')]
     return {
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
-        'board rails: two bodies (one clip-on rail per side, spine across the filler gap)': 2 - len(rails().decompose()) + 0.0,
+        'board rails: two bodies (one clip-on rail per side, spine across the filler gap)': -abs(2 - len(rails().decompose())) + 0.0,
         'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
         'crush ribs fit the thinnest tongue (z, >= 0.2 each side)': (min(FR_T1 - FR_T0, FR_B1 - TONGUE_SETBACK - FR_B0) - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
         'rail tongues: top full frame height, bottom >= 1.0 (JLC MJF wall)': min(tongue_h('top') - (FR_T1 - FR_T0), tongue_h('bottom') - 1.0) + 1e-9,
