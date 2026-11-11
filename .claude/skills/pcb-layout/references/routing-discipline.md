@@ -11,7 +11,7 @@ outer layers, and each pair of buried signal layers between them is a Manhattan 
 ## Contents
 1. Inner signal layers are a Manhattan pair · 2. Outer layers are free-angle but local · 3. Fan out
 fine-pitch parts first · 4. The ground planes are untouchable · 5. Reference changes · 6. Scripted routing ·
-7. Checklist
+7. Width and shape: tracks that look intended · 8. Checklist
 
 ## 1. Inner signal layers are a Manhattan pair
 
@@ -118,11 +118,34 @@ fine-pitch parts first · 4. The ground planes are untouchable · 5. Reference c
   plane has to come off, test each candidate layer with a real DRC on a copy (`kicad-practice.md` §7); two of
   three such paths moved cleanly to L3, the third needed a new path from the net's other end.
 
-## 7. Checklist
+## 7. Width and shape: tracks that look intended
+
+These came from the board's owner looking at a script-routed board that had passed DRC and every solver
+(2026-11-10). His words: "this trace area makes no sense" and "the trace randomly switches size". Both were faults
+of the method, and neither is visible to a rule check.
+
+- **One width per net.** Signals 0.2 mm on this board, gate drives included. Narrower only for the escape from a
+  fine-pitch pin, as one stretch from the pad. Power tracks: one width per run (between pads, vias and
+  junctions), with a neck only where the run has to squeeze, and one neck width.
+- **Never lower the width of single segments to satisfy DRC.** A widening pass that backs off segment by segment
+  leaves 0.25 / 0.4 / 0.3 / 0.6 in one run. Decide the width for the whole run.
+- **A track goes where it is going.** Length over the shortest tree across the net's pads: 1.0 to 1.4 is direct.
+  Over 1.5 needs a reason (a keep-out, a pair, a corridor). Over 2 is a fault.
+- **Few bends, all at multiples of 45°.** No staircases: a run of segments under 0.2 mm is a grid router's
+  signature. No segment at an odd angle, pad escapes included.
+- **A multi-pad net is one tree**, drawn as a tree. Not a chain of connections each made to whatever copper of
+  the net was nearest at the time.
+- **Vias only where the route needs a layer change**, and an existing hole is re-used before a new one is drilled.
+- Measure all of this after every pass with `hardware/Production/groundup/compare/tidy.py` and put the table
+  beside the DRC result. Method and the cleanup pass: the `pcb-scripted-routing` skill.
+
+## 8. Checklist
 
 - [ ] No segment on L3 that isn't vertical; none on L4 that isn't horizontal.
 - [ ] No tracks and no non-GND zones on L2/L5; no via rows that slot them.
 - [ ] Long signal runs on L1/L6 reviewed (advisory: length is a goal, not a rule).
 - [ ] Every signal layer change has a GND via within 1 mm.
+- [ ] One width per net (per run on power tracks); no width change in mid-run; no staircase; nothing off the
+      45° grid; no net over 1.5× its shortest tree without a reason.
 - [ ] Every IC with more than 20 pins or a pitch under 0.8 mm has 1–1.5 mm clear around it (decoupling excepted),
       and was fanned out first.

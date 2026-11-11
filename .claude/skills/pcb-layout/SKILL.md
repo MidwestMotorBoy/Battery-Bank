@@ -32,12 +32,15 @@ decisions about where the return current will flow — so ask that question firs
 | RF and antenna modules | `references/rf-and-antennas.md` | BLE/Wi-Fi modules, chip antennas, matching networks, 50 Ω feeds |
 | ESD, TVS and connectors | `references/esd-and-connectors.md` | Placing TVS/ESD parts, USB-C/headers, cable entry |
 | Manufacturing (DFM/DFA) | `references/dfm-jlcpcb.md` | Rules, vias, mask, paste, fiducials, panel, before ordering |
-| Routing discipline (house rules) | `references/routing-discipline.md` | **Before any routing**: inner Manhattan layer pair, outer layers local only, fan-out first with 1.5 mm clear, planes untouchable, GND via at every layer change |
+| Routing discipline (house rules) | `references/routing-discipline.md` | **Before any routing**: inner Manhattan layer pair, outer layers local only, fan-out first with 1.5 mm clear, planes untouchable, GND via at every layer change, one width per net and direct routes |
 | KiCad practice and scripting | `references/kicad-practice.md` | Zones, net classes, custom rules, net ties, python/pcbnew automation, DRC |
 | Review checklist | `references/review-checklist.md` | Before routing, after routing, before ordering, when asked to review a board |
 | Solver-verified layout | `references/solver-verified-layout.md` | **Before any scripted routing pass and after any edit near power copper**: the check loop that finds what DRC cannot (cut or pinched power paths, Kelvin taps, loop inductance, coupling), the order of work for a scripted layout, and the solver tools in this repo |
 
 3. Use the scripts in `scripts/` for things that should be deterministic (see **Scripts**).
+4. For doing the work by program, the sibling skills go deeper: `pcb-scripted-placement` (placer and placement
+   checks), `pcb-scripted-routing` (router, cleanup pass, tidiness measure), `pcb-loop-and-coupling-solvers` and
+   `pcb-copper-resistance` (the solvers behind the check loop), `pcb-proto-flow` (the whole flow and its gaps).
 
 ## Workflow
 
@@ -135,6 +138,9 @@ These are summaries; the reference files give the reasoning, numbers and sources
   open-connection count: a cut power bus, a pinched one, Kelvin taps reading plane drop, and a bulk capacitor cut
   off from its regulator. Each was a legal track or via of *another* net. Solve the power paths, the taps and the
   loops after every edit near them, and compare with the run before (`solver-verified-layout.md`).
+- **Legal and working is still not finished.** A board also has to look intended to the person who opens it:
+  one width per net, direct routes, few bends, nothing at an odd angle. A script-routed board passed DRC and
+  every solver and failed this in the first minute. Measure it (`routing-discipline.md` section 7) after every pass.
 - **Reserve signal corridors at placement.** Slow signals that must pass between power stages need a lane and a
   via site on a signal layer before the stages close around them, or they end up cut into a ground plane.
 

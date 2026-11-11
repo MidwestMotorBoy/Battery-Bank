@@ -7,7 +7,8 @@ description: Run KiCad from an agent - kicad-cli for netlists, ERC, DRC and expo
 
 ## Where KiCad runs
 
-- **Cloud containers usually have no KiCad.** On this project an apt PPA was blocked, and pulling the official Docker image was refused. Work on the files as text (`kicad-schematic-scripting`, `pcb-copper-resistance`), and get real ERC/DRC from the user's machine.
+- **A cloud container can run KiCad through Docker** (found 2026-11-09; before that this project believed it could not). The apt PPA, downloads.kicad.org and flathub were blocked, Docker Hub was open. See "KiCad in a cloud container" below. With it, DRC, ERC, zone refill, pcbnew scripts, renders and gerbers need nobody's PC.
+- **Where Docker is not available**, work on the files as text (`kicad-schematic-scripting`, `pcb-copper-resistance`), and get real ERC/DRC from the user's machine.
 - **The user's PC.** Either use `kicad-cli` through a remote session, or use a KiCad MCP server running there (`mixelpixx/KiCAD-MCP-Server` on this project, tools `kicad__*`).
 - **Heavy batches** (thermal sweeps, many solver runs) go to the user's machine too if it's set up for them.
 
@@ -20,6 +21,38 @@ kicad-cli pcb drc --format json --severity-all -o drc.json board.kicad_pcb     #
 kicad-cli pcb export step|gerbers|drill|pos ...
 ```
 On Windows the path is `C:\Program Files\KiCad\<ver>\bin\kicad-cli.exe`. KiCad's bundled Python (`...\bin\python.exe`) has pcbnew available, and is the interpreter to use for scripts that import it.
+
+## KiCad in a cloud container (Docker)
+
+```
+dockerd > /tmp/dockerd.log 2>&1 &          # the daemon is not running by default; wait until `docker info` answers
+docker pull kicad/kicad:10.0               # about a minute
+docker run --rm -u 0 -v <work>:/w -v <conf>:/root/.config/kicad -w /w kicad/kicad:10.0 \
+    kicad-cli pcb drc --schematic-parity --all-track-errors --severity-all --format json -o /w/drc.json /w/Board.kicad_pcb
+docker run --rm -u 0 -v <work>:/w -w /w kicad/kicad:10.0 python3 /w/script.py      # `import pcbnew` works
+```
+
+What it took to make the results trustworthy:
+
+- **Work on a copy.** `kicad-cli` rewrites the `.kicad_pro`. Copy the project to a scratch folder, `chmod -R a+rwX`
+  it, and restore the project file after each run.
+- **The board must carry the project's name and sit beside its `.kicad_pro` and `.kicad_dru`.** A scratch copy
+  called `try7.kicad_pcb` is checked with default rules: the custom rules and net classes are silently not
+  applied. Copy the candidate to `<dir>/<Project>.kicad_pcb` for the DRC that counts. pcbnew's Python likewise
+  only knows the net classes when `<board>.kicad_pro` sits beside the board.
+- **Footprint library table.** Run as root (`-u 0`) and mount a folder that holds `10.0/fp-lib-table` (KiCad's
+  template) at `/root/.config/kicad`. Without it DRC reports about 200 `lib_footprint_issues`.
+- **Python packages.** The image's Python has no pip and no numpy. On the host:
+  `pip download --python-version 3.13 --only-binary=:all: numpy pillow scipy -d wheels`, unzip the wheels into a
+  folder, mount it and set `PYTHONPATH`. Better: keep KiCad scripts to pcbnew + the standard library, dump what
+  they read to JSON, and do the numeric work on the host.
+- **One daemon, one command.** Wrap every call in a script that starts `dockerd` if needed, runs the command and
+  stops the daemon it started (`hardware/Production/groundup/dk.sh`). Never run two such commands at once: the
+  first to finish stops the daemon under the other. Do not leave `dockerd` running as a background task.
+- **A zone refill from a script can report edge-clearance errors on zones that a second DRC run does not.** Judge
+  a board by the DRC of the saved, renamed file, not by the DRC inside the edit step.
+- The image has no KiCad 3-D model library: a STEP export only contains the project's own models.
+- Times on 4 cores, 430-part six-layer board: DRC with parity 8 to 10 s, load + refill + save 15 s.
 
 ## Working with a local KiCad MCP
 

@@ -50,6 +50,22 @@ A board review here is **read-only**: the agent measures and reports, and the la
 ### Clean-up
 - Dangling vias and track ends, zero-length segments, silk over pads and the board edge, overlapping same-net zones with the same priority.
 
+### A board routed by script
+
+A script-routed board arrives legal. Review it for what legality does not cover (found on the ground-up
+Monolith board, 2026-11):
+
+- Run the whole solver loop and compare with the last reviewed board of the same circuit, number by number
+  (`pcb-layout/references/solver-verified-layout.md`). Signal tracks and vias of other nets are what damaged power
+  paths there: a via in a pour neck, a short hop on a plane layer that closed the last gap to a bulk capacitor.
+- Tidiness table (`hardware/Production/groundup/compare/tidy.py`): length over shortest tree, bends, staircase
+  segments, vias, widths per net, width steps away from pads, off-angle segments. Then look at the worst ten
+  nets in a picture. The owner will.
+- Signal track on the ground-plane layers, in millimetres, and how many nets cross each slot.
+- Nets that an earlier repair moved for a solver reason: are they still where the repair put them?
+- "No part moved" and "power copper untouched" are checked with a diff of pad positions and of path
+  resistances, not taken from the change description.
+
 ## Report format
 
 - **Must fix / should fix / clean-up**, each with net, layer, coordinates, the measured value and a concrete fix. Example: "add B.Cu keep-out x 97.59–98.50, y 99.73–100.63".

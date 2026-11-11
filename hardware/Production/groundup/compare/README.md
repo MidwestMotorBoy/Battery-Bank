@@ -3,7 +3,8 @@
 Run on 2026-11-10. `base` is the hand-routed board (`Monolith.kicad_pcb` at commit 8dd9eb6, master's board
 until PR #66), `new` is the first version of the ground-up board
 (commit 6aaa778), `fix` is the ground-up board after the first fix pass (commit ffb0dde) and `fix2` is the board
-after the second fix pass (commit dd34285), which is master's `Monolith.kicad_pcb` since PR #66. Every tool reads the board from the `PCB`
+after the second fix pass (commit dd34285), which is master's `Monolith.kicad_pcb` since PR #66. `tidy2` is `fix2` after the
+cleanup pass of 2026-11-11 (branch `claude/project-thread-ploune` only; see `../README.md`, "Cleanup pass"). Every tool reads the board from the `PCB`
 environment variable and tags its output with `TAG`, so all boards go through the same code. Nothing here is measured.
 
 ## Result
@@ -66,6 +67,8 @@ differ by at most 0.013 mΩ on one path (about 0.5 mW), so the runs were not rep
 | Pictures | `figs_cmp.py`, `cmap_fig.py`, `lossfig.py`; `kicad-cli pcb render` for `img/render_*.jpg` | `img/` |
 | Ground-plane tracks and what crosses them | `../in4fig.py`, `../in4cross.py` | `img/in4.png`, `img/in4.json`, `in4cross.json` |
 | All of the above on one more board | `runfix.sh <board> [tag]` | the `<tag>` files |
+| Tidiness of signal routing (length over shortest tree, bends, short segments, vias, widths, width changes) | `PCB=<board> TAG=<tag> tidy.py`, then `tidycmp.py tag1 tag2 ...` | `tidy_<tag>.json`, `tidycmp_<tags>.json` |
+| Two boards side by side over every solver result | `cmpsum.py tagA tagB` | printed |
 | PACK_P path only, quick check after a hand edit | `k/pk.py` (`RES=0.05` for the fine grid) | printed |
 | Page | `NTAG=fix2 build_page.py` with `page_tpl.html`, `page_text.py`, `page_words.py`, `page_fix.py` | one self-contained HTML |
 

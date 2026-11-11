@@ -6,6 +6,10 @@ These are the electrical design, schematic and board-review techniques used to b
 
 | Skill | Use it when |
 |---|---|
+| [pcb-proto-flow](pcb-proto-flow/SKILL.md) | Planning an agent-driven flow from schematic to fab files: which skill covers each step, what the schematic must declare, what is proven and what is missing. **Start here for an auto-placer or auto-router project** |
+| [pcb-scripted-placement](pcb-scripted-placement/SKILL.md) | Placing parts by program: footprint database, fixed parts, power stages from coordinates, greedy placer with pin targets, repeated blocks, enclosure checks |
+| [pcb-scripted-routing](pcb-scripted-routing/SKILL.md) | Routing by program: a grid router that stays legal against real DRC, pad escapes, pours, the cleanup pass, the tidiness measure, accept-or-revert |
+| [pcb-loop-and-coupling-solvers](pcb-loop-and-coupling-solvers/SKILL.md) | Hot-loop and gate-loop inductance and switch-node coupling into signals, solved on the real copper; comparing layouts; finding the via that picks up noise |
 | [pcb-layout](pcb-layout/SKILL.md) | Laying out a board: stack-up, placement, hot loops, return paths, routing discipline, DFM, and the solver check loop for scripted layouts (with reference files and scripts) |
 | [schematic-design-review](schematic-design-review/SKILL.md) | Reviewing a schematic or netlist: pin-by-pin, net-by-net, ratings, derating, state and fault tables, config defaults, challenge round |
 | [kicad-schematic-scripting](kicad-schematic-scripting/SKILL.md) | Editing `.kicad_sch` / `.kicad_sym` by script, with a netlist diff to prove the change |

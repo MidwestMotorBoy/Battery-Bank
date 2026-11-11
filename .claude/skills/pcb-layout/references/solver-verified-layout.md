@@ -40,8 +40,9 @@ changed via is enough to need it.
 | 8 | Coupling from switching copper into every signal, then again with a location printout for each flagged net | Signals beside switch nodes; shows the via or stretch that picks it up | 4 min |
 | 9 | Per-via current on every power path | A layer change carried by too few vias | 1 min |
 | 10 | Mechanical fit, if any part moved | Parts in keep-outs | 1 min |
+| 11 | Tidiness table: length over shortest tree, bends, short segments, vias, widths per net, width changes in mid-run, off-angle segments (`routing-discipline.md` §7) | Routes that are legal and work but wander, staircase or change width; the first thing the owner sees | 5 s |
 
-Steps 1 to 5 are cheap enough to run after every single edit. Steps 6 to 9 run after each pass and once more on
+Steps 1 to 5 and 11 are cheap enough to run after every single edit. Steps 6 to 9 run after each pass and once more on
 the final file. **Any repair is an edit: run the loop again after it.** Both faults of the second fix pass were
 introduced by signal re-routes and one of them was found only because the full set ran one more time.
 
@@ -127,6 +128,10 @@ several board files go through the same code and can be compared.
 | Coupling from switching copper (3-D electrostatic) | `compare/coup.py`, `coup_post.py`; `WHERE='<net suffix>'` prints where on the victim the charge lands |
 | Sense-pair routing and enclosed area | `compare/senspair.py` |
 | Tracks cut into a ground plane and what crosses them | `in4fig.py`, `in4cross.py` |
+| Tidiness of every track-routed net, and a table over several boards | `compare/tidy.py`, `compare/tidycmp.py` |
+| Redraw a net as one tree, few bends, one width; the same over the board with accept-or-revert | `tidynet.py`, `tidyall.py` (need `dumpkeep.py` for outline, holes and rule areas) |
+| One width per run | `runwidth.py` |
+| Before / after pictures of one net, or of all signal tracks of several boards | `netpic.py`, `sigpic.py` |
 | Everything on one more board file | `compare/runfix.sh <board> <tag>` |
 
 **They are not turnkey for another board.** The physics is general, the tables are Monolith's. Before using them
@@ -151,7 +156,22 @@ loop it produced a board that was legal and clearly worse than the hand-routed o
 Limits met in a 4-core, 14 GB cloud container: the dense inductance matrix needs about 8 bytes × branches², a
 run above roughly 27 000 branches is killed without a message, and two large loops cannot run side by side.
 
-## 7. Methods to test next
+## 7. A third verdict: does it look intended
+
+Added 2026-11-11. The board that came out of sections 1 to 6 passed DRC and every solver. Its owner opened it in
+KiCad and within a minute pointed at a gate net that zigzagged ("this trace area makes no sense") and at tracks
+that "randomly switch size". Measured against his hand-routed board on the 144 signal nets both have: length
+over shortest tree 1.54 against 1.20, 2861 bends against 1044, 136 places where a track changes width
+against 4, 295 segments off the 45° grid against none.
+
+No rule and no solver sees this, so it is a check of its own (step 11) with its own repair pass. The causes, the
+measure and the cleanup pass are in the `pcb-scripted-routing` skill, sections 6 and 7. The cleanup pass moves
+signal copper, so the whole loop runs again after it. It did find something: one redrawn enable net, whose old
+route was a hand repair from the pass before, went from 1.7 to 18 mV per switching edge and took a bulk
+capacitor's loop from 0.95 to 1.11 nH. That net was put back. **Nets that were repaired for a solver reason
+need a protected list that later passes read.**
+
+## 8. Methods to test next
 
 Nothing in this section has been tried. Each entry is a method the board's owner or a review proposed. When a
 run tests one, move it into the sections above with its picture and its numbers before and after, or delete it

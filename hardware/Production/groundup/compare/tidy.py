@@ -7,7 +7,8 @@ For every net that is routed with tracks (nets with a zone fill are left out, th
   segs     track segments, and how many are shorter than 0.2 mm (staircase steps of a grid router)
   bends    direction changes along the tracks
   vias, layers
-  widths   how many track widths the net uses, and wsteps: places where a track changes width mid-run
+  widths   how many track widths the net uses; wsteps: places where two widths meet; wsteps_mid: those further than
+           1.6 mm from every pad of the net (a step at a pad is a pin-escape neck, one out in the run reads as random)
   offangle segments over 0.3 mm that are not at a multiple of 45 degrees
 
 PCB=<board> TAG=<tag> python tidy.py [N]     prints the N worst nets (default 25) and writes tidy_<TAG>.json
@@ -44,11 +45,14 @@ def offangle(ss):
             a = math.degrees(math.atan2(s['y2'] - s['y1'], s['x2'] - s['x1'])) % 45
             if min(a, 45 - a) > 1.0: n += 1
     return n
-def wsteps(ss):
+def wsteps(ss, pp=()):
+    """places where two widths meet on one layer: (all, those further than 1.6 mm from every pad of the net).
+    A step next to a pad is a neck at a pin escape; one out in the run is the kind that reads as random."""
     e = collections.defaultdict(set)
     for s in ss:
         e[(s['layer'], round(s['x1'], 3), round(s['y1'], 3))].add(s['w']); e[(s['layer'], round(s['x2'], 3), round(s['y2'], 3))].add(s['w'])
-    return sum(1 for v in e.values() if len(v) > 1)
+    st = [k for k, v in e.items() if len(v) > 1]
+    return len(st), sum(1 for l, x, y in st if all(math.hypot(p[0] - x, p[1] - y) > 1.6 for p in pp))
 def bends(ss):
     ends = collections.defaultdict(list)
     for s in ss:
@@ -66,12 +70,12 @@ for net, ss in segs.items():
     if not net or net in zoned or len(pads[net]) < 2: continue
     L = sum(B.seglen(s) for s in ss); M = mst([(p[0], p[1]) for p in pads[net]])
     rows.append(dict(net=net, pads=len(pads[net]), length=L, mst=M, detour=L / M if M > 0.5 else 0.0, segs=len(ss),
-                     short=sum(1 for s in ss if B.seglen(s) < 0.2), bends=bends(ss), vias=vias[net], layers=len({s['layer'] for s in ss}), widths=len({s['w'] for s in ss}), wsteps=wsteps(ss), offangle=offangle(ss),
+                     short=sum(1 for s in ss if B.seglen(s) < 0.2), bends=bends(ss), vias=vias[net], layers=len({s['layer'] for s in ss}), widths=len({s['w'] for s in ss}), wsteps=wsteps(ss, pads[net])[0], wsteps_mid=wsteps(ss, pads[net])[1], offangle=offangle(ss),
                      excess=max(L - 1.2 * M, 0.0)))
 tot = dict(nets=len(rows), length=sum(r['length'] for r in rows), mst=sum(r['mst'] for r in rows), segs=sum(r['segs'] for r in rows),
            short=sum(r['short'] for r in rows), bends=sum(r['bends'] for r in rows), vias=sum(r['vias'] for r in rows),
            over15=sum(1 for r in rows if r['detour'] > 1.5 and r['mst'] > 2), over2=sum(1 for r in rows if r['detour'] > 2.0 and r['mst'] > 2),
-           excess=sum(r['excess'] for r in rows), one_width=sum(1 for r in rows if r['widths'] == 1), wsteps=sum(r['wsteps'] for r in rows), offangle=sum(r['offangle'] for r in rows))
+           excess=sum(r['excess'] for r in rows), one_width=sum(1 for r in rows if r['widths'] == 1), wsteps=sum(r['wsteps'] for r in rows), wsteps_mid=sum(r['wsteps_mid'] for r in rows), offangle=sum(r['offangle'] for r in rows))
 tot['detour'] = tot['length'] / tot['mst']; tot['bends_per_mm'] = tot['bends'] / tot['length']
 json.dump(dict(total=tot, nets=rows), open(os.path.join(HERE, f'tidy_{TAG}.json'), 'w'), indent=0)
 print(TAG, {k: (round(v, 2) if isinstance(v, float) else v) for k, v in tot.items()})

@@ -4,7 +4,8 @@ An experimental, script-built re-layout of the Monolith P0 board.
 
 **Which board is which (since 2026-11-10).** The experiment branch was merged to `master` in PR #66, and Logan
 chose to keep it there. `hardware/Production/Monolith.kicad_pcb` on `master` is therefore the ground-up board
-(after the second fix pass, commit dd34285). The approved, hand-routed board is the same file at commit
+(after the second fix pass, commit dd34285). On branch `claude/project-thread-ploune` the same file is that board
+after the cleanup pass of 2026-11-11 (next section); it reaches `master` only if that branch is merged. The approved, hand-routed board is the same file at commit
 `8dd9eb6` (`git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb`). In the tables below "current board
 (master)" still means that hand-routed board, as it was when the comparison ran.
 
@@ -19,6 +20,94 @@ placed again and all copper was drawn again.
 
 The practices and the solver check loop that came out of this work are in the `pcb-layout` skill:
 `.claude/skills/pcb-layout/references/solver-verified-layout.md`.
+
+## Cleanup pass (2026-11-11)
+
+The board is now the fourth version. Logan opened the third version in KiCad and pointed at two things no rule
+and no solver scores: the CHG_G net ("this trace area makes no sense") and tracks that "randomly switch size".
+Both were faults of the method:
+
+- CHG_G ran 36.9 mm in 103 segments with 5 vias between pads whose shortest tree is 16 mm. Multi-pad nets had
+  been routed link by link by a router that rips and retries and has no cost for a bend.
+- `widen.py` raised every track of a class toward its class width and then lowered *single segments* where DRC
+  objected, which leaves 0.25 / 0.4 / 0.3 / 0.6 mm inside one run.
+
+Three new tools: `compare/tidy.py` measures what a person sees, `tidynet.py` / `tidyall.py` redraw a net as one
+tree with few bends, few vias and one width, and `runwidth.py` gives every run one width. The method is in the
+`pcb-scripted-routing` skill, sections 6 and 7.
+
+Tidiness of the signal nets that are routed as tracks on both boards (144 nets):
+
+| | Hand-routed board | Ground-up, third version | After the cleanup pass |
+|---|---|---|---|
+| Track length | 1819 mm | 2983 mm | 2832 mm |
+| Length over the shortest tree across each net's pads | 1.20 | 1.54 | 1.46 |
+| Nets over 1.5 times / over 2 times their shortest tree | 5 / 0 | 46 / 17 | 38 / 12 |
+| Segments | 1428 | 3533 | 2449 |
+| Segments under 0.2 mm (staircase steps) | 243 | 1007 | 456 |
+| Bends | 1044 | 2861 | 1837 |
+| Vias on these nets | 171 | 351 | 310 |
+| Nets drawn in one width | 128 | 72 | 77 |
+| Places where two widths meet | 4 | 136 | 81 |
+| ... of those further than 1.6 mm from any pad of the net | 0 | 29 | 0 |
+| Segments over 0.3 mm that are off the 45 degree grid | 0 | 295 | 257 |
+
+What was done: 54 signal nets were redrawn (together 1204 to 1053 mm, 1917 to 833 segments, 166 to 125 vias; CHG_G is 25.8 mm, 24 segments, 4 vias, 0.2 mm throughout), and 225 segments in 17 nets were narrowed
+so that each run has one width from a short list (0.8, 0.5, 0.3, 0.2, 0.15 mm). The board has 908 vias (949
+before) and 3282 track segments (4366 before). No part moved (pad positions of the two files are identical) and
+no pour outline changed.
+
+What the pass does not do, and why the numbers are still far from the hand-routed board:
+
+- It redraws one net at a time with everything else fixed. A net that is boxed in by two neighbours stays boxed in.
+- It leaves alone: nets with a track in the In4 ground plane (EN_5V2, SDA, port 1 CHG_INT, both TS), sense pairs,
+  the RF match, USB data, switching and bootstrap nets, and nets outside the default class (the cell taps
+  CELL_1N, CELL3, CELL_4P are among the longest and least tidy). Of the 94 candidate nets 19 gave no gain, 9 could
+  not be redrawn from a fine-pitch pin, and 3 would have split a pour.
+- The 81 width changes that remain are 0.15 mm escapes at fine-pitch pins, and the off-angle segments are those
+  same escapes: the first router ended tracks anywhere inside a pad. Straight escapes along the pin axis have to
+  be built by construction.
+- The shortest trees themselves are longer than on the hand-placed board: 1937 mm against 1516 mm for the same
+  nets. That part was decided at placement.
+- On the hand-routed board groups of signals run as bundles of parallel tracks in a few lanes
+  (`tidy1/whole_board_three_boards.png`). Here every net found its own way.
+
+Check loop on the cleaned board against the third version (`compare/cmpsum.py fix2 tidy2`):
+
+| Check | Third version | After the cleanup pass |
+|---|---|---|
+| DRC errors / unconnected / parity | 0 / 0 / 0 | 0 / 0 / 0 |
+| DRC warnings | 22 | 18 (8 narrow connections, 9 silkscreen, 1 text height) |
+| PACK_P to the stage, port 1 / port 2 | 2.42 / 1.38 mΩ | 2.29 / 1.23 mΩ |
+| The same on the 0.05 mm grid (`compare/k/pk.py`) | 2.53 / 1.45 mΩ | 2.40 / 1.30 mΩ |
+| Ground return, port 1 / port 2 | 1.42 / 1.27 mΩ | 1.38 / 1.25 mΩ |
+| Other 11 power paths | | unchanged to 0.01 mΩ |
+| Kelvin tap error, four charger resistors | within 0.95 % | within 0.95 % (each unchanged) |
+| Kelvin tap error, gauge shunt | +0.82 / +0.86 % | +0.78 / +0.83 % |
+| Charger hot loops, four | 0.50 to 0.56 nH | unchanged, every capacitor within 0.01 nH |
+| Small buck hot loops | 0.30 / 0.39 / 1.22 nH | 0.30 / 0.38 / 1.22 nH (C544 1.36 to 0.97 nH) |
+| Gate-drive loops, sum of eight | 44.3 nH | 44.4 nH (each within 0.04 nH) |
+| Signals over 10 mV per switch edge | 2 (both charger TS pins) | 2 (the same, each unchanged) |
+| Coupling from all switch nodes into signals | 0.39 pF | 0.39 pF |
+| Highest current in one via | 2.26 A | 2.27 A |
+| Area enclosed by the five sense pairs | 28.9 mm² | 28.9 mm² |
+| Signal track cut into the ground planes | 258 mm | 258 mm (those nets were not touched) |
+
+The battery path got better because fewer signal tracks now cut the In2 PACK_P plane.
+
+**One regression was found by the loop and taken back.** The first run also redrew EN_5V1. Its old route was a
+hand repair of the second fix pass (a hop on B.Cu that keeps the In2 plane open between U404 and its bulk
+capacitor C444, away from the 5 V buck's switch node). The redrawn route was legal and shorter, and it took
+EN_5V1 from 1.7 to 18.3 mV per edge and C444's loop from 0.95 to 1.11 nH. EN_5V1 is back on its old route in
+the final board, and the loop was run again on that file. Rule: a net that was repaired for a solver reason
+goes on a protected list that later passes read.
+
+Record of the pass: `tidy1/cleanup_spec.json` (delete and add items for the 54 nets, applied to the third
+version with `step.sh`), `tidy1/width_spec.json` (applied next), `tidy1/cleanup_log.txt` (every candidate net
+with its before and after, two sweeps; the log still lists EN_5V1 and the RF match node, which were taken out
+of the spec), `tidy1/keep.json` (outline, unplated holes, rule areas), pictures in `tidy1/`. To repeat:
+`dumpcu.py` and `dumpkeep.py` on the board, `tidyall.py`, `step.sh`, `runwidth.py --palette=0.8,0.5,0.3,0.2,0.15`
+on the new dump, `step.sh`, `finish.sh`, `compare/runfix.sh`.
 
 ## Second fix pass (2026-11-10, evening)
 
