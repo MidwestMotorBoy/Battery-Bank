@@ -6,9 +6,9 @@ board, the rails and the cup in 3D for the back-face drop, which is the worst ca
 
 Every figure and run, interactively: https://claude.ai/artifact/5e8FgYGjQaZCfDvVeQPFwm (private to the project owner).
 
-> **Status:** runs 2-8 are complete. **Run 9, the validation run on the branch tip (acd6f23), is pending.** Its first attempt
-> stalled at 0.44 ms on one inverted tet at a cap-post top (a meshing problem, not a design one). It is being rerun with a
-> finer mesh at the post tops. This page and its figures will be updated in place when it finishes.
+> **Status:** runs 2-9 are complete. Run 9 is the validation run on the merged geometry (acd6f23, master since PR #69). Its first attempt stalled at
+> 0.44 ms on one collapsed tet at a cap-post top, a meshing problem rather than a design one. The rerun has a 0.3 mm mesh
+> at the five post tops and is otherwise identical. It ended normally: 2 ms in 57 min.
 
 ## Setup
 
@@ -52,7 +52,7 @@ hysteresis and the structural damping that the material laws lack.
 | 6B | 34dca5f | variant B, tip gap 0.3 | 3,129 / 4,077 | +0.02 (L501) | 6.33 | tips bottom out with 60 N; root yield 0.51 mm³ |
 | 7 | 0ce9b68 | tip gap 1.3, 4 mm parabolic land ramp | 3,076 / 4,007 | −0.03 (L501) | 6.26 | **tongue elastic** (tip 5 N); board load goes into the cans; L501 / L401 reach their pockets |
 | 8 | d6af475 | tip gap 1.5, 0.7 mm pockets, lands 0.45, web feet | 2,943 / 4,032 | −0.02 (C524) | 6.36 | pockets clear L401 / L501 (+0.19 / +0.13); edge peak stays about 4,000 µε; web-foot hot spot 54 % |
-| 9 | acd6f23 (branch tip) | run 7 + tip gap 1.5 + 0.7 mm pockets (lands and web feet backed out) | *pending* | *pending* | *pending* | first attempt stalled at 0.44 ms on a cap-post-top tet; rerun with a 0.3 mm mesh there |
+| **9** | **acd6f23, merged in PR #69** | run 7 + tip gap 1.5 + 0.7 mm pockets (lands and web feet backed out) | **3,089 / 4,022** | **+0.02 (C531), no strikes** | 6.22 | L401 / L501 +0.19 / +0.15; tongue tips close to 0.12 mm (3-5 N graze), root 30-33 MPa; web max 21 % |
 
 The MLCC strain limit is roughly 1,000-2,000 µε. "Tightest F.Cu gap" is the minimum over C531, C434, C524, L501, C420 and
 L401, the six parts closest to the board-face wall. A negative gap means the part reaches the wall. Runs 2-3 used an older
@@ -62,8 +62,9 @@ probe that put points beside the parts, so their gaps are approximate (it gave U
 
 ![Board strain envelope, master vs the latest run](img/board-envelope.png)
 
-*PCB strain envelope seen from F.Cu, one colour scale. Master (damped) has a full-width band at mid-length, where nothing
-props the board. With the spined rails the band is gone, and the peak sits on the long edges at z 53-55.*
+*PCB strain envelope seen from F.Cu, one colour scale: master (run 3, damped) against the merged geometry (run 9). Master has a
+full-width band at mid-length, where nothing props the board. With the spined rails the band is gone, and the peak sits on
+the long edges at z 53-55.*
 
 ![Trends](img/trends.png)
 
@@ -81,17 +82,46 @@ land as its shape changed.*
 
 ![F.Cu clearance](img/fcu-clearance.png)
 
-*Gap from each F.Cu part to the board-face wall over time, latest run against the one before.*
+*Gap from each F.Cu part to the board-face wall over time, run 8 against run 9. In run 9 none reaches the wall.*
 
 ![Carrier and rails, peak stress](img/carrier-stress.png)
 
-*Inside parts (carrier, rails, cells) at the peak frame, von Mises.*
+*Run 9: carrier, rails and spacers at their peak frame (0.715 ms), von Mises, 0-48 MPa (red is at yield). The hot spots
+are where the webs and spines meet the bottom frame. Drawn with matplotlib.*
 
 ![Cup, section at peak](img/cup-stress.png)
 
-*Cup and cap section at the peak frame, von Mises.*
+*Run 9: cup and cap cut at y = 0 at the cup's peak frame (0.295 ms), von Mises, 0-48 MPa. Back face on the left, board
+face on the right, cap and its posts at the bottom. Drawn with matplotlib.*
 
-## Conclusions (runs 2-8)
+## Run 9 (acd6f23) against runs 7 and 8
+
+| | Run 7 (0ce9b68) | Run 8 (d6af475) | **Run 9 (acd6f23)** |
+|---|---|---|---|
+| Board strain p99 / max (µε) | 3,076 / 4,007 | 2,943 / 4,032 | **3,089 / 4,022** |
+| Board-edge peak +y / −y (µε), z 53-55 | 3,869 / 4,007 | 4,032 / 3,930 | 3,727 / 4,022 |
+| F.Cu C531 / C434 / C524 / L501 / C420 / L401 (mm) | +0.02 / +0.01 / +0.01 / −0.03 / +0.02 / −0.01 | +0.01 / +0.04 / −0.02 / +0.13 / +0.02 / +0.19 | **+0.02 / +0.05 / +0.03 / +0.15 / +0.05 / +0.19** |
+| Bottom tongue tip: start → min gap | 1.3 → −0.03 (5 N) | 1.5 → +0.25 | 1.5 → +0.12 (3-5 N graze) |
+| Tongue root: peak von Mises / elements over 2 % | 37 MPa / ≈0 | 43 MPa / 0 | 30-33 MPa / 4 on +y (max 6 %), 0 on −y |
+| Board → rail / blocks → cans / spine → cans, impact (N per rail) | 412-430 / 222-225 / 242-252 | 591-610 / 215-228 / 433-461 | 407-413 / 216-219 / 243-251 |
+| Board edge onto the B.Cu land: start gap / force per side | 0.25 mm / 126-132 N | 0.445 mm / 98-103 N | 0.25 mm / 128-132 N |
+| Carrier webs: p99.9 / max / volume over 2 % | 4.4 % / 24 % / 11.0 mm³ | 4.6 % / 54 % / 9.0 mm³ | 4.1 % / 21 % / 12.7 mm³ |
+| Cradles, plastic p99.9 | 0.1 % | 5.4 % | 0.5 % |
+| Floor force | 6.26 kN | 6.36 kN | 6.22 kN |
+| Energy balance, floor peak / 2 ms | −7.6 / −15.2 % | −7.5 / −15.15 % | −7.5 / −15.2 % |
+
+**Cap overtravel posts.** These are the core's 0.3 mm hard stop. The carrier comes down onto them in the back-face drop:
+
+| Post | +x (board face) | centre | +y / −y | −x (back face) |
+|---|---|---|---|---|
+| Peak contact force | 34 N (from 0.385 ms to the end) | 30 N (0.49-1.25 ms) | 19 / 26 N (0.45-0.68 ms) | none |
+| Peak von Mises | 42 MPa | 39 MPa | 49 / 50 MPa | 25 MPa |
+| Single-element plastic strain at the top rim | 47 % | 22 % | 2 % | 0 |
+
+The rim strains come from a sharp edge carrying the load, and they grow as the mesh is refined (runs 7 and 8 gave 23 % and
+36 % on the +x rim with a coarser mesh). Runs 7 and 8 saw the same 14-35 N contacts.
+
+## Conclusions
 
 1. **The mid-board prop is the big win.** Spined rails cut board strain from about 5,000 to about 3,000 µε (p99) and
    remove the full-width mid-span band. The rebound no longer pushes F.Cu parts into the wall by 0.1-0.3 mm.
@@ -104,7 +134,17 @@ land as its shape changed.*
    rail spine ends (z 55.5) and the top rail block begins, so it is most likely set by that change of support. It is
    still about 2× the MLCC limit band, so parts near the long edges at z 50-58 should keep clear or be soft-terminated.
 5. **Carrier webs yield locally** (p99.9 4-5 %), more once the cans carry the board load. The run 8 web foot added a
-   54 % single-element peak at its inner end, so it was backed out.
+   54 % single-element peak at its inner end, so it was backed out. In run 9 the peak is back to 21 %.
+6. **The merged geometry (acd6f23) passes the back-face drop as well as any run so far.**
+   - No F.Cu part reaches the board-face wall; the closest is C531 at +0.02 mm.
+   - The tongues stay essentially elastic.
+   - The rails, cans and lands carry the same loads as in run 7.
+   - What remains is the about 4,000 µε board-edge peak at z 53-55 (point 4) and the local web yield (point 5).
+7. **The cap overtravel post tops yield at their rims** under only 20-35 N, because the carrier lands on a sharp edge. A
+   0.3-0.5 mm radius or chamfer on the post-top rim would spread the contact. That is a small change. **Done after
+   run 9:** the post tops now have a 0.3 mm × 45° chamfer (`OT_CHAMFER` in `monolith_cup.py`). The stop height is
+   unchanged; the posts grow to r2.8 below the chamfer so the flat tops keep their r2.5 bearing area for the cap-end drop.
+   It has not been re-run in 3D.
 
 ## Limits
 
@@ -115,5 +155,7 @@ land as its shape changed.*
   (the M2 screws are not modelled), so stress at the back corner next to the cap is partly an artifact.
 - Board parts are lumped masses, so solder-joint and component-body strain is not resolved; board surface strain is
   the proxy. The USB-C bodies are tied over their whole footprint.
+- Margins of a few hundredths of a mm (C531 +0.02, C524 +0.03) are below what the model can resolve. Treat that
+  wall area as touching-possible.
 - Penalty contact lets surfaces overlap by about 0.05 mm under peak load. Gaps under ±0.05 mm are within the model's
   resolution.
