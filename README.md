@@ -26,7 +26,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), Infineon BSC007N04LS6 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner copper, ENIG, filled and capped vias; JLCPCB assembly of F.Cu, B.Cu parts hand-fitted |
-| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.9 × 52.7 × 95.5 mm, about 399.6 g (modelled) |
+| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.9 × 52.7 × 95.5 mm, about 402.0 g (modelled) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app on the `app` branch) |
 
 ## Status
@@ -143,11 +143,23 @@ Model studies of the whole pack, each in its own folder under [`docs/analysis/`]
 | Corner, port end | 2432 g | 5.1 mm | local stress in the cup under the corner |
 | Corner, cap end | 1535 g | 2.7 mm | local stress in the cup and cap under the corner |
 
-Three fixes came out of it and are now in the model: the bumper slabs at **30 % gyroid** (port end 2685 → 569 g), the two M2 heads **counterbored 0.8 mm** into the cup mouth so they sit below the bumper band, and **0.5 mm pockets in the board-face wall** over the two inductors (0.51 mm left after the board's bow, was 0.02 mm). The rerun is in the analysis README.
+Three fixes came out of it and are now in the model: the bumper slabs at **30 % gyroid** (port end 2685 → 569 g), the two M2 heads **counterbored 0.8 mm** into the cup mouth so they sit below the bumper band, and **0.5 mm pockets in the board-face wall** over the two inductors (0.51 mm left after the board's bow, was 0.02 mm; 0.7 mm since the 3D study below). The rerun is in the analysis README.
 
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-poses.png" alt="The six drop poses at first touch" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-stress.png" alt="Stress in the nylon parts for the six drops" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-board.png" alt="Board deflection, strain and part clearance in the board-face drop" width="100%"></p>
+
+### Drop in 3D: 1 m flat onto the back face (2026-11-11)
+
+A full 3D explicit model of the whole pack (OpenCourant, about 900k nodes, quadratic tets for the nylon and TPU parts) for the worst pose of the lumped studies: flat onto the back (cell) face, where the board's own inertia bends it toward the cells and then swings it into the board-face wall on the rebound. Write-up, runs and limits: [`docs/analysis/2026-11-11-drop-3d/`](docs/analysis/2026-11-11-drop-3d/README.md).
+
+- **On master the board bent across its middle** (about 5,000 µε in a full-width band at mid-length) and the rebound pushed six or seven F.Cu caps and inductors into the board-face wall.
+- **Rail spines now prop the board's mid-span** (one clip-on rail per side, its bottom and top blocks joined across the gap-filler zone), with ribs on the cup under the board's long edges: board strain p99 about 3,000 µε, the mid-span band gone.
+- **The bottom rail tongues stay elastic** now that their slots run 1.5 mm past the tips, so the rails ride on the front cans; and the L401 / L501 wall pockets are 0.7 mm deep.
+- **Still open:** about 4,000 µε on the board's long edges where the spines end (z 53–55), local yield in the carrier webs, and only about 0.02 mm between the 2.5 mm caps (C420, C434, C524, C531) and the wall in the rebound. Check those with a witness-paint drop on the first print.
+
+<p align="center"><img src="docs/analysis/2026-11-11-drop-3d/img/board-envelope.png" alt="Board strain envelope in the back-face drop: master against the spined rails" width="60%"></p>
+<p align="center"><img src="docs/analysis/2026-11-11-drop-3d/img/trends.png" alt="Board strain, tightest F.Cu gap, tongue yield and floor force across the runs" width="100%"></p>
 
 ## Firmware
 

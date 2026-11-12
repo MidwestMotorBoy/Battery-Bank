@@ -156,11 +156,11 @@ def step1(P):
              side_notes=['Weld spots >= 3 mm from the solder,', 'joints inside the weld window.',
                          'Cap the wire ends until soldered.'])
     done = L(P, 'carrier', 'foam', 'strip_bot', 'w_cell2', 'cells', 'insul', 'strip_top', 'tongues', 'w_top', 'pads', 'tails_wire', 'w_kelvin')
-    st.panel('1.8  Rail blocks on', done, L(P, 'rails', o=(14, 0, 0)), ISO,
+    st.panel('1.8  Rails on (one per side)', done, L(P, 'rails', o=(14, 0, 0)), ISO,
              arrows=[((48, -9, 72), (36, -9, 72)), ((48, -9, 12), (36, -9, 12))],
              notes=[((14 + 30.3, 9.0, 68.0), 'Peg posts point +x\n(toward the board)'),
-                    ((14 + 20.5, -9.0, 60.0), 'Tongue presses into the key\nslot; crush ribs hold it'),
-                    ((14 + 25.0, -9.0, 35.0), 'No rail over the gap-filler\nzone (z 25-55)')])
+                    ((14 + 20.5, -9.0, 60.0), 'Both tongues press into their\nkey slots; crush ribs hold them'),
+                    ((14 + 25.0, -9.0, 35.0), 'Spine across the gap-filler\nzone props mid-board')])
     st.save()
 
 def step2(P):

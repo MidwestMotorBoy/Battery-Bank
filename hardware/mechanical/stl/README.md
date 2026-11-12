@@ -14,7 +14,7 @@ move them by hand: the scripts put each part in its material's folder (`STL_MAT`
 | `monolith_cup_cup.stl` | Cup (11) | 1 | No surface finish (see below). |
 | `monolith_cup_cap.stl` | Bottom cap (14) | 1 | The O-ring groove and the seal faces must stay bare. |
 | `monolith_cup_carrier.stl` | Cell carrier (1) | 1 | |
-| `monolith_cup_rails.stl` | Board rail blocks (2) | 4 | All four in one file. |
+| `monolith_cup_rails.stl` | Board rails (2) | 2 | Both in one file; one rail per side (bottom and top block joined by a spine since 2026-11-11). |
 | `monolith_cup_spacer.stl` | Post spacers (10) | 4 | All four in one file. Ø4 × 3.3 mm with crush ribs in the bore (2026-11-03; TPU sleeves before). |
 | `coupons/monolith_coupon_A_seal_bore_ladder.stl` | Fit coupon A | 1 set | Not ordered (Logan, 2026-11-07: the real parts are ordered directly); kept for a reprint question. |
 | `coupons/monolith_coupon_B1_cup_mouth.stl` | Fit coupon B1 | 1 set | |

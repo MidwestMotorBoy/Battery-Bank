@@ -41,9 +41,10 @@ USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.
 HOUSING_CLR = 0.15                  # pocket round the housing, each side
 POCKET_LEAD = 0.25                  # loft from the pocket up to the seal bore (the ring squeezes in over it)
 BOARD_ZFLOAT = 0.1                  # board top edge to the top wall (it can rise this much before it stops)
-WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.5, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
+WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.7, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
                                     # 3.3 uH inductors: the board bows 0.68 mm toward the wall in a board-face drop and
-                                    # had 0.02 mm left over them (drop analysis 2026-10-31); depth, parts, margin round each
+                                    # had 0.02 mm left over them (drop analysis 2026-10-31); depth, parts, margin round each. 0.5 -> 0.7
+                                    # (2026-11-11): the 3D back drop with the rails riding the cans (run 7) put both 0.01-0.03 into 0.5 pockets
 DROP_BOW = 0.68                     # that bow (docs/analysis/2026-10-31-drop-1m, board-face drop)
 DROP_BOW_LIPS = 0.33                # the same bow with the F.Cu lips holding the board's long edges (plate model, 2026-11-03)
 FR_B0 = S.cup_fr_b0; FR_B1 = FR_B0 + 1.6                            # carrier bottom frame, under the bottom strips
@@ -96,18 +97,28 @@ WIN_R = 7.0                        # weld / + cap windows in the frames
 FILL_Z = S.CUP_FILL_Z              # gap filler, board B.Cu to the two front cells, over the power stages
 RAIL_GAP = S.CUP_RAIL_GAP          # board rails stop here so the filler reaches the cell tangents
 WIRE_NOTCH_CLR = 0.2               # PACK / Kelvin wire notch through the bottom frame: clearance each side of the wires
-RAIL_RELIEF_Y = 7.6                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK and Kelvin wires pass
+RAIL_RELIEF_Y = 7.4                # below SB_BAR_Z0 the rails keep only |y| <= this, so the PACK and Kelvin wires pass;
+                                   # 7.4 (was 7.6, 2026-11-11) puts the stub's outer face flush with its tongue's, inside the
+                                   # key slot, so the stub never bears on a 0.1 mm sliver of the frame face (3D drop run 6)
 RAIL_X0 = PR + CR + 0.15           # rails stand 0.15 off the front cans (they keep the cells off the board)
-# Board rails (#5): four clip-on PA12 blocks (bottom and top, each side), not part of the carrier, so the front cells can
+# Board rails (#5): clip-on PA12 blocks (bottom and top, each side; joined into one rail per side by the 2026-11-11 spines), not part of the carrier, so the front cells can
 # go into the carrier from the board side. Each has a tongue that slides into a key slot in the frame's board-side face;
 # the board's pegs then hold them, and the peg posts run on to the board-face wall (#4).
 KEY_Y = {'bottom': (5.4, 7.4), 'top': (7.5, 10.5)}   # |y| span of each block's tongue
 KEY_DEPTH, KEY_CLR = 2.0, 0.1      # tongue length into the frame (-x), clearance all round in the key slot
+KEY_TIP_CLR = {'bottom': 1.5, 'top': 0.3}   # slot bottom to the tongue tip (2026-11-11; was KEY_CLR, then 0.3): the
+                                   # tongue only locates the block, so its tip must never bottom. The top blocks bear on the frame
+                                   # face either side of their slots at 0.15, so 0.3 is enough there; the bottom stubs don't. In the 3D back drop the cans (and the rails on them)
+                                   # move > 0.3 mm toward the frame's slot bottoms, and 50-60 N through the bottom tongue's tip
+                                   # yielded its root (runs 4-6). Run 6: free travel ~0.85-0.87 (cans 0.70 into the carrier + 0.15); run 7 at 1.3 travelled ~1.3 once the cans took the board load (tip 5 N), so 1.5
 TONGUE_SETBACK = 0.3               # bottom tongues' cell-side face this far behind the frame's (2026-11-05): the front cans'
                                    # rims landed on them in cap-end drops (0.45-1.1 kN each, blocks 100-196 MPa); now the frame
                                    # takes the cells' end loads (docs/analysis/2026-11-04-drop-stress). Bottom only since
                                    # 2026-11-07: on the 0.95 mm top frame it left a 0.65 mm tongue (under JLC's 1.0 mm MJF
                                    # wall), and the port-end tongue load was a model error; a top tongue is backed by the top wall
+KEY_ROOT_CHAMFER = 0.5             # 45 deg chamfer in the bottom tongues' root corner (top face to the block's cell-side
+                                   # face, |y| 6.5-7.4; 2026-11-11): the 3D drop yielded that sharp corner to 13 % at impact
+                                   # and 37 % when the can pinched the block against the board on the rebound
 KEY_RIB = (0.25, 0.5, 0.4)         # crush rib on each side face of a tongue (2026-10-28): height (0.15 into the slot wall past
                                    # the clearance), width (z), lead-in length at the tip. Holds the blocks in on the bench
                                    # until the board is soldered; the cup captures them after that
@@ -139,11 +150,24 @@ CRADLE_BANDS = ((5.0, 17.0), (35.0, 47.0), (65.0, None))       # z bands along t
 # Cells (#3, #6). An insulator ring on every + end (C1 / C3 top, C2 / C4 bottom) under the nickel, so a strip pushed
 # into a frame window lands on paper, not on the cell's own - shoulder; a foam ring in a pocket in the bottom frame
 # pushes each cell up onto the top frame, so the cells can't float on the welds.
+RAIL_SPINE_Y, SPINE_CAN_GAP = (7.0, 8.2), 0.15   # mid-board prop (2026-11-11, 3D drop study): each side's bottom and top
+                                    # rail blocks are joined by a spine across RAIL_GAP at this |y| span (inboard of the gap
+                                    # filler, 0.25 off C456 / C521), flush with the rails under B.Cu and following the front can
+                                    # SPINE_CAN_GAP off. A back-face drop bowed the board 1.2 mm into the cells there (5,500 ue);
+                                    # the spine stops it on the cans. Costs ~12 % of the filler's B.Cu-to-can conductance
+BCU_LAND = (0.25, 16.4, 50.0, 58.0)   # 0.45 tried in run 8 (2026-11-11): edge peak unchanged (~4,000 ue), cradles yielded, C524 grazed the wall
+BCU_LAND_RAMP = (4.0, 0.5)         # the lands' lower end ramps off B.Cu over this z length to this extra gap, on a parabola that
+                                   # meets the land tangent (run 5: the board's long edges peaked at ~4,200 ue at the lands' square
+                                   # lower end; run 6's 2 mm straight ramp only moved that peak to its upper kink) # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
+                                    # front-can cradles up to the board's long edges on the B.Cu side, outboard of the filler (|y| <= 16); above C421 / C556 (z <= 49.1)
+                                    # because the core slides in along +z and every B.Cu part must pass under them
 INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure the BAK + cap first), thickness
 FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 1.2), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
 CH_W, CH_D = 1.0, 0.95              # CELL2 sense-wire channel in the bottom frame (y = 0), from under the strip to the edge
 WEB_X, WEB_IN, WEB_CLR, WEB_LINK = 2.0, 4.5, 0.05, 0.6   # front-back webs (heat sharing), link out to the side spine
+                                    # (run 8, 2026-11-11, tried 1.0 + a foot onto the bottom frame: 2 % volume -18 %, but a
+                                    # 54 % hot spot at the foot's end; back to 0.6 until a tapered foot is checked)
 BUMP_T_TOP, BUMP_T_BOT, BUMP_BAND, BUMP_WALL = 6.0, 3.0, 7.0, 2.0   # mass trim 2026-10-31 (was 8 / 4 / 9): pick the
                                     # final slabs in the drop series
 SLAB_FILL, PAD_FILL = 0.30, 0.15    # TPU gyroid infill: bumper slabs (20 % in the mass trim bottomed the port-end slab out
@@ -242,9 +266,27 @@ def cradles():
             out.append(pz(sec, z0, z1) - lead)
     x0, (ya, yb), (za, zb) = CRADLE_CAP_RELIEF
     return U(*out) - U(*[pz(rect(x0, CRADLE_X[1] + 1, *sorted((s*ya, s*yb))), za, zb) for s in (-1, 1)])
+def bcu_lands():
+    """B.Cu edge lands (2026-11-11): the cup reaches up under the board's long edges on the B.Cu side, BCU_LAND[0] off B.Cu,
+    following the front cans CRADLE_GAP off, with the cradles' lead-in at the bottom for the cans"""
+    g, y_in, z0, z1 = BCU_LAND; out = []
+    for cx, cy in [(x, y) for x, y in CELLS if x > 0]:
+        s = 1 if cy > 0 else -1
+        sec = CS.batch_boolean([rect(CRADLE_X[0], S.sb_xb0 - g, *sorted((s * y_in, s * (YI + 1)))), cs_in.offset(0.01, ROUND)], M3.OpType.Intersect)
+        sec = CS.batch_boolean([sec, circ(cx, cy, CR + CRADLE_GAP)], M3.OpType.Subtract)
+        lead = MF.batch_hull([pz(circ(cx, cy, CR + CRADLE_GAP + CRADLE_LEAD), z0 - 0.01, z0), pz(circ(cx, cy, CR + CRADLE_GAP), z0 + CRADLE_LEAD, z0 + CRADLE_LEAD + 0.01)])
+        out.append(pz(sec, z0, z1) - lead)
+    L, e = BCU_LAND_RAMP; xt = S.sb_xb0 - g                                     # land top (x)
+    ramp = [(z0 + L * t, xt - e * (1 - t) ** 2) for t in np.linspace(0, 1, 17)]   # parabola, tangent to the land at its top
+    pts = [(z0 - 0.01, xt - e)] + ramp[:-1] + [(z0 + L, xt + 0.01), (z0 - 0.01, xt + 0.01)]   # section (z, x), cut above it
+    if sum(xa*yb - xb*ya for (xa, ya), (xb, yb) in zip(pts, pts[1:] + pts[:1])) < 0: pts = pts[::-1]   # CCW
+    tri = CS([pts])
+    cuts = [MF.extrude(tri, YI + 2 - y_in + 0.5).transform([[0, 1, 0, 0], [0, 0, 1, y_in - 0.5], [1, 0, 0, 0]]),
+            MF.extrude(tri, YI + 2 - y_in + 0.5).transform([[0, 1, 0, 0], [0, 0, 1, -(YI + 2)], [1, 0, 0, 0]])]
+    return U(*out) - U(*cuts)
 def cup_ribs():
     """everything the 2026-11-03 retention change adds inside the cup, clipped to the cup's inside"""
-    return (lands() + cradles()) ^ pz(cs_in.offset(0.02, ROUND), Z_MOUTH - 1, Z_TOP0 + 0.02)
+    return (lands() + cradles() + bcu_lands()) ^ pz(cs_in.offset(0.02, ROUND), Z_MOUTH - 1, Z_TOP0 + 0.02)
 def cup():
     zt = Z_MOUTH + MOUTH_H
     band = MF.batch_hull([pz(cs_mouth, Z_MOUTH, zt - MOUTH_TAPER), pz(cs_out, zt - 0.01, zt)])
@@ -323,7 +365,7 @@ def key_slots(clr=KEY_CLR):
             y0, y1 = KEY_Y[end]
             if clr: z0, z1 = z0 - 1, z1 + 1                                               # slots run through the frame
             elif end == 'bottom': z1 = z1 - TONGUE_SETBACK                                 # bottom tongues stay off the cans
-            out.append(pz(rect(xe - KEY_DEPTH - clr, RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0, z1))
+            out.append(pz(rect(xe - KEY_DEPTH - (KEY_TIP_CLR[end] if clr else 0.0), RAIL_X0 + 0.01, *sorted((s*(y0 - clr), s*(y1 + clr)))), z0, z1))
     return out
 def key_ribs():
     """the crush ribs on the rail blocks' tongues: one on each side face (y), along x, ramped up over KEY_RIB[2] from the
@@ -348,7 +390,7 @@ def carrier():
          pz(rect(-1.5, 1.5, PR + CR - 5.2, PR + CR), FR_B0, FR_T1), pz(rect(-1.5, 1.5, -PR - CR, -PR - CR + 5.2), FR_B0, FR_T1)]
     return U(*m, webs()) - U(*wire_notches(), *key_slots(), *foam_pockets(), sense_channel())
 def rails():
-    """the four clip-on board-rail blocks with their tongues and the board peg posts (#4, #5): the posts pass through the
+    """the two clip-on board rails (one per side; four blocks until the 2026-11-11 spines joined them) with their tongues and the board peg posts (#4, #5): the posts pass through the
     board's peg holes and stop POST_GAP under the board-face wall, so a board-face hit goes post -> rail -> cells, not
     through the parts"""
     m = []
@@ -357,7 +399,27 @@ def rails():
         keep = rect(RAIL_X0, S.sb_xb0, *sorted((s*S.SB_BAR_Y[0], s*RAIL_RELIEF_Y)))
         m += [pz(keep, FR_B0, RAIL_GAP[0]), pz(r, S.SB_BAR_Z0, RAIL_GAP[0]), pz(r, RAIL_GAP[1], FR_T1)]
     m += [px_(post_cs(y, z), S.sb_xb0 - 0.5, X_IN - POST_GAP) for y, z in S.CUP_PEGS]
-    return U(*m, *key_slots(0.0), *key_ribs()) - U(*rail_usb_relief())
+    return U(*m, rail_spines(), *key_slots(0.0), *key_ribs(), *tongue_root_chamfers()) - U(*rail_usb_relief())
+def tongue_root_chamfers():
+    """KEY_ROOT_CHAMFER in the bottom tongues' root corner, where the tongue's top face meets the block's cell-side face
+    (only where the block stands over the tongue, |y| from the block's inner edge to the tongue's outer edge)"""
+    c, z1 = KEY_ROOT_CHAMFER, FR_B1 - TONGUE_SETBACK
+    tri = CS([[(z1 - 0.01, RAIL_X0 - c), (z1 + c, RAIL_X0 + 0.02), (z1 - 0.01, RAIL_X0 + 0.02)]])   # section (z, x)
+    out = []
+    for s in (-1, 1):
+        y0, y1 = sorted((s*S.SB_BAR_Y[0], s*KEY_Y['bottom'][1]))
+        out.append(MF.extrude(tri, y1 - y0).transform([[0, 1, 0, 0], [0, 0, 1, y0], [1, 0, 0, 0]]))
+    return out
+def rail_spines():
+    """mid-board prop (2026-11-11): a spine joining each side's bottom and top rail blocks across RAIL_GAP, RAIL_SPINE_Y
+    wide, from the front can (SPINE_CAN_GAP off) up to B.Cu"""
+    out = []
+    for cx, cy in [(x, y) for x, y in CELLS if x > 0]:
+        s = 1 if cy > 0 else -1
+        sec = CS.batch_boolean([rect(RAIL_X0 - 3.0, S.sb_xb0, *sorted((s*RAIL_SPINE_Y[0], s*RAIL_SPINE_Y[1]))),
+                                circ(cx, cy, CR + SPINE_CAN_GAP)], M3.OpType.Subtract)
+        out.append(pz(sec, RAIL_GAP[0] - 0.5, RAIL_GAP[1] + 0.5))
+    return U(*out)
 def rail_usb_relief():
     """the USB-C front housings hang 0.32 below B.Cu in the board notches, over the top rail blocks (real-board check
     2026-10-30): notch the blocks' board-side corner there, 0.2 clear plus the board's z float"""
@@ -428,7 +490,7 @@ def filler():
     cells = U(*[pz(circ(x, y, CR), FILL_Z[0] - 1, FILL_Z[1] + 1) for x, y in CELLS])
     fy0, fy1 = S.CUP_FILL_Y
     keep = pz(CS.batch_boolean([rect(19.0, S.sb_xb0, -fy1, -fy0), rect(19.0, S.sb_xb0, fy0, fy1)], M3.OpType.Add), *FILL_Z)
-    return (blk ^ keep) - cells
+    return (blk ^ keep) - cells - rail_spines()
 def bumper(top):
     base = cs_out if top else cs_mouth                    # the bottom bumper goes over the cup's thick mouth
     out = base.offset(BUMP_WALL if top else BUMP_WALL_BOT, ROUND); ring = CS.batch_boolean([out, base], M3.OpType.Subtract)
@@ -541,7 +603,7 @@ def board_parts():
             ('board', np.vstack([B[k] for k in usb]), C['usb']), ('ble', B['U301'], C['ble'])]
 def group(k): return k.split('_')[0]
 PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carrier'),
-         (2, 'Board rails (4, clip-on) with the peg posts', 'MJF PA12', 'rails'),
+         (2, 'Board rails (2, clip-on, spined) with the peg posts', 'MJF PA12', 'rails'),
          (3, 'Cells C1-C4, welded 4S', 'BAK N21700CX-65E', 'cell'),
          (4, 'Insulator rings on the + ends (4)', 'fish paper 0.2', 'insul'), (5, 'Preload rings under the cells (4)', 'EVA foam 1 mm', 'foam'),
          (6, 'Nickel series strips (3)', 'nickel 0.2 x 10', 'nickel'), (7, 'PACK pads, CELL1/3 tongues; 18 / 28 AWG wires', 'nickel; PTFE wire', 'tails'),
@@ -612,7 +674,9 @@ def checks():
     pk_y = [abs(S.sb_pack_holes()[n][0]) for n in ('PACK-', 'PACK+')]
     return {
         'carrier is one body': 1 - len(carrier().decompose()) + 0.0,
-        'board rails: four bodies (clip-on blocks)': 4 - len(rails().decompose()) + 0.0,
+        'board rails: two bodies (one clip-on rail per side, spine across the filler gap)': -abs(2 - len(rails().decompose())) + 0.0,
+        'bottom rail stubs sit over their key slots, off the frame face (y, >= 0.05)': (KEY_Y['bottom'][1] + KEY_CLR) - RAIL_RELIEF_Y - 0.05 + 1e-9,
+        'rails land on the front cans before a tongue tip bottoms in its slot (x, >= 0.1)': min(KEY_TIP_CLR.values()) - (RAIL_X0 - (PR + CR)) - 0.1 + 1e-9,
         'rail tongue crush ribs bite the slot walls (0.1-0.2 per side)': min(KEY_RIB[0] - KEY_CLR - 0.1, 0.2 - (KEY_RIB[0] - KEY_CLR)) + 1e-9,
         'crush ribs fit the thinnest tongue (z, >= 0.2 each side)': (min(FR_T1 - FR_T0, FR_B1 - TONGUE_SETBACK - FR_B0) - KEY_RIB[1]) / 2 - 0.2 + 1e-9,
         'rail tongues: top full frame height, bottom >= 1.0 (JLC MJF wall)': min(tongue_h('top') - (FR_T1 - FR_T0), tongue_h('bottom') - 1.0) + 1e-9,
@@ -692,8 +756,8 @@ def checks():
                                                        for y0, y1 in S.sb_fingers(n).values() for y0 in (y0, y1)) - RAIL_RELIEF_Y - 0.5,
         'bottom key slots clear of the wire notch (y, web >= 0.6)': (abs(S.sb_slots()['4P'][0]) - S.SB_KWIRE_OD/2 - WIRE_NOTCH_CLR)
                                                        - (KEY_Y['bottom'][1] + KEY_CLR) - 0.6,
-        'key slots clear of the weld windows (frame left >= 1.0)': min(np.hypot(PR + CR - KEY_DEPTH - KEY_CLR - PR, max(PR - (y1 + KEY_CLR), 0))
-                                                       for y0, y1 in KEY_Y.values()) - WIN_R - 1.0,
+        'key slots clear of the weld windows (frame left >= 1.0)': min(np.hypot(PR + CR - KEY_DEPTH - KEY_TIP_CLR[end] - PR, max(PR - (y1 + KEY_CLR), 0))
+                                                       for end, (y0, y1) in KEY_Y.items()) - WIN_R - 1.0,
         'wire notch: power wire inside the frame edge (y)': (PR + CR) - (max(pk_y) + S.SB_PWIRE_OD/2 + WIRE_NOTCH_CLR),
         'CELL2 channel: wire sits below the frame face (z)': CH_D - S.SB_KWIRE_OD - 0.2 + 1e-9,
         'wire notch: power wire under the PACK pad clears the pad relief (z, >= 0.5)':
@@ -875,7 +939,7 @@ def sheet_sections(A):
     sh.callouts([(tp(X_IN + WALL_BF/2, 0), 'Board face: 2.0 mm cup wall,\n0.5 mm over the tallest part'),
                  (tp(S.sb_xb0 + 0.8, -2), 'Board on the clip-on rails;\nthermal vias under the power stages'),
                  (tp(PR + CR + 1.0, -PR), 'Gap filler: B.Cu to the two front cells.\nThe cells are the heat sink'),
-                 (tp(PR + CR + 1.0, PR), 'Rails stop over the filler zone\n(they carry the board above and below it)'),
+                 (tp(RAIL_X0 + 1.0, RAIL_SPINE_Y[0] + 0.6), 'Rail spine: props the board\nbetween the filler zones (2026-11-11)'),
                  (tp(X_IN - 1, -YI + 1), 'Bore corners r 4 for the O-ring'),
                  (tp(X_IN - 1.6, YI - 0.4), 'Edge land + F.Cu lip: the board\'s\nedges stop on the cup (2026-11-03)'),
                  (tp(19.5, -PR - 8.5), 'Cradle: in a board-face drop the\nfront cans stop on the cup')], 1010, 'r', 170)
@@ -916,7 +980,7 @@ def sheet_sections(A):
         sh.text(UX + uw/2, UY + uh + 14, lab, 14, fill=MUTED, anchor='mm')
         sh.callouts([(tu(PORT_X + S.USB_RING_H/2 - 0.1, Z_TOP1 - 1.0), 'Seal ring in the bore'),
                      (tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing pocket: clears\nthe hard front housing'),
-                     (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Rail block notched under\nthe housing (0.32 below B.Cu)')]
+                     (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Top rail block notched under\nthe housing (0.32 below B.Cu)')]
                     if i == 0 else [(tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing corner in the pocket,\n0.15 clear in x, 0.35 in y')],
                     UX + uw + 30, 'r', UY, size=13)
     sh.line([(40, 1240), (2660, 1240)], RULE, 1.5); sh.legend(LEG, 40, 1256, 14)
