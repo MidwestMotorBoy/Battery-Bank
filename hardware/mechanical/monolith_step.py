@@ -11,7 +11,10 @@ Run: python monolith_step.py [outdir]   -> outdir/parts/*.step, outdir/monolith_
 import os, sys, numpy as np
 from OCP.gp import gp_Pnt, gp_Trsf
 from OCP.STEPCAFControl import STEPCAFControl_Reader
-from OCP.TDF import TDF_LabelSequence
+try:
+    from OCP.TDF import TDF_LabelSequence
+except ImportError:                                   # cadquery-ocp 8.x moved the NCollection sequences
+    from OCP.OCP.collections import Sequence_TDF_Label as TDF_LabelSequence
 from OCP.TopoDS import TopoDS_Shell, TopoDS_Compound, TopoDS
 from OCP.BRep import BRep_Builder
 from OCP.BRepBuilderAPI import BRepBuilderAPI_MakeVertex, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire, \
