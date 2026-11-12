@@ -81,7 +81,11 @@ VENT_POCKET_R = 6.35               # (VOSAREA lamp vent, 100 for $13; a Gore VE8
 VENT_GRILLE = (1.0, 0.8, 2.4)      # cross-hatch grille over the pocket at the slab's base (thick, bar width, pitch; 45 deg): it
                                    # prints on the bed and the patch sits 1 mm above it (no breather groove since 2026-10-31: it
                                    # cut the bars into slivers that JLC flagged as thin walls)
-OT_R, OT_GAP = 2.5, 0.3            # post radius (1.5 until 2026-11-05: 2.2-2.9 kN in a cap-end drop crushed the r1.5 tips at
+OT_CHAMFER = 0.3                   # 45 deg chamfer on each post's top rim (2026-11-12): in the 3D back-face drop (run 9,
+                                   # docs/analysis/2026-11-11-drop-3d) the carrier lands on the sharp rim at 20-35 N and yields
+                                   # it (up to 47 % in one element). The post is OT_R + OT_CHAMFER below the chamfer, so the flat
+                                   # top keeps r OT_R and its cap-end bearing area
+OT_R, OT_GAP = 2.5, 0.3            # post (flat top) radius (1.5 until 2026-11-05: 2.2-2.9 kN in a cap-end drop crushed the r1.5 tips at
                                    # ~80-95 MPa); gap to the frame underside at nominal (0.6 until 2026-10-31: a hard plug-in
                                    # could push the core far enough to pull the USB-C rings out of the full bore)
 FOOT_GAP = 0.2                     # board feet (2026-11-03): PA12 ribs on the cap skirt's inside face under the board's bottom
@@ -315,12 +319,17 @@ def cap():
     plate = pz(cs_mouth, Z_MOUTH - CAP_T, Z_MOUTH)
     skirt = pz(CS.batch_boolean([cs_in.offset(-0.1, ROUND), cs_in.offset(-0.1 - SKIRT_T, ROUND)], M3.OpType.Subtract), Z_MOUTH - 0.01, Z_SKIRT1)
     bosses = [cyly(SCREW_X, SCREW_Z, 2.6, -(YI - 0.1), -(YI - 0.1 - BOSS_DEPTH)), cyly(SCREW_X, SCREW_Z, 2.6, YI - 0.1 - BOSS_DEPTH, YI - 0.1)]
-    posts = [pz(circ(x, y, OT_R), Z_MOUTH - 0.01, FR_B0 - OT_GAP) for x, y in OT_POSTS]
+    posts = [ot_post(x, y) for x, y in OT_POSTS]
     m = U(plate, skirt, *bosses, *posts, board_feet())
     m = m - pz(CS.batch_boolean([cs_in.offset(0.5, ROUND), cs_in.offset(-0.1 - GROOVE_D, ROUND)], M3.OpType.Subtract), *GROOVE_Z)
     d = YI - 0.1 - BOSS_DEPTH + PILOT_SOLID                                                       # blind pilots
     m = m - pz(circ(*VENT_XY, VENT_HOLE_R), Z_MOUTH - CAP_T - 1, Z_MOUTH + 1)                      # vent hole
     return m - cyly(SCREW_X, SCREW_Z, PILOT_R, -(YI + 1), -d) - cyly(SCREW_X, SCREW_Z, PILOT_R, d, YI + 1)
+def ot_post(x, y):
+    """overtravel post: r OT_R + OT_CHAMFER, chamfered 45 deg to an r OT_R flat top at FR_B0 - OT_GAP"""
+    top, c = FR_B0 - OT_GAP, OT_CHAMFER
+    return U(pz(circ(x, y, OT_R + c), Z_MOUTH - 0.01, top - c + 0.01),
+             MF.batch_hull([pz(circ(x, y, OT_R + c), top - c - 0.01, top - c), pz(circ(x, y, OT_R), top - 0.01, top)]))
 def board_feet():
     """PA12 ribs on the cap skirt's inside face, up under the board's bottom edge (FOOT_GAP below it)"""
     xs = X_IN - 0.1 - SKIRT_T + 0.3                                                               # 0.3 into the skirt
@@ -342,7 +351,7 @@ def pad(printed=False):
     top = FR_B0 + (PAD_PROUD if printed else 0.0)
     m = pz(CS.batch_boolean([cs_cells.offset(-0.4, ROUND), cs_in.offset(-0.1 - SKIRT_T - 0.3, ROUND)], M3.OpType.Intersect), Z_MOUTH, top)
     m = m - U(cyly(SCREW_X, SCREW_Z, 3.0, -YI, -(YI - BOSS_DEPTH - 0.5)), cyly(SCREW_X, SCREW_Z, 3.0, YI - BOSS_DEPTH - 0.5, YI))
-    m = m - U(*[pz(circ(x, y, OT_R + 0.4), Z_MOUTH - 1, top + 1) for x, y in OT_POSTS])
+    m = m - U(*[pz(circ(x, y, OT_R + OT_CHAMFER + 0.4), Z_MOUTH - 1, top + 1) for x, y in OT_POSTS])
     rel = [circ(x, y, WIN_R + 1.0) for (x, y) in CELLS if x > 0] + [rect(PR, PR + CR + 1, 7.5, 16.0), rect(PR, PR + CR + 1, -16.0, -7.5)]
     return m - pz(CS.batch_boolean(rel, M3.OpType.Add), FR_B0 - PAD_RELIEF, top + 1)
 def webs():
@@ -717,7 +726,10 @@ def checks():
         'board feet: edge bearing, cap-end drop on the two inner feet (MPa, <= 40)':
             40 - 0.0215 * 1182 * 9.81 / (2 * S.SB_PCB_T * (FOOT_Y[0][1] - FOOT_Y[0][0])),
         'overtravel posts under frame material, not a window or notch': min(
-            min(np.hypot(x - cx, y - cy) for cx, cy in CELLS) - WIN_R - OT_R for x, y in OT_POSTS),
+            min(np.hypot(x - cx, y - cy) for cx, cy in CELLS) - WIN_R - OT_R - OT_CHAMFER for x, y in OT_POSTS),
+        'overtravel post tops: cap-end drop bearing on the flat tops (MPa, <= 45; 42 at r2.5 in the 2026-11-04 study)':
+            45 - 42 * (2.5 / OT_R) ** 2,
+        'overtravel post tops: chamfer leaves a flat top (r >= 2.0)': OT_R - 2.0 if OT_CHAMFER > 0 else -1,
         'USB-C rings stay in the full bore when a plug pushes the core onto the overtravel posts (z, >= 0.2)':
             (Z_TOP1 - S.USB_RING_D[0]) - (OT_GAP + (S.CUP_PEG_SLOT[1] - S.CUP_PEG_D) / 2) - (Z_POCKET + POCKET_LEAD) - 0.2,
         'pad preload: printed proud 1.0-1.5': min(PAD_PROUD - 1.0, 1.5 - PAD_PROUD),

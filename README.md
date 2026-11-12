@@ -26,7 +26,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 | **Gauge / protection** | BQ40Z50-R2 (Impedance Track, SMBus), Infineon BSC007N04LS6 CHG/DSG FETs, 1 mΩ shunt; BQ294700 + chemical fuse as the independent second level |
 | **MCU** | TI CC2340R5MODA (Cortex-M0+ Bluetooth LE module with integrated antenna) |
 | **Board** | 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner copper, ENIG, filled and capped vias; JLCPCB assembly of F.Cu, B.Cu parts hand-fitted |
-| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.9 × 52.7 × 95.5 mm, about 402.0 g (modelled) |
+| **Enclosure** | MJF PA12 cup and bottom cap (one radial O-ring), PA12 cell carrier, TPU 95A bumpers; 60.9 × 52.7 × 95.5 mm, about 402.2 g (modelled) |
 | **Tools** | KiCad 10 with Python scripts, TI SimpleLink Low Power F3 SDK, Xcode (app on the `app` branch) |
 
 ## Status
@@ -156,6 +156,7 @@ A full 3D explicit model of the whole pack (OpenCourant, about 900k nodes, quadr
 - **On master the board bent across its middle** (about 5,000 µε in a full-width band at mid-length) and the rebound pushed six or seven F.Cu caps and inductors into the board-face wall.
 - **Rail spines now prop the board's mid-span** (one clip-on rail per side, its bottom and top blocks joined across the gap-filler zone), with ribs on the cup under the board's long edges: board strain p99 about 3,000 µε, the mid-span band gone.
 - **The bottom rail tongues stay elastic** now that their slots run 1.5 mm past the tips, so the rails ride on the front cans; and the L401 / L501 wall pockets are 0.7 mm deep.
+- **Run 9 checked the merged geometry:** board strain p99 / max 3,089 / 4,022 µε, no F.Cu part reaches the wall (closest C531 at +0.02 mm, L401 / L501 +0.19 / +0.15 mm), the tongue tips stop 0.12 mm short, and the floor peaks at 6.22 kN. The cap overtravel posts yielded at their sharp top rims under 20–35 N, so their tops now have a 0.3 mm chamfer.
 - **Still open:** about 4,000 µε on the board's long edges where the spines end (z 53–55), local yield in the carrier webs, and only about 0.02 mm between the 2.5 mm caps (C420, C434, C524, C531) and the wall in the rebound. Check those with a witness-paint drop on the first print.
 
 <p align="center"><img src="docs/analysis/2026-11-11-drop-3d/img/board-envelope.png" alt="Board strain envelope in the back-face drop: master against the spined rails" width="60%"></p>
