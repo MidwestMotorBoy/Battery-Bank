@@ -51,7 +51,7 @@ def coupons():
             ('B1_cup_mouth', 'Cup mouth, bottom 14 mm, lidded', 'MJF PA12', mouth()),
             ('B2_cap', 'Bottom cap (the real part)', 'MJF PA12', K.cap()),
             ('C1_carrier', 'Cell carrier (the real part)', 'MJF PA12', K.carrier()),
-            ('C2_rails', 'Clip-on rail blocks, 4 (the real parts)', 'MJF PA12', K.rails()),
+            ('C2_rails', 'Clip-on rails, 2 (the real parts)', 'MJF PA12', K.rails()),
             ('C3_spacers', 'Post spacers, 4', 'MJF PA12', K.spacers())]
 
 if __name__ == '__main__':
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         b = np.array(m.bounding_box()); return -(b[:3] + b[3:]) / 2
     panels = [('A  seal-bore ladder: outer face, and from below (the pockets)', [('A', C[0][3])], None, 7.0),
               ('B  cup mouth + cap, O-ring, M2 screws', [('B1', C[1][3]), ('B2', C[2][3].translate((0, 0, -12)))], R, 4.5),
-              ('C  carrier, rail blocks, spacers', [('C1', C[3][3]), ('C2', C[4][3]), ('C3', C[5][3])], R, 3.2)]
+              ('C  carrier, rails, spacers', [('C1', C[3][3]), ('C2', C[4][3]), ('C3', C[5][3])], R, 3.2)]
     for i, (title, parts, cam, px) in enumerate(panels):
         x = 40 + i * 880; sh.panel_title(x, 128, title, 840)
         off = ctr(U(*[m for _, m in parts]))

@@ -46,7 +46,7 @@ P2, (pw2, ph2) = cut(S.CUP_PEGS[2][0], (-27.0, 35.0, -14.0, 88.0), 6, 980, 170, 
 tx2 = 980 + pw2 + 30
 steps = [((K.PORT_X - 2, 84), 'USB plug pushes the receptacle\nand the board toward the cap', RED),
          ((S.sb_xb0 + 1, 68), 'Board rides on 4 pegs in slots:\n0.2 mm of z play (2.2 slot, 2.0 peg)', MUT),
-         ((24.5, 72), 'Pegs belong to the 4 clip-on\nrails, keyed into the carrier', MUT),
+         ((24.5, 72), 'Pegs belong to the 2 clip-on\nrails, keyed into the carrier', MUT),
          ((0, 40), 'Carrier + cells (the whole core)\nslide as one block', MUT),
          ((0, 0), f'TPU pad, {K.PAD_FILL:.0%} gyroid, printed\n{K.PAD_PROUD} mm proud: ~15-80 N preload.\nThe only thing resisting the push', RED),
          ((0, K.Z_MOUTH - 0.8), f'Cap. Overtravel posts (at y = 0, not\nin this cut) catch the core after {K.OT_GAP} mm', MUT)]

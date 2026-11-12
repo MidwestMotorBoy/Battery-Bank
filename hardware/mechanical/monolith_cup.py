@@ -939,7 +939,7 @@ def sheet_sections(A):
     sh.callouts([(tp(X_IN + WALL_BF/2, 0), 'Board face: 2.0 mm cup wall,\n0.5 mm over the tallest part'),
                  (tp(S.sb_xb0 + 0.8, -2), 'Board on the clip-on rails;\nthermal vias under the power stages'),
                  (tp(PR + CR + 1.0, -PR), 'Gap filler: B.Cu to the two front cells.\nThe cells are the heat sink'),
-                 (tp(PR + CR + 1.0, PR), 'Rails stop over the filler zone\n(they carry the board above and below it)'),
+                 (tp(RAIL_X0 + 1.0, RAIL_SPINE_Y[0] + 0.6), 'Rail spine: props the board\nbetween the filler zones (2026-11-11)'),
                  (tp(X_IN - 1, -YI + 1), 'Bore corners r 4 for the O-ring'),
                  (tp(X_IN - 1.6, YI - 0.4), 'Edge land + F.Cu lip: the board\'s\nedges stop on the cup (2026-11-03)'),
                  (tp(19.5, -PR - 8.5), 'Cradle: in a board-face drop the\nfront cans stop on the cup')], 1010, 'r', 170)
@@ -980,7 +980,7 @@ def sheet_sections(A):
         sh.text(UX + uw/2, UY + uh + 14, lab, 14, fill=MUTED, anchor='mm')
         sh.callouts([(tu(PORT_X + S.USB_RING_H/2 - 0.1, Z_TOP1 - 1.0), 'Seal ring in the bore'),
                      (tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing pocket: clears\nthe hard front housing'),
-                     (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Rail block notched under\nthe housing (0.32 below B.Cu)')]
+                     (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Top rail block notched under\nthe housing (0.32 below B.Cu)')]
                     if i == 0 else [(tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing corner in the pocket,\n0.15 clear in x, 0.35 in y')],
                     UX + uw + 30, 'r', UY, size=13)
     sh.line([(40, 1240), (2660, 1240)], RULE, 1.5); sh.legend(LEG, 40, 1256, 14)
