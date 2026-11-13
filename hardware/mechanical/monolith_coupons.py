@@ -6,7 +6,7 @@ feature, not a redraw.
      loose connector in from the pocket side; pick the bore that seals (1 m dunk) and still lets the board float.
   B  Cup mouth + cap: the bottom 14 mm of the cup, closed by a lid, with the real cap, O-ring and M2 screws. Squeeze in
      the middle of each flat (clay or feelers), dunk at 1 m / 30 min, pull-test the cap, -50 kPa jar test.
-  C  Core: the real carrier, the four clip-on rail blocks and the four PA12 post spacers (no coupon: the parts themselves).
+  C  Core: the real carrier, the two clip-on rails (four blocks before the 2026-11-11 spines) and the four PA12 post spacers (no coupon: the parts themselves).
 Run: python monolith_coupons.py   -> stl/MJF_PA12/coupons/*.stl, stl/TPU_95A/coupons/*.stl, monolith_coupons.png"""
 import os, numpy as np
 import manifold3d as M3
@@ -51,7 +51,7 @@ def coupons():
             ('B1_cup_mouth', 'Cup mouth, bottom 14 mm, lidded', 'MJF PA12', mouth()),
             ('B2_cap', 'Bottom cap (the real part)', 'MJF PA12', K.cap()),
             ('C1_carrier', 'Cell carrier (the real part)', 'MJF PA12', K.carrier()),
-            ('C2_rails', 'Clip-on rail blocks, 4 (the real parts)', 'MJF PA12', K.rails()),
+            ('C2_rails', 'Clip-on rails, 2 (the real parts)', 'MJF PA12', K.rails()),
             ('C3_spacers', 'Post spacers, 4', 'MJF PA12', K.spacers())]
 
 if __name__ == '__main__':
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         b = np.array(m.bounding_box()); return -(b[:3] + b[3:]) / 2
     panels = [('A  seal-bore ladder: outer face, and from below (the pockets)', [('A', C[0][3])], None, 7.0),
               ('B  cup mouth + cap, O-ring, M2 screws', [('B1', C[1][3]), ('B2', C[2][3].translate((0, 0, -12)))], R, 4.5),
-              ('C  carrier, rail blocks, spacers', [('C1', C[3][3]), ('C2', C[4][3]), ('C3', C[5][3])], R, 3.2)]
+              ('C  carrier, rails, spacers', [('C1', C[3][3]), ('C2', C[4][3]), ('C3', C[5][3])], R, 3.2)]
     for i, (title, parts, cam, px) in enumerate(panels):
         x = 40 + i * 880; sh.panel_title(x, 128, title, 840)
         off = ctr(U(*[m for _, m in parts]))

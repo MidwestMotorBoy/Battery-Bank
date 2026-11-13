@@ -1,5 +1,7 @@
 # 1 m drop: contact model, stress in every part (2026-11-04)
 
+> **2026-11-11:** the back-face drop was rerun as a full 3D explicit model in [`../2026-11-11-drop-3d/`](../2026-11-11-drop-3d/README.md), which led to the rail spines (mid-board prop). Use that study for the board and rails in that pose.
+
 The 2026-10-31 study (`../2026-10-31-drop-1m`) treated the bank as two masses with the inside bonded to the cup, so it could
 not see the inside parts hitting each other. This one keeps every part that can move as its own body, finds where they
 touch on the real master geometry, and runs the impact in 17 orientations from 1 m onto concrete.
