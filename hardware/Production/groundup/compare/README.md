@@ -38,7 +38,8 @@ charger TS pins take over 10 mV from a switch-node edge, and every other signal 
 port 2 5 V FB 5.9, port 2 CC2 5.4 mV) and under 6 mV on the current board. It is still behind on one thing: 258 mm
 of signal track in a ground plane against 34 mm, crossed by 28 slow nets. The hand-routed board is still the one to
 build first: it has been reviewed several times and keeps its planes almost whole. The ground-up board is now a
-second layout without a known fault that only its author has looked at.
+second layout without a known fault that only its author has looked at. (This verdict is kept as written on
+2026-11-10. On 2026-11-13 Logan chose the ground-up board as the design; it still needs a review by a person.)
 
 The second pass did not get new thermal runs. It moved two 0402 feedback resistors (R418 0.6 mm, R518 5.1 mm),
 changed the copper loss at 100 W by less than 1 mW and left 255 vias under the gap-filler pads where the `fix`

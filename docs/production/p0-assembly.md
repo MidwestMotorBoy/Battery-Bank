@@ -2,7 +2,7 @@
 
 How a Monolith P0 goes together, from the mechanical model in `hardware/mechanical/` (**the cup**, `monolith_cup.py`; adopted 2026-10-21, it replaces the side tray). Parts and views: `hardware/mechanical/monolith_cup_exploded.png` and `monolith_cup_sections.png`, and a picture sheet for each step below (`hardware/mechanical/assembly_steps/`); the connections are in the table below (the old nickel-tail drawing, `monolith_side_tabs.png`, is history: removed 2026-10-29, in git at `5cf521e`).
 
-**Status:** a plan. Nothing has been built yet, so expect it to change at the first real print (the first cup, cap and core are the fit test). Cells: BAK N21700CX-65E 6500 mAh (`docs/spec.md`, Cells and pack). Board coordinates and part positions below are from the hand-routed board Logan approved (`Monolith.kicad_pcb` at commit `8dd9eb6`, the one with order files in `hardware/Production/jlc/`). The ground-up re-layout on `master` since 2026-11-10 keeps the same wire holes, peg slots, NTCs and B.Cu parts, but other parts moved (`docs/spec.md`, Boards and enclosure).
+**Status:** a plan. Nothing has been built yet, so expect it to change at the first real print (the first cup, cap and core are the fit test). Cells: BAK N21700CX-65E 6500 mAh (`docs/spec.md`, Cells and pack). The board is the script-built layout on `master` (`Monolith.kicad_pcb`, commit `dd34285`), the design since 2026-11-13 (`docs/spec.md`, Boards and enclosure). The board coordinates below are the wire holes, peg slots, NTCs and B.Cu parts, which are in the same places as on the earlier hand-routed board (`8dd9eb6`).
 
 ![Cup, exploded](../../hardware/mechanical/monolith_cup_exploded.png)
 
@@ -35,7 +35,7 @@ The cup is closed on five sides, with the two USB-C seal bores in its top wall. 
 | TS3 / TS3 return | back-cell NTC | insulated NTC leads | J119 / J120, Ø0.8 at (103.63, 136.14) / (105.41, 136.14) |
 | TS2 / TS2 return | back-cell NTC | insulated NTC leads | J117 / J118, Ø0.8 at (114.05, 127.76) / (112.27, 127.76) |
 
-**Get the holes right.** The holes all look alike. Both boards now carry silk labels at them (P−, 1N, C1, C2, C3, 4P, P+, T2 / T2R, T3 / T3R; added to the hand-routed board on 2026-11-08); check them against this table anyway. A 4P Kelvin wire in J118 or J120 (CELL_1N) shorts the whole stack through 28 AWG wire with no fuse in the path. Both NTC pairs sit on the +y side of the board; the gauge doesn't care which back cell is TS2, so wire the +y back cell (C3) to whichever pair gives the shorter run, and route the TS2 leads clear of the right-bottom rail block and of the gel zone near TH104. The NTC routes are not in the model yet.
+**Get the holes right.** The holes all look alike. The board carries silk labels at them (P−, 1N, C1, C2, C3, 4P, P+, T2 / T2R, T3 / T3R); check them against this table anyway. A 4P Kelvin wire in J118 or J120 (CELL_1N) shorts the whole stack through 28 AWG wire with no fuse in the path. Both NTC pairs sit on the +y side of the board; the gauge doesn't care which back cell is TS2, so wire the +y back cell (C3) to whichever pair gives the shorter run, and route the TS2 leads clear of the right-bottom rail block and of the gel zone near TH104. The NTC routes are not in the model yet.
 
 The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanical/monolith_shell.py`. The five sense holes sit where the plated slots for the old nickel tails were, each Ø0.8 in a 1.5 × 1.4 mm pad (2026-10-24: the old 4.2 mm oval pads at J109 / J111 overlapped the USB-C courtyards, and nothing was routed to them yet). They're on the `SENSE_WIRE_HOLES` / `SENSE_WIRE_PADS` layers of `monolith_side_pcb.dxf`.
 
@@ -64,16 +64,16 @@ The positions come from `sb_slots()` and `sb_pack_holes()` in `hardware/mechanic
         - **B.Cu edge lands** (`bcu_lands()`): the cup reaches up under the board's long edges, 0.25 mm below B.Cu, at |y| ≥ 16.4 and z 50–58, above C421 / C556 so they pass as the core slides in.
         - **Bottom tongues and wall pockets:** the bottom tongue slots run 1.5 mm past the tips and the tongue roots have a 0.5 mm chamfer (*Board rails* above); the board-face wall's pockets over L401 / L501 went from 0.5 to 0.7 mm.
         - **Overtravel post tops (2026-11-12):** the cap's five posts catch the carrier at 20–35 N each in this drop and yielded at their sharp top rims, so each top has a 0.3 mm × 45° chamfer (`OT_CHAMFER`); the posts are r 2.8 below it so the flat top keeps r 2.5.
-        - Result (damped model, run 9 on the merged geometry): board strain p99 / max 3,089 / 4,022 µε (5,050 p99 before the prop), the mid-span band gone; no F.Cu part reaches the board-face wall, but the 2.5 mm caps C420, C434, C524 and C531 keep only about 0.01–0.04 mm, so use witness paint in the first drop series; the bottom tongue tips stop 0.12 mm short. What remains is 3,000–4,000 µε along the long edges near the spines' ends. Write-up: `docs/analysis/2026-11-11-drop-3d/`.
+        - Result (damped model, run 9 on the merged geometry): board strain p99 / max 3,089 / 4,022 µε (5,050 p99 before the prop), the mid-span band gone; no F.Cu part reaches the board-face wall, but the 2.5 mm caps C420, C434, C524 and C531 keep only about 0.02 to 0.05 mm (hand-routed part positions; not rerun for the script-built board, where three of them sit elsewhere), so use witness paint in the first drop series; the bottom tongue tips stop 0.12 mm short. What remains is 3,000–4,000 µε along the long edges near the spines' ends. Write-up: `docs/analysis/2026-11-11-drop-3d/`.
     - **USB-C:** the housing pockets are opened from 0.15 to 0.35 mm in y, and the bore 0.25 mm per side over its front 0.49 mm (in front of the ring band), so the connectors are no longer the first sideways stop (before, the housing touched at 0.15 mm and the shell lip at 0.20 mm, inside the slot float). The ring band left in the full bore at full rise is 0.64 mm.
 
-**Board features the build relies on (on both boards):**
+**Board features the build relies on:**
 - Five sense holes, Ø0.8 in 1.5 × 1.4 mm pads: J109–J111 (CELL1–CELL3), J115 / J116 (1N / 4P). Done 2026-10-24.
 - Two Ø1.5 mm plated holes with a 0.4 mm ring for the 18 AWG PACK wires (J108, J112). Done 2026-10-24.
 - **R124 and R126 are DNP** (gauge sheet note 16, 2026-10-24; hand-fitted from DigiKey, tracker L04). They connect the BQ294700 output and the gauge FUSE pin to Q104's gate. With them off, nothing can blow F102 while the pack is being wired; fit them by hand after the seven voltages read right (step 3.1).
 - Route 1N and 4P as Kelvin nets to the gauge.
 - Keep-outs: the carrier rails (`BCU_FRAME_BARS`, split: no rail at z 25–55 mm), the tail runs (`BCU_TAIL_RUNS`), the wire runs (`BCU_WIRE_RUNS`), and the **gap-filler zone** on B.Cu (|y| 7–16 mm, z 27–53 mm: no parts, solid copper, a dense thermal-via array to the power stages on F.Cu).
-- Four slots for the peg posts (2.6 × 2.2 mm NPTH, long across the board, H101–H104 at y ±8.6, z 14 and 68). The Ø4 post spacers (2026-11-03; Ø3.8 TPU sleeves before) reach 2.4 mm from a slot's centre across the board at full float (±0.4 mm). On the hand-routed board the nearest F.Cu part is R313, 0.23 mm clear of its spacer (`board_checks()`); U405 was moved off H104 in layout. The ground-up board passed its own cup-fit check on 2026-11-10 (`hardware/Production/groundup/`).
+- Four slots for the peg posts (2.6 × 2.2 mm NPTH, long across the board, H101–H104 at y ±8.6, z 14 and 68). The Ø4 post spacers (2026-11-03; Ø3.8 TPU sleeves before) reach 2.4 mm from a slot's centre across the board at full float (±0.4 mm). The nearest F.Cu part is R313, 0.51 mm clear of its spacer (`board_checks()` in `monolith_cup.py`, 2026-11-13, with the script-built board's parts; 0.23 mm on the hand-routed board).
 
 ## Materials and tools
 
@@ -186,7 +186,7 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
 - Keep a metal bucket of sand nearby.
 
 ## Open items
-- **Board:** decide which board is ordered (the hand-routed board at `8dd9eb6` with its order files, or the ground-up board on `master` after a review and new gerbers, BOM and CPL). At checkout, check the D401 / D501 pin-1 rotation in JLC's placement preview.
+- **Board:** review the script-built board on `master` in KiCad, then make its gerbers, BOM and CPL together (`hardware/Production/jlc/ORDER-NOTES.md`). At checkout, check the D401 / D501 pin-1 rotation in JLC's placement preview.
 - **Fit (on the first real parts):** the first cup, cap and core are the fit test (Logan, 2026-11-07: the real parts cost about the same as test pieces).
     - USB-C bores (0.15 mm squeeze a side, `USB_SQ`): measure the rings on 5 connectors from the batch, then push a loose connector into the first cup's bores from the pocket side. It should go in with a firm push and pass a 1 m dunk. Too tight or too loose means changing `USB_SQ` for the next cup order.
     - Cup mouth + cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.

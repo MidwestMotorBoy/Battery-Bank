@@ -2,17 +2,22 @@
 
 An experimental, script-built re-layout of the Monolith P0 board.
 
-**Which board is which (since 2026-11-10).** The experiment branch was merged to `master` in PR #66, and Logan
-chose to keep it there. `hardware/Production/Monolith.kicad_pcb` on `master` is therefore the ground-up board
-(after the second fix pass, commit dd34285). A cleaned-up version of it (cleanup pass of 2026-11-11) is in open
-PR #68 (branch `claude/project-thread-ploune`); it reaches `master` only if that PR is merged. The approved,
-hand-routed board is the same file at commit `8dd9eb6` (`git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb`).
-In the tables below "current board (master)" still means that hand-routed board, as it was when the comparison ran.
+**Which board is which (2026-11-13).** The experiment branch was merged to `master` in PR #66, Logan chose on
+2026-11-10 to keep it there, and on 2026-11-13 he chose it as the design. `hardware/Production/Monolith.kicad_pcb`
+on `master` is therefore this board (after the second fix pass, commit dd34285), called the script-built board in
+the rest of the repo. A cleaned-up version of it (cleanup pass of 2026-11-11) is in open PR #68 (branch
+`claude/project-thread-ploune`); it reaches `master` only if that PR is merged. The earlier hand-routed board, which
+Logan approved on 2026-10-30, is the same file at commit `8dd9eb6`
+(`git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb`) and is history. This file is the record of the
+experiment as it ran: in the tables below "current board (master)" still means that hand-routed board, as it was
+when the comparison ran, and the verdicts ("still build his board first") predate Logan's decision.
 
-**Not yet redone for the ground-up board:** the order files in `../jlc/` (gerbers, BOM, CPL), the renders and layer
-plots in `docs/hardware/`, the board reviews in `docs/reviews/`, the studies in `docs/analysis/` and the board data
-in the mechanical model. All of them describe the hand-routed board. The ground-up board has been checked by script
-and solver only; nobody has reviewed it in KiCad. Regenerate the order package and review the board before any order.
+**Redone for this board on 2026-11-13:** the renders, plots and layers PDF in `docs/hardware/`
+(`docs/hardware/board_pictures.py`), the board data in the mechanical model (a KiCad STEP export through
+`hardware/mechanical/board/board_from_step.py`; all 129 enclosure checks pass), the model pictures, the viewer and
+the STEP set. **Not yet done:** a review in KiCad (the board has been checked by script and solver only), the order
+package (`../jlc/ORDER-NOTES.md`; the hand-routed board's package is in `../retired/jlc-hand-routed/`), and reruns of
+the drop and thermal studies in `docs/analysis/` with this board's part positions and copper.
 
 The schematic, project file, design rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs, antenna
 module, the back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
@@ -199,7 +204,7 @@ A detailed comparison (hot loops, gate loops, loss at each load, thermals, Kelvi
 All scripts run with KiCad 10's Python inside the `kicad/kicad:10.0` Docker image (`kc` is the wrapper).
 
 1. Placement: `place*.py`, `placelib.py`, `run.py` write `placement.json`; `apply_place.py` moves the parts.
-   `mechcheck.py` re-poses the per-part meshes of `hardware/mechanical/board/monolith_board.npz` and runs
+   `mechcheck.py` re-poses the per-part meshes of the hand-routed board (`hardware/mechanical/board/monolith_board_handrouted.npz`) and runs
    `board_checks()`, so the cup fit is tested without a STEP export.
 2. Old copper is stripped (`strip.py`), power pours, vias and Kelvin taps are drawn by `cu.py`, `copper.py`
    and `add_copper.py`.

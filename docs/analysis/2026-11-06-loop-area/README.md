@@ -1,7 +1,8 @@
 # Switch-node, hot-loop and gate-loop inductance (2026-11-06)
 
-**Board: the hand-routed board** that Logan approved on 2026-10-30, not the ground-up board that is on master since
-PR #66. The study ran on Logan's local save of 2026-11-04 02:20Z. The committed version of that board is
+**Board: the hand-routed board** that Logan approved on 2026-10-30. Since 2026-11-13 the design is the script-built
+board on master (commit `dd34285`, PR #66); its loops were solved with the same tools in
+`hardware/Production/groundup/compare/` (charger hot loops 0.50 to 0.56 nH, gate loops 3.3 to 8.0 nH), not here. The study ran on Logan's local save of 2026-11-04 02:20Z. The committed version of that board is
 `hardware/Production/Monolith.kicad_pcb` at commit `8dd9eb6` (the same file as `36dad0c`, which added the 2026-11-08 silk,
 UART and corner fills). The 2026-11-04 save differed from the committed file only in one port 2 BAT_SNS_P trace. A
 rerun on `8dd9eb6` on 2026-11-13 gave the same port 1 PACK-leg loop to the last digit (0.656 nH) and the same port 2
@@ -226,7 +227,7 @@ its title.
 Needs Python 3 with numpy, scipy, Pillow and matplotlib. The solver and the board reader live in
 `hardware/Production/groundup/compare/` (`peec.py`, `loops.py`, `board.py`, `sx.py`, `run_all_defs.py`); every script
 here adds that folder to its path. The board is read from the `PCB` environment variable and the scripts stop if it is
-not set, because the default board on master is the ground-up one:
+not set, because the board on master is the script-built one and this study is of the hand-routed board:
 
 ```sh
 git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb > /tmp/hand_routed.kicad_pcb

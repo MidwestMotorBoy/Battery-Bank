@@ -2,7 +2,7 @@
 
 Model studies of the whole pack and its board. Each folder has its own README with the results, the figures, the scripts that made them and the assumptions. Every number is a model value until the bench tests.
 
-Every study here used the **hand-routed board** (its copper and its part positions; the board file at commit `8dd9eb6`), not the ground-up layout that has been on `master` since 2026-11-10, and the cup as it was on the study's date. Each README opens with a status block that gives the geometry it ran on and says, for each finding, whether it was fixed, superseded by a later study, or is still open.
+Every study here used the **hand-routed board** (its copper and its part positions; the board file at commit `8dd9eb6`) and the cup as it was on the study's date. Since 2026-11-13 the design is the script-built board on `master` (commit `dd34285`), and no study has been rerun for it. What carries over: everything about the cup, bumpers, carrier and cells, because the outline, holes, connectors, B.Cu parts and main inductors are the same on both boards. What does not: copper loss and path resistance, loop inductance, and the part-to-wall gaps of the F.Cu capacitors in the drop models (C434 and C524 moved about 13 mm and C420 about 5 mm; C531 moved 0.4 mm and turned 90°). The script-built board's own loop, copper-loss and 100 W burst numbers are in the solver comparison linked below. Each README opens with a status block that gives the geometry it ran on and says, for each finding, whether it was fixed, superseded by a later study, or is still open.
 
 | Folder | What it covers |
 |---|---|
@@ -20,5 +20,5 @@ Related work elsewhere in the repo:
 
 - The pack thermal model itself is in [`research_notes/Pack thermal BAK 65E/`](../../research_notes/Pack%20thermal%20BAK%2065E/README.md), with the loss-reduction study next to it in [`research_notes/`](../../research_notes/).
 - The copper resistance of every power path and the current-sense tap checks are in the routed-board review, [`docs/reviews/2026-10-30-routed-board/`](../reviews/2026-10-30-routed-board/README.md).
-- The solver comparison of the ground-up layout against the hand-routed board is in [`hardware/Production/groundup/compare/`](../../hardware/Production/groundup/compare/README.md).
+- The solver comparison of the script-built (ground-up) layout against the hand-routed board, with the new board's hot loops, gate loops, copper loss and 100 W burst time, is in [`hardware/Production/groundup/compare/`](../../hardware/Production/groundup/compare/README.md).
 - The enclosure's own design checks are in [`docs/mechanical-design.md`](../mechanical-design.md).

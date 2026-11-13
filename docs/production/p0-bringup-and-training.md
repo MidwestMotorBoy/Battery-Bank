@@ -22,7 +22,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 
 ## Pads on P0
 
-The refdes and pin numbers below hold for both layouts of the P0 schematic. KiCad coordinates are for the hand-routed board Logan approved (`Monolith.kicad_pcb` at `8dd9eb6`, the one with order files); the ground-up re-layout on `master` since 2026-11-10 keeps the wire holes, J301 / J302 and the NTCs where they were, but other parts moved (noted in the table).
+The refdes and pin numbers below come from the schematic. KiCad coordinates are for the script-built board on `master` (`Monolith.kicad_pcb`, commit `dd34285`), the design since 2026-11-13. The wire holes, J301 / J302 and the NTCs sit where they sat on the earlier hand-routed board (`8dd9eb6`); most other parts moved.
 
 | Pads | Use |
 |---|---|
@@ -33,7 +33,7 @@ The refdes and pin numbers below hold for both layouts of the P0 schematic. KiCa
 | J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG wires (TE 55A0111-28-9) |
 | J117 / J118, J119 / J120 | Back-cell NTC wires: TS2 and its return, TS3 and its return (returns on CELL_1N). The front-cell NTCs are TH101 / TH104 on the board |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge, and the bench-supply input for bring-up without cells |
-| TP113 (WAKE) + PACK_P | Gauge wake: TP113 (108.46, 114.81) is CELL_P through R118 4.7 kΩ. TP106 is 30 mm away, so bridge TP113 to C444 pad 1 (PACK_P, 103.30, 114.20, 5.2 mm away) or use a jumper lead, and hold it ≥ 0.5 s. On the ground-up board TP113 is at (92.45, 130.75) and C444 at (119.05, 84.70), far apart: use a jumper lead to any PACK_P point |
+| TP113 (WAKE) + PACK_P | Gauge wake: TP113 (92.45, 130.75) is CELL_P through R118 4.7 kΩ. Connect it to PACK_P for ≥ 0.5 s. The nearest PACK_P pad is C111 pad 2 (94.12, 127.60), 3.6 mm away and small; a jumper lead to J113 or to C444 pad 1 (119.05, 86.17) is easier. (On the hand-routed board TP113 sat 5.2 mm from C444 pad 1 and could be bridged directly.) |
 | TP109, TP301 | GND, 3V3 |
 | TP412 / TP512 | GND per port |
 | Port probe points (no test pads; TP401–TP406 / TP501–TP506 are not on the board) | VBUS C406.1 / C506.1, PPHV R424.1 / R524.1, PP5V C443.1 / C543.1, REGN D410.2 / D510.2, DRV_SUP C411.1 / C511.1, LDO_3V3 C404.1 / C504.1, SW1 / SW2 on the L401 / L501 pads, GND C423.2 / C523.2 |
@@ -102,7 +102,7 @@ TI's EVM guide tests the BQ25756 without a battery only with a two-quadrant supp
 
 ## 2. First power
 
-1. **Wake the gauge** with USB unplugged: bridge TP113 to C444 pad 1 (PACK_P) for ≥ 0.5 s, or put the J113 supply on at or below the pack voltage. Wake-on-USB is unproven; try it separately (section 4).
+1. **Wake the gauge** with USB unplugged: connect TP113 to PACK_P with a jumper lead (J113 or C444 pad 1) for ≥ 0.5 s, or put the J113 supply on at or below the pack voltage. Wake-on-USB is unproven; try it separately (section 4).
 2. **Check the rails:** with USB unplugged, PACK_P at TP106 should read the stack (about 14 V), and 3V3 at TP301. 16.8–16.9 V with USB in means the charger is regulating PACK_P and the FETs are still off: FET_EN wasn't set (stage 4).
 3. The CC2340 and both EEPROMs were programmed in stage 3; no re-flash is needed.
 

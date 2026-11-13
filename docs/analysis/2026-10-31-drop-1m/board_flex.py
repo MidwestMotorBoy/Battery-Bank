@@ -15,7 +15,9 @@ X_F, X_IN = 26.9, 30.6                       # F.Cu face, board-face wall inside
 BENCH = ('J113', 'J114')
 
 def board():
-    z = np.load(os.path.join(MECH, 'board', 'monolith_board.npz'))
+    # the study ran on the hand-routed board (monolith_board_handrouted.npz); board/monolith_board.npz is the
+    # script-built board since 2026-11-13: set BOARD_NPZ to it to run on that board
+    z = np.load(os.environ.get('BOARD_NPZ', os.path.join(MECH, 'board', 'monolith_board_handrouted.npz')))
     B = {k: z[k].astype(float) for k in z.files if not k.startswith('_')}
     models = {k[7:]: str(z[k]) for k in z.files if k.startswith('_model_')}
     return B, models

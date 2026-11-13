@@ -9,9 +9,9 @@ An ultralight 91 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidir
 Nothing has been built, assembled or bench-tested yet. Every number in this repo is a design or model value, not a measurement.
 
 - **The design is complete on paper:** schematic, board layout, enclosure model with print files, assembly and bring-up procedures, and a parts tracker for the first five packs.
-- **There are two layouts of the same schematic** (details in [Two board layouts](#two-board-layouts)). The hand-routed board that was reviewed and approved on 2026-10-30 has a complete JLCPCB order package. The board file on `master` is a later script-built re-layout that passes DRC but has not been reviewed by a person. Which one to order is the open decision.
+- **The board is the script-built layout on `master`** (Logan's choice on 2026-11-13; details in [The board layout and its predecessor](#the-board-layout-and-its-predecessor)). It passes DRC and was checked by solver, but it has not been reviewed by a person and has no order files yet. The earlier hand-routed layout, approved on 2026-10-30, is history: its order files, reviews and board-specific studies are kept and labelled as such.
 - **The enclosure has been through four drop studies and a thermal study**, the last a full 3D explicit drop model (2026-11-11 and 11-12) that added the rail spines under the board. See [Analysis](#analysis).
-- **Next:** choose the board and order it, print the first cup (it is the fit test: there are no separate fit coupons), weld a pack, bring the board up, and run the drop and thermal tests that the models can only estimate.
+- **Next:** review the board in KiCad, make its order files and order it, print the first cup (it is the fit test: there are no separate fit coupons), weld a pack, bring the board up, and run the drop and thermal tests that the models can only estimate.
 
 Where to read more:
 
@@ -44,8 +44,8 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 **Done**
 
 - **Schematic:** six sheets, 289 footprints. Derived by script from an earlier bench design that went through four schematic reviews, with a netlist check that every surviving pin kept its net. Loss cuts, the BAK 65E cell change, the late part swaps (TVS2200 clone, KEMET T593V bulk caps, 2.0 mm inductors) and the UART_TX debug pin are in. ERC is clean (0 errors).
-- **Hand-routed layout:** placed 2026-10-28, routed and reviewed revision by revision up to rev 12 on 2026-10-30, approved the same day (PR #44), with silk labels, the UART route and corner fills added 2026-11-08. A whole-project pre-order review on 2026-11-07 found no wiring error. Order files are in [`hardware/Production/jlc/`](hardware/Production/jlc/ORDER-NOTES.md).
-- **Ground-up layout:** a script-built re-layout of the same schematic into the same outline (2026-11-10, PR #66), checked by DRC and by solver against the hand-routed board. It is the board file on `master`.
+- **Board layout:** the script-built layout of 2026-11-10 (PR #66, commit `dd34285`), placed and routed by script into the outline the enclosure gives, DRC clean, and ahead of or level with the earlier hand-routed layout on loop inductance, copper loss and via current in the solver comparison. Logan made it the design on 2026-11-13. A whole-project pre-order review on 2026-11-07 found no wiring error in the schematic it implements.
+- **Earlier hand-routed layout (history):** placed 2026-10-28, routed and reviewed revision by revision up to rev 12 on 2026-10-30, approved the same day (PR #44). It is the board file at commit `8dd9eb6`; its order files are in [`hardware/Production/retired/jlc-hand-routed/`](hardware/Production/retired/jlc-hand-routed/ORDER-NOTES.md).
 - **Mechanical:** parametric cup enclosure with 129 clearance, seal, sealed-pressure and drop load-path checks, all passing, STL print files by material, STEP export and an interactive viewer ([`docs/mechanical-design.md`](docs/mechanical-design.md)). The cup carries the drop loads since 2026-11-03 (edge lands, lips, cradles, spacers) and props the board at mid-span since 2026-11-11 (rail spines).
 - **Analysis:** thermal with both ports loaded, four drop studies ending in a full 3D explicit model, a bumper materials study, the inductance of every switching loop, and an inner copper weight study ([Analysis](#analysis)).
 - **Cells and pack build:** BAK N21700CX-65E, BSC007N04LS6 protection FETs sized for its short-circuit current ([options](research_notes/protection-fets/options.md)), P20B spot welding with 0.2 × 10 mm pure nickel and wire PACK tails ([welding](docs/production/spot-welding.md), [assembly](docs/production/p0-assembly.md)), Parker GEL 30 gap filler, front-cell NTCs as SMD parts on the board under the gap filler (TH101 / TH104).
@@ -54,7 +54,9 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 
 **Remaining**
 
-- Choose the board to build. The ground-up board needs a review in KiCad and its own gerbers, BOM and CPL before it can be ordered; the hand-routed board's package is ready apart from the checkout checks in [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md).
+- Review the board in KiCad: it has been checked by DRC, script and solver only.
+- Make its gerbers, BOM and CPL together and go through the checkout checks in [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md).
+- Rerun the board-specific studies for this layout where the margin is small: the 3D drop model (of the four capacitors with the smallest wall margins, three moved by 5 to 13 mm and the fourth turned 90°) and the thermal runs.
 - Order the board and the printed parts. The first real cup, cap and core are the fit test.
 - Weld the pack, bring up the board and train the gauge ([`docs/production/p0-bringup-and-training.md`](docs/production/p0-bringup-and-training.md)).
 - Firmware beyond the skeleton: the P0 pin map, gauge and PD-controller drivers, the TPS25751 patch bundle and its loader, charge policy, power sharing, BLE GATT, MCUboot OTA.
@@ -71,48 +73,51 @@ Everything for the board is in [`hardware/Production/`](hardware/Production/), K
 | File | What it is |
 |---|---|
 | `Monolith.kicad_pro` | The project; open this |
-| `Monolith.kicad_pcb` | The 6-layer board. On `master` this is the ground-up layout; the approved hand-routed layout is the same file at commit `8dd9eb6` (see below) |
+| `Monolith.kicad_pcb` | The 6-layer board: the script-built layout (commit `dd34285`). The earlier hand-routed layout is the same file at commit `8dd9eb6` (see below) |
 | `Monolith.kicad_sch` | Root sheet. Sub-sheets: `gauge.kicad_sch` (Cells and Gauge), `power.kicad_sch` (3V3 Rail), `mcu.kicad_sch` (MCU), and `usb_port.kicad_sch` used twice (USB Port 1, USB Port 2) |
 | `MonolithDev.kicad_sym`, `MonolithDev.pretty/`, `3dmodels/` | Project-local symbol library, footprints and STEP models (wired up by `sym-lib-table` / `fp-lib-table`) |
 | `Monolith.kicad_dru` | Custom DRC rules (net-class clearances, keep-outs) |
-| `jlc/` | JLCPCB order files for the hand-routed board: gerber zip, BOM, CPL, hand-solder list, [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md) |
+| `jlc/` | [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md): how to make the JLCPCB order package for this board, the PCB options and the checkout checks. No order files exist yet |
+| `retired/jlc-hand-routed/` | History: the complete order package of the hand-routed layout (gerber zip, BOM, CPL, hand-solder list). Not for today's board |
 | `tools/` | Python scripts that generated the schematic, stack-up, outline and mechanical keep-outs from the enclosure model ([table](hardware/Production/README.md#tools)) |
-| `groundup/` | The tools, passes and solver comparison behind the ground-up layout ([README](hardware/Production/groundup/README.md)) |
+| `groundup/` | The tools, passes and solver comparison behind the script-built layout ("ground-up" in that folder's notes; [README](hardware/Production/groundup/README.md)) |
 | `README.md` | Dated change log: every part choice and change with its reasoning |
 
 The board outline, peg holes, wire holes and keep-outs come from the enclosure model (`hardware/mechanical/monolith_shell.py`) through `tools/make_board.py`, so mechanical changes go there first. Reference designators follow the sheets: 1xx cells and gauge, 2xx 3V3 rail, 3xx MCU, 4xx port 1, 5xx port 2.
 
-### Two board layouts
+### The board layout and its predecessor
 
-Both layouts implement the same schematic in the same outline, with the same holes, USB-C connectors, wire pads, NTCs, antenna module, bottom-side parts and main inductors.
+Two layouts of the same schematic exist. On 2026-11-13 Logan chose the script-built one as the design. Both use the same outline, holes, USB-C connectors, wire pads, NTCs, antenna module, bottom-side parts and main inductors, so both fit the same cup; 246 of the 289 footprints have a different position or rotation (234 moved by more than 0.1 mm).
 
-| | Hand-routed board | Ground-up board |
+| | Script-built board (the design) | Hand-routed board (history) |
 |---|---|---|
-| **Where** | `Monolith.kicad_pcb` at commit `8dd9eb6` | `Monolith.kicad_pcb` on `master` (commit `dd34285`, PR #66, 2026-11-10) |
-| **How it was made** | Placed and routed by hand in KiCad | Placed and routed by script, with a DC and loop-inductance solver in the loop |
-| **Review** | Reviewed revision by revision up to rev 12 and a final blocker review on 2026-10-30, approved (PR #44); pre-order review 2026-11-07 | DRC clean (0 errors, 0 unconnected); compared by solver against the hand-routed board ([`groundup/compare/`](hardware/Production/groundup/compare/README.md)); not reviewed by a person |
-| **Order files** | Complete set in [`jlc/`](hardware/Production/jlc/ORDER-NOTES.md) | None. Gerbers, BOM and CPL must be regenerated together |
-| **Renders, plots, reviews, analysis, mechanical board data** | All of them describe this board | Fits today's cup in the static clearance check (26 of 26 checks pass); the drop studies have not been rerun for its part positions |
+| **Where** | `Monolith.kicad_pcb` on `master` (commit `dd34285`, PR #66, 2026-11-10) | `Monolith.kicad_pcb` at commit `8dd9eb6` |
+| **How it was made** | Placed and routed by script from the schematic, with a DC and loop-inductance solver in the loop, in two fix passes ([`groundup/`](hardware/Production/groundup/README.md)) | Placed and routed by hand in KiCad |
+| **Review** | DRC clean (0 errors, 0 unconnected); compared by solver against the hand-routed board ([`groundup/compare/`](hardware/Production/groundup/compare/README.md)); **not yet reviewed by a person** | Reviewed revision by revision up to rev 12 and a final blocker review on 2026-10-30, approved (PR #44) |
+| **Solver comparison (model values)** | Charger hot loops 0.50 to 0.56 nH; gate loops 44 nH in sum; copper loss at 100 W 435 / 358 mW (port 1 / port 2); 5.3 / 5.7 min at 100 W before the derate; 258 mm of signal track in a ground plane | 0.54 to 0.67 nH; 49 nH; 469 / 415 mW; 5.0 / 5.3 min; 34 mm |
+| **Order files** | None yet. Gerbers, BOM and CPL are made together after the review ([`jlc/ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md)) | Complete set, kept in [`retired/jlc-hand-routed/`](hardware/Production/retired/jlc-hand-routed/ORDER-NOTES.md) |
+| **Renders, plots, mechanical board data** | Regenerated from this board on 2026-11-13; all 129 enclosure checks pass with its part positions | In git history (pictures at `401b2ee` and earlier; part meshes kept as `hardware/mechanical/board/monolith_board_handrouted.npz`) |
+| **Reviews and studies** | The solver comparison only. The drop and thermal studies have not been rerun for its part positions | Every board review in [`docs/reviews/`](docs/reviews/README.md) and every study in [`docs/analysis/`](docs/analysis/README.md) used this board |
 
-As of 2026-11-13, open PR #68 holds a cleaned-up version of the ground-up board (a tidiness pass on 2026-11-11) and would replace the board file on `master` if merged. Never mix files between the two layouts: gerbers made from the board on `master` with the CPL in `jlc/` would place almost every part in the wrong spot.
+As of 2026-11-13, open PR #68 holds a cleaned-up version of the script-built board (a tidiness pass on 2026-11-11) and would replace the board file on `master` if merged; the pictures can be made again with [`docs/hardware/board_pictures.py`](docs/hardware/board_pictures.py). Never mix files between the two layouts: gerbers made from the board on `master` with the CPL in `retired/jlc-hand-routed/` would place almost every part in the wrong spot.
 
 ### Schematics, renders and plots
 
 - [`docs/hardware/monolith-p0-schematic.pdf`](docs/hardware/monolith-p0-schematic.pdf): all six sheets, exported from the current schematic on 2026-11-13. It is the same for both layouts.
-- [`docs/hardware/monolith-p0-layers.pdf`](docs/hardware/monolith-p0-layers.pdf): the hand-routed board, front and back (copper, mask, silk), then every copper layer (F.Cu, In1–In4, B.Cu), one page each, as approved on 2026-10-30 (master 50c5625, before the 2026-11-08 silk labels, UART route and corner fills).
+- [`docs/hardware/monolith-p0-layers.pdf`](docs/hardware/monolith-p0-layers.pdf): the script-built board, front and back (copper, mask, silk), then every copper layer (F.Cu, In1–In4, B.Cu), one page each, plotted on 2026-11-13 from master's board (`dd34285`).
 - A 3D STEP of the whole assembly can be generated with `hardware/mechanical/monolith_step.py`.
 
-#### The hand-routed board
+#### The board
 
-Raytraced in KiCad 10 (`kicad-cli pcb render`, all 3D models) from the hand-routed board as approved on 2026-10-30 (master 50c5625). The renders, plots, reviews and analysis in this repo show this board, not the ground-up layout that is on `master` now.
+Raytraced in KiCad 10 (`kicad-cli pcb render`, all 3D models) on 2026-11-13 from the board on `master` (`dd34285`) by [`docs/hardware/board_pictures.py`](docs/hardware/board_pictures.py), which also writes the plots and the layers PDF.
 
-<p align="center"><a href="docs/hardware/monolith-p0-render-iso-top.png"><img src="docs/hardware/monolith-p0-render-iso-top.png" alt="Raytraced 3D render of the hand-routed P0 board, top side, with the two USB-C ports at the front" width="80%"></a></p>
+<p align="center"><a href="docs/hardware/monolith-p0-render-iso-top.png"><img src="docs/hardware/monolith-p0-render-iso-top.png" alt="Raytraced 3D render of the P0 board, top side, with the two USB-C ports at the front" width="80%"></a></p>
 
 | Top (F.Cu side, faces the cup wall) | Bottom (B.Cu side, faces the cells) |
 |---|---|
 | [<img src="docs/hardware/monolith-p0-render-top.png" alt="P0 board render, top">](docs/hardware/monolith-p0-render-top.png) | [<img src="docs/hardware/monolith-p0-render-bottom.png" alt="P0 board render, bottom">](docs/hardware/monolith-p0-render-bottom.png) |
 
-<p align="center"><a href="docs/hardware/monolith-p0-render-iso-bottom.png"><img src="docs/hardware/monolith-p0-render-iso-bottom.png" alt="Raytraced 3D render of the hand-routed P0 board, bottom side" width="60%"></a></p>
+<p align="center"><a href="docs/hardware/monolith-p0-render-iso-bottom.png"><img src="docs/hardware/monolith-p0-render-iso-bottom.png" alt="Raytraced 3D render of the P0 board, bottom side" width="60%"></a></p>
 
 #### Board plots
 
@@ -143,7 +148,7 @@ Datasheets and app notes the design was checked against are in `datasheets/`: [`
 
 ## Enclosure
 
-The enclosure is a parametric Python model in [`hardware/mechanical/`](hardware/mechanical/) (`monolith_shell.py`, `monolith_parts.py`, `monolith_cup.py`). The model runs its own 129 checks (clearances against the hand-routed board's part meshes, an insertion sweep, seal squeeze, sealed pressure, drop load-path gaps and bearing stresses) and writes the print files, the pictures in this README and the viewer. [`docs/mechanical-design.md`](docs/mechanical-design.md) describes the design and its checks.
+The enclosure is a parametric Python model in [`hardware/mechanical/`](hardware/mechanical/) (`monolith_shell.py`, `monolith_parts.py`, `monolith_cup.py`). The model runs its own 129 checks (clearances against the board's part meshes, an insertion sweep, seal squeeze, sealed pressure, drop load-path gaps and bearing stresses) and writes the print files, the pictures in this README and the viewer. [`docs/mechanical-design.md`](docs/mechanical-design.md) describes the design and its checks.
 
 - **Printed parts:** cup, bottom cap, cell carrier, two board rails and four post spacers in MJF PA12; top and bottom bumpers (one piece each, 30 % gyroid slabs) and the cap pad in FDM TPU 95A. Print files by material: [`hardware/mechanical/stl/`](hardware/mechanical/stl/README.md).
 - **Sealing:** one 58 × 54 × 2 mm NBR O-ring between cup and cap, the two USB-C receptacles' own seal rings in the cup's bores, and a 12 mm ePTFE vent patch on the cap under the bottom bumper.
@@ -156,7 +161,7 @@ The enclosure is a parametric Python model in [`hardware/mechanical/`](hardware/
 
 ## Analysis
 
-Model studies of the whole pack, each in its own folder under [`docs/analysis/`](docs/analysis/README.md) with the scripts, the numbers as JSON and every figure. Every study uses the hand-routed board (its copper and its part positions) and the cup as it was on the study's date; each README opens with a status block that says which geometry it ran on and what became of each finding. Every number is a model value until the bench tests.
+Model studies of the whole pack, each in its own folder under [`docs/analysis/`](docs/analysis/README.md) with the scripts, the numbers as JSON and every figure. Every study was run on the earlier hand-routed board (its copper and its part positions) and the cup as it was on the study's date; none has been rerun for the script-built board that is now the design. The enclosure findings carry over, because the cup, the outline and the parts the cup keys on are the same. The board-specific numbers (copper loss, loop inductance, the parts next to the rail spines in the drop model) describe the hand-routed layout; where the solver comparison in [`groundup/compare/`](hardware/Production/groundup/compare/README.md) has the same number for the script-built board, it is given. Each README opens with a status block that says which geometry it ran on and what became of each finding. Every number is a model value until the bench tests.
 
 | Study | Date | What it answered |
 |---|---|---|
@@ -176,7 +181,7 @@ Model studies of the whole pack, each in its own folder under [`docs/analysis/`]
 - **At 35 °C** the derate starts at 20 min and settles at 30 W (USB1 down to 10 W, USB2 kept at 20 W); the hottest part reaches 56 °C and the cells 51 °C. At 40 °C USB1 is cut to 0 W for most of the run.
 - **Heat** at 45 W is 2.4 W: 0.8 W in the USB1 stage, 1.0 W in the USB2 stage, 0.5 W in the cells. The 6-layer board keeps itself within 3.6 K end to end.
 - Even with the derate switched off at 35 °C (a firmware failure) the cells stop at 55.4 °C, under their 60 °C discharge limit.
-- **Not rerun since.** The model's cup has 1.2 mm side walls and no rail spines. The cup now has 1.6 mm walls, and the spines cross the gap-filler zone and take about 12 % of its conductance, so these temperatures are probably slightly optimistic.
+- **Not rerun since.** The model's cup has 1.2 mm side walls and no rail spines. The cup now has 1.6 mm walls, and the spines cross the gap-filler zone and take about 12 % of its conductance, so these temperatures are probably slightly optimistic. The copper losses are the hand-routed board's. For the script-built board only the 100 W burst was run, in the solver comparison: 5.3 / 5.7 min before the derate (port 1 / port 2) against 5.0 / 5.3, with the hottest part at 58.1 / 58.9 °C against 59.4 / 60.2 °C.
 
 <p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-timeline.png" alt="Delivered power and temperatures against time at 25, 35 and 40 °C" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-board-on-render.png" alt="Board temperature laid over the KiCad render" width="100%"></p>
@@ -184,7 +189,7 @@ Model studies of the whole pack, each in its own folder under [`docs/analysis/`]
 
 ### Inner copper weight
 
-[`docs/analysis/2026-11-05-inner-copper/`](docs/analysis/2026-11-05-inner-copper/README.md). The board is specified with 2 oz outer and 0.5 oz inner copper. This study solved the hand-routed board's power-path resistance and reran the 100 W burst with 1 oz and 2 oz inner layers.
+[`docs/analysis/2026-11-05-inner-copper/`](docs/analysis/2026-11-05-inner-copper/README.md). The board is specified with 2 oz outer and 0.5 oz inner copper. This study solved the hand-routed board's power-path resistance and reran the 100 W burst with 1 oz and 2 oz inner layers. The script-built board has the same stack-up; the study has not been repeated on its copper.
 
 | Inner copper | Path resistance, port 1 / port 2 | Port 1 copper loss at 100 W | Minutes at 100 W before the derate, port 1 / port 2 | Hottest part, port 1 / port 2 |
 |---|---|---|---|---|
@@ -217,6 +222,8 @@ Where each pose stands today, from the newest model that covers it:
 
 The lumped g values are from the 2026-10-31 rerun on the 399.6 g cup, before the lands, cradles and spines were added; they have not been rerun on today's 402.2 g cup. The gap filler is carried as mass only: a sensitivity bracket in the contact study suggests it could cut the back-face strain by about 18 % but could also drag parts toward the wall on the rebound. A **witness-paint drop test on the first print** is the planned check for the open items.
 
+The part names and part-to-wall gaps in this table are for the hand-routed board. The script-built board keeps the parts the cup keys on (L401 / L501, the bulk capacitors, the NTCs, the USB-C connectors, the antenna module, the holes), and it passes the model's static clearance checks, but the four capacitors with the smallest margins are not where the studies had them: C434 and C524 moved about 13 mm and C420 about 5 mm; C531 moved 0.4 mm and turned 90°. The margins of 0.02 to 0.06 mm therefore say nothing about the new layout until the contact and 3D models are rerun with its part positions.
+
 <p align="center"><img src="docs/analysis/2026-10-31-drop-1m/img/drop-poses.png" alt="The six drop poses at first touch (peak g of the first run, before the fixes)" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-11-04-drop-stress/figs/fig_faces.png" alt="The five flat drops: stress in each nylon part after the 2026-11-05 fixes" width="100%"></p>
 <p align="center"><img src="docs/analysis/2026-11-11-drop-3d/img/board-envelope.png" alt="Board strain envelope in the back-face drop: before and after the rail spines" width="60%"></p>
@@ -240,13 +247,14 @@ The lumped g values are from the 2026-10-31 rerun on the 399.6 g cup, before the
 - **Hot loops:** 0.53 to 0.66 nH on the BQ25756 legs, 0.54 and 0.60 nH on the 5 V bucks, 1.39 nH on the 3V3 buck. The 0402 capacitor next to each FET carries 58 to 68 % of the edge current.
 - **Ringing:** the BQ25756 switch nodes ring at about 395 to 425 MHz with an expected peak of 18.8 to 22.4 V; the worst-case bound with an instant edge is 32 to 33 V against the FETs' 40 V rating.
 - **Gate loops:** 2.9 to 9.2 nH. The tightest margin is the low-side Miller bounce, about 0.46 V against a 1.1 V minimum threshold.
-- **No loop needs a fix.** Two optional tweaks are listed in the study. The same solver was used to steer and check the ground-up layout ([`groundup/compare/`](hardware/Production/groundup/compare/README.md)).
+- **No loop needs a fix.** Two optional tweaks are listed in the study. These numbers are for the hand-routed board.
+- **Script-built board:** the same solver steered and checked the new layout ([`groundup/compare/`](hardware/Production/groundup/compare/README.md)). Its four charger hot loops are 0.50 to 0.56 nH, the three small bucks 0.30 to 1.22 nH, and the eight gate loops 3.3 to 8.0 nH, 44 nH in sum. That comparison re-solved the hand-routed board with its own ground setting and got 0.54 to 0.67 nH, 0.53 to 1.40 nH and 49 nH in sum, so compare within one run, not across the two. The ringing estimates were not redone for the script-built board.
 
 <p align="center"><img src="docs/analysis/2026-11-06-loop-area/img/hot-p1-vbus-q401.png" alt="Port 1 VBUS-side hot loop: high-frequency current on each layer" width="100%"></p>
 
 ### Reviews
 
-Board and enclosure reviews are in [`docs/reviews/`](docs/reviews/README.md), with a table of the whole review history. The routed-board review of 2026-10-30 has the copper resistance of every power path and the current-sense tap checks; its fix list was closed in the later revisions that day. The mouth-band review (2026-10-31) and the rail-retention review (2026-11-03) are the enclosure decisions behind the thick cup mouth and the cup-carried drop loads.
+Board and enclosure reviews are in [`docs/reviews/`](docs/reviews/README.md), with a table of the whole review history. The board-layout reviews are history: they reviewed the hand-routed layout, and the script-built board has had no review by a person yet. The routed-board review of 2026-10-30 has the copper resistance of every power path and the current-sense tap checks of that layout (its fix list was closed in the later revisions that day), and its solver tools are the ones the script-built layout was checked with. The schematic findings of the reviews apply to both layouts. The mouth-band review (2026-10-31) and the rail-retention review (2026-11-03) are the enclosure decisions behind the thick cup mouth and the cup-carried drop loads.
 
 ## Firmware
 
@@ -265,7 +273,7 @@ Board and enclosure reviews are in [`docs/reviews/`](docs/reviews/README.md), wi
 ├── LICENSE
 ├── .claude/skills/        Electrical design techniques from this project as skills for AI agents (index: README.md)
 ├── hardware/
-│   ├── Production/        KiCad 10 project "Monolith" (P0): schematic, board, libraries, JLC order files, generator scripts, ground-up layout tools
+│   ├── Production/        KiCad 10 project "Monolith" (P0): schematic, board, libraries, order notes, generator scripts, the layout tools (groundup/), retired order files
 │   ├── mechanical/        Enclosure model (Python → STL/STEP/DXF), print files by material, renders
 │   ├── label/             Wrap label for the cup
 │   └── DevBoard/          Earlier bench design, never built (reference only)

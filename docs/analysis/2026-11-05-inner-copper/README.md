@@ -1,7 +1,7 @@
 # Inner copper weight: 0.5 vs 1 vs 2 oz (2026-11-05)
 
-**Board: the hand-routed board** that Logan approved on 2026-10-30, not the ground-up board that is on master since
-PR #66. The copper was solved on `hardware/Production/Monolith.kicad_pcb` at commit `8081416` (the approval commit).
+**Board: the hand-routed board** that Logan approved on 2026-10-30. Since 2026-11-13 the design is the script-built
+board on master (commit `dd34285`, PR #66), which has the same stack-up; this study has not been repeated on its copper. The copper was solved on `hardware/Production/Monolith.kicad_pcb` at commit `8081416` (the approval commit).
 The later commit `8dd9eb6` adds the 2026-11-08 silk, UART route and corner ground fills to the same board.
 
 The board is ordered with 6 layers, 2 oz outer and 0.5 oz inner copper (`hardware/Production/jlc/ORDER-NOTES.md`,
@@ -125,7 +125,7 @@ About 1.4 g more copper for 1 oz inner and about 4 g for 2 oz (estimate from the
 - The thermal results come from runs on Logan's PC whose output is not in the repo; the values are as recorded in the
   study note.
 - The mass is an estimate, not from the fab.
-- The ground-up board on master (PR #66) was not run here. Its own copper and thermal comparison, at 0.5 oz inner, is
+- The script-built (ground-up) board on master (PR #66), the design since 2026-11-13, was not run here. Its own copper and thermal comparison, at 0.5 oz inner, is
   in [`hardware/Production/groundup/compare/`](../../../hardware/Production/groundup/compare/README.md).
 
 ## How to rerun

@@ -16,10 +16,11 @@ The outline leaves gaps for the connector notches (PORTS_X), and place_ports() p
 hardware/mechanical/retired/monolith_bottom_pcb.dxf, is not this board; monolith_shell.py still writes it into the
 git-ignored retired/ folder, and the last committed copy is at commit 5cf521e, removed from the repo on 2026-10-29.)
 
-Status (2026-11-13): the board on master is the ground-up re-layout (PR #66, 2026-11-10); the hand-routed board
-Logan approved is the same file at commit 8dd9eb6. Only --mech and --keepouts still make sense against either board,
+Status (2026-11-13): the board on master is the script-built (ground-up) layout (PR #66, 2026-11-10), the design
+since 2026-11-13; the earlier hand-routed board is the same file at commit 8dd9eb6. Only --mech and --keepouts still
+make sense against it,
 and both rewrite Monolith.kicad_pcb, so run them only when Logan asks for a board change. A plain run patches only a
-board with no copper (both boards have copper, so it stops unless --keep-copper is given); --force builds a new
+board with no copper (the board has copper, so it stops unless --keep-copper is given); --force builds a new
 empty board from the dev board and copies the dev board's DRU over Monolith.kicad_dru, whose KiCad 10 rules
 (2026-10-24 onward) would be lost. Both are a record of how P0 was started on 2026-10-17.
 

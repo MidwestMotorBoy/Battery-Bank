@@ -17,6 +17,9 @@ MECH = os.path.normpath(os.path.join(HERE, '..', '..', '..', 'hardware', 'mechan
 _cwd = os.getcwd(); sys.path.insert(0, MECH); os.chdir(MECH)
 import manifold3d as M3
 import monolith_cup as K, monolith_shell as S, monolith_parts as P
+# This study ran on the hand-routed board, whose part meshes are kept as board/monolith_board_handrouted.npz.
+# board/monolith_board.npz is the script-built board since 2026-11-13: set BOARD_NPZ to it to run on that board.
+P.BOARD_NPZ = os.environ.get('BOARD_NPZ', os.path.join(MECH, 'board', 'monolith_board_handrouted.npz'))
 os.chdir(_cwd)
 MF, CS = M3.Manifold, M3.CrossSection
 

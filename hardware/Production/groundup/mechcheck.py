@@ -1,12 +1,12 @@
 """Mechanical fit of the new placement against the unchanged cup model.
-The repo's board mesh (hardware/mechanical/board/monolith_board.npz, one mesh per footprint from the KiCad STEP of the
-current board) is re-posed: every footprint's mesh is moved rigidly from its old position/rotation to the new one, then
+The hand-routed board's mesh (hardware/mechanical/board/monolith_board_handrouted.npz, one mesh per footprint from its
+KiCad STEP; until 2026-11-13 this was board/monolith_board.npz, which now holds the script-built board itself) is re-posed: every footprint's mesh is moved rigidly from its old position/rotation to the new one, then
 monolith_cup.board_checks() runs on it.   mechcheck.py <repo> <base.json> <placement.json> [--baseline]"""
 import sys, os, json, math, numpy as np
 repo, basej, placej = sys.argv[1:4]
 sys.path.insert(0, os.path.join(repo, 'hardware', 'mechanical'))
 import monolith_shell as S, monolith_parts as P
-d = np.load(P.BOARD_NPZ)
+d = np.load(os.path.join(os.path.dirname(P.BOARD_NPZ), 'monolith_board_handrouted.npz'))
 base = {f['ref']: (f['x'], f['y'], f['rot']) for f in json.load(open(basej))['fps']}
 new = {k: tuple(v) for k, v in json.load(open(placej)).items()}
 out, moved, dev = {}, 0, []
