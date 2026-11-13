@@ -1,0 +1,113 @@
+<section class="v3d" id="view3d" aria-label="3D loop viewer">
+  <div class="v3d-bar">
+    <label for="v3d-loop">Loop</label>
+    <select id="v3d-loop"></select>
+    <div class="seg" role="group" aria-label="Which capacitors">
+      <button type="button" id="v3d-best" class="on">HF cap only</button>
+      <button type="button" id="v3d-all">All caps</button>
+    </div>
+    <label for="v3d-z">Thickness ×<span id="v3d-zv">4</span></label>
+    <input id="v3d-z" type="range" min="1" max="10" step="1" value="4">
+  </div>
+  <div class="v3d-stage"><canvas id="v3d-canvas"></canvas>
+    <div class="v3d-info" id="v3d-info"></div>
+    <div class="v3d-hint">Drag to orbit · scroll or pinch to zoom · right-drag to pan</div>
+  </div>
+  <div class="v3d-legend">
+    <span class="lg" style="--sw:#d9480f">Current path (thicker, darker = more current)</span>
+    <span class="lg" style="--sw:#7a5af8">Inside a part (cap body, FET, driver)</span>
+    <span class="lg" style="--sw:#9aa3ad">Part bodies</span>
+    <span class="lgtxt">Layers top to bottom: F.Cu · In1 GND · In2 · In3 · In4 GND · B.Cu. Vertical scale is stretched so the six layers can be told apart.</span>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const D = __DATA__;
+const LAYERS=['F.Cu','In1.Cu','In2.Cu','In3.Cu','In4.Cu','B.Cu'];
+const LCOL={'F.Cu':0xc8873a,'In1.Cu':0x8a9099,'In2.Cu':0x5b8def,'In3.Cu':0xa06cd5,'In4.Cu':0x8a9099,'B.Cu':0x3fa36b};
+const cv=document.getElementById('v3d-canvas'), sel=document.getElementById('v3d-loop');
+const bBest=document.getElementById('v3d-best'), bAll=document.getElementById('v3d-all');
+const zr=document.getElementById('v3d-z'), zv=document.getElementById('v3d-zv'), info=document.getElementById('v3d-info');
+if(!window.THREE){info.textContent='3D view could not load (three.js blocked).';return;}
+const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(35,1,0.1,500);
+const controls=new THREE.OrbitControls(cam,cv); controls.enableDamping=true;
+scene.add(new THREE.AmbientLight(0xffffff,0.75));
+const dl=new THREE.DirectionalLight(0xffffff,0.55); dl.position.set(20,40,30); scene.add(dl);
+let group=null, cur=0, mode='best', zs=4;
+D.loops.forEach((l,i)=>{const o=document.createElement('option');o.value=i;o.textContent=l.title+(l.kind==='gate'?' (gate drive)':'');sel.appendChild(o);});
+function heat(t){ // t 0..1 -> light amber to deep red
+  const a=[1.0,0.80,0.45], b=[0.85,0.28,0.06], c=[0.45,0.05,0.02];
+  const m=t<0.5?[a,b,t*2]:[b,c,(t-0.5)*2];
+  return new THREE.Color(m[0][0]+(m[1][0]-m[0][0])*m[2], m[0][1]+(m[1][1]-m[0][1])*m[2], m[0][2]+(m[1][2]-m[0][2])*m[2]);
+}
+function textSprite(txt){
+  const c=document.createElement('canvas'); const g=c.getContext('2d'); const fs=44;
+  g.font='600 '+fs+'px IBM Plex Sans, system-ui, sans-serif'; const w=g.measureText(txt).width+20;
+  c.width=w; c.height=fs+18; g.font='600 '+fs+'px IBM Plex Sans, system-ui, sans-serif';
+  g.fillStyle='rgba(255,255,255,0.85)'; g.fillRect(0,0,c.width,c.height);
+  g.fillStyle='#16325c'; g.textBaseline='middle'; g.fillText(txt,10,c.height/2);
+  const t=new THREE.CanvasTexture(c); const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false}));
+  s.scale.set(c.width/c.height*0.55,0.55,1); s.renderOrder=10; return s;
+}
+function build(){
+  if(group){scene.remove(group); group.traverse(o=>{if(o.geometry)o.geometry.dispose(); if(o.material){if(o.material.map)o.material.map.dispose(); o.material.dispose();}});}
+  group=new THREE.Group(); scene.add(group);
+  const L=D.loops[cur]; const [x0,x1,y0,y1]=L.box; const cx=(x0+x1)/2, cy=(y0+y1)/2;
+  const P=(x,y,z)=>new THREE.Vector3(x-cx,-z*zs,y-cy);
+  // layer sheets
+  LAYERS.forEach(n=>{
+    const g=new THREE.PlaneGeometry(x1-x0,y1-y0); const m=new THREE.MeshBasicMaterial({color:LCOL[n],transparent:true,opacity:(n.indexOf('In')===0?0.05:0.08),side:THREE.DoubleSide,depthWrite:false});
+    const p=new THREE.Mesh(g,m); p.rotation.x=-Math.PI/2; p.position.copy(P(cx,cy,D.layers[n])); group.add(p);
+    const e=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:LCOL[n],transparent:true,opacity:0.35}));
+    e.rotation.x=-Math.PI/2; e.position.copy(p.position); group.add(e);
+    const s=textSprite(n.replace('.Cu','')); s.scale.multiplyScalar(0.8); s.position.copy(P(x0-0.2,y0,D.layers[n])).add(new THREE.Vector3(-0.9,0,0)); group.add(s);
+  });
+  // pads
+  const padMat=new THREE.MeshBasicMaterial({color:0xb08d57,transparent:true,opacity:0.55,side:THREE.DoubleSide,depthWrite:false});
+  L.pads.forEach(q=>{const sh=new THREE.Shape(); sh.moveTo(q[0]-cx,q[1]-cy); for(let i=2;i<8;i+=2) sh.lineTo(q[i]-cx,q[i+1]-cy);
+    const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),padMat); m.rotation.x=Math.PI/2; m.position.y=-q[8]*zs+0.001; group.add(m);});
+  // bodies
+  L.bodies.forEach(b=>{
+    const h=b.h*Math.min(zs,3)/3*1.2+0.15; const g=new THREE.BoxGeometry(Math.max(0.2,b.x1-b.x0)*0.92,h,Math.max(0.2,b.y1-b.y0)*0.92);
+    const m=new THREE.MeshLambertMaterial({color:0x9aa3ad,transparent:true,opacity:0.28,depthWrite:false});
+    const box=new THREE.Mesh(g,m); const zTop=b.bot?(D.layers['B.Cu']*zs+h/2+0.05):-(h/2+0.05);
+    box.position.set((b.x0+b.x1)/2-cx,-zTop,(b.y0+b.y1)/2-cy); group.add(box);
+    const ed=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:0x6b7480,transparent:true,opacity:0.6})); ed.position.copy(box.position); group.add(ed);
+    const s=textSprite(b.ref); s.position.copy(box.position).add(new THREE.Vector3(0,(b.bot?-1:1)*(h/2+0.45),0)); group.add(s);
+  });
+  // current segments as instanced boxes
+  const segs=L.segs[L.kind==='gate'?'g':mode]||[];
+  const geo=new THREE.BoxGeometry(1,1,1); const mat=new THREE.MeshLambertMaterial({vertexColors:false});
+  const inst=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial(),segs.length);
+  const dummy=new THREE.Object3D(); const up=new THREE.Vector3(0,0,1);
+  segs.forEach((s,i)=>{
+    const a=P(s[0],s[1],s[2]), b=P(s[3],s[4],s[5]); const t=s[6]; const kind=s[7];
+    const d=new THREE.Vector3().subVectors(b,a); const len=d.length();
+    const th=(kind===1?0.09:0.05)+0.20*Math.sqrt(t);
+    dummy.position.copy(a).add(b).multiplyScalar(0.5);
+    dummy.quaternion.setFromUnitVectors(up,d.clone().normalize());
+    dummy.scale.set(th,th,len+th*0.6); dummy.updateMatrix(); inst.setMatrixAt(i,dummy.matrix);
+    inst.setColorAt(i,kind===1?new THREE.Color(0x7a5af8):heat(Math.sqrt(t)));
+  });
+  if(inst.instanceColor) inst.instanceColor.needsUpdate=true; group.add(inst);
+  info.textContent=L.info[L.kind==='gate'?'g':mode];
+  bBest.disabled=bAll.disabled=(L.kind==='gate'); bBest.textContent=L.kind==='gate'?'Gate loop':(L.best+' only');
+}
+function frame(first){
+  const L=D.loops[cur]; const w=L.box[1]-L.box[0], h=L.box[3]-L.box[2]; const r=Math.max(w,h);
+  cam.position.set(r*0.55,r*0.75,r*1.05); controls.target.set(0,-0.8*zs*0.5,0); controls.update();
+}
+function resize(){const w=cv.clientWidth,h=cv.clientHeight; if(cv.width!==Math.floor(w*renderer.getPixelRatio())||cv.height!==Math.floor(h*renderer.getPixelRatio())){renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix();}}
+function loop(){resize(); controls.update(); renderer.render(scene,cam); requestAnimationFrame(loop);}
+sel.addEventListener('change',()=>{cur=+sel.value; build(); frame();});
+bBest.addEventListener('click',()=>{mode='best';bBest.classList.add('on');bAll.classList.remove('on');build();});
+bAll.addEventListener('click',()=>{mode='all';bAll.classList.add('on');bBest.classList.remove('on');build();});
+zr.addEventListener('input',()=>{zs=+zr.value; zv.textContent=zs; build();});
+build(); frame(); loop();
+})();
+</script>

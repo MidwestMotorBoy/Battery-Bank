@@ -14,8 +14,10 @@ _restore_backup_*/
 *.rpt
 hardware/DevBoard/MonolithDev.pdf
 hardware/Production/Monolith.pdf
-# Fab outputs are tracked only as the zipped order package (hardware/*/fab/*.zip)
+# Fab outputs are tracked only as the zipped order package (hardware/DevBoard/fab/*.zip,
+# hardware/Production/jlc/*.zip); loose drill and job files are never tracked
 hardware/*/fab/gerbers/
+hardware/*/jlc/gerbers/
 hardware/**/*.gbr
 hardware/**/*.gbrjob
 hardware/**/*.drl
@@ -49,3 +51,8 @@ hardware/mechanical/step/
 hardware/mechanical/retired/*
 !hardware/mechanical/retired/README.md
 hardware/mechanical/board/*.step
+
+# Outputs that are no longer committed: fit coupons (dropped 2026-11-07) and the cup-against-side-tray history sheet
+hardware/mechanical/stl/*/coupons/
+hardware/mechanical/monolith_coupons.png
+hardware/mechanical/monolith_cup_vs_tray.png

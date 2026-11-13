@@ -1,5 +1,7 @@
 # Bring-up and configuration checklist (rev A8, 2026-10-14)
 
+> **Dev board only: do not use this list on P0 (2026-11-13).** The dev board was never built. The 2026-11-07 pre-order review found that several items here would break P0: the GPIO6 liquid-detect line (on P0 GPIO6 is the output DRV9_OFF, initial high), GPIO4/5 multiplexed to the ADC and GPIO7 as an output (on P0 they are tied to GND), and EN_ICHG_PIN = 1 (P0 uses EN_ICHG_PIN = 0, R413/R513 stay 11.8k). The P0 configuration lists are in [`docs/production/p0-bringup-and-training.md`](../production/p0-bringup-and-training.md), section 3a. This file is kept for its sources and reasoning.
+
 This is the order of work from a bare assembled board to a configured pack. It gathers every configuration item from the four schematic reviews into one list:
 
 - `schematic-review-2026-10-12.md`, "Firmware and configuration", items 1–14;

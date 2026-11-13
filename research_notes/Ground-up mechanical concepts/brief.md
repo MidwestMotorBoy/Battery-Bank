@@ -1,5 +1,8 @@
 # Ground-up mechanical concept — shared brief
 
+_Dated snapshot (2026-10-21) of the five-concept enclosure study, unrelated to the 2026-11-10 "ground-up" board re-layout. It produced the cup, the current enclosure: [`docs/mechanical-design.md`](../../docs/mechanical-design.md) and `hardware/mechanical/monolith_cup.py`. The models in `model/` are the study's own copies, with the FEB 21700G cells._
+
+
 This is a THOUGHT EXPERIMENT: a clean-sheet mechanical design for a hobby trail battery bank. You may read the existing design for facts (this repo, `mechanical/monolith_shell.py`, `README.md`, `Production/README.md`, `reports/`), but do NOT copy it by default and do NOT edit any repo file. Write only to your output file named below.
 
 ## Fixed facts

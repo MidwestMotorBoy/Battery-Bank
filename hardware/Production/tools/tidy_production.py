@@ -65,7 +65,9 @@ TEXTS = {
             "2. Kelvin-route SRP/SRN from the RS101 pads; R107/R108/C106 at the IC. RS101 is a 1206 1 W 75 ppm alloy part (P0).",
             "3. VC taps are separate thin traces from the sense-wire holes J109-J111. VC4 and the U102 V4/VDD filters are on CELL_4P,",
             "    the 4P Kelvin wire hole J116 (before F102 and off the power wire): fuse and wire drop are not read as cell voltage.",
-            "4. TS1-TS4: one wired 10k NTC per cell on J102, J105-J107, taped to the cell at mid-height; insulated sensors only",
+            # note 4 as the gauge sheet has it since the SMD front NTCs (2026-10-28) and J117-J120 (2026-10-30)
+            "4. TS1 / TS4 (front cells C1 / C4): SMD 0402 NTCs TH101 / TH104 on B.Cu in the gap-filler zones (smd-ntc.md).",
+            "   TS2 / TS3 (back cells): wired 10k NTCs on J117 / J118 (TS2) and J119 / J120 (TS3), taped to the cell at mid-height; insulated sensors only",
             "    (cans 0-12.6 V above VSS, TS 2.1 V max). PTC, PTCEN, PRES, DISP tied to VSS per datasheet.",
             "5. VCC fed from FET common drain via R106 (TI R13). PACK sense via R113 10k (TI R15).",
             "6. BAT fed from CELL_4P (cell top, before F102) via D101 + R105 (TI fig. 9-12).",

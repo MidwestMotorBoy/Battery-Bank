@@ -1,32 +1,79 @@
 # Monolith production board
 
-KiCad 10 project `Monolith`: the P0 board, the design of record. Since 2026-10-30 the routed board is on `master` (the `Production` and `Layout-P0` branches were merged in).
+KiCad 10 project `Monolith`: the P0 board. The schematic (`Monolith.kicad_sch` with the sheets `gauge`, `power` (3V3 Rail), `mcu` and `usb_port`, the last used once per port; 301 references) is the design of record.
 
-**Status (2026-10-29):** the dev board was skipped on 2026-10-18, so P0 is the first build (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). The schematic is the dev board's (rev A8) with the dev-only parts removed, plus the P0 changes below. Footprint placement was finished on 2026-10-28 and routing on 2026-10-30 (`8fd8b74`); the routed board is in review ([`docs/reviews/2026-10-30-routed-board/`](../../docs/reviews/2026-10-30-routed-board/README.md) lists what to fix before fab), and nothing has been ordered.
+**Which board is which (2026-11-13).**
 
-The current design is in `docs/spec.md`, which wins where this file disagrees; its *P0 board changes still to apply* list is the to-do list. The sections below are a dated design log. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-10-29:
+- `Monolith.kicad_pcb` on `master` is the **ground-up re-layout**: a script-built board, merged in PR #66 on 2026-11-10 (commit `dd34285`) and kept on `master` by Logan's choice the same day. It keeps the schematic, outline, holes, USB-C connectors, wire pads, NTCs, antenna module, the 12 B.Cu parts and L401/L501 of the hand-routed board; every other part was placed again and all copper was drawn again. It passes DRC (0 errors, 0 unconnected) and was checked by script and solver, but nobody has reviewed it in KiCad. Details: [`groundup/README.md`](groundup/README.md).
+- The **hand-routed board Logan approved on 2026-10-30** (PR #44), with his 2026-11-08 silk labels, UART_TX route and F.Cu corner fills, is the same file at commit `8dd9eb6`: `git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb`.
+- Open PR #68 (branch `claude/project-thread-ploune`, not merged) holds a cleaned-up version of the ground-up board (cleanup pass of 2026-11-11). Merging it replaces the board file on `master`.
+- [`jlc/`](jlc/ORDER-NOTES.md) is the order package for the **hand-routed** board: the gerber zip from the 2026-11-08 save, BOM and CPL from the 2026-10-30 save with hand fixes. It does not match the board now on `master`. The renders and plots in `docs/hardware/`, the reviews in `docs/reviews/`, the studies in `docs/analysis/` and the board data of the mechanical model also show the hand-routed board.
+- No board has been ordered or built (two parts, TPS25751D and SiZ240DT, were pre-ordered at JLC on 2026-11-07).
+
+The dev board was skipped on 2026-10-18, so P0 is the first build (gauge training and the dev board checks happen on P0: `docs/production/p0-bringup-and-training.md`). The schematic is the dev board's (rev A8) with the dev-only parts removed, plus the P0 changes below.
+
+The current design is in `docs/spec.md`, which wins where this file disagrees. The sections below are a dated design log: the newest entries (2026-10-28 to 2026-11-10) come right after the tools table, the older ones follow. Sections that a later decision replaced say so and are kept as history. In short, as of 2026-11-13:
 
 - **Cells:** four BAK N21700CX-65E (6500 mAh) in 4S1P, 14.0 V nominal, 91 Wh (since 2026-10-23; the FEB 21700G section below is history).
 - **Enclosure:** the MJF PA12 cup, vented by a 12 mm ePTFE patch on the cap since 2026-10-31 (no hole in the cup or label; the side tray, its aluminium cover and the top-cap tube are retired; their outputs were removed on 2026-10-29 and are in git history at `5cf521e`).
 - **Loss cuts:** Q101/Q102 BSC007N04LS6, a 9 V gate drive per port (U406/U506), L401/L501 XGL7030-332 at 500 kHz.
-- **Front-cell NTCs:** SMD TH101 / TH104 on B.Cu (since 2026-10-28; they replace the J102 / J107 wire pads).
+- **Late part swaps:** L402/L502 ABC EHE05023R3MFB (2.0 mm, since 2026-10-30), D401/D501 Maxinmicro TVS2200DRVR C55616459 and C421/C456/C521/C556 KEMET T593V686M035APE070 (both 2026-10-31).
+- **Front-cell NTCs:** SMD TH101 / TH104 on B.Cu (since 2026-10-28; they replace the J102 / J107 wire pads). The back-cell NTC wires go to J117–J120 (since 2026-10-30; they replace J105 / J106).
 - **Charge ceiling:** R413/R513 stay 11.8k (decided 2026-11-07, replacing the 2026-10-23 plan for 0 Ω) with `EN_ICHG_PIN = 0`, so firmware sets the limit and the pin is only the no-host fallback.
 
 ## Tools
 
 All in `tools/`. Run them from the repo root as `hardware/Production/tools/<name>.py`, with KiCad's Python unless the script's docstring says any Python 3 will do.
 
-| Script | What it does |
-|---|---|
-| `make_production.py` | Builds the production schematic from the dev board's (see below); holds the part swaps (`DOWNSIZE`, loss cuts, P0 pads). It overwrites the sheets, which have been edited in KiCad since (2026-10-28), so don't re-run it blindly |
-| `tidy_production.py`, `layout_production.py` | Drawing tidy and block layout after `make_production.py` (no electrical change) |
-| `check_netlist.py` | Compares the production netlist with the dev board's |
-| `schlib.py` | Schematic text helpers used by the three above |
-| `siz240dt.py`, `tpd6s300.py`, `tps7a4101.py` | Symbol, footprint and wiring for the SiZ240DT, TPD6S300 and TPS7A4101 (imported by `make_production.py`) |
-| `make_board.py` | Board stack-up and outline; `--mech` places and locks the wire holes, peg holes and front-cell NTCs; `--keepouts` redraws the `KO_*` rule areas (board closed in KiCad) |
-| `make_3d_models.py`, `step_mesh.py` | Writes the STEP models in `3dmodels/` (pure Python); the SiZ240DT and TPD6S300 models start from the EasyEDA meshes in `3dmodels/source/`, so keep those |
-| `pack_bus_sims.py`, `low_profile_sims.py` | Bulk-capacitor studies (reuse `hardware/DevBoard/tools/cap_sims.py`) |
-| `jlc.py`, `jlc_datasheet.py` | JLC part search, and a datasheet download through a part's JLC page |
+| Script | What it does | Status (2026-11-13) |
+|---|---|---|
+| `make_production.py` | Builds the production schematic from the dev board's (see below); holds the part swaps (`DOWNSIZE`, loss cuts, P0 pads) | Record of how P0 was derived. It overwrites the sheets, which have been edited since 2026-10-28 (J117–J120, UART_TX, the R413/R513 note, the TVS and L402/L502 swaps), so don't re-run it |
+| `tidy_production.py`, `layout_production.py` | Drawing tidy and block layout after `make_production.py` (no electrical change) | Record; they edit the sheets in place |
+| `check_netlist.py` | Compares the production netlist with the dev board's | Record of the 2026-10-17 to 2026-10-28 derivation; it checks the schematic against the dev board, not against either board file |
+| `schlib.py` | Schematic text helpers used by the three above | Helper library |
+| `siz240dt.py`, `tpd6s300.py`, `tps7a4101.py` | Symbol, footprint and wiring for the SiZ240DT, TPD6S300 and TPS7A4101 (imported by `make_production.py`) | Record; the footprints and symbols they made are in `MonolithDev.pretty` and `MonolithDev.kicad_sym` |
+| `make_board.py` | Board stack-up and outline (from `hardware/mechanical/monolith_shell.py`, the source of the live outline `hardware/mechanical/monolith_side_pcb.dxf`); `--mech` places and locks the wire holes, peg holes and front-cell NTCs; `--keepouts` redraws the `KO_*` rule areas (board closed in KiCad) | `--mech` and `--keepouts` still work on either board but rewrite `Monolith.kicad_pcb`: only at Logan's request. A plain run or `--force` is a record of how the board was started (2026-10-17) |
+| `make_3d_models.py`, `step_mesh.py` | Writes the STEP models in `3dmodels/` (pure Python); the SiZ240DT and TPD6S300 models start from the EasyEDA meshes in `3dmodels/source/`, so keep those | Usable; `--board` also writes the model paths into `Monolith.kicad_pcb` (only at Logan's request) |
+| `pack_bus_sims.py`, `low_profile_sims.py` | Bulk-capacitor studies (reuse `hardware/DevBoard/tools/cap_sims.py`) | Usable; `low_profile_sims.py` overwrites `hardware/DevBoard/tools/cap_sims.json`, so restore that file from git afterwards |
+| `jlc.py`, `jlc_datasheet.py` | JLC part search, and a datasheet download through a part's JLC page | Usable (any Python 3) |
+
+The ground-up re-layout has its own scripts (placement, router, copper, solvers) in [`groundup/`](groundup/README.md) and [`groundup/compare/`](groundup/compare/README.md).
+
+## Ground-up re-layout on master (2026-11-10)
+
+Logan asked on 2026-11-09 for a ground-up, script-built layout that drops into the current cup. It was built on branch `claude/project-thread-ploune` (first version `6aaa778`, fix passes `ffb0dde` and `dd34285`) and merged to `master` in PR #66 on 2026-11-10. Logan then chose to keep it on `master`, so `Monolith.kicad_pcb` is the ground-up board from that date and the approved hand-routed board is the file at `8dd9eb6`.
+
+- **Kept from the hand-routed board:** schematic, project file and design rules, stack-up, outline, peg and wire holes, USB-C connectors, NTCs, U301, the 12 B.Cu parts, L401/L501 and the `KO_*` rule areas. Every other part was placed again (L201 0.9 mm, L402 and L502 by about 29 and 39 mm, most others several mm) and all copper was drawn again. It adds one rule area, `KO_SRN_tap` on F.Cu.
+- **Checks:** DRC 0 errors, 0 unconnected, parity 0 (22 warnings); cup fit with `groundup/mechcheck.py`, 0 failed checks. The solver comparison against the hand-routed board is in `groundup/compare/README.md`. Nobody has reviewed the board in KiCad.
+- **Not redone for it:** the order files in `jlc/`, the renders and plots in `docs/hardware/`, the reviews, the studies in `docs/analysis/` and the mechanical model's board data. To order this board, regenerate gerbers, drill, BOM and CPL together and check rotations in JLC's preview again.
+- **Open PR #68** (2026-11-11 cleanup pass of the same board: redrawn signal nets, one width per run) is not merged.
+
+## Board edits before ordering (2026-11-07 and 2026-11-08)
+
+From the 2026-11-07 pre-order review and Logan's answers (PR #64) and his board save of 2026-11-08 (PR #65, commit `36dad0c`, merged as `8dd9eb6`). All on the hand-routed board.
+
+- **UART_TX:** U301 DIO18 (pad 16) to J301 pin 6 on the MCU sheet (2026-11-07), routed by Logan on the board (2026-11-08).
+- **Silk labels:** 14 F.SilkS texts at the pack, NTC, cell-tap and WAKE holes (2026-11-08).
+- **F.Cu corner fills:** `GND_corner_TL` and `GND_corner_TR` with 14 stitching vias (0.45/0.3), F.Cu copper 37.3 % to 45.1 % against B.Cu's 52.3 % (2026-11-08).
+- **Gerbers:** `jlc/Monolith_gerbers_JLC.zip` regenerated from that save; BOM and CPL not touched. DRC 0 errors, 0 unconnected, 16 warnings.
+- **Decisions:** R413/R513 stay 11.8k with `EN_ICHG_PIN = 0`; U102 stays BQ294700 (gauge COV 4.25 V); the 12 bottom parts are hand-soldered; SiZ240DT and TPS25751D pre-ordered at JLC. Still open at checkout: the D401/D501 pin-1 check in JLC's preview (`jlc/ORDER-NOTES.md`).
+
+## Part swaps after approval (2026-10-30 and 2026-10-31)
+
+Schematic and JLC BOM changes on the hand-routed board; no footprint or position changed.
+
+- **L402/L502 (2026-10-30):** the 3.1 mm APS0530 at L502 met the cup's corner fillet (final review), so both became 2.0 mm parts on the new footprint `MonolithDev:L_COILMX_MS0520` (same pads as the APS0530): first COILMX MS0520-3R3M, then the same evening ABC EHE05023R3MFB (LCSC C49248023), which JLC stocks.
+- **D401/D501 (2026-10-31, PR #52):** TI TVS2200DRVR (C523793, short at JLC) to the Wuxi Maxinmicro TVS2200DRVR, LCSC C55616459. Same pinout and 2 × 2 mm DFN, footprint kept. Its datasheet gives typical values only. Rotated 180° it would short VBUS to GND, hence the pin-1 check at order time.
+- **C421/C456/C521/C556 (2026-10-31, PR #54):** KEMET T593V686M035APE070, 68 µF 35 V, 2.0 mm, Mouser only (see *Low-profile bulk* below).
+- **Pack wires (2026-10-31):** TE 100G0111-1.00-0 (18 AWG) and 55A0111-28-9 (28 AWG) (see *Pack wire holes* below).
+
+## Routed and approved (2026-10-28 to 2026-10-30)
+
+Placement was finished on 2026-10-28 and routing by Logan on branch `Layout-P0` on 2026-10-29 (`8fd8b74`). The routed board was reviewed several times on 2026-10-30 ([`docs/reviews/2026-10-30-routed-board/`](../../docs/reviews/2026-10-30-routed-board/README.md) and later revisions; see [`docs/reviews/README.md`](../../docs/reviews/README.md)) and approved by Logan the same day (`8081416`, merged in PR #44). The order package in `jlc/` was made from his 22:41 save that night. Changes made during the reviews:
+
+- J1–J4, the single-pin back-cell NTC wire pads that replaced J105 / J106, were renamed J117 (TS2), J118 (TS2 return), J119 (TS3) and J120 (TS3 return) and left out of the BOM.
+- U301's antenna keep-out on the board was extended from In1 to In1–In4 and B.Cu, as in the library footprint.
+- Logan's routing fixes closed the review's must-fix items (port 1 PACK_P path, port 2 sense taps and ACN keep-out, fuse heater return, VPWR caps).
 
 ## How P0 was made
 
@@ -87,7 +134,7 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 | | R315 (DNP) | unused pull-up |
 | | R301, R312 → wires | links |
 | | TP302–TP304, TP307–TP309 | test points |
-| | | DIO12, DIO18 and DIO20 are now free (no-connect) |
+| | | DIO12, DIO18 and DIO20 are now free (no-connect). (2026-11-07: DIO18 now carries UART_TX to J301 pin 6.) |
 | USB ×2 | J402 | logic-analyser header |
 | | TP402–TP421 | test points |
 | | R450/C454, R451/C455 | DNP snubbers; removed before bring-up, by choice |
@@ -102,11 +149,11 @@ Re-running overwrites the sheets. Once you start editing them by hand in KiCad, 
 
 - **PP5V bulk:** C443/C543, the 100 µF polymer, is now a 22 µF 25 V 1206 (CL31A226KAHNNNE, LCSC C12891, the same part as C441). This leaves three 22 µF parts, about 33 µF effective, and saves about 43 mm² per port.
     - Each port's PP5V comes from its own TPS62933, so the USB PD cSrcBulk minimum (10 µF, dedicated supply) applies. The 120 µF cSrcBulkShared in the TPS25751 table is for a shared supply (checked 2026-10-17, `docs/devboard/cap-reduction-sims-2026-10-17.md`).
-    - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed.
+    - The estimated 0.5 → 3 A step undershoot is about 190 mV against a 250 mV budget. Measure it on the dev board with C443 removed. (The dev board was never built, 2026-10-18: measure it on P0.)
 - **Pack wires:**
     - J108 PACK− (CELL_N) and J112 PACK+ (CELL_P_RAW): 18 AWG wires (TE 100G0111-1.00-0, up to 1.8 mm OD) in Ø1.5 mm plated holes (since 2026-10-24, *Pack wire holes* below);
     - J109–J111 (CELL1–CELL3) and J115 / J116 (1N / 4P Kelvin): 28 AWG sense wires (TE 55A0111-28-9) in Ø0.8 mm plated holes (since 2026-10-24, *Pack wire holes* below);
-    - J105 / J106: back-cell (C2 / C3) NTC wire pads. The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
+    - J105 / J106: back-cell (C2 / C3) NTC wire pads (replaced on 2026-10-30 by the single-pin pads J117 / J118 for TS2 and J119 / J120 for TS3, see *Routed and approved* above). The front cells' NTCs are SMD since 2026-10-28: TH101 (C1, TS1) and TH104 (C4, TS4), 0402s on B.Cu at |y| 15.5 mm, z 29 mm (KiCad (84.5, 112.48) / (115.5, 112.48), 90°, locked; `sb_ntc_smd()`), in a notch at the outer edge of each gap-filler keep-out, under the gel (`research_notes/Pack thermal BAK 65E/smd-ntc.md`). They replace J102 / J107 and the wired beads.
 - **Gauge access:** TP110 SMBC, TP111 SMBD, TP112 GND, 1.5 mm pogo pads in a row (replace the EV2400 header J103). Later replaced by the J302 Tag-Connect (see below).
 - **SWD:** J301 is a Tag-Connect TC2030-NL footprint (VCC, SWDIO, NRST, SWCLK, GND; SWO not connected). Use an XDS110 with a TC2030-CTX cable.
 - **Factory test pads (1.5 mm):** TP106 PACK_P, TP109 GND, TP301 3V3, TP401/TP501 VBUS.
@@ -119,7 +166,7 @@ The board-side loss cuts from `docs/spec.md` (*Decided: the four loss cuts*). Po
 |---|---|---|
 | 1. Protection FETs | Q101, Q102 | AGM404AP1 (3.3 × 3.3) → Infineon BSC007N04LS6 (LCSC C534274), 0.70 mΩ, TDSON-8 FL 5 × 6. Footprint `Infineon_PG-TDSON-8_6.15x5.15mm_D5-8`: KiCad's PG-TDSON-8 with the drain leads numbered 5–8 to match the symbol (`tdson_footprint()`). Check it against the datasheet's footprint drawing before fab |
 | 2. 9 V gate drive | U406, C457, C458, R452–R455, D410, D411, Q409 | See below |
-| 3. Inductor + 500 kHz | L401, R412 | Coilcraft XGL7030-332MEC 3.3 µH on the APS0730 pads (consigned); R412 40.2k → 49.9k (598 → ~500 kHz). R412's LCSC code (0201WMF4992TEE) is still to look up |
+| 3. Inductor + 500 kHz | L401, R412 | Coilcraft XGL7030-332MEC 3.3 µH on the APS0730 pads (consigned); R412 40.2k → 49.9k (598 → ~500 kHz). R412's LCSC code (0201WMF4992TEE) is still to look up (2026-10-30: 0201WMF4992TEE is the MPN; LCSC C7343965 is in the JLC BOM only, not in the schematic) |
 
 **9 V gate drive, per port** (`add_gate_drive()`, symbol in `tools/tps7a4101.py`), in the free area right of the BQ25756 controller block:
 
@@ -243,7 +290,7 @@ The board moved from the top cap to one side of the cells, in a one-piece printe
     - PACK- (C1 side) and PACK+ (C4 side) at the bottom edge, within 16 mm of centre, clear of the notches;
     - CELL2 at the bottom; CELL1 and CELL3 at the top.
     - The cell order and the assembly steps are in the assembly doc.
-- **Vent:** keep a Ø7 mm circle free of tall parts and gap pad, centred 12 mm above the tray bottom (shown on the DXF's `VENT_KEEPOUT` layer). Gone since 2026-10-28: the cup has no vent.
+- **Vent:** keep a Ø7 mm circle free of tall parts and gap pad, centred 12 mm above the tray bottom (shown on the DXF's `VENT_KEEPOUT` layer). Gone since 2026-10-28: the board needs no vent keep-out. (Since 2026-10-31 the vent is a 12 mm ePTFE patch on the cap under the bottom bumper, with no hole in the cup or label and no board change.)
 - **Still to do:**
     - Placement: every part except J401/J501 still sits where it was.
     - Four hand-drawn VBUS traces near the old J401 position were kept as they were (`--keep-copper`). They now dangle (3 DRC warnings).
@@ -267,7 +314,7 @@ Each BQ25756 leg's two PGQ04N070s became one **SiZ240DT**, a 40 V dual-N half-br
     - Gate charge is 6.9/6.5 nC, so less load on REGN.
     - Both FETs of a leg now share one 3.3×3.3 package. Worst case (reverse 20 V 5 A from a 10 V pack), the fully-on high side dissipates ~1.8 W. That needs the paddle via arrays into the GND planes and the gap pad, and the thermal throttle limits it.
     - Measure FET temperature at bring-up. The dev board still has the old FETs.
-- **Sourcing:** DigiKey/Mouser. JLC/LCSC (C3289403) has only a couple in stock, so supply them to JLC yourself, or check stock before ordering.
+- **Sourcing:** DigiKey/Mouser. JLC/LCSC (C3289403) has only a couple in stock, so supply them to JLC yourself, or check stock before ordering. (2026-11-07: Logan pre-ordered them at JLC, `jlc/ORDER-NOTES.md`.)
 - **Area:** about 31 mm² less per port (one 16.6 mm² courtyard instead of two of 15.6 mm² each per leg).
 
 ## BQ25756 status pins (2026-10-17)
@@ -465,7 +512,7 @@ Every pack connection is a wire (Logan, 2026-10-24): **five 28 AWG sense wires**
 
 JLC assembles F.Cu only. B.Cu is hand-soldered and faces the cells. `tools/make_board.py --keepouts` draws these as named KiCad rule areas, so DRC flags any part placed on one. It takes every size from `hardware/mechanical/monolith_shell.py` (the cup's values are the `CUP_*` constants there), and re-running it replaces the old `KO_*` areas. It edits the board file as text (KiCad 10's python can't build zone outlines), so run it with the board closed in KiCad.
 
-The cup has had no vent since 2026-10-28, so `KO_F_cup_vent` (a Ø7 mm F.Cu circle at 100, 127.5) is gone and parts may go there.
+The vent left the cup's board-face wall on 2026-10-28, so `KO_F_cup_vent` (a Ø7 mm F.Cu circle at 100, 127.5) is gone and parts may go there. Since 2026-10-31 the vent is a 12 mm ePTFE patch on the cap under the bottom bumper, which needs nothing on the board.
 
 | Rule area | Layer | Not allowed | Why |
 |---|---|---|---|
@@ -481,7 +528,7 @@ There is no rule-area type for height, so a note on Cmts.User under the board ho
 - **B.Cu:** parts up to 2.3 mm in most places. Up to about 5 mm only in the centre strip (x 96–104) or more than 18 mm from the centre line. No heat sources.
 
 **Hand-soldered B.Cu parts (19):**
-- **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering.
+- **BLE module group:** U301 (hot air), with its decoupling C301/C302/C303, RF match C313/C314/C315/R321 and NRST cap C304. C302, C303 and C304 are 0201 today; make them 0402 before ordering. (2026-11-13: still 0201 (C307380) in the schematic and the JLC BOM; no later decision recorded. Since the 2026-10-30 approval U301 and its parts are top-side parts in the JLC CPL, and only 12 parts are on B.Cu: C208–C213, C421, C456, C521, C556, TH101, TH104.)
 - **Shared bulk:** C208–C213 (22 µF 1210) in the centre strip, between the two power stages.
 - **USB-side tantalums:** C421, C456, C521 and C556 (T593V, 2.0 mm since 2026-10-31; CA55 2.8 mm before), in the centre strip near the ports. C421 is at (101.6, 88.0), behind C424 / C427 (2026-10-24); it was on the C4 NTC lead run.
 
@@ -516,4 +563,4 @@ The side tray and its aluminium cover are retired; the enclosure is now **the cu
 
 1. **Review P0**, mainly gauge note 10. With no wake button, the gauge has to come out of SHUTDOWN when USB brings up PACK_P, through the TPS25751 dead-battery sink and the BQ25756 charging with 3V3 down. Confirm this at P0 bring-up.
 2. **No cap cuts on hold.** C427/C527 is part of the 100 µF USB-side bank since the low-profile change (2026-10-18), so it stays.
-3. **Finish the board.** Done: approved 2026-10-30 (PR #44), reviewed again 2026-11-07; the list below is history, and R413/R513 stay 11.8k. Placement is done (2026-10-28). Still to do (full list in `docs/spec.md`, *P0 board changes still to apply*): run ERC, `check_netlist.py` and DRC in KiCad (the 2026-10-28 schematic changes were checked by script only), change R413/R513 to 0 Ω, check the TDSON footprint against the BSC007N04LS6 drawing, look up R412/R512's LCSC code, make C302–C304 0402, remove the stranded VBUS traces, then route, with the gap-filler copper and thermal vias by hand.
+3. **Pick the board to order (open, 2026-11-13).** The hand-routed board (`8dd9eb6`) was approved on 2026-10-30 (PR #44) and reviewed again on 2026-11-07; its order package is in `jlc/`. The ground-up board on `master` (and the cleaned-up one in PR #68) needs a review in KiCad and a full new order package first. Open for the hand-routed board at checkout (`jlc/ORDER-NOTES.md`): the D401/D501 pin-1 check in JLC's preview; L401/L501 and U301 consigned or globally sourced; R412/R512's LCSC code C7343965 is in the JLC BOM only, not in the schematic; C421/C456/C521/C556 come from Mouser. Not recorded as done anywhere: the TDSON footprint check against the BSC007N04LS6 drawing (*Loss cuts* below) and making C302–C304 0402 (they are still 0201 in the schematic; *Mechanical keep-outs* below).

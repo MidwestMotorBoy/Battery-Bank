@@ -1,5 +1,8 @@
 # Loss reduction — combined findings (2026-10-21)
 
+_Dated snapshot (2026-10-21), modelled with the EVE 58E cells. The four loss cuts were adopted on 2026-10-23 with one change: the protection FETs are the BSC007N04LS6, not the XRS120N04D ([`../protection-fets/options.md`](../protection-fets/options.md)). Current parts and figures: [`docs/spec.md`](../../docs/spec.md), "Decided: the four loss cuts for P0"._
+
+
 Five researchers (A charger FETs, B frequency + inductor, C pack path, D cells + interconnect, E USB side, fixed losses, system), then a cross-examination round. Full reports: `A_charger_fets.md` … `E_usb_fixed_system.md`, each with a cross-examination section. All numbers are estimates from datasheets and the `heat_sources.py` model, not measurements.
 
 ## Recommended for P0 (keeping the EVE 58E cells)

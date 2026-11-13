@@ -16,7 +16,8 @@ SYSCONFIG_TOOL      ?= C:/ti/sysconfig_1.26.4/sysconfig_cli.bat
 # Command-line flasher and the target config saved from UniFlash on day 1
 # (XDS110 + CC2340R53)
 DSLITE ?= $(CCS)/ccs_base/DebugServer/bin/DSLite.exe
-# The dev board's U301 is the same die, so one .ccxml serves both boards.
-# Save a second one (devboard_xds110.ccxml) only if UniFlash needs a
-# different device entry for the module.
+# This .ccxml is for the LaunchPad (probe supplied power). The P0 board's U301 is
+# the same die but must be flashed from a second .ccxml set to "Target supplied
+# power", or the probe back-feeds the 3V3 rail
+# (docs/production/p0-bringup-and-training.md).
 CCXML  ?= targets/lp_em_cc2340r53_xds110.ccxml

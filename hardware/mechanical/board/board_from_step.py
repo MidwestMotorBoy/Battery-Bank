@@ -1,6 +1,6 @@
 """Real P0 board for the mechanical model: KiCad STEP (board + every part's 3D model) -> board/monolith_board.npz in the
 pack frame (mm), one triangle mesh per footprint, so the cup model can draw the real board and check every part against
-the cup, carrier, rails, sleeves and filler instead of the old slab + USB-C envelopes (P.side_board_dummy).
+the cup, carrier, rails, post spacers and filler instead of the old slab + USB-C envelopes (P.side_board_dummy).
 
 Make the STEP from the saved board (KiCad 10):
   kicad-cli pcb export step --subst-models --no-dnp --force -o hardware/mechanical/board/Monolith_board.step \
@@ -16,7 +16,11 @@ from OCP.STEPCAFControl import STEPCAFControl_Reader
 from OCP.TDocStd import TDocStd_Document
 from OCP.TCollection import TCollection_ExtendedString
 from OCP.XCAFDoc import XCAFDoc_DocumentTool
-from OCP.TDF import TDF_LabelSequence, TDF_Label
+from OCP.TDF import TDF_Label
+try:
+    from OCP.TDF import TDF_LabelSequence
+except ImportError:                                   # cadquery-ocp 8.x moved the NCollection sequences (as monolith_step.py)
+    from OCP.OCP.collections import Sequence_TDF_Label as TDF_LabelSequence
 from OCP.TDataStd import TDataStd_Name
 from OCP.BRepMesh import BRepMesh_IncrementalMesh
 from OCP.TopExp import TopExp_Explorer

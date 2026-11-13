@@ -1,6 +1,6 @@
 # Datasheets
 
-Datasheets and application notes for the parts chosen for Monolith: the P0 production board (`hardware/Production/`, the live board), the dev board (`hardware/DevBoard/`, designed but skipped on 2026-10-18), and parts that have since been replaced. Most were downloaded on 2026-10-11 and 2026-10-14. `sources.csv` lists every file with its source link. These documents are the manufacturers' copyrighted material, included here for reference.
+Datasheets and application notes for the parts chosen for Monolith: the P0 production board (`hardware/Production/`, the live board), the dev board (`hardware/DevBoard/`, designed but skipped on 2026-10-18), and parts that have since been replaced. Most were downloaded on 2026-10-11 and 2026-10-14; Logan added a few by hand later (see History). `sources.csv` lists every file with its source link. These documents are the manufacturers' copyrighted material, included here for reference.
 
 To re-download or refresh them, run from the repo root on a computer with normal internet access:
 
@@ -8,11 +8,12 @@ To re-download or refresh them, run from the repo root on a computer with normal
 bash tools/fetch_datasheets.sh
 ```
 
-The script saves each PDF here under the file name in `sources.csv` and skips files already present. At the end it lists any it couldn't fetch, so you can grab those by hand: some sites serve a web page instead of the PDF, and rows whose url isn't a link were added by hand. It also lists any PDF here that `sources.csv` is missing. Three files need hand work if they are ever deleted:
+Every file listed is committed, so the script only refills files that have been deleted. It saves each PDF here under the file name in `sources.csv` and skips files already present. At the end it lists any it couldn't fetch, so you can grab those by hand: some sites serve a web page instead of the PDF, and rows whose url isn't a link were added by hand. It also lists any PDF here that `sources.csv` is missing. These files need hand work if they are ever deleted:
 
 - `bak-n21700cx-65e.pdf` came from Convoy's store, which the script can't reach.
 - `aps0730.pdf`: the url is the JLC part page, not the PDF.
 - `siz240dt.pdf` is Vishay doc 77182 with the PowerPAIR 3x3S land pattern (doc 78115) appended. The script fetches only 77182.
+- `ABC EHE05023R3MFB.pdf`, `COILMX MS0520-3R3M.pdf` and `infineon-bsc007n04ls6-datasheet-en.pdf` were added by hand, with no source link recorded.
 
 ## Index
 
@@ -31,10 +32,11 @@ Use: **P0** = on the production board schematic, **Dev** = on the dev board sche
 | `ao3400a.pdf` | AOS AO3400A | P0, Dev | Q103/Q104 (fuse ignition), Q409/Q509; more on the dev board |
 | `bzt52c15.pdf` | BZT52C series | P0, Dev | D103 15 V gate clamp |
 | `ncp18xh103f03rb.pdf` | Murata NCP series NTCs | P0, Dev | P0 TH101/TH104/TH401/TH501 are NCP15XH103F03RC (0402), covered by this catalog; dev TH401 is NCP18XH103F03RB |
-| `agm404ap1.pdf` | AGM Semi AGM404AP1 | Dev | Dev Q101/Q102 protection FETs. P0 fits BSC007N04LS6 on the same symbol (datasheet not held) |
+| `infineon-bsc007n04ls6-datasheet-en.pdf` | Infineon BSC007N04LS6 (Rev 2.3, 2022-08-29) | P0 | Q101/Q102 CHG/DSG protection FETs (LCSC C534274) |
+| `agm404ap1.pdf` | AGM Semi AGM404AP1 | Dev | Dev Q101/Q102 protection FETs. P0 fits the BSC007N04LS6 (above) on the same symbol |
 | `pa2512-1mohm.pdf` | Yageo PA2512 1 mOhm | Dev | Dev RS101 gauge shunt (P0: Ralec LR1206, not held) |
 | `bh-21700-b1bj001.pdf` | MYOUNG BH-21700-B1BJ001 | Dev | Dev BT101-BT104 cell holders; `hardware/DevBoard/tools/make_3d_holder.py` |
-| `eve-inr21700-58e.pdf` | EVE INR21700-58E | History | Cell before the FEB 21700G and BAK 65E (notes in `docs/archive/`); cell outline in `make_3d_holder.py` |
+| `eve-inr21700-58e.pdf` | EVE INR21700-58E | History | Cell before the FEB 21700G and the BAK 65E (adopted 2026-10-23; notes in `docs/archive/`); cell outline in `make_3d_holder.py` |
 
 ### USB-C ports and charger
 
@@ -49,7 +51,9 @@ Use: **P0** = on the production board schematic, **Dev** = on the dev board sche
 | `bq25756.pdf` | TI BQ25756 | P0, Dev | U403/U503 buck-boost charger |
 | `bq25756evm-sluuct7.pdf` | TI SLUUCT7 (BQ25756 EVM) | P0 | Reference schematic |
 | `siz240dt.pdf` | Vishay SiZ240DT + PowerPAIR 3x3S land pattern | P0 | Q401/Q402/Q501/Q502 charger half-bridges |
-| `aps0730.pdf` | Coilank APS-F series | P0, Dev | APS0530M3R3H: L402/L502 5 V buck inductor. APS0730M2R2F: L401/L501 land pattern and A/B alternate (fitted: Coilcraft XGL7030-332MEC, not held) |
+| `aps0730.pdf` | Coilank APS-F series | P0, Dev | P0: the APS0730 land pattern under L401/L501 (fitted: Coilcraft XGL7030-332MEC, not held). Dev: APS0530M3R3H on L402/L502 (P0 replaced it on 2026-10-30, below) |
+| `ABC EHE05023R3MFB.pdf` | ABC EHE0502 series (EHE05023R3MFB) | P0 | L402/L502 5 V buck inductor as fitted since 2026-10-30 (JLC C49248023), on the MS0520 land pattern |
+| `COILMX MS0520-3R3M.pdf` | COILMX MS0520-3R3M | P0 | Land pattern of L402/L502 (`L_COILMX_MS0520`) and the listed alternate (C18163579, not in the JLC library); the fitted part is the ABC EHE05023R3MFB |
 | `tps62933.pdf` | TI TPS62933 | P0, Dev | U404/U504 5 V PP5V buck |
 | `tpd6s300.pdf` | TI TPD6S300 | P0 | U405/U505 CC/SBU port protector |
 | `tvs2200.pdf` | TI TVS2200 | P0, Dev | D401/D501 VBUS flat-clamp TVS (reference part; P0 fits the Maxinmicro clone below) |
@@ -77,6 +81,7 @@ Use: **P0** = on the production board schematic, **Dev** = on the dev board sche
 | File | Part | Use | Where |
 |---|---|---|---|
 | `tps62177.pdf` | TI TPS62177 | P0, Dev | U204 3.3 V always-on buck |
+| `tps7a4101.pdf` | TI TPS7A4101 (SBVS183B) | P0 | U406/U506 9 V gate-drive LDO (loss cut 2) |
 | `cc2340r5moda.pdf` | TI CC2340R5MODA | P0, Dev | U301 BLE module |
 | `rh-s2761-46r-testloop.pdf` | RH-S2761-46R test loop | P0, Dev | GND and switch-node test loops (TP109, TP405, TP406, TP412) |
 | `ina190.pdf` | TI INA190 | Dev | Dev U201/U202 sleep-current amplifiers |
@@ -93,7 +98,7 @@ Use: **P0** = on the production board schematic, **Dev** = on the dev board sche
 
 ### P0 parts with no datasheet here
 
-BSC007N04LS6 (Q101/Q102, LCSC C534274), Coilcraft XGL7030-332MEC (L401/L501), Changjiang FNR4030S100MT (L201), TI TPS7A4101 (U406/U506, SBVS183B), Nexperia BAT54L (D101), Ralec LR1206-21R001F4 (RS101), MA120610FR005MZ (R427/R527), CCTC CA55-D035M476T (C421/C456), Panasonic ERA2AEB (R418/R419). Superseded parts with no datasheet here: JinYu PGQ04N070 and SXN SMMS1040 (dev charger stage), Holtek HT7550-1 (dev), and the FEB 21700G cell (see `docs/archive/feb-21700g-datasheet-notes.md`).
+Coilcraft XGL7030-332MEC (L401/L501), KEMET T593V686M035APE070 (C421/C456/C521/C556, since 2026-10-31), Changjiang FNR4030S100MT (L201), Nexperia BAT54L (D101), Ralec LR1206-21R001F4 (RS101), MA120610FR005MZ (R427/R527), Panasonic ERA2AEB (R418/R419). Dev-board parts with no datasheet here: JinYu PGQ04N070 and SXN SMMS1040 (dev charger stage) and Holtek HT7550-1. Superseded parts with no datasheet here: CCTC CA55-D035M476T (C421/C456 until 2026-10-31) and the FEB 21700G cell (see `docs/archive/feb-21700g-datasheet-notes.md`).
 
 ## History
 
@@ -101,3 +106,6 @@ BSC007N04LS6 (Q101/Q102, LCSC C534274), Coilcraft XGL7030-332MEC (L401/L501), Ch
 - 2026-10-14 (schematic review 3): the second-level protection and liquid-detection parts (BQ2947, WSFB1514, TPD2S300), the BQ40Z50-R2 technical reference manual and SLUA660, the BQ25756 and TPS25751 EVM guides (reference schematics), and the discretes (FETs, diodes, NTC, switch, test loop, C406). ST AN5290 and AN5165 (st.com refuses scripted downloads) and the Everlight 19-217 LED datasheet were never fetched. Both became moot when the STM32WB and that LED were replaced.
 - 2026-10-14 to 10-18: TPD4S201 / -Q1, 1.6 mm USB-C, CC2340R5MODA, TMP1075, TVS2200, then the P0 parts APS0730, SiZ240DT and TPD6S300.
 - 2026-10-23: the BAK N21700CX-65E product specification (A/00, 2025-04-10), the pack cell adopted on 10-23. It was added by hand from Convoy's store.
+- 2026-10-30 (Logan, with the approved board, commit `8081416`): ABC EHE05023R3MFB and COILMX MS0520-3R3M, the L402/L502 inductor and its land pattern.
+- 2026-10-31: the Maxinmicro TVS2200DRVR (PR #52).
+- 2026-11-11 and 2026-11-12 (Logan, commits `0af9d70` and `5edc27d`): TPS7A4101 and BSC007N04LS6.

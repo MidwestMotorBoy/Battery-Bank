@@ -1,0 +1,50 @@
+{
+ "P1 HS gate leg A (Q401)": {
+  "L_nH": 7.38,
+  "f_MHz": 50.6,
+  "zeta_off": 0.62,
+  "overshoot_off": 0.084
+ },
+ "P1 LS gate leg A (Q401)": {
+  "L_nH": 5.15,
+  "f_MHz": 62.0,
+  "zeta_off": 0.69,
+  "overshoot_off": 0.051
+ },
+ "P1 HS gate leg B (Q402)": {
+  "L_nH": 7.68,
+  "f_MHz": 49.7,
+  "zeta_off": 0.61,
+  "overshoot_off": 0.09
+ },
+ "P1 LS gate leg B (Q402)": {
+  "L_nH": 3.48,
+  "f_MHz": 72.7,
+  "zeta_off": 0.81,
+  "overshoot_off": 0.014
+ },
+ "P2 HS gate leg A (Q501)": {
+  "L_nH": 9.22,
+  "f_MHz": 45.8,
+  "zeta_off": 0.56,
+  "overshoot_off": 0.119
+ },
+ "P2 LS gate leg A (Q501)": {
+  "L_nH": 6.2,
+  "f_MHz": 57.3,
+  "zeta_off": 0.64,
+  "overshoot_off": 0.075
+ },
+ "P2 HS gate leg B (Q502)": {
+  "L_nH": 8.57,
+  "f_MHz": 47.4,
+  "zeta_off": 0.58,
+  "overshoot_off": 0.107
+ },
+ "P2 LS gate leg B (Q502)": {
+  "L_nH": 2.89,
+  "f_MHz": 78.0,
+  "zeta_off": 0.87,
+  "overshoot_off": 0.004
+ }
+}

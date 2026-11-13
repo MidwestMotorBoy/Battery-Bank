@@ -1,5 +1,8 @@
 # Tenpower 60XG instead of the EVE 58E (2026-10-21)
 
+_Dated snapshot (2026-10-21): a cell study replaced by the BAK N21700CX-65E, adopted on 2026-10-23. Current cell figures: [`docs/spec.md`](../../docs/spec.md)._
+
+
 Question from the owner: what if the pack used Tenpower INR21700-60XG cells? Estimates, not measurements.
 
 ## The cell

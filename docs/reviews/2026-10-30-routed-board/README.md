@@ -1,5 +1,8 @@
 # P0 routed board review (2026-10-30)
 
+> **Status (2026-11-13).** This reviewed the hand-routed board as Logan saved it at 04:02 UTC on 2026-10-30. Its must-fix list was closed in his later saves the same day: the CELL_P via clearance and port 1 PACK_P path (14:29 save), J1–J4 renamed J117–J120 and left out of the BOM, the BAT_SNS_P overlap and the F102 heater return (16:04 and 17:04 saves), the U301 antenna keep-out on all inner layers and B.Cu (19:37), and the port 2 sense taps (the SRP tap that still read +7.2 % at the 20:53 save was fixed at 21:19, and the input-sense keep-outs at 21:55 and 21:58). The 21:58 save had DRC 0 errors and was approved and merged in PR #44. Left open in the project notes after that: the CELL1 via 0.37 mm from J302's hole (a DRC warning) and moving C118 from CELL_1N to GND (offered, not answered). This is the board at commit `8dd9eb6`; none of it was redone for the ground-up board that has been on `master` since 2026-11-10.
+
+
 Review of the first fully routed Monolith P0 board (`hardware/Production/Monolith.kicad_pcb`): DRC, copper resistance of every power path, the current-sense taps, and what the routed copper does to the thermal model. It is design review only; nothing has been built or measured.
 
 **Board version.** The numbers below are from Logan's local save of 2026-10-30 04:02 UTC. `master` holds the 03:50 commit (8fd8b74 "Board Layout Done Going to review"), which is the same board minus two CELL_P vias and a few SDA segments. Where they differ it's noted.

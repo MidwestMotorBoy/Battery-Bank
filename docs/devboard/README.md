@@ -4,14 +4,14 @@ The dev board was the bench version of the circuit: 196 × 115 mm, about 430 par
 
 These are dated notes. They are kept as written: part numbers, cells, the MCU and the enclosure are the ones of their date (EVE 58E cells, STM32WB before rev A7, TMP1075 sensors before rev A8, PGQ04N070 charger FETs and XAL7030 inductors, potting, the top-cap tube). Where a note and `docs/spec.md` disagree, the spec wins.
 
-## Still applies to P0 and firmware
+## Still used by the production design and firmware
 
 | File | What it is | Use on P0 |
 |---|---|---|
 | [`power-budget.md`](power-budget.md) | Idle current by power state (rev A8) | Baseline for P0's idle current; P0 adds about 175 µA for the two TPD6S300s (`docs/spec.md`). |
-| [`mcu-io-power-states.md`](mcu-io-power-states.md) | State of every CC2340 pin in every power state | P0 keeps the dev board pin map minus the LED and UART; firmware follows it. |
+| [`mcu-io-power-states.md`](mcu-io-power-states.md) | State of every CC2340 pin in every power state | P0 keeps the dev board pin map minus the LED and UART header; since 2026-11-07 DIO18 carries UART_TX to J301 pin 6. Firmware follows it. |
 | [`cc2340-pin-budget.md`](cc2340-pin-budget.md) | CC2340R5MODA pin plan and the reasons for it | Cited by P0's `mcu.kicad_sch` and `tools/tidy_production.py`. |
-| [`bringup-config-checklist.md`](bringup-config-checklist.md) | Every configuration item from the four reviews, in bring-up order | The configuration items carry over; P0's procedure is [`docs/production/p0-bringup-and-training.md`](../production/p0-bringup-and-training.md). |
+| [`bringup-config-checklist.md`](bringup-config-checklist.md) | Every configuration item from the four reviews, in bring-up order | **Conflicts with P0 (2026-11-07 pre-order review):** its GPIO4–7 and EN_ICHG_PIN items would break P0. Use only for sources and reasoning; P0's configuration lists are in [`docs/production/p0-bringup-and-training.md`](../production/p0-bringup-and-training.md), section 3a. |
 | [`launchpad-cc2340-plan.md`](launchpad-cc2340-plan.md) | LP-EM-CC2340R53 LaunchPad test plan | The plan the firmware follows until P0 exists (`firmware/README.md`). |
 | [`cap-reduction-sims-2026-10-17.md`](cap-reduction-sims-2026-10-17.md) | Charger and PP5V capacitor-bank simulations | P0's PP5V bulk capacitance follows its result (cited in `hardware/Production/README.md` and `tools/make_production.py`). |
 | [`rev2-changes.md`](rev2-changes.md) | The rev 2 change list | Fed into P0 on 2026-10-18; P0's changes are logged in `hardware/Production/README.md`. |

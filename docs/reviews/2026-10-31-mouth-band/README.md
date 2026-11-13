@@ -1,5 +1,8 @@
 # Cup mouth: collar vs thick mouth band (2026-10-31)
 
+> **Status (2026-11-13).** Cup geometry only, not the board. The 2.4 mm mouth band was adopted (`MOUTH_T` in `hardware/mechanical/monolith_cup.py`). Coupon B was dropped on 2026-11-07 (Logan: no coupons, the first cup is the fit test), so the squeeze and the 1 m dunk are checked on the first printed cup.
+
+
 Logan doubted that the cap's 1.5 mm outer collar was helping the seal (it doesn't retain the O-ring; the skirt groove does). Its job was to stop the cup's 1.2 mm mouth flats bowing outward off the O-ring. `mouth_plate.py` is a plate model of one side flat that tests whether it does.
 
 The table gives the squeeze left at the worst spot on a flat. Nominal squeeze is 25 %, and the low-tolerance column assumes 0.35 mm of compression instead of 0.5.
@@ -22,4 +25,4 @@ The collar helps, but only about half as much as a rigid collar would, because i
 - The O-ring force of about 1.1 N/mm at 25 % is an estimate for 70A NBR and could be off by ±50 %.
 - The ends of the flat are taken as simply supported.
 
-Coupon B (`hardware/mechanical/monolith_coupons.py`) is the real test: measure the squeeze in the middle of each flat, then dunk at 1 m.
+The first real cup and cap are the test (written as coupon B at the time; coupons were dropped on 2026-11-07): measure the squeeze in the middle of each flat, then dunk at 1 m.

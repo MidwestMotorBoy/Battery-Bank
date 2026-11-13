@@ -1,5 +1,8 @@
 # Rail block retention (2026-11-03)
 
+> **Status (2026-11-13).** Cup and carrier geometry, checked against the hand-routed board's part meshes. Options 2 and 5 were built (PR #61, 2026-11-03) and are still in `monolith_cup.py`; the 3-D drop runs of 2026-11-11 (`docs/analysis/2026-11-11-drop-3d/`) added rail spines, B.Cu edge lands and 0.7 mm wall pockets over L401 / L501 on top of them. The cradle squeeze and the contact drop rerun below were taken up by that study; the land-gap and seal-entry checks are left for the first printed cup (no coupons, Logan 2026-11-07).
+
+
 Logan didn't trust the rail blocks' glued, crush-rib tongue joint to the cell carrier. Five agents each worked one concept against the mech model on master (`ece80e6`). The chosen fix, options 2 and 5 merged, is in `hardware/mechanical/monolith_cup.py`: **the cup carries the drop loads**, and the tongues and posts only locate parts on the bench.
 
 ## What was wrong with the old design

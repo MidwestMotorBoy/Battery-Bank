@@ -58,7 +58,7 @@ def src_boxes():
     b['shunt'] = [(26.9, 27.5, -11.2, -8.0, 9.2, 10.8)]
     b['pack_cu'] = [(25.3, 26.9, -16.0, 16.0, 5.0, 20.0)]
     return b
-PART_BOXES = ('fet', 'ic', 'sense', 'pphv', 'prot', 'fuse', 'shunt')
+PART_BOXES = ('fet', 'ic', 'sense', 'pphv', 'prot', 'fuse', 'shunt', 'rbat', 'rac', 'buck5')   # rev7: p0f's RBAT / RAC / TPS62933 boxes were air
 
 # ---------------- materials ----------------
 OUT, AIR, PA12, TPU, LAT, JELLY, CAN, WRAP, BOARD, VIAS, FILL, NI, PART, IND, USBC, HEAD, CORE = range(17)
@@ -355,7 +355,9 @@ def p_allow_cell(t):
     if t <= DERATE_HOT[0]: return ps
     if t <= DERATE_HOT[1]: return lin(t, DERATE_HOT[0], DERATE_HOT[1], ps, 0)
     return 0.0
-def board_factor(t): return lin(t, 55, 70, 1, 0)
+BOARD_RAMP = (55.0, 70.0)
+TS_PT = {1: (26.6, 11.82, 44.16), 2: (26.6, -11.20, 44.16)}   # rev7: charger TS NTCs TH401 / TH501 (F.Cu, KiCad (111.82, 97.31) / (88.80, 97.31))
+def board_factor(t): return lin(t, BOARD_RAMP[0], BOARD_RAMP[1], 1, 0)
 def i_chg_ramp(t):
     return float(np.interp(t, [0, 0.01, 5, 6.5, 15, 16.5, *CHG_HOT], [0, 0.65, 0.65, 3.25, 3.25, 4.55, 4.55, 0])) if t > 0 else 0.0
 I_CHG_MAX, MAX_SOC, USB2_MIN = 4.55, 0.95, 20.0
@@ -424,7 +426,12 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     surfmask = [np.flatnonzero(cell_surface_mask(g, k)[dom]) for k in range(4)]
     boardmask = np.flatnonzero(np.isin(g.mat, (BOARD, VIAS))[dom])
     partmask = np.flatnonzero(np.isin(g.mat, (PART, IND))[dom])
-    ts_i = {p: g.idx[tuple(int(np.searchsorted(e, v) - 1) for e, v in zip(g.edges, (26.6, STAGE_Y[p], 47.0)))] for p in (1, 2)}
+    PART_NAMES = [n for n in boxes if n.startswith(('fet', 'ind', 'ic', 'rbat', 'rac', 'pphv', 'buck5', 'prot', 'fuse', 'shunt', 'conn'))]
+    pm = {}
+    for n in PART_NAMES:
+        sel = (W[n] > 0) & np.isin(g.mat[dom], (PART, IND, USBC)); pm[n] = np.flatnonzero(sel if sel.any() else W[n] > 0)
+    LOSS_KEYS = []
+    ts_i = {p: g.idx[tuple(int(np.searchsorted(e, v) - 1) for e, v in zip(g.edges, TS_PT[p]))] for p in (1, 2)}
     # outer skin: active voxels with an exterior face
     skin = np.flatnonzero(ge > 0)
     if cs['hours'] == 0:                                  # steady state at a constant tiny load
@@ -443,6 +450,7 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     rec = {k: [] for k in keys}
     for k in ('ntc', 'ntc_alt', 'cell_mean', 'cell_max', 'cell_min', 'surf_max', 'surf_min'): rec[k] = []
     for k in ('board_max', 'part_max', 'ts1', 'ts2', 'skin_max', 'skin_mean', 'probe'): rec[k] = []
+    rec['parts'] = []; rec['part_mean'] = []; rec['loss'] = []
     snaps = {}; best = dict(cell=-1, board=-1)
     nsteps = int(cs['hours']*3600/dt); t0 = time.time()
     snap_t = [5, 10, 20, 30, 45, 60, 90, 120, 150, 180]
@@ -515,6 +523,9 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
         rec['board_max'].append(float(T[boardmask].max())); rec['part_max'].append(float(T[partmask].max()))
         rec['ts1'].append(ts[1]); rec['ts2'].append(ts[2]); rec['probe'].append(T[probe_i].tolist())
         rec['skin_max'].append(float(T[skin].max())); rec['skin_mean'].append(float(T[skin].mean()))
+        rec['parts'].append([float(T[pm[n]].max()) for n in PART_NAMES]); rec['part_mean'].append([float(T[pm[n]].mean()) for n in PART_NAMES])
+        lv = {f'{part}{p}': w for p, Lp in L.items() for part, w in Lp.items()}; lv.update(q_path)
+        rec['loss'].append([float(lv.get(n, 0.0)) for n in PART_NAMES])
         cm = max(rec['cell_max'][-1]); bm = rec['part_max'][-1]
         if cm > best['cell']: best['cell'] = cm; snaps['peak_cell'] = th.astype(np.float32); best['t_cell'] = t/60
         if bm > best['board']: best['board'] = bm; snaps['peak_board'] = th.astype(np.float32); best['t_board'] = t/60
@@ -535,7 +546,8 @@ def run_case(g, name, h_ext=10.0, amb=25.0, verbose=True, tag='', ntc_side='cent
     rec = {k: np.array(v) for k, v in rec.items()}
     meta = dict(name=name, title=cs['title'], amb=amb, h_ext=h_ext, dt=dt, t_end=float(rec['t'][-1]),
                 t_peak_cell=best['t_cell'], t_peak_board=best['t_board'], ntc_side=ntc_side, r25=R25,
-                ntc_front=ntc_front, derate=DERATE, derate_hot=DERATE_HOT, chg_hot=CHG_HOT)
+                ntc_front=ntc_front, derate=DERATE, derate_hot=DERATE_HOT, chg_hot=CHG_HOT, part_names=PART_NAMES,
+                board_ramp=list(BOARD_RAMP))
     save(g, name + tag, rec, snaps, meta)
     return meta
 

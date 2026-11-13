@@ -1,6 +1,9 @@
-"""Fit coupons for the Monolith cup: cheap MJF PA12 prints that test the risky fits before the full cup is ordered
-(docs/production/p0-assembly.md, Open items: Fit). Geometry comes from monolith_cup.py, so a coupon is the real part's
-feature, not a redraw.
+"""Fit coupons for the Monolith cup. NOT PART OF THE PLAN: Logan dropped the coupons on 2026-11-07 (ordering/ H01): the real
+parts cost about the same, so the first cup, cap and core are the fit test (docs/production/p0-assembly.md, Open items:
+Fit). The script is kept only in case a test piece is ever wanted; its outputs are git-ignored since 2026-11-13. B2, C1, C2
+and C3 are byte-for-byte the real parts (stl/MJF_PA12/monolith_cup_cap / carrier / rails / spacer.stl), so never order the
+coupons/ folder with them.
+Geometry comes from monolith_cup.py, so a coupon is the real part's feature, not a redraw.
   A  USB-C seal-bore ladder: a 1.85 mm top-wall plate with five bores at 0.05-0.25 mm squeeze a side, each over the
      housing pocket and lead-in, the squeeze debossed beside it, and a 1.6 mm skirt (the cup's side wall) so the plate stays flat. Push a
      loose connector in from the pocket side; pick the bore that seals (1 m dunk) and still lets the board float.

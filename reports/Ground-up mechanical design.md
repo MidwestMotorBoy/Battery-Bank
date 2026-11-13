@@ -1,5 +1,7 @@
 # A rigid core in a printed tub, closed by an O-ring heatsink lid
 
+_Status (2026-11-13): dated report of the 2026-10-21 enclosure concept study (not related to the "ground-up" board, the 2026-11-10 script-built PCB re-layout in `hardware/Production/groundup/`). It led to the cup: the study's follow-up models turned the recommended tub and aluminium heatsink lid into the heatsink-free MJF PA12 cup with an O-ring bottom cap, adopted on 2026-10-21 and still the enclosure ([`docs/mechanical-design.md`](../docs/mechanical-design.md), `hardware/mechanical/monolith_cup.py`). Changed since: there is no aluminium, the cells are BAK N21700CX-65E (not the FEB 21700G), and the nickel tongues through plated board slots gave way to soldered PACK and sense wires on 2026-10-24._
+
 This report is a clean-sheet look at how the Monolith's four cells, board and heatsink should be held together and sealed. Five agents each designed a pack a different way:
 
 - **A:** a gasketed box;

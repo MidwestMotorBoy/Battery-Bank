@@ -1,17 +1,26 @@
 # Ground-up layout experiment
 
-An experimental, script-built re-layout of the Monolith P0 board. It exists only on the branch
-`claude/project-thread-ploune`. `master` still holds the approved, hand-routed board, and nothing here
-should be merged without a review.
+An experimental, script-built re-layout of the Monolith P0 board.
 
-On this branch `hardware/Production/Monolith.kicad_pcb` is the ground-up board. The schematic, project
-file, design rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs, antenna module, the
-back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
-placed again and all copper was drawn again. `jlc/` still holds the fab files of master's board.
+**Which board is which (since 2026-11-10).** The experiment branch was merged to `master` in PR #66, and Logan
+chose to keep it there. `hardware/Production/Monolith.kicad_pcb` on `master` is therefore the ground-up board
+(after the second fix pass, commit dd34285). A cleaned-up version of it (cleanup pass of 2026-11-11) is in open
+PR #68 (branch `claude/project-thread-ploune`); it reaches `master` only if that PR is merged. The approved,
+hand-routed board is the same file at commit `8dd9eb6` (`git show 8dd9eb6:hardware/Production/Monolith.kicad_pcb`).
+In the tables below "current board (master)" still means that hand-routed board, as it was when the comparison ran.
+
+**Not yet redone for the ground-up board:** the order files in `../jlc/` (gerbers, BOM, CPL), the renders and layer
+plots in `docs/hardware/`, the board reviews in `docs/reviews/`, the studies in `docs/analysis/` and the board data
+in the mechanical model. All of them describe the hand-routed board. The ground-up board has been checked by script
+and solver only; nobody has reviewed it in KiCad. Regenerate the order package and review the board before any order.
+
+The schematic, project file, design rules, stack-up, outline, holes, USB-C connectors, wire pads, NTCs, antenna
+module, the back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
+placed again and all copper was drawn again.
 
 ## Second fix pass (2026-11-10, evening)
 
-The board on this branch is now the third version. The second pass took the four open items of the first fix pass
+The board is now the third version. The second pass took the four open items of the first fix pass
 (commit ffb0dde): the charger feedback pins, four other signals over 10 mV per edge, the sense pairs, and the two
 long tracks in the In4 ground plane. Three were closed and the fourth was tested and left.
 

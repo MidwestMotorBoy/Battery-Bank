@@ -6,13 +6,22 @@ and capped (JLC default on 6+ layers). The dielectric split is a symmetric appro
 here is impedance-controlled, so set it to JLC's stack at order time. JLC multilayer vias at 1.6 mm: 0.15 mm hole /
 0.25 mm via minimum (surcharge below 0.2 mm or under a 0.45 mm via); the 0.1 mm hole option needs a board <= 1 mm.
 
-Outline: the side board of the one-piece tray, from mechanical/monolith_shell.py (sb_* values, also written to
-mechanical/monolith_side_pcb.dxf): 43.2 mm wide, its bottom corners notched around the tray's screw pillars, centred on
-(100, 100). KiCad x = the tray's y (left = the C1 / PACK- side), KiCad y = down the pack (top edge = the port end).
-F.Cu faces the cup wall (outer face), B.Cu faces the cells. The outline leaves gaps for the connector notches
-(PORTS_X), and place_ports() puts J401/J501 there.
+Outline: the side board in the cup (the one-piece tray it was drawn for on 2026-10-18 is retired), from
+hardware/mechanical/monolith_shell.py (sb_* values; the same run writes the live outline DXF,
+hardware/mechanical/monolith_side_pcb.dxf): 43.2 mm wide, its bottom corners notched (once round the tray's screw
+pillars; nothing uses the notches in the cup), centred on (100, 100). KiCad x = the shell's y (left = the C1 / PACK-
+side), KiCad y = down the pack (top edge = the port end). F.Cu faces the cup wall (outer face), B.Cu faces the cells.
+The outline leaves gaps for the connector notches (PORTS_X), and place_ports() puts J401/J501 there.
 (History: 40.5 mm then 45.5 mm top-cap boards, 2026-10-17. The old bottom end board with the vent,
-monolith_bottom_pcb.dxf, is not this board; it was removed from the repo on 2026-10-29 and is in Production 5cf521e.)
+hardware/mechanical/retired/monolith_bottom_pcb.dxf, is not this board; monolith_shell.py still writes it into the
+git-ignored retired/ folder, and the last committed copy is at commit 5cf521e, removed from the repo on 2026-10-29.)
+
+Status (2026-11-13): the board on master is the ground-up re-layout (PR #66, 2026-11-10); the hand-routed board
+Logan approved is the same file at commit 8dd9eb6. Only --mech and --keepouts still make sense against either board,
+and both rewrite Monolith.kicad_pcb, so run them only when Logan asks for a board change. A plain run patches only a
+board with no copper (both boards have copper, so it stops unless --keep-copper is given); --force builds a new
+empty board from the dev board and copies the dev board's DRU over Monolith.kicad_dru, whose KiCad 10 rules
+(2026-10-24 onward) would be lost. Both are a record of how P0 was started on 2026-10-17.
 
 Run: "C:/Program Files/KiCad/10.0/bin/python.exe" -I hardware/Production/tools/make_board.py [--force] [--keep-copper]
      ... make_board.py --mech        (only places the sense wire holes, PACK wire holes, front-cell SMD NTCs and peg holes, after Update PCB
@@ -189,7 +198,7 @@ def place_ports(path):
 
 
 def place_mech(path):
-    """Put the five slots (J109-J111, J115, J116) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes(),
+    """Put the five sense wire holes (J109-J111, J115, J116; plated slots until 2026-10-24) at sb_slots(), the PACK wire holes (J108, J112) at sb_pack_holes(),
     the front-cell SMD NTCs (TH101, TH104) at sb_ntc_smd() and the four carrier peg holes (H101-H104) at CUP_PEGS,
     from mechanical/monolith_shell.py: F.Cu, 0 deg (NTCs on B.Cu, 90 deg), locked. Only moves those footprints; run after Update PCB
     from Schematic, with the board closed in KiCad (or reload it afterwards)."""
@@ -236,7 +245,7 @@ def keepout_list():
         (xa, ya), (xb, yb) = k(y0, z1), k(y1, z0)
         return rect(xa, ya, xb, yb)
     out = []
-    # (no KO_F_cup_vent: the cup has no vent since 2026-10-28)
+    # (no KO_F_cup_vent: the vent left the board-face wall on 2026-10-28; since 2026-10-31 it is an ePTFE patch on the cap, nothing on the board)
     # (no KO_F_above_antenna: Logan removed it from the board on 2026-10-23)
     # both faces: the top edge bears on the top wall's inside face beyond |x| = SB_STOP_Y0
     for side, (x0, x1) in (("L", (CX - HALF_W, CX - M.SB_STOP_Y0)), ("R", (CX + M.SB_STOP_Y0, CX + HALF_W))):

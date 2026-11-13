@@ -1,6 +1,6 @@
 # Spot welding the P0 pack
 
-How the cells get welded: the welder, the strip, the recipe, and how to qualify a weld before the real pack. It goes with `p0-assembly.md`, which gives the build order. Decided with Logan on 2026-10-23 and 2026-10-24. Nothing has been welded yet, so the settings below are starting points to confirm on coupons.
+How the cells get welded: the welder, the strip, the recipe, and how to qualify a weld before the real pack. It goes with `p0-assembly.md`, which gives the build order. Decided with Logan on 2026-10-23 and 2026-10-24. Nothing has been welded yet, so the settings below are starting points to confirm on test welds.
 
 ## Welder: AWithZ P20B
 
@@ -23,11 +23,11 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 
 ## Weld qualification (before the real pack)
 
-1. **Coupons.** Two spare 65E cells from the same order, and the same strip roll. Weld both ends: the + cap and the can bottom behave differently.
+1. **Test cells.** Two spare 65E cells from the same order, and the same strip roll. Weld both ends: the + cap and the can bottom behave differently.
 2. **Find the window.** Start low and step up, with a double pulse and a short preheat. Note the lowest setting that passes the peel test, and the setting where the can blackens, dents or spits. Use a setting about a third of the way up from the lowest pass.
 3. **Peel test.** Pull the strip off at 90° with pliers. A pass tears the nickel around the nugget and leaves the nugget on the cell. A fail pops off clean.
 4. **Resistance.** Four-wire each test joint at 5 A and write down the mΩ, so the pack's joints can be compared with it.
-5. **Real fixture.** A last coupon through a carrier fit print, so the pen angle and pressure match the real job.
+5. **Real fixture.** A last test weld through the first printed carrier (there is no separate fit print), so the pen angle and pressure match the real job.
 6. **Pack welds.** Two pulses per cell end, spaced across the strip. Dress or replace the pen tips when they mushroom. Four-wire every series and PACK joint afterwards, and again after the drop and vibration tests.
 7. **Rework.** A failed joint gets new strip on a fresh spot. Never re-weld the same spot more than once.
 
@@ -37,6 +37,6 @@ How the cells get welded: the welder, the strip, the recipe, and how to qualify 
 - **Sense wires (2026-10-24):** all three cell taps are 28 AWG XL-ETFE wires, soldered to the nickel on the bench before it goes near a cell, so no solder iron touches a cell. CELL2 solders to the middle of the bottom strip (C2+ / C3−), which sits under the frame, not under a window, and its wire lies in the channel in the bottom frame. CELL1 and CELL3 solder under the tongue ends of the top strips, outside the frame. Those joints are 8 mm or more from the nearest weld spot.
 - **Before the first weld:** fish-paper rings on the four + ends (C1 and C3 top, C2 and C4 bottom) and the foam preload rings in the bottom frame's pockets (`p0-assembly.md`, step 1). Keep the pens on the + cap inside the ring; a weld through the fish paper chars it.
 - Once the first strip is on, the cells are live. Keep the pens from bridging two cells, and cap every loose wire end.
-- To confirm on the first carrier fit print: that a 0.2 × 10 mm strip slides into the frame gap, and that the pens sit flat through a 1.6 mm deep, 14 mm window.
+- To confirm on the first printed carrier: that a 0.2 × 10 mm strip slides into the frame gap, and that the pens sit flat through a 1.6 mm deep, 14 mm window.
 
 The comparison of the PACK tail options (plain nickel, bimetal copper, wire) is drawn to scale in [`docs/archive/pack-tail-options.html`](../archive/pack-tail-options.html) (archived: it predates the decision and still marks option A as recommended). P0 takes option C, the wire tails (2026-10-24): solder the wires to the PACK pads before the pads are welded, and keep every weld spot at least 3 mm from the solder.

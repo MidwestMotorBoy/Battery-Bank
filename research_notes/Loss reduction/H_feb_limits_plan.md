@@ -1,5 +1,8 @@
 # FEB 21700G: charge cap and temperature derating plan (2026-10-21)
 
+_Dated snapshot (2026-10-21): a cell study replaced by the BAK N21700CX-65E, adopted on 2026-10-23. Current cell figures: [`docs/spec.md`](../../docs/spec.md)._
+
+
 The owner chose energy over bursts and leans toward the FEB 21700G (6.5 Ah, 93.6 Wh pack; see `G_feb_21700g.md`). This is the plan for keeping the pack inside the cell's limits. Model and sheet: `research_notes/Ground-up mechanical concepts/model/feb_limits.py` / `feb_limits.png`. Simulated numbers are estimates.
 
 ## The cell's limits ([diy500amp listing](https://diy500amp.com/products/feb-21700-battery-cell-6500mah-13a-ultra-high-capacity-energy-cell?variant=42624877330503))

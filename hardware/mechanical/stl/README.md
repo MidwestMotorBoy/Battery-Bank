@@ -4,8 +4,9 @@ All files are in millimetres and in the pack's own frame (z along the cells, por
 when files are imported together. Files with several copies of a part (rails, spacers) hold every copy in its fitted
 position. Lay them out on the build plate yourself, or ask JLC3DP to print the bodies as separate parts.
 
-`python monolith_cup.py stl` and `python monolith_coupons.py` (in `hardware/mechanical/`) write these files. Don't
-move them by hand: the scripts put each part in its material's folder (`STL_MAT` in `monolith_cup.py`).
+`python monolith_cup.py stl` (in `hardware/mechanical/`) writes these files. Don't move them by hand: the script puts
+each part in its material's folder (`STL_MAT` in `monolith_cup.py`). The files match the model at commit c9b707f
+(2026-11-12: 0.3 mm chamfer on the cap's overtravel post tops), regenerated and checked byte for byte on 2026-11-13.
 
 ## `MJF_PA12/`: JLC3DP, MJF PA12-HP nylon
 
@@ -16,15 +17,16 @@ move them by hand: the scripts put each part in its material's folder (`STL_MAT`
 | `monolith_cup_carrier.stl` | Cell carrier (1) | 1 | |
 | `monolith_cup_rails.stl` | Board rails (2) | 2 | Both in one file; one rail per side (bottom and top block joined by a spine since 2026-11-11). |
 | `monolith_cup_spacer.stl` | Post spacers (10) | 4 | All four in one file. Ø4 × 3.3 mm with crush ribs in the bore (2026-11-03; TPU sleeves before). |
-| `coupons/monolith_coupon_A_seal_bore_ladder.stl` | Fit coupon A | 1 set | Not ordered (Logan, 2026-11-07: the real parts are ordered directly); kept for a reprint question. |
-| `coupons/monolith_coupon_B1_cup_mouth.stl` | Fit coupon B1 | 1 set | |
-| `coupons/monolith_coupon_B2_cap.stl` | Fit coupon B2 (the real cap) | 1 set | |
-| `coupons/monolith_coupon_C1_carrier.stl` | Fit coupon C1 (the real carrier) | 1 set | |
-| `coupons/monolith_coupon_C2_rails.stl` | Fit coupon C2 (the real rails) | 1 set | |
-| `coupons/monolith_coupon_C3_spacers.stl` | Fit coupon C3 (the real post spacers) | 1 set | |
 
 Order these in PA12-HP, the material the fit checks assume, in grey or dyed black. Don't use spray paint: JLC's paint
 is 0.1–0.2 mm thick, which is more than the USB-C seal bores and the O-ring groove can take.
+
+### No fit coupons
+
+There are no fit coupons: Logan dropped them on 2026-11-07, because the real parts cost about the same, so the first
+cup, cap and core are the fit test (`ordering/README.md`, H01). The coupon STLs were removed from the repo on
+2026-11-13. `monolith_coupons.py` still writes them (into a git-ignored `coupons/` folder here) if a test piece is ever
+wanted.
 
 ## `TPU_95A/`: FDM, TPU 95A (at home or JLC3DP)
 
@@ -38,7 +40,7 @@ is 0.1–0.2 mm thick, which is more than the USB-C seal bores and the O-ring gr
 
 | File | Part | What it really is |
 |---|---|---|
-| `monolith_cup_oring.stl` | O-ring (13) | 2.0 mm silicone or NBR O-ring, bought (parts tracker). |
-| `monolith_cup_foam.stl` | Preload rings (5) | Cut from silicone sponge sheet with hollow punches. |
-| `monolith_cup_filler.stl` | Gap filler (8) | Parker GEL 30, dispensed. |
+| `monolith_cup_oring.stl` | O-ring (13) | 58 × 54 × 2 mm NBR O-ring, bought (parts tracker H07). The file is the ring as squeezed in its groove. |
+| `monolith_cup_foam.stl` | Preload rings (5) | Cut from 1 mm EVA foam sheet with hollow punches (parts tracker C09; silicone sheet until 2026-10-31). |
+| `monolith_cup_filler.stl` | Gap filler (8) | Parker GEL 30, dispensed: two zones, about 1.9 g each (3.8 g per pack, model value). |
 | `monolith_cup_vent.stl` | Pressure vent (19) | 12 mm adhesive ePTFE patch, bought. |

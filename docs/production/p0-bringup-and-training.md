@@ -6,8 +6,8 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 
 - **SWD:** XDS110 (LP-MSPM0G3519 LaunchPad) on J301. **Use a `.ccxml` with Power Selection = "Target supplied power"**, not the LaunchPad's `lp_em_cc2340r53_xds110.ccxml`. That one is set to "Probe supplied power", and the probe then drives 3.3 V on pin 1 (measured 2026-10-20), which is J301 VCC, the board's 3V3 rail. Power the board from its own pack.
 - **Gauge:** EV2400 (clone) with TI BQStudio on J302.
-- **Cable:** one Tag-Connect TC2030-IDC-NL serves both J301 and J302; its 2×3 0.1″ end takes the jumper wires. A TC2030-CLIP only works on the bare board: once the board is on the carrier, the cells are behind it, and two of J302's guide holes sit over the right-bottom rail block (check the plug seats; for long training runs tack wires to J302 pads 1 / 5 / 6 instead).
-- **TPS25751 loader:** a 3.3 V USB-I2C adapter (FT232H, MCP2221A or similar) on J302 pins 1 SDA / 6 SCL / 5 GND, with pin 3 NRST held low so the MCU stays off the bus, plus a host script that loads each controller's bundle (PBMs / PBMc, then FLad / FLwd / FLvy, `docs/firmware/tps25751-eeprom-programming.md`). BQStudio has no TPS25751 patch flow. Neither the bundles nor the script exist yet (2026-11-07): both are needed before stage 3.
+- **Cable:** one Tag-Connect TC2030-IDC-NL serves both J301 and J302; its 2×3 0.1″ end takes the jumper wires. A TC2030-CLIP only works on the bare board: once the board is on the carrier, the cells are behind it, and two of J302's guide holes sit over the bottom block of the right-hand rail (check the plug seats; for long training runs tack wires to J302 pads 1 / 5 / 6 instead).
+- **TPS25751 loader:** a 3.3 V USB-I2C adapter (FT232H, MCP2221A or similar) on J302 pins 1 SDA / 6 SCL / 5 GND, with pin 3 NRST held low so the MCU stays off the bus, plus a host script that loads each controller's bundle (PBMs / PBMc, then FLad / FLwd / FLvy, `docs/firmware/tps25751-eeprom-programming.md`). BQStudio has no TPS25751 patch flow. Neither the bundles nor the script exist yet (checked 2026-11-13): both are needed before stage 3.
 - **Log output:** a 3.3 V USB-UART adapter, RX on J301 pin 6 (UART_TX = CC2340 DIO18, added 2026-11-07), GND on J301 pin 5.
 - **Power:**
     - current-limited bench supply (≥ 150 W for the 100 W reverse test);
@@ -22,6 +22,8 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 
 ## Pads on P0
 
+The refdes and pin numbers below hold for both layouts of the P0 schematic. KiCad coordinates are for the hand-routed board Logan approved (`Monolith.kicad_pcb` at `8dd9eb6`, the one with order files); the ground-up re-layout on `master` since 2026-11-10 keeps the wire holes, J301 / J302 and the NTCs where they were, but other parts moved (noted in the table).
+
 | Pads | Use |
 |---|---|
 | J301 (TC2030-NL, "SWD") | CC2340 flash and debug: VCC, SWDIO, NRST, SWCLK, GND |
@@ -31,7 +33,7 @@ _Started 2026-10-18. The dev board is skipped: P0 of the production board is the
 | J115 / J116 | Gauge Kelvin 1N / 4P: Ø0.8 mm plated holes for 28 AWG wires (TE 55A0111-28-9) |
 | J117 / J118, J119 / J120 | Back-cell NTC wires: TS2 and its return, TS3 and its return (returns on CELL_1N). The front-cell NTCs are TH101 / TH104 on the board |
 | J113 / J114 | PACK_P / GND, 20 AWG load wires for the learning-cycle discharge, and the bench-supply input for bring-up without cells |
-| TP113 (WAKE) + PACK_P | Gauge wake: TP113 (108.46, 114.81) is CELL_P through R118 4.7 kΩ. TP106 is 30 mm away, so bridge TP113 to C444 pad 1 (PACK_P, 103.30, 114.20, 5.2 mm away) or use a jumper lead, and hold it ≥ 0.5 s |
+| TP113 (WAKE) + PACK_P | Gauge wake: TP113 (108.46, 114.81) is CELL_P through R118 4.7 kΩ. TP106 is 30 mm away, so bridge TP113 to C444 pad 1 (PACK_P, 103.30, 114.20, 5.2 mm away) or use a jumper lead, and hold it ≥ 0.5 s. On the ground-up board TP113 is at (92.45, 130.75) and C444 at (119.05, 84.70), far apart: use a jumper lead to any PACK_P point |
 | TP109, TP301 | GND, 3V3 |
 | TP412 / TP512 | GND per port |
 | Port probe points (no test pads; TP401–TP406 / TP501–TP506 are not on the board) | VBUS C406.1 / C506.1, PPHV R424.1 / R524.1, PP5V C443.1 / C543.1, REGN D410.2 / D510.2, DRV_SUP C411.1 / C511.1, LDO_3V3 C404.1 / C504.1, SW1 / SW2 on the L401 / L501 pads, GND C423.2 / C523.2 |
@@ -149,7 +151,7 @@ Steps:
 There is no single P0 list for the TPS25751 bundle yet, and `docs/devboard/bringup-config-checklist.md` is dev-board only: its GPIO6 liquid-detect line, GPIO4/5 ADC, GPIO7 output and EN_ICHG_PIN = 1 would break P0. The P0 items so far:
 
 - **TPS25751 (both ports):** liquid detection and BC1.2 off; GPIO0/1/2/4/5/7/11 no event, no output, no ADC (they are tied to GND); GPIO3 = fault_input_event_port1 (TPD6S300 FLT); GPIO6 = output, initial high (DRV9_OFF, 9 V drive off); PPHV soft-start 0 or 1 (usb_port sheet note 9); DIS_CE_PIN 0 (note 11); DIS_STAT_PINS 1 (note 13).
-- **BQ25756:** VFB_REG 0x0F or 0x0E (16.80–16.82 V; the POR value gives 16.85 V and up to about 17.0 V at tolerance); EN_ICHG_PIN 0 with ICHG_REG 3.25 A (R413 stays 11.8 kΩ, so a watchdog reset falls back to a 4.07–4.45 A pin cap); EN_JEITA 0; WATCHDOG 00 unless the TPS25751 feeds it; EN_CHG_BIT_RESET_BEHAVIOR (REG0x17 bit 3) 0; ITERM / IPRECHG about 0.25–0.5 A. ICHG_REG is clamped at 0.4 A minimum, so firmware uses EN_CHG / CHG_INH below that.
+- **BQ25756:** VFB_REG 0x0F or 0x0E (16.80–16.82 V; the POR value gives 16.85 V and up to about 17.0 V at tolerance); EN_ICHG_PIN 0 with ICHG_REG 3.25 A (R413 stays 11.8 kΩ, so a watchdog reset falls back to a 4.07–4.45 A pin cap); EN_JEITA 0; IBAT_REV 10 A (the reverse-mode backstop in `docs/spec.md`; the POR value is 20 A, and the dev-board plan held it at 5 A until the 9 V gate-drive test passed); WATCHDOG 00 unless the TPS25751 feeds it; EN_CHG_BIT_RESET_BEHAVIOR (REG0x17 bit 3) 0; ITERM / IPRECHG about 0.25–0.5 A. ICHG_REG is clamped at 0.4 A minimum, so firmware uses EN_CHG / CHG_INH below that.
 
 ## 4. Checks that the dev board would have done
 

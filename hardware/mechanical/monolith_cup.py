@@ -9,8 +9,10 @@ Geometry comes from monolith_shell.py (cells, board, nickel, slots, ports), so t
 are the same as the side tray's: the tray-only parts (wedge, ring carrier, TPU cage and frame, cover, standoffs,
 fish paper, EVA hold-downs, crush caps) are not used.
 Needs numpy, pillow, manifold3d (the mechanical venv).
-Run: python monolith_cup.py [all|stl|exploded|sections|compare]
--> stl/<material>/monolith_cup_*.stl, monolith_cup_exploded.png, monolith_cup_sections.png, monolith_cup_vs_tray.png"""
+Run: python monolith_cup.py [all|stl|exploded|sections|compare|none]   (every mode prints the checks, part masses and size;
+none stops there)
+-> stl/<material>/monolith_cup_*.stl, monolith_cup_exploded.png, monolith_cup_sections.png, and monolith_cup_vs_tray.png (git-ignored: a history sheet against the retired side tray)
+(the 2026-10-21 comparison with the retired side tray; it needs the retired meshes, so run monolith_parts.py first)"""
 import os, sys, struct, math, numpy as np
 import manifold3d as M3
 from PIL import Image
@@ -32,8 +34,8 @@ R_FRONT = 4.0                       # bore corner radius on the board side (radi
 TOP_T = 1.85                        # top wall, thickened inward (#8): the USB-C seal ring ends 0.35 inside it, and the board's
 Z_TOP1 = S.SB_H                     # top edge is a 0.1 mm backstop under it
 Z_TOP0 = Z_TOP1 - TOP_T
-USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.12-0.18 radial target: pick from the bore-ladder
-                                    # coupon), a rounded rectangle like the ring (USB_RING_R), not a stadium
+USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.12-0.18 radial target; no coupons since 2026-11-07,
+                                    # the first cup is the fit test), a rounded rectangle like the ring (USB_RING_R), not a stadium
 # Housing pocket (real-board check, 2026-10-30): the connector's hard front housing (d 1.5-2.5 behind the face) reaches
 # 0.35 into the top wall and is wider than the seal bore at its corners (~0.5 mm), so the wall's inside face is pocketed
 # round it up to just under the ring (plus the board's z float), and the ring's lead-in starts there. USB_LEAD is now
@@ -159,12 +161,13 @@ RAIL_SPINE_Y, SPINE_CAN_GAP = (7.0, 8.2), 0.15   # mid-board prop (2026-11-11, 3
                                     # filler, 0.25 off C456 / C521), flush with the rails under B.Cu and following the front can
                                     # SPINE_CAN_GAP off. A back-face drop bowed the board 1.2 mm into the cells there (5,500 ue);
                                     # the spine stops it on the cans. Costs ~12 % of the filler's B.Cu-to-can conductance
-BCU_LAND = (0.25, 16.4, 50.0, 58.0)   # 0.45 tried in run 8 (2026-11-11): edge peak unchanged (~4,000 ue), cradles yielded, C524 grazed the wall
+BCU_LAND = (0.25, 16.4, 50.0, 58.0)   # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
+                                    # front-can cradles up to the board's long edges on the B.Cu side, outboard of the filler (|y| <= 16); above C421 / C556 (z <= 49.1)
+                                    # because the core slides in along +z and every B.Cu part must pass under them.
+                                    # A 0.45 gap was tried in run 8 (2026-11-11): edge peak unchanged (~4,000 ue), cradles yielded, C524 grazed the wall
 BCU_LAND_RAMP = (4.0, 0.5)         # the lands' lower end ramps off B.Cu over this z length to this extra gap, on a parabola that
                                    # meets the land tangent (run 5: the board's long edges peaked at ~4,200 ue at the lands' square
-                                   # lower end; run 6's 2 mm straight ramp only moved that peak to its upper kink) # B.Cu edge lands (2026-11-11): gap under B.Cu, inner |y|, z span. On the cup, from the
-                                    # front-can cradles up to the board's long edges on the B.Cu side, outboard of the filler (|y| <= 16); above C421 / C556 (z <= 49.1)
-                                    # because the core slides in along +z and every B.Cu part must pass under them
+                                   # lower end; run 6's 2 mm straight ramp only moved that peak to its upper kink)
 INSUL = (10.6, 4.7, 0.2)           # fish-paper ring: outer r, inner r (measure the BAK + cap first), thickness
 FOAM_R, FOAM_POCKET = (WIN_R + 0.3, CR - 1.2), 0.6   # foam ring radii, its pocket depth in the bottom frame (not under
                                     # the PACK pads: C1 / C4 keep only the half away from the board)
@@ -621,7 +624,7 @@ PARTS = [(1, 'Cell carrier: frames, spines, front-back webs', 'MJF PA12', 'carri
          (10, 'Post spacers (4), crush-rib bores', 'MJF PA12', 'spacer'),
          (11, 'Cup: 5 closed sides, USB-C seal bores in the top wall', f'MJF PA12, {WALL} / {WALL_BF}', 'cup'),
          (12, 'Pad on the cap: preloads the core', 'TPU 95A, 15 % gyroid', 'pad'),
-         (13, 'O-ring, 2.0 mm cord (radial)', 'silicone 60A', 'oring'), (14, 'Bottom cap: plate, skirt, posts, feet', 'MJF PA12', 'cap'),
+         (13, 'O-ring, 2.0 mm cord (radial)', 'NBR, 58 x 54 x 2', 'oring'), (14, 'Bottom cap: plate, skirt, posts, feet', 'MJF PA12', 'cap'),
          (15, 'Screws M2 (2), thread-forming, below the seal', 'stainless', 'screw'),
          (16, 'Bottom bumper, mouth band + label lip', 'TPU 95A', 'bumpb'), (17, 'Top bumper, port well, port numbers', 'TPU 95A', 'bumpt'),
          (18, 'Wrap label, edges under the bumpers', 'vinyl + laminate', 'label'),
@@ -662,7 +665,8 @@ def wall_deflection(t, p_kpa, a=37.5, b=80.0):
     alpha 0.1106), E 1700 MPa for MJF PA12: the upper bound the review used"""
     return 0.1106 * p_kpa * 1e-3 * a**4 / (1700 * t**3)
 def sealed_pressure(p_kpa):
-    """no vent (removed 2026-10-28): the cup keeps the air it was closed with, so at altitude it pushes out by p_kpa
+    """the pack with its vent clogged or taped (the ePTFE patch normally equalises it): the cup keeps the air it was closed
+    with, so at altitude it pushes out by p_kpa
     (~25 kPa in an airliner, ~40 kPa at 4300 m, ~50 kPa there with the pack warm). Flat walls simply supported (Roark,
     b/a ~2: beta 0.61, linear, so the deflection is an upper bound), and the cap's push carried by the two M2 screws
     shearing the ligament under their holes in the cup wall (two planes). PA12 MJF: ~48 MPa tensile, creeps above ~15."""
@@ -963,7 +967,7 @@ def sheet_sections(A):
     sh.text(ob[0] + pxb*(Z_MOUTH - CAP_T), 640, 'bottom (cap)', 15, fill=MUTED, anchor='mm'); sh.text(ob[0] + pxb*Z_TOP1, 640, 'port end', 15, fill=MUTED, anchor='mm')
     sh.callouts([(tq(Z_TOP1 - 0.5, PORT_X), 'Ports seat in the closed\ntop wall as the core is\npushed home: no seam here'),
                  (tq(FR_T0 + 0.6, -6), 'Carrier top frame\non the top wall')], 2320, 'r', 200, size=14)
-    sh.callouts([(tq(Z_MOUTH - CAP_T/2, 0), 'Cap plate on the rim (hard stop);\nposts stop the core 0.6 short of the skirt'),
+    sh.callouts([(tq(Z_MOUTH - CAP_T/2, 0), f'Cap plate on the rim (hard stop);\nposts stop the core {SKIRT_GAP - OT_GAP:.1f} short of the skirt'),
                  (tq((Z_MOUTH + FR_B0)/2, -8), 'TPU pad: preloads the core\n(printed 1.2 proud)'),
                  (tq(sum(GROOVE_Z)/2, X_IN - 0.6), 'O-ring in the skirt\n(radial, ~25 %)')], 1660, 'l', 200, size=14)
     pxd, (y0, y1, z0, z1) = 15.0, (-27.5, 27.5, Z_MOUTH - 3.0, Z_MOUTH + 12.0); dw, dh = int((y1 - y0)*pxd), int((z1 - z0)*pxd)
@@ -1005,7 +1009,7 @@ def sheet_compare(A, m):
     tt, tc = sum(mt.values()), sum(m.values())
     wt, dt, Lt = RR.SIZE(); su = size(A)
     sh = RR.Sheet(2700, 1300)
-    sh.header('Side tray (retired) vs the cup (current)', 'Same FEB 21700G cells, board outline, slots, nickel tongues and BLE position. '
+    sh.header('Side tray (retired) vs the cup (current)', 'Same 75 g 21700 cells, board outline, slots and nickel tongues (snapshot of 2026-10-21; the tray is retired). '
               'The cup drops the aluminium cover, the wedge, the TPU cage and frame, the fish paper and the standoffs.')
     R = camera((1.0, -1.1, 0.65)); pxs = 3.9
     for title, asm, cx in (('Side tray (retired)', At, 330), ('Cup (current)', A, 900)):
@@ -1025,13 +1029,13 @@ def sheet_compare(A, m):
     sh.panel_title(40, 760, 'Weight by function (g)', 1240)
     sh.table(40, 810, ['', '>Tray', '>Cup', '>Cup - tray'], rows, [440, 200, 200, 220], 15, bold_last=True, rh=36)
     rows2 = [['Outside (mm)', f'{wt:.1f} x {dt:.1f} x {Lt:.1f}', f'{su[0]:.1f} x {su[1]:.1f} x {su[2]:.1f}'],
-             ['Seal joints', 'bead round the cover, 2 port rings, vent', '1 radial O-ring, 2 port rings, no vent'],
+             ['Seal joints', 'bead round the cover, 2 port rings, vent', '1 radial O-ring, 2 port rings, ePTFE vent patch'],
              ['Core install', 'drop in, lift 2.5 mm, wedge', 'push in from the bottom, cap on'],
              ['Heat path for bursts', 'board -> 1 mm Al cover', 'board -> vias + filler -> cells, webs'],
              ['100 W from full (model)', '~5 min at 100 W', '~9 min (~10 with the P0 loss cuts)'],
              ['88 W charge, empty to full', '~108 min', '~127 min (~120 with the P0 cuts)'],
              ['BLE antenna', 'Al cover over the board', 'no metal at all'],
-             ['Label', 'laser-marked on the Al cover', 'open: emboss, or a small plate']]
+             ['Label', 'laser-marked on the Al cover', 'printed vinyl wrap label']]
     sh.panel_title(1320, 760, 'Side by side', 1340)
     y2 = sh.table(1320, 810, ['', 'Tray', 'Cup'], rows2, [330, 500, 510], 14, rh=36)
     sh.text(1320, y2 + 14, 'Thermal rows: research_notes/.../model/thermal_rundown.py (FEB cells, 25 C ambient, estimates).', 13, fill=MUTED)

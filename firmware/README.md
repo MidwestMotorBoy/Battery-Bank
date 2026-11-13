@@ -1,8 +1,8 @@
 # Monolith MCU firmware
 
-Firmware for U301, a TI CC2340R5MODA (BLE, 512 KB flash / 64 KB RAM), on the production P0 board. Until P0 exists it runs on the **LP-EM-CC2340R53 LaunchPad**, which has the same memory. The plan for that phase is [`../docs/devboard/launchpad-cc2340-plan.md`](../docs/devboard/launchpad-cc2340-plan.md). The dev board was skipped on 2026-10-18 and never built; its `devboard` target stays because its pin map is P0's plus the LED and UART, and a `boards/p0.syscfg` is still to write (`docs/spec.md`, Firmware). Design notes: [`../docs/firmware/`](../docs/firmware/).
+Firmware for U301, a TI CC2340R5MODA (BLE, 512 KB flash / 64 KB RAM), on the production P0 board. Until P0 exists it runs on the **LP-EM-CC2340R53 LaunchPad**, which has the same memory. The plan for that phase is [`../docs/devboard/launchpad-cc2340-plan.md`](../docs/devboard/launchpad-cc2340-plan.md). The dev board was skipped on 2026-10-18 and never built; its `devboard` target stays as the template for P0, whose pin map is the dev board's without the LED (DIO12) and the UART RX (DIO20). A `boards/p0.syscfg` is still to write ([`../docs/spec.md`](../docs/spec.md), Firmware). P0's pins are in the notes on `hardware/Production/mcu.kicad_sch` and in the spec's MCU pin table. Design notes: [`../docs/firmware/`](../docs/firmware/).
 
-**Status (2026-10-20):** tools installed on this machine (CCS 21.0.1, LPF3 SDK 9.23.00.27, UniFlash 9.7.0). The skeleton builds with no warnings: about 10 KB flash and 10.6 KB RAM, 8 KB of it heap. It runs on the LaunchPad: Day 1 (flash and UART log) and plan tests T1, T3, T5 and T6 (TI's `basic_ble`, see [BLE build](#ble-build)) passed on 2026-10-20; results are in the plan.
+**Status (2026-10-20, unchanged on 2026-11-13):** no P0 board has been built, so the firmware has only run on the LaunchPad. Tools installed on this machine (CCS 21.0.1, LPF3 SDK 9.23.00.27, UniFlash 9.7.0). The skeleton builds with no warnings: about 10 KB flash and 10.6 KB RAM, 8 KB of it heap. It runs on the LaunchPad: Day 1 (flash and UART log) and plan tests T1, T3, T5 and T6 (TI's `basic_ble`, see [BLE build](#ble-build)) passed on 2026-10-20; results are in the plan.
 
 ## Install (once)
 
@@ -60,6 +60,8 @@ The output goes to `build/launchpad/batterybank_launchpad.out`, with a `.hex` an
 gmake flash
 ```
 
+**P0 (U301 CC2340R5MODA):** there is no `p0` target yet. When there is, flash over J301 (Tag-Connect TC2030-NL) with a `.ccxml` set to "Target supplied power", not `targets/lp_em_cc2340r53_xds110.ccxml`: that one has the probe drive 3.3 V into the board's 3V3 rail (measured 2026-10-20). Logs come out on J301 pin 6 (UART_TX on DIO18, UART0 TX, since 2026-11-07; there is no RX), into a 3.3 V USB-UART adapter's RX, with GND on J301 pin 5. Don't plug the gauge cable from J302 into J301. Details: [`../docs/production/p0-bringup-and-training.md`](../docs/production/p0-bringup-and-training.md).
+
 **Dev board (U301 CC2340R5MODA; never built, kept as the template for P0):** same probe, same `.ccxml`, J102 → cable → J301. Power the board from a current-limited bench supply on J104 first (`docs/devboard/bringup-config-checklist.md` §1); the probe must not be the only thing holding up 3V3.
 
 ```bash
@@ -96,7 +98,7 @@ gmake -C ble clean
 | `tools.mak.example` | Tool paths. Copy it to `tools.mak`, which git ignores |
 | `boards/launchpad.syscfg` | LaunchPad pins (from TI's board file) and CCFG |
 | `boards/launchpad_bldr.syscfg` | LaunchPad with the SDK-default bootloader CCFG: the T1 positive control (`gmake BOARD=launchpad_bldr`). Not for normal use |
-| `boards/devboard.syscfg` | Dev-board pin map from `docs/devboard/cc2340-pin-budget.md`: DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N, UART0 on DIO18/20, I2C0 on DIO6/8. Every output starts in its safe state |
+| `boards/devboard.syscfg` | Dev-board pin map from `docs/devboard/cc2340-pin-budget.md`: DIO12 LED, DIO24 CHG_INH, DIO3/4 EN_5V1/2, DIO21 3V3_SLEEP, DIO11 IRQ_N, UART0 on DIO18/20 (J302 on the dev board), I2C0 on DIO6/8. Every output starts in its safe state. P0 uses the same pins except DIO12 and DIO20, which are spare there, and its UART_TX goes to J301 pin 6 |
 | `app/` | Application sources |
 | `targets/` | `.ccxml` target configurations saved from UniFlash |
 | `ble/` | TI's `basic_ble` example and a wrapper `Makefile` (see [BLE build](#ble-build)) |

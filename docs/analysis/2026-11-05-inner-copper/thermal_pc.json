@@ -1,0 +1,16 @@
+{
+ "_source": "Thermal runs of 2026-11-05 on Logan's PC (run_oz.py, then analyze_oz.py). The oz_metrics.json they wrote stayed on the PC; these values are transcribed from the study note of 2026-11-05. 25 C ambient, d44 policy, TH101/TH104 at out29. dis100 = 100 W out of USB1 (port 1), dis100u2 = 100 W out of USB2 (port 2). Burst minutes have 20 s steps. The note gives energy in 40 min and hottest can as one value per weight without naming the port, so they are kept apart here.",
+ "per_port": {
+  "dis100_oz0.5":   {"burst_min": 5.0,  "part_max": 59.4},
+  "dis100u2_oz0.5": {"burst_min": 5.33, "part_max": 60.2},
+  "dis100_oz1":     {"burst_min": 5.33, "part_max": 57.2},
+  "dis100u2_oz1":   {"burst_min": 5.67, "part_max": 57.9},
+  "dis100_oz2":     {"burst_min": 5.83, "part_max": 54.9},
+  "dis100u2_oz2":   {"burst_min": 6.0,  "part_max": 55.3}
+ },
+ "port_not_stated": {
+  "oz0.5": {"Wh40": 44.8, "can_max": 46.3},
+  "oz1":   {"Wh40": 45.5, "can_max": 46.2},
+  "oz2":   {"Wh40": 46.3, "can_max": 46.05}
+ }
+}
