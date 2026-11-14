@@ -1,5 +1,22 @@
 # Thermal: USB1 at 25 W and USB2 at 20 W at the same time (2026-10-31)
 
+> **Status (2026-11-13): run once on 2026-10-31, not rerun since.**
+>
+> - **Model.** The 3-D finite-volume BAK 65E pack model (`pack3d.py`) in its rev 7 form. The rev 7 form has the routed-copper losses (`cu.py` with `cu_losses_rev7.json`) and rev 7 edits to `pack3d.py` and `smd.py`: the RBAT, RAC and 5 V buck heat boxes, and the charger TS NTCs for the board ramp. The rev 7 files are in [`research_notes/Pack thermal BAK 65E/`](../../../research_notes/Pack%20thermal%20BAK%2065E/) (added to the repo on 2026-11-13; before that the repo copy was the 2026-10-28 version and `run_dual.py` could not run against it).
+> - **Copper losses.** The hand-routed board at rev 7 (Layout-P0, 2026-10-30), from the DC grid solver: per port, the battery-side copper (PACK_P, BAT_SNS_P, GND return) and the USB-side copper (VBUS, PPHV, AC_SNS_N). The board is 6 layers, 2 oz outer and 0.5 oz inner, as ordered (in-plane `K_BOARD_IN` 38 W/mK). Since 2026-11-13 the design is the script-built board on `master` (commit `dd34285`); this study has not been rerun with its copper. That board's 100 W burst comparison is in `hardware/Production/groundup/compare/thermal/`.
+> - **Cup geometry.** The thermal model has its own voxel cup. It is not built from `monolith_cup.py`. It has:
+>   - 1.2 mm cup walls (`WALL`);
+>   - 2.0 mm bumper bands, 9 mm tall;
+>   - an 8 mm top slab and a 4 mm bottom slab (the bumpers before the 2026-10-31 mass trim, PR #46);
+>   - carrier rails under B.Cu only at z 4.6-23 and 56-79;
+>   - the gap filler between B.Cu and the two front cells over |y| 7-16, z 27-53.
+> - **Changes since that could matter thermally** (none has been run through this model):
+>   - The cup side walls went from 1.2 to 1.6 mm (PR #50, 2026-10-31).
+>   - The rail spines (2026-11-11, PR #69, from the 3D drop study [`../2026-11-11-drop-3d/`](../2026-11-11-drop-3d/README.md)) cross the gap-filler zone at |y| 7.0-8.2, z 25-55. They cost about 12 % of the filler's B.Cu-to-can conductance (`RAIL_SPINE_Y` comment in `monolith_cup.py`) and displace about 0.7 g of filler. This is the change most likely to move the result.
+>   - The bumpers are now 6 / 3 mm slabs at 30 % gyroid with 7 mm bands (PR #46, PR #50), and the cup mouth is a 2.4 mm band (PR #47).
+>   - PA12 features now touch the cans and the board edges: front-can cradles, edge lands and F.Cu lips (PR #61, 2026-11-03), and the B.Cu edge lands (PR #69).
+>   - The board-face wall has 0.7 mm pockets over L401 / L501.
+
 Both ports deliver at once, from full until empty: USB1 a 25 W device at 15 V, and USB2 a 20 W phone at 9 V, so 45 W total. The question is how hot the routed board and the pack get, and when the firmware has to cut power.
 
 **Short answer.** At 25 °C the pack runs the whole battery (118 min, 88.4 Wh) at the full 45 W. It cuts to 40 W only for the last 3 minutes. The hottest board part peaks at 51 °C, the hottest point in any cell at 45.7 °C, and the outside at 46.6 °C. At 35 °C the derate starts at 20 min and settles at 30 W (USB1 down to 10 W, USB2 kept at 20 W); the hottest part reaches 56 °C. At 40 °C USB1 is cut to 0 W for most of the run. Every part stays far below its rating: the limit that matters is the cells' 60 °C discharge limit, and the firmware holds the cells under 53 °C even at 40 °C. With the derate switched off at 35 °C (a firmware failure), the cells reach 55.4 °C and the hottest part 60.9 °C after two hours, which is still under the cell limit.
@@ -62,7 +79,7 @@ The model is the same one used for the routed-board review: `research_notes/Pack
 
 | File | What it is |
 |---|---|
-| `run_dual.py` | The seven runs. Copy it into the rev 7 model folder (the BAK 65E model plus `cu.py`, `smd.py`, `ntc.py`, `cu_losses_rev7.json`) and run `python run_dual.py` with `NPROC` set. Results go to `results/p0f/dual*.npz` (17–21 MB each, not in git). |
+| `run_dual.py` | The seven runs. Copy it into the model folder `research_notes/Pack thermal BAK 65E/` (the BAK 65E model with `cu.py`, `smd.py`, `ntc.py`, `cu_losses_rev7.json`) and run `python run_dual.py` with `NPROC` set. Results go to `results/p0f/dual*.npz` (17–21 MB each, not in git). |
 | `figs.py` | Every figure here and `summary.json`: `MODEL=<model folder> RENDER=<KiCad top render> python figs.py` |
 | `summary.json` | The numbers in the table, per run, including every part's peak temperature |
 

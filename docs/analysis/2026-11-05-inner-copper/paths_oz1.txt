@@ -1,0 +1,20 @@
+cub1 PACK_P Q102 R427 R 1.79 mOhm (edge-sum 1.79)
+cub1 /USB Port 1/BAT_SNS_P R427 Q402 R 0.62 mOhm (edge-sum 0.62)
+cub1 GND RS101 Q401 R 0.88 mOhm (edge-sum 0.88)
+cub1 total 3.29 mOhm tiles 118 top [(17, 38, np.float64(0.11)), (7, 40, np.float64(0.04)), (15, 40, np.float64(0.04)), (7, 34, np.float64(0.03))]
+cub2 PACK_P Q102 R527 R 1.12 mOhm (edge-sum 1.12)
+cub2 /USB Port 2/BAT_SNS_P R527 Q502 R 0.53 mOhm (edge-sum 0.53)
+cub2 GND RS101 Q501 R 0.84 mOhm (edge-sum 0.84)
+cub2 total 2.50 mOhm tiles 137 top [(-7, 40, np.float64(0.07)), (-5, 38, np.float64(0.06)), (-17, 40, np.float64(0.05)), (-3, 42, np.float64(0.04))]
+cuu1 /USB Port 1/VBUS J401 U401 R 1.22 mOhm (edge-sum 1.22)
+cuu1 /USB Port 1/PPHV U401 R424 R 0.37 mOhm (edge-sum 0.37)
+cuu1 /USB Port 1/AC_SNS_N R424 Q401 R 2.07 mOhm (edge-sum 2.07)
+cuu1 total 3.66 mOhm tiles 96 top [(11, 58, np.float64(0.1)), (3, 70, np.float64(0.07)), (7, 60, np.float64(0.05)), (7, 70, np.float64(0.05))]
+cuu2 /USB Port 2/VBUS J501 U501 R 1.11 mOhm (edge-sum 1.11)
+cuu2 /USB Port 2/PPHV U501 R524 R 0.33 mOhm (edge-sum 0.33)
+cuu2 /USB Port 2/AC_SNS_N R524 Q501 R 1.81 mOhm (edge-sum 1.81)
+cuu2 total 3.24 mOhm tiles 101 top [(-9, 70, np.float64(0.08)), (-11, 60, np.float64(0.06)), (-5, 70, np.float64(0.06)), (-13, 60, np.float64(0.05))]
+CELL /Cells and Gauge/CELL_P_RAW J112 F102 R 0.248 mOhm
+CELL /Cells and Gauge/CELL_P F102 Q101 R 1.291 mOhm
+CELL /Cells and Gauge/FET_MID Q101 Q102 R 0.089 mOhm
+CELL CELL_N J108 RS101 R 0.320 mOhm

@@ -1,0 +1,656 @@
+{
+ "/USB Port 1/SW1": {
+  "box": [
+   105.801,
+   112.879421,
+   87.271791,
+   109.591712
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 38.96,
+    "near": {
+     "/USB Port 1/ACN_F": {
+      "cells": 257,
+      "dmin": 0.15
+     },
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 605,
+      "dmin": 0.18
+     },
+     "/USB Port 1/BAT_SNS_P": {
+      "cells": 31,
+      "dmin": 0.4
+     },
+     "/USB Port 1/BTST1": {
+      "cells": 87,
+      "dmin": 0.3
+     },
+     "/USB Port 1/HIDRV1": {
+      "cells": 333,
+      "dmin": 0.1
+     },
+     "/USB Port 1/LG1": {
+      "cells": 246,
+      "dmin": 0.112
+     },
+     "/USB Port 1/TS": {
+      "cells": 79,
+      "dmin": 0.18
+     },
+     "GND": {
+      "cells": 510,
+      "dmin": 0.18
+     }
+    }
+   },
+   "In1.Cu": {
+    "area": 6.08,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 9,
+      "dmin": 0.5
+     },
+     "/USB Port 1/LG1": {
+      "cells": 42,
+      "dmin": 0.269
+     },
+     "GND": {
+      "cells": 3000,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In2.Cu": {
+    "area": 6.08,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 9,
+      "dmin": 0.5
+     },
+     "/USB Port 1/LG1": {
+      "cells": 59,
+      "dmin": 0.269
+     },
+     "GND": {
+      "cells": 53,
+      "dmin": 0.4
+     },
+     "PACK_P": {
+      "cells": 2498,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In3.Cu": {
+    "area": 6.08,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 2189,
+      "dmin": 0.206
+     },
+     "/USB Port 1/LG1": {
+      "cells": 42,
+      "dmin": 0.269
+     },
+     "GND": {
+      "cells": 53,
+      "dmin": 0.4
+     }
+    }
+   },
+   "In4.Cu": {
+    "area": 6.08,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 9,
+      "dmin": 0.5
+     },
+     "/USB Port 1/LG1": {
+      "cells": 42,
+      "dmin": 0.269
+     },
+     "GND": {
+      "cells": 2992,
+      "dmin": 0.206
+     }
+    }
+   },
+   "B.Cu": {
+    "area": 38.59,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 700,
+      "dmin": 0.206
+     },
+     "/USB Port 1/BAT_SNS_P": {
+      "cells": 191,
+      "dmin": 0.206
+     },
+     "/USB Port 1/LG1": {
+      "cells": 48,
+      "dmin": 0.25
+     },
+     "/USB Port 1/TS": {
+      "cells": 74,
+      "dmin": 0.206
+     },
+     "GND": {
+      "cells": 368,
+      "dmin": 0.206
+     }
+    }
+   }
+  },
+  "vias": 32,
+  "total_area": 101.87,
+  "C_pF": 21.6
+ },
+ "/USB Port 1/SW2": {
+  "box": [
+   110.514,
+   117.324,
+   87.4,
+   110.391529
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 37.51,
+    "near": {
+     "/USB Port 1/BAT_SNS_P": {
+      "cells": 821,
+      "dmin": 0.18
+     },
+     "/USB Port 1/BTST2": {
+      "cells": 125,
+      "dmin": 0.2
+     },
+     "/USB Port 1/HIDRV2": {
+      "cells": 62,
+      "dmin": 0.32
+     },
+     "/USB Port 1/LG2": {
+      "cells": 203,
+      "dmin": 0.15
+     },
+     "/USB Port 1/LODRV2": {
+      "cells": 96,
+      "dmin": 0.15
+     },
+     "/USB Port 1/SRP_F": {
+      "cells": 43,
+      "dmin": 0.25
+     },
+     "GND": {
+      "cells": 741,
+      "dmin": 0.141
+     }
+    }
+   },
+   "In1.Cu": {
+    "area": 6.63,
+    "near": {
+     "GND": {
+      "cells": 3549,
+      "dmin": 0.2
+     }
+    }
+   },
+   "In2.Cu": {
+    "area": 8.29,
+    "near": {
+     "/USB Port 1/BAT_SNS_P": {
+      "cells": 61,
+      "dmin": 0.15
+     },
+     "GND": {
+      "cells": 61,
+      "dmin": 0.4
+     },
+     "PACK_P": {
+      "cells": 2442,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In3.Cu": {
+    "area": 6.63,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 1904,
+      "dmin": 0.206
+     },
+     "3V3": {
+      "cells": 463,
+      "dmin": 0.2
+     },
+     "GND": {
+      "cells": 61,
+      "dmin": 0.4
+     }
+    }
+   },
+   "In4.Cu": {
+    "area": 6.63,
+    "near": {
+     "GND": {
+      "cells": 3558,
+      "dmin": 0.2
+     }
+    }
+   },
+   "B.Cu": {
+    "area": 38.52,
+    "near": {
+     "/USB Port 1/AC_SNS_N": {
+      "cells": 113,
+      "dmin": 0.461
+     },
+     "/USB Port 1/BAT_SNS_P": {
+      "cells": 769,
+      "dmin": 0.2
+     },
+     "GND": {
+      "cells": 548,
+      "dmin": 0.206
+     },
+     "PACK_P": {
+      "cells": 462,
+      "dmin": 0.2
+     }
+    }
+   }
+  },
+  "vias": 33,
+  "total_area": 104.21,
+  "C_pF": 22.3
+ },
+ "/USB Port 2/SW1": {
+  "box": [
+   82.911624,
+   89.763906,
+   87.271747,
+   109.798629
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 37.33,
+    "near": {
+     "/USB Port 2/ACN_F": {
+      "cells": 47,
+      "dmin": 0.35
+     },
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 548,
+      "dmin": 0.18
+     },
+     "/USB Port 2/BTST1": {
+      "cells": 39,
+      "dmin": 0.4
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 190,
+      "dmin": 0.15
+     },
+     "/USB Port 2/LG1": {
+      "cells": 73,
+      "dmin": 0.25
+     },
+     "/USB Port 2/TS": {
+      "cells": 67,
+      "dmin": 0.212
+     },
+     "GND": {
+      "cells": 561,
+      "dmin": 0.18
+     }
+    }
+   },
+   "In1.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 37,
+      "dmin": 0.255
+     },
+     "GND": {
+      "cells": 3773,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In2.Cu": {
+    "area": 7.47,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 37,
+      "dmin": 0.255
+     },
+     "GND": {
+      "cells": 54,
+      "dmin": 0.4
+     },
+     "PACK_P": {
+      "cells": 3513,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In3.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 2224,
+      "dmin": 0.2
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 37,
+      "dmin": 0.255
+     },
+     "3V3": {
+      "cells": 469,
+      "dmin": 0.206
+     },
+     "GND": {
+      "cells": 54,
+      "dmin": 0.4
+     }
+    }
+   },
+   "In4.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 37,
+      "dmin": 0.255
+     },
+     "GND": {
+      "cells": 3775,
+      "dmin": 0.2
+     }
+    }
+   },
+   "B.Cu": {
+    "area": 39.06,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 1019,
+      "dmin": 0.224
+     },
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 83,
+      "dmin": 0.4
+     },
+     "/USB Port 2/HIDRV1": {
+      "cells": 43,
+      "dmin": 0.255
+     },
+     "/USB Port 2/TS": {
+      "cells": 69,
+      "dmin": 0.224
+     },
+     "GND": {
+      "cells": 564,
+      "dmin": 0.2
+     }
+    }
+   }
+  },
+  "vias": 34,
+  "total_area": 103.24,
+  "C_pF": 22.0
+ },
+ "/USB Port 2/SW2": {
+  "box": [
+   87.483624,
+   94.336484,
+   87.271747,
+   110.258768
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 37.86,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 10,
+      "dmin": 0.45
+     },
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 779,
+      "dmin": 0.18
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 60,
+      "dmin": 0.25
+     },
+     "/USB Port 2/HIDRV2": {
+      "cells": 76,
+      "dmin": 0.3
+     },
+     "/USB Port 2/LG2": {
+      "cells": 71,
+      "dmin": 0.25
+     },
+     "/USB Port 2/LODRV2": {
+      "cells": 112,
+      "dmin": 0.2
+     },
+     "GND": {
+      "cells": 780,
+      "dmin": 0.18
+     }
+    }
+   },
+   "In1.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 31,
+      "dmin": 0.3
+     },
+     "GND": {
+      "cells": 3773,
+      "dmin": 0.206
+     }
+    }
+   },
+   "In2.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 212,
+      "dmin": 0.25
+     },
+     "/USB Port 2/REGN": {
+      "cells": 468,
+      "dmin": 0.3
+     },
+     "GND": {
+      "cells": 53,
+      "dmin": 0.4
+     },
+     "PACK_P": {
+      "cells": 1904,
+      "dmin": 0.2
+     }
+    }
+   },
+   "In3.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 1857,
+      "dmin": 0.2
+     },
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 31,
+      "dmin": 0.3
+     },
+     "3V3": {
+      "cells": 350,
+      "dmin": 0.212
+     },
+     "GND": {
+      "cells": 53,
+      "dmin": 0.4
+     }
+    }
+   },
+   "In4.Cu": {
+    "area": 6.46,
+    "near": {
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 39,
+      "dmin": 0.45
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 31,
+      "dmin": 0.3
+     },
+     "GND": {
+      "cells": 3784,
+      "dmin": 0.2
+     }
+    }
+   },
+   "B.Cu": {
+    "area": 39.2,
+    "near": {
+     "/USB Port 2/AC_SNS_N": {
+      "cells": 438,
+      "dmin": 0.206
+     },
+     "/USB Port 2/BAT_SNS_P": {
+      "cells": 602,
+      "dmin": 0.224
+     },
+     "/USB Port 2/BTST2": {
+      "cells": 64,
+      "dmin": 0.292
+     },
+     "/USB Port 2/DRV_SUP": {
+      "cells": 5,
+      "dmin": 0.461
+     },
+     "GND": {
+      "cells": 581,
+      "dmin": 0.2
+     }
+    }
+   }
+  },
+  "vias": 34,
+  "total_area": 102.9,
+  "C_pF": 21.9
+ },
+ "/USB Port 1/SW_5V": {
+  "box": [
+   101.954878,
+   106.0174,
+   104.037,
+   111.8562
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 6.5,
+    "near": {
+     "/USB Port 1/BST_5V": {
+      "cells": 198,
+      "dmin": 0.2
+     },
+     "/USB Port 1/PPHV": {
+      "cells": 274,
+      "dmin": 0.18
+     },
+     "GND": {
+      "cells": 80,
+      "dmin": 0.25
+     },
+     "PACK_P": {
+      "cells": 62,
+      "dmin": 0.3
+     }
+    }
+   }
+  },
+  "vias": 0,
+  "total_area": 6.5,
+  "C_pF": 1.3
+ },
+ "/USB Port 2/SW_5V": {
+  "box": [
+   80.3388,
+   88.1648,
+   115.1498,
+   119.230984
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 7.12,
+    "near": {
+     "/USB Port 2/BST_5V": {
+      "cells": 210,
+      "dmin": 0.2
+     }
+    }
+   }
+  },
+  "vias": 0,
+  "total_area": 7.12,
+  "C_pF": 1.4
+ },
+ "/3V3 Rail/SW_3V3": {
+  "box": [
+   81.8628,
+   86.5364,
+   127.13715199999999,
+   130.7352
+  ],
+  "layers": {
+   "F.Cu": {
+    "area": 4.42,
+    "near": {
+     "3V3": {
+      "cells": 244,
+      "dmin": 0.071
+     },
+     "3V3_SLEEP": {
+      "cells": 227,
+      "dmin": 0.2
+     },
+     "GND": {
+      "cells": 126,
+      "dmin": 0.2
+     }
+    }
+   }
+  },
+  "vias": 0,
+  "total_area": 4.42,
+  "C_pF": 0.9
+ }
+}

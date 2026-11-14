@@ -21,6 +21,12 @@ What it does:
 
 Frame: as `monolith_cup.py`, z along the cells (ports at +z, cap at -z), +x toward the board, y across.
 
+The committed page was rebuilt on 2026-11-13 on top of commit 401b2ee. Its meshes are the model as of c9b707f (2026-11-12: rail
+spines, B.Cu edge lands, 0.7 mm inductor pockets, chamfered cap posts; 402.2 g, 60.9 × 52.7 × 95.5 mm), and the footer
+names the commit it was built from. The board is the script-built P0 board on master (commit dd34285, the design since
+2026-11-13; `hardware/mechanical/board/monolith_board.npz`). Until 2026-11-13 the page showed the hand-routed board.
+`viewer_preview.png` was taken on 2026-11-12 from the 402.0 g build, before the post chamfer and with the hand-routed board; neither difference can be seen at its size.
+
 ## Rebuilding
 
 The page is generated from the model, so re-run it after any geometry change:
@@ -31,7 +37,7 @@ python monolith_viewer.py              # -> docs/viewer/monolith_viewer.html
 python monolith_viewer.py --fragment X # page body only, for publishing as a claude.ai artifact
 ```
 
-It needs the mechanical venv (numpy, pillow, manifold3d, matplotlib) plus `cairosvg` for the label art, and
+It needs the mechanical venv (numpy, scipy, shapely, pillow, manifold3d, matplotlib) plus `cairosvg` for the label art, and
 `board/monolith_board.npz` for the real board. The page layout and script live in `template.html`.
 
 Not drawn: copper, silkscreen and solder (the PCB is a plain green slab), the NTCs on wires and the solder joints.

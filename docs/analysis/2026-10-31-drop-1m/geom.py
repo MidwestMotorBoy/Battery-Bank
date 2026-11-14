@@ -15,7 +15,9 @@ def load():
 def build():
     sys.path.insert(0, MECH); cwd = os.getcwd(); os.chdir(MECH)
     try:
-        import monolith_cup as K
+        import monolith_cup as K, monolith_parts as P
+        # the study ran on the hand-routed board (see board_flex.py); BOARD_NPZ=<path> runs it on another board
+        P.BOARD_NPZ = os.environ.get('BOARD_NPZ', os.path.join(os.path.dirname(P.BOARD_NPZ), 'monolith_board_handrouted.npz'))
         # the vent grille spans the cap pocket on its rim: it bends into the pocket rather than crushing as a column
         # (modelled as a rigid-backed gyroid column it adds ~800 g to the bottom pose), so leave it out of the floor contact
         # (a thin ring inside the slab stands in for it: an empty section would void the union)

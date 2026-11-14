@@ -1,5 +1,8 @@
 # Front-cell NTC placement and the retuned derate (2026-10-24)
 
+_Superseded on 2026-10-28: the front-cell NTCs are SMD parts on the board (TH101 / TH104), not the wired beads this note places, and the discharge ramp moved to 44 to 48 °C. See [`smd-ntc.md`](smd-ntc.md) and [`docs/spec.md`](../../docs/spec.md)._
+
+
 The 10-23 model found that a cell NTC at mid-length, facing the pack centre, reads up to 8.5 K below the hottest point of the front cell's can: the stripe that faces the board over the gap filler. This note finds a better spot for the two front-cell NTCs (C1 on TS1, C4 on TS4) on the current board and carrier, and retunes the firmware and gauge thresholds for it. Code: `ntc.py` (with small additions to `pack3d.py`); numbers: `renders/ntc.json`. Same assumptions as the README: 25 °C ambient, still air, 14 mΩ cells, P0 parts, stage positions assumed.
 
 ## 1. Where the NTC should go

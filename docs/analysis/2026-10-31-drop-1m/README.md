@@ -1,8 +1,27 @@
 # Drop: 1 m onto concrete, six poses (2026-10-31)
 
+> **Status (2026-11-13).** This is the first, lumped drop study. Its housing findings were applied and its board and stress results were superseded by the later studies.
+>
+> - **Model and geometry.** A two-mass model (shell on the bumpers, core on a 1 mm voxel FE stiffness).
+>   - First run on master 50c5625 (PR #46 mass trim, PR #47 thick cup mouth): 391.2 g, 60.7 × 52.9 × 95.9 mm, 20 % gyroid slabs, 10 % pad, 1.2 mm side walls, 0.6 mm overtravel gap.
+>   - Reruns on later geometry: `out/drop-after-fixes.json` (394.1 g, PR #50), `out/drop-wall-1p6.json` (398.8 g, PR #50) and `out/drop-pad15.json` (399.6 g, PR #53). The last of these is the newest result from this model.
+>   - Today's cup (master 415007f, 402.2 g, 60.9 × 52.7 × 95.5 mm) has more than that: the 2026-11-03 lands, cradles, lips and cap board feet; the 2026-11-05 cap posts; the 2026-11-11 rail spines; and the 2026-11-12 post chamfer. None of these has been run in this model.
+> - **Board data.** The hand-routed P0 board that Logan approved on 2026-10-30, from the mechanical model's board data of that time (commit 0e6edc0, PR #45; kept as `hardware/mechanical/board/monolith_board_handrouted.npz`, which `board_flex.py` reads). It was the design's board then; since 2026-11-13 the design is the script-built board on `master` (commit `dd34285`), for which this study has not been rerun.
+> - **What became of each finding:**
+>   - *Port-end slab bottoms out (2685 g):* **fixed** in PR #50 (2026-10-31). Both slabs are now 30 % gyroid (`SLAB_FILL`, still in the code), which gives 572 g in `out/drop-pad15.json`. The resin and engineered-slab follow-up is in [`../2026-11-01-bumper-materials/`](../2026-11-01-bumper-materials/README.md); nothing there was adopted.
+>   - *M2 heads 0.3 mm proud:* **fixed** in PR #50. The screws are M2 × 5 in 0.8 mm counterbores (`SCREW_CBORE`).
+>   - *0.02 mm left over L401 / L501:* **fixed** in PR #50 with 0.5 mm wall pockets. The pockets went to 0.7 mm on 2026-11-11 (PR #69, merged 2026-11-12) after run 7 of the 3D study.
+>   - *Side walls 1.2 mm:* **changed** to 1.6 mm in PR #50 (rerun below).
+>   - *Pad 15 % and 0.3 mm overtravel gap (USB-C ring retention):* **applied** in PR #53 (rerun below). The cap posts changed again on 2026-11-05 (r2.5, five posts) and 2026-11-12 (chamfer); neither change was rerun here.
+>   - *Board bow and strain in the board-face drop (0.68 mm, about 1500 µε, 4000 µε near the pegs):* **superseded**. This model bonds the cells to the walls, and it gives the core no stop but the four peg posts (found 2026-11-03). The contact study [`../2026-11-04-drop-stress/`](../2026-11-04-drop-stress/README.md) gives about 7,800 µε (p99) for the board-face drop and 8,100 µε for the back face. The 3D study [`../2026-11-11-drop-3d/`](../2026-11-11-drop-3d/README.md) gives about 3,100 µε for the back face on the merged geometry (run 9, before the 2026-11-12 post chamfer).
+>   - *PA12 stresses in the flat drops:* **superseded** by the contact study.
+>   - *Corner stresses (about 110 MPa):* still **open**. They are bearing upper bounds here, and no later study has a usable corner result.
+>   - *Narrow-side drop (3,875 to 4,013 g on the core, only 1 mm of solid TPU in the bottom band):* still **open**. The thicker bottom band was not applied (`BUMP_WALL_BOT` is still 1.0 mm).
+>   - *PEBA bumpers:* **not adopted**. TPU 95A stays.
+
 What happens to the pack when it falls 1 m onto concrete: flat on each end, flat on the board face, flat on a narrow side, and on a corner at each end. It lands at 4.43 m/s with 3.84 J to absorb. For each pose this works out how far the TPU bumpers crush, the peak deceleration of the cells and board, the stress in the nylon parts, and how far the board flexes.
 
-The geometry is the current cup from [`hardware/mechanical/monolith_cup.py`](../../../hardware/mechanical/monolith_cup.py) on master 50c5625, which includes the mechanical polish of PR #46 (mass trim) and PR #47 (2.4 mm thick cup mouth instead of the cap collar) and the real routed board: 391.2 g, 60.7 × 52.9 × 95.9 mm. Every number here is a model value, not a measurement.
+The geometry is the cup from [`hardware/mechanical/monolith_cup.py`](../../../hardware/mechanical/monolith_cup.py) on master 50c5625, which includes the mechanical polish of PR #46 (mass trim) and PR #47 (2.4 mm thick cup mouth instead of the cap collar) and the real routed board: 391.2 g, 60.7 × 52.9 × 95.9 mm. Every number here is a model value, not a measurement.
 
 **Short answer.** The pack survives every 1 m drop in the model, but two things need fixing before a real drop test:
 

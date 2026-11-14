@@ -1,7 +1,8 @@
 """Mesh and mass helpers (numpy + PIL): camera, draw, vol, board_g, CELL_G, used by monolith_cup.py,
 monolith_cup_assembly_steps.py and monolith_side_renders.py. The top-cap vs side-tray comparison render that used to
 run from here (retired/monolith_layout_compare.png) was removed on 2026-10-29; it is in git history (Production 5cf521e).
-Masses: printed parts from STL volume x density; cells 75 g each (FEB 21700G listing; Batemo measures 73.4 g);
+Masses: printed parts from STL volume x density; cells 75 g each (CELL_G: the BAK N21700CX-65E
+maximum in the spec);
 boards estimated at the production thickness (SB_PCB_T) as FR4 + 6-layer copper (2 oz outer, 0.5 oz inner) at 70 % fill."""
 import numpy as np, struct, os
 from PIL import Image, ImageDraw, ImageFont

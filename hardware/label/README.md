@@ -9,7 +9,7 @@ The adopted artwork is the Borderlands-style version (`--bl`): brush inking, the
 | Script | Writes | What it is |
 |---|---|---|
 | `monolith_label.py --bl` | `out/monolith_label_bl_*` | The adopted label. Needs numpy, fonttools, manifold3d, cairosvg, pypdf, svgpathtools and scipy. |
-| `monolith_label.py` | `out/monolith_label_*` | The same layout in the earlier flat style, without `--bl`. |
+| `monolith_label.py` | `out/monolith_label_*` | The same layout in the earlier flat style, without `--bl`. Not the chosen look; its outputs in `out/` are kept only until Logan decides whether to delete them. |
 | `monolith_label_preview.py [--bl]` | `out/<name>_on_cup.png` | The label on the cup with the bumpers, from three sides. Run `monolith_label.py` first. |
 | `bear_options.py` | `out/bear_options*.png` (git-ignored) | The bear options for the back, which is where 9i-7 came from. |
 | `label_variants.py` | `out/label_variants*.png`, `out/variants*/` (git-ignored) | The whole-label look variations, which is where 8-1 came from. |
@@ -18,8 +18,8 @@ The adopted artwork is the Borderlands-style version (`--bl`): brush inking, the
 
 | File | Use |
 |---|---|
-| `monolith_label_bl_print.pdf` | The file to send. Artwork with 2 mm bleed and all text as outlines. TrimBox is the cut size, and the die line is a CutContour spot-colour stroke. |
-| `monolith_label_bl_stickerapp.pdf` | The same for StickerApp: the outer cut line only, as the spot colour "die cut", 1 pt, on its own layer. |
+| `monolith_label_bl_stickerapp.pdf` | **The order file.** Logan picked StickerApp on 2026-10-27 (matte, permanent). Artwork with 2 mm bleed, text as outlines, and the outer cut line only, as the spot colour "die cut", 1 pt, on its own layer. TrimBox 7.91 × 2.87 in (checked 2026-11-13). |
+| `monolith_label_bl_print.pdf` | The same artwork for other shops: TrimBox is the cut size, and the die line is a CutContour spot-colour stroke. |
 | `monolith_label_bl_trim.pdf` | The artwork cut to size, with no bleed or die line, for shops that cut from the artwork outline. |
 | `monolith_label_bl_print.svg`, `monolith_label_bl_cut.svg` | The artwork, and the die line on the same page. |
 | `monolith_label_bl_proof.png`, `monolith_label_bl_on_cup.png` | Proofs: the art with the die line and face folds, and the label on the cup. |

@@ -2,6 +2,9 @@
 # Download every datasheet listed in datasheets/sources.csv into datasheets/.
 # Run from the repo root on a machine with normal internet access:
 #   bash tools/fetch_datasheets.sh
+# Every file in sources.csv is committed in datasheets/, so this only refills
+# files that have been deleted. Keep commas out of the part and role columns:
+# the loop splits on them.
 # Files already present are skipped. Rows whose url is not an http(s) link
 # (added by hand) and files that come back as something other than a PDF
 # (e.g. a web page asking for JavaScript) are listed at the end; grab those by

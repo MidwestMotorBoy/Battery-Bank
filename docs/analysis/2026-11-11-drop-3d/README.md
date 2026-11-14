@@ -1,14 +1,27 @@
 # 3D explicit drop study: 1 m flat onto the back (cell) face
 
 The study ran 2026-11-10/11 on Logan's PC, outside the repo (`C:\Users\Logan\Documents\BatteryBank-fea\drop_back`). Each run
-uses the geometry of one commit, exported with `git archive`. It follows on from the 2026-11-04 lumped study and checks the
-board, the rails and the cup in 3D for the back-face drop, which is the worst case in that study.
+uses the geometry of one commit, exported with `git archive`. It follows on from the 2026-11-04 lumped contact study
+([`../2026-11-04-drop-stress/`](../2026-11-04-drop-stress/README.md)) and checks the board, the rails and the cup in 3D for
+the back-face drop, which is the worst case in that study. That study gave about 8,100 µε (p99) on the board in this pose and
+asked for a mid-board support; on the same cup (runs 2 and 3, master c8fb819) the 3D model gives about 5,000 µε.
 
 Every figure and run, interactively: https://claude.ai/artifact/5e8FgYGjQaZCfDvVeQPFwm (private to the project owner).
 
-> **Status:** runs 2-9 are complete. Run 9 is the validation run on the merged geometry (acd6f23, master since PR #69). Its first attempt stalled at
-> 0.44 ms on one collapsed tet at a cap-post top, a meshing problem rather than a design one. The rerun has a 0.3 mm mesh
-> at the five post tops and is otherwise identical. It ended normally: 2 ms in 57 min.
+> **Status (2026-11-13).** Runs 2-9 are complete (2026-11-10 to 2026-11-12). Run 9 is the validation run on acd6f23, the geometry merged in PR #69 (2026-11-12 UTC; 402.0 g). Its first attempt stalled at 0.44 ms on one collapsed tet at a cap-post top, a meshing problem rather than a design one. The rerun has a 0.3 mm mesh at the five post tops and is otherwise identical. It ended normally: 2 ms in 57 min.
+>
+> - **Geometry.** Each run's commit is in the table below. Master has one change since run 9: the 0.3 mm cap post chamfer (`OT_CHAMFER`, PR #70, 2026-11-12, 402.2 g), which has not been run in 3D.
+> - **Board data.** The hand-routed P0 board that Logan approved on 2026-10-30. Its outline and peg slots are used, with its parts as lumped masses, from the mechanical model's board data of that time (kept as `hardware/mechanical/board/monolith_board_handrouted.npz`) through the 2026-11-04 study's `bodies.py`. It was the design's board then; since 2026-11-13 the design is the script-built board on `master` (commit `dd34285`), for which this study has not been rerun. The outline, peg slots, B.Cu parts and L401 / L501 are the same on both boards. The other inductors and most F.Cu parts are not (C434 and C524 moved about 13 mm and C420 about 5 mm; C531 moved 0.4 mm and turned 90°; L402 and L502 moved about 29 and 39 mm), so its F.Cu part-to-wall gaps need a rerun.
+> - **What became of each finding:**
+>   - *Mid-span board strain and F.Cu parts swinging into the wall:* **fixed** in PR #69 (changed 2026-11-11, merged 2026-11-12). The fix is the rail spines (`rail_spines()`) and the B.Cu edge lands (`bcu_lands()`): about 5,000 to about 3,100 µε p99, and no F.Cu strike in run 9.
+>   - *Bottom tongue root yield:* **fixed** in PR #69 with 1.5 mm tip clearance (`KEY_TIP_CLR`), the stubs over their slots (`RAIL_RELIEF_Y` 7.4) and a 0.5 mm root chamfer.
+>   - *L401 / L501 reaching their 0.5 mm pockets:* **fixed** in PR #69. The pockets are now 0.7 mm (`WALL_POCKET`).
+>   - *Cap overtravel post rims yielding (run 9):* **changed** in PR #70 with the 0.3 mm × 45° chamfer. It has **not been re-run** in 3D.
+>   - *Board-edge peak about 4,000 µε at z 53-55 (where the spines end):* still **open**.
+>   - *Local yield where the carrier webs meet the bottom frame (p99.9 4-5 %, single-element max 21 % in run 9):* still **open**.
+>   - *C531 / C524 at +0.02 / +0.03 mm from the board-face wall:* below the model's resolution, so still **open**. A witness-paint drop on the first print is the check. Wall pockets over these caps were considered and rejected, because a 1.5 mm wall there bulges 0.95 mm at +25 kPa against 0.40 mm.
+>   - *Thermal cost:* the spines take about 12 % of the gap filler's B.Cu-to-can conductance. The thermal study [`../2026-10-31-thermal-25w-20w/`](../2026-10-31-thermal-25w-20w/README.md) has not been rerun with them.
+>   - *Other poses (board face, cap end, port end, narrow side, edges and corners):* **not run** in 3D. For the flat ones the 2026-11-04 contact study is the latest result, on the 2026-11-05 cup.
 
 ## Setup
 

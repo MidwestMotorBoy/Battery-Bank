@@ -1,5 +1,9 @@
 """Build the production schematic from the dev board schematic (re-runnable).
 
+Status (2026-11-13): a record of how the P0 schematic was derived. The sheets have been edited by hand in KiCad since
+2026-10-28 (UART_TX to J301 pin 6, the R413/R513 note, and part swaps this script does not carry, such as the
+D401/D501 TVS2200 and the L402/L502 inductor), so a re-run would overwrite them. Its functions are still the source for the generated footprints and symbols.
+
 Copies the DevBoard schematic sheets, symbol/footprint libraries and project file into Production/ as the
 'Monolith' project, then strips everything the production board doesn't carry (decided 2026-10-17):
 
@@ -187,6 +191,9 @@ def P(fp, lcsc, mpn, value=None):
     return (None, props)
 
 
+# R413_NOTES and the "(FEB cell)" text edit below are the 2026-10-21 FEB 21700G wording that this script wrote. The
+# cells are BAK N21700CX-65E since 2026-10-23, and the R413/R513 note on usb_port.kicad_sch was rewritten by hand on
+# 2026-11-07 (11.8k kept, EN_ICHG_PIN = 0). Re-running this script would put the old wording back.
 R413_NOTES = ("ICHG hardware ceiling 50/11.8 = 4.24 A per port (4.07-4.45 A over K_ICHG and 1 %), under the FEB 21700G "
               "cell's 4.55 A charge maximum (2026-10-21; was 9.1k for the EVE 58E). Firmware keeps the sum of both ports "
               "at 4.55 A max and follows the cell-temperature charge ramp (docs/firmware/charge-and-thermal-policy.md; "
@@ -212,7 +219,7 @@ DOWNSIZE = {  # extended parts and 0201 allowed on production; 0201 only where b
         "R116": P(R0201, "C270366", "0201WMF1000TEE"),
         "RS101": P("Resistor_SMD:R_1206_3216Metric", "C154629", "LR1206-21R001F4 (Ralec, 75 ppm)", "1m 1% 1W"),
         "D101": SOD882,
-        # loss cut 1 (2026-10-23, 65E short circuit): 0.70 mOhm 5 x 6 OptiMOS 6, spec/protection-fet-options.md
+        # loss cut 1 (2026-10-23, 65E short circuit): 0.70 mOhm 5 x 6 OptiMOS 6, research_notes/protection-fets/options.md
         **{q: (None, {"Value": "BSC007N04LS6", "Footprint": "MonolithDev:" + TDSON_FP, "LCSC": "C534274",
                       "MPN": "BSC007N04LS6ATMA1 (Infineon)", "Datasheet": "https://www.lcsc.com/datasheet/C534274.pdf",
                       "Description": "40 V 0.7 mOhm N-MOSFET, TDSON-8 FL 5x6"})

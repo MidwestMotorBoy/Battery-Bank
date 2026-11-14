@@ -166,10 +166,10 @@ def step1(P):
 def step2(P):
     mod = L(P, 'carrier', 'foam', 'strip_bot', 'w_cell2', 'cells', 'insul', 'strip_top', 'tongues', 'w_top', 'pads', 'tails_wire', 'w_kelvin', 'rails')
     st = Step(2, '2   Gap filler and board on, on the bench',
-              'About 4.5 g of GEL 30 on the two front cells, then the board down onto the posts with every '
+              'About 3.8 g of GEL 30 on the two front cells, then the board down onto the posts with every '
               'wire through its hole, spacers on, and the seven wires soldered from F.Cu in order.', 3)
     st.panel('2.1 / 2.2  Gap filler on the front cells', mod, L(P, 'filler'), (1.0, -0.55, 0.35),
-             notes=[((24.0, -11.5, 40.0), 'About 2.3 g GEL 30 per zone,\na little proud (|y| 7-16, z 27-53)'),
+             notes=[((24.0, -11.5, 40.0), 'About 1.9 g GEL 30 per zone,\na little proud (|y| 8.2-16, z 27-53)'),
                     ((24.0, -15.5, 29.0), 'Cover the zone\'s bottom corner too:\nthe C1 / C4 NTCs (TH101 / TH104)\nsit there on B.Cu')],
              side_notes=['Weigh it: tare the module on the scale.', 'No cure. Rework: peel, IPA, fresh gel.'])
     sl, ph = S.sb_slots(), S.sb_pack_holes()

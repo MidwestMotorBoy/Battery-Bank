@@ -1,8 +1,25 @@
 # 1 m drop: contact model, stress in every part (2026-11-04)
 
-> **2026-11-11:** the back-face drop was rerun as a full 3D explicit model in [`../2026-11-11-drop-3d/`](../2026-11-11-drop-3d/README.md), which led to the rail spines (mid-board prop). Use that study for the board and rails in that pose.
+> **Status (2026-11-13).** This is the contact (lumped 1-DOF) study. Its cup-side fixes are in the design. Its board finding led to the 3D study, which supersedes it for the back-face drop.
+>
+> - **Geometry.**
+>   - The 17-pose PC run (2026-11-04, mesh 0.75) used master after PR #61: cup lands, F.Cu lips, front-can cradles, PA12 post spacers and cap board feet, 401.8 g.
+>   - The results below are the 2026-11-05 rerun of the five flat drops (mesh 1.0) on the fixed cup (commit 2a19bf6, 402.1 g). That rerun went to master in PR #64 on 2026-11-07.
+>   - Since then: the top tongues went back to full frame height on 2026-11-07, and the 2026-11-11 rail spines, B.Cu lands, 1.5 mm bottom tongue tip clearance and 0.7 mm wall pockets (PR #69) and the 2026-11-12 cap post chamfer (PR #70) were added. None of these was run in this model. Today's cup is 402.2 g.
+> - **Board data.** The hand-routed P0 board that Logan approved on 2026-10-30, from the mechanical model's board data of that time (kept as `hardware/mechanical/board/monolith_board_handrouted.npz`, which `bodies.py` reads), with C421 / C456 / C521 / C556 trimmed to the 2.0 mm T593V. It was the design's board then; since 2026-11-13 the design is the script-built board on `master` (commit `dd34285`), for which this study has not been rerun. The part names and part-to-wall gaps below (C434, C531 and others) are for the hand-routed positions.
+> - **What became of each finding:**
+>   - *Cap-end tongue load, cap overtravel posts at 107 MPa, C421 / C556 striking the cradles:* **fixed** on 2026-11-05 (`TONGUE_SETBACK` 0.3, `OT_R` 2.5 plus a fifth post, `CRADLE_CAP_RELIEF`; PR #64). Three model errors are corrected on the way (below).
+>   - *Board strain about 8,000 µε (p99) in the back-face and board-face drops; mid-board support needed:* **taken up** by the 3D study [`../2026-11-11-drop-3d/`](../2026-11-11-drop-3d/README.md). On master c8fb819, which has these cup fixes, the 3D back-face drop gives about 5,000 µε (runs 2 and 3: 5,477 and 5,047). The rail spines (`rail_spines()`, PR #69) take it to about 3,100 µε (run 9: 3,089 p99, 4,022 max) with no F.Cu part reaching the wall. Use the 3D study for the back-face drop.
+>   - *Board-face drop (7,800 µε, C434 / C531 0.06 mm from the wall, USB-C tabs about 25,000 µε and about 200 N per receptacle):* still **open**. The board-face drop has not been run in 3D or rerun here with the spines.
+>   - *Bottom tongues about 280 N each in the cap-end drop:* still **open**. The tongue geometry changed on 2026-11-11 (tip clearance, root chamfer) and has not been rerun in the cap-end pose.
+>   - *M2 screws and cup mouth about 1.15 kN in the cap-end rebound:* still **open**. This is a lumped-shell estimate; test it on a real cup.
+>   - *Narrow side wall 178 MPa and cradles 143 MPa:* still **open**. The mesh is coarse (1-2 bricks through the wall).
+>   - *Rail post tips about 270 N, 69 MPa in the board-face drop:* still **open**; they dent.
+>   - *Post-tip gap 0.5 mm:* **rejected** (below).
+>   - *GEL 30 as a load path:* bracketed only (below). Its viscosity at drop rates is unknown, and a witness-paint drop test is suggested.
+>   - *Edges and corners:* **not usable** in this model (it needs a 3-DOF `dyn.py`), and no other study covers them.
 
-The 2026-10-31 study (`../2026-10-31-drop-1m`) treated the bank as two masses with the inside bonded to the cup, so it could
+The 2026-10-31 study ([`../2026-10-31-drop-1m/`](../2026-10-31-drop-1m/README.md)) treated the bank as two masses with the inside bonded to the cup, so it could
 not see the inside parts hitting each other. This one keeps every part that can move as its own body, finds where they
 touch on the real master geometry, and runs the impact in 17 orientations from 1 m onto concrete.
 
@@ -17,7 +34,7 @@ adds about 20 % (`sens.py` -> `out/sensitivity.json`, from the 11-04 geometry).
 
 | Part | Worst drop | Demand | Limit | What happens |
 |---|---|---|---|---|
-| Board | back face, board face | bows 1.0-1.2 mm, surface strain ~8000 ue (99th pct); USB-C tabs ~25 000 ue, ~200 N per receptacle; F.Cu C434 / C531 0.06 mm off the wall | 1000-2000 ue | MLCC cracking, USB-C solder joints. Nothing props the middle of the board; the fix is a mid-board support (not in this round) |
+| Board | back face, board face | bows 1.0-1.2 mm, surface strain ~8000 ue (99th pct); USB-C tabs ~25 000 ue, ~200 N per receptacle; F.Cu C434 / C531 0.06 mm off the wall | 1000-2000 ue | MLCC cracking, USB-C solder joints. Nothing props the middle of the board; the fix is a mid-board support (added on 2026-11-11 as the rail spines, see the 3D study) |
 | Rail tongues (bottom pair) | cap end | the front cans still reach them, ~280 N each (was ~460); 307 MPa at the contact, block bodies 136 MPa | 48 MPa | tongue tips crush, the small blocks can crack. The cans sink ~0.5 mm into the bottom frame at the nickel strips before the tongues touch |
 | Cup side wall, cradles | narrow side | 178 MPa in the wall near the cap end, cradles 143 MPa (coarse mesh: 1-2 bricks through the wall) | 48 MPa | local yield likely, watch item |
 | M2 screws / cup mouth | cap end | in the rebound the core still pushes the cap while the floor has let go, so the cup (~48 g) hangs on the two radial screws: ~1.15 kN (was ~0.74 kN), lumped-shell estimate | ~400 N | the screws load the 1.3 mm of cup mouth below their holes in shear-out; test it on the real cup |
@@ -37,7 +54,8 @@ its knee: 1.7-1.8 mm of crush, where its force climbs from 2 kN to 90 kN per mm.
 Edges and corners (`out/edges_corners_2026-11-04/`, PC run on the 11-04 geometry, before the inertia relief and the
 carrier fixes below): the inside parts there can only move along the drop direction, so a core stopped in one
 direction can't slide on in the other, and the cup pivoted on its corner footprint in the FE. Their contact forces
-are upper bounds and their stresses are not usable; that needs a 3-DOF version of `dyn.py`.
+are upper bounds and their stresses are not usable; that needs a 3-DOF version of `dyn.py`. Only the impact
+(`dyn_*`) and board (`board_*`) results are kept there; the part stress files were removed on 2026-11-13.
 
 ## Cup-side fixes (2026-11-05)
 

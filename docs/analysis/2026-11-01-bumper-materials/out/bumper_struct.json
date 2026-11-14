@@ -1,0 +1,1280 @@
+{
+ "top | TPU 95A gyroid 0.20": {
+  "m1": {
+   "g": 2545,
+   "crush": 4.36,
+   "F": 9881,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  },
+  "m15": {
+   "g": 5975,
+   "crush": 4.43,
+   "F": 24163,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  }
+ },
+ "top | TPU 95A gyroid 0.30": {
+  "m1": {
+   "g": 572,
+   "crush": 2.6,
+   "F": 2244,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  },
+  "m15": {
+   "g": 624,
+   "crush": 3.43,
+   "F": 2447,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  }
+ },
+ "top | TPU 95A gyroid 0.40": {
+  "m1": {
+   "g": 916,
+   "crush": 1.75,
+   "F": 3603,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  },
+  "m15": {
+   "g": 1018,
+   "crush": 2.26,
+   "F": 4017,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  }
+ },
+ "top | TPU 95A gyroid 0.50": {
+  "m1": {
+   "g": 1313,
+   "crush": 1.28,
+   "F": 5193,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  },
+  "m15": {
+   "g": 1499,
+   "crush": 1.64,
+   "F": 5926,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  }
+ },
+ "top | TPU 95A gyroid 0.60": {
+  "m1": {
+   "g": 1861,
+   "crush": 0.96,
+   "F": 7314,
+   "slab_g": 18.51,
+   "soft_g": 26.68
+  },
+  "m15": {
+   "g": 4747,
+   "crush": 1.08,
+   "F": 16448,
+   "slab_g": 18.51,
+   "soft_g": 26.68
+  }
+ },
+ "top | TPU 95A honeycomb 0.08": {
+  "m1": {
+   "g": 7499,
+   "crush": 5.38,
+   "F": 28703,
+   "slab_g": 2.47,
+   "soft_g": 10.63
+  },
+  "m15": {
+   "g": 9913,
+   "crush": 5.39,
+   "F": 37686,
+   "slab_g": 2.47,
+   "soft_g": 10.63
+  }
+ },
+ "top | TPU 95A honeycomb 0.10": {
+  "m1": {
+   "g": 5602,
+   "crush": 5.21,
+   "F": 21984,
+   "slab_g": 3.09,
+   "soft_g": 11.25
+  },
+  "m15": {
+   "g": 8335,
+   "crush": 5.23,
+   "F": 32827,
+   "slab_g": 3.09,
+   "soft_g": 11.25
+  }
+ },
+ "top | TPU 95A honeycomb 0.12": {
+  "m1": {
+   "g": 1694,
+   "crush": 5.01,
+   "F": 6501,
+   "slab_g": 3.7,
+   "soft_g": 11.86
+  },
+  "m15": {
+   "g": 6167,
+   "crush": 5.06,
+   "F": 24605,
+   "slab_g": 3.7,
+   "soft_g": 11.86
+  }
+ },
+ "top | TPU 95A honeycomb 0.14": {
+  "m1": {
+   "g": 332,
+   "crush": 3.51,
+   "F": 1287,
+   "slab_g": 4.32,
+   "soft_g": 12.48
+  },
+  "m15": {
+   "g": 1883,
+   "crush": 4.84,
+   "F": 7049,
+   "slab_g": 4.32,
+   "soft_g": 12.48
+  }
+ },
+ "top | TPU 95A honeycomb 0.17": {
+  "m1": {
+   "g": 557,
+   "crush": 2.23,
+   "F": 2137,
+   "slab_g": 5.25,
+   "soft_g": 13.41
+  },
+  "m15": {
+   "g": 583,
+   "crush": 3.11,
+   "F": 2263,
+   "slab_g": 5.25,
+   "soft_g": 13.41
+  }
+ },
+ "top | TPU 95A honeycomb 0.20": {
+  "m1": {
+   "g": 856,
+   "crush": 1.63,
+   "F": 3312,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  },
+  "m15": {
+   "g": 902,
+   "crush": 2.2,
+   "F": 3465,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  }
+ },
+ "top | TPU 95A honeycomb 0.25": {
+  "m1": {
+   "g": 1540,
+   "crush": 1.27,
+   "F": 6023,
+   "slab_g": 7.71,
+   "soft_g": 15.88
+  },
+  "m15": {
+   "g": 1638,
+   "crush": 1.59,
+   "F": 6265,
+   "slab_g": 7.71,
+   "soft_g": 15.88
+  }
+ },
+ "top | TPU 95A honeycomb 0.30": {
+  "m1": {
+   "g": 1703,
+   "crush": 1.16,
+   "F": 6601,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  },
+  "m15": {
+   "g": 2086,
+   "crush": 1.42,
+   "F": 8085,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  }
+ },
+ "top | TPU 95A honeycomb 0.35": {
+  "m1": {
+   "g": 1838,
+   "crush": 1.07,
+   "F": 7128,
+   "slab_g": 10.8,
+   "soft_g": 18.96
+  },
+  "m15": {
+   "g": 2251,
+   "crush": 1.32,
+   "F": 8731,
+   "slab_g": 10.8,
+   "soft_g": 18.96
+  }
+ },
+ "top | TPU 95A honeycomb 0.40": {
+  "m1": {
+   "g": 1922,
+   "crush": 1.01,
+   "F": 7624,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  },
+  "m15": {
+   "g": 2354,
+   "crush": 1.23,
+   "F": 9339,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  }
+ },
+ "top | TPU 95A honeycomb 0.45": {
+  "m1": {
+   "g": 2056,
+   "crush": 0.95,
+   "F": 8089,
+   "slab_g": 13.89,
+   "soft_g": 22.05
+  },
+  "m15": {
+   "g": 2518,
+   "crush": 1.16,
+   "F": 9908,
+   "slab_g": 13.89,
+   "soft_g": 22.05
+  }
+ },
+ "top | TPU 95A honeycomb 0.50": {
+  "m1": {
+   "g": 2189,
+   "crush": 0.9,
+   "F": 8522,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  },
+  "m15": {
+   "g": 2681,
+   "crush": 1.1,
+   "F": 10439,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  }
+ },
+ "top | TPU 95A honeycomb 0.55": {
+  "m1": {
+   "g": 2307,
+   "crush": 0.86,
+   "F": 8931,
+   "slab_g": 16.97,
+   "soft_g": 25.13
+  },
+  "m15": {
+   "g": 2825,
+   "crush": 1.05,
+   "F": 10940,
+   "slab_g": 16.97,
+   "soft_g": 25.13
+  }
+ },
+ "top | Flexible 50A gyroid 0.20": {
+  "m1": {
+   "g": 3834,
+   "crush": 4.81,
+   "F": 14319,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  },
+  "m15": {
+   "g": 5127,
+   "crush": 4.9,
+   "F": 18909,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  }
+ },
+ "top | Flexible 50A gyroid 0.30": {
+  "m1": {
+   "g": 2815,
+   "crush": 4.08,
+   "F": 11000,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  },
+  "m15": {
+   "g": 3749,
+   "crush": 4.22,
+   "F": 14676,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  }
+ },
+ "top | Flexible 50A gyroid 0.40": {
+  "m1": {
+   "g": 2390,
+   "crush": 3.33,
+   "F": 9119,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  },
+  "m15": {
+   "g": 3185,
+   "crush": 3.5,
+   "F": 12179,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  }
+ },
+ "top | Flexible 50A gyroid 0.50": {
+  "m1": {
+   "g": 2120,
+   "crush": 2.56,
+   "F": 8179,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  },
+  "m15": {
+   "g": 2805,
+   "crush": 2.76,
+   "F": 10803,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  }
+ },
+ "top | Flexible 50A gyroid 0.60": {
+  "m1": {
+   "g": 2014,
+   "crush": 1.81,
+   "F": 7888,
+   "slab_g": 16.2,
+   "soft_g": 23.63
+  },
+  "m15": {
+   "g": 2598,
+   "crush": 2.02,
+   "F": 10174,
+   "slab_g": 16.2,
+   "soft_g": 23.63
+  }
+ },
+ "top | Flexible 50A honeycomb 0.08": {
+  "m1": {
+   "g": 6163,
+   "crush": 5.59,
+   "F": 23251,
+   "slab_g": 2.16,
+   "soft_g": 9.59
+  },
+  "m15": {
+   "g": 8045,
+   "crush": 5.63,
+   "F": 30411,
+   "slab_g": 2.16,
+   "soft_g": 9.59
+  }
+ },
+ "top | Flexible 50A honeycomb 0.10": {
+  "m1": {
+   "g": 5627,
+   "crush": 5.47,
+   "F": 20466,
+   "slab_g": 2.7,
+   "soft_g": 10.13
+  },
+  "m15": {
+   "g": 7384,
+   "crush": 5.52,
+   "F": 27000,
+   "slab_g": 2.7,
+   "soft_g": 10.13
+  }
+ },
+ "top | Flexible 50A honeycomb 0.12": {
+  "m1": {
+   "g": 5141,
+   "crush": 5.33,
+   "F": 18178,
+   "slab_g": 3.24,
+   "soft_g": 10.67
+  },
+  "m15": {
+   "g": 6798,
+   "crush": 5.39,
+   "F": 24184,
+   "slab_g": 3.24,
+   "soft_g": 10.67
+  }
+ },
+ "top | Flexible 50A honeycomb 0.14": {
+  "m1": {
+   "g": 4609,
+   "crush": 5.2,
+   "F": 16294,
+   "slab_g": 3.78,
+   "soft_g": 11.21
+  },
+  "m15": {
+   "g": 6220,
+   "crush": 5.27,
+   "F": 21847,
+   "slab_g": 3.78,
+   "soft_g": 11.21
+  }
+ },
+ "top | Flexible 50A honeycomb 0.17": {
+  "m1": {
+   "g": 3807,
+   "crush": 4.98,
+   "F": 13854,
+   "slab_g": 4.59,
+   "soft_g": 12.02
+  },
+  "m15": {
+   "g": 5284,
+   "crush": 5.07,
+   "F": 18997,
+   "slab_g": 4.59,
+   "soft_g": 12.02
+  }
+ },
+ "top | Flexible 50A honeycomb 0.20": {
+  "m1": {
+   "g": 3096,
+   "crush": 4.73,
+   "F": 11585,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  },
+  "m15": {
+   "g": 4451,
+   "crush": 4.85,
+   "F": 16466,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  }
+ },
+ "top | Flexible 50A honeycomb 0.25": {
+  "m1": {
+   "g": 2122,
+   "crush": 4.28,
+   "F": 8192,
+   "slab_g": 6.75,
+   "soft_g": 14.18
+  },
+  "m15": {
+   "g": 3331,
+   "crush": 4.44,
+   "F": 12810,
+   "slab_g": 6.75,
+   "soft_g": 14.18
+  }
+ },
+ "top | Flexible 50A honeycomb 0.30": {
+  "m1": {
+   "g": 1469,
+   "crush": 3.77,
+   "F": 5662,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  },
+  "m15": {
+   "g": 2594,
+   "crush": 4.0,
+   "F": 10160,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  }
+ },
+ "top | Flexible 50A honeycomb 0.35": {
+  "m1": {
+   "g": 1334,
+   "crush": 3.28,
+   "F": 5051,
+   "slab_g": 9.45,
+   "soft_g": 16.88
+  },
+  "m15": {
+   "g": 2354,
+   "crush": 3.55,
+   "F": 9180,
+   "slab_g": 9.45,
+   "soft_g": 16.88
+  }
+ },
+ "top | Flexible 50A honeycomb 0.40": {
+  "m1": {
+   "g": 1506,
+   "crush": 2.97,
+   "F": 5871,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  },
+  "m15": {
+   "g": 2367,
+   "crush": 3.22,
+   "F": 9374,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  }
+ },
+ "top | Flexible 50A honeycomb 0.45": {
+  "m1": {
+   "g": 1657,
+   "crush": 2.66,
+   "F": 6585,
+   "slab_g": 12.15,
+   "soft_g": 19.58
+  },
+  "m15": {
+   "g": 2462,
+   "crush": 2.89,
+   "F": 9640,
+   "slab_g": 12.15,
+   "soft_g": 19.58
+  }
+ },
+ "top | Flexible 50A honeycomb 0.50": {
+  "m1": {
+   "g": 1838,
+   "crush": 2.35,
+   "F": 7179,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  },
+  "m15": {
+   "g": 2558,
+   "crush": 2.57,
+   "F": 9907,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  }
+ },
+ "top | Flexible 50A honeycomb 0.55": {
+  "m1": {
+   "g": 1975,
+   "crush": 2.04,
+   "F": 7641,
+   "slab_g": 14.85,
+   "soft_g": 22.28
+  },
+  "m15": {
+   "g": 2620,
+   "crush": 2.25,
+   "F": 10134,
+   "slab_g": 14.85,
+   "soft_g": 22.28
+  }
+ },
+ "top | ideal 0.1": {
+  "m1": {
+   "g": 6289,
+   "crush": 4.61,
+   "F": 26090,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 0.2": {
+  "m1": {
+   "g": 4526,
+   "crush": 4.58,
+   "F": 18503,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 0.3": {
+  "m1": {
+   "g": 1007,
+   "crush": 4.51,
+   "F": 3699,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 0.4": {
+  "m1": {
+   "g": 516,
+   "crush": 3.43,
+   "F": 1139,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 0.5": {
+  "m1": {
+   "g": 645,
+   "crush": 2.75,
+   "F": 1423,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 0.7": {
+  "m1": {
+   "g": 903,
+   "crush": 1.97,
+   "F": 1993,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "top | ideal 1.0": {
+  "m1": {
+   "g": 1289,
+   "crush": 1.38,
+   "F": 2847,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | TPU 95A gyroid 0.20": {
+  "m1": {
+   "g": 1378,
+   "crush": 2.22,
+   "F": 28645,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  },
+  "m15": {
+   "g": 1981,
+   "crush": 2.24,
+   "F": 38843,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  }
+ },
+ "bottom | TPU 95A gyroid 0.30": {
+  "m1": {
+   "g": 1183,
+   "crush": 1.78,
+   "F": 14003,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  },
+  "m15": {
+   "g": 1554,
+   "crush": 1.84,
+   "F": 30248,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  }
+ },
+ "bottom | TPU 95A gyroid 0.40": {
+  "m1": {
+   "g": 1363,
+   "crush": 1.27,
+   "F": 4261,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  },
+  "m15": {
+   "g": 1702,
+   "crush": 1.4,
+   "F": 22131,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  }
+ },
+ "bottom | TPU 95A gyroid 0.50": {
+  "m1": {
+   "g": 1444,
+   "crush": 0.78,
+   "F": 5794,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  },
+  "m15": {
+   "g": 1845,
+   "crush": 0.95,
+   "F": 14932,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  }
+ },
+ "bottom | TPU 95A gyroid 0.60": {
+  "m1": {
+   "g": 1756,
+   "crush": 0.45,
+   "F": 6950,
+   "slab_g": 18.51,
+   "soft_g": 26.68
+  },
+  "m15": {
+   "g": 2299,
+   "crush": 0.51,
+   "F": 11266,
+   "slab_g": 18.51,
+   "soft_g": 26.68
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.08": {
+  "m1": {
+   "g": 1863,
+   "crush": 2.71,
+   "F": 49519,
+   "slab_g": 2.47,
+   "soft_g": 10.63
+  },
+  "m15": {
+   "g": 2477,
+   "crush": 2.71,
+   "F": 52651,
+   "slab_g": 2.47,
+   "soft_g": 10.63
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.10": {
+  "m1": {
+   "g": 1670,
+   "crush": 2.63,
+   "F": 42168,
+   "slab_g": 3.09,
+   "soft_g": 11.25
+  },
+  "m15": {
+   "g": 2223,
+   "crush": 2.64,
+   "F": 55402,
+   "slab_g": 3.09,
+   "soft_g": 11.25
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.12": {
+  "m1": {
+   "g": 1458,
+   "crush": 2.53,
+   "F": 27597,
+   "slab_g": 3.7,
+   "soft_g": 11.86
+  },
+  "m15": {
+   "g": 1978,
+   "crush": 2.56,
+   "F": 49062,
+   "slab_g": 3.7,
+   "soft_g": 11.86
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.14": {
+  "m1": {
+   "g": 1006,
+   "crush": 2.44,
+   "F": 18763,
+   "slab_g": 4.32,
+   "soft_g": 12.48
+  },
+  "m15": {
+   "g": 1672,
+   "crush": 2.47,
+   "F": 39434,
+   "slab_g": 4.32,
+   "soft_g": 12.48
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.17": {
+  "m1": {
+   "g": 1243,
+   "crush": 1.77,
+   "F": 2369,
+   "slab_g": 5.25,
+   "soft_g": 13.41
+  },
+  "m15": {
+   "g": 1395,
+   "crush": 2.3,
+   "F": 7466,
+   "slab_g": 5.25,
+   "soft_g": 13.41
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.20": {
+  "m1": {
+   "g": 1313,
+   "crush": 1.27,
+   "F": 3621,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  },
+  "m15": {
+   "g": 1641,
+   "crush": 1.74,
+   "F": 3877,
+   "slab_g": 6.17,
+   "soft_g": 14.33
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.25": {
+  "m1": {
+   "g": 1578,
+   "crush": 0.67,
+   "F": 6022,
+   "slab_g": 7.71,
+   "soft_g": 15.88
+  },
+  "m15": {
+   "g": 1854,
+   "crush": 0.98,
+   "F": 6588,
+   "slab_g": 7.71,
+   "soft_g": 15.88
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.30": {
+  "m1": {
+   "g": 1706,
+   "crush": 0.57,
+   "F": 6353,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  },
+  "m15": {
+   "g": 2072,
+   "crush": 0.7,
+   "F": 7919,
+   "slab_g": 9.26,
+   "soft_g": 17.42
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.35": {
+  "m1": {
+   "g": 1775,
+   "crush": 0.5,
+   "F": 6554,
+   "slab_g": 10.8,
+   "soft_g": 18.96
+  },
+  "m15": {
+   "g": 2206,
+   "crush": 0.6,
+   "F": 7900,
+   "slab_g": 10.8,
+   "soft_g": 18.96
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.40": {
+  "m1": {
+   "g": 1806,
+   "crush": 0.46,
+   "F": 6865,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  },
+  "m15": {
+   "g": 2284,
+   "crush": 0.54,
+   "F": 8029,
+   "slab_g": 12.34,
+   "soft_g": 20.5
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.45": {
+  "m1": {
+   "g": 1818,
+   "crush": 0.43,
+   "F": 7235,
+   "slab_g": 13.89,
+   "soft_g": 22.05
+  },
+  "m15": {
+   "g": 2312,
+   "crush": 0.5,
+   "F": 8376,
+   "slab_g": 13.89,
+   "soft_g": 22.05
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.50": {
+  "m1": {
+   "g": 1823,
+   "crush": 0.41,
+   "F": 7629,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  },
+  "m15": {
+   "g": 2319,
+   "crush": 0.47,
+   "F": 8821,
+   "slab_g": 15.43,
+   "soft_g": 23.59
+  }
+ },
+ "bottom | TPU 95A honeycomb 0.55": {
+  "m1": {
+   "g": 1823,
+   "crush": 0.39,
+   "F": 8034,
+   "slab_g": 16.97,
+   "soft_g": 25.13
+  },
+  "m15": {
+   "g": 2318,
+   "crush": 0.45,
+   "F": 9296,
+   "slab_g": 16.97,
+   "soft_g": 25.13
+  }
+ },
+ "bottom | Flexible 50A gyroid 0.20": {
+  "m1": {
+   "g": 1936,
+   "crush": 2.36,
+   "F": 10824,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  },
+  "m15": {
+   "g": 2348,
+   "crush": 2.41,
+   "F": 14982,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  }
+ },
+ "bottom | Flexible 50A gyroid 0.30": {
+  "m1": {
+   "g": 2027,
+   "crush": 1.95,
+   "F": 6975,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  },
+  "m15": {
+   "g": 2407,
+   "crush": 2.03,
+   "F": 10361,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  }
+ },
+ "bottom | Flexible 50A gyroid 0.40": {
+  "m1": {
+   "g": 1846,
+   "crush": 1.62,
+   "F": 7595,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  },
+  "m15": {
+   "g": 2415,
+   "crush": 1.65,
+   "F": 8479,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  }
+ },
+ "bottom | Flexible 50A gyroid 0.50": {
+  "m1": {
+   "g": 1840,
+   "crush": 1.23,
+   "F": 6917,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  },
+  "m15": {
+   "g": 2315,
+   "crush": 1.3,
+   "F": 8643,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  }
+ },
+ "bottom | Flexible 50A gyroid 0.60": {
+  "m1": {
+   "g": 1735,
+   "crush": 0.89,
+   "F": 7484,
+   "slab_g": 16.2,
+   "soft_g": 23.63
+  },
+  "m15": {
+   "g": 2185,
+   "crush": 0.98,
+   "F": 9275,
+   "slab_g": 16.2,
+   "soft_g": 23.63
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.08": {
+  "m1": {
+   "g": 2039,
+   "crush": 2.8,
+   "F": 23551,
+   "slab_g": 2.16,
+   "soft_g": 9.59
+  },
+  "m15": {
+   "g": 2531,
+   "crush": 2.82,
+   "F": 31690,
+   "slab_g": 2.16,
+   "soft_g": 9.59
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.10": {
+  "m1": {
+   "g": 2003,
+   "crush": 2.72,
+   "F": 18360,
+   "slab_g": 2.7,
+   "soft_g": 10.13
+  },
+  "m15": {
+   "g": 2493,
+   "crush": 2.75,
+   "F": 25177,
+   "slab_g": 2.7,
+   "soft_g": 10.13
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.12": {
+  "m1": {
+   "g": 1983,
+   "crush": 2.64,
+   "F": 13724,
+   "slab_g": 3.24,
+   "soft_g": 10.67
+  },
+  "m15": {
+   "g": 2448,
+   "crush": 2.68,
+   "F": 19909,
+   "slab_g": 3.24,
+   "soft_g": 10.67
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.14": {
+  "m1": {
+   "g": 2044,
+   "crush": 2.54,
+   "F": 9884,
+   "slab_g": 3.78,
+   "soft_g": 11.21
+  },
+  "m15": {
+   "g": 2445,
+   "crush": 2.59,
+   "F": 15478,
+   "slab_g": 3.78,
+   "soft_g": 11.21
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.17": {
+  "m1": {
+   "g": 1843,
+   "crush": 2.47,
+   "F": 11841,
+   "slab_g": 4.59,
+   "soft_g": 12.02
+  },
+  "m15": {
+   "g": 2520,
+   "crush": 2.45,
+   "F": 10612,
+   "slab_g": 4.59,
+   "soft_g": 12.02
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.20": {
+  "m1": {
+   "g": 1723,
+   "crush": 2.38,
+   "F": 12458,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  },
+  "m15": {
+   "g": 2377,
+   "crush": 2.37,
+   "F": 11596,
+   "slab_g": 5.4,
+   "soft_g": 12.83
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.25": {
+  "m1": {
+   "g": 1482,
+   "crush": 2.2,
+   "F": 11510,
+   "slab_g": 6.75,
+   "soft_g": 14.18
+  },
+  "m15": {
+   "g": 2097,
+   "crush": 2.22,
+   "F": 12491,
+   "slab_g": 6.75,
+   "soft_g": 14.18
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.30": {
+  "m1": {
+   "g": 1411,
+   "crush": 2.0,
+   "F": 10219,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  },
+  "m15": {
+   "g": 1927,
+   "crush": 2.03,
+   "F": 11626,
+   "slab_g": 8.1,
+   "soft_g": 15.53
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.35": {
+  "m1": {
+   "g": 1386,
+   "crush": 1.77,
+   "F": 8903,
+   "slab_g": 9.45,
+   "soft_g": 16.88
+  },
+  "m15": {
+   "g": 1992,
+   "crush": 1.79,
+   "F": 9823,
+   "slab_g": 9.45,
+   "soft_g": 16.88
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.40": {
+  "m1": {
+   "g": 1405,
+   "crush": 1.58,
+   "F": 8503,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  },
+  "m15": {
+   "g": 2122,
+   "crush": 1.59,
+   "F": 8751,
+   "slab_g": 10.8,
+   "soft_g": 18.23
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.45": {
+  "m1": {
+   "g": 1518,
+   "crush": 1.38,
+   "F": 7789,
+   "slab_g": 12.15,
+   "soft_g": 19.58
+  },
+  "m15": {
+   "g": 2285,
+   "crush": 1.37,
+   "F": 7635,
+   "slab_g": 12.15,
+   "soft_g": 19.58
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.50": {
+  "m1": {
+   "g": 1734,
+   "crush": 1.16,
+   "F": 6766,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  },
+  "m15": {
+   "g": 2137,
+   "crush": 1.26,
+   "F": 9287,
+   "slab_g": 13.5,
+   "soft_g": 20.93
+  }
+ },
+ "bottom | Flexible 50A honeycomb 0.55": {
+  "m1": {
+   "g": 1744,
+   "crush": 1.0,
+   "F": 7180,
+   "slab_g": 14.85,
+   "soft_g": 22.28
+  },
+  "m15": {
+   "g": 2277,
+   "crush": 1.06,
+   "F": 8456,
+   "slab_g": 14.85,
+   "soft_g": 22.28
+  }
+ },
+ "bottom | ideal 0.1": {
+  "m1": {
+   "g": 1858,
+   "crush": 2.32,
+   "F": 33563,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 0.2": {
+  "m1": {
+   "g": 1565,
+   "crush": 2.32,
+   "F": 32732,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 0.3": {
+  "m1": {
+   "g": 1353,
+   "crush": 2.3,
+   "F": 27410,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 0.4": {
+  "m1": {
+   "g": 1277,
+   "crush": 2.26,
+   "F": 4627,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 0.5": {
+  "m1": {
+   "g": 1087,
+   "crush": 2.28,
+   "F": 13761,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 0.7": {
+  "m1": {
+   "g": 1220,
+   "crush": 1.79,
+   "F": 2034,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ },
+ "bottom | ideal 1.0": {
+  "m1": {
+   "g": 1246,
+   "crush": 1.23,
+   "F": 2906,
+   "slab_g": 4.63,
+   "soft_g": 12.79
+  }
+ }
+}

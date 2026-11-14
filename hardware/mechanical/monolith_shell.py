@@ -8,8 +8,9 @@ import numpy as np, struct, os
 RETIRED = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retired')   # outputs of the top-cap tube and side tray (2026-10-24)
 
 # ---------------- parameters ----------------
-CELL_D      = 21.85   # FEB 21700G (68E) 6500 mAh: 21.65 +-0.2 mm, so design to the 21.85 maximum (measure yours)
-CELL_L      = 71.1    # 70.95 +-0.2 mm; Batemo measures 71.1. A 71.15 maximum cell squeezes the spring rings 0.05 more.
+CELL_D      = 21.85   # design diameter, set 2026-10-21 for the FEB 21700G (21.65 +-0.2 mm) and kept for the BAK N21700CX-65E
+                      # (2026-10-24); measure each cell before assembly
+CELL_L      = 71.1    # FEB 21700G 70.95 +-0.2 mm; Batemo measures 71.1. Kept for the BAK cells (preload: 1 mm EVA foam rings).
                       # Was the EVE 58E, 21.5 x 70.8, until 2026-10-21
 CELL_D_58E  = 21.5    # the board outline is still derived from the 58E-era pocket (see pocket_r), so it doesn't change
 CELL_CLEAR  = 0.30    # diametral clearance per cell pocket

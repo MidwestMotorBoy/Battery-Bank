@@ -1,5 +1,8 @@
 # Loss reduction — shared brief
 
+_Dated snapshot (2026-10-21), modelled with the EVE 58E cells. The four loss cuts were adopted on 2026-10-23 with one change: the protection FETs are the BSC007N04LS6, not the XRS120N04D ([`../protection-fets/options.md`](../protection-fets/options.md)). Current parts and figures: [`docs/spec.md`](../../docs/spec.md), "Decided: the four loss cuts for P0"._
+
+
 The Monolith is a 4S1P, 82 Wh USB-C PD power bank (4 × EVE INR21700-58E) with two ports. Each port has a TI BQ25756 4-switch buck-boost charger and a TPS25751 PD controller; a BQ40Z50 gauge runs the pack protection. The owner wants to **cut the electrical losses** before any more thermal or mechanical modelling. You are one of five researchers, each owning one area. **Research and recommend only: do not edit any schematic, board, script or doc in the repo.** Write only your own output file.
 
 ## Where things are
