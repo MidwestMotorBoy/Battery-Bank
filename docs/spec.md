@@ -167,7 +167,7 @@ The production P0 board is the design of record and the first board planned to b
 | Board | State (repo, 2026-11-13) | Key facts |
 | --- | --- | --- |
 | Production P0, hand-routed (`hardware/Production/Monolith.kicad_pcb` at `8dd9eb6`) | History since 2026-11-13. Approved 2026-10-30 (PR #44), silk / UART / corner fills 2026-11-08 (PR #65); order files in `hardware/Production/retired/jlc-hand-routed/` | 301 schematic parts (261 placed), 43.2 × 74.35 mm, 6 layers, 1.6 mm, 2 oz outer / 0.5 oz inner, ENIG, filled vias. JLC assembles F.Cu (CC2340 module consigned); the 12 B.Cu parts (C208–C213, the four T593V, TH101 / TH104) are hand-fitted |
-| Production P0, script-built layout (`master` since 2026-11-10, dd34285) | **The design** (Logan, 2026-11-13). DRC clean, not yet reviewed by a person; no order files yet | Same schematic, outline, stack-up, holes, connectors, NTCs and B.Cu parts as the hand-routed board. In the 2026-11-10 comparison it is ahead or level on hot loops, gate loops, via current and copper loss, but cuts 258 mm of signal track into a ground plane (34 mm on the hand-routed board) |
+| Production P0, script-built layout (`master` since 2026-11-10, dd34285) | **The design** (Logan, 2026-11-13). DRC clean, not yet reviewed by a person; order files made 2026-11-14 (`hardware/Production/jlc/`) | Same schematic, outline, stack-up, holes, connectors, NTCs and B.Cu parts as the hand-routed board. In the 2026-11-10 comparison it is ahead or level on hot loops, gate loops, via current and copper loss, but cuts 258 mm of signal track into a ground plane (34 mm on the hand-routed board) |
 | Dev board MonolithDev rev A8 (`hardware/DevBoard/`) | Routed, DRC clean, fab files generated. Repo says it was skipped on 10-18 and never ordered (see Contradictions) | 196 × 115 mm, about 430 parts, cell holders, test points, sleep-current section |
 
 **P0 board changes before routing (history; all applied or superseded by the routed board):**
@@ -232,7 +232,7 @@ Twenty conflicts turned up. The first eight changed what gets built or coded; Lo
 
 ## To do: areas not yet specified or built
 
-Firmware is a bring-up skeleton, the GATT spec predates the 10-21 policy, the app exists only on the unmerged `app` branch, no enclosure part has been printed, and the script-built board on `master` has not been reviewed by a person and has no order files.
+Firmware is a bring-up skeleton, the GATT spec predates the 10-21 policy, the app exists only on the unmerged `app` branch, no enclosure part has been printed, and the script-built board on `master` has not been reviewed by a person (its order files exist since 2026-11-14).
 
 ### Firmware (CC2340, LPF3 SDK)
 
@@ -284,7 +284,7 @@ Today on `app` (10-16): SwiftUI + CoreBluetooth app with dashboard, charging, te
 - [ ] Gap-filler dispense pattern (GEL 30, about 1.9 g per zone since the rail spines, dispensed by weight; the board's silk still says 2.3 g)
 - [ ] Outside label: the wrap label art is done (`hardware/label/`, StickerApp matte 7.91 × 2.87 in since the 1.6 mm walls); order it, measure its thickness against the model's 0.17 mm relief, and check it carries 91 Wh, 14.0 V, USB1 / USB2 and the ratings
 - [ ] Rerun the STEP export on Logan's PC for the 2026-11-03 to 2026-11-12 geometry
-- [ ] Review the script-built board on `master` in KiCad before any order, then make gerbers, BOM and CPL together (`hardware/Production/jlc/ORDER-NOTES.md`)
+- [ ] Review the script-built board on `master` in KiCad before any order and fix the silkscreen items in `hardware/Production/jlc/ORDER-NOTES.md`; the gerbers, BOM and CPL were made together on 2026-11-14 (rerun `make_package.sh` after any board change)
 - [ ] Rerun the 3D drop model and the thermal runs with the script-built board's part positions and copper (C434 and C524 moved about 13 mm and C420 about 5 mm; C531 moved 0.4 mm and turned 90°; the 0.02 to 0.06 mm part-to-wall margins of the drop studies are for the hand-routed positions)
 
 ### Mass reduction (400 g accepted; keep working on it)
