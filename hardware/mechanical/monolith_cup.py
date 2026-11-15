@@ -40,8 +40,9 @@ USB_SQ, USB_LEAD = 0.15, 0.3        # seal bore = ring (rev A4) - 2 x USB_SQ (0.
 # 0.35 into the top wall and is wider than the seal bore at its corners (~0.5 mm), so the wall's inside face is pocketed
 # round it up to just under the ring (plus the board's z float), and the ring's lead-in starts there. USB_LEAD is now
 # the peg-slot y float the old 45 deg lead-in had to cover; the pocket covers it.
-HOUSING_CLR = 0.15                  # pocket round the housing, each side
-POCKET_LEAD = 0.25                  # loft from the pocket up to the seal bore (the ring squeezes in over it)
+HOUSING_CLR = 0.5                   # pocket round the housing in x, each side (0.15 until 2026-11-15: more than the ring's own
+                                    # ~0.2 travel to solid, so the squashed ring, not the hard housing, is the first x stop)
+POCKET_LEAD = 0.25                  # 45 deg lead-in chamfer from the pocket's ceiling up to the seal bore (the ring squeezes in over it)
 BOARD_ZFLOAT = 0.1                  # board top edge to the top wall (it can rise this much before it stops)
 WALL_POCKET, POCKET_PARTS, POCKET_MARGIN = 0.7, ('L401', 'L501'), 0.5   # pockets in the board-face wall's inside over the two
                                     # 3.3 uH inductors: the board bows 0.68 mm toward the wall in a board-face drop and
@@ -144,12 +145,15 @@ LAND_DEFL = 0.09                    # lands' estimated give at the narrow-side p
 FCU_LIP = (0.5, 1.8, 20.9, 27.0, 1.5)   # F.Cu lips over the board's long edges: gap off F.Cu, thickness (x), reach (|y|), bottom z
                                     # (L502 / C315 / U301 / C206 sweep under anything lower), lead-in. A board-face drop stops the
                                     # board on its edges, not on its parts
-HOUSING_CLR_Y = 0.35                # USB-C housing pocket, y clearance (0.15 until 2026-11-03: the housings were the first y stop)
-BORE_CHAMFER = (0.52, 0.52)         # 45 deg chamfer at the seal bore's mouth: width per side at the face, depth. It keeps the
-                                    # connector's shell lip (d 0-0.496, 9.655 wide, 0.20 off the bore) off the wall when the
-                                    # board sits on a land, so the lip isn't a y stop. Was a 0.25 x 0.49 step (2026-11-03),
-                                    # too small a feature for MJF (Logan, 2026-11-15)
-USB_LIP_W = 9.655                   # shell lip width in front of the ring (DevBoard/tools/make_3d_usbc.py, measured)
+HOUSING_CLR_Y = 0.6                 # USB-C housing pocket, y clearance (0.15 until 2026-11-03: the housings were the first y stop;
+                                    # 0.35 until 2026-11-15)
+MOUTH_RELIEF = (0.5, 0.49)          # seal bore opened this much per side over this depth from the face, in front of the ring
+                                    # band (0.5-1.5 deep), so the connector's shell lip (d 0-0.496, 9.655 x 3.869, 0.20 off the
+                                    # bore) isn't a stop when the board moves. 0.25 per side 2026-11-03 to 2026-11-15: too small a
+                                    # step for MJF; Logan asked for it opened out further instead of a chamfer
+USB_LIP_W, USB_LIP_H = 9.655, 3.869  # shell lip in front of the ring, continuing inside it (DevBoard/tools/make_3d_usbc.py)
+USB_RING_STOP = (S.USB_RING_H - USB_LIP_H) / 2 - USB_SQ   # ring's radial thickness on the shell (x) left after the squeeze: the
+                                    # board can push the connector about this far before the ring goes solid
 CRADLE_GAP, CRADLE_X, CRADLE_LEAD = 0.15, (12.6, 21.5), 1.0    # front-can cradles: radial gap, x span, lead-in
 CRADLE_CAP_RELIEF = (20.5, (15.8, 21.3), (40.8, 50.1))         # cradle tops cut to x <= 20.5 under C421 / C556 (2026-11-05):
                                     # those 7343 caps on B.Cu sat 0.88 mm off the cradles and hit them in a back-face drop
@@ -306,9 +310,8 @@ def cup():
     for py in PORT_YS:
         m = m - MF.extrude(usb_bore(py), 4).translate((0, 0, Z_TOP0 - 1))
         m = m - pz(usb_pocket(py), Z_TOP0 - 1, Z_POCKET)
-        m = m - MF.batch_hull([pz(usb_pocket(py), Z_POCKET - 0.01, Z_POCKET), pz(usb_bore(py), Z_POCKET + POCKET_LEAD - 0.01, Z_POCKET + POCKET_LEAD)])
-        cw, cd = BORE_CHAMFER                                                                        # mouth chamfer
-        m = m - MF.batch_hull([pz(usb_bore(py), Z_TOP1 - cd, Z_TOP1 - cd + 0.01), pz(usb_bore(py, cw), Z_TOP1, Z_TOP1 + 1)])
+        m = m - MF.batch_hull([pz(usb_bore(py, POCKET_LEAD), Z_POCKET - 0.01, Z_POCKET), pz(usb_bore(py), Z_POCKET + POCKET_LEAD - 0.01, Z_POCKET + POCKET_LEAD)])
+        m = m - pz(usb_bore(py, MOUTH_RELIEF[0]), Z_TOP1 - MOUTH_RELIEF[1], Z_TOP1 + 1)              # shell-lip relief
     e = YI + MOUTH_T; m = m - wall_pockets()
     m = m - cyly(SCREW_X, SCREW_Z, SCREW_CBORE[0], -(e + 1), -(e - SCREW_CBORE[1])) - cyly(SCREW_X, SCREW_Z, SCREW_CBORE[0], e - SCREW_CBORE[1], e + 1)
     return m - cyly(SCREW_X, SCREW_Z, SCREW_HOLE_R, -(e + 0.5), e + 0.5)
@@ -723,9 +726,12 @@ def checks():
         'USB-C seal squeeze per side (0.12-0.18)': min(USB_SQ - 0.12, 0.18 - USB_SQ),
         'seal bores fit the top wall beside the board (y)': (S.SB_STOP_Y0 - (S.SB_PORT_Y + bw/2 + USB_LEAD)),
         'housing pockets: wall left between the two ports (y, >= 1.5)': 2 * S.SB_PORT_Y - (S.USB_HOUSING[0] + 2 * HOUSING_CLR_Y) - 1.5,
-        'shell lip clears the mouth chamfer at its back edge, board on a land (y, >= 0)': (bw - USB_LIP_W)/2
-                                                       + BORE_CHAMFER[0] * (1 - S.USB_RING_D[0] / BORE_CHAMFER[1]) - LAND_GAP - LAND_DEFL,
-        'seal ring band left in the full bore, board at full rise, after the mouth chamfer (z, >= 0.6)': (Z_TOP1 - BORE_CHAMFER[1])
+        'mouth reliefs: wall left between the two ports at the face (y, >= 1.5)': 2 * S.SB_PORT_Y - (bw + 2 * MOUTH_RELIEF[0]) - 1.5,
+        'housing pockets stay inside the board\'s top-edge stops (y, >= 0.5)': S.SB_STOP_Y0 - (S.SB_PORT_Y + S.USB_HOUSING[0]/2 + HOUSING_CLR_Y) - 0.5,
+        'shell lip clears the mouth relief with the board on a land (y, >= 0.2)': (bw - USB_LIP_W)/2 + MOUTH_RELIEF[0] - LAND_GAP - LAND_DEFL - 0.2,
+        'squashed seal ring is the first x stop, before the housing or the lip (x, >= 0.1)':
+            min(HOUSING_CLR, (bh - USB_LIP_H)/2 + MOUTH_RELIEF[0]) - USB_RING_STOP - 0.1,
+        'seal ring band left in the full bore, board at full rise, after the mouth relief (z, >= 0.6)': (Z_TOP1 - MOUTH_RELIEF[1])
                                                        - max(Z_TOP1 - S.USB_RING_D[1] + BOARD_ZFLOAT, Z_POCKET + POCKET_LEAD) - 0.6,
         'carrier top frame >= 0.9 thick (z)': (FR_T1 - FR_T0) - 0.9,
         'cap skirt top under the carrier frame (z, >= 0.5 at -3 sigma)': (FR_B0 - Z_SKIRT1) - 0.5 - 0.5,
@@ -1000,12 +1006,12 @@ def sheet_sections(A):
         sh.img.paste(u.img, (UX*SS, UY*SS)); sh.rect(UX, UY, UX + uw, UY + uh, outline=RULE, width=1)
         tu = lambda x, z: (UX + ou[0] + pxu*x, UY + ou[1] - pxu*z)
         sh.text(UX + uw/2, UY + uh + 14, lab, 14, fill=MUTED, anchor='mm')
-        cw_, bh_ = BORE_CHAMFER[0], S.USB_RING_H/2 - USB_SQ
-        sh.callouts([(tu(PORT_X + bh_ + cw_/2, Z_TOP1 - BORE_CHAMFER[1]/2), f'{BORE_CHAMFER[0]} mm 45 deg chamfer at the mouth\nkeeps the shell lip off the wall'),
+        cw_, bh_ = MOUTH_RELIEF[0], S.USB_RING_H/2 - USB_SQ
+        sh.callouts([(tu(PORT_X + bh_ + cw_/2, Z_TOP1 - MOUTH_RELIEF[1]/2), f'Mouth opened {MOUTH_RELIEF[0]} mm a side:\nthe shell lip stays off the wall'),
                      (tu(PORT_X + S.USB_RING_H/2 - 0.1, Z_TOP1 - 1.0), 'Seal ring in the bore'),
                      (tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing pocket: clears\nthe hard front housing'),
                      (tu(S.sb_xb0 - 0.2, Z_HOUSING0 - 0.15), 'Top rail block notched under\nthe housing (0.32 below B.Cu)')]
-                    if i == 0 else [(tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), 'Housing corner in the pocket,\n0.15 clear in x, 0.35 in y')],
+                    if i == 0 else [(tu(PORT_X + S.USB_HOUSING[1]/2 + HOUSING_CLR/2, Z_RING0 - 0.15), f'Housing corner in the pocket,\n{HOUSING_CLR} clear in x, {HOUSING_CLR_Y} in y')],
                     UX + uw + 30, 'r', UY, size=13)
     sh.line([(40, 1240), (2660, 1240)], RULE, 1.5); sh.legend(LEG, 40, 1256, 14)
     save(sh, 'monolith_cup_sections.png')
