@@ -184,7 +184,8 @@ Model studies of the whole pack, each in its own folder under [`docs/analysis/`]
 - **Not rerun since.** The model's cup has 1.2 mm side walls and no rail spines. The cup now has 1.6 mm walls, and the spines cross the gap-filler zone and take about 12 % of its conductance, so these temperatures are probably slightly optimistic. The copper losses are the hand-routed board's. For the script-built board only the 100 W burst was run, in the solver comparison: 5.3 / 5.7 min before the derate (port 1 / port 2) against 5.0 / 5.3, with the hottest part at 58.1 / 58.9 °C against 59.4 / 60.2 °C.
 
 <p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-timeline.png" alt="Delivered power and temperatures against time at 25, 35 and 40 °C" width="100%"></p>
-<p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-board-on-render.png" alt="Board temperature laid over the KiCad render" width="100%"></p>
+<p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-board-on-render.png" alt="Board temperature laid over a KiCad render of the hand-routed board (2026-10-31), not the board on master" width="100%"></p>
+<p align="center"><sub>The board under the temperatures above is the <b>hand-routed</b> board this study ran on (silk "REV 1.0 10/30/26"), not the script-built board on <code>master</code>. For the current board see <a href="#the-board">The board</a>.</sub></p>
 <p align="center"><img src="docs/analysis/2026-10-31-thermal-25w-20w/img/thermal-std25-pack.png" alt="Pack temperature in 3D and in section at 25 °C" width="100%"></p>
 
 ### Inner copper weight

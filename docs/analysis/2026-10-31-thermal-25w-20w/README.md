@@ -51,7 +51,7 @@ The model is the same one used for the routed-board review: `research_notes/Pack
 
 **The board at its hottest, on the KiCad render of the routed board** (left: 25 °C with the derate on, at 115 min; right: 35 °C with the derate off, the worst case). The two hot spots sit over the two power stages; the gap filler under them carries their heat into the front cells.
 
-<p align="center"><img src="img/thermal-board-on-render.png" alt="Board temperature laid over the KiCad render" width="100%"></p>
+<p align="center"><img src="img/thermal-board-on-render.png" alt="Board temperature laid over a KiCad render of the hand-routed board (2026-10-31), not the board on master" width="100%"></p>
 
 **Every board part's hottest temperature over the run:**
 
