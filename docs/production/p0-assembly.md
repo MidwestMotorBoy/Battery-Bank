@@ -186,7 +186,7 @@ From the first weld until the cap is on, the pack is a bare 14 V, 91 Wh source w
 - Keep a metal bucket of sand nearby.
 
 ## Open items
-- **Board:** review the script-built board on `master` in KiCad, then make its gerbers, BOM and CPL together (`hardware/Production/jlc/ORDER-NOTES.md`). At checkout, check the D401 / D501 pin-1 rotation in JLC's placement preview.
+- **Board:** review the script-built board on `master` in KiCad and fix the silkscreen items in `hardware/Production/jlc/ORDER-NOTES.md`; its gerbers, BOM and CPL were made on 2026-11-14 (rerun `make_package.sh` after any board change). At checkout, check the D401 / D501 pin-1 rotation in JLC's placement preview.
 - **Fit (on the first real parts):** the first cup, cap and core are the fit test (Logan, 2026-11-07: the real parts cost about the same as test pieces).
     - USB-C bores (0.15 mm squeeze a side, `USB_SQ`): measure the rings on 5 connectors from the batch, then push a loose connector into the first cup's bores from the pocket side. It should go in with a firm push and pass a 1 m dunk. Too tight or too loose means changing `USB_SQ` for the next cup order.
     - Cup mouth + cap + O-ring: measure the squeeze in the middle of each flat (clay or feelers), dunk at 1 m / 30 min, and pull-test the cap.

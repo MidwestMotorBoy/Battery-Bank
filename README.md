@@ -9,9 +9,9 @@ An ultralight 91 Wh USB-C power bank for backpacking: 4S1P 21700 pack, two bidir
 Nothing has been built, assembled or bench-tested yet. Every number in this repo is a design or model value, not a measurement.
 
 - **The design is complete on paper:** schematic, board layout, enclosure model with print files, assembly and bring-up procedures, and a parts tracker for the first five packs.
-- **The board is the script-built layout on `master`** (Logan's choice on 2026-11-13; details in [The board layout and its predecessor](#the-board-layout-and-its-predecessor)). It passes DRC and was checked by solver, but it has not been reviewed by a person and has no order files yet. The earlier hand-routed layout, approved on 2026-10-30, is history: its order files, reviews and board-specific studies are kept and labelled as such.
+- **The board is the script-built layout on `master`** (Logan's choice on 2026-11-13; details in [The board layout and its predecessor](#the-board-layout-and-its-predecessor)). It passes DRC and was checked by solver, but it has not been reviewed by a person. Its JLC order files were made on 2026-11-14 ([`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md)). The earlier hand-routed layout, approved on 2026-10-30, is history: its order files, reviews and board-specific studies are kept and labelled as such.
 - **The enclosure has been through four drop studies and a thermal study**, the last a full 3D explicit drop model (2026-11-11 and 11-12) that added the rail spines under the board. See [Analysis](#analysis).
-- **Next:** review the board in KiCad, make its order files and order it, print the first cup (it is the fit test: there are no separate fit coupons), weld a pack, bring the board up, and run the drop and thermal tests that the models can only estimate.
+- **Next:** review the board in KiCad, fix three silkscreen items and order it, print the first cup (it is the fit test: there are no separate fit coupons), weld a pack, bring the board up, and run the drop and thermal tests that the models can only estimate.
 
 Where to read more:
 
@@ -55,7 +55,7 @@ The goal is a hiking power bank that is lighter and better behaved than the off-
 **Remaining**
 
 - Review the board in KiCad: it has been checked by DRC, script and solver only.
-- Make its gerbers, BOM and CPL together and go through the checkout checks in [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md).
+- Fix the silkscreen items in [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md) (the title text is off the board edge), rerun `hardware/Production/jlc/make_package.sh` after any board change, and go through the checkout checks there.
 - Rerun the board-specific studies for this layout where the margin is small: the 3D drop model (of the four capacitors with the smallest wall margins, three moved by 5 to 13 mm and the fourth turned 90°) and the thermal runs.
 - Order the board and the printed parts. The first real cup, cap and core are the fit test.
 - Weld the pack, bring up the board and train the gauge ([`docs/production/p0-bringup-and-training.md`](docs/production/p0-bringup-and-training.md)).
@@ -77,7 +77,7 @@ Everything for the board is in [`hardware/Production/`](hardware/Production/), K
 | `Monolith.kicad_sch` | Root sheet. Sub-sheets: `gauge.kicad_sch` (Cells and Gauge), `power.kicad_sch` (3V3 Rail), `mcu.kicad_sch` (MCU), and `usb_port.kicad_sch` used twice (USB Port 1, USB Port 2) |
 | `MonolithDev.kicad_sym`, `MonolithDev.pretty/`, `3dmodels/` | Project-local symbol library, footprints and STEP models (wired up by `sym-lib-table` / `fp-lib-table`) |
 | `Monolith.kicad_dru` | Custom DRC rules (net-class clearances, keep-outs) |
-| `jlc/` | [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md): how to make the JLCPCB order package for this board, the PCB options and the checkout checks. No order files exist yet |
+| `jlc/` | [`ORDER-NOTES.md`](hardware/Production/jlc/ORDER-NOTES.md): the JLCPCB order package for this board (gerber zip, BOM, CPL, hand-solder list, made 2026-11-14 by `make_package.sh`), the PCB options and the checkout checks |
 | `retired/jlc-hand-routed/` | History: the complete order package of the hand-routed layout (gerber zip, BOM, CPL, hand-solder list). Not for today's board |
 | `tools/` | Python scripts that generated the schematic, stack-up, outline and mechanical keep-outs from the enclosure model ([table](hardware/Production/README.md#tools)) |
 | `groundup/` | The tools, passes and solver comparison behind the script-built layout ("ground-up" in that folder's notes; [README](hardware/Production/groundup/README.md)) |
