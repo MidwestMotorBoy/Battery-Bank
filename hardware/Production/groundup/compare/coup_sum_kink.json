@@ -1,0 +1,483 @@
+{
+ "groups": {
+  "P1 SW1 (VBUS leg)": {
+   "C_self_pF": 14.28504636182961,
+   "vsw": 20.0,
+   "to_gnd_pF": 10.810997395640527,
+   "to_planes_pF": 11.943609851987702,
+   "to_signals_fF": 67.4059539364201
+  },
+  "P1 SW2 (pack leg)": {
+   "C_self_pF": 13.451128525830503,
+   "vsw": 16.8,
+   "to_gnd_pF": 10.304298141327005,
+   "to_planes_pF": 12.162857662643484,
+   "to_signals_fF": 52.23631969364156
+  },
+  "P2 SW1 (VBUS leg)": {
+   "C_self_pF": 14.345613467676202,
+   "vsw": 20.0,
+   "to_gnd_pF": 10.880750638660729,
+   "to_planes_pF": 12.06073298991595,
+   "to_signals_fF": 70.535095996067
+  },
+  "P2 SW2 (pack leg)": {
+   "C_self_pF": 13.394526367129435,
+   "vsw": 16.8,
+   "to_gnd_pF": 10.683318980158829,
+   "to_planes_pF": 12.083184749722818,
+   "to_signals_fF": 55.43053046858074
+  },
+  "P1 5 V buck SW": {
+   "C_self_pF": 3.0507949172318236,
+   "vsw": 16.8,
+   "to_gnd_pF": 2.6619874541880866,
+   "to_planes_pF": 3.021979597326828,
+   "to_signals_fF": 28.2075335744998
+  },
+  "P2 5 V buck SW": {
+   "C_self_pF": 3.212870623111339,
+   "vsw": 16.8,
+   "to_gnd_pF": 2.631136848624364,
+   "to_planes_pF": 3.0968990762280986,
+   "to_signals_fF": 114.21196686344096
+  },
+  "3V3 buck SW": {
+   "C_self_pF": 1.3966577690871818,
+   "vsw": 16.8,
+   "to_gnd_pF": 1.3366498100533244,
+   "to_planes_pF": 1.3543506201992417,
+   "to_signals_fF": 0.0
+  }
+ },
+ "victims": {
+  "/Cells and Gauge/TS4": {
+   "label": "TS4",
+   "cat": "Gauge analog",
+   "c_node_pF": 12.783696114056069,
+   "c_cap_pF": 0.0,
+   "len_mm": 67.83696114056067,
+   "by": {
+    "P1 SW1 (VBUS leg)": 0.7703518794983182
+   },
+   "step_mV": {
+    "P1 SW1 (VBUS leg)": 1.2051373149609867
+   },
+   "c_total_fF": 0.7703518794983182,
+   "worst": "P1 SW1 (VBUS leg)",
+   "worst_mV": 1.2051373149609867
+  },
+  "/USB Port 1/ACN_F": {
+   "label": "P1 ACN_F",
+   "cat": "Current sense",
+   "c_node_pF": 570009.6650944051,
+   "c_cap_pF": 570000.0,
+   "len_mm": 36.65094405142697,
+   "by": {
+    "P1 SW1 (VBUS leg)": 12.70153072193639
+   },
+   "step_mV": {
+    "P1 SW1 (VBUS leg)": 0.00044566017794819113
+   },
+   "c_total_fF": 12.70153072193639,
+   "worst": "P1 SW1 (VBUS leg)",
+   "worst_mV": 0.00044566017794819113
+  },
+  "/USB Port 1/ACP_F": {
+   "label": "P1 ACP_F",
+   "cat": "Current sense",
+   "c_node_pF": 570009.3108278174,
+   "c_cap_pF": 570000.0,
+   "len_mm": 33.108278175627476,
+   "by": {
+    "P1 SW1 (VBUS leg)": 0.9551142773202155
+   },
+   "step_mV": {
+    "P1 SW1 (VBUS leg)": 3.351223418904208e-05
+   },
+   "c_total_fF": 0.9551142773202155,
+   "worst": "P1 SW1 (VBUS leg)",
+   "worst_mV": 3.351223418904208e-05
+  },
+  "/USB Port 1/CHG_INT": {
+   "label": "P1 CHG_INT",
+   "cat": "Control / debug",
+   "c_node_pF": 14.20666709375446,
+   "c_cap_pF": 0.0,
+   "len_mm": 42.06667093754459,
+   "by": {
+    "P1 SW1 (VBUS leg)": 0.6053684974310175
+   },
+   "step_mV": {
+    "P1 SW1 (VBUS leg)": 0.852195238796828
+   },
+   "c_total_fF": 0.6053684974310175,
+   "worst": "P1 SW1 (VBUS leg)",
+   "worst_mV": 0.852195238796828
+  },
+  "/USB Port 1/TS": {
+   "label": "P1 TS",
+   "cat": "Charger analog",
+   "c_node_pF": 10.927890279118515,
+   "c_cap_pF": 0.0,
+   "len_mm": 49.27890279118517,
+   "by": {
+    "P1 SW1 (VBUS leg)": 52.37358856023417,
+    "P1 SW2 (pack leg)": 5.297801975692363
+   },
+   "step_mV": {
+    "P1 SW1 (VBUS leg)": 95.39586514746672,
+    "P1 SW2 (pack leg)": 8.140633137514284
+   },
+   "c_total_fF": 57.671390535926534,
+   "worst": "P1 SW1 (VBUS leg)",
+   "worst_mV": 95.39586514746672
+  },
+  "/USB Port 1/SRN_F": {
+   "label": "P1 SRN_F",
+   "cat": "Current sense",
+   "c_node_pF": 570006.9473671668,
+   "c_cap_pF": 570000.0,
+   "len_mm": 9.473671668836658,
+   "by": {
+    "P1 SW2 (pack leg)": 39.205185596292274
+   },
+   "step_mV": {
+    "P1 SW2 (pack leg)": 0.0011555070964627667
+   },
+   "c_total_fF": 39.205185596292274,
+   "worst": "P1 SW2 (pack leg)",
+   "worst_mV": 0.0011555070964627667
+  },
+  "/USB Port 1/SRP_F": {
+   "label": "P1 SRP_F",
+   "cat": "Current sense",
+   "c_node_pF": 570007.276984949,
+   "c_cap_pF": 570000.0,
+   "len_mm": 12.76984949198626,
+   "by": {
+    "P1 SW2 (pack leg)": 5.637304547659393
+   },
+   "step_mV": {
+    "P1 SW2 (pack leg)": 0.00016615001121562926
+   },
+   "c_total_fF": 5.637304547659393,
+   "worst": "P1 SW2 (pack leg)",
+   "worst_mV": 0.00016615001121562926
+  },
+  "EN_5V1": {
+   "label": "EN_5V1",
+   "cat": "Control / debug",
+   "c_node_pF": 15.079897821219058,
+   "c_cap_pF": 0.0,
+   "len_mm": 50.79897821219057,
+   "by": {
+    "P1 SW2 (pack leg)": 1.55946603908309,
+    "P1 5 V buck SW": 1.3844396332257245
+   },
+   "step_mV": {
+    "P1 SW2 (pack leg)": 1.7371682959796373,
+    "P1 5 V buck SW": 1.5422154055538357
+   },
+   "c_total_fF": 2.9439056723088144,
+   "worst": "P1 SW2 (pack leg)",
+   "worst_mV": 1.7371682959796373
+  },
+  "Net-(U403-FB)": {
+   "label": "P1 FB",
+   "cat": "Charger analog",
+   "c_node_pF": 7.4172124403721496,
+   "c_cap_pF": 0.0,
+   "len_mm": 14.172124403721503,
+   "by": {
+    "P1 SW2 (pack leg)": 0.5365615349144469
+   },
+   "step_mV": {
+    "P1 SW2 (pack leg)": 1.2152249670682032
+   },
+   "c_total_fF": 0.5365615349144469,
+   "worst": "P1 SW2 (pack leg)",
+   "worst_mV": 1.2152249670682032
+  },
+  "/USB Port 2/ACN_F": {
+   "label": "P2 ACN_F",
+   "cat": "Current sense",
+   "c_node_pF": 570008.8991287817,
+   "c_cap_pF": 570000.0,
+   "len_mm": 28.991287818570154,
+   "by": {
+    "P2 SW1 (VBUS leg)": 8.520776798200895
+   },
+   "step_mV": {
+    "P2 SW1 (VBUS leg)": 0.0002989699523586908
+   },
+   "c_total_fF": 8.520776798200895,
+   "worst": "P2 SW1 (VBUS leg)",
+   "worst_mV": 0.0002989699523586908
+  },
+  "/USB Port 2/ACP_F": {
+   "label": "P2 ACP_F",
+   "cat": "Current sense",
+   "c_node_pF": 570009.0800344258,
+   "c_cap_pF": 570000.0,
+   "len_mm": 30.800344259147913,
+   "by": {
+    "P2 SW1 (VBUS leg)": 0.8368766433705782
+   },
+   "step_mV": {
+    "P2 SW1 (VBUS leg)": 2.9363624947565692e-05
+   },
+   "c_total_fF": 0.8368766433705782,
+   "worst": "P2 SW1 (VBUS leg)",
+   "worst_mV": 2.9363624947565692e-05
+  },
+  "/USB Port 2/CHG_INT": {
+   "label": "P2 CHG_INT",
+   "cat": "Control / debug",
+   "c_node_pF": 13.749786686224452,
+   "c_cap_pF": 0.0,
+   "len_mm": 37.49786686224452,
+   "by": {
+    "P2 SW1 (VBUS leg)": 0.2050476733269611
+   },
+   "step_mV": {
+    "P2 SW1 (VBUS leg)": 0.2982513405029302
+   },
+   "c_total_fF": 0.2050476733269611,
+   "worst": "P2 SW1 (VBUS leg)",
+   "worst_mV": 0.2982513405029302
+  },
+  "/USB Port 2/I2CC_SCL": {
+   "label": "P2 I2CC_SCL",
+   "cat": "I2C / SMBus",
+   "c_node_pF": 19.298933178964436,
+   "c_cap_pF": 0.0,
+   "len_mm": 52.989331789644375,
+   "by": {
+    "P2 SW1 (VBUS leg)": 0.20069116238945403
+   },
+   "step_mV": {
+    "P2 SW1 (VBUS leg)": 0.20797945000019336
+   },
+   "c_total_fF": 0.20069116238945403,
+   "worst": "P2 SW1 (VBUS leg)",
+   "worst_mV": 0.20797945000019336
+  },
+  "/USB Port 2/TS": {
+   "label": "P2 TS",
+   "cat": "Charger analog",
+   "c_node_pF": 9.166016966293686,
+   "c_cap_pF": 0.0,
+   "len_mm": 31.66016966293687,
+   "by": {
+    "P2 SW1 (VBUS leg)": 60.771703718779115,
+    "P2 SW2 (pack leg)": 3.1381409629641164
+   },
+   "step_mV": {
+    "P2 SW1 (VBUS leg)": 131.72882980682166,
+    "P2 SW2 (pack leg)": 5.749795653044729
+   },
+   "c_total_fF": 63.90984468174323,
+   "worst": "P2 SW1 (VBUS leg)",
+   "worst_mV": 131.72882980682166
+  },
+  "/USB Port 2/SRN_F": {
+   "label": "P2 SRN_F",
+   "cat": "Current sense",
+   "c_node_pF": 570007.6900345788,
+   "c_cap_pF": 570000.0,
+   "len_mm": 16.900345789456807,
+   "by": {
+    "P2 SW2 (pack leg)": 3.4259432665760823
+   },
+   "step_mV": {
+    "P2 SW2 (pack leg)": 0.00010097380708856067
+   },
+   "c_total_fF": 3.4259432665760823,
+   "worst": "P2 SW2 (pack leg)",
+   "worst_mV": 0.00010097380708856067
+  },
+  "/USB Port 2/SRP_F": {
+   "label": "P2 SRP_F",
+   "cat": "Current sense",
+   "c_node_pF": 570007.0225869919,
+   "c_cap_pF": 570000.0,
+   "len_mm": 10.225869920278026,
+   "by": {
+    "P2 SW2 (pack leg)": 44.16206941040478
+   },
+   "step_mV": {
+    "P2 SW2 (pack leg)": 0.0013016027508680394
+   },
+   "c_total_fF": 44.16206941040478,
+   "worst": "P2 SW2 (pack leg)",
+   "worst_mV": 0.0013016027508680394
+  },
+  "/USB Port 2/SS_5V": {
+   "label": "P2 SS_5V",
+   "cat": "Regulator feedback",
+   "c_node_pF": 33006.32161797717,
+   "c_cap_pF": 33000.00000000001,
+   "len_mm": 3.216179771686279,
+   "by": {
+    "P2 SW2 (pack leg)": 0.6486909528503337,
+    "P2 5 V buck SW": 23.611384677631452
+   },
+   "step_mV": {
+    "P2 SW2 (pack leg)": 0.00033017940986691227,
+    "P2 5 V buck SW": 0.012018030467406515
+   },
+   "c_total_fF": 24.260075630481786,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 0.012018030467406515
+  },
+  "EN_5V2": {
+   "label": "EN_5V2",
+   "cat": "Control / debug",
+   "c_node_pF": 18.573519010139744,
+   "c_cap_pF": 0.0,
+   "len_mm": 85.73519010139742,
+   "by": {
+    "P2 SW2 (pack leg)": 1.7722209875355297,
+    "P2 5 V buck SW": 7.593310376949799
+   },
+   "step_mV": {
+    "P2 SW2 (pack leg)": 1.6028449955446566,
+    "P2 5 V buck SW": 6.865445519744283
+   },
+   "c_total_fF": 9.365531364485328,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 6.865445519744283
+  },
+  "Net-(U504-FB)": {
+   "label": "P2 5V FB",
+   "cat": "Regulator feedback",
+   "c_node_pF": 6.548302460621928,
+   "c_cap_pF": 0.0,
+   "len_mm": 5.483024606219287,
+   "by": {
+    "P2 SW2 (pack leg)": 2.2834648882498962,
+    "P2 5 V buck SW": 1.7646883099444248
+   },
+   "step_mV": {
+    "P2 SW2 (pack leg)": 5.8563021016490975,
+    "P2 5 V buck SW": 4.526177050246099
+   },
+   "c_total_fF": 4.048153198194321,
+   "worst": "P2 SW2 (pack leg)",
+   "worst_mV": 5.8563021016490975
+  },
+  "/USB Port 1/CC2": {
+   "label": "P1 CC2",
+   "cat": "USB CC",
+   "c_node_pF": 232.6558676775013,
+   "c_cap_pF": 220.0,
+   "len_mm": 26.558676775013247,
+   "by": {
+    "P1 5 V buck SW": 1.5349891422495463
+   },
+   "step_mV": {
+    "P1 5 V buck SW": 0.11084030550595336
+   },
+   "c_total_fF": 1.5349891422495463,
+   "worst": "P1 5 V buck SW",
+   "worst_mV": 0.11084030550595336
+  },
+  "/USB Port 1/SS_5V": {
+   "label": "P1 SS_5V",
+   "cat": "Regulator feedback",
+   "c_node_pF": 33006.30533809512,
+   "c_cap_pF": 33000.00000000001,
+   "len_mm": 3.053380951166243,
+   "by": {
+    "P1 5 V buck SW": 23.67368297036387
+   },
+   "step_mV": {
+    "P1 5 V buck SW": 0.012049745785427697
+   },
+   "c_total_fF": 23.67368297036387,
+   "worst": "P1 5 V buck SW",
+   "worst_mV": 0.012049745785427697
+  },
+  "Net-(U404-FB)": {
+   "label": "P1 5V FB",
+   "cat": "Regulator feedback",
+   "c_node_pF": 6.45126635117737,
+   "c_cap_pF": 0.0,
+   "len_mm": 4.512663511773701,
+   "by": {
+    "P1 5 V buck SW": 1.6144218286606604
+   },
+   "step_mV": {
+    "P1 5 V buck SW": 4.203128443804234
+   },
+   "c_total_fF": 1.6144218286606604,
+   "worst": "P1 5 V buck SW",
+   "worst_mV": 4.203128443804234
+  },
+  "/USB Port 1/I2CC_SCL": {
+   "label": "P1 I2CC_SCL",
+   "cat": "I2C / SMBus",
+   "c_node_pF": 21.63685479332048,
+   "c_cap_pF": 0.0,
+   "len_mm": 76.3685479332048,
+   "by": {
+    "P2 5 V buck SW": 5.198739625688557
+   },
+   "step_mV": {
+    "P2 5 V buck SW": 4.0356071376780385
+   },
+   "c_total_fF": 5.198739625688557,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 4.0356071376780385
+  },
+  "/USB Port 2/CC1": {
+   "label": "P2 CC1",
+   "cat": "USB CC",
+   "c_node_pF": 231.5653425076722,
+   "c_cap_pF": 220.0,
+   "len_mm": 15.653425076722026,
+   "by": {
+    "P2 5 V buck SW": 1.3882609137676751
+   },
+   "step_mV": {
+    "P2 5 V buck SW": 0.10071733220867703
+   },
+   "c_total_fF": 1.3882609137676751,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 0.10071733220867703
+  },
+  "/USB Port 2/CC2": {
+   "label": "P2 CC2",
+   "cat": "USB CC",
+   "c_node_pF": 231.56369758045184,
+   "c_cap_pF": 220.0,
+   "len_mm": 15.636975804518801,
+   "by": {
+    "P2 5 V buck SW": 73.82565682164285
+   },
+   "step_mV": {
+    "P2 5 V buck SW": 5.354361492344018
+   },
+   "c_total_fF": 73.82565682164285,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 5.354361492344018
+  },
+  "/USB Port 2/SBU_FLT": {
+   "label": "P2 SBU_FLT",
+   "cat": "Control / debug",
+   "c_node_pF": 12.568881362272634,
+   "c_cap_pF": 0.0,
+   "len_mm": 25.688813622726332,
+   "by": {
+    "P2 5 V buck SW": 0.829926137816219
+   },
+   "step_mV": {
+    "P2 5 V buck SW": 1.1092346351795694
+   },
+   "c_total_fF": 0.829926137816219,
+   "worst": "P2 5 V buck SW",
+   "worst_mV": 1.1092346351795694
+  }
+ }
+}

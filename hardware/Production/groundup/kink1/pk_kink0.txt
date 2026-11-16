@@ -1,0 +1,2 @@
+P1 PACK_P Q102 to RBAT: 2.53 mOhm {'F.C': 4, 'In2': 4, 'B.C': 80}
+P2 PACK_P Q102 to RBAT: 1.45 mOhm {'F.C': 6, 'B.C': 68}

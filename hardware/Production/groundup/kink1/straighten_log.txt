@@ -1,0 +1,179 @@
+/Cells and Gauge/BTP_INT           runs  3    17.62 ->   16.29 mm  bends  56 ->  12  segments  59 ->  15
+/Cells and Gauge/DSG               runs  1     0.55 ->    0.55 mm  bends   2 ->   1  segments   3 ->   2
+/Cells and Gauge/GAUGE_FUSE        runs  7    38.42 ->   35.65 mm  bends  82 ->  19  segments  89 ->  26
+/Cells and Gauge/TS1               runs  2    24.27 ->   22.73 mm  bends  20 ->   8  segments  22 ->  10
+/Cells and Gauge/TS2               runs  2    24.03 ->   21.84 mm  bends  59 ->  10  segments  61 ->  12
+/Cells and Gauge/TS3               runs  3    26.32 ->   24.89 mm  bends  37 ->  14  segments  40 ->  17
+/MCU/NRST                          runs  2    25.46 ->   23.27 mm  bends  16 ->  11  segments  18 ->  13
+/MCU/SWCLK                         runs  2    14.67 ->   13.66 mm  bends  38 ->   8  segments  40 ->  10
+/MCU/SWDIO                         runs  2    14.21 ->   12.16 mm  bends  32 ->   4  segments  35 ->   6
+/MCU/UART_TX                       runs  4    20.69 ->   18.30 mm  bends  37 ->   8  segments  41 ->  12
+/USB Port 1/CC1                    runs  3     8.25 ->    8.19 mm  bends   9 ->   5  segments  12 ->   8
+/USB Port 1/CC2                    runs  2    22.84 ->   21.65 mm  bends  10 ->   6  segments  12 ->   8
+/USB Port 1/CE_N                   runs  4    13.44 ->   13.18 mm  bends  30 ->  11  segments  34 ->  15
+/USB Port 1/C_CC1                  runs  4     8.17 ->    7.11 mm  bends   9 ->   4  segments  13 ->   8
+/USB Port 1/C_CC2                  runs  2     7.14 ->    6.82 mm  bends  16 ->   6  segments  18 ->   8
+/USB Port 1/DRV9_OFF               runs  3    37.23 ->   36.09 mm  bends  18 ->  17  segments  21 ->  20
+/USB Port 1/FSW                    runs  1     6.20 ->    5.87 mm  bends   8 ->   3  segments   9 ->   4
+/USB Port 1/I2CC_SDA               runs  7    72.09 ->   68.66 mm  bends  50 ->  22  segments  57 ->  29
+/USB Port 1/ILIM                   runs  3    11.69 ->   11.31 mm  bends  28 ->   6  segments  31 ->   9
+/USB Port 1/LDO_1V5                runs  1     1.56 ->    1.54 mm  bends   2 ->   1  segments   3 ->   2
+/USB Port 1/SBU_FLT                runs  5    24.93 ->   24.76 mm  bends  25 ->  18  segments  30 ->  23
+/USB Port 1/SS_5V                  runs  1     3.08 ->    3.05 mm  bends   4 ->   3  segments   5 ->   4
+/USB Port 1/VBIAS                  runs  2     8.37 ->    7.56 mm  bends   7 ->   4  segments   9 ->   6
+/USB Port 2/CC2                    runs  1     1.11 ->    0.85 mm  bends   4 ->   1  segments   5 ->   2
+/USB Port 2/CE_N                   runs  5    14.33 ->   13.74 mm  bends  21 ->   5  segments  27 ->  10
+/USB Port 2/CHG_INT                runs  1     2.69 ->    2.69 mm  bends   4 ->   3  segments   5 ->   4
+/USB Port 2/C_CC1                  runs  2     5.13 ->    4.72 mm  bends   7 ->   3  segments   9 ->   5
+/USB Port 2/C_CC2                  runs  1     2.55 ->    2.55 mm  bends   3 ->   2  segments   4 ->   3
+/USB Port 2/DRV9_OFF               runs  4    38.31 ->   37.36 mm  bends  16 ->  12  segments  20 ->  16
+/USB Port 2/FSW                    runs  2     5.11 ->    4.90 mm  bends   2 ->   2  segments   4 ->   4
+/USB Port 2/I2CC_SCL               runs  4    46.27 ->   44.47 mm  bends  33 ->  11  segments  37 ->  15
+/USB Port 2/I2CC_SDA               runs  5    51.36 ->   50.75 mm  bends  21 ->  13  segments  26 ->  18
+/USB Port 2/ILIM                   runs  1     0.82 ->    0.82 mm  bends   2 ->   1  segments   3 ->   2
+/USB Port 2/LDO_1V5                runs  1     1.56 ->    1.54 mm  bends   2 ->   1  segments   3 ->   2
+/USB Port 2/SS_5V                  runs  1     3.22 ->    3.22 mm  bends   6 ->   5  segments   7 ->   6
+/USB Port 2/VBIAS                  runs  1     5.25 ->    4.69 mm  bends   2 ->   1  segments   3 ->   2
+3V3_SLEEP                          runs  6    36.49 ->   34.72 mm  bends  49 ->  16  segments  55 ->  22
+CHG_INH                            runs  7    55.69 ->   51.44 mm  bends  92 ->  30  segments  99 ->  37
+IRQ_N                              runs  8    97.65 ->   92.53 mm  bends  79 ->  33  segments  87 ->  41
+Net-(C110-Pad2)                    runs  1     4.14 ->    3.35 mm  bends   7 ->   0  segments   8 ->   1
+Net-(D511-A)                       runs  1     2.58 ->    2.58 mm  bends   3 ->   2  segments   4 ->   3
+Net-(Q104-G)                       runs  7    18.83 ->   15.98 mm  bends  52 ->  11  segments  59 ->  18
+Net-(Q409-D)                       runs  2     2.96 ->    2.95 mm  bends   4 ->   2  segments   6 ->   4
+Net-(Q509-D)                       runs  1     2.64 ->    2.49 mm  bends   3 ->   1  segments   4 ->   2
+Net-(U101-SMBC)                    runs  2     8.34 ->    7.43 mm  bends  11 ->   2  segments  13 ->   4
+Net-(U101-SMBD)                    runs  2    10.61 ->    9.75 mm  bends  16 ->   4  segments  18 ->   6
+Net-(U102-CD)                      runs  2     2.93 ->    2.74 mm  bends  11 ->   4  segments  13 ->   6
+Net-(U102-OUT)                     runs  6    32.96 ->   31.60 mm  bends  66 ->  13  segments  72 ->  20
+Net-(U102-V2)                      runs  1     6.61 ->    4.07 mm  bends  16 ->   1  segments  17 ->   2
+Net-(U102-V3)                      runs  2     5.56 ->    5.02 mm  bends  18 ->   2  segments  20 ->   4
+Net-(U102-V4)                      runs  1     3.59 ->    2.65 mm  bends   5 ->   1  segments   6 ->   2
+Net-(U403-ACOV)                    runs  1     3.10 ->    2.40 mm  bends   1 ->   1  segments   2 ->   2
+Net-(U403-ACUV)                    runs  5    22.16 ->   19.90 mm  bends  54 ->   9  segments  59 ->  14
+Net-(U403-FBG)                     runs  1     3.25 ->    2.91 mm  bends   9 ->   3  segments  10 ->   4
+Net-(U403-ICHG)                    runs  3    18.12 ->   17.43 mm  bends  44 ->  14  segments  47 ->  17
+Net-(U406-FB)                      runs  1     3.83 ->    3.83 mm  bends   6 ->   4  segments   7 ->   5
+Net-(U503-ACOV)                    runs  3    10.43 ->    9.79 mm  bends   7 ->   6  segments  10 ->   9
+Net-(U503-ACUV)                    runs  1     8.93 ->    8.43 mm  bends   6 ->   5  segments   7 ->   6
+Net-(U503-FBG)                     runs  1     7.73 ->    3.87 mm  bends   8 ->   2  segments   9 ->   3
+Net-(U503-ICHG)                    runs  2    22.05 ->   21.02 mm  bends   9 ->   5  segments  11 ->   7
+Net-(U504-FB)                      runs  1     2.50 ->    2.29 mm  bends   1 ->   1  segments   2 ->   2
+Net-(U506-FB)                      runs  2     9.49 ->    9.22 mm  bends  23 ->   7  segments  25 ->   9
+SCL                                runs 12    73.63 ->   69.88 mm  bends 102 ->  33  segments 114 ->  45
+
+frozen runs (left alone)
+  /MCU/NRST F (111.125, 124.078) to (111.570, 124.082): touches its own net away from a track end
+  /MCU/NRST F (111.125, 124.075) to (111.570, 124.082): touches its own net away from a track end
+  /MCU/NRST F (111.125, 124.075) to (111.425, 124.374): touches its own net away from a track end
+  /MCU/SWDIO F (116.775, 114.424) to (116.825, 114.474): passes a pad or via of its own net without a corner in it
+  /MCU/SWDIO F (116.775, 114.424) to (116.825, 114.374): passes a pad or via of its own net without a corner in it
+  /MCU/SWDIO F (116.825, 114.474) to (116.975, 114.474): passes a pad or via of its own net without a corner in it
+  /MCU/SWDIO F (116.975, 114.474) to (117.175, 114.274): passes a pad or via of its own net without a corner in it
+  /USB Port 1/I2CC_SDA F (103.375, 81.224) to (103.825, 82.224): touches its own net away from a track end
+  /USB Port 1/I2CC_SDA F (103.725, 82.218) to (104.175, 82.200): touches its own net away from a track end
+  /USB Port 1/I2CC_SDA F (103.725, 82.174) to (103.725, 82.224): touches its own net away from a track end
+  /USB Port 1/PD_DRAIN F (104.170, 81.800) to (104.950, 81.800): passes a pad or via of its own net without a corner in it
+  /USB Port 1/PD_DRAIN F (107.250, 81.800) to (108.020, 81.800): passes a pad or via of its own net without a corner in it
+  /USB Port 2/CC1 F (95.325, 75.275) to (95.475, 75.275): touches its own net away from a track end
+  /USB Port 2/CC1 F (95.325, 75.275) to (95.525, 75.474): touches its own net away from a track end
+  /USB Port 2/CC1 F (95.329, 75.275) to (95.350, 74.700): touches its own net away from a track end
+  /USB Port 2/CC1 F (95.475, 75.275) to (96.640, 76.420): touches its own net away from a track end
+  /USB Port 2/C_CC2 F (94.875, 71.374) to (94.975, 71.374): touches its own net away from a track end
+  /USB Port 2/C_CC2 F (94.950, 71.900) to (94.971, 71.374): touches its own net away from a track end
+  /USB Port 2/PD_DRAIN F (82.670, 81.800) to (83.450, 81.800): passes a pad or via of its own net without a corner in it
+  /USB Port 2/PD_DRAIN F (85.750, 81.800) to (86.520, 81.800): passes a pad or via of its own net without a corner in it
+  Net-(Q104-G) F (116.075, 131.924) to (119.725, 127.924): touches its own net away from a track end
+  Net-(Q104-G) F (119.775, 128.075) to (119.825, 128.024): touches its own net away from a track end
+  Net-(U403-ACUV) In3 (108.075, 116.674) to (108.525, 116.224): touches its own net away from a track end
+  Net-(U403-ACUV) In3 (108.525, 116.224) to (108.675, 116.075): touches its own net away from a track end
+  Net-(U403-ACUV) In3 (108.525, 116.224) to (110.175, 116.024): touches its own net away from a track end
+  SCL F (112.065, 117.653) to (112.575, 119.124): touches its own net away from a track end
+  SCL F (112.525, 119.124) to (112.575, 119.124): touches its own net away from a track end
+
+protected nets (obstacles only)
+  /3V3 Rail/SW_3V3: class Power
+  /Cells and Gauge/CELL1: class HighCurrent
+  /Cells and Gauge/CELL2: class HighCurrent
+  /Cells and Gauge/CELL3: class HighCurrent
+  /Cells and Gauge/CELL_1N: class HighCurrent
+  /Cells and Gauge/CELL_4P: class HighCurrent
+  /Cells and Gauge/CELL_P: class HighCurrent
+  /Cells and Gauge/CHG_G: class GateDrive
+  /Cells and Gauge/DSG_G: class GateDrive
+  /Cells and Gauge/FET_MID: class HighCurrent
+  /Cells and Gauge/SRN: class Kelvin
+  /Cells and Gauge/SRP: class Kelvin
+  /Cells and Gauge/TS4: listed
+  /MCU/ANT_IN: listed
+  /MCU/RFIO: listed
+  /P1_LDO_3V3: class Power
+  /USB Port 1/ACN_F: class Kelvin
+  /USB Port 1/ACP_F: class Kelvin
+  /USB Port 1/AC_SNS_N: class HighCurrent
+  /USB Port 1/BAT_SNS_P: class HighCurrent
+  /USB Port 1/CHG_INT: track on a ground-plane layer
+  /USB Port 1/DPDN_DCP: pattern
+  /USB Port 1/DRV_SUP: pattern
+  /USB Port 1/HG1: class GateDrive
+  /USB Port 1/HG2: class GateDrive
+  /USB Port 1/HIDRV1: class GateDrive
+  /USB Port 1/HIDRV2: class GateDrive
+  /USB Port 1/I2CC_SCL: listed
+  /USB Port 1/LG1: class GateDrive
+  /USB Port 1/LG2: class GateDrive
+  /USB Port 1/LODRV1: class GateDrive
+  /USB Port 1/LODRV2: class GateDrive
+  /USB Port 1/PP5V: class Power
+  /USB Port 1/PPHV: class HighCurrent
+  /USB Port 1/REGN: class Power
+  /USB Port 1/SRN_F: class Kelvin
+  /USB Port 1/SRP_F: class Kelvin
+  /USB Port 1/SW1: class HighCurrent
+  /USB Port 1/SW2: class HighCurrent
+  /USB Port 1/SW_5V: class Power
+  /USB Port 1/TS: track on a ground-plane layer
+  /USB Port 1/VBUS: class HighCurrent
+  /USB Port 2/ACN_F: class Kelvin
+  /USB Port 2/ACP_F: class Kelvin
+  /USB Port 2/AC_SNS_N: class HighCurrent
+  /USB Port 2/BAT_SNS_P: class HighCurrent
+  /USB Port 2/DPDN_DCP: pattern
+  /USB Port 2/DRV_SUP: pattern
+  /USB Port 2/HG1: class GateDrive
+  /USB Port 2/HG2: class GateDrive
+  /USB Port 2/HIDRV1: class GateDrive
+  /USB Port 2/HIDRV2: class GateDrive
+  /USB Port 2/LDO_3V3: class Power
+  /USB Port 2/LG1: class GateDrive
+  /USB Port 2/LG2: class GateDrive
+  /USB Port 2/LODRV1: class GateDrive
+  /USB Port 2/LODRV2: class GateDrive
+  /USB Port 2/PP5V: class Power
+  /USB Port 2/PPHV: class HighCurrent
+  /USB Port 2/REGN: class Power
+  /USB Port 2/SBU_FLT: listed
+  /USB Port 2/SRN_F: class Kelvin
+  /USB Port 2/SRP_F: class Kelvin
+  /USB Port 2/SW1: class HighCurrent
+  /USB Port 2/SW2: class HighCurrent
+  /USB Port 2/SW_5V: class Power
+  /USB Port 2/TS: track on a ground-plane layer
+  /USB Port 2/VBUS: class HighCurrent
+  3V3: class Power
+  CELL_N: class HighCurrent
+  EN_5V1: listed
+  EN_5V2: track on a ground-plane layer
+  GND: class GND
+  Net-(C313-Pad2): listed
+  Net-(U101-BAT): class Kelvin
+  Net-(U101-PACK): class Kelvin
+  Net-(U101-VC1): class Kelvin
+  Net-(U101-VC2): class Kelvin
+  Net-(U101-VC3): class Kelvin
+  Net-(U101-VC4): class Kelvin
+  Net-(U101-VCC): class Kelvin
+  Net-(U403-FB): listed
+  Net-(U503-FB): listed
+  PACK_P: class HighCurrent
+  SDA: track on a ground-plane layer
