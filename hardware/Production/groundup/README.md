@@ -23,6 +23,74 @@ The schematic, project file, design rules, stack-up, outline, holes, USB-C conne
 module, the back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
 placed again and all copper was drawn again.
 
+## Straightening pass (2026-11-16)
+
+A pass over the signal tracks of the board above that takes out kinks, staircases, jogs and small detours **in
+place**. It is not a re-route: every net keeps its pads, branches, vias, layers and widths, and no part, via, zone
+outline or rule moved. It is on branch `claude/project-thread-4819o2` and reaches `master` only if that branch is
+merged. The record, numbers and pictures are in [`kink1/README.md`](kink1/README.md).
+
+| | Before (master b254c5e) | After |
+|---|---|---|
+| Track segments on the board | 4366 | 3430 |
+| Segments shorter than 0.2 mm | 1196 | 732 |
+| Bends, the 149 nets routed as tracks | 3152 | 2195 |
+| Track length, all tracks | 3560.2 mm | 3490.4 mm |
+| Nets changed | | 63 (165 runs drawn again) |
+| DRC errors / unconnected / parity / warnings | 0 / 0 / 0 / 22 | 0 / 0 / 0 / 22 |
+| Pads, vias, zones, rule areas, outline | | identical (`topocheck.py`, `boarddiff.py`) |
+| Path resistance, Kelvin taps, hot loops, gate loops, coupling | | unchanged or better, see `kink1/README.md` |
+
+**The tool.** `straighten.py` reads a board dump (`dumpgeo.py`) and cuts every net on every layer into *runs*: the
+track between two fixed points. Fixed points are track ends, T-junctions (also a track ending on the middle of
+another, and two tracks of a net crossing), vias, pads, and every place where the width changes. A run is then
+pulled tight like a rubber band between its fixed points: between any two corners of the run it tries a straight
+piece, the two one-corner shapes and the corner where the two outer directions meet, all at 0, 45 or 90 degrees, and
+keeps a replacement only if all of this holds:
+
+- not longer, not more bends, not more total turning, no new corner sharper than 90 degrees, and better in one of them;
+- every clearance of the board's rules is met (0.15 mm, 0.25 mm to the high-current class and to its via barrels,
+  0.2 mm to holes, 0.25 mm to the edge), or where the old track was already closer, not closer than it was;
+- it stays in the same channel: the area between the old and the new path holds no pad, via, hole or track, so the
+  run still passes every obstacle on the same side and the branches at a junction keep their order;
+- it enters no rule area, and puts no more track inside a drawn power pour of another net than before;
+- the pours it crosses keep every connection (free room test at the pour's clearance plus half its minimum width).
+
+Among shapes that save the same length (within 0.05 mm) it takes the one that moves the track least. The width
+of a run never changes, because a width change is a fixed point. `straighten_apply.py` then removes and adds the
+track segments in KiCad and refills the zones.
+
+**Nets it never alters** (they are obstacles only; the list is `PROTECT` at the top of `straighten.py`): the net
+classes HighCurrent, Power, GND, Kelvin and GateDrive (PACK_P, the cell taps, VBUS, PPHV, the switch nodes, the
+rails, every sense tap, the gate drives); every net with a pour; every net with a track on a ground-plane layer
+(In1, In4); the USB data pairs; the RF path; EN_5V1 and the other nets that fix pass 2 moved on the coupling
+solver's word (port 1 I2CC_SCL, port 2 SBU_FLT, TS4, the two charger feedback nets); and the two gate-driver
+supplies DRV_SUP. Two of these were learned in this pass: straightening port 1 I2CC_SCL took it from 4.0 to 17.5 mV
+per switch edge, and straightening DRV_SUP raised its pick-up from the switch nodes by up to 3.5 fF.
+
+**To run it again** (KiCad 10 in Docker, python 3 with shapely on the host):
+
+```
+./straighten.sh /tmp/kink            # dump, straighten, apply + refill, full-rule DRC, topocheck, pourcheck, boarddiff
+                                     # options are passed on: --only=regex --skip=regex --maxmove=mm --protect=file.json
+cp /tmp/kink/out/Monolith.kicad_pcb ../Monolith.kicad_pcb      # only after the checks below
+cd compare
+PCB=/tmp/kink/out/Monolith.kicad_pcb TAG=new python3 tidy.py; python3 tidycmp.py kink new
+./runfix.sh /tmp/kink/out/Monolith.kicad_pcb new; python3 gmerge.py new; python3 cmpsum.py kink new
+```
+
+`straighten.sh` writes nothing in the repo. On the board as committed it finds nothing more to do (0 runs).
+`topocheck.py` fails (exit 1) if a pad, via, zone, rule area or the outline differs, a protected net changed, a new
+segment is off the 45 degree grid, or a net's track graph, joined pads, widths or layers differ. `pourcheck.py`
+lists pour area, pieces and lost links per pour; DRC does not see a pour that lost an island. `cmpsum.py` puts the
+solver results of two tags side by side; a line that moved is the finding. `kinkpic.py` and `sigpic.py` draw the
+pictures.
+
+**Not redone for this board:** the order package in `../jlc/` (made 2026-11-14 from the board before this pass; its
+copper gerbers no longer match, while no part, hole or via moved, so BOM, placement and drilling are the same):
+rerun `../jlc/make_package.sh` before ordering. The renders and layer plots in `docs/hardware/` also show the
+board before this pass. No person has reviewed the result in KiCad.
+
 ## Second fix pass (2026-11-10, evening)
 
 The board is now the third version. The second pass took the four open items of the first fix pass

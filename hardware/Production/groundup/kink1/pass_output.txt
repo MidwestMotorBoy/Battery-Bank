@@ -1,0 +1,59 @@
+tracks 4366 vias 949 pads 1176 fills 53 keepouts 21 edge 1 gfx 0 other None
+tracks 4366 vias 949 fills 53 pads 1176
+runs 529 to work on 529 frozen 27 protected nets with tracks 85
+sweep 1 runs changed 165 time 8 s
+sweep 2 runs changed 3 time 9 s
+sweep 3 runs changed 0 time 9 s
+rejected candidates by reason: {'clearance to via GND': 1592, 'clearance to via PACK_P': 1108, 'clearance to trk /USB Port 1/ACP_F': 768, 'clearance to via /Cells and Gauge/CELL_1': 712, 'clearance to via Net-(U101-VC3)': 667, 'clearance to via 3V3': 560, 'clearance to trk Net-(U101-SMBC)': 527, 'clearance to via SCL': 508, 'would pass via GND': 501, 'clearance to via /MCU/NRST': 478, 'clearance to via /Cells and Gauge/FET_MI': 402, 'would pass via SCL': 368}
+changed runs 177 in 63 nets;  tracks removed 1587 added 651 (zero-length or duplicate removed 3)
+length of the changed runs 1085.7 -> 1017.7 mm, bends 1420 -> 473
+removed 1587 added 651
+DRC: errors 0 warnings 22 unconnected 0 parity 0 {'connection_width': 12, 'text_height': 1, 'silk_overlap': 6, 'silk_over_copper': 3}
+tracks 3430 vias 949 pads 1176 fills 53 keepouts 21 edge 1 gfx 0 other None
+tracks 3430 vias 949 fills 53 pads 1176
+version                1 ->     1   identical
+generator              1 ->     1   identical
+generator_version      1 ->     1   identical
+general                1 ->     1   identical
+paper                  1 ->     1   identical
+layers                 1 ->     1   identical
+setup                  1 ->     1   identical
+footprint            289 ->   289   identical
+gr_poly                2 ->     2   identical
+gr_line               11 ->    11   identical
+gr_text               20 ->    20   identical
+segment             4366 ->  3430   only before 1587, only after 651
+via                  949 ->   949   identical
+zone                  56 ->    56   identical (outline, net, layers, priority, settings); filled pieces 155 -> 153, 6 zones with a changed fill
+embedded_fonts         1 ->     1   identical
+pads (1176) identical                                                          True
+vias (949): id, position, size, drill, net, layers identical                   True
+vias: layers with a pad identical                                              True
+zones (39): outline, net, layers, priority, clearance, min width identical     True
+rule areas (21) identical                                                      True
+board outline identical                                                        True
+net classes identical                                                          True
+tracks before / after                                                          [4366, 3430]
+tracks removed / added / altered in place                                      [1587, 651, 0]
+nets changed                                                                   63
+protected nets changed                                                         []
+off-grid segments written again unchanged (part of a run that changed elsewhere) 27
+new segments off the 45 degree grid                                            0
+segments off the 45 degree grid, before / after (exact, any length)            [703, 629]
+zero-length tracks, before / after                                             [0, 0]
+nets with tracks                                                               167
+nets whose reduced track graph differs                                         []
+duplicate track pieces (same two ends), before / after                         [23, 20]
+nets checked for joined pads and vias (no pour)                                147
+nets whose joined pads / vias differ                                           []
+nets in more than one piece by tracks alone (joined through a pad-to-pad overlap or the like) ['/USB Port 1/ACN_F (2 before, 2 after)', '/USB Port 1/ACP_F (2 before, 2 after)', '/USB Port 1/ILIM (2 before, 2 after)', '/USB Port 2/TS (2 before, 2 after)', 'Net-(U102-V1) (2 before, 2 after)']
+net/layer pairs whose set of widths differs                                    []
+layers used per net identical                                                  True
+FAILED                                                                         []
+pour net                     lay    area mm2 (delta)       pieces   lost links at neck 0 / 0.2 / 0.4 mm
+3V3                          In3    1528.75 ( +3.31)     8 -> 8      0 / 0 / 0  
+GND                          B      1473.12 ( +8.65)    29 -> 28     0 / 0 / 0  
+GND                          F      1203.20 ( +6.63)    48 -> 47     0 / 0 / 0  
+PACK_P                       In2    1219.72 ( +9.39)    13 -> 13     0 / 0 / 0  
+pours unchanged: 43 of 47
+result: <work dir>/out/Monolith.kicad_pcb   (then: compare/tidy.py, compare/runfix.sh <board> <tag>, compare/cmpsum.py)
