@@ -1,0 +1,15 @@
+version                1 ->     1   identical
+generator              1 ->     1   identical
+generator_version      1 ->     1   identical
+general                1 ->     1   identical
+paper                  1 ->     1   identical
+layers                 1 ->     1   identical
+setup                  1 ->     1   identical
+footprint            289 ->   289   identical
+gr_poly                2 ->     2   identical
+gr_line               11 ->    11   identical
+gr_text               20 ->    20   identical
+segment             3430 ->  2598   only before 2664, only after 1832
+via                  949 ->   949   identical
+zone                  56 ->    56   identical (outline, net, layers, priority, settings); filled pieces 153 -> 152, 15 zones with a changed fill
+embedded_fonts         1 ->     1   identical

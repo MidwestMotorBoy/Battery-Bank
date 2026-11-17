@@ -23,6 +23,28 @@ The schematic, project file, design rules, stack-up, outline, holes, USB-C conne
 module, the back-side parts and L401/L501 are unchanged, so the board drops into the same cup. Every other part was
 placed again and all copper was drawn again.
 
+## Track clean-up pass (2026-11-17)
+
+After the straightening pass below, the tracks still met in blobs, overlapped, changed width inside a run and left
+pads at odd angles. This pass redraws the track segments in place so that every end is exactly on the end it joins,
+on a via centre or on a pad centre, every piece is at 0, 45 or 90 degrees, nothing lies on top of anything, and a
+run has one width. Only track segments changed; every net joins the same pads and vias. The record, pictures,
+checks and what is left are in [`clean1/README.md`](clean1/README.md); the tools are in `clean1/tools/`.
+It is on branch `claude/project-thread-ywc27l`, which also holds the straightening pass, and reaches `master` only if
+that branch is merged.
+
+| | Before (after the straightening pass) | After |
+|---|---|---|
+| Track segments | 3430 | 2598 |
+| Track ends that only touch by overlapping copper | 550 | 24 |
+| Pieces of one net on each other or crossing without a node | 86 | 0 |
+| Segments off the 45 degree grid | 629 | 5 (the RF path, not touched) |
+| Width changes in the middle of a run | 103 | 16 (forced necks on power and gate-drive tracks) |
+| Nets drawn in one width, of 149 | 74 | 126 |
+| DRC errors / unconnected / parity / warnings | 0 / 0 / 0 / 22 | 0 / 0 / 0 / 17 |
+| Pads, vias, zones, rule areas, outline | | identical (`boarddiff.py`) |
+| Path resistance, Kelvin taps, loops, coupling | | unchanged within 0.01 nH on the hot loops and 0.6 mV on coupling, see `clean1/README.md` |
+
 ## Straightening pass (2026-11-16)
 
 A pass over the signal tracks of the board above that takes out kinks, staircases, jogs and small detours **in
