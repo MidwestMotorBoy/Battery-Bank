@@ -1,0 +1,36 @@
+
+common nets
+                                        kink     clean
+nets                                     149       149
+track length, mm                        3163      3077
+length / shortest tree                   1.5      1.46
+segments                                2959      2191
+segments under 0.2 mm                    645       176
+bends                                   2195      1511
+vias                                     388       388
+nets over 1.5x                            44        38
+nets over 2x                              15        10
+nets in one width                         74       126
+nets in two widths                        65        16
+nets in three or more widths              10         7
+width changes, all                       142        34
+width changes away from a pad             29         2
+segments off the 45 degree grid          292         5
+
+all track nets
+                                        kink     clean
+nets                                     149       149
+track length, mm                        3163      3077
+length / shortest tree                   1.5      1.46
+segments                                2959      2191
+segments under 0.2 mm                    645       176
+bends                                   2195      1511
+vias                                     388       388
+nets over 1.5x                            44        38
+nets over 2x                              15        10
+nets in one width                         74       126
+nets in two widths                        65        16
+nets in three or more widths              10         7
+width changes, all                       142        34
+width changes away from a pad             29         2
+segments off the 45 degree grid          292         5

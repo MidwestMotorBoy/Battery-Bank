@@ -68,11 +68,18 @@ differ by at most 0.013 mΩ on one path (about 0.5 mW), so the runs were not rep
 | Pictures | `figs_cmp.py`, `cmap_fig.py`, `lossfig.py`; `kicad-cli pcb render` for `img/render_*.jpg` | `img/` |
 | Ground-plane tracks and what crosses them | `../in4fig.py`, `../in4cross.py` | `img/in4.png`, `img/in4.json`, `in4cross.json` |
 | All of the above on one more board | `runfix.sh <board> [tag]` | the `<tag>` files |
+| Two tags side by side, every number of the check loop | `cmpsum.py <tagA> <tagB>` (after `gmerge.py`) | printed |
+| Track tidiness per net, and the table of several boards | `tidy.py` (`PCB`, `TAG`), `tidycmp.py <tag> <tag>` | `tidy_<tag>.json`, `tidycmp_<tags>.json` |
 | PACK_P path only, quick check after a hand edit | `k/pk.py` (`RES=0.05` for the fine grid) | printed |
 | Page | `NTAG=fix2 build_page.py` with `page_tpl.html`, `page_text.py`, `page_words.py`, `page_fix.py` | one self-contained HTML |
 
 `peec.py`, `loops.py`, `board.py`, `sx.py`, `run_all_defs.py` are the tools of the 2026-11-06 loop study; `k/solve.py`
 and `k/run2.py` are the copper solver of the 2026-10-30 review.
+
+Tags: `base` the hand-routed board, `new` the first script-built board, `fix` and `fix2` the two fix passes (`fix2` is
+`master` b254c5e), `kink0` the same board as `fix2` solved again on 2026-11-16 as the baseline of the straightening
+pass, `kink` the board after that pass (`../kink1/README.md`). `tidy.py`, `tidycmp.py` and `cmpsum.py` come from the
+cleanup branch (`claude/project-thread-ploune`); nothing else of that branch is used here.
 
 ## Notes on the method
 

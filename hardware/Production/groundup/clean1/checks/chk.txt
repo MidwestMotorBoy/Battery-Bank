@@ -1,0 +1,26 @@
+tracks 3430 -> 2598   (deleted 2664, added 1832)   nets changed 152
+nets where pads/vias that were joined are now apart: none
+nets where separate groups (in this model) became joined, same net, harmless: ['/MCU/SWDIO', '/USB Port 1/PD_DRAIN', '/USB Port 1/VBUS', '/USB Port 2/PD_DRAIN', '/USB Port 2/SRP_F', 'Net-(U101-VC3)', 'PACK_P', 'SDA']
+new orphan track groups: none
+clearance violations: 0
+zero-length 0, below min width 0, duplicate tracks 4 -> 0, unknown nets none
+new segments off the 45 degree grid: 0
+largest excursion of a new centre line from the old copper of its net: 0.729 mm 
+audit, before -> after:
+   acute             38 ->     4 
+   body_ovl          28 ->     0 
+   collinear_ovl     43 ->     0 
+   cross             15 ->     0 
+   dangling          24 ->    21 
+   end_off_pad      114 ->    36 
+   end_off_track    550 ->    24 
+   end_off_via      218 ->    62 
+   hidden_jog       102 ->    67 
+   near_miss        199 ->     4 
+   off45            427 ->     5 
+   tee_unsplit       49 ->     0 
+   through_pad       17 ->     2 
+   tiny              12 ->     0 
+   width_step       103 ->    16 
+   width_tee         42 ->    10 
+RESULT: OK

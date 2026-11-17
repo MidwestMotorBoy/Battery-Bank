@@ -1,0 +1,302 @@
+{
+ "pads (1176) identical": true,
+ "vias (949): id, position, size, drill, net, layers identical": true,
+ "vias: layers with a pad identical": true,
+ "zones (39): outline, net, layers, priority, clearance, min width identical": true,
+ "rule areas (21) identical": true,
+ "board outline identical": true,
+ "net classes identical": true,
+ "tracks before / after": [
+  4366,
+  3430
+ ],
+ "tracks removed / added / altered in place": [
+  1587,
+  651,
+  0
+ ],
+ "nets changed": 63,
+ "protected nets changed": [],
+ "off-grid segments written again unchanged (part of a run that changed elsewhere)": 27,
+ "new segments off the 45 degree grid": 0,
+ "segments off the 45 degree grid, before / after (exact, any length)": [
+  703,
+  629
+ ],
+ "zero-length tracks, before / after": [
+  0,
+  0
+ ],
+ "nets with tracks": 167,
+ "nets whose reduced track graph differs": [],
+ "duplicate track pieces (same two ends), before / after": [
+  23,
+  20
+ ],
+ "nets checked for joined pads and vias (no pour)": 147,
+ "nets whose joined pads / vias differ": [],
+ "nets in more than one piece by tracks alone (joined through a pad-to-pad overlap or the like)": [
+  "/USB Port 1/ACN_F (2 before, 2 after)",
+  "/USB Port 1/ACP_F (2 before, 2 after)",
+  "/USB Port 1/ILIM (2 before, 2 after)",
+  "/USB Port 2/TS (2 before, 2 after)",
+  "Net-(U102-V1) (2 before, 2 after)"
+ ],
+ "net/layer pairs whose set of widths differs": [],
+ "layers used per net identical": true,
+ "per net": {
+  "/Cells and Gauge/BTP_INT": {
+   "removed": 59,
+   "added": 15
+  },
+  "/Cells and Gauge/DSG": {
+   "removed": 3,
+   "added": 2
+  },
+  "/Cells and Gauge/GAUGE_FUSE": {
+   "removed": 89,
+   "added": 26
+  },
+  "/Cells and Gauge/TS1": {
+   "removed": 22,
+   "added": 10
+  },
+  "/Cells and Gauge/TS2": {
+   "removed": 61,
+   "added": 12
+  },
+  "/Cells and Gauge/TS3": {
+   "removed": 40,
+   "added": 17
+  },
+  "/MCU/NRST": {
+   "removed": 18,
+   "added": 13
+  },
+  "/MCU/SWCLK": {
+   "removed": 40,
+   "added": 10
+  },
+  "/MCU/SWDIO": {
+   "removed": 35,
+   "added": 6
+  },
+  "/MCU/UART_TX": {
+   "removed": 41,
+   "added": 12
+  },
+  "/USB Port 1/CC1": {
+   "removed": 12,
+   "added": 8
+  },
+  "/USB Port 1/CC2": {
+   "removed": 12,
+   "added": 8
+  },
+  "/USB Port 1/CE_N": {
+   "removed": 33,
+   "added": 15
+  },
+  "/USB Port 1/C_CC1": {
+   "removed": 12,
+   "added": 8
+  },
+  "/USB Port 1/C_CC2": {
+   "removed": 18,
+   "added": 8
+  },
+  "/USB Port 1/DRV9_OFF": {
+   "removed": 20,
+   "added": 20
+  },
+  "/USB Port 1/FSW": {
+   "removed": 9,
+   "added": 4
+  },
+  "/USB Port 1/I2CC_SDA": {
+   "removed": 56,
+   "added": 29
+  },
+  "/USB Port 1/ILIM": {
+   "removed": 31,
+   "added": 9
+  },
+  "/USB Port 1/LDO_1V5": {
+   "removed": 3,
+   "added": 2
+  },
+  "/USB Port 1/SBU_FLT": {
+   "removed": 29,
+   "added": 23
+  },
+  "/USB Port 1/SS_5V": {
+   "removed": 5,
+   "added": 4
+  },
+  "/USB Port 1/VBIAS": {
+   "removed": 9,
+   "added": 6
+  },
+  "/USB Port 2/CC2": {
+   "removed": 5,
+   "added": 2
+  },
+  "/USB Port 2/CE_N": {
+   "removed": 27,
+   "added": 10
+  },
+  "/USB Port 2/CHG_INT": {
+   "removed": 5,
+   "added": 4
+  },
+  "/USB Port 2/C_CC1": {
+   "removed": 9,
+   "added": 5
+  },
+  "/USB Port 2/C_CC2": {
+   "removed": 4,
+   "added": 3
+  },
+  "/USB Port 2/DRV9_OFF": {
+   "removed": 19,
+   "added": 16
+  },
+  "/USB Port 2/FSW": {
+   "removed": 4,
+   "added": 4
+  },
+  "/USB Port 2/I2CC_SCL": {
+   "removed": 37,
+   "added": 15
+  },
+  "/USB Port 2/I2CC_SDA": {
+   "removed": 25,
+   "added": 18
+  },
+  "/USB Port 2/ILIM": {
+   "removed": 3,
+   "added": 2
+  },
+  "/USB Port 2/LDO_1V5": {
+   "removed": 3,
+   "added": 2
+  },
+  "/USB Port 2/SS_5V": {
+   "removed": 7,
+   "added": 6
+  },
+  "/USB Port 2/VBIAS": {
+   "removed": 3,
+   "added": 2
+  },
+  "3V3_SLEEP": {
+   "removed": 55,
+   "added": 22
+  },
+  "CHG_INH": {
+   "removed": 99,
+   "added": 37
+  },
+  "IRQ_N": {
+   "removed": 86,
+   "added": 41
+  },
+  "Net-(C110-Pad2)": {
+   "removed": 8,
+   "added": 1
+  },
+  "Net-(D511-A)": {
+   "removed": 4,
+   "added": 3
+  },
+  "Net-(Q104-G)": {
+   "removed": 58,
+   "added": 18
+  },
+  "Net-(Q409-D)": {
+   "removed": 6,
+   "added": 4
+  },
+  "Net-(Q509-D)": {
+   "removed": 4,
+   "added": 2
+  },
+  "Net-(U101-SMBC)": {
+   "removed": 13,
+   "added": 4
+  },
+  "Net-(U101-SMBD)": {
+   "removed": 18,
+   "added": 6
+  },
+  "Net-(U102-CD)": {
+   "removed": 13,
+   "added": 6
+  },
+  "Net-(U102-OUT)": {
+   "removed": 72,
+   "added": 20
+  },
+  "Net-(U102-V2)": {
+   "removed": 17,
+   "added": 2
+  },
+  "Net-(U102-V3)": {
+   "removed": 20,
+   "added": 4
+  },
+  "Net-(U102-V4)": {
+   "removed": 6,
+   "added": 2
+  },
+  "Net-(U403-ACOV)": {
+   "removed": 2,
+   "added": 2
+  },
+  "Net-(U403-ACUV)": {
+   "removed": 59,
+   "added": 14
+  },
+  "Net-(U403-FBG)": {
+   "removed": 10,
+   "added": 4
+  },
+  "Net-(U403-ICHG)": {
+   "removed": 47,
+   "added": 17
+  },
+  "Net-(U406-FB)": {
+   "removed": 7,
+   "added": 5
+  },
+  "Net-(U503-ACOV)": {
+   "removed": 9,
+   "added": 9
+  },
+  "Net-(U503-ACUV)": {
+   "removed": 7,
+   "added": 6
+  },
+  "Net-(U503-FBG)": {
+   "removed": 9,
+   "added": 3
+  },
+  "Net-(U503-ICHG)": {
+   "removed": 11,
+   "added": 7
+  },
+  "Net-(U504-FB)": {
+   "removed": 2,
+   "added": 2
+  },
+  "Net-(U506-FB)": {
+   "removed": 25,
+   "added": 9
+  },
+  "SCL": {
+   "removed": 112,
+   "added": 45
+  }
+ },
+ "FAILED": []
+}

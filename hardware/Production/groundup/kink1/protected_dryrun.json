@@ -1,0 +1,362 @@
+{
+ "/Cells and Gauge/CELL1": {
+  "why": "class HighCurrent",
+  "runs": 5,
+  "len0": 70.944,
+  "len1": 69.275,
+  "bends0": 30,
+  "bends1": 23,
+  "segs0": 35,
+  "segs1": 28
+ },
+ "/Cells and Gauge/CELL2": {
+  "why": "class HighCurrent",
+  "runs": 1,
+  "len0": 14.12,
+  "len1": 12.747,
+  "bends0": 26,
+  "bends1": 5,
+  "segs0": 27,
+  "segs1": 6
+ },
+ "/Cells and Gauge/CELL3": {
+  "why": "class HighCurrent",
+  "runs": 6,
+  "len0": 92.507,
+  "len1": 86.916,
+  "bends0": 40,
+  "bends1": 22,
+  "segs0": 46,
+  "segs1": 28
+ },
+ "/Cells and Gauge/CELL_1N": {
+  "why": "class HighCurrent",
+  "runs": 33,
+  "len0": 108.046,
+  "len1": 99.992,
+  "bends0": 190,
+  "bends1": 54,
+  "segs0": 223,
+  "segs1": 88
+ },
+ "/Cells and Gauge/CELL_4P": {
+  "why": "class HighCurrent",
+  "runs": 8,
+  "len0": 45.232,
+  "len1": 39.673,
+  "bends0": 67,
+  "bends1": 12,
+  "segs0": 75,
+  "segs1": 20
+ },
+ "/Cells and Gauge/CHG_G": {
+  "why": "class GateDrive",
+  "runs": 6,
+  "len0": 22.946,
+  "len1": 19.255,
+  "bends0": 69,
+  "bends1": 12,
+  "segs0": 75,
+  "segs1": 18
+ },
+ "/Cells and Gauge/DSG_G": {
+  "why": "class GateDrive",
+  "runs": 4,
+  "len0": 6.572,
+  "len1": 6.297,
+  "bends0": 13,
+  "bends1": 5,
+  "segs0": 17,
+  "segs1": 9
+ },
+ "/Cells and Gauge/SRN": {
+  "why": "class Kelvin",
+  "runs": 2,
+  "len0": 9.379,
+  "len1": 9.35,
+  "bends0": 9,
+  "bends1": 4,
+  "segs0": 11,
+  "segs1": 6
+ },
+ "/Cells and Gauge/TS4": {
+  "why": "listed",
+  "runs": 4,
+  "len0": 33.645,
+  "len1": 31.131,
+  "bends0": 24,
+  "bends1": 16,
+  "segs0": 28,
+  "segs1": 20
+ },
+ "/MCU/RFIO": {
+  "why": "listed",
+  "runs": 2,
+  "len0": 3.466,
+  "len1": 3.354,
+  "bends0": 9,
+  "bends1": 3,
+  "segs0": 11,
+  "segs1": 5
+ },
+ "/P1_LDO_3V3": {
+  "why": "class Power",
+  "runs": 1,
+  "len0": 11.45,
+  "len1": 10.688,
+  "bends0": 2,
+  "bends1": 2,
+  "segs0": 3,
+  "segs1": 3
+ },
+ "/USB Port 1/ACN_F": {
+  "why": "class Kelvin",
+  "runs": 4,
+  "len0": 35.588,
+  "len1": 35.274,
+  "bends0": 36,
+  "bends1": 20,
+  "segs0": 41,
+  "segs1": 24
+ },
+ "/USB Port 1/ACP_F": {
+  "why": "class Kelvin",
+  "runs": 3,
+  "len0": 30.781,
+  "len1": 30.596,
+  "bends0": 22,
+  "bends1": 14,
+  "segs0": 26,
+  "segs1": 17
+ },
+ "/USB Port 1/DRV_SUP": {
+  "why": "pattern",
+  "runs": 5,
+  "len0": 20.551,
+  "len1": 19.737,
+  "bends0": 19,
+  "bends1": 10,
+  "segs0": 25,
+  "segs1": 17
+ },
+ "/USB Port 1/HIDRV2": {
+  "why": "class GateDrive",
+  "runs": 1,
+  "len0": 6.982,
+  "len1": 6.369,
+  "bends0": 5,
+  "bends1": 2,
+  "segs0": 6,
+  "segs1": 3
+ },
+ "/USB Port 1/I2CC_SCL": {
+  "why": "listed",
+  "runs": 6,
+  "len0": 65.214,
+  "len1": 58.261,
+  "bends0": 46,
+  "bends1": 26,
+  "segs0": 53,
+  "segs1": 32
+ },
+ "/USB Port 1/REGN": {
+  "why": "class Power",
+  "runs": 3,
+  "len0": 24.257,
+  "len1": 23.291,
+  "bends0": 10,
+  "bends1": 9,
+  "segs0": 13,
+  "segs1": 12
+ },
+ "/USB Port 1/SRN_F": {
+  "why": "class Kelvin",
+  "runs": 2,
+  "len0": 6.469,
+  "len1": 6.11,
+  "bends0": 9,
+  "bends1": 5,
+  "segs0": 11,
+  "segs1": 7
+ },
+ "/USB Port 1/SRP_F": {
+  "why": "class Kelvin",
+  "runs": 1,
+  "len0": 9.153,
+  "len1": 8.088,
+  "bends0": 14,
+  "bends1": 3,
+  "segs0": 15,
+  "segs1": 4
+ },
+ "/USB Port 2/ACP_F": {
+  "why": "class Kelvin",
+  "runs": 1,
+  "len0": 22.491,
+  "len1": 21.73,
+  "bends0": 6,
+  "bends1": 2,
+  "segs0": 7,
+  "segs1": 3
+ },
+ "/USB Port 2/DRV_SUP": {
+  "why": "pattern",
+  "runs": 4,
+  "len0": 26.377,
+  "len1": 24.766,
+  "bends0": 11,
+  "bends1": 7,
+  "segs0": 15,
+  "segs1": 11
+ },
+ "/USB Port 2/HIDRV2": {
+  "why": "class GateDrive",
+  "runs": 1,
+  "len0": 6.982,
+  "len1": 6.369,
+  "bends0": 5,
+  "bends1": 2,
+  "segs0": 6,
+  "segs1": 3
+ },
+ "/USB Port 2/REGN": {
+  "why": "class Power",
+  "runs": 4,
+  "len0": 42.024,
+  "len1": 39.418,
+  "bends0": 10,
+  "bends1": 9,
+  "segs0": 14,
+  "segs1": 13
+ },
+ "/USB Port 2/SBU_FLT": {
+  "why": "listed",
+  "runs": 2,
+  "len0": 22.192,
+  "len1": 22.192,
+  "bends0": 2,
+  "bends1": 1,
+  "segs0": 5,
+  "segs1": 3
+ },
+ "/USB Port 2/SRN_F": {
+  "why": "class Kelvin",
+  "runs": 4,
+  "len0": 14.959,
+  "len1": 13.289,
+  "bends0": 22,
+  "bends1": 10,
+  "segs0": 26,
+  "segs1": 14
+ },
+ "/USB Port 2/SW_5V": {
+  "why": "class Power",
+  "runs": 1,
+  "len0": 1.53,
+  "len1": 1.12,
+  "bends0": 1,
+  "bends1": 1,
+  "segs0": 2,
+  "segs1": 2
+ },
+ "EN_5V1": {
+  "why": "listed",
+  "runs": 4,
+  "len0": 42.603,
+  "len1": 40.187,
+  "bends0": 30,
+  "bends1": 11,
+  "segs0": 34,
+  "segs1": 15
+ },
+ "Net-(C313-Pad2)": {
+  "why": "listed",
+  "runs": 1,
+  "len0": 4.342,
+  "len1": 2.438,
+  "bends0": 14,
+  "bends1": 2,
+  "segs0": 15,
+  "segs1": 3
+ },
+ "Net-(U101-BAT)": {
+  "why": "class Kelvin",
+  "runs": 1,
+  "len0": 3.05,
+  "len1": 2.845,
+  "bends0": 2,
+  "bends1": 2,
+  "segs0": 3,
+  "segs1": 3
+ },
+ "Net-(U101-PACK)": {
+  "why": "class Kelvin",
+  "runs": 1,
+  "len0": 5.189,
+  "len1": 5.189,
+  "bends0": 4,
+  "bends1": 3,
+  "segs0": 5,
+  "segs1": 4
+ },
+ "Net-(U101-VC1)": {
+  "why": "class Kelvin",
+  "runs": 4,
+  "len0": 13.615,
+  "len1": 12.34,
+  "bends0": 29,
+  "bends1": 10,
+  "segs0": 33,
+  "segs1": 14
+ },
+ "Net-(U101-VC2)": {
+  "why": "class Kelvin",
+  "runs": 4,
+  "len0": 9.277,
+  "len1": 7.898,
+  "bends0": 25,
+  "bends1": 7,
+  "segs0": 29,
+  "segs1": 11
+ },
+ "Net-(U101-VC3)": {
+  "why": "class Kelvin",
+  "runs": 2,
+  "len0": 4.422,
+  "len1": 3.474,
+  "bends0": 7,
+  "bends1": 3,
+  "segs0": 9,
+  "segs1": 5
+ },
+ "Net-(U101-VC4)": {
+  "why": "class Kelvin",
+  "runs": 1,
+  "len0": 1.963,
+  "len1": 1.952,
+  "bends0": 5,
+  "bends1": 4,
+  "segs0": 6,
+  "segs1": 5
+ },
+ "Net-(U403-FB)": {
+  "why": "listed",
+  "runs": 3,
+  "len0": 10.397,
+  "len1": 9.859,
+  "bends0": 13,
+  "bends1": 9,
+  "segs0": 16,
+  "segs1": 13
+ },
+ "Net-(U503-FB)": {
+  "why": "listed",
+  "runs": 2,
+  "len0": 6.742,
+  "len1": 6.581,
+  "bends0": 6,
+  "bends1": 4,
+  "segs0": 8,
+  "segs1": 6
+ }
+}

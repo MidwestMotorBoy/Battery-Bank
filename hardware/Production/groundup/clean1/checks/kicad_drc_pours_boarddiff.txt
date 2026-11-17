@@ -1,0 +1,25 @@
+tracks 3430 vias 949 pads 1176 fills 53 keepouts 21 edge 1 gfx 0 other None
+removed 2664 added 1832
+DRC: errors 0 warnings 17 unconnected 0 parity 0 {'connection_width': 7, 'text_height': 1, 'silk_overlap': 6, 'silk_over_copper': 3}
+tracks 2598 vias 949 pads 1176 fills 53 keepouts 21 edge 1 gfx 0 other None
+pour net                     lay    area mm2 (delta)       pieces   lost links at neck 0 / 0.2 / 0.4 mm
+/USB Port 1/SW1              F        20.88 ( -0.01)     2 -> 2      0 / 0 / 0  
+/USB Port 1/SW2              F        20.33 ( +0.10)     2 -> 2      0 / 0 / 0  
+/USB Port 2/PP5V             F        18.43 ( +0.02)     1 -> 1      0 / 0 / 0  
+/USB Port 2/SW1              F        20.88 ( -0.01)     2 -> 2      0 / 0 / 0  
+/USB Port 2/SW2              F        20.33 ( +0.10)     2 -> 2      0 / 0 / 0  
+3V3                          In3    1536.91 ( +8.15)     8 -> 8      0 / 0 / 0  
+GND                          B      1481.55 ( +8.43)    28 -> 27     0 / 0 / 0  
+GND                          F      1209.75 ( +6.55)    47 -> 47     0 / 0 / 0  
+GND                          In4    2320.05 ( +0.14)     3 -> 3      0 / 0 / 0  
+PACK_P                       F        28.36 ( -0.02)     3 -> 3      0 / 0 / 0  
+PACK_P                       In2    1225.20 ( +5.48)    13 -> 13     0 / 0 / 0  
+pours unchanged: 36 of 47
+footprint            289 ->   289   identical
+gr_poly                2 ->     2   identical
+gr_line               11 ->    11   identical
+gr_text               20 ->    20   identical
+segment             3430 ->  2598   only before 2664, only after 1832
+via                  949 ->   949   identical
+zone                  56 ->    56   identical (outline, net, layers, priority, settings); filled pieces 153 -> 152, 15 zones with a changed fill
+embedded_fonts         1 ->     1   identical
